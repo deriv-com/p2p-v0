@@ -36,7 +36,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       "X-Data-Source": "live",
     }
 
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, { headers, credentials: "include" })
 
     if (!response.ok) {
       throw new Error("Failed to fetch user adverts")
@@ -169,6 +169,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const response = await fetch(url, {
       method: "PATCH",
       headers,
+      credentials: "include",
       body,
     })
 
@@ -298,6 +299,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     const response = await fetch(url, {
       method: "DELETE",
       headers,
+      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -349,6 +351,7 @@ export async function createAd(
     const response = await fetch(url, {
       method: "POST",
       headers,
+      credentials: "include",
       body,
     })
 
@@ -454,6 +457,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     const response = await fetch(url, {
       method: "PATCH",
       headers,
+      credentials: "include",
       body,
     })
 
