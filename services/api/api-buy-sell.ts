@@ -404,12 +404,9 @@ export async function toggleBlockAdvertiser(
 export async function getPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const url = `${API.baseUrl}${API.endpoints.availablePaymentMethods}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
-    }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+
+    const response = await fetch(url, { credentials: "include" })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
