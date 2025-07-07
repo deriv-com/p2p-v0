@@ -9,7 +9,7 @@ import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { PlusCircle } from "lucide-react"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { USER, API } from "@/lib/local-variables"
 
 interface StatsTabsProps {
   stats?: any

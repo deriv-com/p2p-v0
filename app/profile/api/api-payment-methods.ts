@@ -1,4 +1,4 @@
-import { API, AUTH } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 
 export interface PaymentMethod {
   id: string
