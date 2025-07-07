@@ -1,4 +1,4 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 
 export interface LoginRequest {
   email: string
@@ -30,7 +30,6 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
   try {
     const response = await fetch(`${API.coreUrl}/login`, {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(email),
     })
 
@@ -41,7 +40,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
     const result = await response.json()
     const { data } = result
 
-    return data[0]
+    return data[0];
   } catch (error) {
     console.error("Login error:", error)
     throw new Error("Failed to login. Please try again.")
@@ -55,7 +54,6 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
   try {
     const response = await fetch(`${API.coreUrl}/verify`, {
       method: "POST",
-      credentials: "include",
       body: JSON.stringify(verificationData),
     })
 
@@ -125,7 +123,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
-      credentials: "include",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -154,9 +151,9 @@ export async function fetchUserIdAndStore(): Promise<void> {
  */
 export async function getSocketToken(token: string): Promise<void> {
   try {
+
     const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
       method: "GET",
-      credentials: "include",
       headers: {
         Authorization: `Bearer ${token}`,
         "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
