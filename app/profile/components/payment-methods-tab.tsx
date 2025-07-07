@@ -67,6 +67,7 @@ export default function PaymentMethodsTab() {
         "X-Data-Source": "live",
       }
       const response = await fetch(url, {
+        credentials: "include",
         headers,
         cache: "no-store",
       })
