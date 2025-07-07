@@ -7,7 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
-import NotificationBanner from "./notification-banner"
+import CustomNotificationBanner from "./notification-banner"
 import { PlusCircle } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
 
@@ -162,7 +162,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   return (
     <div className="relative">
       {notification.show && (
-        <NotificationBanner
+        <CustomNotificationBanner
           message={notification.message}
           onClose={() => setNotification({ show: false, message: "" })}
         />
@@ -170,7 +170,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
       <div className="mb-6">
         <Tabs defaultValue="stats">
-          <TabsList className="bg-custom-gray rounded-2xl p-1 h-auto">
+          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.id}
@@ -185,7 +185,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           <TabsContent value="stats">
             {isLoadingStats ? (
               <div className="space-y-4">
-                <div className="bg-custom-gray rounded-lg p-4">
+                <div className="bg-[#F5F5F5] rounded-lg p-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[...Array(3)].map((_, i) => (
                       <div key={i} className="py-4">
