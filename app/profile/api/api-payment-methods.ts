@@ -28,7 +28,8 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
       throw new Error(`Error fetching payment methods: ${response.statusText}`)
     }
 
-    return await response.json()
+    const result = await response.json()
+    return result.data || []
   } catch (error) {
     throw error
   }

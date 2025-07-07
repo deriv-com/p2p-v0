@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { API, AUTH } from "@/lib/local-variables"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
-import { Plus } from "lucide-react"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { addPaymentMethod } from "@/app/profile/api/api-payment-methods"
+import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import { getPaymentMethodIcon, getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
+import Image from "next/image"
 
 interface PaymentMethod {
   id: number
@@ -29,23 +29,10 @@ const AdPaymentMethods = () => {
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
-        const headers = {
-          ...AUTH.getAuthHeader(),
-          "Content-Type": "application/json",
-        }
-
-        const response = await fetch(url, {
-          headers,
-          cache: "no-store",
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          setPaymentMethods(data.data || [])
-        }
+        const data = await getUserPaymentMethods()
+        setPaymentMethods(data)
       } catch (error) {
-        // Silently fail - just show empty state
+        setPaymentMethods([])
       } finally {
         setIsLoading(false)
       }
@@ -67,74 +54,18 @@ const AdPaymentMethods = () => {
     setSelectedMethods(newSelection)
   }
 
-  const getMethodDisplayDetails = (method: PaymentMethod) => {
-    if (method.type === "bank") {
-      const account = method.fields.account?.value || ""
-      const bankName = method.fields.bank_name?.value || "Bank Transfer"
-      const maskedAccount = account ? account.slice(0, 6) + "****" + account.slice(-4) : "****"
-
-      return {
-        primary: maskedAccount,
-        secondary: bankName,
-      }
-    } else {
-      const account = method.fields.account?.value || ""
-      const displayValue = account || method.display_name
-
-      return {
-        primary: displayValue,
-        secondary: method.display_name,
-      }
-    }
-  }
-
-  const getMethodIcon = (method: PaymentMethod) => {
-    if (method.type === "bank") {
-      return <div className="w-3 h-3 rounded-full bg-green-500"></div>
-    } else {
-      return <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-    }
-  }
-
-  const getCategoryDisplayName = (type: string) => {
-    switch (type) {
-      case "bank":
-        return "Bank transfer"
-      case "ewallet":
-        return "eWallet"
-      default:
-        return "Other"
-    }
-  }
-
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       setIsAddingMethod(true)
       const result = await addPaymentMethod(method, fields)
 
       if (result.success) {
-        // Refresh payment methods list
-        const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
-        const headers = {
-          ...AUTH.getAuthHeader(),
-          "Content-Type": "application/json",
-        }
-
-        const response = await fetch(url, {
-          headers,
-          cache: "no-store",
-        })
-
-        if (response.ok) {
-          const data = await response.json()
-          setPaymentMethods(data.data || [])
-        }
+        const data = await getUserPaymentMethods()
+        setPaymentMethods(data)
         setShowAddPanel(false)
-      } else {
-        console.error("Failed to add payment method:", result.errors)
       }
     } catch (error) {
-      console.error("Error adding payment method:", error)
+      console.log(error)
     } finally {
       setIsAddingMethod(false)
     }
@@ -176,7 +107,13 @@ const AdPaymentMethods = () => {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        {getMethodIcon(method)}
+                        <Image
+                          src={getPaymentMethodIcon(method.type) || "/placeholder.svg"}
+                          alt={getCategoryDisplayName(method.type)}
+                          width={12}
+                          height={12}
+                          className="rounded-full"
+                        />
                         <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
@@ -194,14 +131,19 @@ const AdPaymentMethods = () => {
               )
             })}
 
-            {/* Add Payment Method Button */}
             <Card
               className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
               onClick={() => setShowAddPanel(true)}
             >
               <CardContent className="p-4 h-full flex items-center justify-center">
                 <div className="text-center">
-                  <Plus className="h-8 w-8 mx-auto mb-2 text-black" />
+                  <Image
+                    src="/icons/plus_icon.png"
+                    alt="Add payment method"
+                    width={32}
+                    height={32}
+                    className="mx-auto mb-2"
+                  />
                   <p className="text-sm font-medium text-black">Add payment method</p>
                 </div>
               </CardContent>
@@ -212,7 +154,6 @@ const AdPaymentMethods = () => {
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
 
-      {/* Add Payment Method Panel */}
       {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}
