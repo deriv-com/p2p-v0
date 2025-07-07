@@ -164,7 +164,24 @@ export async function fetchUserIdAndStore(): Promise<void> {
 export async function getSocketToken(token: string): Promise<void> {
   try {
 
-tToken) {
+    const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
+        "X-Branch": "development",
+        "Content-Type": "application/json",
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch token: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    const socketToken = result?.data
+
+    if (socketToken) {
       localStorage.setItem("socket_token", socketToken.toString())
     }
   } catch (error) {
