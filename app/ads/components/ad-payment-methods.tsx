@@ -26,7 +26,6 @@ const AdPaymentMethods = () => {
             try {
                 const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
                 const headers = {
-                    ...AUTH.getAuthHeader(),
                     "Content-Type": "application/json",
                 }
 

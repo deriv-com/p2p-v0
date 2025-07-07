@@ -19,7 +19,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "X-Data-Source": "live",
     }
 
@@ -124,7 +123,6 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -278,7 +276,6 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       Accept: "application/json",
     }
 
@@ -352,7 +349,6 @@ export async function createAd(
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       Accept: "application/json",
       "Content-Type": "application/json",
     }
@@ -556,7 +552,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     // Use the updateAd function instead of a direct activation endpoint
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
