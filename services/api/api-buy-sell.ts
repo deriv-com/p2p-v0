@@ -66,7 +66,11 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
-    const response = await fetch(url, { credentials: "include" })
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
@@ -119,9 +123,10 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     // First try to get user data from the users endpoint
     const url = `${API.baseUrl}${API.endpoints.advertisers}/${id}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.warn(`Error Response: ${response.status} ${response.statusText}`)
@@ -247,10 +252,11 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       throw new Error(`Error fetching advertiser ads: ${response.statusText}`)
@@ -286,6 +292,7 @@ export async function toggleFavouriteAdvertiser(
     const method = isFavourite ? "POST" : "DELETE"
 
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -297,7 +304,6 @@ export async function toggleFavouriteAdvertiser(
 
     const response = await fetch(url, {
       method,
-      credentials: "include",
       headers,
       body,
     })
@@ -345,6 +351,7 @@ export async function toggleBlockAdvertiser(
     const method = isBlocked ? "POST" : "DELETE"
 
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -356,7 +363,6 @@ export async function toggleBlockAdvertiser(
 
     const response = await fetch(url, {
       method,
-      credentials: "include",
       headers,
       body,
     })
@@ -397,9 +403,12 @@ export async function toggleBlockAdvertiser(
 export async function getPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const url = `${API.baseUrl}${API.endpoints.availablePaymentMethods}`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
 
-
-    const response = await fetch(url, { credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
