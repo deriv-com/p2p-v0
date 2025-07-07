@@ -20,7 +20,6 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
     })
@@ -59,7 +58,6 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
       method: "POST",
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
@@ -130,7 +128,6 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
       method: "PATCH",
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify(requestBody),
@@ -197,7 +194,6 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
       method: "DELETE",
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
     })

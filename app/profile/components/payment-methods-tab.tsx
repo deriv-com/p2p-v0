@@ -62,9 +62,7 @@ export default function PaymentMethodsTab() {
 
       const url = `${API.baseUrl}/user-payment-methods`
       const headers = {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       }
       const response = await fetch(url, {
         headers,

@@ -63,9 +63,7 @@ export async function getUserProfile(): Promise<UserProfile> {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
     })
 
@@ -89,9 +87,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
       method: "PUT",
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
       body: JSON.stringify(data),
     })
@@ -115,9 +111,7 @@ export async function getUserBalance(): Promise<{ balance: number; currency: str
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
     })
 
@@ -140,7 +134,6 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
     })
@@ -168,9 +161,7 @@ export async function addPaymentMethod(name: string, instructions: string): Prom
       credentials: "include",
       method: "POST",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
       body: JSON.stringify(requestBody),
     })
@@ -201,9 +192,7 @@ export async function deletePaymentMethod(id: string): Promise<{ success: boolea
       credentials: "include",
       method: "DELETE",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
     })
 
@@ -227,9 +216,7 @@ export async function toggleRealNameVisibility(show: boolean): Promise<{ success
       credentials: "include",
       method: "PUT",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
       body: JSON.stringify({ show }),
     })
