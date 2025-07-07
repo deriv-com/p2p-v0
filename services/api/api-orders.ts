@@ -68,7 +68,6 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
     const url = `${API.baseUrl}${API.endpoints.orders}${queryString}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -97,7 +96,6 @@ export async function getOrderById(id: string): Promise<Order> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -126,14 +124,13 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/payment-sent`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
     const response = await fetch(url, {
       method: "POST",
-      headers,
       credentials: "include",
+      headers,
     })
 
     if (!response.ok) {
@@ -159,14 +156,13 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/release`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
     const response = await fetch(url, {
       method: "POST",
-      headers,
       credentials: "include",
+      headers,
     })
 
     if (!response.ok) {
@@ -192,14 +188,13 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/cancel`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
     const response = await fetch(url, {
       method: "POST",
-      headers,
       credentials: "include",
+      headers,
     })
 
     if (!response.ok) {
@@ -225,16 +220,15 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/dispute`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
     const body = JSON.stringify({ reason })
 
     const response = await fetch(url, {
       method: "POST",
+      credentials: "include",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -260,7 +254,6 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
       Accept: "application/json",
     }
@@ -274,9 +267,9 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
 
     const response = await fetch(url, {
       method: "POST",
+      credentials: "include",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -302,14 +295,13 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/pay`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
     const response = await fetch(url, {
       method: "POST",
-      headers,
       credentials: "include",
+      headers,
     })
 
     if (!response.ok) {
@@ -338,7 +330,6 @@ export async function reviewOrder(
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/review`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
     const body = JSON.stringify({
@@ -350,9 +341,9 @@ export async function reviewOrder(
 
     const response = await fetch(url, {
       method: "POST",
+      credentials: "include",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -378,14 +369,13 @@ export async function completeOrder(orderId: string): Promise<{ success: boolean
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/complete`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
     const response = await fetch(url, {
       method: "POST",
-      headers,
       credentials: "include",
+      headers,
     })
 
     if (!response.ok) {
@@ -415,7 +405,6 @@ export async function sendChatMessage(
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/chat`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -434,9 +423,9 @@ export async function sendChatMessage(
 
     const response = await fetch(url, {
       method: "POST",
+      credentials: "include",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -458,13 +447,13 @@ export async function sendChatMessage(
       success: true,
       message: data.data ||
         data.message || {
-          id: Date.now().toString(),
-          orderId,
-          senderId: 0,
-          content: message,
-          time,
-          isRead: false,
-        },
+        id: Date.now().toString(),
+        orderId,
+        senderId: 0,
+        content: message,
+        time,
+        isRead: false,
+      },
     }
   } catch (error) {
     throw error
