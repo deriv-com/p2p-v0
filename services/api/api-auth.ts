@@ -109,7 +109,7 @@ export async function getSession(): Promise<VerificationResponse> {
 export async function logout(): Promise<void> {
   try {
     const response = await fetch(`${API.coreUrl}/logout`, {
-      method: "GET",
+      method: "POST",
       credentials: "include",
     })
 
