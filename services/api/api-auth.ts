@@ -1,4 +1,5 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
+
 
 export interface LoginRequest {
   email: string
