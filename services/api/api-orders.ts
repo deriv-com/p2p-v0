@@ -72,7 +72,7 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       throw new Error(`Error fetching orders: ${response.statusText}`)
@@ -101,7 +101,7 @@ export async function getOrderById(id: string): Promise<Order> {
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       throw new Error(`Error fetching order: ${response.statusText}`)
@@ -133,7 +133,6 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -166,7 +165,6 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -199,7 +197,6 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -234,7 +231,6 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
       method: "POST",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -276,7 +272,6 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
       method: "POST",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -309,7 +304,6 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -352,7 +346,6 @@ export async function reviewOrder(
       method: "POST",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -385,7 +378,6 @@ export async function completeOrder(orderId: string): Promise<{ success: boolean
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -436,7 +428,6 @@ export async function sendChatMessage(
       method: "POST",
       headers,
       body,
-      credentials: "include",
     })
 
     if (!response.ok) {
@@ -458,13 +449,13 @@ export async function sendChatMessage(
       success: true,
       message: data.data ||
         data.message || {
-          id: Date.now().toString(),
-          orderId,
-          senderId: 0,
-          content: message,
-          time,
-          isRead: false,
-        },
+        id: Date.now().toString(),
+        orderId,
+        senderId: 0,
+        content: message,
+        time,
+        isRead: false,
+      },
     }
   } catch (error) {
     throw error

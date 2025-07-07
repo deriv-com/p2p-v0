@@ -1,4 +1,6 @@
 "use client"
+
+import type React from "react"
 import { useState, useEffect } from "react"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
@@ -58,7 +60,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         const url = `${API.baseUrl}/users/${userId}`
 
         const response = await fetch(url, {
-          credentials: "include",
           headers: {
             ...AUTH.getAuthHeader(),
             accept: "application/json",
@@ -101,7 +102,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             totalOrders30d: (data.buy_count_30day || 0) + (data.sell_count_30day || 0),
             totalOrdersLifetime: data.order_count_lifetime || 0,
             tradeVolume30d: {
-              amount: (data.buy_amount_30day || 0) + (data.sell_amount_30day || 0),
+              amount: ((data.buy_amount_30day || 0) + (data.sell_amount_30day || 0)),
               currency: "USD",
               period: "(30d)",
             },
