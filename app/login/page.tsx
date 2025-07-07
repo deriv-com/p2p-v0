@@ -169,6 +169,7 @@ export default function LoginPage() {
         >
           {isLoading ? "Logging in..." : "Log in"}
         </Button>
+        <div className="mt-[2rem] text-center">Don’t have an account yet? <a className="text-primary" href="https://staging-app.champion.trade/champion" target="_blank" rel="noopener noreferrer">Sign up</a></div>
       </div>
     </div>
   )
