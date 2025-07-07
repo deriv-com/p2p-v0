@@ -155,10 +155,10 @@ export default function LoginPage() {
         <div className="mb-6">
           <label className="block text-gray-600 mb-3">Email</label>
           <Input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder=""
+            placeholder="name@email.com"
           />
           {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
         </div>
