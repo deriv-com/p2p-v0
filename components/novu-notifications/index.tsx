@@ -10,11 +10,15 @@ async function fetchSubscriberHash() {
   try {
     const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
+    if (!USER.token) {
+      throw new Error("No authentication token available")
+    }
+
     const response = await fetch(url, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${USER.token}`,
       },
     })
 
@@ -35,7 +39,6 @@ async function fetchSubscriberHash() {
       subscriberId: subscriberData.subscriberId,
     }
   } catch (error) {
-    console.log(error);
     return null
   }
 }
@@ -103,7 +106,7 @@ export function NovuNotifications() {
     }
 
     getSubscriberHash()
-  }, [userIdFallback])
+  }, [userIdFallback, USER.token])
 
   if (!mounted || isLoading) {
     return (

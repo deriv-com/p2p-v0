@@ -68,7 +68,6 @@ export default function PaymentMethodsTab() {
       }
       const response = await fetch(url, {
         headers,
-        credentials: "include",
         cache: "no-store",
       })
 
@@ -81,8 +80,7 @@ export default function PaymentMethodsTab() {
 
       try {
         data = JSON.parse(responseText)
-      } catch (error) {
-        console.log(error);
+      } catch (e) {
         data = { data: [] }
       }
 

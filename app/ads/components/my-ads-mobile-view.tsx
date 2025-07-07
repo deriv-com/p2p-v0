@@ -288,12 +288,13 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
                   {ad.paymentMethods.map((method, index) => (
                     <div key={index} className="flex items-center">
                       <span
-                        className={`w-3 h-3 rounded-full mr-2 ${method.toLowerCase() === "bank transfer"
-                          ? "bg-green-600"
-                          : method.toLowerCase() === "skrill"
-                            ? "bg-blue-500"
-                            : "bg-blue-400"
-                          }`}
+                        className={`w-3 h-3 rounded-full mr-2 ${
+                          method.toLowerCase() === "bank transfer"
+                            ? "bg-green-600"
+                            : method.toLowerCase() === "skrill"
+                              ? "bg-blue-500"
+                              : "bg-blue-400"
+                        }`}
                       ></span>
                       <span>{method}</span>
                     </div>

@@ -6,6 +6,7 @@ import type { AdFormData } from "../types"
 import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -27,6 +28,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
+  const [buyCurrency, setBuyCurrency] = useState("BTC")
+  const [forCurrency, setForCurrency] = useState("USD")
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
     totalAmount: false,
@@ -217,6 +220,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     document.dispatchEvent(event)
   }, [totalAmount, fixedRate, minAmount, maxAmount, formErrors])
 
+  const currencies = ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
+
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-10">
@@ -224,6 +229,43 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div>
             <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Select trade type</h3>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
+
+            {/* Currency Selection Dropdowns */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+              <div>
+                <label className="block mb-2 text-black text-sm font-normal leading-5">
+                  {type === "buy" ? "Buy currency" : "Sell currency"}
+                </label>
+                <Select value={buyCurrency} onValueChange={setBuyCurrency}>
+                  <SelectTrigger className="w-full h-14 rounded-lg">
+                    <SelectValue>{buyCurrency}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <label className="block mb-2 text-black text-sm font-normal leading-5">For</label>
+                <Select value={forCurrency} onValueChange={setForCurrency}>
+                  <SelectTrigger className="w-full h-14 rounded-lg">
+                    <SelectValue>{forCurrency}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
         )}
 
@@ -266,7 +308,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         </div>
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Order amount limit</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Transaction limit</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput

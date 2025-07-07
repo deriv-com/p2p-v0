@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { StatusIndicator } from "@/components/ui/status-indicator"
 import { deleteAd, updateAd } from "../api/api-ads"
 import type { Ad } from "../types"
-import { cn } from "@/lib/utils"
+import { cn, formatPaymentMethodName } from "@/lib/utils"
 import StatusModal from "./ui/status-modal"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 
@@ -237,7 +237,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
           <div
             key={index}
             className={cn(
-              "w-full h-[216px] border rounded p-4 flex flex-col gap-2",
+              "w-full h-[224px] border rounded p-4 flex flex-col gap-2",
               ad.status === "Inactive" ? "opacity-50" : "",
               index < ads.length - 1 ? "mb-4" : "",
             )}
@@ -283,11 +283,9 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
             {/* Buy/Sell with ID row */}
             <div className="flex items-center justify-between">
               <div className="text-base font-bold">
-                {/* Updated to use StatusIndicator */}
-                <StatusIndicator variant={ad.type === "Buy" ? "buy" : "sell"}>
-                  {ad.type}
-                  <span className="text-black ml-1">USD</span>
-                </StatusIndicator>
+                {/* Updated to use Tailwind buy/sell colors */}
+                <span className={ad.type === "Buy" ? "text-buy" : "text-sell"}>{ad.type}</span>
+                <span className="text-black ml-1">USD</span>
               </div>
               <div className="text-neutral-7 text-xs font-normal">
                 {ad.type} {ad.id}
@@ -299,9 +297,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
               {/* Available Row */}
               <div className="flex flex-col w-full mb-2">
                 <div className="text-neutral-10 text-xs font-normal leading-5 font-medium">
-                  <span className="text-neutral-10 text-xs font-normal leading-5">
-                    USD {ad.available.current || 0}
-                  </span>{" "}
+                  <span className="text-neutral-10 text-xs font-normal leading-5">USD {ad.available.current || 0}</span>{" "}
                   / {ad.available.total || 0}
                 </div>
                 <div className="h-2 bg-gray-200 rounded-full w-full overflow-hidden mt-1">
@@ -316,7 +312,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
 
               {/* Rate Row */}
               <div className="flex justify-between">
-                <span className="label-rate">Rate:</span>
+                <span className="text-xs font-bold">Rate:</span>
                 <div className="text-right">
                   <div className="text-neutral-10 text-xs font-normal leading-5">USD 1.00 = {ad.rate.value}</div>
                 </div>
@@ -324,7 +320,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
 
               {/* Limits Row */}
               <div className="flex justify-between">
-                <span className="label-rate align-middle">Limits:</span>
+                <span className="text-xs font-bold align-middle">Limits:</span>
                 <span className="text-neutral-10 text-xs font-normal leading-5">
                   {typeof ad.limits === "string"
                     ? ad.limits
@@ -333,7 +329,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
               </div>
 
               {/* Payment Methods Row - Updated to use StatusIndicator with dot */}
-              <div className="flex flex-wrap gap-2 text-black text-xs font-normal leading-5 text-left">
+              <div className="flex flex-wrap gap-2 text-black text-xs font-normal leading-5 text-left mb-2">
                 {ad.paymentMethods.map((method, i) => (
                   <StatusIndicator
                     key={i}
@@ -342,7 +338,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                     size="sm"
                     className="mr-2 mb-1"
                   >
-                    {method}
+                    {formatPaymentMethodName(method)}
                   </StatusIndicator>
                 ))}
               </div>

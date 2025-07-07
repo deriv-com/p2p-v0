@@ -48,12 +48,36 @@ export function getPaymentMethodIcon(type: string): string {
   return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
 }
 
-export const maskAccountNumber = (accountNumber: string): string => {
-  if (!accountNumber || accountNumber.length <= 4) {
-    return accountNumber
-  }
-  const lastFour = accountNumber.slice(-4)
-  const maskedPart= "".padStart(accountNumber.length - 4, "*")
+export const maskAccountNumber = (accountNumber: any): string => {
+  if (!accountNumber) return ""
 
-  return maskedPart + lastFour
+  let rawValue = accountNumber
+
+  if (typeof accountNumber === "object" && accountNumber !== null) {
+    if ("value" in accountNumber) {
+      rawValue = accountNumber.value
+    }
+  }
+
+  const accountStr = String(rawValue)
+
+  if (accountStr.length <= 4) {
+    return accountStr
+  }
+
+  return "*".repeat(accountStr.length - 4) + accountStr.slice(-4)
+}
+
+/**
+ * Convert snake_case payment method names to proper case
+ * @param methodName - The snake_case method name (e.g., "apple_pay")
+ * @returns Formatted method name (e.g., "Apple Pay")
+ */
+export function formatPaymentMethodName(methodName: string): string {
+  if (!methodName) return ""
+
+  return methodName
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
 }

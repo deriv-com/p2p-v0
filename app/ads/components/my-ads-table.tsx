@@ -12,6 +12,7 @@ import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
+import { formatPaymentMethodName } from "@/lib/utils"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -41,7 +42,22 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
 
   const formatPaymentMethods = (methods: string[]) => {
     if (!methods || methods.length === 0) return "None"
-    return methods.join(", ")
+    return (
+      <div className="space-y-1">
+        {methods.map((method, index) => (
+          <div key={index} className="flex items-center">
+            <span
+              className={`w-2 h-2 rounded-full mr-2 ${
+                method.toLowerCase().includes("bank") || method.toLowerCase().includes("transfer")
+                  ? "bg-payment-method-bank"
+                  : "bg-payment-method-other"
+              }`}
+            ></span>
+            <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
+          </div>
+        ))}
+      </div>
+    )
   }
 
   const getStatusBadge = (status: string) => {
@@ -208,23 +224,14 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
         <Table>
           <TableHeader>
             <TableRow className="border-b">
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
                 Ad ID
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
-                Rate (USD 1)
-              </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
-                Limits
-              </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
                 Available amount
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
                 Payment methods
-              </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
-                Status
               </TableHead>
               <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal"></TableHead>
             </TableRow>
@@ -234,18 +241,31 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               <TableRow key={index} className={cn("border-b", ad.status === "Inactive" ? "opacity-60" : "")}>
                 <TableCell className="py-4">
                   <div>
-                    <span className={cn("font-medium", ad.type === "Buy" ? "text-buy" : "text-sell")}>{ad.type}</span>
-                    <span className="text-gray-900"> {ad.id}</span>
+                    <div className="mb-1">
+                      <span
+                        className={cn("font-bold text-base leading-6", ad.type === "Buy" ? "text-buy" : "text-sell")}
+                      >
+                        {ad.type}
+                      </span>
+                      <span className="text-gray-900 text-base font-normal leading-6"> {ad.id}</span>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs font-normal leading-5 text-slate-500">Rate:</span>
+                        <span className="text-sm font-bold leading-5 text-gray-900">{ad.rate.value}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs font-normal leading-5 text-slate-500">Limits:</span>
+                        <span className="text-sm font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                          {formatLimits(ad.limits)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="py-4">
-                  <div className="font-medium">{ad.rate.value}</div>
-                </TableCell>
-                <TableCell className="py-4">{formatLimits(ad.limits)}</TableCell>
-                <TableCell className="py-4">
                   <div className="mb-1">
-                    {ad.available.currency} {ad.available.current || 0} /{" "}
-                    {ad.available.total || 0}
+                    {ad.available.currency} {ad.available.current || 0} / {ad.available.total || 0}
                   </div>
                   <div className="h-2 bg-gray-200 rounded-full w-full max-w-[180px] overflow-hidden">
                     <div

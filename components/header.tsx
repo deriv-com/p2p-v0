@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import { USER } from "@/lib/local-variables"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { Button } from "@/components/ui/button"
@@ -9,6 +10,7 @@ import * as AuthAPI from "@/services/api/api-auth"
 
 export default function Header() {
   const pathname = usePathname()
+  const isAuthenticated = !!USER.token;
   const navItems = [
     { name: "Market", href: "/" },
     { name: "Orders", href: "/orders" },
@@ -45,11 +47,11 @@ export default function Header() {
         <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
         </div>
-        <Button
+        {isAuthenticated && <Button
           size="sm"
           onClick={() => AuthAPI.logout()}>
           Logout
-        </Button>
+        </Button>}
       </div>
     </header>
   )

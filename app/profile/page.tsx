@@ -8,10 +8,11 @@ import { USER, API, AUTH } from "@/lib/local-variables"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({
-    username: "",
+    username: "John_doe",
     rating: "Not rated yet",
     completionRate: "",
-    joinDate: "",
+    joinDate: "Joined today",
+    blockedCount: 2,
     realName: "",
     balance: "",
     isVerified: {
@@ -21,7 +22,7 @@ export default function ProfilePage() {
     },
     businessHours: {
       isOpen: true,
-      availability: "",
+      availability: "available 24/7",
     },
     tradeLimits: {
       buy: {
@@ -53,7 +54,6 @@ export default function ProfilePage() {
         const url = `${API.baseUrl}/users/${userId}`
 
         const response = await fetch(url, {
-          credentials: "include",
           headers: {
             ...AUTH.getAuthHeader(),
             accept: "application/json",
@@ -119,6 +119,7 @@ export default function ProfilePage() {
             rating={userData.rating}
             completionRate={userData.completionRate}
             joinDate={userData.joinDate}
+            blockedCount={userData.blockedCount}
             realName={userData.realName}
             isVerified={userData.isVerified}
           />

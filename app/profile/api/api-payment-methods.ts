@@ -18,7 +18,6 @@ export interface PaymentMethodResponse {
 export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -56,7 +55,6 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       method: "POST",
-      credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -69,9 +67,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
     let responseData: any
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
-    } catch (error) {
-      console.log(error);
-
+    } catch (e) {
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -111,11 +107,13 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
 export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
+    const { method_type, ...cleanFields } = fields
+
     const finalFields: Record<string, any> = {}
 
-    Object.keys(fields).forEach((key) => {
-      if (fields[key] && typeof fields[key] === "string") {
-        finalFields[key] = fields[key]
+    Object.keys(cleanFields).forEach((key) => {
+      if (cleanFields[key] && typeof cleanFields[key] === "string") {
+        finalFields[key] = cleanFields[key]
       }
     })
 
@@ -127,7 +125,6 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
 
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
-      credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -140,9 +137,7 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
     let responseData: any
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
-    } catch (error) {
-      console.log(error);
-
+    } catch (e) {
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -196,7 +191,6 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
   try {
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "DELETE",
-      credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -209,8 +203,6 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
         const errorData = JSON.parse(errorText)
         return { success: false, errors: errorData.errors }
       } catch (error) {
-        console.log(error);
-
         return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }

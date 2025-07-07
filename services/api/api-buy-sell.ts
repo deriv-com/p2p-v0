@@ -68,8 +68,9 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
     const headers = {
       ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
     }
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
@@ -125,7 +126,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.warn(`Error Response: ${response.status} ${response.statusText}`)
@@ -255,7 +256,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       throw new Error(`Error fetching advertiser ads: ${response.statusText}`)
@@ -303,7 +304,6 @@ export async function toggleFavouriteAdvertiser(
 
     const response = await fetch(url, {
       method,
-      credentials: "include",
       headers,
       body,
     })
@@ -363,7 +363,6 @@ export async function toggleBlockAdvertiser(
 
     const response = await fetch(url, {
       method,
-      credentials: "include",
       headers,
       body,
     })
@@ -409,7 +408,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)

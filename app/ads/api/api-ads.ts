@@ -23,7 +23,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       "X-Data-Source": "live",
     }
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, { headers })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
@@ -77,7 +77,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
           total: actualMaxAmount,
           currency: "USD",
         },
-        paymentMethods: advert.payment_method_names || [],
+        paymentMethods: advert.payment_methods || [],
         status: status,
         description: advert.description || "", // Make sure to include the description field
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
@@ -120,7 +120,11 @@ export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
 /**
  * Update an advertisement
  */
-export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
+export async function updateAd(
+  id: string,
+  adData: any,
+  adType?: string,
+): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
@@ -128,18 +132,47 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
       "Content-Type": "application/json",
     }
 
-    // Ensure payment_method_names is an array of strings
-    if (adData.payment_method_names) {
-      // If it's not an array, convert it to an array with a single string
-      if (!Array.isArray(adData.payment_method_names)) {
-        adData.payment_method_names = [String(adData.payment_method_names)]
+    // Determine ad type from parameter or data
+    const type = adType || adData.type || "buy"
+    const isBuyAd = type.toLowerCase() === "buy"
+
+    // Handle payment methods based on ad type
+    if (isBuyAd) {
+      // For Buy ads: use payment_method_names (array of strings)
+      if (adData.payment_method_names) {
+        // If it's not an array, convert it to an array with a single string
+        if (!Array.isArray(adData.payment_method_names)) {
+          adData.payment_method_names = [String(adData.payment_method_names)]
+        } else {
+          // If it is an array, ensure all elements are strings
+          adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
+        }
       } else {
-        // If it is an array, ensure all elements are strings
-        adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
+        // If it's undefined or null, set it to an empty array
+        adData.payment_method_names = []
       }
+
+      // Remove payment_method_ids if it exists (shouldn't be used for buy ads)
+      delete adData.payment_method_ids
     } else {
-      // If it's undefined or null, set it to an empty array
-      adData.payment_method_names = []
+      // For Sell ads: use payment_method_ids (array of numbers)
+      if (adData.payment_method_ids) {
+        // Ensure it's an array of numbers
+        if (!Array.isArray(adData.payment_method_ids)) {
+          adData.payment_method_ids = [Number(adData.payment_method_ids)]
+        } else {
+          adData.payment_method_ids = adData.payment_method_ids.map((id) => Number(id))
+        }
+      } else if (adData.payment_method_names) {
+        // If payment_method_names is provided for sell ads, convert to IDs
+        // This is a fallback - ideally payment_method_ids should be provided directly
+        adData.payment_method_ids = []
+      } else {
+        adData.payment_method_ids = []
+      }
+
+      // Remove payment_method_names for sell ads
+      delete adData.payment_method_names
     }
 
     // Format the request body as required by the API
@@ -147,10 +180,31 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const requestData = { data: adData }
     const body = JSON.stringify(requestData)
 
+    console.group(`📤 PATCH Update Ad Request (${isBuyAd ? "Buy" : "Sell"} Ad)`)
+    console.log("URL:", url)
+    console.log("Headers:", headers)
+    console.log("Ad ID:", id)
+    console.log("Ad Type:", type)
+    console.log("Request Data:", requestData)
+    console.log("Request Body:", body)
+
+    if (isBuyAd) {
+      console.log(
+        "Payment Methods (Names):",
+        Array.isArray(adData.payment_method_names) ? "Array of strings ✅" : "Not an array ❌",
+        adData.payment_method_names,
+      )
+    } else {
+      console.log(
+        "Payment Methods (IDs):",
+        Array.isArray(adData.payment_method_ids) ? "Array of numbers ✅" : "Not an array ❌",
+        adData.payment_method_ids,
+      )
+    }
+
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
       body,
     })
 
@@ -230,9 +284,9 @@ export async function toggleAdStatus(
       }
     }
 
-    // For the API, we need to convert boolean isActive to 1/0 for some endpoints
-    // and keep it as boolean for others. Let's try with the boolean first.
-    const adData = {
+    // Prepare ad data based on ad type
+    const isBuyAd = currentAd.type === "Buy"
+    const adData: any = {
       is_active: isActive,
       minimum_order_amount: currentAd.limits.min,
       maximum_order_amount: currentAd.limits.max,
@@ -241,22 +295,22 @@ export async function toggleAdStatus(
       exchange_rate_type: "fixed",
       order_expiry_period: 15, // Default value if not available
       description: "", // Default value if not available
-      payment_method_names: currentAd.type === "Buy" ? currentAd.paymentMethods : [],
+    }
+
+    // Add payment methods based on ad type
+    if (isBuyAd) {
+      adData.payment_method_names = currentAd.paymentMethods
+    } else {
+      // For sell ads, we need payment method IDs
+      // If we only have names, we'll need to convert them or pass empty array
+      adData.payment_method_ids = []
     }
 
     console.log("Prepared Ad Data for Update:", adData)
-
-    // Add this line to specifically check the payment_method_names format
-    console.log(
-      "Payment Methods Format:",
-      Array.isArray(adData.payment_method_names) ? "Array of strings ✅" : "Not an array ❌",
-      adData.payment_method_names,
-    )
-
     console.groupEnd()
 
-    // Call the updateAd function with the prepared data
-    return await updateAd(id, adData)
+    // Call the updateAd function with the prepared data and ad type
+    return await updateAd(id, adData, currentAd.type)
   } catch (error) {
     console.group("💥 Toggle Ad Status Exception")
     console.error("Error:", error)
@@ -292,7 +346,6 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     const response = await fetch(url, {
       method: "DELETE",
       headers,
-      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -371,7 +424,6 @@ export async function createAd(
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
       body,
     })
 
@@ -531,8 +583,9 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
       }
     }
 
-    // Prepare the payload for activation
-    const payload = {
+    // Prepare the payload for activation based on ad type
+    const isBuyAd = adToActivate.type === "Buy"
+    const payload: any = {
       is_active: true,
       minimum_order_amount: adToActivate.limits.min,
       maximum_order_amount: adToActivate.limits.max,
@@ -541,17 +594,17 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
       exchange_rate_type: "fixed",
       order_expiry_period: 15,
       description: "",
-      payment_method_names: adToActivate.type === "Buy" ? adToActivate.paymentMethods : [],
+    }
+
+    // Add payment methods based on ad type
+    if (isBuyAd) {
+      payload.payment_method_names = adToActivate.paymentMethods
+    } else {
+      // For sell ads, we need payment method IDs
+      payload.payment_method_ids = []
     }
 
     console.log("Activation payload:", payload)
-
-    // Add this line to specifically check the payment_method_names format
-    console.log(
-      "Payment Methods Format:",
-      Array.isArray(payload.payment_method_names) ? "Array of strings ✅" : "Not an array ❌",
-      payload.payment_method_names,
-    )
 
     // Use the updateAd function instead of a direct activation endpoint
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
@@ -568,7 +621,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
       body,
     })
 
