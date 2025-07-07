@@ -1,4 +1,4 @@
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { USER, API } from "@/lib/local-variables"
 import type { APIAdvert, MyAd, AdFilters, CreateAdPayload, CreateAdResponse } from "../types"
 
 export async function getCurrencies(): Promise<string[]> {
@@ -32,7 +32,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "X-Data-Source": "live",
     }
 
@@ -124,7 +123,6 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -266,7 +264,6 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       Accept: "application/json",
     }
 
@@ -313,7 +310,6 @@ export async function createAd(
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       Accept: "application/json",
       "Content-Type": "application/json",
     }
@@ -421,7 +417,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
 
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 

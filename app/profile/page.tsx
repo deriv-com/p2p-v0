@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { USER, API } from "@/lib/local-variables"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({
@@ -55,7 +55,6 @@ export default function ProfilePage() {
 
         const response = await fetch(url, {
           headers: {
-            ...AUTH.getAuthHeader(),
             accept: "application/json",
           },
         })

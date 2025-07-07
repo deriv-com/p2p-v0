@@ -69,7 +69,8 @@ export default function LoginPage() {
         await AuthAPI.getSocketToken(response.access_token)
 
         window.location.href = "/"
-        
+
+        localStorage.setItem("user_data", JSON.stringify(response.user));
       } else {
         setError("Verification failed. Please try again.")
       }
@@ -161,10 +162,10 @@ export default function LoginPage() {
         <div className="mb-6">
           <label className="block text-gray-600 mb-3">Email</label>
           <Input
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder=""
+            placeholder="name@email.com"
           />
           {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
         </div>
@@ -175,6 +176,7 @@ export default function LoginPage() {
         >
           {isLoading ? "Logging in..." : "Log in"}
         </Button>
+        <div className="mt-[2rem] text-center">Don’t have an account yet? <a className="text-primary" href="https://staging-app.champion.trade/champion" target="_blank" rel="noopener noreferrer">Sign up</a></div>
       </div>
     </div>
   )

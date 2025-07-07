@@ -62,9 +62,7 @@ export async function getUserProfile(): Promise<UserProfile> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
     })
 
@@ -87,9 +85,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/business-hours`, {
       method: "PUT",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
       body: JSON.stringify(data),
     })
@@ -112,9 +108,7 @@ export async function getUserBalance(): Promise<{ balance: number; currency: str
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
     })
 
@@ -136,7 +130,6 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
     })
@@ -163,9 +156,7 @@ export async function addPaymentMethod(name: string, instructions: string): Prom
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`, {
       method: "POST",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
       body: JSON.stringify(requestBody),
     })
@@ -195,9 +186,7 @@ export async function deletePaymentMethod(id: string): Promise<{ success: boolea
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods/${id}`, {
       method: "DELETE",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
     })
 
@@ -220,9 +209,7 @@ export async function toggleRealNameVisibility(show: boolean): Promise<{ success
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
       method: "PUT",
       headers: {
-        ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Data-Source": "live",
       },
       body: JSON.stringify({ show }),
     })

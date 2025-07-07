@@ -92,14 +92,16 @@ export function getAuthToken(): string | null {
  */
 export async function logout(): Promise<void> {
   try {
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("auth_token")
-      localStorage.removeItem("user_data")
-      localStorage.removeItem("user_id")
-      localStorage.removeItem("socket_token")
+    const response = await fetch(`${API.coreUrl}/logout`, {
+      method: "POST",
+      credentials: "include",
+    })
 
-      window.location.href = "/"
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
     }
+
+    window.location.href = "/"
   } catch (error) {
     console.error("Logout error:", error)
   }
@@ -123,11 +125,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-        "X-Branch": "development",
-      },
+      credentials: "include",
     })
 
     if (!response.ok) {

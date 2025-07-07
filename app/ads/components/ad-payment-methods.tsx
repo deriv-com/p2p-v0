@@ -42,7 +42,7 @@ const AdPaymentMethods = () => {
   }, [])
 
   useEffect(() => {
-    ;(window as any).adPaymentMethodIds = selectedMethods
+    ; (window as any).adPaymentMethodIds = selectedMethods
   }, [selectedMethods])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {

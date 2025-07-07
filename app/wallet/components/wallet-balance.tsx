@@ -9,7 +9,7 @@ import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { USER, API } from "@/lib/local-variables"
 
 interface WalletBalanceProps {
   className?: string
@@ -38,7 +38,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
       const response = await fetch(url, {
         headers: {
-          ...AUTH.getAuthHeader(),
           accept: "application/json",
         },
       })
