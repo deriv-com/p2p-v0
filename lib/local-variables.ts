@@ -51,13 +51,6 @@ export const APP_SETTINGS = {
   supportedLanguages: ["EN", "ES", "FR", "ID"],
 }
 
-export const AUTH = {
-  getAuthHeader: () => ({
-    "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
-    "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
-  }),
-}
-
 export const NOTIFICATIONS = {
   applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
   subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,

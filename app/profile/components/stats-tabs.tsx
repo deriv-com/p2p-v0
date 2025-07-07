@@ -60,7 +60,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         const response = await fetch(url, {
           credentials: "include",
           headers: {
-            ...AUTH.getAuthHeader(),
             accept: "application/json",
           },
         })

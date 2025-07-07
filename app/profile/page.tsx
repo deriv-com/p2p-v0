@@ -55,7 +55,6 @@ export default function ProfilePage() {
         const response = await fetch(url, {
           credentials: "include",
           headers: {
-            ...AUTH.getAuthHeader(),
             accept: "application/json",
           },
         })
