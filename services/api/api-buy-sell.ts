@@ -68,7 +68,6 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
     const headers = {
       ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
     }
     const response = await fetch(url, { headers, credentials: "include" })
 
