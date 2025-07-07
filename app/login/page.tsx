@@ -65,7 +65,7 @@ export default function LoginPage() {
       if (response) {
         await AuthAPI.fetchUserIdAndStore()
         window.location.href = "/"
-        
+
       } else {
         setError("Verification failed. Please try again.")
       }
