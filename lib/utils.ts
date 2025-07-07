@@ -79,6 +79,7 @@ export const maskAccountNumber = (accountNumber: any): string => {
   return "*".repeat(accountStr.length - 4) + accountStr.slice(-4)
 }
 
+
 export function formatPaymentMethodName(methodName: string): string {
   if (!methodName) return ""
 

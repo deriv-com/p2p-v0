@@ -134,12 +134,37 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
       } else {
         adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
       }
+
+      // Remove payment_method_ids if it exists (shouldn't be used for buy ads)
+      delete adData.payment_method_ids
     } else {
       adData.payment_method_names = []
     }
 
     const requestData = { data: adData }
     const body = JSON.stringify(requestData)
+
+    console.group(`📤 PATCH Update Ad Request (${isBuyAd ? "Buy" : "Sell"} Ad)`)
+    console.log("URL:", url)
+    console.log("Headers:", headers)
+    console.log("Ad ID:", id)
+    console.log("Ad Type:", type)
+    console.log("Request Data:", requestData)
+    console.log("Request Body:", body)
+
+    if (isBuyAd) {
+      console.log(
+        "Payment Methods (Names):",
+        Array.isArray(adData.payment_method_names) ? "Array of strings ✅" : "Not an array ❌",
+        adData.payment_method_names,
+      )
+    } else {
+      console.log(
+        "Payment Methods (IDs):",
+        Array.isArray(adData.payment_method_ids) ? "Array of numbers ✅" : "Not an array ❌",
+        adData.payment_method_ids,
+      )
+    }
 
     const response = await fetch(url, {
       method: "PATCH",
@@ -418,7 +443,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     const payload = {
       is_active: true,
     }
-
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
       ...AUTH.getAuthHeader(),

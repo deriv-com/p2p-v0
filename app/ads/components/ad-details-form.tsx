@@ -195,6 +195,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     document.dispatchEvent(event)
   }, [type, totalAmount, fixedRate, minAmount, maxAmount, formErrors])
 
+  const currencies = ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
+
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-10">
@@ -202,7 +204,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div>
             <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Select trade type</h3>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
                 <label className="block mb-2 text-black text-sm font-normal leading-5">

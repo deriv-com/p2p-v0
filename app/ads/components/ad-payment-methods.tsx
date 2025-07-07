@@ -49,6 +49,20 @@ const AdPaymentMethods = () => {
     if (checked && selectedMethods.length >= 3) {
       return
     }
+  }
+
+  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
+    try {
+      setIsAddingMethod(true)
+      const result = await addPaymentMethod(method, fields)
+
+      if (result.success) {
+        // Refresh payment methods list
+        const url = `${API.baseUrl}${API.endpoints.userPaymentMethods}`
+        const headers = {
+          ...AUTH.getAuthHeader(),
+          "Content-Type": "application/json",
+        }
 
     const newSelection = checked ? [...selectedMethods, methodId] : selectedMethods.filter((id) => id !== methodId)
     setSelectedMethods(newSelection)
@@ -130,7 +144,6 @@ const AdPaymentMethods = () => {
                 </Card>
               )
             })}
-
             <Card
               className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
               onClick={() => setShowAddPanel(true)}
@@ -153,7 +166,6 @@ const AdPaymentMethods = () => {
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
-
       {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}

@@ -255,7 +255,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-
               <div className="flex items-center justify-between">
                 <div className="text-base font-bold">
                   <span className={adType.toLowerCase() === "buy" ? "text-buy" : "text-sell"}>{adType}</span>
@@ -265,7 +264,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                   {adType} {ad.id}
                 </div>
               </div>
-
               <div className="flex flex-col gap-2 flex-grow justify-between">
                 <div className="flex flex-col w-full mb-2">
                   <div className="text-neutral-10 text-xs font-normal leading-5 font-medium">
@@ -283,7 +281,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                     ></div>
                   </div>
                 </div>
-
                 <div className="flex justify-between">
                   <span className="text-xs font-bold">Rate:</span>
                   <div className="text-right">

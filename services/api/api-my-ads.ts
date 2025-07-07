@@ -200,7 +200,6 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-
     if (adData.payment_method_names !== undefined) {
       if (!Array.isArray(adData.payment_method_names)) {
         adData.payment_method_names = [String(adData.payment_method_names)]
@@ -211,7 +210,6 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
 
     const requestData = { data: adData }
     const body = JSON.stringify(requestData)
-
     const response = await fetch(url, {
       method: "PATCH",
       headers,
@@ -284,6 +282,7 @@ export async function toggleAdStatus(id: string, isActive: boolean, currentAd: M
     }
 
     return await updateAd(id, adData)
+
   } catch (error) {
     throw error
   }
