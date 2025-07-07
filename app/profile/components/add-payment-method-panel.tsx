@@ -8,9 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
-import { API } from "@/services/api"
-import { AUTH } from "@/lib/auth"
 
 interface AddPaymentMethodPanelProps {
   onClose: () => void
@@ -57,20 +56,12 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
       try {
         setIsLoadingMethods(true)
 
-        const response = await fetch(`${API.baseUrl}/payment-methods`, {
-          credentials: "include",
-          headers: {
-            ...AUTH.getAuthHeader(),
-            "Content-Type": "application/json",
-          },
-        })
+        const response = await getPaymentMethods()
 
-        const data = await response.json()
-
-        if (data && data.data && Array.isArray(data.data)) {
-          setAvailablePaymentMethods(data.data)
-        } else if (Array.isArray(data)) {
-          setAvailablePaymentMethods(data)
+        if (response && response.data && Array.isArray(response.data)) {
+          setAvailablePaymentMethods(response.data)
+        } else if (Array.isArray(response)) {
+          setAvailablePaymentMethods(response)
         }
       } catch (error) {
       } finally {
