@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { API, AUTH } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"

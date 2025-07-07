@@ -1,4 +1,4 @@
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { USER, API } from "@/lib/local-variables"
 import type { APIAdvert, MyAd, AdFilters, CreateAdPayload, CreateAdResponse } from "../types"
 
 /**
