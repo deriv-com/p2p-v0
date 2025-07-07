@@ -4,7 +4,6 @@ import { useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useRouter } from "next/navigation"
 import * as AuthAPI from "@/services/api/api-auth"
 
 export default function LoginPage() {
@@ -15,8 +14,6 @@ export default function LoginPage() {
   const [resendTimer, setResendTimer] = useState(59)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
-
-  const router = useRouter()
 
   const handleLogin = async () => {
     try {
@@ -62,12 +59,8 @@ export default function LoginPage() {
 
       const response = await AuthAPI.verifyCode(verificationData);
 
-      if (response.access_token) {
-        localStorage.setItem("auth_token", response.access_token)
-
+      if (response) {
         await AuthAPI.fetchUserIdAndStore()
-        await AuthAPI.getSocketToken(response.access_token)
-
         window.location.href = "/"
 
         localStorage.setItem("user_data", JSON.stringify(response.user));
