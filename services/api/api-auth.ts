@@ -17,6 +17,7 @@ export interface VerificationRequest {
 
 export interface VerificationResponse {
   access_token?: string
+  errors?: string[]
   user?: {
     id: string
     email?: string
@@ -53,7 +54,12 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
     const response = await fetch(`${API.coreUrl}/verify`, {
+
       method: "POST",
+      headers: {
+        "X-Enable-Session": "true"
+      },
+      credentials: "include",
       body: JSON.stringify(verificationData),
     })
 
@@ -74,17 +80,27 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
 /**
  * Check if user is authenticated
  */
-export function isAuthenticated(): boolean {
-  if (typeof window === "undefined") return false
-  return !!localStorage.getItem("auth_token")
-}
+export async function getSession(): Promise<VerificationResponse> {
+  try {
+    const response = await fetch(`${API.coreUrl}/session`, {
+      method: "GET",
+      credentials: "include",
+    })
 
-/**
- * Get the authentication token
- */
-export function getAuthToken(): string | null {
-  if (typeof window === "undefined") return null
-  return localStorage.getItem("auth_token")
+    if (!response.ok) {
+      return {
+        errors: ["User not authenticated."]
+      }
+    }
+
+    const result = await response.json()
+    return result
+  } catch (error) {
+    console.error(error)
+    return {
+      errors: ["User not authenticated."]
+    }
+  }
 }
 
 /**
@@ -103,7 +119,8 @@ export async function logout(): Promise<void> {
 
     window.location.href = "/"
   } catch (error) {
-    console.error("Logout error:", error)
+    console.error(error)
+    throw new Error("User not authenticated.")
   }
 }
 
@@ -120,9 +137,6 @@ export function validateEmail(email: string): boolean {
  */
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
-    const token = getAuthToken()
-    if (!token) throw new Error("No auth token found")
-
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
@@ -152,8 +166,8 @@ export async function getSocketToken(token: string): Promise<void> {
 
     const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
       method: "GET",
+      credentials: "include",
       headers: {
-        Authorization: `Bearer ${token}`,
         "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
         "X-Branch": "development",
         "Content-Type": "application/json",
