@@ -1,4 +1,4 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 
 export interface LoginRequest {
   email: string
@@ -41,7 +41,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
     const result = await response.json()
     const { data } = result
 
-    return data[0]
+    return data[0];
   } catch (error) {
     console.error("Login error:", error)
     throw new Error("Failed to login. Please try again.")
@@ -54,9 +54,10 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
     const response = await fetch(`${API.coreUrl}/verify`, {
+
       method: "POST",
       headers: {
-        "X-Enable-Session": "true",
+        "X-Enable-Session": "true"
       },
       credentials: "include",
       body: JSON.stringify(verificationData),
@@ -88,7 +89,7 @@ export async function getSession(): Promise<VerificationResponse> {
 
     if (!response.ok) {
       return {
-        errors: ["User not authenticated."],
+        errors: ["User not authenticated."]
       }
     }
 
@@ -97,7 +98,7 @@ export async function getSession(): Promise<VerificationResponse> {
   } catch (error) {
     console.error(error)
     return {
-      errors: ["User not authenticated."],
+      errors: ["User not authenticated."]
     }
   }
 }
@@ -162,6 +163,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
  */
 export async function getSocketToken(token: string): Promise<void> {
   try {
+
     const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
       method: "GET",
       credentials: "include",
