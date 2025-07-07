@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import PaymentMethodBottomSheet from "./payment-method-bottom-sheet"
 import { Button } from "@/components/ui/button"
-import { AUTH, API } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 import AdPaymentMethods from "./ad-payment-methods"
 
 interface PaymentMethod {
