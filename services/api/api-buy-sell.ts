@@ -70,7 +70,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, { headers, credentials: "include" })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
@@ -126,7 +126,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, { headers, credentials: "include" })
 
     if (!response.ok) {
       console.warn(`Error Response: ${response.status} ${response.statusText}`)
@@ -256,7 +256,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, { headers, credentials: "include" })
 
     if (!response.ok) {
       throw new Error(`Error fetching advertiser ads: ${response.statusText}`)
@@ -306,6 +306,7 @@ export async function toggleFavouriteAdvertiser(
       method,
       headers,
       body,
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -365,6 +366,7 @@ export async function toggleBlockAdvertiser(
       method,
       headers,
       body,
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -408,7 +410,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
       "Content-Type": "application/json",
     }
 
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, { headers, credentials: "include" })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
@@ -428,10 +430,8 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
       return data.data
     } else if (Array.isArray(data)) {
       return data
-    } else
-      return []
-  }
-  catch (error) {
+    } else return []
+  } catch (error) {
     // Return empty array on error to prevent map errors
     return []
   }

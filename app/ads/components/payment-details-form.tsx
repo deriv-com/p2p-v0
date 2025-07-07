@@ -44,6 +44,7 @@ export default function PaymentDetailsForm({
     const fetchPaymentMethods = async () => {
       try {
         const response = await fetch(`${API.baseUrl}${API.endpoints.availablePaymentMethods}`, {
+          credentials: "include",
           headers: {
             accept: "application/json",
             ...AUTH.getAuthHeader(),
@@ -161,8 +162,9 @@ export default function PaymentDetailsForm({
                       <Button
                         type="button"
                         variant="outline"
-                        className={`w-full h-[56px] rounded-[8px] border border-[1px] gap-[8px] px-[16px] justify-between text-left ${bottomSheetOpen ? "border-black" : "border-gray-300"
-                          }`}
+                        className={`w-full h-[56px] rounded-[8px] border border-[1px] gap-[8px] px-[16px] justify-between text-left ${
+                          bottomSheetOpen ? "border-black" : "border-gray-300"
+                        }`}
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
@@ -190,8 +192,9 @@ export default function PaymentDetailsForm({
                   ) : (
                     <DropdownMenu open={dropdownOpen} onOpenChange={setDropdownOpen}>
                       <DropdownMenuTrigger
-                        className={`w-full md:w-[360px] h-[56px] rounded-lg border ${dropdownOpen ? "border-black" : "border-gray-300"
-                          } justify-between text-left focus:outline-none focus-visible:outline-none focus:ring-0 relative flex items-center px-4`}
+                        className={`w-full md:w-[360px] h-[56px] rounded-lg border ${
+                          dropdownOpen ? "border-black" : "border-gray-300"
+                        } justify-between text-left focus:outline-none focus-visible:outline-none focus:ring-0 relative flex items-center px-4`}
                       >
                         {dropdownOpen ? (
                           <div className="flex flex-col items-start">
@@ -240,12 +243,14 @@ export default function PaymentDetailsForm({
                               togglePaymentMethod(method.method)
                             }}
                             disabled={!isMethodSelected(method.method) && isMaxReached}
-                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${!isMethodSelected(method.method) && isMaxReached ? "opacity-50" : ""
-                              }`}
+                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${
+                              !isMethodSelected(method.method) && isMaxReached ? "opacity-50" : ""
+                            }`}
                           >
                             <div
-                              className={`w-5 h-5 flex items-center justify-center rounded border ${isMethodSelected(method.method) ? "bg-[#00D2FF] border-[#00D2FF]" : "border-gray-300"
-                                }`}
+                              className={`w-5 h-5 flex items-center justify-center rounded border ${
+                                isMethodSelected(method.method) ? "bg-[#00D2FF] border-[#00D2FF]" : "border-gray-300"
+                              }`}
                             >
                               {isMethodSelected(method.method) && <Check className="h-3 w-3 text-white" />}
                             </div>

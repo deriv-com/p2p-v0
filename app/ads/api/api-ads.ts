@@ -3,20 +3,23 @@ import type { APIAdvert, MyAd, AdFilters, CreateAdPayload, CreateAdResponse } fr
 
 export async function getCurrencies(): Promise<string[]> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`;
+    const url = `${API.baseUrl}${API.endpoints.settings}`
     const headers = {
       ...AUTH.getAuthHeader(),
       "X-Data-Source": "live",
-    };
+    }
 
-    const response = await fetch(url, { headers });
-    await response.text();
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+    await response.text()
   } catch (error) {
-    console.log("Error fetching currencies:", error);
+    console.log("Error fetching currencies:", error)
   }
-  
+
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"];
+  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
 }
 
 export async function getUserAdverts(): Promise<MyAd[]> {
@@ -36,7 +39,10 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       "X-Data-Source": "live",
     }
 
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
 
     if (!response.ok) {
       throw new Error("Failed to fetch user adverts")
@@ -145,6 +151,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
       method: "PATCH",
       headers,
       body,
+      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -204,6 +211,7 @@ export async function toggleAdActiveStatus(
       method: "PATCH",
       headers,
       body,
+      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -273,6 +281,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     const response = await fetch(url, {
       method: "DELETE",
       headers,
+      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -325,6 +334,7 @@ export async function createAd(
       method: "POST",
       headers,
       body,
+      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -431,6 +441,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
       method: "PATCH",
       headers,
       body,
+      credentials: "include",
     })
 
     const responseText = await response.text()
