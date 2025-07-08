@@ -240,7 +240,6 @@ export async function toggleAdActiveStatus(id: string, isActive: boolean): Promi
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -254,6 +253,7 @@ export async function toggleAdActiveStatus(id: string, isActive: boolean): Promi
     const response = await fetch(url, {
       method: "PATCH",
       headers,
+      credentials: "include",
       body,
     })
 

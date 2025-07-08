@@ -5,16 +5,17 @@ export async function getCurrencies(): Promise<string[]> {
   try {
     const url = `${API.baseUrl}${API.endpoints.settings}`;
     const headers = {
-      ...AUTH.getAuthHeader(),
       "X-Data-Source": "live",
     };
 
-    const response = await fetch(url, { headers });
+    const response = await fetch(url, {
+      headers, credentials: "include",
+    });
     await response.text();
   } catch (error) {
     console.log("Error fetching currencies:", error);
   }
-  
+
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
   return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"];
 }
@@ -35,7 +36,9 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       "X-Data-Source": "live",
     }
 
-    const response = await fetch(url, { headers })
+    const response = await fetch(url, {
+      headers, credentials: "include",
+    })
 
     if (!response.ok) {
       throw new Error("Failed to fetch user adverts")
@@ -187,7 +190,6 @@ export async function toggleAdActiveStatus(
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
-      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -201,6 +203,7 @@ export async function toggleAdActiveStatus(
     const response = await fetch(url, {
       method: "PATCH",
       headers,
+      credentials: "include",
       body,
     })
 
