@@ -56,20 +56,11 @@ export const NOTIFICATIONS = {
   subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
 }
 
-export const AUTH = {
-  isLoggedIn: !!USER_ID && !!USER_DATA?.nickname,
-  token: SOCKET_TOKEN,
-  userId: USER_ID,
-  userData: USER_DATA,
-  loginUrl: "/login",
-  logoutUrl: "/logout",
-}
 
 export default {
   USER,
   API,
   APP_SETTINGS,
   NOTIFICATIONS,
-  WALLETS,
-  AUTH,
+  WALLETS
 }
