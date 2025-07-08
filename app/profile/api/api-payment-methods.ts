@@ -113,7 +113,9 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
     const { method_type, ...cleanFields } = fields
 
     const finalFields = Object.fromEntries(
-      Object.entries(cleanFields).filter(([key, value]) => value && typeof value === "string"),
+      Object.entries(cleanFields)
+        .filter(([key, value]) => value != null)
+        .map(([key, value]) => [key, String(value)]),
     )
 
     const requestBody = {
