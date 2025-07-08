@@ -94,9 +94,8 @@ export default function StatusBottomSheet({
         <div className="px-6 pb-8">
           <div className="flex justify-center mb-8 mt-4">
             <div
-              className={`${
-                type === "success" ? "bg-[#EDFAF3]" : "bg-[#FFF8E7]"
-              } rounded-full p-4 flex items-center justify-center w-[72px] h-[72px]`}
+              className={`${type === "success" ? "bg-[#EDFAF3]" : "bg-[#FFF8E7]"
+                } rounded-full p-4 flex items-center justify-center w-[72px] h-[72px]`}
             >
               {type === "success" ? (
                 <CheckCircle className="h-10 w-10 text-[#008832]" />
@@ -124,7 +123,7 @@ export default function StatusBottomSheet({
           {subMessage && <p className="mt-6 font-normal text-base leading-6">{subMessage}</p>}
 
           <div className="mt-12">
-            <Button onClick={onClose} variant="default" className="w-full h-14">
+            <Button onClick={onClose} variant="default">
               {actionButtonText}
             </Button>
           </div>

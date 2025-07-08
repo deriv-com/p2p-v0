@@ -69,6 +69,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
     } catch (e) {
+      console.log("Failed to parse response:", e);
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -94,6 +95,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
     return { success: true, data: responseData.data }
   } catch (error) {
+    console.log("Error adding payment method:", error);
     return {
       success: false,
       errors: [
@@ -139,6 +141,7 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
     } catch (e) {
+      console.log("Failed to parse response:", e);
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -164,6 +167,7 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
 
     return { success: true, data: responseData.data }
   } catch (error) {
+    console.log("Error updating payment method:", error);
     return {
       success: false,
       errors: [
@@ -204,12 +208,14 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
         const errorData = JSON.parse(errorText)
         return { success: false, errors: errorData.errors }
       } catch (error) {
+        console.log("Error at delete payment method:", error);
         return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
     return { success: true }
   } catch (error) {
+    console.log("Error deleting payment method:", error);
     return {
       success: false,
       errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
