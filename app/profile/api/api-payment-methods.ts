@@ -108,73 +108,65 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
 export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
-    // Remove method_type from the fields as it's not needed for updates
-    const { method_type, ...fieldsWithoutMethodType } = fields
+    const { method_type, ...cleanFields } = fields
 
-    // Filter and validate fields to only include valid string values
-    const validatedFields: Record<string, any> = {}
+    // Filter to only include valid string fields
+    const finalFields = Object.fromEntries(
+      Object.entries(cleanFields).filter(([key, value]) => value && typeof value === "string"),
+    )
 
-    Object.keys(fieldsWithoutMethodType).forEach((fieldName) => {
-      const fieldValue = fieldsWithoutMethodType[fieldName]
-
-      // Only include fields that have truthy string values
-      if (fieldValue && typeof fieldValue === "string") {
-        validatedFields[fieldName] = fieldValue
-      }
-    })
-
-    const requestPayload = {
+    const requestBody = {
       data: {
-        fields: validatedFields,
+        fields: finalFields,
       },
     }
 
-    const apiResponse = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
+    const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestPayload),
+      body: JSON.stringify(requestBody),
     })
 
-    const responseText = await apiResponse.text()
+    const responseText = await response.text()
 
-    let parsedResponse: any
+    let responseData: any
     try {
-      parsedResponse = responseText ? JSON.parse(responseText) : { success: apiResponse.ok }
-    } catch (parseError) {
+      responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
+    } catch (e) {
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
       }
     }
 
-    if (!apiResponse.ok) {
-      const serverErrors = parsedResponse.errors || []
+    if (!response.ok) {
+      const errors = responseData.errors || []
 
-      const userFriendlyErrors = serverErrors.map((error: any) => ({
-        code: error.code || "unknown_error",
-        message: error.message || getErrorMessageFromCode(error.code),
+      const formattedErrors = errors.map((err: any) => ({
+        code: err.code || "unknown_error",
+        message: err.message || getErrorMessageFromCode(err.code),
       }))
 
       return {
         success: false,
         errors:
-          userFriendlyErrors.length > 0
-            ? userFriendlyErrors
-            : [{ code: "api_error", message: `API Error: ${apiResponse.status} ${apiResponse.statusText}` }],
+          formattedErrors.length > 0
+            ? formattedErrors
+            : [{ code: "api_error", message: `API Error: ${response.status} ${response.statusText}` }],
       }
     }
 
-    return { success: true, data: parsedResponse.data }
-  } catch (networkError) {
+    return { success: true, data: responseData.data }
+  } catch (error) {
     return {
       success: false,
       errors: [
         {
           code: "exception",
-          message: networkError instanceof Error ? networkError.message : "An unexpected error occurred",
+          message: error instanceof Error ? error.message : "An unexpected error occurred",
         },
       ],
     }
