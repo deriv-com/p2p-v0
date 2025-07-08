@@ -110,9 +110,11 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
   try {
     const { method_type, ...cleanFields } = fields
 
-    // Filter to only include valid string fields
+    // Convert all values to strings and filter out null/undefined values
     const finalFields = Object.fromEntries(
-      Object.entries(cleanFields).filter(([key, value]) => value && typeof value === "string"),
+      Object.entries(cleanFields)
+        .filter(([key, value]) => value != null) // Remove null and undefined
+        .map(([key, value]) => [key, String(value)]), // Convert everything to string
     )
 
     const requestBody = {
