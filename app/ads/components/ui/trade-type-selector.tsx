@@ -3,39 +3,33 @@
 import { Button } from "@/components/ui/button"
 
 interface TradeTypeSelectorProps {
-  selectedType: "buy" | "sell"
-  onTypeChange: (type: "buy" | "sell") => void
-  disabled?: boolean
+  value: "buy" | "sell"
+  onChange: (value: "buy" | "sell") => void
+  isEditMode?: boolean
 }
 
-export function TradeTypeSelector({ selectedType, onTypeChange, disabled = false }: TradeTypeSelectorProps) {
+export function TradeTypeSelector({ value, onChange, isEditMode = false }: TradeTypeSelectorProps) {
   return (
-    <div className="flex w-full rounded-lg border border-gray-200 bg-gray-50 p-1">
+    <div className="flex bg-gray-50 rounded-lg w-full md:w-[270px] h-10 min-h-10 max-h-10 px-1 py-0">
       <Button
-        variant={selectedType === "buy" ? "default" : "ghost"}
-        size="sm"
-        onClick={() => onTypeChange("buy")}
-        disabled={disabled}
-        className={`flex-1 ${
-          selectedType === "buy"
-            ? "bg-green-600 text-white hover:bg-green-700"
-            : "bg-transparent text-gray-600 hover:bg-gray-100"
-        }`}
+        type="button"
+        variant="ghost"
+        onClick={() => !isEditMode && onChange("buy")}
+        disabled={isEditMode}
+        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8
+          ${value === "buy" ? "bg-white shadow-sm my-1" : "bg-transparent text-gray-500 my-1"}`}
       >
-        Buy
+        I want to buy
       </Button>
       <Button
-        variant={selectedType === "sell" ? "default" : "ghost"}
-        size="sm"
-        onClick={() => onTypeChange("sell")}
-        disabled={disabled}
-        className={`flex-1 ${
-          selectedType === "sell"
-            ? "bg-red-600 text-white hover:bg-red-700"
-            : "bg-transparent text-gray-600 hover:bg-gray-100"
-        }`}
+        type="button"
+        variant="ghost"
+        onClick={() => !isEditMode && onChange("sell")}
+        disabled={isEditMode}
+        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8
+          ${value === "sell" ? "bg-white shadow-sm my-1" : "bg-transparent text-gray-500 my-1"}`}
       >
-        Sell
+        I want to sell
       </Button>
     </div>
   )
