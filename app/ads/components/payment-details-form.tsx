@@ -47,6 +47,7 @@ export default function PaymentDetailsForm({
           headers: {
             accept: "application/json",
           },
+          credentials: "include",
         })
         const responseData = await response.json()
 

@@ -21,6 +21,7 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -58,6 +59,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -127,6 +129,7 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -192,6 +195,7 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     })
 
     if (!response.ok) {

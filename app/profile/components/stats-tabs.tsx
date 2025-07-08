@@ -61,6 +61,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           headers: {
             accept: "application/json",
           },
+          credentials: "include",
         })
 
         if (!response.ok) {

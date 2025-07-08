@@ -334,6 +334,7 @@ export async function createAd(payload: CreateAdPayload): Promise<{ success: boo
     const response = await fetch(url, {
       method: "POST",
       headers,
+      credentials: "include",
       body,
     })
 
@@ -423,6 +424,7 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
     const response = await fetch(url, {
       method: "PATCH",
       headers,
+      credentials: "include",
       body,
     })
 
