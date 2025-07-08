@@ -226,24 +226,7 @@ export async function toggleAdActiveStatus(
   }
 }
 
-export async function toggleAdStatus(
-  id: string,
-  isActive: boolean,
-  currentAd: MyAd,
-): Promise<{ success: boolean; errors?: any[] }> {
-  try {
-    const adData = {
-      is_active: isActive,
-    }
 
-    return await updateAd(id, adData)
-  } catch (error) {
-    return {
-      success: false,
-      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
-    }
-  }
-}
 
 export async function deleteAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
   try {
@@ -451,7 +434,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
 export const AdsAPI = {
   getCurrencies,
   getUserAdverts,
-  toggleAdStatus,
   toggleAdActiveStatus,
   deleteAd,
   createAd,
