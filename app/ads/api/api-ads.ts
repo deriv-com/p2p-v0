@@ -3,20 +3,20 @@ import type { APIAdvert, MyAd, AdFilters, CreateAdPayload, CreateAdResponse } fr
 
 export async function getCurrencies(): Promise<string[]> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`;
+    const url = `${API.baseUrl}${API.endpoints.settings}`
     const headers = {
       ...AUTH.getAuthHeader(),
       "X-Data-Source": "live",
-    };
+    }
 
-    const response = await fetch(url, { headers });
-    await response.text();
+    const response = await fetch(url, { headers })
+    await response.text()
   } catch (error) {
-    console.log("Error fetching currencies:", error);
+    console.log("Error fetching currencies:", error)
   }
-  
+
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"];
+  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
 }
 
 export async function getUserAdverts(): Promise<MyAd[]> {
