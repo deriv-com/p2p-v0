@@ -107,9 +107,9 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
     window.location.href = editUrl
   }
 
-  const handleCopy = (adId: string) => {}
+  const handleCopy = (adId: string) => { }
 
-  const handleShare = (adId: string) => {}
+  const handleShare = (adId: string) => { }
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
@@ -208,7 +208,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
           const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
           const adType = ad.type || "Buy"
           const rate = ad.exchange_rate || ad.rate?.value || "N/A"
-          const paymentMethods = ad.payment_methods || ad.paymentMethods || []
+          const paymentMethods = ad.payment_methods || []
 
           return (
             <div
