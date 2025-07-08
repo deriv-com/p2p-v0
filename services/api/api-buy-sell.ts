@@ -1,4 +1,4 @@
-import { API, AUTH } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 
 // Define the Advertisement interface directly in this file
 export interface Advertisement {
@@ -64,13 +64,15 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
     }
 
+    const country_code = localStorage.getItem("residence_country")
+    if (country_code) queryParams.append("country_code", country_code)
+
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
     const response = await fetch(url, { credentials: "include" })
 
     if (!response.ok) {
       console.error("Error Response:", response.status, response.statusText)
-      console.groupEnd()
       throw new Error(`Error fetching advertisements: ${response.statusText}`)
     }
 
@@ -79,34 +81,20 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
 
     try {
       data = JSON.parse(responseText)
-      console.log("Response Body (parsed):", data)
     } catch (e) {
-      console.warn("⚠️ Could not parse response as JSON:", e)
-      console.log("Response Body (raw):", responseText)
+      console.log(e)
       data = { data: [] }
     }
 
-    // Check if the response has a data property that is an array
     if (data && data.data && Array.isArray(data.data)) {
-      console.log("✅ Successfully fetched advertisements")
-      console.groupEnd()
       return data.data
     } else if (Array.isArray(data)) {
-      console.log("✅ Successfully fetched advertisements")
-      console.groupEnd()
       return data
     } else {
-      console.warn("⚠️ API response is not in the expected format")
-      console.log("Returning empty array")
-      console.groupEnd()
       return []
     }
   } catch (error) {
-    console.group("💥 Get Advertisements Exception")
-    console.error("Error:", error)
-    console.error("Stack:", error instanceof Error ? error.stack : "No stack trace available")
-    console.groupEnd()
-    // Return empty array on error to prevent map errors
+    console.log(error);
     return []
   }
 }
@@ -125,7 +113,6 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
 
     if (!response.ok) {
       console.warn(`Error Response: ${response.status} ${response.statusText}`)
-      console.log("Falling back to getting advertiser data from ads...")
       console.groupEnd()
 
       // If the user endpoint fails, try to get user data from their ads
@@ -137,22 +124,14 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
 
     try {
       data = JSON.parse(responseText)
-      console.log("Response Body (parsed):", data)
     } catch (e) {
       console.warn("⚠️ Could not parse response as JSON:", e)
-      console.log("Response Body (raw):", responseText)
       data = {}
     }
 
-    console.log("✅ Successfully fetched advertiser details")
-    console.groupEnd()
-
     return data
   } catch (error) {
-    console.group("💥 Get Advertiser By ID Exception")
     console.error("Error:", error)
-    console.error("Stack:", error instanceof Error ? error.stack : "No stack trace available")
-    console.groupEnd()
 
     // Return a mock profile as a fallback
     return createMockAdvertiser(id)

@@ -117,6 +117,7 @@ export async function logout(): Promise<void> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
+    localStorage.removeItem("residence_country");
     window.location.href = "/"
   } catch (error) {
     console.error(error)
@@ -155,6 +156,28 @@ export async function fetchUserIdAndStore(): Promise<void> {
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
+  }
+}
+
+export async function getClientProfile(): Promise<void> {
+  try {
+    const response = await fetch(`${API.coreUrl}/client/profile`, {
+      method: "GET",
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch profile: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    const { data } = result;
+
+    if (data[0].residence_country) {
+      localStorage.setItem("residence_country", data[0].residence_country)
+    }
+  } catch (error) {
+    console.error("Error fetching profile:", error)
   }
 }
 

@@ -61,8 +61,9 @@ export default function LoginPage() {
 
       if (response) {
         await AuthAPI.fetchUserIdAndStore()
-        window.location.href = "/"
+        await AuthAPI.getClientProfile()
 
+        window.location.href = "/"
         localStorage.setItem("user_data", JSON.stringify(response.user));
       } else {
         setError("Verification failed. Please try again.")
