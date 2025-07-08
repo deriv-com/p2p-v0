@@ -1,63 +1,137 @@
 "use client"
 
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { useAdStore } from "@/store/ad-store"
-import { useEffect } from "react"
+import type React from "react"
+
+import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
 
 interface StatusBottomSheetProps {
-  open: boolean
-  setOpen: (open: boolean) => void
-  status: "success" | "error" | null
+  isOpen: boolean
+  onClose: () => void
+  type: "success" | "error" | "warning"
+  title: string
+  message: string
+  subMessage?: string
+  adId?: string
+  adType?: string
+  actionButtonText?: string
+  isUpdate?: boolean
 }
 
-export function StatusBottomSheet({ open, setOpen, status }: StatusBottomSheetProps) {
-  const router = useRouter()
-  const resetAd = useAdStore((state) => state.reset)
+export default function StatusBottomSheet({
+  isOpen,
+  onClose,
+  type,
+  title,
+  message,
+  subMessage,
+  adId,
+  adType,
+  actionButtonText = "OK",
+  isUpdate = false,
+}: StatusBottomSheetProps) {
+  const [startY, setStartY] = useState(0)
+  const [currentY, setCurrentY] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const bottomSheetRef = useRef<HTMLDivElement>(null)
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setStartY(e.touches[0].clientY)
+    setIsDragging(true)
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (isDragging) {
+      setCurrentY(e.touches[0].clientY)
+    }
+  }
+
+  const handleTouchEnd = () => {
+    if (isDragging) {
+      if (currentY - startY > 100) {
+        onClose()
+      }
+      setIsDragging(false)
+    }
+  }
+
+  const getTransformStyle = () => {
+    if (isDragging && currentY > startY) {
+      return { transform: `translateY(${currentY - startY}px)` }
+    }
+    return {}
+  }
 
   useEffect(() => {
-    if (open) {
+    if (isOpen) {
       document.body.style.overflow = "hidden"
     } else {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = ""
     }
     return () => {
-      document.body.style.overflow = "auto"
+      document.body.style.overflow = ""
     }
-  }, [open])
+  }, [isOpen])
 
-  const handleNavigation = () => {
-    resetAd()
-    setOpen(false)
-    router.push("/ads")
+  if (!isOpen) return null
+
+  const getIconSrc = () => {
+    return type === "success" ? "/icons/success_icon_round.png" : "/icons/error_icon_round.png"
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent className="text-center">
-        <SheetHeader>
-          <SheetTitle>{status === "success" ? "Ad Created!" : "Ad Creation Failed"}</SheetTitle>
-          <SheetDescription>
-            {status === "success"
-              ? "Your ad has been successfully created and is now live."
-              : "There was an error creating your ad. Please try again."}
-          </SheetDescription>
-        </SheetHeader>
-
-        <div className="flex items-center justify-center w-16 h-16 mx-auto mb-4">
-          <Image
-            src={status === "success" ? "/icons/success_icon_round.png" : "/icons/error_icon_round.png"}
-            alt={status === "success" ? "Success" : "Error"}
-            width={64}
-            height={64}
-            className="w-16 h-16"
-          />
+    <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
+      <div
+        ref={bottomSheetRef}
+        className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[32px] max-h-[90vh] overflow-y-auto z-[60]"
+        style={getTransformStyle()}
+        onClick={(e) => e.stopPropagation()}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="w-full flex justify-center pt-4 pb-2">
+          <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
         </div>
 
-        <Button onClick={handleNavigation}>{status === "success" ? "Go to Ads" : "Try Again"}</Button>
-      </SheetContent>
-    </Sheet>
+        <div className="px-6 pb-8">
+          <div className="flex justify-center mb-8 mt-4">
+            <div className="flex items-center justify-center w-[72px] h-[72px]">
+              <Image
+                src={getIconSrc() || "/placeholder.svg"}
+                alt={type === "success" ? "Success" : "Error"}
+                width={72}
+                height={72}
+                className="w-[72px] h-[72px]"
+              />
+            </div>
+          </div>
+
+          <h2 className="mb-6 font-bold text-lg leading-7">{title}</h2>
+
+          {type === "success" && (
+            <>
+              <p className="mb-6 font-normal text-base leading-6">
+                {isUpdate
+                  ? `You've successfully updated Ad${adType && adId ? ` (${adType} ${adId})` : "."}`
+                  : `You've successfully created Ad${adType && adId ? ` (${adType} ${adId})` : "."}`}
+              </p>
+              <p className="font-normal text-base leading-6">{message}</p>
+            </>
+          )}
+
+          {type !== "success" && <p className="font-normal text-base leading-6">{message}</p>}
+
+          {subMessage && <p className="mt-6 font-normal text-base leading-6">{subMessage}</p>}
+
+          <div className="mt-12">
+            <Button onClick={onClose} variant="default" className="w-full h-14">
+              {actionButtonText}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
