@@ -18,17 +18,14 @@ export default function Main({
   const pathname = usePathname()
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 
-    setIsLoading(true)
     const fetchSessionData = async () => {
       try {
         const response = await AuthAPI.getSession()
-        setIsLoading(false)
         if (response.errors && !isPublic) {
           setIsHeaderVisible(false)
           router.push("/login")
@@ -44,12 +41,6 @@ export default function Main({
     fetchSessionData();
   }, [pathname, router])
 
-    if(isLoading) {
-        return <div className="text-center py-12">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-              <p className="mt-2 text-slate-600">Loading...</p>
-            </div>
-    }
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
   }
