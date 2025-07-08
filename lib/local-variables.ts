@@ -56,7 +56,6 @@ export const NOTIFICATIONS = {
   subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
 }
 
-
 export default {
   USER,
   API,
