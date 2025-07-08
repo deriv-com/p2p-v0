@@ -101,26 +101,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
   }
 }
 
-export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
-  try {
-    const userAdverts = await getUserAdverts()
 
-    if (filters) {
-      const filteredAds = userAdverts.filter((ad) => {
-        if (filters.type && ad.type !== filters.type) return false
-        if (filters.status && ad.status !== filters.status) return false
-        if (filters.adId && ad.id !== filters.adId) return false
-        return true
-      })
-
-      return filteredAds
-    }
-
-    return userAdverts
-  } catch (error) {
-    return []
-  }
-}
 
 export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
   try {
@@ -470,7 +451,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
 export const AdsAPI = {
   getCurrencies,
   getUserAdverts,
-  getMyAds,
   toggleAdStatus,
   toggleAdActiveStatus,
   deleteAd,
