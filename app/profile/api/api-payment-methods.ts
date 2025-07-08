@@ -108,9 +108,12 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
 export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
-    // Filter out method_type and keep only valid string fields
+    // Remove method_type from the fields as it's not needed for updates
+    const { method_type, ...fieldsWithoutMethodType } = fields
+
+    // Filter and validate fields to only include valid string values
     const validatedFields = Object.fromEntries(
-      Object.entries(fields).filter(([key, value]) => key !== "method_type" && value && typeof value === "string"),
+      Object.entries(fieldsWithoutMethodType).filter(([key, value]) => value && typeof value === "string"),
     )
 
     const requestPayload = {
