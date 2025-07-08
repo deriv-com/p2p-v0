@@ -10,13 +10,13 @@ interface TradeTypeSelectorProps {
 
 export function TradeTypeSelector({ selectedType, onTypeChange, disabled = false }: TradeTypeSelectorProps) {
   return (
-    <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+    <div className="flex w-full rounded-lg border border-gray-200 overflow-hidden">
       <Button
-        variant={selectedType === "buy" ? "default" : "outline"}
+        variant={selectedType === "buy" ? "default" : "ghost"}
         className={`flex-1 rounded-none border-0 ${
           selectedType === "buy"
-            ? "bg-green-500 hover:bg-green-600 text-white"
-            : "bg-white hover:bg-gray-50 text-gray-700"
+            ? "bg-green-600 text-white hover:bg-green-700"
+            : "bg-white text-gray-700 hover:bg-gray-50"
         }`}
         onClick={() => onTypeChange("buy")}
         disabled={disabled}
@@ -24,9 +24,9 @@ export function TradeTypeSelector({ selectedType, onTypeChange, disabled = false
         Buy
       </Button>
       <Button
-        variant={selectedType === "sell" ? "default" : "outline"}
-        className={`flex-1 rounded-none border-0 border-l ${
-          selectedType === "sell" ? "bg-red-500 hover:bg-red-600 text-white" : "bg-white hover:bg-gray-50 text-gray-700"
+        variant={selectedType === "sell" ? "default" : "ghost"}
+        className={`flex-1 rounded-none border-0 ${
+          selectedType === "sell" ? "bg-red-600 text-white hover:bg-red-700" : "bg-white text-gray-700 hover:bg-gray-50"
         }`}
         onClick={() => onTypeChange("sell")}
         disabled={disabled}
