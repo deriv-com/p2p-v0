@@ -61,6 +61,7 @@ export interface PaymentMethod {
 export async function getUserProfile(): Promise<UserProfile> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -84,6 +85,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/business-hours`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -107,6 +109,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
 export async function getUserBalance(): Promise<{ balance: number; currency: string }> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -129,6 +132,7 @@ export async function getUserBalance(): Promise<{ balance: number; currency: str
 export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -155,6 +159,7 @@ export async function addPaymentMethod(name: string, instructions: string): Prom
 
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -185,6 +190,7 @@ export async function deletePaymentMethod(id: string): Promise<{ success: boolea
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods/${id}`, {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -208,6 +214,7 @@ export async function toggleRealNameVisibility(show: boolean): Promise<{ success
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
