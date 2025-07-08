@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { deleteAd, toggleAdActiveStatus } from "@/services/api/api-my-ads"
+import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"

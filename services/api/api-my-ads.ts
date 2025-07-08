@@ -48,7 +48,6 @@ export interface MyAd {
   status: "Active" | "Inactive"
   createdAt: string
   updatedAt: string
-  description?: string
 }
 
 export interface AdFilters {
@@ -69,8 +68,7 @@ export interface CreateAdPayload {
   description: string
   is_active: number
   order_expiry_period: number
-  payment_method_names?: string[]
-  payment_method_ids?: number[]
+  payment_method_names: string[]
 }
 
 export interface CreateAdResponse {
@@ -106,8 +104,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     const queryParams = new URLSearchParams({
       user_id: userId.toString(),
       show_inactive: "true",
-      show_unorderable: "true",
-      show_unlisted: "true",
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
@@ -141,8 +137,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       const exchangeRate = advert.exchange_rate || 0
       const currency = advert.payment_currency || "USD"
       const isActive = advert.is_active !== undefined ? advert.is_active : true
-      const availableAmount = advert.available_amount || 0
-      const actualMaxAmount = advert.actual_maximum_order_amount || maxAmount
 
       const status: "Active" | "Inactive" = isActive ? "Active" : "Inactive"
 
@@ -160,16 +154,15 @@ export async function getUserAdverts(): Promise<MyAd[]> {
           currency: "USD",
         },
         available: {
-          current: availableAmount,
+          current: advert.available_amount || minAmount,
           total:
-            Number(availableAmount || 0) +
+            Number(advert.available_amount || 0) +
             Number(advert.open_order_amount || 0) +
             Number(advert.completed_order_amount || 0),
           currency: "USD",
         },
         paymentMethods: advert.payment_method_names || [],
         status: status,
-        description: advert.description || "",
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
       }
@@ -200,7 +193,7 @@ export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
   }
 }
 
-export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
+export async function updateAd(id: string, adData: any): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
@@ -208,14 +201,12 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
       "Content-Type": "application/json",
     }
 
-    if (adData.payment_method_names) {
+    if (adData.payment_method_names !== undefined) {
       if (!Array.isArray(adData.payment_method_names)) {
         adData.payment_method_names = [String(adData.payment_method_names)]
       } else {
         adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
       }
-    } else {
-      adData.payment_method_names = []
     }
 
     const requestData = { data: adData }
@@ -237,28 +228,12 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     }
 
     if (!response.ok) {
-      let errors = []
-      if (responseData && responseData.errors) {
-        errors = responseData.errors
-      } else {
-        errors = [{ message: `Failed to update ad: ${response.statusText || responseText}` }]
-      }
-
-      return {
-        success: false,
-        errors: errors,
-      }
+      throw new Error(`Failed to update ad: ${response.statusText || responseText}`)
     }
 
-    return {
-      success: true,
-      errors: responseData.errors || [],
-    }
+    return { success: true }
   } catch (error) {
-    return {
-      success: false,
-      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
-    }
+    throw error
   }
 }
 
@@ -314,7 +289,7 @@ export async function toggleAdStatus(id: string, isActive: boolean, currentAd: M
   }
 }
 
-export async function deleteAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
+export async function deleteAd(id: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
@@ -337,31 +312,16 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     }
 
     if (!response.ok) {
-      let errors = []
-      if (responseData && responseData.errors) {
-        errors = responseData.errors
-      } else {
-        errors = [{ message: `Failed to delete ad: ${response.statusText}` }]
-      }
-
-      return {
-        success: false,
-        errors: errors,
-      }
+      throw new Error(`Failed to delete ad: ${response.statusText}`)
     }
 
     return { success: true }
   } catch (error) {
-    return {
-      success: false,
-      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
-    }
+    throw error
   }
 }
 
-export async function createAd(
-  payload: CreateAdPayload,
-): Promise<{ success: boolean; data: CreateAdResponse; errors?: any[] }> {
+export async function createAd(payload: CreateAdPayload): Promise<{ success: boolean; data: CreateAdResponse }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
     const headers = {
@@ -380,21 +340,21 @@ export async function createAd(
     })
 
     const responseText = await response.text()
-    let responseData
+    let data
 
     try {
-      responseData = JSON.parse(responseText)
+      data = JSON.parse(responseText)
     } catch (e) {
-      responseData = { raw: responseText }
+      data = { raw: responseText }
     }
 
     if (!response.ok) {
-      let errorMessage = responseData.error || `Error creating advertisement: ${response.statusText}`
+      let errorMessage = data.error || `Error creating advertisement: ${response.statusText}`
       let errorCode = null
 
-      if (responseData.errors && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
-        if (responseData.errors[0].code) {
-          errorCode = responseData.errors[0].code
+      if (data.errors && Array.isArray(data.errors) && data.errors.length > 0) {
+        if (data.errors[0].code) {
+          errorCode = data.errors[0].code
 
           switch (errorCode) {
             case "AdvertExchangeRateDuplicate":
@@ -412,14 +372,11 @@ export async function createAd(
             case "InsufficientBalance":
               errorMessage = "You don't have enough balance to create this ad."
               break
-            case "AdvertTotalAmountExceeded":
-              errorMessage = "The total amount exceeds your available balance. Please enter a smaller amount."
-              break
             default:
               errorMessage = `Error: ${errorCode}. Please try again or contact support.`
           }
-        } else if (responseData.errors[0].message) {
-          errorMessage = responseData.errors[0].message
+        } else if (data.errors[0].message) {
+          errorMessage = data.errors[0].message
         }
       }
 
@@ -429,39 +386,26 @@ export async function createAd(
         }
       }
 
-      const error = new Error(errorMessage)
       if (errorCode) {
+        const error = new Error(errorMessage)
         error.name = errorCode
+        throw error
+      } else {
+        throw new Error(errorMessage)
       }
-      throw error
     }
 
     return {
       success: true,
       data: {
-        id: responseData.data?.id || "000000",
-        type: responseData.data?.type || payload.type,
-        status: responseData.data?.status || "active",
-        created_at: responseData.data?.created_at || new Date().toISOString(),
+        id: data.id || "000000",
+        type: data.type || payload.type,
+        status: data.status || "active",
+        created_at: data.created_at || new Date().toISOString(),
       },
-      errors: responseData.errors || [],
     }
   } catch (error) {
-    return {
-      success: false,
-      data: {
-        id: "",
-        type: payload.type,
-        status: "inactive",
-        created_at: new Date().toISOString(),
-      },
-      errors: [
-        {
-          message: error instanceof Error ? error.message : "An unexpected error occurred",
-          code: error instanceof Error ? error.name : "UnknownError",
-        },
-      ],
-    }
+    throw error
   }
 }
 
@@ -504,24 +448,6 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
   }
 }
 
-export async function getCurrencies(): Promise<string[]> {
-  try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "X-Data-Source": "live",
-    }
-
-    const response = await fetch(url, { headers })
-    await response.text()
-  } catch (error) {
-    console.log("Error fetching currencies:", error)
-  }
-
-  // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
-}
-
 export const MyAdsAPI = {
   getUserAdverts,
   getMyAds,
@@ -531,5 +457,4 @@ export const MyAdsAPI = {
   createAd,
   updateAd,
   activateAd,
-  getCurrencies,
 }

@@ -1,5 +1,5 @@
 import { USER, API, AUTH } from "@/lib/local-variables"
-import type { APIAdvert, MyAd, AdFilters, CreateAdPayload, CreateAdResponse } from "../types"
+import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "../types"
 
 export async function getCurrencies(): Promise<string[]> {
   try {
@@ -94,27 +94,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
         updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
       }
     })
-  } catch (error) {
-    return []
-  }
-}
-
-export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
-  try {
-    const userAdverts = await getUserAdverts()
-
-    if (filters) {
-      const filteredAds = userAdverts.filter((ad) => {
-        if (filters.type && ad.type !== filters.type) return false
-        if (filters.status && ad.status !== filters.status) return false
-        if (filters.adId && ad.id !== filters.adId) return false
-        return true
-      })
-
-      return filteredAds
-    }
-
-    return userAdverts
   } catch (error) {
     return []
   }
@@ -468,7 +447,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
 export const AdsAPI = {
   getCurrencies,
   getUserAdverts,
-  getMyAds,
   toggleAdStatus,
   toggleAdActiveStatus,
   deleteAd,
