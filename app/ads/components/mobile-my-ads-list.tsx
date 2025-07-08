@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { StatusIndicator } from "@/components/ui/status-indicator"
-import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
+import { deleteAd, toggleAdActiveStatus } from "@/services/api/api-my-ads"
 import type { Ad } from "../types"
 import { cn, formatPaymentMethodName } from "@/lib/utils"
 import StatusModal from "./ui/status-modal"
