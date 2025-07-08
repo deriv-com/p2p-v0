@@ -3,32 +3,32 @@
 import { Button } from "@/components/ui/button"
 
 interface TradeTypeSelectorProps {
-  value: "buy" | "sell"
-  onChange: (value: "buy" | "sell") => void
+  selectedType: "buy" | "sell"
+  onTypeChange: (type: "buy" | "sell") => void
   disabled?: boolean
 }
 
-export function TradeTypeSelector({ value, onChange, disabled = false }: TradeTypeSelectorProps) {
+export function TradeTypeSelector({ selectedType, onTypeChange, disabled = false }: TradeTypeSelectorProps) {
   return (
-    <div className="flex w-full rounded-lg border border-gray-200 overflow-hidden">
+    <div className="flex rounded-lg border border-gray-200 overflow-hidden">
       <Button
-        type="button"
-        variant={value === "buy" ? "default" : "outline"}
+        variant={selectedType === "buy" ? "default" : "outline"}
         className={`flex-1 rounded-none border-0 ${
-          value === "buy" ? "bg-green-600 hover:bg-green-700 text-white" : "bg-white hover:bg-gray-50 text-gray-700"
+          selectedType === "buy"
+            ? "bg-green-500 hover:bg-green-600 text-white"
+            : "bg-white hover:bg-gray-50 text-gray-700"
         }`}
-        onClick={() => onChange("buy")}
+        onClick={() => onTypeChange("buy")}
         disabled={disabled}
       >
         Buy
       </Button>
       <Button
-        type="button"
-        variant={value === "sell" ? "default" : "outline"}
-        className={`flex-1 rounded-none border-0 border-l border-gray-200 ${
-          value === "sell" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-white hover:bg-gray-50 text-gray-700"
+        variant={selectedType === "sell" ? "default" : "outline"}
+        className={`flex-1 rounded-none border-0 border-l ${
+          selectedType === "sell" ? "bg-red-500 hover:bg-red-600 text-white" : "bg-white hover:bg-gray-50 text-gray-700"
         }`}
-        onClick={() => onChange("sell")}
+        onClick={() => onTypeChange("sell")}
         disabled={disabled}
       >
         Sell
