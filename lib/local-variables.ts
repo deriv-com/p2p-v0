@@ -1,11 +1,9 @@
 let USER_DATA = null
-let USER_TOKEN = null
 let USER_ID = null
 let SOCKET_TOKEN = null
 
 if (typeof window !== "undefined") {
   USER_DATA = JSON.parse(localStorage.getItem("user_data") ?? "{}")
-  USER_TOKEN = localStorage.getItem("auth_token") ?? ""
   USER_ID = localStorage.getItem("user_id") ?? ""
   SOCKET_TOKEN = localStorage.getItem("socket_token") ?? ""
 }
@@ -13,7 +11,6 @@ if (typeof window !== "undefined") {
 export const USER = {
   id: USER_ID,
   nickname: USER_DATA?.nickname,
-  token: USER_TOKEN,
   socketToken: SOCKET_TOKEN,
 }
 
@@ -33,7 +30,6 @@ export const API = {
     transactions: "/transactions",
     userFavourites: "/user-favourites",
     userBlocks: "/user-blocks",
-    settings: "/settings",
   },
 }
 
@@ -63,6 +59,7 @@ export const AUTH = {
   }),
   isAuthenticated: () => !!USER.token,
 }
+
 
 export const NOTIFICATIONS = {
   applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
