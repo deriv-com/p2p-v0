@@ -3,8 +3,8 @@
 import type React from "react"
 
 import { useEffect, useRef, useState } from "react"
-import { CheckCircle, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 interface StatusBottomSheetProps {
   isOpen: boolean
@@ -76,6 +76,10 @@ export default function StatusBottomSheet({
 
   if (!isOpen) return null
 
+  const getIconSrc = () => {
+    return type === "success" ? "/icons/success_icon_round.png" : "/icons/error_icon_round.png"
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
       <div
@@ -93,15 +97,14 @@ export default function StatusBottomSheet({
 
         <div className="px-6 pb-8">
           <div className="flex justify-center mb-8 mt-4">
-            <div
-              className={`${type === "success" ? "bg-[#EDFAF3]" : "bg-[#FFF8E7]"
-                } rounded-full p-4 flex items-center justify-center w-[72px] h-[72px]`}
-            >
-              {type === "success" ? (
-                <CheckCircle className="h-10 w-10 text-[#008832]" />
-              ) : (
-                <AlertCircle className="h-10 w-10 text-[#F59E0B]" />
-              )}
+            <div className="flex items-center justify-center w-[72px] h-[72px]">
+              <Image
+                src={getIconSrc() || "/placeholder.svg"}
+                alt={type === "success" ? "Success" : "Error"}
+                width={72}
+                height={72}
+                className="w-[72px] h-[72px]"
+              />
             </div>
           </div>
 
@@ -123,7 +126,7 @@ export default function StatusBottomSheet({
           {subMessage && <p className="mt-6 font-normal text-base leading-6">{subMessage}</p>}
 
           <div className="mt-12">
-            <Button onClick={onClose} variant="default">
+            <Button onClick={onClose} variant="default" className="w-full h-14">
               {actionButtonText}
             </Button>
           </div>
