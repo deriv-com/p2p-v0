@@ -40,9 +40,8 @@ export default function StatusModal({
         <div className="relative p-6">
           <div className="flex justify-center mb-12">
             <div
-              className={`${
-                type === "success" ? "bg-success-bg" : "bg-warning-bg"
-              } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
+              className={`${type === "success" ? "bg-success-bg" : "bg-warning-bg"
+                } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
             >
               {type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
@@ -132,7 +131,7 @@ export default function StatusModal({
             )}
           </div>
 
-          <Button onClick={onClose} variant="default" className="w-full h-14">
+          <Button onClick={onClose} variant="default">
             {actionButtonText}
           </Button>
         </div>
