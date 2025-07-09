@@ -68,7 +68,6 @@ export default function LoginPage() {
         //await AuthPrevAPI.getClientProfile()
 
         window.location.href = "/"
-        localStorage.setItem("user_data", JSON.stringify(response.user));
       } else {
         setError("Verification failed. Please try again.")
       }
