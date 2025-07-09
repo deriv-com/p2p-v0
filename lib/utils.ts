@@ -48,12 +48,67 @@ export function getPaymentMethodIcon(type: string): string {
   return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
 }
 
-export const maskAccountNumber = (accountNumber: string): string => {
-  if (!accountNumber || accountNumber.length <= 4) {
-    return accountNumber
+export function getCategoryDisplayName(type: string): string {
+  switch (type) {
+    case "bank":
+      return "Bank transfer"
+    case "ewallet":
+      return "eWallet"
+    default:
+      return "Other"
   }
-  const lastFour = accountNumber.slice(-4)
-  const maskedPart= "".padStart(accountNumber.length - 4, "*")
+}
 
-  return maskedPart + lastFour
+export const maskAccountNumber = (accountNumber: any): string => {
+  if (!accountNumber) return ""
+
+  let rawValue = accountNumber
+
+  if (typeof accountNumber === "object" && accountNumber !== null) {
+    if ("value" in accountNumber) {
+      rawValue = accountNumber.value
+    }
+  }
+
+  const accountStr = String(rawValue)
+
+  if (accountStr.length <= 4) {
+    return accountStr
+  }
+
+  return "*".repeat(accountStr.length - 4) + accountStr.slice(-4)
+}
+
+export function formatPaymentMethodName(methodName: string): string {
+  if (!methodName) return ""
+
+  return methodName
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
+}
+
+export function getMethodDisplayDetails(method: {
+  type: string
+  fields: Record<string, any>
+  display_name: string
+}) {
+  if (method.type === "bank") {
+    const account = method.fields.account?.value || ""
+    const bankName = method.fields.bank_name?.value || "Bank Transfer"
+    const maskedAccount = maskAccountNumber(account)
+
+    return {
+      primary: maskedAccount,
+      secondary: bankName,
+    }
+  } else {
+    const account = method.fields.account?.value || ""
+    const displayValue = account || method.display_name
+
+    return {
+      primary: displayValue,
+      secondary: method.display_name,
+    }
+  }
 }

@@ -58,10 +58,10 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         const url = `${API.baseUrl}/users/${userId}`
 
         const response = await fetch(url, {
-          credentials: "include",
           headers: {
             accept: "application/json",
           },
+          credentials: "include",
         })
 
         if (!response.ok) {
@@ -113,7 +113,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           setUserStats(transformedStats)
         }
       } catch (error) {
-        console.log(error);
       } finally {
         setIsLoadingStats(false)
       }

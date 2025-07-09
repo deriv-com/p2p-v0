@@ -158,8 +158,8 @@ export async function addPaymentMethod(name: string, instructions: string): Prom
     console.log("Payment Method API - Request Body:", JSON.stringify(requestBody, null, 2))
 
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`, {
-      credentials: "include",
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -189,8 +189,8 @@ export async function addPaymentMethod(name: string, instructions: string): Prom
 export async function deletePaymentMethod(id: string): Promise<{ success: boolean }> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods/${id}`, {
-      credentials: "include",
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -213,8 +213,8 @@ export async function deletePaymentMethod(id: string): Promise<{ success: boolea
 export async function toggleRealNameVisibility(show: boolean): Promise<{ success: boolean }> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
-      credentials: "include",
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

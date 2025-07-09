@@ -44,10 +44,10 @@ export default function PaymentDetailsForm({
     const fetchPaymentMethods = async () => {
       try {
         const response = await fetch(`${API.baseUrl}${API.endpoints.availablePaymentMethods}`, {
-          credentials: "include",
           headers: {
             accept: "application/json",
           },
+          credentials: "include",
         })
         const responseData = await response.json()
 

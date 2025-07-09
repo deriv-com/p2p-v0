@@ -79,8 +79,8 @@ export default function PaymentMethodsTab() {
 
       try {
         data = JSON.parse(responseText)
-      } catch (error) {
-        console.log(error);
+      } catch (e) {
+        console.error("Failed to parse payment methods response:", e);
         data = { data: [] }
       }
 

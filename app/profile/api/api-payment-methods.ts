@@ -18,17 +18,18 @@ export interface PaymentMethodResponse {
 export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     })
 
     if (!response.ok) {
       throw new Error(`Error fetching payment methods: ${response.statusText}`)
     }
 
-    return await response.json()
+    const result = await response.json()
+    return result.data || []
   } catch (error) {
     throw error
   }
@@ -55,10 +56,10 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       method: "POST",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -67,9 +68,8 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
     let responseData: any
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
-    } catch (error) {
-      console.log(error);
-
+    } catch (e) {
+      console.log("Failed to parse response:", e);
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -95,6 +95,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
     return { success: true, data: responseData.data }
   } catch (error) {
+    console.log("Error adding payment method:", error);
     return {
       success: false,
       errors: [
@@ -109,13 +110,13 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
 export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
-    const finalFields: Record<string, any> = {}
+    const { method_type, ...cleanFields } = fields
 
-    Object.keys(fields).forEach((key) => {
-      if (fields[key] && typeof fields[key] === "string") {
-        finalFields[key] = fields[key]
-      }
-    })
+    const finalFields = Object.fromEntries(
+      Object.entries(cleanFields)
+        .filter(([key, value]) => value != null)
+        .map(([key, value]) => [key, String(value)]),
+    )
 
     const requestBody = {
       data: {
@@ -125,10 +126,10 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
 
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -137,9 +138,8 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
     let responseData: any
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
-    } catch (error) {
-      console.log(error);
-
+    } catch (e) {
+      console.log("Failed to parse response:", e);
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -165,6 +165,7 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
 
     return { success: true, data: responseData.data }
   } catch (error) {
+    console.log("Error updating payment method:", error);
     return {
       success: false,
       errors: [
@@ -193,10 +194,10 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
   try {
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "DELETE",
-      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -205,14 +206,14 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
         const errorData = JSON.parse(errorText)
         return { success: false, errors: errorData.errors }
       } catch (error) {
-        console.log(error);
-
+        console.log("Error at delete payment method:", error);
         return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
     return { success: true }
   } catch (error) {
+    console.log("Error deleting payment method:", error);
     return {
       success: false,
       errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],
