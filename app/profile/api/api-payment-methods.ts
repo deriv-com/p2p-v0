@@ -110,10 +110,11 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
 export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
-    const { method_type, ...cleanFields } = fields
+    const { ...cleanFields } = fields
 
     const finalFields = Object.fromEntries(
       Object.entries(cleanFields)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .filter(([key, value]) => value != null)
         .map(([key, value]) => [key, String(value)]),
     )

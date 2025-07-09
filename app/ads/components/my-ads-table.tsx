@@ -85,11 +85,10 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
             <span
-              className={`w-2 h-2 rounded-full mr-2 ${
-                method.toLowerCase().includes("bank") || method.toLowerCase().includes("transfer")
+              className={`w-2 h-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") || method.toLowerCase().includes("transfer")
                   ? "bg-payment-method-bank"
                   : "bg-payment-method-other"
-              }`}
+                }`}
             ></span>
             <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
           </div>
@@ -118,9 +117,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     window.location.href = editUrl
   }
 
-  const handleCopy = (adId: string) => {}
+  const handleCopy = () => { }
 
-  const handleShare = (adId: string) => {}
+  const handleShare = () => { }
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
