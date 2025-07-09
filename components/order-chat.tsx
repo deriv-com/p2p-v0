@@ -168,12 +168,11 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
                 messages from numbers claiming to be from Deriv.
               </span>
+              <div className="text-gray-700 mt-[16px]">
+                    <span className="font-semibold">Note:</span>
+                    <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
+                  </div>
             </div>
-          </div>
-
-          <div className="text-gray-700">
-            <span className="font-semibold">Note:</span>
-            <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
           </div>
         </div>
       </div>
