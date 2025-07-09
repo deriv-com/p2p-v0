@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { USER, API } from "@/lib/local-variables"
+import { USER, API, AUTH } from "@/lib/local-variables"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({
@@ -51,12 +51,11 @@ export default function ProfilePage() {
       try {
         const userId = USER.id
         const url = `${API.baseUrl}/users/${userId}`
+        const headers = AUTH.getAuthHeader()
 
         const response = await fetch(url, {
-          credentials: "include",
-          headers: {
-            accept: "application/json",
-          },
+          // credentials: "include",
+          headers
         })
 
         if (!response.ok) {

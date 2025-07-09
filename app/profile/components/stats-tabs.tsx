@@ -9,7 +9,7 @@ import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { PlusCircle } from "lucide-react"
-import { USER, API } from "@/lib/local-variables"
+import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface StatsTabsProps {
   stats?: any
@@ -57,11 +57,10 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         const userId = USER.id
         const url = `${API.baseUrl}/users/${userId}`
 
+        const headers = AUTH.getAuthHeader()
         const response = await fetch(url, {
-          headers: {
-            accept: "application/json",
-          },
-          credentials: "include",
+          headers,
+          //credentials: "include",
         })
 
         if (!response.ok) {

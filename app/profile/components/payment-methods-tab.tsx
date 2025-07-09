@@ -6,7 +6,7 @@ import { maskAccountNumber } from "@/lib/utils"
 import { useState, useEffect, useCallback } from "react"
 import { MoreVertical, Edit, Trash } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "../api"
@@ -61,12 +61,10 @@ export default function PaymentMethodsTab() {
       setError(null)
 
       const url = `${API.baseUrl}/user-payment-methods`
-      const headers = {
-        "Content-Type": "application/json",
-      }
+      const headers = AUTH.getAuthHeader()
       const response = await fetch(url, {
         headers,
-        credentials: "include",
+        //credentials: "include",
         cache: "no-store",
       })
 

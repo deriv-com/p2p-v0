@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
-import * as AuthAPI from "@/services/api/api-auth"
+import * as AuthPrevAPI from "@/services/api/api-auth"
 import "./globals.css"
 
 export default function Main({
@@ -25,8 +25,8 @@ export default function Main({
 
     const fetchSessionData = async () => {
       try {
-        const response = await AuthAPI.getSession()
-        if (response.errors && !isPublic) {
+        const response = await AuthPrevAPI?.getSession()
+        if (response?.errors && !isPublic) {
           setIsHeaderVisible(false)
           router.push("/login")
         } else {

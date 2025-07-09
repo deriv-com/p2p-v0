@@ -107,11 +107,12 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
-    const headers = {
-      "X-Data-Source": "live",
-    }
+    const headers = AUTH.getAuthHeader()
 
-    const response = await fetch(url, { headers, credentials: "include" })
+    const response = await fetch(url, {
+      headers,
+      // credentials: "include" 
+    })
 
     if (!response.ok) {
       throw new Error("Failed to fetch user adverts")
@@ -196,6 +197,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -213,7 +215,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
+      //credentials: "include",
       body,
     })
 
@@ -240,6 +242,7 @@ export async function toggleAdActiveStatus(id: string, isActive: boolean): Promi
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -253,7 +256,7 @@ export async function toggleAdActiveStatus(id: string, isActive: boolean): Promi
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
+      //credentials: "include",
       body,
     })
 
@@ -292,13 +295,14 @@ export async function deleteAd(id: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       Accept: "application/json",
     }
 
     const response = await fetch(url, {
       method: "DELETE",
       headers,
-      credentials: "include"
+      //credentials: "include"
     })
 
     const responseText = await response.text()
@@ -324,6 +328,7 @@ export async function createAd(payload: CreateAdPayload): Promise<{ success: boo
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       Accept: "application/json",
       "Content-Type": "application/json",
     }
@@ -334,7 +339,7 @@ export async function createAd(payload: CreateAdPayload): Promise<{ success: boo
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
+      //credentials: "include",
       body,
     })
 
@@ -416,6 +421,7 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
 
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
     const headers = {
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
 
@@ -424,7 +430,7 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
+      //credentials: "include",
       body,
     })
 

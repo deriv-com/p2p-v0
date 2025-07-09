@@ -5,7 +5,7 @@ import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { Button } from "@/components/ui/button"
-import * as AuthAPI from "@/services/api/api-auth"
+import * as AuthPrevAPI from "@/services/api/api-auth"
 
 export default function Header() {
   const pathname = usePathname()
@@ -47,7 +47,7 @@ export default function Header() {
         </div>
         <Button
           size="sm"
-          onClick={() => AuthAPI.logout()}>
+          onClick={() => AuthPrevAPI.logout()}>
           Logout
         </Button>
       </div>
