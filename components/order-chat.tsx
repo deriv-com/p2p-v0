@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Paperclip, Send } from "lucide-react"
+import { Paperclip } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -213,16 +213,8 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
       {/* Message input */}
       <div className="p-4 border-t">
-        <div className="flex items-center">
-          <Button
-            className="p-2 text-slate-500 hover:text-slate-700"
-            onClick={() => fileInputRef.current?.click()}
-            variant="ghost"
-          >
-            <Paperclip className="h-5 w-5" />
-          </Button>
-          <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
-          <div className="flex-1 relative">
+        <div className="space-y-2">
+          <div className="relative">
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
@@ -230,19 +222,24 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               placeholder="Enter message"
               rows={1}
               disabled={isSending}
+              className="w-full bg-gray-50 border-gray-200 rounded-[12px] pr-12 resize-none min-h-[48px] placeholder:text-gray-400"
             />
             <Button
-              onClick={handleSendMessage}
-              disabled={message.trim() === "" || isSending}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+              onClick={() => fileInputRef.current?.click()}
               variant="ghost"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              size="sm"
             >
-              <Send className={`h-5 w-5 ${isSending ? "animate-pulse" : ""}`} />
+              <Paperclip className="h-5 w-5" />
             </Button>
+            <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
           </div>
-        </div>
-        <div className="text-right text-xs text-slate-500 mt-1">
-          {message.length}/{maxLength}
+          <div className="flex justify-between items-center">
+            <div></div>
+            <div className="text-xs text-gray-400">
+              {message.length}/{maxLength}
+            </div>
+          </div>
         </div>
       </div>
     </div>
