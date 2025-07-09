@@ -344,7 +344,7 @@ export async function reviewOrder(
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/review`
     const headers = {
-      AUTH.getAuthHeader(),
+      ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
     const body = JSON.stringify({
