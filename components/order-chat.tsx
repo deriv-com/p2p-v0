@@ -159,7 +159,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       </div>
 
       {/* Important notice */}
-      <div className="p-[16px] m-[16px] bg-orange-50">
+      <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
         <div className="space-y-3">
           <div className="flex items-start gap-[8px]">
             <div className="flex-shrink-0 mt-0.5">
