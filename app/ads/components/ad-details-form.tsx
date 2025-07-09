@@ -200,7 +200,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-10">
         {!isEditMode && (
           <div>
-            <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Select trade type</h3>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
