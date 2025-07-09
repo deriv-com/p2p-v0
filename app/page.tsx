@@ -216,39 +216,13 @@ export default function BuySellPage() {
             <div className="text-center py-8">{error}</div>
           ) : adverts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
-              {false ? (
-                <>
-                  <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="text-slate-400"
-                    >
-                      <path
-                        d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <h3 className="text-xl font-medium text-slate-800 mb-2">No results for "{/*searchQuery*/ ""}"</h3>
-                  <p className="text-slate-600 text-center">
-                    We couldn't find an advertiser with that nickname. Try a different name.
-                  </p>
-                </>
-              ) : (
-                <>
+          
                   <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
                     <AlertCircle className="h-8 w-8 text-slate-400" />
                   </div>
                   <p className="text-xl font-medium text-slate-800">No ads available.</p>
-                </>
-              )}
+              
+          
             </div>
           ) : (
             <>
