@@ -118,7 +118,7 @@ export default function ProfilePage() {
             realName={userData.realName}
             isVerified={userData.isVerified}
           />
-          <div className="md:w-[40%] h-full flex flex-col gap-6 order-2">
+          <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
           <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
         </div>
           <StatsTabs stats={userData.stats} />
