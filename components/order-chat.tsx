@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Paperclip, Send, AlertCircle } from "lucide-react"
+import { Paperclip, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -147,7 +147,8 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
   return (
     <div className="flex flex-col h-full">
-        <div className="flex items-center p-4 border-b">
+      {/* Counterparty info */}
+      <div className="flex items-center p-4 border-b">
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
         </div>
@@ -156,11 +157,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
         </div>
       </div>
+
+      {/* Important notice */}
       <div className="p-[16px] m-[16px] bg-orange-50">
         <div className="space-y-3">
           <div className="flex items-start gap-3">
-            <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-              <AlertCircle className="h-3 w-3 text-white" />
+            <div className="flex-shrink-0 mt-0.5">
+              <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="w-5 h-5" />
             </div>
             <div>
               <span className="font-semibold text-gray-900">Important:</span>
@@ -169,9 +172,9 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 messages from numbers claiming to be from Deriv.
               </span>
               <div className="text-gray-700 mt-[16px]">
-                    <span className="font-semibold">Note:</span>
-                    <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
-                  </div>
+                <span className="font-semibold">Note:</span>
+                <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
+              </div>
             </div>
           </div>
         </div>
@@ -189,7 +192,14 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           messages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[80%] rounded-lg p-3 ${msg.sender_is_self ? "bg-blue-50" : "bg-slate-100"}`}>
-                {msg.attachment && <Image alt={msg.attachment.name} src={msg.attachment.url || "/placeholder.svg"} />}
+                {msg.attachment && (
+                  <Image
+                    alt={msg.attachment.name}
+                    src={msg.attachment.url || "/placeholder.svg"}
+                    width={200}
+                    height={200}
+                  />
+                )}
                 <div className="break-words">{msg.message}</div>
                 <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-blue-500" : "text-slate-500"}`}>
                   {formatMessageTime(msg.time)}
