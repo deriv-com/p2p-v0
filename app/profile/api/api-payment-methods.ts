@@ -1,4 +1,4 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 
 export interface PaymentMethod {
   id: string
@@ -17,11 +17,10 @@ export interface PaymentMethodResponse {
 
 export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
+    const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+      headers
+      //credentials: "include",
     })
 
     if (!response.ok) {
@@ -54,12 +53,11 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
       },
     }
 
+    const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+      headers,
+      // credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -125,12 +123,11 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
       },
     }
 
+    const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+      headers,
+      // credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -193,12 +190,11 @@ function getErrorMessageFromCode(code: string): string {
 
 export async function deletePaymentMethod(id: string): Promise<PaymentMethodResponse> {
   try {
+    const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
+      headers,
+      // credentials: "include",
     })
 
     if (!response.ok) {

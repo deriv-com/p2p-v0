@@ -1,15 +1,14 @@
-import { USER, API } from "@/lib/local-variables"
+import { USER, API, AUTH } from "@/lib/local-variables"
 import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "../types"
 
 export async function getCurrencies(): Promise<string[]> {
   try {
     const url = `${API.baseUrl}${API.endpoints.settings}`;
-    const headers = {
-      "X-Data-Source": "live",
-    };
+    const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
-      headers, credentials: "include",
+      headers,
+      //credentials: "include",
     });
     await response.text();
   } catch (error) {
@@ -32,12 +31,11 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
-    const headers = {
-      "X-Data-Source": "live",
-    }
+    const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
-      headers, credentials: "include",
+      headers,
+      // credentials: "include",
     })
 
     if (!response.ok) {
@@ -107,9 +105,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
 export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      "Content-Type": "application/json",
-    }
+    const headers = AUTH.getAuthHeader()
 
     if (adData.payment_method_names) {
       if (!Array.isArray(adData.payment_method_names)) {
@@ -127,7 +123,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
+      //credentials: "include",
       body,
     })
 
@@ -173,9 +169,7 @@ export async function toggleAdActiveStatus(
 ): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      "Content-Type": "application/json",
-    }
+    const headers = AUTH.getAuthHeader()
 
     const payload = {
       is_active: isActive,
@@ -187,7 +181,7 @@ export async function toggleAdActiveStatus(
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
+      // credentials: "include",
       body,
     })
 
@@ -234,14 +228,12 @@ export async function toggleAdActiveStatus(
 export async function deleteAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      Accept: "application/json",
-    }
+    const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
       method: "DELETE",
       headers,
-      credentials: "include",
+      // credentials: "include",
     })
 
     const responseText = await response.text()
@@ -282,10 +274,7 @@ export async function createAd(
 ): Promise<{ success: boolean; data: CreateAdResponse; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
-    const headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    }
+    const headers = AUTH.getAuthHeader()
 
     const requestBody = { data: payload }
     const body = JSON.stringify(requestBody)
@@ -293,7 +282,7 @@ export async function createAd(
     const response = await fetch(url, {
       method: "POST",
       headers,
-      credentials: "include",
+      // credentials: "include",
       body,
     })
 
@@ -391,16 +380,14 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     }
 
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      "Content-Type": "application/json",
-    }
+    const headers = AUTH.getAuthHeader()
 
     const body = JSON.stringify({ data: payload })
 
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-      credentials: "include",
+      //  credentials: "include",
       body,
     })
 

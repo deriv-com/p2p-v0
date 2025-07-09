@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import PaymentMethodBottomSheet from "./payment-method-bottom-sheet"
 import { Button } from "@/components/ui/button"
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 import AdPaymentMethods from "./ad-payment-methods"
 
 interface PaymentMethod {
@@ -43,11 +43,10 @@ export default function PaymentDetailsForm({
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
+        const headers = AUTH.getAuthHeader()
         const response = await fetch(`${API.baseUrl}${API.endpoints.availablePaymentMethods}`, {
-          headers: {
-            accept: "application/json",
-          },
-          credentials: "include",
+          headers,
+          //credentials: "include",
         })
         const responseData = await response.json()
 

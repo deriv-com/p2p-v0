@@ -4,7 +4,7 @@ import { useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import * as AuthAPI from "@/services/api/api-auth"
+import * as AuthPrevAPI from "@/services/api/api-auth"
 
 export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verification">("login")
@@ -20,7 +20,7 @@ export default function LoginPage() {
       setIsLoading(true)
       setError("")
 
-      const response = await AuthAPI.login({ email })
+      const response = await AuthPrevAPI.login({ email })
 
       if (response.code === "Success") {
         setVerificationMessage(response.message);
@@ -57,11 +57,11 @@ export default function LoginPage() {
         email,
       }
 
-      const response = await AuthAPI.verifyCode(verificationData);
+      const response = await AuthPrevAPI.verifyCode(verificationData);
 
       if (response) {
-        await AuthAPI.fetchUserIdAndStore()
-        await AuthAPI.getClientProfile()
+        await AuthPrevAPI.fetchUserIdAndStore()
+        await AuthPrevAPI.getClientProfile()
 
         window.location.href = "/"
         localStorage.setItem("user_data", JSON.stringify(response.user));
@@ -81,7 +81,7 @@ export default function LoginPage() {
 
     try {
       setError("")
-      const response = await AuthAPI.login({ email })
+      const response = await AuthPrevAPI.login({ email })
 
       if (response.success) {
         setResendTimer(59)
