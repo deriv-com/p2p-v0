@@ -91,7 +91,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       }
     } catch (error) {
       // Silent error handling
-      console.log(error);
+      console.log(error)
     } finally {
       setIsSending(false)
     }
@@ -161,19 +161,24 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       </div>
 
       {/* Important notice */}
-      <div className="p-4 bg-white">
-        <div className="flex mb-4">
-          <div className="mr-2 text-yellow-500">
-            <AlertCircle className="h-5 w-5" />
-          </div>
-          <div>
+      <div className="p-4 bg-orange-50 border-l-4 border-orange-400">
+        <div className="space-y-3">
+          <div className="flex items-start gap-3">
+            <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <AlertCircle className="h-3 w-3 text-white" />
+            </div>
             <div>
-              <span className="font-bold">Important:</span> Deriv will never contact you via WhatsApp to ask for your
-              personal information. Always ignore any messages from numbers claiming to be from Deriv.
+              <span className="font-semibold text-gray-900">Important:</span>
+              <span className="text-gray-700 ml-1">
+                Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
+                messages from numbers claiming to be from Deriv.
+              </span>
             </div>
-            <div className="mb-2">
-              <span className="font-bold">Note:</span> In case of a dispute, we'll use this chat as a reference.
-            </div>
+          </div>
+
+          <div className="text-gray-700">
+            <span className="font-semibold">Note:</span>
+            <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
           </div>
         </div>
       </div>
