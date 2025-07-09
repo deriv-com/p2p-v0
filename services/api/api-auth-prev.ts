@@ -192,7 +192,7 @@ export async function getSocketToken(token: string): Promise<void> {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
-                "X-Branch": "live",
+                "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
                 "Content-Type": "application/json",
             },
         })
