@@ -1,6 +1,3 @@
-import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
-import { Button } from "@/components/ui/button"
-
 interface TradeLimitsProps {
   buyLimit: {
     current: number
