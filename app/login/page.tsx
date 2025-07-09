@@ -60,6 +60,8 @@ export default function LoginPage() {
       const response = await AuthPrevAPI.verifyCode(verificationData);
 
       if (response) {
+        localStorage.setItem("auth_token", JSON.stringify(response.access_token))
+
         await AuthPrevAPI.fetchUserIdAndStore()
         await AuthPrevAPI.getClientProfile()
 
