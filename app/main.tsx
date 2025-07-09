@@ -30,6 +30,7 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
+           AuthPrevAPI.getSocketTocken(response) 
           setIsHeaderVisible(true)
           router.push(pathname)
         }
