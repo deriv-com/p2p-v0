@@ -60,7 +60,6 @@ export default {
   USER,
   API,
   APP_SETTINGS,
-  AUTH,
   NOTIFICATIONS,
   WALLETS,
 }
