@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
-import * as AuthPrevAPI from "@/services/api/api-auth"
+import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 import "./globals.css"
 
 export default function Main({
