@@ -1,9 +1,8 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { AlertCircle, ArrowLeft } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
@@ -21,7 +20,6 @@ export default function BuySellPage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
   const [currency, setCurrency] = useState("IDR")
-  const [searchQuery, setSearchQuery] = useState("")
   const [sortBy, setSortBy] = useState("exchange_rate")
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -30,11 +28,9 @@ export default function BuySellPage() {
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     fromFollowing: false,
   })
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all") // Updated default value
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
-
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
@@ -60,7 +56,7 @@ export default function BuySellPage() {
   }, [])
 
   // Update the fetchAdverts function to ensure adverts is always an array
-  const fetchAdverts = async (query = null) => {
+  const fetchAdverts = async () => {
     setIsLoading(true)
     setError(null)
     try {
@@ -68,7 +64,6 @@ export default function BuySellPage() {
         type: activeTab,
         currency: currency,
         paymentMethod: selectedPaymentMethod || undefined,
-        nickname: query !== null ? query : searchQuery,
         sortBy: sortBy,
       }
 
@@ -97,7 +92,7 @@ export default function BuySellPage() {
     debounce(() => {
       fetchAdverts()
     }, 300),
-    [activeTab, currency, sortBy, filterOptions, searchQuery, selectedPaymentMethod],
+    [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod],
   )
 
   const handleAdvertiserClick = (userId: number) => {
@@ -130,12 +125,9 @@ export default function BuySellPage() {
     <div className="flex flex-col h-screen overflow-hidden px-4">
       <div className="flex-shrink-0">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-          {!isSearchOpen && (
+          {
             <div className="flex flex-row justify-between items-center gap-4">
-              <Tabs
-                defaultValue={activeTab}
-                onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
-              >
+              <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                 <TabsList className="w-full md:min-w-3xs">
                   <TabsTrigger className="w-full md:w-auto" value="sell">
                     Buy
@@ -146,9 +138,9 @@ export default function BuySellPage() {
                 </TabsList>
               </Tabs>
             </div>
-          )}
+          }
           <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
-            {!isSearchOpen && (
+            {
               <Select value={currency} onValueChange={setCurrency}>
                 <SelectTrigger className="flex-1 md:flex-none w-auto">
                   <SelectValue placeholder="Currency" />
@@ -160,7 +152,7 @@ export default function BuySellPage() {
                   <SelectItem value="GBP">GBP</SelectItem>
                 </SelectContent>
               </Select>
-            )}
+            }
             <div className="hidden md:block">
               <Select
                 value={selectedPaymentMethod}
@@ -180,49 +172,6 @@ export default function BuySellPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="hidden md:block relative flex-grow w-full sm:w-auto sm:max-w-md">
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
-                  alt="Search"
-                  width={24}
-                  height={24}
-                />
-              </div>
-              <Input
-                className="pl-10 w-full"
-                placeholder="Enter nickname"
-                onChange={(e) => {
-                  const value = e.target.value
-                  setSearchQuery(value)
-                  if (value.trim() === "") {
-                    // If search is empty, fetch all adverts
-                    fetchAdverts("")
-                  } else {
-                    debouncedFetchAdverts()
-                  }
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    fetchAdverts()
-                  }
-                }}
-              />
-            </div>
-            {!isSearchOpen && (
-              <button
-                className="md:hidden border rounded-md p-1 flex-shrink-0"
-                onClick={() => setIsSearchOpen(!isSearchOpen)}
-              >
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
-                  alt="Search"
-                  width={24}
-                  height={24}
-                />
-              </button>
-            )}
-
             <div className="hidden md:block">
               <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
                 <SelectTrigger className="w-full sm:w-[200px]">
@@ -236,7 +185,7 @@ export default function BuySellPage() {
             </div>
 
             <div className="relative filter-dropdown-container flex-shrink-0">
-              {!isSearchOpen && (
+              {
                 <button
                   onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
                   className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
@@ -250,7 +199,7 @@ export default function BuySellPage() {
                     className="h-4 w-4 opacity-70 md:inline"
                   />
                 </button>
-              )}
+              }
               {isFilterPopupOpen && (
                 <FilterPopup
                   isOpen={isFilterPopupOpen}
@@ -261,51 +210,6 @@ export default function BuySellPage() {
               )}
             </div>
           </div>
-
-          {/* Mobile Search Input (conditionally shown) */}
-          {isSearchOpen && (
-            <div className="md:hidden flex">
-              <div
-                href="/"
-                className="flex items-center text-slate-1400"
-                onClick={() => {
-                  setIsSearchOpen(false)
-                  setSearchQuery(null)
-                }}
-              >
-                <ArrowLeft className="h-5 w-5 mr-2" />
-              </div>
-              <div className="relative w-full">
-                <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-slate-400">
-                  <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-M1TMmjYwGjHFhjLbq4bbWyCgHduG6y.png"
-                    alt="Search"
-                    width={24}
-                    height={24}
-                  />
-                </div>
-                <Input
-                  className="pl-10 w-full focus:ring-0 focus:border-[#000000] focus:outline-none"
-                  placeholder="Enter nickname"
-                  onChange={(e) => {
-                    const value = e.target.value
-                    setSearchQuery(value)
-                    if (value.trim() === "") {
-                      // If search is empty, fetch all adverts
-                      fetchAdverts("")
-                    } else {
-                      debouncedFetchAdverts()
-                    }
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      fetchAdverts()
-                    }
-                  }}
-                />
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -320,7 +224,7 @@ export default function BuySellPage() {
             <div className="text-center py-8">{error}</div>
           ) : adverts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
-              {searchQuery ? (
+              {false ? (
                 <>
                   <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
                     <svg
@@ -340,7 +244,7 @@ export default function BuySellPage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-xl font-medium text-slate-800 mb-2">No results for "{searchQuery}"</h3>
+                  <h3 className="text-xl font-medium text-slate-800 mb-2">No results for "{/*searchQuery*/ ""}"</h3>
                   <p className="text-slate-600 text-center">
                     We couldn't find an advertiser with that nickname. Try a different name.
                   </p>
@@ -412,9 +316,9 @@ export default function BuySellPage() {
                       {ad.account_currency} 1.00 = {ad.payment_currency}{" "}
                       {ad.exchange_rate
                         ? ad.exchange_rate.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })
                         : "N/A"}
                     </div>
 
@@ -441,8 +345,9 @@ export default function BuySellPage() {
                         {ad.payment_methods?.map((method, index) => (
                           <div key={index} className="flex items-center">
                             <div
-                              className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                                }`}
+                              className={`h-2 w-2 rounded-full mr-2 ${
+                                method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                              }`}
                             ></div>
                             <span className="text-sm">{method}</span>
                           </div>
@@ -515,16 +420,18 @@ export default function BuySellPage() {
                           </div>
                         </TableCell>
                         <TableCell className="py-4 px-4 align-top">
-                          <div className="font-bold">{ad.payment_currency}{" "}
+                          <div className="font-bold">
+                            {ad.payment_currency}{" "}
                             {ad.exchange_rate
                               ? ad.exchange_rate.toLocaleString(undefined, {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
-                              })
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
                               : "N/A"}
                           </div>
-                          <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
-                            }`}</div>
+                          <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                            ad.actual_maximum_order_amount || "N/A"
+                          }`}</div>
                           <div className="flex items-center text-xs text-slate-500 mt-1">
                             <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
                               <Image
@@ -544,8 +451,9 @@ export default function BuySellPage() {
                               <div key={index} className="flex items-center">
                                 {method && (
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                                      }`}
+                                    className={`h-2 w-2 rounded-full mr-2 ${
+                                      method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                                    }`}
                                   ></div>
                                 )}
                                 <span className="text-sm">{method}</span>
