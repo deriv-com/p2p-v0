@@ -560,13 +560,12 @@ export default function CreateAdPage() {
             <ArrowLeft className="h-6 w-6" />
           </button>
         )}
-        <div className="absolute left-1/2 transform -translate-x-1/2 font-bold text-[18px] leading-[28px] tracking-[0%]">
-          {getPageTitle(isEditMode, formData.type)}
-        </div>
         <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
           <X className="h-6 w-6" />
         </button>
       </div>
+
+      <div className="hidden md:block text-left mb-6 text-page-title">{getPageTitle(isEditMode, formData.type)}</div>
 
       <ProgressSteps currentStep={currentStep} steps={steps} />
 
