@@ -570,7 +570,6 @@ export default function CreateAdPage() {
 
       <ProgressSteps currentStep={currentStep} steps={steps} />
 
-      {/* Mobile step indicator - only visible on mobile and only for step 1 */}
       {currentStep === 0 && (
         <div className="block md:hidden mt-4 mb-6 text-left">
           <div className="text-sm font-normal text-gray-dark">Step 1</div>
@@ -578,7 +577,6 @@ export default function CreateAdPage() {
         </div>
       )}
 
-      {/* Mobile step indicator - only visible on mobile and only for step 2 */}
       {currentStep === 1 && (
         <div className="block md:hidden mt-4 mb-6 text-left">
           <div className="text-sm font-normal text-gray-dark">Step 2</div>
