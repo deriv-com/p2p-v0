@@ -24,7 +24,7 @@ export default function TradeLimits({
 
   return (
       <div className="border rounded-lg p-4">
-        <h3 className="text-base font-normal mb-3 leading-6 tracking-normal">Daily trade limit</h3
+        <h3 className="text-base font-normal mb-3 leading-6 tracking-normal">Daily trade limit</h3>
         <div className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-1">
