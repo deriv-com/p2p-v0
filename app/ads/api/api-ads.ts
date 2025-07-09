@@ -1,5 +1,5 @@
 import { USER, API } from "@/lib/local-variables"
-import type { APIAdvert, MyAd, AdFilters, CreateAdPayload, CreateAdResponse } from "../types"
+import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "../types"
 
 export async function getCurrencies(): Promise<string[]> {
   try {
@@ -50,6 +50,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     try {
       apiData = JSON.parse(responseText)
     } catch (e) {
+      console.log(e);
       apiData = { data: [] }
     }
 
@@ -64,7 +65,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       const currency = advert.payment_currency || "USD"
       const isActive = advert.is_active !== undefined ? advert.is_active : true
       const availableAmount = advert.available_amount || 0
-      const actualMaxAmount = advert.actual_maximum_order_amount || maxAmount
 
       const status: "Active" | "Inactive" = isActive ? "Active" : "Inactive"
 
@@ -97,6 +97,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       }
     })
   } catch (error) {
+    console.log(error);
     return []
   }
 }
@@ -136,6 +137,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
+      console.log(e);
       responseData = {}
     }
 
@@ -195,6 +197,7 @@ export async function toggleAdActiveStatus(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
+      console.log(e);
       responseData = {}
     }
 
@@ -247,6 +250,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
+      console.log(e);
       responseData = {}
     }
 
@@ -299,6 +303,7 @@ export async function createAd(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
+      console.log(e);
       responseData = { raw: responseText }
     }
 
@@ -405,6 +410,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
+      console.log(e);
       responseData = {}
     }
 

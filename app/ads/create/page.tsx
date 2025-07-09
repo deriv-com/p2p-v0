@@ -7,7 +7,7 @@ import PaymentDetailsForm from "../components/payment-details-form"
 import StatusModal from "../components/ui/status-modal"
 import StatusBottomSheet from "../components/ui/status-bottom-sheet"
 import type { AdFormData, StatusModalState } from "../types"
-import { createAd, updateAd, getCurrencies } from "../api/api-ads"
+import { createAd, updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { X, ArrowLeft } from "lucide-react"
@@ -147,7 +147,7 @@ export default function CreateAdPage() {
                   .filter((id: number) => !isNaN(id))
 
                 if (typeof window !== "undefined") {
-                  ;(window as any).adPaymentMethodIds = paymentMethodIds
+                  ; (window as any).adPaymentMethodIds = paymentMethodIds
                 }
               }
             }

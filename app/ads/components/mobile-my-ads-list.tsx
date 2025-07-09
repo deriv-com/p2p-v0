@@ -107,9 +107,9 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
     window.location.href = editUrl
   }
 
-  const handleCopy = (adId: string) => { }
+  const handleCopy = () => { }
 
-  const handleShare = (adId: string) => { }
+  const handleShare = () => { }
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
@@ -118,7 +118,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
-      const updateResult = await toggleAdActiveStatus(ad.id, isListed)
+      await toggleAdActiveStatus(ad.id, isListed)
 
       if (onAdDeleted) {
         onAdDeleted()
