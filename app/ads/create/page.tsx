@@ -553,13 +553,14 @@ export default function CreateAdPage() {
   }
 `}</style>
       <div
-        className={`flex ${currentStep === 0 ? "justify-between" : "justify-between"} mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+        className={`flex justify-between mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
       >
         {currentStep === 1 && (
           <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
             <ArrowLeft className="h-6 w-6" />
           </button>
         )}
+        {currentStep === 0 && <div></div>}
         <div className="block md:hidden text-mobile-title">{getPageTitle(isEditMode, formData.type)}</div>
         <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
           <X className="h-6 w-6" />
