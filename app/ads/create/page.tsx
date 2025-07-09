@@ -147,7 +147,7 @@ export default function CreateAdPage() {
                   .filter((id: number) => !isNaN(id))
 
                 if (typeof window !== "undefined") {
-                  ; (window as any).adPaymentMethodIds = paymentMethodIds
+                  ;(window as any).adPaymentMethodIds = paymentMethodIds
                 }
               }
             }
@@ -569,6 +569,14 @@ export default function CreateAdPage() {
       </div>
 
       <ProgressSteps currentStep={currentStep} steps={steps} />
+
+      {/* Mobile step indicator - only visible on mobile and only for step 1 */}
+      {currentStep === 0 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-gray-dark">Step 1</div>
+          <div className="text-lg font-bold text-gray-dark">Set Type and Price</div>
+        </div>
+      )}
 
       <div className="relative">
         {currentStep === 0 ? (

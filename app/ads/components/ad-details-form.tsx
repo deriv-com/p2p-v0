@@ -201,11 +201,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         {!isEditMode && (
           <div>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
-            {/* Mobile step indicator - only visible on mobile */}
-            <div className="block md:hidden mt-6 text-left">
-              <div className="text-sm font-normal text-gray-dark">Step 1</div>
-              <div className="text-lg font-bold text-gray-dark">Set Type and Price</div>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
