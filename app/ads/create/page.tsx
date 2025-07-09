@@ -578,6 +578,14 @@ export default function CreateAdPage() {
         </div>
       )}
 
+      {/* Mobile step indicator - only visible on mobile and only for step 2 */}
+      {currentStep === 1 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-gray-dark">Step 2</div>
+          <div className="text-lg font-bold text-gray-dark">Payment details</div>
+        </div>
+      )}
+
       <div className="relative">
         {currentStep === 0 ? (
           <AdDetailsForm
