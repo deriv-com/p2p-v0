@@ -129,7 +129,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         console.error("Error sending file:", error)
       } finally {
         setIsSending(false)
-        // Reset the file input
         if (fileInputRef.current) {
           fileInputRef.current.value = ""
         }
@@ -137,7 +136,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     }
   }
 
-  // Helper function to convert file to base64
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -149,8 +147,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
   return (
     <div className="flex flex-col h-full">
-      {/* Counterparty info */}
-      <div className="flex items-center p-4 border-b">
+        <div className="flex items-center p-4 border-b">
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
         </div>
@@ -159,8 +156,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
         </div>
       </div>
-
-      {/* Important notice */}
       <div className="p-[16px] m-[16px] bg-orange-50">
         <div className="space-y-3">
           <div className="flex items-start gap-3">
