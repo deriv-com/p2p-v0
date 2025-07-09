@@ -165,7 +165,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
             <div className="flex-shrink-0 mt-0.5">
               <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="w-5 h-5" />
             </div>
-            <div>
+            <div className="text-sm">
               <span className="font-semibold text-gray-900">Important:</span>
               <span className="text-gray-700 ml-1">
                 Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
