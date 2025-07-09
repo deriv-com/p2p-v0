@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import { AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { debounce } from "lodash"
 import FilterPopup, { type FilterOptions } from "@/components/buy-sell/filter-popup"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
@@ -87,13 +86,6 @@ export default function BuySellPage() {
       setIsLoading(false)
     }
   }
-
-  const debouncedFetchAdverts = useCallback(
-    debounce(() => {
-      fetchAdverts()
-    }, 300),
-    [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod],
-  )
 
   const handleAdvertiserClick = (userId: number) => {
     router.push(`/advertiser/${userId}`)
