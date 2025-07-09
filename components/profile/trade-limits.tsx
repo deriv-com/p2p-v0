@@ -35,24 +35,6 @@ export default function TradeLimits({
 
   return (
     <div className="border rounded-lg p-4">
-      <div className="mb-6">
-        <div className="flex justify-between">
-          <div>
-            <h3 className="text-base font-normal mb-3 leading-6 tracking-normal">P2P Balance</h3>
-            {isLoading ? (
-              <CustomShimmer className="h-8 w-32" />
-            ) : (
-              <div className="text-2xl font-extrabold leading-8 tracking-normal">USD {Number(userBalance).toFixed(2)}</div>
-            )}
-          </div>
-          <div className="flex flex-col justify-end">
-            <Button variant="cyan" size="pill" className="w-[124px] h-[48px] font-bold">
-              Transfer
-            </Button>
-          </div>
-        </div>
-      </div>
-
       <div className="border-t pt-4">
         <h3 className="text-base font-normal mb-3 leading-6 tracking-normal">Daily trade limit</h3>
 
