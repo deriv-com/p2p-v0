@@ -4,7 +4,7 @@ import { useState } from "react"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import * as AuthPrevAPI from "@/services/api/api-auth"
+import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verification">("login")
