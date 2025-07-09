@@ -34,6 +34,13 @@ body {
     font-weight: 800;
     line-height: 32px;
   }
+
+  .text-mobile-title {
+    color: #000;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+  }
 }
 
 @layer base {
