@@ -224,7 +224,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   )
 }
 
-// Helper functions
 function formatLastSeen(date: Date): string {
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()
