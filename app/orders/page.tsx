@@ -183,7 +183,7 @@ export default function OrdersPage() {
                     <span>{order.advert.account_currency}{" "} {order.amount}</span>
                   </div>
                   <div className="mb-1">ID: {order.id}</div>
-                  <div className="mb-1">Counterparty: {order.advert.user.nickname</div>
+                  <div className="mb-1">Counterparty: {order.advert.user.nickname}</div>
                 </div>
               </TableCell>
                <TableCell className="py-4 px-4">
