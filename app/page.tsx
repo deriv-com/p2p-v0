@@ -350,8 +350,8 @@ export default function BuySellPage() {
                       <TableRow key={ad.id}>
                         <TableCell className="py-4 px-4 align-top">
                           <div className="flex items-center">
-                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl mr-3">
-                              {(ad.user?.nickname || "U").charAt(0).toUpperCase()}
+                            <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl mr-3">
+                              {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                             </div>
                             <div>
                               <div className="flex items-center">
