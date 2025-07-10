@@ -22,25 +22,6 @@ body {
   .w-1\/7 {
     width: 14.285%;
   }
-
-  .text-gray-dark {
-    color: #333333;
-  }
-
-  .text-page-title {
-    color: #00080a;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 800;
-    line-height: 32px;
-  }
-
-  .text-mobile-title {
-    color: #000;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-  }
 }
 
 @layer base {
@@ -132,8 +113,4 @@ body {
 
 .shadow-dropdown {
   box-shadow: 0px 16px 24px 4px rgba(0, 0, 0, 0.02), 0px 16px 24px 4px rgba(0, 0, 0, 0.04);
-}
-
-.text-gray-dark {
-  color: #333333;
 }
