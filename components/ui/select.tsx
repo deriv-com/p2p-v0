@@ -31,7 +31,7 @@ const SelectTrigger = React.forwardRef<
         alt="Dropdown icon"
         width={18}
         height={14}
-        className="opacity-70 ml-[8px]"
+        className="opacity-70"
       />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>

@@ -23,7 +23,6 @@ export interface Order {
   completed_at?: string
   cancelled_at?: string
   payment_currency: string
-  payment_amount: string
   is_reviewable: boolean
   rating: number
 }

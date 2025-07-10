@@ -25,12 +25,11 @@ export default function Main({
 
     const fetchSessionData = async () => {
       try {
-        const response = await AuthPrevAPI.getSession()
+        const response = await AuthPrevAPI?.getSession()
         if (response?.errors && !isPublic) {
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
-           AuthPrevAPI.getSocketToken(response.access_token) 
           setIsHeaderVisible(true)
           router.push(pathname)
         }

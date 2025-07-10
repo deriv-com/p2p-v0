@@ -2,18 +2,16 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import {X, ChevronRight, Star, ThumbsUp, ThumbsDown } from "lucide-react"
+import { AlertCircle, X, ChevronRight, Clock, Star, ThumbsUp, ThumbsDown } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
-import { cn, formatStatus } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { USER } from "@/lib/local-variables"
-import Image from "next/image"
-
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -227,6 +225,14 @@ export default function OrderDetailsPage() {
       : order.user.id == USER.id
         ? "Buyer"
         : "Seller"
+  const pendingReleaseLabel =
+    order.type === "buy"
+      ? order.user.id == USER.id
+        ? "Waiting seller's confirmation"
+        : "Confirm payment"
+      : order.user.id == USER.id
+        ? "Confirm payment"
+        : "Waiting seller's confirmation"
   const youPayReceiveLabel =
     order.type === "buy"
       ? order.user.id == USER.id
@@ -241,24 +247,38 @@ export default function OrderDetailsPage() {
   return (
     <div className="px-4 relative">
       <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4">
         <div className="flex flex-col">
+          {/* Left panel - Order details */}
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
-              <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
-                <div className="flex items-center">
-                  <span className="text-blue-100 font-bold">
-                    {formatStatus(order.status, order.type)}
-                  </span>
-                </div>
-                {(order.status === "pending_payment" || order.status === "pending_release") &&
-                  <div className="flex items-center text-blue-100">
-                    <span>Time left: </span><span className="font-bold">{timeLeft}</span>
+              {order.status === "pending_payment" && (
+                <div className="bg-yellow-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg">
+                  <div className="flex items-center">
+                    <span className="text-yellow-600 font-medium">
+                      {order.user.id == USER.id ? "Awaiting payment" : "Complete payment"}
+                    </span>
                   </div>
-                }
-              </div>
-              <div className="p-4 border rounded-lg mb-[24px]">
-                <div className="flex justify-between items-start mb-4">
+                  <div className="flex items-center text-yellow-600">
+                    <Clock className="h-4 w-4 mr-1" />
+                    <span>Time left: {timeLeft}</span>
+                  </div>
+                </div>
+              )}
+              {order.status === "pending_release" && (
+                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg">
+                  <div className="flex items-center">
+                    <span className="text-blue-600 font-medium">{pendingReleaseLabel}</span>
+                  </div>
+                  <div className="flex items-center text-blue-600">
+                    <Clock className="h-4 w-4 mr-1" />
+                    <span>Time left: {timeLeft}</span>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-4 border rounded-lg mt-3">
+                <div className="flex justify-between items-center mb-4">
                   <div>
                     <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                     <p className="text-lg font-bold">
@@ -285,10 +305,12 @@ export default function OrderDetailsPage() {
                 <div className="space-y-4">
                   {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
                   {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
-                  <div className="bg-orange-50 rounded-[16px] p-[16px]">
+                  <div className="bg-yellow-50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
-                    <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="h-5 w-5"/> 
-                      <p className="text-sm text-gray-900">
+                      <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <AlertCircle className="h-3 w-3 text-white" />
+                      </div>
+                      <p className="text-sm text-slate-500">
                         Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
                       </p>
                     </div>
@@ -298,7 +320,7 @@ export default function OrderDetailsPage() {
 
               {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                 (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                  <div className="py-4 flex gap-4">
+                  <div className="p-4 flex gap-4">
                     <Button
                       variant="outline"
                       size="sm"

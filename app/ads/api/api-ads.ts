@@ -1,5 +1,5 @@
 import { USER, API, AUTH } from "@/lib/local-variables"
-import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "@/services/api/api-my-ads"
+import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "../types"
 
 export async function getCurrencies(): Promise<string[]> {
   try {

@@ -112,25 +112,3 @@ export function getMethodDisplayDetails(method: {
     }
   }
 }
-
-export function formatStatus(status: string, type: string): string {
-  if (!status) return ""
-
-  const statusMap: Record<string, string> = {
-    refunded: "Refunded",
-    cancelled: "Cancelled",
-    timed_out: "Expired",
-    completed: "Complete",
-    pending_payment: type === "buy" ? "Complete payment" : "Awaiting payment",
-    pending_release: type === "buy" ? "Waiting seller's confirmation" : "Confirm payment",
-    under_dispute: "Under dispute",
-  }
-
-  const lowerStatus = status.toLowerCase()
-  if (statusMap[lowerStatus]) {
-    return statusMap[lowerStatus]
-  }
-
-  return status
-  
-  }

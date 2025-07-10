@@ -13,6 +13,7 @@ export default function ProfilePage() {
     completionRate: "",
     joinDate: "",
     realName: "",
+    balance: "",
     isVerified: {
       id: true,
       address: true,
@@ -54,7 +55,7 @@ export default function ProfilePage() {
 
         const response = await fetch(url, {
           // credentials: "include",
-          headers,
+          headers
         })
 
         if (!response.ok) {
@@ -96,6 +97,7 @@ export default function ProfilePage() {
                 max: data.daily_limits?.sell || 0,
               },
             },
+            balance: data.balances?.find((b: any) => b.currency === "USD")?.amount || 0,
           }))
         }
       } catch (error) {
@@ -118,10 +120,15 @@ export default function ProfilePage() {
             realName={userData.realName}
             isVerified={userData.isVerified}
           />
-          <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
-          <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
-        </div>
           <StatsTabs stats={userData.stats} />
+        </div>
+
+        <div className="md:w-[40%] h-full flex flex-col gap-6 order-2">
+          <TradeLimits
+            buyLimit={userData.tradeLimits.buy}
+            sellLimit={userData.tradeLimits.sell}
+            balance={userData.balance}
+          />
         </div>
       </div>
     </div>
