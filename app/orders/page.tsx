@@ -26,7 +26,6 @@ export default function OrdersPage() {
     setIsLoading(true)
     setError(null)
     try {
-      // Determine filters based on active tab
       const filters: {
         is_open?: boolean
       } = {}
@@ -36,11 +35,9 @@ export default function OrdersPage() {
       } else if (activeTab === "past") {
         filters.is_open = false
       }
-      // For past orders, we'll fetch with is_open: false and still filter client-side
 
       const orders = await OrdersAPI.getOrders(filters)
 
-      // Ensure data is an array before filtering
       const ordersArray = Array.isArray(orders.data) ? orders.data : []
       setOrders(ordersArray)
     } catch (err) {
@@ -52,7 +49,6 @@ export default function OrdersPage() {
     }
   }
 
-  // Function to format date as DD MMM YYYY
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-GB", {
@@ -62,7 +58,6 @@ export default function OrdersPage() {
     })
   }
 
-  // Function to get status badge style
   const getStatusBadgeStyle = (status: string) => {
     switch (status) {
       case "completed":
