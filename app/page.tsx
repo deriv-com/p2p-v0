@@ -98,10 +98,6 @@ export default function BuySellPage() {
     setError(null)
   }
 
-  const handleBackClick = () => {
-    router.back()
-  }
-
   useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
@@ -121,10 +117,13 @@ export default function BuySellPage() {
     <div className="flex flex-col h-screen overflow-hidden">
       {/* Mobile Navigation Header */}
       <div className="md:hidden flex items-center px-4 py-3 bg-white border-b border-gray-200">
-        <button onClick={handleBackClick} className="mr-4 p-1">
-          <ArrowLeft className="h-6 w-6 text-gray-600" />
+        <button
+          onClick={() => router.back()}
+          className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 mr-3"
+        >
+          <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
-        <h1 className="text-lg font-semibold text-gray-900">P2P</h1>
+        <h1 className="text-xl font-bold text-black">P2P</h1>
       </div>
 
       <div className="flex-shrink-0 px-4">
