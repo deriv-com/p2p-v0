@@ -227,14 +227,6 @@ export default function OrderDetailsPage() {
       : order.user.id == USER.id
         ? "Buyer"
         : "Seller"
-  const pendingReleaseLabel =
-    order.type === "buy"
-      ? order.user.id == USER.id
-        ? "Waiting seller's confirmation"
-        : "Confirm payment"
-      : order.user.id == USER.id
-        ? "Confirm payment"
-        : "Waiting seller's confirmation"
   const youPayReceiveLabel =
     order.type === "buy"
       ? order.user.id == USER.id
