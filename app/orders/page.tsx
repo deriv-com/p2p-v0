@@ -180,8 +180,8 @@ export default function OrdersPage() {
                     {order.type === "buy" ? "Buy" : "Sell"}
                     <span>{order.advert.account_currency}{" "} {order.amount}</span>
                   </div>
-                  <div className="mt-1">ID: {order.id}</div>
-                  <div className="mt-1">Counterparty: {order.advert.user.nickname}</div>
+                  <div className="mt-[4px]">ID: {order.id}</div>
+                  <div className="mt-[4px]">Counterparty: {order.advert.user.nickname}</div>
                 </div>
               </TableCell>
                <TableCell className="py-4 px-4">
