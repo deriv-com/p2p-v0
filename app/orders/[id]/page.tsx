@@ -277,7 +277,7 @@ export default function OrderDetailsPage() {
                 </div>
               )}
 
-              <div className="p-4 border rounded-lg">
+              <div className="p-4 border rounded-lg mb-[24px]">
                 <div className="flex justify-between items-center mb-4">
                   <div>
                     <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
