@@ -112,3 +112,37 @@ export function getMethodDisplayDetails(method: {
     }
   }
 }
+
+export function formatStatus(status: string): string {
+  if (!status) return ""
+
+  // Handle common status formats
+  const statusMap: Record<string, string> = {
+    active: "Active",
+    inactive: "Inactive",
+    pending: "Pending",
+    completed: "Completed",
+    cancelled: "Cancelled",
+    expired: "Expired",
+    buyer_confirmed: "Buyer Confirmed",
+    seller_confirmed: "Seller Confirmed",
+    dispute: "Dispute",
+    timed_out: "Timed Out",
+    refunded: "Refunded",
+    in_progress: "In Progress",
+    awaiting_payment: "Awaiting Payment",
+    payment_confirmed: "Payment Confirmed",
+  }
+
+  // Check if status exists in the map
+  const lowerStatus = status.toLowerCase()
+  if (statusMap[lowerStatus]) {
+    return statusMap[lowerStatus]
+  }
+
+  // Fallback: convert snake_case or kebab-case to Title Case
+  return status
+    .split(/[-_\s]+/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
+}
