@@ -251,9 +251,11 @@ export default function OrderDetailsPage() {
                     {formatStatus(order.status, order.type)}
                   </span>
                 </div>
-                <div className="flex items-center text-blue-100">
-                  <span>Time left: </span><span className="font-bold">{timeLeft}</span>
-                </div>
+                {(order.status === "pending_payment" || order.status === "pending_release") &&
+                  <div className="flex items-center text-blue-100">
+                    <span>Time left: </span><span className="font-bold">{timeLeft}</span>
+                  </div>
+                }
               </div>
               <div className="p-4 border rounded-lg mb-[24px]">
                 <div className="flex justify-between items-start mb-4">
