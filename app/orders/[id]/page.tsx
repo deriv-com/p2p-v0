@@ -258,7 +258,7 @@ export default function OrderDetailsPage() {
                 <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
                   <div className="flex items-center">
                     <span className="text-blue-100 font-bold">
-                      {order.user.id == USER.id ? "Awaiting payment" : "Complete payment"}
+                      {order.user.id == USER.id ? "Complete payment" : "Awaiting payment"}
                     </span>
                   </div>
                   <div className="flex items-center text-blue-100">
