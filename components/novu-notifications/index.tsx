@@ -6,7 +6,6 @@ import { USER, NOTIFICATIONS, AUTH } from "@/lib/local-variables"
 
 import { useRouter } from "next/navigation"
 
-// Function to fetch the subscriber hash
 async function fetchSubscriberHash() {
   try {
     const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
