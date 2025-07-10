@@ -186,7 +186,7 @@ export default function OrdersPage() {
                 <div className="font-bold">{order.advert.payment_currency}{" "} {order.payment_amount}</div>
               </TableCell>
               <TableCell className="py-4 px-4 align-top">
-                <span className={`px-3 py-1 rounded-full text-xs ${getStatusBadgeStyle(order.status)}`}>
+                <span className={`px-3 py-1 rounded-full text-xs ${getStatusBadgeStyle(order.status, order.type)}`}>
                   {formatStatus(order.status, order.type)}
                 </span>
               </TableCell>
