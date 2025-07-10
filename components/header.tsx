@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header className="hidden md:flex justify-between items-center px-[24px] py-[16px] z-10">
       <div>
-        <nav className="flex h-12 mx-4 border-b border-slate-200">
+        <nav className="flex h-12 border-b border-slate-200">
           {navItems.map((item) => {
             const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
 
