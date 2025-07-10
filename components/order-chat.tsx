@@ -172,12 +172,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 <div className={`max-w-[80%] rounded-lg p-3 ${msg.sender_is_self ? "bg-blue-50" : "bg-slate-100"}`}>
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
-                      <Image
-                        alt={msg.attachment.name}
-                        src={msg.attachment.url || "/placeholder.svg"}
-                        width={200}
-                        height={200}
-                      />
+                      <div className="bg-white p-[8px]">{msg.attachment.name}</div>
                     </div>
                   )}
                   <div className={`break-words ${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>{msg.message}</div>
