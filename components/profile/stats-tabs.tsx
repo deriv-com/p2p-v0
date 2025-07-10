@@ -13,9 +13,10 @@ import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface StatsTabsProps {
   stats?: any
+  onTabChange?: (tab: string) => void
 }
 
-export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
+export default function StatsTabs({ stats: initialStats, onTabChange }: StatsTabsProps) {
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -42,6 +43,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   )
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
+  const [activeTab, setActiveTab] = useState("30d")
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -49,6 +51,11 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     { id: "ads", label: "Advertisers' instruction" },
     { id: "counterparties", label: "Counterparties" },
   ]
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab)
+    onTabChange?.(tab)
+  }
 
   useEffect(() => {
     const fetchUserStats = async () => {
@@ -161,6 +168,23 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
   return (
     <div className="relative">
+      <div className="flex bg-slate-1500 rounded-lg p-1 mb-6">
+        <Button
+          variant={activeTab === "30d" ? "default" : "ghost"}
+          className={`flex-1 ${activeTab === "30d" ? "bg-white shadow-sm" : "bg-transparent"}`}
+          onClick={() => handleTabChange("30d")}
+        >
+          30 days
+        </Button>
+        <Button
+          variant={activeTab === "lifetime" ? "default" : "ghost"}
+          className={`flex-1 ${activeTab === "lifetime" ? "bg-white shadow-sm" : "bg-transparent"}`}
+          onClick={() => handleTabChange("lifetime")}
+        >
+          Lifetime
+        </Button>
+      </div>
+
       {notification.show && (
         <NotificationBanner
           message={notification.message}
