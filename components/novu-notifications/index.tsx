@@ -12,10 +12,7 @@ async function fetchSubscriberHash() {
 
     const response = await fetch(url, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...AUTH.getAuthHeader(),
-      },
+      headers: AUTH.getAuthHeader(),
     })
 
     if (!response.ok) {
