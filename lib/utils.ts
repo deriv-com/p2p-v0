@@ -148,5 +148,9 @@ export function getChatErrorMessage(tags: string[]): string {
     miscellaneous: "Your message doesn't meet our community guidelines. Please try again."
   }
 
+  const messages = tags.map(() => {
+      
+  })
+
   return messageTypeFormatters[tag]
 }
