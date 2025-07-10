@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { ArrowLeft } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
@@ -97,6 +98,10 @@ export default function BuySellPage() {
     setError(null)
   }
 
+  const handleBackClick = () => {
+    router.back()
+  }
+
   useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
@@ -114,7 +119,15 @@ export default function BuySellPage() {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <div className="flex-shrink-0">
+      {/* Mobile Navigation Header */}
+      <div className="md:hidden flex items-center px-4 py-3 bg-white border-b border-gray-200">
+        <button onClick={handleBackClick} className="mr-4 p-1">
+          <ArrowLeft className="h-6 w-6 text-gray-600" />
+        </button>
+        <h1 className="text-lg font-semibold text-gray-900">P2P</h1>
+      </div>
+
+      <div className="flex-shrink-0 px-4">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           {
             <div className="flex flex-row justify-between items-center gap-4">
@@ -203,7 +216,7 @@ export default function BuySellPage() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
+      <div className="flex-1 overflow-y-auto pb-20 md:pb-4 px-4">
         <div>
           {isLoading ? (
             <div className="text-center py-12">
