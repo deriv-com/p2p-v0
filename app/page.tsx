@@ -221,7 +221,7 @@ export default function BuySellPage() {
             <>
               <div className="md:block">
                 <Table>
-                  <TableHeader className="sm:hidden border-b sticky top-0 bg-white">
+                  <TableHeader className="hidden md:table-header-group border-b sticky top-0 bg-white">
                     <TableRow className="text-sm">
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
@@ -233,7 +233,7 @@ export default function BuySellPage() {
                   </TableHeader>
                   <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
-                      <TableRow className="sm:flex sm:flex-col" key={ad.id}>
+                      <TableRow className="flex flex-col md:table-row" key={ad.id}>
                         <TableCell className="py-4 px-4 align-top">
                           <div className="flex items-center">
                             <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
