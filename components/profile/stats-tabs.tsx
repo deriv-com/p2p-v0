@@ -1,4 +1,6 @@
 "use client"
+
+import type React from "react"
 import { useState, useEffect } from "react"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
@@ -101,7 +103,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             totalOrders30d: (data.buy_count_30day || 0) + (data.sell_count_30day || 0),
             totalOrdersLifetime: data.order_count_lifetime || 0,
             tradeVolume30d: {
-              amount: (data.buy_amount_30day || 0) + (data.sell_amount_30day || 0),
+              amount: ((data.buy_amount_30day || 0) + (data.sell_amount_30day || 0)),
               currency: "USD",
               period: "(30d)",
             },
@@ -170,7 +172,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
       <div className="mb-6">
         <Tabs defaultValue="stats">
-          <TabsList className="bg-slate-1500 rounded-2xl p-1 h-auto">
+          <TabsList className="bg-custom-gray rounded-2xl p-1 h-auto">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.id}
@@ -185,7 +187,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           <TabsContent value="stats">
             {isLoadingStats ? (
               <div className="space-y-4">
-                <div className="bg-slate-1500 rounded-lg p-4">
+                <div className="bg-custom-gray rounded-lg p-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {[...Array(3)].map((_, i) => (
                       <div key={i} className="py-4">
