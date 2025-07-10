@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { AlertCircle, X, ChevronRight, Clock, Star, ThumbsUp, ThumbsDown } from "lucide-react"
+import {X, ChevronRight, Clock, Star, ThumbsUp, ThumbsDown } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -12,6 +12,8 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { USER } from "@/lib/local-variables"
+import Image from "next/image"
+
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -308,7 +310,7 @@ export default function OrderDetailsPage() {
                   <div className="bg-yellow-50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
                       <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <AlertCircle className="h-3 w-3 text-white" />
+                    <Image src="/icons/warning-icon.png" alt="Warning" width={12} height={12} className="h-3 w-3" 
                       </div>
                       <p className="text-sm text-slate-500">
                         Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
