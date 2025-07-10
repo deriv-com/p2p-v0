@@ -61,18 +61,14 @@ export default function CreateAdPage() {
   const isEditMode = localEditMode
   const adId = localAdId
 
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
-  const [isFormValid, setIsFormValid] = useState(false)
-  const [validationErrors, setValidationErrors] = useState<any>({})
   const [statusModal, setStatusModal] = useState<StatusModalState>({
     show: false,
     type: "success",
     title: "",
     message: "",
     subMessage: "",
-    adType: "",
-    adId: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -196,15 +192,62 @@ export default function CreateAdPage() {
   }, [formData.type])
 
   useEffect(() => {
-    const handleFormValidation = (event: CustomEvent) => {
-      setIsFormValid(event.detail.isValid)
-      setFormData((prev) => ({ ...prev, ...event.detail.formData }))
+    const handleAdFormValidation = (e: any) => {
+      setAdFormValid(e.detail.isValid)
+      if (e.detail.isValid) {
+        const updatedData = { ...formData, ...e.detail.formData }
+        setFormData(updatedData)
+        formDataRef.current = updatedData
+      }
     }
 
-    document.addEventListener("adFormValidationChange", handleFormValidation as EventListener)
-    return () => {
-      document.removeEventListener("adFormValidationChange", handleFormValidation as EventListener)
+    const handlePaymentFormValidation = (e: any) => {
+      setPaymentFormValid(e.detail.isValid)
+      if (e.detail.isValid) {
+        const updatedData = { ...formData, ...e.detail.formData }
+        setFormData(updatedData)
+        formDataRef.current = updatedData
+      }
     }
+
+    document.addEventListener("adFormValidationChange", handleAdFormValidation)
+    document.addEventListener("paymentFormValidationChange", handlePaymentFormValidation)
+
+    return () => {
+      document.removeEventListener("adFormValidationChange", handleAdFormValidation)
+      document.removeEventListener("paymentFormValidationChange", handlePaymentFormValidation)
+    }
+  }, [formData])
+
+  useEffect(() => {
+    const checkForSuccessData = () => {
+      try {
+        const creationDataStr = localStorage.getItem("adCreationSuccess")
+        if (creationDataStr) {
+          const successData = JSON.parse(creationDataStr) as SuccessData
+
+          setStatusModal({
+            show: true,
+            type: "success",
+            title: "Ad created",
+            message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
+            adType: successData.type?.toUpperCase(),
+            adId: successData.id,
+          })
+
+          localStorage.removeItem("adCreationSuccess")
+        }
+
+        const updateDataStr = localStorage.getItem("adUpdateSuccess")
+        if (updateDataStr) {
+          localStorage.removeItem("adUpdateSuccess")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    checkForSuccessData()
   }, [])
 
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
@@ -213,30 +256,8 @@ export default function CreateAdPage() {
     formDataRef.current = updatedData
 
     if (!errors || Object.keys(errors).length === 0) {
-      setCurrentStep(2)
-    } else {
-      setValidationErrors(errors)
+      setCurrentStep(1)
     }
-  }
-
-  const handlePaymentDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
-    const updatedData = { ...formData, ...data }
-    setFormData(updatedData)
-    formDataRef.current = updatedData
-
-    if (!errors || Object.keys(errors).length === 0) {
-      setCurrentStep(3)
-    } else {
-      setValidationErrors(errors)
-    }
-  }
-
-  const handleBottomSheetOpenChange = (isOpen: boolean) => {
-    setIsBottomSheetOpen(isOpen)
-  }
-
-  const handleNext = (data: Partial<AdFormData>) => {
-    // Placeholder for handleNext logic
   }
 
   const formatErrorMessage = (errors: any[]): string => {
@@ -285,24 +306,31 @@ export default function CreateAdPage() {
     return "There was an error processing your request. Please try again."
   }
 
-  const handleSubmit = async () => {
+  const handlePaymentDetailsSubmit = async (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+    const finalData = { ...formData, ...data }
+    formDataRef.current = finalData
+
+    if (errors && Object.keys(errors).length > 0) {
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
-      const selectedPaymentMethodIds = formData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
+      const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
       if (isEditMode && adId) {
         const payload = {
           is_active: true,
-          minimum_order_amount: formData.minAmount || 0,
-          maximum_order_amount: formData.maxAmount || 0,
-          available_amount: formData.totalAmount || 0,
-          exchange_rate: formData.fixedRate || 0,
+          minimum_order_amount: finalData.minAmount || 0,
+          maximum_order_amount: finalData.maxAmount || 0,
+          available_amount: finalData.totalAmount || 0,
+          exchange_rate: finalData.fixedRate || 0,
           exchange_rate_type: "fixed",
           order_expiry_period: 15,
-          description: formData.instructions || "",
-          ...(formData.type === "buy"
-            ? { payment_method_names: formData.paymentMethods || [] }
+          description: finalData.instructions || "",
+          ...(finalData.type === "buy"
+            ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
@@ -320,26 +348,24 @@ export default function CreateAdPage() {
           type: "success",
           title: "Ad updated",
           message: "Your ad has been updated successfully.",
-          adType: formData.type || "",
-          adId: adId || "",
         })
 
         router.push("/ads")
       } else {
         const payload = {
-          type: formData.type || "buy",
+          type: finalData.type || "buy",
           account_currency: "USD",
           payment_currency: "IDR",
-          minimum_order_amount: formData.minAmount || 0,
-          maximum_order_amount: formData.maxAmount || 0,
-          available_amount: formData.totalAmount || 0,
-          exchange_rate: formData.fixedRate || 0,
+          minimum_order_amount: finalData.minAmount || 0,
+          maximum_order_amount: finalData.maxAmount || 0,
+          available_amount: finalData.totalAmount || 0,
+          exchange_rate: finalData.fixedRate || 0,
           exchange_rate_type: "fixed" as const,
-          description: formData.instructions || "",
+          description: finalData.instructions || "",
           is_active: 1,
           order_expiry_period: 15,
-          ...(formData.type === "buy"
-            ? { payment_method_names: formData.paymentMethods || [] }
+          ...(finalData.type === "buy"
+            ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
@@ -358,15 +384,6 @@ export default function CreateAdPage() {
           }),
         )
 
-        setStatusModal({
-          show: true,
-          type: "success",
-          title: "Ad created",
-          message: "Your ad has been created successfully.",
-          adType: result.data.type || "",
-          adId: result.data.id || "",
-        })
-
         router.push("/ads")
       }
     } catch (error) {
@@ -375,8 +392,6 @@ export default function CreateAdPage() {
         message: "Please try again.",
         type: "error" as "error" | "warning",
         actionButtonText: getActionButtonText(isEditMode),
-        adType: "",
-        adId: "",
       }
 
       if (error instanceof Error) {
@@ -387,8 +402,6 @@ export default function CreateAdPage() {
               "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
             type: "warning",
             actionButtonText: getActionButtonText(isEditMode),
-            adType: formData.type || "",
-            adId: adId || "",
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           errorInfo = {
@@ -397,8 +410,6 @@ export default function CreateAdPage() {
               "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
             type: "warning",
             actionButtonText: getActionButtonText(isEditMode),
-            adType: formData.type || "",
-            adId: adId || "",
           }
         } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
           errorInfo = {
@@ -407,8 +418,6 @@ export default function CreateAdPage() {
               "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
             type: "error",
             actionButtonText: getActionButtonText(isEditMode),
-            adType: formData.type || "",
-            adId: adId || "",
           }
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
@@ -416,8 +425,6 @@ export default function CreateAdPage() {
             message: "You don't have enough balance to create this ad.",
             type: "error",
             actionButtonText: getActionButtonText(isEditMode),
-            adType: formData.type || "",
-            adId: adId || "",
           }
         } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
           errorInfo = {
@@ -425,8 +432,6 @@ export default function CreateAdPage() {
             message: error.message || "Please check your input values.",
             type: "error",
             actionButtonText: getActionButtonText(isEditMode),
-            adType: formData.type || "",
-            adId: adId || "",
           }
         } else if (error.name === "AdvertTotalAmountExceeded") {
           errorInfo = {
@@ -434,8 +439,6 @@ export default function CreateAdPage() {
             message: "The total amount exceeds your available balance. Please enter a smaller amount.",
             type: "error",
             actionButtonText: getActionButtonText(isEditMode),
-            adType: formData.type || "",
-            adId: adId || "",
           }
         } else {
           errorInfo.message = error.message || errorInfo.message
@@ -448,26 +451,58 @@ export default function CreateAdPage() {
         title: errorInfo.title,
         message: errorInfo.message,
         actionButtonText: errorInfo.actionButtonText,
-        adType: errorInfo.adType,
-        adId: errorInfo.adId,
       })
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
-    }
+  const handleBottomSheetOpenChange = (isOpen: boolean) => {
+    setIsBottomSheetOpen(isOpen)
   }
 
-  const handleClose = () => {
-    router.push("/ads")
+  const handleButtonClick = () => {
+    if (isBottomSheetOpen) {
+      return
+    }
+
+    if (currentStep === 0 && !adFormValid) {
+      return
+    }
+
+    if (currentStep === 1) {
+      if (formData.type === "buy" && !paymentFormValid) {
+        return
+      }
+
+      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
+        return
+      }
+
+      if (isSubmitting) {
+        return
+      }
+    }
+
+    if (currentStep === 0) {
+      const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
+      if (adDetailsFormData) {
+        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+      }
+    } else {
+      const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
+      if (paymentDetailsFormData) {
+        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+      }
+    }
   }
 
   const handleModalClose = () => {
     setStatusModal((prev) => ({ ...prev, show: false }))
+  }
+
+  const handleClose = () => {
+    router.push("/ads")
   }
 
   if (isLoading) {
@@ -483,128 +518,113 @@ export default function CreateAdPage() {
 
   const isButtonDisabled =
     isSubmitting ||
-    (currentStep === 1 && !adFormValid) ||
-    (currentStep === 2 && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 2 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    (currentStep === 0 && !adFormValid) ||
+    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
+    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
     isBottomSheetOpen
 
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 1:
-        return (
+  return (
+    <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">
+      <style jsx global>{`
+        input::placeholder {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0%;
+        }
+        textarea::placeholder {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0%;
+        }
+        .progress-steps-container .absolute.top-5 {
+          top: 12px;
+        }
+      `}</style>
+      <style jsx>{`
+  :global(body),
+  :global(html),
+  :global(#__next),
+  :global(main),
+  :global(.container) {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+`}</style>
+      <div
+        className={`flex justify-between mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+      >
+        {currentStep === 1 && (
+          <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+        )}
+        {currentStep === 0 && <div></div>}
+        <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
+        <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+          <X className="h-6 w-6" />
+        </button>
+      </div>
+
+      <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
+        {getPageTitle(isEditMode, formData.type)}
+      </div>
+
+      <ProgressSteps currentStep={currentStep} steps={steps} />
+
+      {currentStep === 0 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-slate-1600">Step 1</div>
+          <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
+        </div>
+      )}
+
+      {currentStep === 1 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-slate-1600">Step 2</div>
+          <div className="text-lg font-bold text-slate-1600">Payment details</div>
+        </div>
+      )}
+
+      <div className="relative">
+        {currentStep === 0 ? (
           <AdDetailsForm
             onNext={handleAdDetailsNext}
             onClose={handleClose}
             initialData={formData}
             isEditMode={isEditMode}
           />
-        )
-      case 2:
-        return (
+        ) : (
           <PaymentDetailsForm
-            onNext={handlePaymentDetailsNext}
-            onBack={handleBack}
+            onBack={() => setCurrentStep(0)}
+            onSubmit={handlePaymentDetailsSubmit}
+            onClose={handleClose}
             initialData={formData}
             isSubmitting={isSubmitting}
             isEditMode={isEditMode}
             onBottomSheetOpenChange={handleBottomSheetOpenChange}
           />
-        )
-      case 3:
-        return (
-          <div className="max-w-[800px] mx-auto text-center">
-            <h2 className="text-2xl font-bold mb-4">Review Your Ad</h2>
-            <div className="bg-slate-1500 p-6 rounded-lg mb-6">
-              <pre className="text-left text-sm">{JSON.stringify(formData, null, 2)}</pre>
-            </div>
-            <Button onClick={handleSubmit} className="w-full md:w-auto">
-              {isEditMode ? "Save Ad" : "Create Ad"}
-            </Button>
-          </div>
-        )
-      default:
-        return null
-    }
-  }
-
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <div className="border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {isMobile ? (
-            // Mobile Header
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center">
-                <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded-full">
-                  <X className="h-6 w-6" />
-                </button>
-                <h1 className="ml-4 text-xl-bold text-slate-1600">{getPageTitle(isEditMode, formData.type)}</h1>
-              </div>
-            </div>
-          ) : (
-            // Desktop Header
-            <>
-              <div className="flex items-center justify-between h-16">
-                <button
-                  onClick={handleBack}
-                  disabled={currentStep === 1}
-                  className="flex items-center text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <ArrowLeft className="h-5 w-5 mr-2" />
-                  Back
-                </button>
-                <button onClick={handleClose} className="p-2 hover:bg-gray-100 rounded-full">
-                  <X className="h-6 w-6" />
-                </button>
-              </div>
-              <div className="pb-4">
-                <h1 className="text-2xl-bold text-slate-1600">{getPageTitle(isEditMode, formData.type)}</h1>
-              </div>
-            </>
-          )}
-        </div>
+        )}
       </div>
 
-      {/* Progress Steps */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <ProgressSteps currentStep={currentStep} steps={steps} />
-      </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8">{renderStepContent()}</div>
-
-      {/* Footer Actions */}
-      {currentStep < 3 && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4">
-          <div className="max-w-7xl mx-auto flex justify-between">
-            <Button
-              variant="outline"
-              onClick={handleBack}
-              disabled={currentStep === 1}
-              className="w-full md:w-auto mr-4 bg-transparent"
-            >
-              Back
-            </Button>
-            <Button
-              onClick={() => {
-                if (currentStep === 1) {
-                  const form = document.getElementById("ad-details-form") as HTMLFormElement
-                  if (form) {
-                    form.requestSubmit()
-                  }
-                } else {
-                  handleNext(formData)
-                }
-              }}
-              disabled={isButtonDisabled}
-              className="w-full md:w-auto"
-            >
-              {currentStep === 2 ? "Review" : "Next"}
+      {isMobile ? (
+        <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
+          <div className="mx-6">
+            <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+              {getButtonText(isEditMode, isSubmitting, currentStep)}
             </Button>
           </div>
         </div>
+      ) : (
+        <div className="hidden md:block"></div>
       )}
+
+      <div className="hidden md:flex justify-end mt-8">
+        <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+          {getButtonText(isEditMode, isSubmitting, currentStep)}
+        </Button>
+      </div>
 
       {statusModal.show && !isMobile && (
         <StatusModal
