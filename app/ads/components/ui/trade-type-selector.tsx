@@ -14,7 +14,7 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
       <Button
         type="button"
         variant="ghost"
-        size="xs"
+        size="sm"
         onClick={() => !isEditMode && onChange("buy")}
         disabled={isEditMode}
         className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all whitespace-nowrap
@@ -25,7 +25,7 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
       <Button
         type="button"
         variant="ghost"
-        size="xs"
+        size="sm"
         onClick={() => !isEditMode && onChange("sell")}
         disabled={isEditMode}
         className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all whitespace-nowrap
