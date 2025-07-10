@@ -243,7 +243,6 @@ export default function OrderDetailsPage() {
       <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />
       <div className="container mx-auto">
         <div className="flex flex-col">
-          {/* Left panel - Order details */}
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
               <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
