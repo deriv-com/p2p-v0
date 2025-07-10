@@ -132,5 +132,27 @@ export function formatStatus(status: string, type: string): string {
   }
 
   return status
-  
+}
+
+export function formatMessage(messageType: string, message: string): string {
+  if (!message) return ""
+
+  const messageTypeFormatters: Record<string, (msg: string) => string> = {
+    error: (msg: string) => `❌ Error: ${msg}`,
+    success: (msg: string) => `✅ Success: ${msg}`,
+    warning: (msg: string) => `⚠️ Warning: ${msg}`,
+    info: (msg: string) => `ℹ️ Info: ${msg}`,
+    notification: (msg: string) => `🔔 ${msg}`,
+    system: (msg: string) => `🔧 System: ${msg}`,
+    user: (msg: string) => msg,
+    admin: (msg: string) => `👤 Admin: ${msg}`,
+    trade: (msg: string) => `💱 Trade: ${msg}`,
+    payment: (msg: string) => `💳 Payment: ${msg}`,
+    order: (msg: string) => `📋 Order: ${msg}`,
+    chat: (msg: string) => msg,
+    default: (msg: string) => msg,
   }
+
+  const formatter = messageTypeFormatters[messageType.toLowerCase()] || messageTypeFormatters.default
+  return formatter(message)
+}
