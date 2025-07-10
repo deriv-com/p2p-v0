@@ -385,7 +385,7 @@ export default function BuySellPage() {
                           </div>
                         </TableCell>
                         <TableCell className="py-4 px-4 align-top">
-                          <div className="font-bold">
+                          <div className="font-bold text-base">
                             {ad.payment_currency}{" "}
                             {ad.exchange_rate
                               ? ad.exchange_rate.toLocaleString(undefined, {
