@@ -267,7 +267,7 @@ export default function OrderDetailsPage() {
                 </div>
               )}
               {order.status === "pending_release" && (
-                <div className="bg-blue-50 p-4 flex justify-between items-start border border-blue-50 rounded-lg mb-[24px]">
+                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
                   <div className="flex items-center">
                     <span className="text-blue-600 font-medium">{pendingReleaseLabel}</span>
                   </div>
@@ -278,7 +278,7 @@ export default function OrderDetailsPage() {
               )}
 
               <div className="p-4 border rounded-lg mb-[24px]">
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-start mb-4">
                   <div>
                     <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                     <p className="text-lg font-bold">
