@@ -561,13 +561,13 @@ export default function CreateAdPage() {
           </button>
         )}
         {currentStep === 0 && <div></div>}
-        <div className="block md:hidden text-6xl text-black">{getPageTitle(isEditMode, formData.type)}</div>
+        <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
         <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
           <X className="h-6 w-6" />
         </button>
       </div>
 
-      <div className="hidden md:block text-left mb-6 text-5xl text-[#00080a]">
+      <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
         {getPageTitle(isEditMode, formData.type)}
       </div>
 

@@ -157,8 +157,8 @@ const config: Config = {
         "2xl": ["1.5rem", { lineHeight: "2rem" }],
         "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
         "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
-        "5xl": ["1.5rem", { lineHeight: "2rem", fontWeight: "800" }],
-        "6xl": ["1.125rem", { fontWeight: "700" }],
+        "xl-bold": ["1.125rem", { fontWeight: "700" }],
+        "2xl-bold": ["1.5rem", { lineHeight: "2rem", fontWeight: "800" }],
       },
       spacing: {
         0.5: "0.125rem",
