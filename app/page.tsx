@@ -398,7 +398,7 @@ export default function BuySellPage() {
                             ad.actual_maximum_order_amount || "N/A"
                           }`}</div>
                           <div className="flex items-center text-xs text-slate-500 mt-1">
-                            <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
+                            <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
                               <Image
                                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
                                 alt="Clock"
