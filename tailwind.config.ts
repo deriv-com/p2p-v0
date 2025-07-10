@@ -141,6 +141,7 @@ const config: Config = {
           bank: "#008832",
           other: "#377CFC",
         },
+        "gray-dark": "#333333",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -156,6 +157,8 @@ const config: Config = {
         "2xl": ["1.5rem", { lineHeight: "2rem" }],
         "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
         "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        "page-title": ["24px", { lineHeight: "32px", fontWeight: "800" }],
+        "mobile-title": ["18px", { fontWeight: "700" }],
       },
       spacing: {
         0.5: "0.125rem",
