@@ -154,7 +154,6 @@ export default function OrdersPage() {
     </div>
   )
 
-  // Desktop table view for orders
   const DesktopOrderTable = () => (
     <div className="overflow-x-auto">
       <Table>
@@ -164,6 +163,7 @@ export default function OrdersPage() {
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
+            {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
             {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
           </TableRow>
@@ -192,6 +192,11 @@ export default function OrdersPage() {
                   {order.status}
                 </span>
               </TableCell>
+              {activeTab === "active" && (
+                <TableCell className="py-4 px-4">
+                  
+                </TableCell>
+              )}
               {activeTab === "past" && (
                 <TableCell className="py-4 px-4">
                   {order.rating > 0 && (
