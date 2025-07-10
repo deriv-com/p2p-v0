@@ -63,6 +63,8 @@ export default function OrdersPage() {
     switch (status) {
       case "pending_payment": 
         return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
+      case "pending_release": 
+        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
       case "completed":
         return "bg-green-100 text-green-800"
       case "cancelled":
