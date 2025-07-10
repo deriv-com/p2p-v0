@@ -208,7 +208,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message input */}
       <div className="p-4 border-t">
         <div className="space-y-2">
           <div className="relative">
