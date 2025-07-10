@@ -248,7 +248,7 @@ export default function OrderDetailsPage() {
               <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
                 <div className="flex items-center">
                   <span className="text-blue-100 font-bold">
-                    formatStatus(order.status)
+                    {formatStatus(order.status)}
                   </span>
                 </div>
                 <div className="flex items-center text-blue-100">
