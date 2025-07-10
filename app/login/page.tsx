@@ -65,10 +65,9 @@ export default function LoginPage() {
           localStorage.setItem("auth_token", response.access_token)
 
         await AuthPrevAPI.fetchUserIdAndStore()
-        await AuthPrevAPI.getClientProfile()
+        //await AuthPrevAPI.getClientProfile()
 
         window.location.href = "/"
-        localStorage.setItem("user_data", JSON.stringify(response.user));
       } else {
         setError("Verification failed. Please try again.")
       }
