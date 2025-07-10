@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import {X, ChevronRight, Clock, Star, ThumbsUp, ThumbsDown } from "lucide-react"
+import {X, ChevronRight, Star, ThumbsUp, ThumbsDown } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -255,15 +255,14 @@ export default function OrderDetailsPage() {
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
               {order.status === "pending_payment" && (
-                <div className="bg-yellow-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg">
+                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg">
                   <div className="flex items-center">
-                    <span className="text-yellow-600 font-medium">
+                    <span className="text-blue-100 font-bold">
                       {order.user.id == USER.id ? "Awaiting payment" : "Complete payment"}
                     </span>
                   </div>
-                  <div className="flex items-center text-yellow-600">
-                    <Clock className="h-4 w-4 mr-1" />
-                    <span>Time left: {timeLeft}</span>
+                  <div className="flex items-center text-blue-100">
+                    <span>Time left: </span><span className="font-bold">{timeLeft}</span>
                   </div>
                 </div>
               )}
@@ -273,7 +272,6 @@ export default function OrderDetailsPage() {
                     <span className="text-blue-600 font-medium">{pendingReleaseLabel}</span>
                   </div>
                   <div className="flex items-center text-blue-600">
-                    <Clock className="h-4 w-4 mr-1" />
                     <span>Time left: {timeLeft}</span>
                   </div>
                 </div>
