@@ -176,9 +176,9 @@ export default function OrdersPage() {
               )}
               <TableCell className="py-4 px-4">
                 <div>
-                  <div className={order.type === "sell" ? "text-green-600 font-medium" : "font-medium"}>
-                    {order.type === "buy" ? "Buy" : "Sell"}
-                    <span>{order.advert.account_currency}{" "} {order.amount}</span>
+                  <div>
+                    {order.type === "buy" ? <span className="text-secondary">Buy</span> : <span className="text-destructive">Sell</span>}
+                    <span>{" "} {order.advert.account_currency}{" "} {order.amount}</span>
                   </div>
                   <div className="mt-[4px]">ID: {order.id}</div>
                   <div className="mt-[4px]">Counterparty: {order.advert.user.nickname}</div>
