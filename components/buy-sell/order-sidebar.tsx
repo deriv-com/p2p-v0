@@ -88,8 +88,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         return
       }
 
-console.log(response);
-console.log(ad?.payment_methods );
       // Filter user payment methods to only show those accepted by the buyer
       const buyerAcceptedMethods = ad?.payment_methods || []
       const filteredMethods =
