@@ -161,8 +161,8 @@ export default function OrdersPage() {
       <Table>
         <TableHeader>
           <TableRow>
+          {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
-            {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Counterparty</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Send</TableHead>
@@ -174,6 +174,9 @@ export default function OrdersPage() {
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
+            {activeTab === "past" && (
+                <TableCell className="py-4 px-4">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
+              )}
               <TableCell className="py-4 px-4">
                 <div className="flex items-center">
                   <span className={order.type === "sell" ? "text-green-600 font-medium" : "font-medium"}>
@@ -182,9 +185,6 @@ export default function OrdersPage() {
                   <span className="ml-1">{order.id}</span>
                 </div>
               </TableCell>
-              {activeTab === "past" && (
-                <TableCell className="py-4 px-4">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
-              )}
               <TableCell className="py-4 px-4">
                 {order.advert.user.nickname}
               </TableCell>
