@@ -163,7 +163,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <div className="flex-1 overflow-y-auto p-4">
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -171,7 +171,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           ) : (
             messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
-                <div className="max-w-[80%] rounded-lg p-3">
+                <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
                       <div className={`${msg.sender_is_self? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}>
