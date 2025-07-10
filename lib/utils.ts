@@ -134,7 +134,7 @@ export function formatStatus(status: string, type: string): string {
   return status
 }
 
-export function getChatErrorMessage(tag: string): string {
+export function getChatErrorMessage(tags: string[]): string {
   const messageTypeFormatters = {
     pii: "Please avoid sharing personal information like phone numbers, addresses, or ID details for your security.",
     link: "Links and URLs are not permitted in this chat.",
