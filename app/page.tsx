@@ -151,7 +151,7 @@ export default function BuySellPage() {
                 onValueChange={setSelectedPaymentMethod}
                 disabled={isLoadingPaymentMethods}
               >
-                <SelectTrigger className="w-full sm:w-[300px]">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
                 </SelectTrigger>
                 <SelectContent>
@@ -191,7 +191,7 @@ export default function BuySellPage() {
             </div>
             <div className="hidden md:block">
               <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
