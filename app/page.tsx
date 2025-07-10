@@ -214,9 +214,7 @@ export default function BuySellPage() {
             <div className="text-center py-8">{error}</div>
           ) : adverts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
-                <Image src="/icons/search-icon.png" alt="No ads found" width={32} height={32} className="opacity-60" />
-              </div>
+              <Image src="/icons/search-icon.png" alt="No ads found" width={56} height={56} className="opacity-60" />
               <p className="text-xl font-medium text-slate-800">No ads available.</p>
             </div>
           ) : (
