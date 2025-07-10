@@ -177,7 +177,7 @@ export default function OrdersPage() {
                   <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.advert.user.nickname}</div>
                 </div>
               </TableCell>
-               <TableCell className="py-4 px-4 align-top">
+               <TableCell className="py-4 px-4 align-top text-base">
                 <div className="font-bold">{order.advert.payment_currency}{" "} {order.payment_amount}</div>
               </TableCell>
               <TableCell className="py-4 px-4 align-top">
