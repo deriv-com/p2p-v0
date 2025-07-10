@@ -11,7 +11,7 @@ async function fetchSubscriberHash() {
     const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
     const response = await fetch(url, {
-      method: "POST",
+      method: "POST"
       headers: {
         "Content-Type": "application/json",
         ...AUTH.getAuthHeader(),
