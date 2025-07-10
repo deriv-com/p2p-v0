@@ -105,6 +105,9 @@ const config: Config = {
         teal: {
           700: "#00CCCC",
         },
+         "custom-gray": {
+          DEFAULT: "#F5F5F5",
+        },
         info: {
           light: "rgba(55, 124, 252, 0.1)",
           DEFAULT: "#377cfc",
