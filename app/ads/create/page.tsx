@@ -61,7 +61,7 @@ export default function CreateAdPage() {
   const isEditMode = localEditMode
   const adId = localAdId
 
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
   const [statusModal, setStatusModal] = useState<StatusModalState>({
     show: false,
@@ -505,25 +505,6 @@ export default function CreateAdPage() {
     router.push("/ads")
   }
 
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1)
-    } else {
-      router.push("/ads")
-    }
-  }
-
-  const handleNext = (data: any) => {
-    setFormData({ ...formData, ...data })
-    setCurrentStep(currentStep + 1)
-  }
-
-  const handleSubmit = (data: any) => {
-    const finalData = { ...formData, ...data }
-    console.log("Final ad data:", finalData)
-    router.push("/ads")
-  }
-
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -543,42 +524,106 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            {currentStep > 1 ? (
-              <Button variant="ghost" size="icon" onClick={handleBack} className="h-10 w-10">
-                <ArrowLeft className="h-6 w-6" />
-              </Button>
-            ) : (
-              <div></div>
-            )}
-            <Button variant="ghost" size="icon" onClick={handleClose} className="h-10 w-10">
-              <X className="h-6 w-6" />
-            </Button>
-          </div>
-          {!isMobile && (
-            <div className="mt-4">
-              <h1 className="text-2xl-bold text-[#00080a]">{getPageTitle(isEditMode, formData.type)}</h1>
-            </div>
-          )}
-          {isMobile && (
-            <div className="mt-2 flex items-center">
-              <h1 className="text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</h1>
-            </div>
-          )}
-          <div className="mt-6">
-            <ProgressSteps currentStep={currentStep} steps={steps} />
-          </div>
-        </div>
+    <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">
+      <style jsx global>{`
+        input::placeholder {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0%;
+        }
+        textarea::placeholder {
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 24px;
+          letter-spacing: 0%;
+        }
+        .progress-steps-container .absolute.top-5 {
+          top: 12px;
+        }
+      `}</style>
+      <style jsx>{`
+  :global(body),
+  :global(html),
+  :global(#__next),
+  :global(main),
+  :global(.container) {
+    overflow-y: auto !important;
+    height: auto !important;
+  }
+`}</style>
+      <div
+        className={`flex justify-between mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+      >
+        {currentStep === 1 && (
+          <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
+            <ArrowLeft className="h-6 w-6" />
+          </button>
+        )}
+        {currentStep === 0 && <div></div>}
+        <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
+        <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+          <X className="h-6 w-6" />
+        </button>
       </div>
 
-      <div className="flex-1 overflow-auto">
-        <div className="container mx-auto px-4 py-6">
-          {currentStep === 0 && <AdDetailsForm onSubmit={handleAdDetailsNext} />}
-          {currentStep === 1 && <PaymentDetailsForm onSubmit={handlePaymentDetailsSubmit} />}
+      <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
+        {getPageTitle(isEditMode, formData.type)}
+      </div>
+
+      <ProgressSteps currentStep={currentStep} steps={steps} />
+
+      {currentStep === 0 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-gray-dark">Step 1</div>
+          <div className="text-lg font-bold text-gray-dark">Set Type and Price</div>
         </div>
+      )}
+
+      {currentStep === 1 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-gray-dark">Step 2</div>
+          <div className="text-lg font-bold text-gray-dark">Payment details</div>
+        </div>
+      )}
+
+      <div className="relative">
+        {currentStep === 0 ? (
+          <AdDetailsForm
+            onNext={handleAdDetailsNext}
+            onClose={handleClose}
+            initialData={formData}
+            isEditMode={isEditMode}
+          />
+        ) : (
+          <PaymentDetailsForm
+            onBack={() => setCurrentStep(0)}
+            onSubmit={handlePaymentDetailsSubmit}
+            onClose={handleClose}
+            initialData={formData}
+            isSubmitting={isSubmitting}
+            isEditMode={isEditMode}
+            onBottomSheetOpenChange={handleBottomSheetOpenChange}
+          />
+        )}
+      </div>
+
+      {isMobile ? (
+        <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
+          <div className="mx-6">
+            <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+              {getButtonText(isEditMode, isSubmitting, currentStep)}
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="hidden md:block"></div>
+      )}
+
+      <div className="hidden md:flex justify-end mt-8">
+        <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+          {getButtonText(isEditMode, isSubmitting, currentStep)}
+        </Button>
       </div>
 
       {statusModal.show && !isMobile && (
