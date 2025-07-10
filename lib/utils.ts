@@ -152,6 +152,6 @@ export function getChatErrorMessage(tag: string): string {
     default: (msg: string) => msg,
   }
 
-  const formatter = messageTypeFormatters[messageType.toLowerCase()] || messageTypeFormatters.default
+  const formatter = messageTypeFormatters[tag]
   return formatter(message)
 }
