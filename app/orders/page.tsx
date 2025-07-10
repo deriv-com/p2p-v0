@@ -165,16 +165,16 @@ export default function OrdersPage() {
           {orders.map((order) => (
             <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
             {activeTab === "past" && (
-                <TableCell className="py-4 px-4 align-top">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
+                <TableCell className="py-4 px-4 align-top text-slate-600">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
               )}
               <TableCell className="py-4 px-4 align-top">
                 <div>
                   <div className="font-bold">
                     {order.type === "buy" ? <span className="text-secondary">Buy</span> : <span className="text-destructive">Sell</span>}
-                    <span>{" "} {order.advert.account_currency}{" "} {order.amount}</span>
+                    <span className="text-slate-600">{" "} {order.advert.account_currency}{" "} {order.amount}</span>
                   </div>
-                  <div className="mt-[4px]">ID: {order.id}</div>
-                  <div className="mt-[4px]">Counterparty: {order.advert.user.nickname}</div>
+                  <div className="mt-[4px] text-slate-600">ID: {order.id}</div>
+                  <div className="mt-[4px] text-slate-600">Counterparty: {order.advert.user.nickname}</div>
                 </div>
               </TableCell>
                <TableCell className="py-4 px-4 align-top">
