@@ -247,7 +247,7 @@ export default function OrderDetailsPage() {
   return (
     <div className="px-4 relative">
       <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto">
         <div className="flex flex-col">
           {/* Left panel - Order details */}
           <div className="flex flex-row gap-6">
@@ -277,7 +277,7 @@ export default function OrderDetailsPage() {
                 </div>
               )}
 
-              <div className="p-4 border rounded-lg mt-3">
+              <div className="p-4 border rounded-lg">
                 <div className="flex justify-between items-center mb-4">
                   <div>
                     <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>

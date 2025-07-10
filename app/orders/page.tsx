@@ -194,38 +194,10 @@ export default function OrdersPage() {
                 </span>
               </TableCell>
               <TableCell className="py-4 px-4">
-                {order.advert.payment_currency}{" "}
-                {typeof order.amount === "object" && order.amount.value
-                  ? Number(order.amount.value).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                  : typeof order.amount === "number"
-                    ? order.amount.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    : Number(order.amount).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                {order.advert.payment_currency}{" "} {order.payment_amount}
               </TableCell>
               <TableCell className="py-4 px-4">
-                {order.advert.account_currency}{" "}
-                {typeof order.price === "object" && order.price.value
-                  ? Number(order.price.value).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                  : typeof order.price === "number"
-                    ? order.price.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    : Number(order.price).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
+                {order.advert.account_currency}{" "} {order.amount}
               </TableCell>
               {activeTab === "past" && (
                 <TableCell className="py-4 px-4">
