@@ -150,5 +150,5 @@ export function getChatErrorMessage(tags: string[]): string {
 
   const messages = tags.length > 0 "It violates or chat guidelines." : messageTypeFormatters[tags[0]]
 
-  return messages[tag]
+  return messages
 }
