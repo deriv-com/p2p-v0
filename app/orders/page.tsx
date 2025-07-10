@@ -164,7 +164,6 @@ export default function OrdersPage() {
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Send</TableHead>
             {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
           </TableRow>
