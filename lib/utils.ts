@@ -131,6 +131,6 @@ export function formatStatus(status: string, type: string): string {
     return statusMap[lowerStatus]
   }
 
-  return statu
+  return status
   
   }
