@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { AlertCircle, Clock } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
@@ -102,7 +102,6 @@ export default function OrdersPage() {
               <div className="flex justify-between items-center mb-4">
                 <span className={`px-3 py-1 rounded-full text-xs ${statusStyle}`}>{statusText}</span>
                 <div className="flex items-center text-slate-500">
-                  <Clock className="h-4 w-4 mr-1" />
                   <span className="text-xs">00:59:59</span>
                 </div>
               </div>
