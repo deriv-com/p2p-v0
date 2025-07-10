@@ -121,10 +121,10 @@ export default function BuySellPage() {
             <div className="flex flex-row justify-between items-center gap-4">
               <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                 <TabsList className="w-full md:min-w-[230px]">
-                  <TabsTrigger className="w-full" value="sell">
+                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
                     Buy
                   </TabsTrigger>
-                  <TabsTrigger className="w-full" value="buy">
+                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
                     Sell
                   </TabsTrigger>
                 </TabsList>
