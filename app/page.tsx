@@ -219,7 +219,6 @@ export default function BuySellPage() {
             </div>
           ) : (
             <>
-             
               <div className="hidden md:block">
                 <Table>
                   <TableHeader className="border-b sticky top-0 bg-white">
