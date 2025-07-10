@@ -151,11 +151,11 @@ export default function BuySellPage() {
                 onValueChange={setSelectedPaymentMethod}
                 disabled={isLoadingPaymentMethods}
               >
-                <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectTrigger className="w-full">
                   <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All payment methods</SelectItem>
+                  <SelectItem value="all">Payment (All)</SelectItem>
                   {paymentMethods.map((method) => (
                     <SelectItem key={method.method} value={method.method}>
                       {method.display_name}
@@ -164,19 +164,7 @@ export default function BuySellPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="hidden md:block">
-              <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[200px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="relative filter-dropdown-container flex-shrink-0">
+            <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
               {
                 <button
                   onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
@@ -200,6 +188,17 @@ export default function BuySellPage() {
                   initialFilters={filterOptions}
                 />
               )}
+            </div>
+            <div className="hidden md:block">
+              <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
+                  <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
@@ -351,8 +350,8 @@ export default function BuySellPage() {
                       <TableRow key={ad.id}>
                         <TableCell className="py-4 px-4 align-top">
                           <div className="flex items-center">
-                            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl mr-3">
-                              {(ad.user?.nickname || "U").charAt(0).toUpperCase()}
+                            <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                              {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                             </div>
                             <div>
                               <div className="flex items-center">
@@ -363,7 +362,7 @@ export default function BuySellPage() {
                                   {ad.user?.nickname || "Unknown"}
                                 </button>
                                 {ad.user?.is_favourite && (
-                                  <span className="ml-2 px-2 py-0.5 border border-[#29823B]  text-[#29823B] text-xs rounded-sm">
+                                  <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                     Following
                                   </span>
                                 )}
@@ -386,7 +385,7 @@ export default function BuySellPage() {
                           </div>
                         </TableCell>
                         <TableCell className="py-4 px-4 align-top">
-                          <div className="font-bold">
+                          <div className="font-bold text-base">
                             {ad.payment_currency}{" "}
                             {ad.exchange_rate
                               ? ad.exchange_rate.toLocaleString(undefined, {
@@ -395,11 +394,11 @@ export default function BuySellPage() {
                                 })
                               : "N/A"}
                           </div>
-                          <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                          <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
                             ad.actual_maximum_order_amount || "N/A"
                           }`}</div>
                           <div className="flex items-center text-xs text-slate-500 mt-1">
-                            <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
+                            <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
                               <Image
                                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
                                 alt="Clock"
