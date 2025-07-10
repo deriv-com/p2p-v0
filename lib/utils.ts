@@ -134,8 +134,7 @@ export function formatStatus(status: string, type: string): string {
   return status
 }
 
-export function formatMessage(messageType: string, message: string): string {
-  if (!message) return ""
+export function getChatErrorMessage(tag: string): string {
 
   const messageTypeFormatters: Record<string, (msg: string) => string> = {
     error: (msg: string) => `❌ Error: ${msg}`,
