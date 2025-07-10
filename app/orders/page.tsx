@@ -171,7 +171,7 @@ export default function OrdersPage() {
                 <div>
                   <div className="font-bold">
                     {order.type === "buy" ? <span className="text-secondary">Buy</span> : <span className="text-destructive">Sell</span>}
-                    <span className="text-slate-600">{" "} {order.advert.account_currency}{" "} {order.amount}</span>
+                    <span>{" "} {order.advert.account_currency}{" "} {order.amount}</span>
                   </div>
                   <div className="mt-[4px] text-slate-600">ID: {order.id}</div>
                   <div className="mt-[4px] text-slate-600">Counterparty: {order.advert.user.nickname}</div>
