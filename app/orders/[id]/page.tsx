@@ -9,7 +9,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
-import { cn } from "@/lib/utils"
+import { cn, formatStatus } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
@@ -254,29 +254,16 @@ export default function OrderDetailsPage() {
           {/* Left panel - Order details */}
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
-              {order.status === "pending_payment" && (
-                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
-                  <div className="flex items-center">
-                    <span className="text-blue-100 font-bold">
-                      {order.user.id == USER.id ? "Complete payment" : "Awaiting payment"}
-                    </span>
-                  </div>
-                  <div className="flex items-center text-blue-100">
-                    <span>Time left: </span><span className="font-bold">{timeLeft}</span>
-                  </div>
+              <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
+                <div className="flex items-center">
+                  <span className="text-blue-100 font-bold">
+                    formatStatus(order.status)
+                  </span>
                 </div>
-              )}
-              {order.status === "pending_release" && (
-                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
-                  <div className="flex items-center">
-                    <span className="text-blue-600 font-medium">{pendingReleaseLabel}</span>
-                  </div>
-                  <div className="flex items-center text-blue-600">
-                    <span>Time left: {timeLeft}</span>
-                  </div>
+                <div className="flex items-center text-blue-100">
+                  <span>Time left: </span><span className="font-bold">{timeLeft}</span>
                 </div>
-              )}
-
+              </div>
               <div className="p-4 border rounded-lg mb-[24px]">
                 <div className="flex justify-between items-start mb-4">
                   <div>
