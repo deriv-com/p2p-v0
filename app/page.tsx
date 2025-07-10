@@ -164,19 +164,7 @@ export default function BuySellPage() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="hidden md:block">
-              <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[200px]">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="relative filter-dropdown-container flex-shrink-0">
+            <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
               {
                 <button
                   onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
@@ -200,6 +188,17 @@ export default function BuySellPage() {
                   initialFilters={filterOptions}
                 />
               )}
+            </div>
+            <div className="hidden md:block">
+              <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
+                <SelectTrigger className="w-full sm:w-[200px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
+                  <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
         </div>
