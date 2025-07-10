@@ -163,10 +163,9 @@ export default function OrdersPage() {
           <TableRow>
           {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Counterparty</TableHead>
+            <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Send</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Receive</TableHead>
             {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
           </TableRow>
@@ -178,26 +177,22 @@ export default function OrdersPage() {
                 <TableCell className="py-4 px-4">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
               )}
               <TableCell className="py-4 px-4">
-                <div className="flex items-center">
-                  <span className={order.type === "sell" ? "text-green-600 font-medium" : "font-medium"}>
+                <div>
+                  <div className={order.type === "sell" ? "text-green-600 font-medium" : "font-medium"}>
                     {order.type === "buy" ? "Buy" : "Sell"}
-                  </span>
-                  <span className="ml-1">{order.id}</span>
+                    {order.advert.account_currency}{" "} {order.amount}
+                  </div>
+                  <div className="mb-1">ID: {order.id}</div>
+                  <div className="mb-1">Counterparty: {order.advert.user.nickname</div>
                 </div>
               </TableCell>
-              <TableCell className="py-4 px-4">
-                {order.advert.user.nickname}
+               <TableCell className="py-4 px-4">
+                {order.advert.payment_currency}{" "} {order.payment_amount}
               </TableCell>
               <TableCell className="py-4 px-4">
                 <span className={`px-3 py-1 rounded-full text-xs ${getStatusBadgeStyle(order.status)}`}>
                   {order.status}
                 </span>
-              </TableCell>
-              <TableCell className="py-4 px-4">
-                {order.advert.payment_currency}{" "} {order.payment_amount}
-              </TableCell>
-              <TableCell className="py-4 px-4">
-                {order.advert.account_currency}{" "} {order.amount}
               </TableCell>
               {activeTab === "past" && (
                 <TableCell className="py-4 px-4">
