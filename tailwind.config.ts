@@ -101,12 +101,11 @@ const config: Config = {
           1200: "#181C25",
           1300: "#11141B",
           1400: "#000000",
+          1500: "#F5F5F5",
+          1600: "#333333",
         },
         teal: {
           700: "#00CCCC",
-        },
-        "custom-gray": {
-          DEFAULT: "#F5F5F5",
         },
         info: {
           light: "rgba(55, 124, 252, 0.1)",
@@ -158,6 +157,8 @@ const config: Config = {
         "2xl": ["1.5rem", { lineHeight: "2rem" }],
         "3xl": ["1.875rem", { lineHeight: "2.25rem" }],
         "4xl": ["2.25rem", { lineHeight: "2.5rem" }],
+        "xl-bold": ["1.125rem", { fontWeight: "700" }],
+        "2xl-bold": ["1.5rem", { lineHeight: "2rem", fontWeight: "800" }],
       },
       spacing: {
         0.5: "0.125rem",

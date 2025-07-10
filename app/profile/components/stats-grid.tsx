@@ -22,19 +22,19 @@ function StatCard({ title, value, hasInfo = false }: StatCardProps) {
 
 interface StatsGridProps {
   stats:
-  | {
-    buyCompletion: { rate: string; period: string }
-    sellCompletion: { rate: string; period: string }
-    avgPayTime: { time: string; period: string }
-    avgReleaseTime: { time: string; period: string }
-    tradePartners: number
-    totalOrders30d: number
-    totalOrdersLifetime: number
-    tradeVolume30d: { amount: string; currency: string; period: string }
-    tradeVolumeLifetime: { amount: string; currency: string }
-  }
-  | null
-  | undefined
+    | {
+        buyCompletion: { rate: string; period: string }
+        sellCompletion: { rate: string; period: string }
+        avgPayTime: { time: string; period: string }
+        avgReleaseTime: { time: string; period: string }
+        tradePartners: number
+        totalOrders30d: number
+        totalOrdersLifetime: number
+        tradeVolume30d: { amount: string; currency: string; period: string }
+        tradeVolumeLifetime: { amount: string; currency: string }
+      }
+    | null
+    | undefined
 }
 
 export default function StatsGrid({ stats }: StatsGridProps) {
@@ -53,7 +53,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
   const displayStats = stats || defaultStats
 
   return (
-    <div className="bg-custom-gray rounded-lg px-4">
+    <div className="bg-slate-1500 rounded-lg px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
           title={`Buy completion ${displayStats.buyCompletion.period}`}

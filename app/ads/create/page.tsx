@@ -147,7 +147,7 @@ export default function CreateAdPage() {
                   .filter((id: number) => !isNaN(id))
 
                 if (typeof window !== "undefined") {
-                  ; (window as any).adPaymentMethodIds = paymentMethodIds
+                  ;(window as any).adPaymentMethodIds = paymentMethodIds
                 }
               }
             }
@@ -553,22 +553,39 @@ export default function CreateAdPage() {
   }
 `}</style>
       <div
-        className={`flex ${currentStep === 0 ? "justify-end" : "justify-between"} mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+        className={`flex justify-between mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
       >
         {currentStep === 1 && (
           <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
             <ArrowLeft className="h-6 w-6" />
           </button>
         )}
-        <div className="absolute left-1/2 transform -translate-x-1/2 font-bold text-[18px] leading-[28px] tracking-[0%]">
-          {getPageTitle(isEditMode, formData.type)}
-        </div>
+        {currentStep === 0 && <div></div>}
+        <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
         <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
           <X className="h-6 w-6" />
         </button>
       </div>
 
+      <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
+        {getPageTitle(isEditMode, formData.type)}
+      </div>
+
       <ProgressSteps currentStep={currentStep} steps={steps} />
+
+      {currentStep === 0 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-slate-1600">Step 1</div>
+          <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
+        </div>
+      )}
+
+      {currentStep === 1 && (
+        <div className="block md:hidden mt-4 mb-6 text-left">
+          <div className="text-sm font-normal text-slate-1600">Step 2</div>
+          <div className="text-lg font-bold text-slate-1600">Payment details</div>
+        </div>
+      )}
 
       <div className="relative">
         {currentStep === 0 ? (
