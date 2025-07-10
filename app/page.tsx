@@ -394,7 +394,7 @@ export default function BuySellPage() {
                                 })
                               : "N/A"}
                           </div>
-                          <div>{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                          <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
                             ad.actual_maximum_order_amount || "N/A"
                           }`}</div>
                           <div className="flex items-center text-xs text-slate-500 mt-1">
