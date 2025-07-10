@@ -274,12 +274,9 @@ export default function OrdersPage() {
           </div>
         ) : (
           <>
-            {/* Mobile view (cards) */}
             <div className="md:hidden">
               <MobileOrderCards />
             </div>
-
-            {/* Desktop view (table) */}
             <div className="hidden md:block">
               <DesktopOrderTable />
             </div>
