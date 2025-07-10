@@ -176,7 +176,7 @@ export default function OrdersPage() {
               )}
               <TableCell className="py-4 px-4">
                 <div>
-                  <div>
+                  <div className="font-bold">
                     {order.type === "buy" ? <span className="text-secondary">Buy</span> : <span className="text-destructive">Sell</span>}
                     <span>{" "} {order.advert.account_currency}{" "} {order.amount}</span>
                   </div>
