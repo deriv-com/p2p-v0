@@ -236,8 +236,8 @@ export default function OrdersPage() {
         <div className="mb-6">
           <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
             <TabsList>
-              <TabsTrigger value="active">Active orders</TabsTrigger>
-              <TabsTrigger value="past">Past orders</TabsTrigger>
+              <TabsTrigger className="data-[state=active]:font-bold" value="active">Active orders</TabsTrigger>
+              <TabsTrigger className="data-[state=active]:font-bold" value="past ">Past orders</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
