@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
@@ -215,13 +214,10 @@ export default function BuySellPage() {
             <div className="text-center py-8">{error}</div>
           ) : adverts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
-          
-                  <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
-                    <AlertCircle className="h-8 w-8 text-slate-400" />
-                  </div>
-                  <p className="text-xl font-medium text-slate-800">No ads available.</p>
-              
-          
+              <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
+                <Image src="/icons/search-icon.png" alt="No ads found" width={32} height={32} className="opacity-60" />
+              </div>
+              <p className="text-xl font-medium text-slate-800">No ads available.</p>
             </div>
           ) : (
             <>
