@@ -135,7 +135,6 @@ export function formatStatus(status: string, type: string): string {
 }
 
 export function getChatErrorMessage(tag: string): string {
-
   const messageTypeFormatters: Record<string, (msg: string) => string> = {
     error: (msg: string) => `❌ Error: ${msg}`,
     success: (msg: string) => `✅ Success: ${msg}`,
@@ -152,6 +151,5 @@ export function getChatErrorMessage(tag: string): string {
     default: (msg: string) => msg,
   }
 
-  const formatter = messageTypeFormatters[tag]
   return messageTypeFormatters[tag]
 }
