@@ -13,10 +13,9 @@ import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface StatsTabsProps {
   stats?: any
-  onTabChange?: (tab: string) => void
 }
 
-export default function StatsTabs({ stats: initialStats, onTabChange }: StatsTabsProps) {
+export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -43,19 +42,15 @@ export default function StatsTabs({ stats: initialStats, onTabChange }: StatsTab
   )
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
-  const [activeTab, setActiveTab] = useState("30d")
 
   const tabs = [
-    { id: "stats", label: "Stats" },
+    { id: "all", label: "All" },
+    { id: "buy", label: "Buy" },
+    { id: "sell", label: "Sell" },
     { id: "payment", label: "Payment methods" },
     { id: "ads", label: "Advertisers' instruction" },
     { id: "counterparties", label: "Counterparties" },
   ]
-
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab)
-    onTabChange?.(tab)
-  }
 
   useEffect(() => {
     const fetchUserStats = async () => {
@@ -167,24 +162,7 @@ export default function StatsTabs({ stats: initialStats, onTabChange }: StatsTab
   }
 
   return (
-    <div className="relative">
-      <div className="flex bg-slate-1500 rounded-lg p-1 mb-6">
-        <Button
-          variant={activeTab === "30d" ? "default" : "ghost"}
-          className={`flex-1 ${activeTab === "30d" ? "bg-white shadow-sm" : "bg-transparent"}`}
-          onClick={() => handleTabChange("30d")}
-        >
-          30 days
-        </Button>
-        <Button
-          variant={activeTab === "lifetime" ? "default" : "ghost"}
-          className={`flex-1 ${activeTab === "lifetime" ? "bg-white shadow-sm" : "bg-transparent"}`}
-          onClick={() => handleTabChange("lifetime")}
-        >
-          Lifetime
-        </Button>
-      </div>
-
+    <div className="relative w-full">
       {notification.show && (
         <NotificationBanner
           message={notification.message}
@@ -193,8 +171,8 @@ export default function StatsTabs({ stats: initialStats, onTabChange }: StatsTab
       )}
 
       <div className="mb-6">
-        <Tabs defaultValue="stats">
-          <TabsList className="bg-slate-1500 rounded-2xl p-1 h-auto">
+        <Tabs defaultValue="all">
+          <TabsList className="grid w-full grid-cols-3 bg-slate-1500">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.id}
@@ -206,7 +184,77 @@ export default function StatsTabs({ stats: initialStats, onTabChange }: StatsTab
             ))}
           </TabsList>
 
-          <TabsContent value="stats">
+          <TabsContent value="all" className="mt-6">
+            {isLoadingStats ? (
+              <div className="space-y-4">
+                <div className="bg-slate-1500 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <StatsGrid stats={userStats} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="buy" className="mt-6">
+            {isLoadingStats ? (
+              <div className="space-y-4">
+                <div className="bg-slate-1500 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <StatsGrid stats={userStats} />
+            )}
+          </TabsContent>
+
+          <TabsContent value="sell" className="mt-6">
             {isLoadingStats ? (
               <div className="space-y-4">
                 <div className="bg-slate-1500 rounded-lg p-4">
