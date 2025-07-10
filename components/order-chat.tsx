@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Paperclip, Send, AlertCircle } from "lucide-react"
+import { Paperclip } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -91,7 +91,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       }
     } catch (error) {
       // Silent error handling
-      console.log(error);
+      console.log(error)
     } finally {
       setIsSending(false)
     }
@@ -129,7 +129,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         console.error("Error sending file:", error)
       } finally {
         setIsSending(false)
-        // Reset the file input
         if (fileInputRef.current) {
           fileInputRef.current.value = ""
         }
@@ -137,7 +136,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     }
   }
 
-  // Helper function to convert file to base64
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -161,36 +159,44 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       </div>
 
       {/* Important notice */}
-      <div className="p-4 bg-white">
-        <div className="flex mb-4">
-          <div className="mr-2 text-yellow-500">
-            <AlertCircle className="h-5 w-5" />
-          </div>
-          <div>
-            <div>
-              <span className="font-bold">Important:</span> Deriv will never contact you via WhatsApp to ask for your
-              personal information. Always ignore any messages from numbers claiming to be from Deriv.
+      <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
+        <div className="space-y-3">
+          <div className="flex items-start gap-[8px]">
+            <div className="flex-shrink-0 mt-0.5">
+              <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="w-5 h-5" />
             </div>
-            <div className="mb-2">
-              <span className="font-bold">Note:</span> In case of a dispute, we'll use this chat as a reference.
+            <div className="text-sm">
+              <span className="font-semibold text-gray-900">Important:</span>
+              <span className="text-gray-700 ml-1">
+                Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
+                messages from numbers claiming to be from Deriv.
+              </span>
+              <div className="text-gray-700 mt-[16px]">
+                <span className="font-semibold">Note:</span>
+                <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           </div>
-        ) : messages.length === 0 ? (
-          <div className="flex justify-center items-center h-full text-gray-500">No messages yet</div>
         ) : (
           messages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[80%] rounded-lg p-3 ${msg.sender_is_self ? "bg-blue-50" : "bg-slate-100"}`}>
-                {msg.attachment && <Image alt={msg.attachment.name} src={msg.attachment.url || "/placeholder.svg"} />}
+                {msg.attachment && (
+                  <Image
+                    alt={msg.attachment.name}
+                    src={msg.attachment.url || "/placeholder.svg"}
+                    width={200}
+                    height={200}
+                  />
+                )}
                 <div className="break-words">{msg.message}</div>
                 <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-blue-500" : "text-slate-500"}`}>
                   {formatMessageTime(msg.time)}
@@ -202,18 +208,9 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message input */}
       <div className="p-4 border-t">
-        <div className="flex items-center">
-          <Button
-            className="p-2 text-slate-500 hover:text-slate-700"
-            onClick={() => fileInputRef.current?.click()}
-            variant="ghost"
-          >
-            <Paperclip className="h-5 w-5" />
-          </Button>
-          <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
-          <div className="flex-1 relative">
+        <div className="space-y-2">
+          <div className="relative">
             <Textarea
               value={message}
               onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
@@ -221,19 +218,24 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               placeholder="Enter message"
               rows={1}
               disabled={isSending}
+              className="w-full bg-gray-50 border-gray-200 rounded-[12px] pr-12 resize-none min-h-[48px] placeholder:text-gray-400"
             />
             <Button
-              onClick={handleSendMessage}
-              disabled={message.trim() === "" || isSending}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+              onClick={() => fileInputRef.current?.click()}
               variant="ghost"
-              className="absolute right-2 top-1/2 transform -translate-y-1/2"
+              size="sm"
             >
-              <Send className={`h-5 w-5 ${isSending ? "animate-pulse" : ""}`} />
+              <Paperclip className="h-5 w-5" />
             </Button>
+            <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
           </div>
-        </div>
-        <div className="text-right text-xs text-slate-500 mt-1">
-          {message.length}/{maxLength}
+          <div className="flex justify-between items-center">
+            <div></div>
+            <div className="text-xs text-gray-400">
+              {message.length}/{maxLength}
+            </div>
+          </div>
         </div>
       </div>
     </div>

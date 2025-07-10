@@ -3,13 +3,14 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { AlertCircle, Clock } from "lucide-react"
+import { AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
+import { formatStatus } from "@/lib/utils"
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -26,7 +27,6 @@ export default function OrdersPage() {
     setIsLoading(true)
     setError(null)
     try {
-      // Determine filters based on active tab
       const filters: {
         is_open?: boolean
       } = {}
@@ -36,11 +36,9 @@ export default function OrdersPage() {
       } else if (activeTab === "past") {
         filters.is_open = false
       }
-      // For past orders, we'll fetch with is_open: false and still filter client-side
 
       const orders = await OrdersAPI.getOrders(filters)
 
-      // Ensure data is an array before filtering
       const ordersArray = Array.isArray(orders.data) ? orders.data : []
       setOrders(ordersArray)
     } catch (err) {
@@ -52,7 +50,6 @@ export default function OrdersPage() {
     }
   }
 
-  // Function to format date as DD MMM YYYY
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-GB", {
@@ -62,9 +59,12 @@ export default function OrdersPage() {
     })
   }
 
-  // Function to get status badge style
-  const getStatusBadgeStyle = (status: string) => {
+  const getStatusBadgeStyle = (status: string, type: string) => {
     switch (status) {
+      case "pending_payment": 
+        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
+      case "pending_release": 
+        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
       case "completed":
         return "bg-green-100 text-green-800"
       case "cancelled":
@@ -74,23 +74,21 @@ export default function OrdersPage() {
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-50 text-blue-800"
     }
   }
 
-  // Function to navigate to order details
   const navigateToOrderDetails = (orderId: string) => {
     router.push(`/orders/${orderId}`)
   }
 
-  // Mobile card view for orders
   const MobileOrderCards = () => (
     <div className="space-y-4">
       {orders.map((order) => {
         const orderType = order.type
         const orderTypeColor = orderType === "buy" ? "text-green-500" : "text-red-500"
         const statusText = order.status
-        const statusStyle = getStatusBadgeStyle(order.status)
+        const statusStyle = getStatusBadgeStyle(order.status, orderType)
 
         return (
           <Card
@@ -102,7 +100,6 @@ export default function OrdersPage() {
               <div className="flex justify-between items-center mb-4">
                 <span className={`px-3 py-1 rounded-full text-xs ${statusStyle}`}>{statusText}</span>
                 <div className="flex items-center text-slate-500">
-                  <Clock className="h-4 w-4 mr-1" />
                   <span className="text-xs">00:59:59</span>
                 </div>
               </div>
@@ -155,18 +152,16 @@ export default function OrdersPage() {
     </div>
   )
 
-  // Desktop table view for orders
   const DesktopOrderTable = () => (
     <div className="overflow-x-auto">
       <Table>
         <TableHeader>
           <TableRow>
+          {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
-            {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Counterparty</TableHead>
+            <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
             <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Send</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Receive</TableHead>
+            {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
             {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
             <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
           </TableRow>
@@ -174,61 +169,34 @@ export default function OrdersPage() {
         <TableBody>
           {orders.map((order) => (
             <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
-              <TableCell className="py-4 px-4">
-                <div className="flex items-center">
-                  <span className={order.type === "sell" ? "text-green-600 font-medium" : "font-medium"}>
-                    {order.type === "buy" ? "Buy" : "Sell"}
-                  </span>
-                  <span className="ml-1">{order.id}</span>
+            {activeTab === "past" && (
+                <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
+              )}
+              <TableCell className="py-4 px-4 align-top">
+                <div>
+                  <div className="font-bold">
+                    {order.type === "buy" ? <span className="text-secondary text-base">Buy</span> : <span className="text-destructive text-base">Sell</span>}
+                    <span className="text-base">{" "} {order.advert.account_currency}{" "} {order.amount}</span>
+                  </div>
+                  <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
+                  <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.advert.user.nickname}</div>
                 </div>
               </TableCell>
-              {activeTab === "past" && (
-                <TableCell className="py-4 px-4">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
-              )}
-              <TableCell className="py-4 px-4">
-                {order.advert.user.nickname}
+               <TableCell className="py-4 px-4 align-top text-base">
+                <div className="font-bold">{order.advert.payment_currency}{" "} {order.payment_amount}</div>
               </TableCell>
-              <TableCell className="py-4 px-4">
-                <span className={`px-3 py-1 rounded-full text-xs ${getStatusBadgeStyle(order.status)}`}>
-                  {order.status}
+              <TableCell className="py-4 px-4 align-top">
+                <span className={`h-[32px] flex justify-center items-center rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}>
+                  {formatStatus(order.status, order.type)}
                 </span>
               </TableCell>
-              <TableCell className="py-4 px-4">
-                {order.advert.payment_currency}{" "}
-                {typeof order.amount === "object" && order.amount.value
-                  ? Number(order.amount.value).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                  : typeof order.amount === "number"
-                    ? order.amount.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    : Number(order.amount).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-              </TableCell>
-              <TableCell className="py-4 px-4">
-                {order.advert.account_currency}{" "}
-                {typeof order.price === "object" && order.price.value
-                  ? Number(order.price.value).toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                  : typeof order.price === "number"
-                    ? order.price.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    : Number(order.price).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-              </TableCell>
+              {activeTab === "active" && (
+                <TableCell className="py-4 px-4 align-top">
+                  
+                </TableCell>
+              )}
               {activeTab === "past" && (
-                <TableCell className="py-4 px-4">
+                <TableCell className="py-4 px-4 align-top">
                   {order.rating > 0 && (
                     <div className="flex">
                       <Image src="/icons/star-icon.png" alt="Chat" width={20} height={20} className="mr-1" />
@@ -237,7 +205,7 @@ export default function OrdersPage() {
                   )}
                 </TableCell>
               )}
-              <TableCell className="py-4 px-4">
+              <TableCell className="py-4 px-4 align-top">
                 <Button
                   onClick={(e) => {
                     e.stopPropagation()
@@ -302,12 +270,9 @@ export default function OrdersPage() {
           </div>
         ) : (
           <>
-            {/* Mobile view (cards) */}
             <div className="md:hidden">
               <MobileOrderCards />
             </div>
-
-            {/* Desktop view (table) */}
             <div className="hidden md:block">
               <DesktopOrderTable />
             </div>
