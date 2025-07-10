@@ -113,7 +113,7 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden px-4">
+    <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex-shrink-0">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           {
