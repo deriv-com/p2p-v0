@@ -169,7 +169,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           ) : (
             messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
-                <div className={`max-w-[80%] rounded-lg p-3 ${msg.sender_is_self ? "bg-blue-50" : "bg-slate-100"}`}>
+                <div className="max-w-[80%] rounded-lg p-3">
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
                       <div className="bg-white p-[8px]">{msg.attachment.name}</div>
