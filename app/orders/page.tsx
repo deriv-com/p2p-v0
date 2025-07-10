@@ -230,7 +230,7 @@ export default function OrdersPage() {
   )
 
   return (
-    <div className="flex flex-col h-full px-4">
+    <div className="flex flex-col h-full">
       <div className="flex-shrink-0">
 
         <div className="mb-6">
