@@ -255,7 +255,7 @@ export default function OrderDetailsPage() {
           <div className="flex flex-row gap-6">
             <div className="w-full lg:w-1/2 rounded-lg">
               {order.status === "pending_payment" && (
-                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg">
+                <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[16px]">
                   <div className="flex items-center">
                     <span className="text-blue-100 font-bold">
                       {order.user.id == USER.id ? "Awaiting payment" : "Complete payment"}
