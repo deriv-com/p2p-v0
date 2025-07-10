@@ -342,7 +342,6 @@ export default function OrderDetailsPage() {
                 </div>
               )}
             </div>
-            {/* Right panel - Chat */}
             <div className="w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
               <OrderChat
                 orderId={orderId}
