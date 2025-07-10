@@ -153,5 +153,5 @@ export function getChatErrorMessage(tag: string): string {
   }
 
   const formatter = messageTypeFormatters[tag]
-  return formatter(message)
+  return messageTypeFormatters[tag]
 }
