@@ -10,6 +10,7 @@ import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
+import { formatStatus } from "@/lib/utils"
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -182,7 +183,7 @@ export default function OrdersPage() {
               </TableCell>
               <TableCell className="py-4 px-4 align-top">
                 <span className={`px-3 py-1 rounded-full text-xs ${getStatusBadgeStyle(order.status)}`}>
-                  {order.status}
+                  {formatStatus(order.status)}
                 </span>
               </TableCell>
               {activeTab === "active" && (
