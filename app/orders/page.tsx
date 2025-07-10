@@ -73,12 +73,10 @@ export default function OrdersPage() {
     }
   }
 
-  // Function to navigate to order details
   const navigateToOrderDetails = (orderId: string) => {
     router.push(`/orders/${orderId}`)
   }
 
-  // Mobile card view for orders
   const MobileOrderCards = () => (
     <div className="space-y-4">
       {orders.map((order) => {
