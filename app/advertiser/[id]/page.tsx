@@ -237,7 +237,7 @@ export default function AdvertiserProfilePage() {
   const CURRENT_USER = USER
 
   return (
-    <div className="px-4">
+    <div>
       <Navigation title="Back" isVisible={false} />
 
       {/* Profile header */}
