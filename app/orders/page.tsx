@@ -172,9 +172,9 @@ export default function OrdersPage() {
           {orders.map((order) => (
             <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
             {activeTab === "past" && (
-                <TableCell className="py-4 px-4">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
+                <TableCell className="py-4 px-4 align-top">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
               )}
-              <TableCell className="py-4 px-4">
+              <TableCell className="py-4 px-4 align-top">
                 <div>
                   <div className="font-bold">
                     {order.type === "buy" ? <span className="text-secondary">Buy</span> : <span className="text-destructive">Sell</span>}
@@ -184,21 +184,21 @@ export default function OrdersPage() {
                   <div className="mt-[4px]">Counterparty: {order.advert.user.nickname}</div>
                 </div>
               </TableCell>
-               <TableCell className="py-4 px-4">
+               <TableCell className="py-4 px-4 align-top">
                 <div className="font-bold">{order.advert.payment_currency}{" "} {order.payment_amount}</div>
               </TableCell>
-              <TableCell className="py-4 px-4">
+              <TableCell className="py-4 px-4 align-top">
                 <span className={`px-3 py-1 rounded-full text-xs ${getStatusBadgeStyle(order.status)}`}>
                   {order.status}
                 </span>
               </TableCell>
               {activeTab === "active" && (
-                <TableCell className="py-4 px-4">
+                <TableCell className="py-4 px-4 align-top">
                   
                 </TableCell>
               )}
               {activeTab === "past" && (
-                <TableCell className="py-4 px-4">
+                <TableCell className="py-4 px-4 align-top">
                   {order.rating > 0 && (
                     <div className="flex">
                       <Image src="/icons/star-icon.png" alt="Chat" width={20} height={20} className="mr-1" />
@@ -207,7 +207,7 @@ export default function OrdersPage() {
                   )}
                 </TableCell>
               )}
-              <TableCell className="py-4 px-4">
+              <TableCell className="py-4 px-4 align-top">
                 <Button
                   onClick={(e) => {
                     e.stopPropagation()
