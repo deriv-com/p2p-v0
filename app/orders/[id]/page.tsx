@@ -239,7 +239,7 @@ export default function OrderDetailsPage() {
   const orderAmount = order.amount
 
   return (
-    <div className="relative">
+    <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
       <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />
       <div className="container mx-auto">
         <div className="flex flex-col">
