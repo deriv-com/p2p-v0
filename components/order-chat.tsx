@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocket } from "@/hooks/use-websocket"
+import { getChatErrorMessage } from "@/lib/utils"
 
 type Message = {
   attachment: {
