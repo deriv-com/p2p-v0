@@ -1,164 +1,94 @@
 "use client"
 
-import { Inbox } from "@novu/nextjs"
+import { NovuProvider, PopoverNotificationCenter } from "@novu/notification-center"
 import { useEffect, useState } from "react"
-import { USER, NOTIFICATIONS, AUTH } from "@/lib/local-variables"
-import { useRouter } from "next/navigation"
+import { AUTH } from "@/lib/local-variables"
 
-// Function to fetch the subscriber hash
-async function fetchSubscriberHash() {
-  try {
-    const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
+const fetchSubscriberHash = async (subscriberId: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_NOTIFICATION_URL}/subscriber-hash`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...AUTH.getAuthHeader(),
+    },
+    credentials: "include",
+    body: JSON.stringify({ subscriberId }),
+  })
 
-    const response = await fetch(url, {
-      method: "POST"
-      headers: {
-        "Content-Type": "application/json",
-        ...AUTH.getAuthHeader(),
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch subscriber hash: ${response.status}`)
-    }
-
-    const responseData = await response.json()
-
-    const subscriberData = responseData.data?.subscriber || responseData.subscriber
-
-    if (!subscriberData) {
-      throw new Error("Invalid response structure: missing subscriber data")
-    }
-
-    return {
-      subscriberHash: subscriberData.subscriberHash,
-      subscriberId: subscriberData.subscriberId,
-    }
-  } catch (error) {
-    console.log(error)
-    return null
+  if (!response.ok) {
+    throw new Error("Failed to fetch subscriber hash")
   }
+
+  const data = await response.json()
+  return data.hash
 }
 
-export function NovuNotifications() {
-  const router = useRouter()
-  const [mounted, setMounted] = useState(false)
-  const [subscriberHash, setSubscriberHash] = useState<string | null>(null)
+function NotificationCenter() {
+  const [subscriberHash, setSubscriberHash] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [subscriberId, setSubscriberId] = useState<string | null>(null)
-
-  const userIdFallback = USER.id || ""
-  const applicationIdentifier = NOTIFICATIONS.applicationId
-
-  const appearance = {
-    variables: {
-      borderRadius: "8px",
-      fontSize: "16px",
-      colorShadow: "rgba(0, 0, 0, 0.1)",
-      colorNeutral: "#1A1523",
-      colorCounterForeground: "#ffffff",
-      colorCounter: "#00D0FF",
-      colorSecondaryForeground: "#1A1523",
-      colorSecondary: "#002A33",
-      colorPrimaryForeground: "#ffffff",
-      colorPrimary: "#00D0FF",
-      colorForeground: "#181C25",
-      colorBackground: "#ffffff",
-    },
-    elements: {
-      "nv-preferences__button": {
-        display: "none",
-      },
-    },
-  }
 
   useEffect(() => {
-    setMounted(true)
-
-    // Only fetch if we have a user ID fallback
-    if (!userIdFallback) {
-      setError("No user ID available")
-      setIsLoading(false)
-      return
-    }
-
-    // Fetch the subscriber hash
     const getSubscriberHash = async () => {
-      setIsLoading(true)
-      setError(null)
       try {
-        const result = await fetchSubscriberHash()
-        if (result) {
-          setSubscriberHash(result.subscriberHash)
-          setSubscriberId(result.subscriberId)
-        } else {
-          setError("Failed to retrieve subscriber data")
-        }
-      } catch (err: any) {
-        setError(err.message)
+        const hash = await fetchSubscriberHash(process.env.NEXT_PUBLIC_WALLETS_USER_ID || "")
+        setSubscriberHash(hash)
+      } catch (error) {
+        console.error("Error fetching subscriber hash:", error)
       } finally {
         setIsLoading(false)
       }
     }
 
-    getSubscriberHash()
-  }, [userIdFallback])
+    if (process.env.NEXT_PUBLIC_WALLETS_USER_ID) {
+      getSubscriberHash()
+    } else {
+      setIsLoading(false)
+    }
+  }, [])
 
-  if (!mounted || isLoading) {
-    return (
-      <div className="relative inline-flex h-5 w-5 bg-yellow-100 rounded-full">
-        <span className="sr-only">Notifications loading</span>
-      </div>
-    )
+  if (isLoading) {
+    return <div>Loading notifications...</div>
   }
 
-  if (error || !subscriberHash || !subscriberId) {
-    return (
-      <div
-        className="relative inline-flex h-5 w-5 bg-red-100 rounded-full"
-        title={error || "Failed to load notifications"}
-      >
-        <span className="sr-only">Notifications error</span>
-      </div>
-    )
+  if (!process.env.NEXT_PUBLIC_WALLETS_USER_ID || !subscriberHash) {
+    return null
   }
 
   return (
-    <div style={{ position: "static" }}>
-      <Inbox
-        applicationIdentifier={applicationIdentifier}
-        subscriber={subscriberId || ""}
-        subscriberHash={subscriberHash}
-        localization={{
-          "inbox.filters.labels.default": "Notifications",
-        }}
-        colorScheme="light"
-        i18n={{
-          poweredBy: "Notifications by",
-        }}
-        onNotificationClick={(notification) => {
-          if (notification.data && notification.data["order_id"]) {
-            const orderId = notification.data["order_id"]
-            router.push(`/orders/${orderId}`)
-          }
-        }}
-        placement="bottom-end"
-        appearance={appearance}
-        styles={{
-          bell: {
-            root: {
-              background: "transparent",
-              color: "black",
-            },
-          },
-          popover: {
-            root: {
-              zIndex: 100,
-            },
-          },
-        }}
-      />
-    </div>
+    <NovuProvider
+      subscriberId={process.env.NEXT_PUBLIC_WALLETS_USER_ID}
+      applicationIdentifier={process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID || ""}
+      subscriberHash={subscriberHash}
+    >
+      <PopoverNotificationCenter colorScheme="light">
+        {({ unseenCount }) => (
+          <div className="relative">
+            <button className="p-2 rounded-full hover:bg-gray-100">
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 17h5l-5 5v-5zM9 7V3a1 1 0 011-1h4a1 1 0 011 1v4M9 7a3 3 0 00-3 3v4a3 3 0 003 3h6a3 3 0 003-3v-4a3 3 0 00-3-3M9 7h6"
+                />
+              </svg>
+            </button>
+            {unseenCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                {unseenCount}
+              </span>
+            )}
+          </div>
+        )}
+      </PopoverNotificationCenter>
+    </NovuProvider>
   )
 }
+
+export default NotificationCenter
