@@ -318,7 +318,7 @@ export default function OrderDetailsPage() {
 
               {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                 (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                  <div className="p-4 flex gap-4">
+                  <div className="py-4 flex gap-4">
                     <Button
                       variant="outline"
                       size="sm"
