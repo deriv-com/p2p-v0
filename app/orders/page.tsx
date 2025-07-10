@@ -88,7 +88,7 @@ export default function OrdersPage() {
         const orderType = order.type
         const orderTypeColor = orderType === "buy" ? "text-green-500" : "text-red-500"
         const statusText = order.status
-        const statusStyle = getStatusBadgeStyle(order.status)
+        const statusStyle = getStatusBadgeStyle(order.status, orderType)
 
         return (
           <Card
