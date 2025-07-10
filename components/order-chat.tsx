@@ -171,12 +171,14 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                 <div className={`max-w-[80%] rounded-lg p-3 ${msg.sender_is_self ? "bg-blue-50" : "bg-slate-100"}`}>
                   {msg.attachment && (
-                    <Image
-                      alt={msg.attachment.name}
-                      src={msg.attachment.url || "/placeholder.svg"}
-                      width={200}
-                      height={200}
-                    />
+                    <div className="break-words bg-primary p-[16px] rounded-[8px]">
+                      <Image
+                        alt={msg.attachment.name}
+                        src={msg.attachment.url || "/placeholder.svg"}
+                        width={200}
+                        height={200}
+                      />
+                    </div>
                   )}
                   <div className="break-words bg-primary p-[16px] rounded-[8px]">{msg.message}</div>
                   <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-blue-500" : "text-slate-500"}`}>
