@@ -362,7 +362,7 @@ export default function BuySellPage() {
                                   {ad.user?.nickname || "Unknown"}
                                 </button>
                                 {ad.user?.is_favourite && (
-                                  <span className="ml-2 px-2 py-0.5 border border-[#29823B]  text-[#29823B] text-xs rounded-sm">
+                                  <span className="ml-2 p-[8px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                     Following
                                   </span>
                                 )}
