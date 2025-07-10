@@ -180,14 +180,11 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         </div>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {isLoading ? (
           <div className="flex justify-center items-center h-full">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           </div>
-        ) : messages.length === 0 ? (
-          <div className="flex justify-center items-center h-full text-gray-500">No messages yet</div>
         ) : (
           messages.map((msg) => (
             <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
@@ -211,7 +208,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Message input */}
       <div className="p-4 border-t">
         <div className="space-y-2">
           <div className="relative">
