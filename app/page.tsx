@@ -151,7 +151,7 @@ export default function BuySellPage() {
                 onValueChange={setSelectedPaymentMethod}
                 disabled={isLoadingPaymentMethods}
               >
-                <SelectTrigger className="w-full sm:w-[200px]">
+                <SelectTrigger className="w-full sm:w-[300px]">
                   <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
                 </SelectTrigger>
                 <SelectContent>
