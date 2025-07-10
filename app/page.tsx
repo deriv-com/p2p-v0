@@ -155,7 +155,7 @@ export default function BuySellPage() {
                   <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">All payment methods</SelectItem>
+                  <SelectItem value="all">Payment (All)</SelectItem>
                   {paymentMethods.map((method) => (
                     <SelectItem key={method.method} value={method.method}>
                       {method.display_name}
