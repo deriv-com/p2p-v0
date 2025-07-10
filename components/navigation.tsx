@@ -1,42 +1,68 @@
 "use client"
 
-import { useState } from "react"
-import Link from "next/link"
-import { ArrowLeft, X } from "lucide-react"
-import BalanceInfoPopup from "@/components/balance-info-popup"
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Home, ShoppingCart, FileText, User, Wallet, Plus } from "lucide-react"
+import { usePathname } from "next/navigation"
 
-interface NavigationProps {
-  isBackBtnVisible?: boolean
-  isVisible?: boolean
-  redirectUrl?: string
-  title: string
-}
+const navigation = [
+  {
+    name: "Home",
+    href: "/",
+    icon: Home,
+  },
+  {
+    name: "Buy/Sell",
+    href: "/ads",
+    icon: ShoppingCart,
+  },
+  {
+    name: "Orders",
+    href: "/orders",
+    icon: FileText,
+  },
+  {
+    name: "My Ads",
+    href: "/my-ads",
+    icon: Plus,
+  },
+  {
+    name: "Profile",
+    href: "/profile",
+    icon: User,
+  },
+  {
+    name: "Wallet",
+    href: "/wallet",
+    icon: Wallet,
+  },
+]
 
-export default function Navigation({
-  isBackBtnVisible = true,
-  redirectUrl = "/",
-  title,
-}: NavigationProps) {
-  const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
+export function Navigation() {
+  const pathname = usePathname()
 
   return (
-    <div className="mb-4">
-      <div className="flex items-center justify-between -mx-4 md:-mx-0 md:px-0 border-b md:border-none">
-        {(isBackBtnVisible && title) ? (
-          <Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <ArrowLeft className="h-5 w-5 mr-2" />
-            <h1 className="text-xl font-bold">{title}</h1>
-          </Link>
-        ) : (
-          <>
-            <h1 className="text-xl font-bold">{title}</h1>
-            <Link href={redirectUrl}>
-              <X className="h-5 w-5" />
-            </Link>
-          </>
-        )}
+    <nav className="hidden md:flex w-64 flex-col border-r bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex flex-col gap-2 p-4">
+        {navigation.map((item) => {
+          const Icon = item.icon
+          const isActive = pathname === item.href
+
+          return (
+            <Button
+              key={item.name}
+              variant={isActive ? "secondary" : "ghost"}
+              className={cn("w-full justify-start", isActive && "bg-secondary")}
+              asChild
+            >
+              <a href={item.href}>
+                <Icon className="mr-2 h-4 w-4" />
+                {item.name}
+              </a>
+            </Button>
+          )
+        })}
       </div>
-      <BalanceInfoPopup isOpen={isBalanceInfoOpen} onClose={() => setIsBalanceInfoOpen(false)} />
-    </div>
+    </nav>
   )
 }

@@ -14,6 +14,8 @@ import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
+import { Header } from "@/components/header"
+import { Navigation } from "@/components/navigation"
 
 export default function BuySellPage() {
   const router = useRouter()
@@ -114,341 +116,388 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden px-4">
-      <div className="flex-shrink-0">
-        <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-          {
-            <div className="flex flex-row justify-between items-center gap-4">
-              <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                <TabsList className="w-full md:min-w-3xs">
-                  <TabsTrigger className="w-full md:w-auto" value="sell">
-                    Buy
-                  </TabsTrigger>
-                  <TabsTrigger className="w-full md:w-auto" value="buy">
-                    Sell
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <div className="flex">
+        <Navigation />
+        <main className="flex-1 p-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-foreground mb-2">Welcome to P2P Trading</h1>
+              <p className="text-muted-foreground">Buy and sell cryptocurrencies directly with other users</p>
             </div>
-          }
-          <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
-            {
-              <Select value={currency} onValueChange={setCurrency}>
-                <SelectTrigger className="flex-1 md:flex-none w-auto">
-                  <SelectValue placeholder="Currency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="IDR">IDR</SelectItem>
-                  <SelectItem value="USD">USD</SelectItem>
-                  <SelectItem value="EUR">EUR</SelectItem>
-                  <SelectItem value="GBP">GBP</SelectItem>
-                </SelectContent>
-              </Select>
-            }
-            <div className="hidden md:block">
-              <Select
-                value={selectedPaymentMethod}
-                onValueChange={setSelectedPaymentMethod}
-                disabled={isLoadingPaymentMethods}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Payment (All)</SelectItem>
-                  {paymentMethods.map((method) => (
-                    <SelectItem key={method.method} value={method.method}>
-                      {method.display_name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
-              {
-                <button
-                  onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
-                  className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-card rounded-lg p-6 border">
+                <h2 className="text-xl font-semibold mb-2">Start Trading</h2>
+                <p className="text-muted-foreground mb-4">Browse available offers or create your own</p>
+                <a
+                  href="/ads"
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
                 >
-                  <span className="text-sm hidden md:inline">Filter by</span>
-                  <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
-                    alt="Dropdown"
-                    width={15}
-                    height={15}
-                    className="h-4 w-4 opacity-70 md:inline"
-                  />
-                </button>
-              }
-              {isFilterPopupOpen && (
-                <FilterPopup
-                  isOpen={isFilterPopupOpen}
-                  onClose={() => setIsFilterPopupOpen(false)}
-                  onApply={setFilterOptions}
-                  initialFilters={filterOptions}
-                />
-              )}
-            </div>
-            <div className="hidden md:block">
-              <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-      </div>
+                  View Ads
+                </a>
+              </div>
 
-      <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
-        <div>
-          {isLoading ? (
-            <div className="text-center py-12">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-              <p className="mt-2 text-slate-600">Loading ads...</p>
+              <div className="bg-card rounded-lg p-6 border">
+                <h2 className="text-xl font-semibold mb-2">My Orders</h2>
+                <p className="text-muted-foreground mb-4">Track your active and completed orders</p>
+                <a
+                  href="/orders"
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                >
+                  View Orders
+                </a>
+              </div>
+
+              <div className="bg-card rounded-lg p-6 border">
+                <h2 className="text-xl font-semibold mb-2">Profile</h2>
+                <p className="text-muted-foreground mb-4">Manage your profile and payment methods</p>
+                <a
+                  href="/profile"
+                  className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                >
+                  View Profile
+                </a>
+              </div>
             </div>
-          ) : error ? (
-            <div className="text-center py-8">{error}</div>
-          ) : adverts.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16">
-          
-                  <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
-                    <AlertCircle className="h-8 w-8 text-slate-400" />
-                  </div>
-                  <p className="text-xl font-medium text-slate-800">No ads available.</p>
-              
-          
-            </div>
-          ) : (
-            <>
-              <div className="md:hidden space-y-4">
-                {adverts.map((ad) => (
-                  <div key={ad.id} className="border rounded-lg p-4 bg-white">
-                    <div className="flex items-center mb-3">
-                      <div className="h-8 w-8 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-2">
-                        {(ad.user?.nickname?.charAt(0) || "U").toUpperCase()}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center">
-                          <button
-                            onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                            className="font-medium hover:underline cursor-pointer"
-                          >
-                            {ad.user?.nickname || "Unknown"}
-                          </button>
-                          {ad.user?.is_favourite && (
-                            <span className="ml-2 px-2 py-0.5 border border-[#29823B] text-[#29823B]text-xs rounded-sm">
-                              Following
-                            </span>
-                          )}
-                        </div>
-                      </div>
+
+            <div className="flex flex-col h-screen overflow-hidden px-4 mt-8">
+              <div className="flex-shrink-0">
+                <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
+                  {
+                    <div className="flex flex-row justify-between items-center gap-4">
+                      <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+                        <TabsList className="w-full md:min-w-3xs">
+                          <TabsTrigger className="w-full md:w-auto" value="sell">
+                            Buy
+                          </TabsTrigger>
+                          <TabsTrigger className="w-full md:w-auto" value="buy">
+                            Sell
+                          </TabsTrigger>
+                        </TabsList>
+                      </Tabs>
                     </div>
-
-                    <div className="flex items-center text-xs text-slate-500 mb-2">
-                      {ad.user_rating_average && (
-                        <span className="flex items-center">
+                  }
+                  <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
+                    {
+                      <Select value={currency} onValueChange={setCurrency}>
+                        <SelectTrigger className="flex-1 md:flex-none w-auto">
+                          <SelectValue placeholder="Currency" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="IDR">IDR</SelectItem>
+                          <SelectItem value="USD">USD</SelectItem>
+                          <SelectItem value="EUR">EUR</SelectItem>
+                          <SelectItem value="GBP">GBP</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    }
+                    <div className="hidden md:block">
+                      <Select
+                        value={selectedPaymentMethod}
+                        onValueChange={setSelectedPaymentMethod}
+                        disabled={isLoadingPaymentMethods}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Payment (All)</SelectItem>
+                          {paymentMethods.map((method) => (
+                            <SelectItem key={method.method} value={method.method}>
+                              {method.display_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
+                      {
+                        <button
+                          onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
+                          className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <span className="text-sm hidden md:inline">Filter by</span>
                           <Image
-                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
-                            alt="Rating"
-                            width={16}
-                            height={16}
-                            className="mr-1"
+                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
+                            alt="Dropdown"
+                            width={15}
+                            height={15}
+                            className="h-4 w-4 opacity-70 md:inline"
                           />
-                          <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
-                        </span>
-                      )}
-                      {ad.user.completed_orders_count > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{ad.user.completed_orders_count} orders</span>
-                        </>
-                      )}
-
-                      {ad.user.completion_rate > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{ad.user.completion_rate}% completion</span>
-                        </>
-                      )}
-                    </div>
-
-                    <div className="text-lg font-bold mb-2">
-                      {ad.account_currency} 1.00 = {ad.payment_currency}{" "}
-                      {ad.exchange_rate
-                        ? ad.exchange_rate.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : "N/A"}
-                    </div>
-
-                    <div className="text-sm mb-2">
-                      Limits: {ad.account_currency} {ad.minimum_order_amount || "N/A"} -{" "}
-                      {ad.actual_maximum_order_amount || "N/A"}
-                    </div>
-
-                    <div className="flex items-center text-xs text-slate-500 mb-3 mt-1">
-                      <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
-                        <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
-                          alt="Clock"
-                          width={12}
-                          height={12}
-                          className="mr-1"
+                        </button>
+                      }
+                      {isFilterPopupOpen && (
+                        <FilterPopup
+                          isOpen={isFilterPopupOpen}
+                          onClose={() => setIsFilterPopupOpen(false)}
+                          onApply={setFilterOptions}
+                          initialFilters={filterOptions}
                         />
-                        <span>{ad.order_expiry_period} min</span>
-                      </div>
+                      )}
                     </div>
+                    <div className="hidden md:block">
+                      <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Sort by" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
+                          <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-                    <div className="flex justify-between items-center">
-                      <div className="flex flex-wrap gap-2">
-                        {ad.payment_methods?.map((method, index) => (
-                          <div key={index} className="flex items-center">
-                            <div
-                              className={`h-2 w-2 rounded-full mr-2 ${
-                                method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                              }`}
-                            ></div>
-                            <span className="text-sm">{method}</span>
+              <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
+                <div>
+                  {isLoading ? (
+                    <div className="text-center py-12">
+                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                      <p className="mt-2 text-slate-600">Loading ads...</p>
+                    </div>
+                  ) : error ? (
+                    <div className="text-center py-8">{error}</div>
+                  ) : adverts.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-16">
+                      <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
+                        <AlertCircle className="h-8 w-8 text-slate-400" />
+                      </div>
+                      <p className="text-xl font-medium text-slate-800">No ads available.</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="md:hidden space-y-4">
+                        {adverts.map((ad) => (
+                          <div key={ad.id} className="border rounded-lg p-4 bg-white">
+                            <div className="flex items-center mb-3">
+                              <div className="h-8 w-8 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-2">
+                                {(ad.user?.nickname?.charAt(0) || "U").toUpperCase()}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center">
+                                  <button
+                                    onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                    className="font-medium hover:underline cursor-pointer"
+                                  >
+                                    {ad.user?.nickname || "Unknown"}
+                                  </button>
+                                  {ad.user?.is_favourite && (
+                                    <span className="ml-2 px-2 py-0.5 border border-[#29823B] text-[#29823B]text-xs rounded-sm">
+                                      Following
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center text-xs text-slate-500 mb-2">
+                              {ad.user_rating_average && (
+                                <span className="flex items-center">
+                                  <Image
+                                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
+                                    alt="Rating"
+                                    width={16}
+                                    height={16}
+                                    className="mr-1"
+                                  />
+                                  <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
+                                </span>
+                              )}
+                              {ad.user.completed_orders_count > 0 && (
+                                <>
+                                  <span className="mx-2">•</span>
+                                  <span>{ad.user.completed_orders_count} orders</span>
+                                </>
+                              )}
+
+                              {ad.user.completion_rate > 0 && (
+                                <>
+                                  <span className="mx-2">•</span>
+                                  <span>{ad.user.completion_rate}% completion</span>
+                                </>
+                              )}
+                            </div>
+
+                            <div className="text-lg font-bold mb-2">
+                              {ad.account_currency} 1.00 = {ad.payment_currency}{" "}
+                              {ad.exchange_rate
+                                ? ad.exchange_rate.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })
+                                : "N/A"}
+                            </div>
+
+                            <div className="text-sm mb-2">
+                              Limits: {ad.account_currency} {ad.minimum_order_amount || "N/A"} -{" "}
+                              {ad.actual_maximum_order_amount || "N/A"}
+                            </div>
+
+                            <div className="flex items-center text-xs text-slate-500 mb-3 mt-1">
+                              <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
+                                <Image
+                                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
+                                  alt="Clock"
+                                  width={12}
+                                  height={12}
+                                  className="mr-1"
+                                />
+                                <span>{ad.order_expiry_period} min</span>
+                              </div>
+                            </div>
+
+                            <div className="flex justify-between items-center">
+                              <div className="flex flex-wrap gap-2">
+                                {ad.payment_methods?.map((method, index) => (
+                                  <div key={index} className="flex items-center">
+                                    <div
+                                      className={`h-2 w-2 rounded-full mr-2 ${
+                                        method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                                      }`}
+                                    ></div>
+                                    <span className="text-sm">{method}</span>
+                                  </div>
+                                ))}
+                              </div>
+
+                              {USER.id != ad.user.id && (
+                                <Button
+                                  size="sm"
+                                  onClick={() => handleOrderClick(ad)}
+                                  className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
+                                >
+                                  {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
+                                </Button>
+                              )}
+                            </div>
                           </div>
                         ))}
                       </div>
 
-                      {USER.id != ad.user.id && (
-                        <Button
-                          size="sm"
-                          onClick={() => handleOrderClick(ad)}
-                          className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
-                        >
-                          {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="hidden md:block">
-                <Table>
-                  <TableHeader className="border-b sticky top-0 bg-white">
-                    <TableRow className="text-sm">
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                        Payment methods
-                      </TableHead>
-                      <TableHead className="text-right py-4 px-4"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
-                    {adverts.map((ad) => (
-                      <TableRow key={ad.id}>
-                        <TableCell className="py-4 px-4 align-top">
-                          <div className="flex items-center">
-                            <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                              {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                            </div>
-                            <div>
-                              <div className="flex items-center">
-                                <button
-                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                  className="hover:underline cursor-pointer"
-                                >
-                                  {ad.user?.nickname || "Unknown"}
-                                </button>
-                                {ad.user?.is_favourite && (
-                                  <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                    Following
-                                  </span>
-                                )}
-                              </div>
-                              <div className="flex items-center text-xs sm:text-sm text-slate-500">
-                                {ad.user_rating_average && (
-                                  <span className="flex items-center">
-                                    <Image
-                                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
-                                      alt="Rating"
-                                      width={16}
-                                      height={16}
-                                      className="mr-1"
-                                    />
-                                    <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-4 px-4 align-top">
-                          <div className="font-bold text-base">
-                            {ad.payment_currency}{" "}
-                            {ad.exchange_rate
-                              ? ad.exchange_rate.toLocaleString(undefined, {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                })
-                              : "N/A"}
-                          </div>
-                          <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
-                            ad.actual_maximum_order_amount || "N/A"
-                          }`}</div>
-                          <div className="flex items-center text-xs text-slate-500 mt-1">
-                            <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
-                              <Image
-                                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
-                                alt="Clock"
-                                width={12}
-                                height={12}
-                                className="mr-1"
-                              />
-                              <span>{ad.order_expiry_period} min</span>
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-4 px-4 sm:table-cell align-top">
-                          <div className="flex flex-col flex-wrap gap-2">
-                            {ad.payment_methods?.map((method, index) => (
-                              <div key={index} className="flex items-center">
-                                {method && (
-                                  <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                                    }`}
-                                  ></div>
-                                )}
-                                <span className="text-sm">{method}</span>
-                              </div>
+                      <div className="hidden md:block">
+                        <Table>
+                          <TableHeader className="border-b sticky top-0 bg-white">
+                            <TableRow className="text-sm">
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                Advertisers
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                                Payment methods
+                              </TableHead>
+                              <TableHead className="text-right py-4 px-4"></TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
+                            {adverts.map((ad) => (
+                              <TableRow key={ad.id}>
+                                <TableCell className="py-4 px-4 align-top">
+                                  <div className="flex items-center">
+                                    <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                                      {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                      <div className="flex items-center">
+                                        <button
+                                          onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                          className="hover:underline cursor-pointer"
+                                        >
+                                          {ad.user?.nickname || "Unknown"}
+                                        </button>
+                                        {ad.user?.is_favourite && (
+                                          <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                            Following
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className="flex items-center text-xs sm:text-sm text-slate-500">
+                                        {ad.user_rating_average && (
+                                          <span className="flex items-center">
+                                            <Image
+                                              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
+                                              alt="Rating"
+                                              width={16}
+                                              height={16}
+                                              className="mr-1"
+                                            />
+                                            <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="py-4 px-4 align-top">
+                                  <div className="font-bold text-base">
+                                    {ad.payment_currency}{" "}
+                                    {ad.exchange_rate
+                                      ? ad.exchange_rate.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        })
+                                      : "N/A"}
+                                  </div>
+                                  <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                                    ad.actual_maximum_order_amount || "N/A"
+                                  }`}</div>
+                                  <div className="flex items-center text-xs text-slate-500 mt-1">
+                                    <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
+                                      <Image
+                                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
+                                        alt="Clock"
+                                        width={12}
+                                        height={12}
+                                        className="mr-1"
+                                      />
+                                      <span>{ad.order_expiry_period} min</span>
+                                    </div>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="py-4 px-4 sm:table-cell align-top">
+                                  <div className="flex flex-col flex-wrap gap-2">
+                                    {ad.payment_methods?.map((method, index) => (
+                                      <div key={index} className="flex items-center">
+                                        {method && (
+                                          <div
+                                            className={`h-2 w-2 rounded-full mr-2 ${
+                                              method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                                            }`}
+                                          ></div>
+                                        )}
+                                        <span className="text-sm">{method}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="py-4 px-4 text-right align-top">
+                                  {USER.id != ad.user.id && (
+                                    <Button
+                                      variant={ad.type === "buy" ? "destructive" : "secondary"}
+                                      size="sm"
+                                      onClick={() => handleOrderClick(ad)}
+                                    >
+                                      {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                                    </Button>
+                                  )}
+                                </TableCell>
+                              </TableRow>
                             ))}
-                          </div>
-                        </TableCell>
-                        <TableCell className="py-4 px-4 text-right align-top">
-                          {USER.id != ad.user.id && (
-                            <Button
-                              variant={ad.type === "buy" ? "destructive" : "secondary"}
-                              size="sm"
-                              onClick={() => handleOrderClick(ad)}
-                            >
-                              {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                            </Button>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                          </TableBody>
+                        </Table>
+                      </div>
+                    </>
+                  )}
+                </div>
               </div>
-            </>
-          )}
-        </div>
+            </div>
+          </div>
+        </main>
       </div>
-      <div className="flex-shrink-0">
-        <MobileFooterNav />
-      </div>
+      <MobileFooterNav />
       <OrderSidebar
         isOpen={isOrderSidebarOpen}
         onClose={() => setIsOrderSidebarOpen(false)}
