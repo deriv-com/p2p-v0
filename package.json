@@ -12,7 +12,6 @@
     "@eslint/eslintrc": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@novu/nextjs": "latest",
-    "@novu/notification-center": "latest",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
     "@radix-ui/react-aspect-ratio": "latest",
