@@ -305,7 +305,7 @@ export default function OrderDetailsPage() {
                 <div className="space-y-4">
                   {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
                   {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
-                  <div className="bg-orange-50 rounded-lg p-4">
+                  <div className="bg-orange-50 rounded-[16px] p-[16px]">
                     <div className="flex items-start gap-3">
                     <Image src="/icons/warning-icon.png" alt="Warning" width={12} height={12} className="h-3 w-3"/> 
                       <p className="text-sm text-gray-900">
