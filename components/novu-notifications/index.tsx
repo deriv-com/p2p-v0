@@ -2,7 +2,7 @@
 
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
-import { USER, NOTIFICATIONS } from "@/lib/local-variables"
+import { USER, NOTIFICATIONS, AUTH } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 
 // Function to fetch the subscriber hash
@@ -12,9 +12,10 @@ async function fetchSubscriberHash() {
 
     const response = await fetch(url, {
       method: "POST",
-      //credentials: "include",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        ...AUTH.getAuthHeader(),
       },
     })
 
@@ -35,7 +36,7 @@ async function fetchSubscriberHash() {
       subscriberId: subscriberData.subscriberId,
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return null
   }
 }
