@@ -19,6 +19,8 @@ type Message = {
   message: string
   sender_is_self: boolean
   time: number
+  rejected: boolean
+  tags: string[]
 }
 
 type OrderChatProps = {
