@@ -18,7 +18,7 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
 
         onClick={() => !isEditMode && onChange("buy")}
         disabled={isEditMode}
-        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8 whitespace-nowrap
+        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all whitespace-nowrap
           ${value === "buy" ? "bg-white shadow-sm my-1" : "bg-transparent text-gray-500 my-1"}`}
       >
         I want to buy
@@ -28,7 +28,7 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
         variant="ghost"
         onClick={() => !isEditMode && onChange("sell")}
         disabled={isEditMode}
-        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8 whitespace-nowrap
+        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8 min-h-[32px] text-sm whitespace-nowrap
           ${value === "sell" ? "bg-white shadow-sm my-1" : "bg-transparent text-gray-500 my-1"}`}
       >
         I want to sell
