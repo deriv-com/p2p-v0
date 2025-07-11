@@ -1,30 +1,24 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
-import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
-import { getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
-import Image from "next/image"
+import { getPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import type { PaymentMethod } from "@/app/profile/api/api-payment-methods"
 
-interface PaymentMethod {
-  id: number
-  method: string
-  type: string
-  display_name: string
-  fields: Record<string, any>
-  created_at?: number
-  is_default?: boolean
+interface AdPaymentMethodsProps {
+  onSelectionChange?: (selectedIds: number[]) => void
+  initialSelectedIds?: number[]
+  maxSelections?: number
 }
 
-const AdPaymentMethods = () => {
+export default function AdPaymentMethods({
+  onSelectionChange,
+  initialSelectedIds = [],
+  maxSelections = 3,
+}: AdPaymentMethodsProps) {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedMethods, setSelectedMethods] = useState<number[]>([])
+  const [selectedIds, setSelectedIds] = useState<number[]>(initialSelectedIds)
   const [isLoading, setIsLoading] = useState(true)
-  const [showAddPanel, setShowAddPanel] = useState(false)
-  const [isAddingMethod, setIsAddingMethod] = useState(false)
 
   const getPaymentMethodColour = (type: string): string => {
     if (type === "bank") {
@@ -37,11 +31,11 @@ const AdPaymentMethods = () => {
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const data = await getUserPaymentMethods()
-        setPaymentMethods(data)
+        setIsLoading(true)
+        const methods = await getPaymentMethods()
+        setPaymentMethods(methods)
       } catch (error) {
-        console.log(error)
-        setPaymentMethods([])
+        console.error("Failed to fetch payment methods:", error)
       } finally {
         setIsLoading(false)
       }
@@ -51,121 +45,82 @@ const AdPaymentMethods = () => {
   }, [])
 
   useEffect(() => {
-    ;(window as any).adPaymentMethodIds = selectedMethods
-  }, [selectedMethods])
+    if (typeof window !== "undefined") {
+      ;(window as any).adPaymentMethodIds = selectedIds
+    }
+    onSelectionChange?.(selectedIds)
+  }, [selectedIds, onSelectionChange])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked && selectedMethods.length >= 3) {
-      return
-    }
-
-    const newSelection = checked ? [...selectedMethods, methodId] : selectedMethods.filter((id) => id !== methodId)
-    setSelectedMethods(newSelection)
-  }
-
-  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
-    try {
-      setIsAddingMethod(true)
-      const result = await addPaymentMethod(method, fields)
-
-      if (result.success) {
-        const data = await getUserPaymentMethods()
-        setPaymentMethods(data)
-        setShowAddPanel(false)
+    setSelectedIds((prev) => {
+      if (checked) {
+        if (prev.length >= maxSelections) {
+          return prev
+        }
+        return [...prev, methodId]
+      } else {
+        return prev.filter((id) => id !== methodId)
       }
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsAddingMethod(false)
-    }
+    })
   }
+
+  const isMaxSelectionsReached = selectedIds.length >= maxSelections
 
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <div className="space-y-2">
-          <CustomShimmer className="h-6 w-48" />
-          <CustomShimmer className="h-4 w-64" />
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <CustomShimmer className="h-24 w-full" />
-          <CustomShimmer className="h-24 w-full" />
-          <CustomShimmer className="h-24 w-full" />
-        </div>
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="flex items-center space-x-3 p-4 border rounded-lg animate-pulse">
+            <div className="w-6 h-6 bg-gray-200 rounded-full"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+            </div>
+            <div className="w-4 h-4 bg-gray-200 rounded"></div>
+          </div>
+        ))}
       </div>
     )
   }
 
   return (
-    <>
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
-        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
-
-        <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
-          <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
-            {paymentMethods.map((method) => {
-              const isSelected = selectedMethods.includes(method.id)
-              const displayDetails = getMethodDisplayDetails(method)
-
-              return (
-                <Card
-                  key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-gray-100 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
-                >
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-2">
-                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
-                      </div>
-                      <Checkbox
-                        checked={isSelected}
-                        onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-                        className="!border-black data-[state=checked]:!bg-black data-[state=checked]:!border-black"
-                      />
-                    </div>
-                    <div className="space-y-1">
-                      <div className="font-medium text-gray-900">{displayDetails.primary}</div>
-                      <div className="text-sm text-gray-500">{displayDetails.secondary}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
-
-            <Card
-              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
-              onClick={() => setShowAddPanel(true)}
-            >
-              <CardContent className="p-4 h-full flex items-center justify-center">
-                <div className="text-center">
-                  <Image
-                    src="/icons/plus_icon.png"
-                    alt="Add payment method"
-                    width={32}
-                    height={32}
-                    className="mx-auto mb-2"
-                  />
-                  <p className="text-sm font-medium text-black">Add payment method</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
+    <div className="space-y-4">
+      <div className="text-sm text-gray-600 mb-4">
+        Select up to {maxSelections} payment methods ({selectedIds.length}/{maxSelections} selected)
       </div>
 
-      {showAddPanel && (
-        <AddPaymentMethodPanel
-          onClose={() => setShowAddPanel(false)}
-          onAdd={handleAddPaymentMethod}
-          isLoading={isAddingMethod}
-        />
+      {paymentMethods.map((method) => {
+        const isSelected = selectedIds.includes(method.id)
+        const isDisabled = !isSelected && isMaxSelectionsReached
+
+        return (
+          <div
+            key={method.id}
+            className={`flex items-center space-x-3 p-4 border rounded-lg transition-colors ${
+              isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200"
+            } ${isDisabled ? "opacity-50" : ""}`}
+          >
+            <div className={`${getPaymentMethodColour(method.type)} rounded-full w-6 h-6`} />
+            <div className="flex-1">
+              <div className="font-medium text-gray-900">{method.display_name}</div>
+              <div className="text-sm text-gray-500">{method.account_identifier}</div>
+            </div>
+            <Checkbox
+              checked={isSelected}
+              onCheckedChange={(checked) => handleCheckboxChange(method.id, checked as boolean)}
+              disabled={isDisabled}
+              className="data-[state=checked]:bg-black data-[state=checked]:border-black border-black"
+            />
+          </div>
+        )
+      })}
+
+      {paymentMethods.length === 0 && !isLoading && (
+        <div className="text-center py-8 text-gray-500">
+          <p>No payment methods available.</p>
+          <p className="text-sm mt-2">Please add payment methods in your profile first.</p>
+        </div>
       )}
-    </>
+    </div>
   )
 }
-
-export default AdPaymentMethods
