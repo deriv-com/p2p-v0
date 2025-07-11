@@ -177,7 +177,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       <div
                         className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
                       >
-                        <a href={msg.attachment.url} download>
+                        <a href={msg.attachment.url} target="_blank" download>
                           {msg.attachment.name}
                         </a>
                       </div>
