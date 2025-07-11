@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Paperclip } from "lucide-react"
+// Remove Paperclip import - using custom image instead
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -175,26 +175,36 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
-                      <div className={`${msg.sender_is_self? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}>
-                        <a href={msg.attachment.url} download>{msg.attachment.name}</a>
+                      <div
+                        className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
+                      >
+                        <a href={msg.attachment.url} download>
+                          {msg.attachment.name}
+                        </a>
                       </div>
                     </div>
                   )}
-                  {msg.message && 
-                  <div className="flex items-center">
-                    <div className={`break-words ${msg.sender_is_self ? msg.rejected ? "bg-blue-200 opacity-50" : "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}>
-                      {msg.message}
-                    </div>
-                    {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
-                  </div>
-                  }
-                  {msg.rejected ? 
-                      <div className="text-xs text-error-text mt-[4px]">Message not sent: {getChatErrorMessage(msg.tags)}
-                      </div> :
-                      <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}>
-                        {formatDateTime(msg.time)}
+                  {msg.message && (
+                    <div className="flex items-center">
+                      <div
+                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-blue-200 opacity-50" : "bg-primary") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
+                      >
+                        {msg.message}
                       </div>
-                  }
+                      {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
+                    </div>
+                  )}
+                  {msg.rejected ? (
+                    <div className="text-xs text-error-text mt-[4px]">
+                      Message not sent: {getChatErrorMessage(msg.tags)}
+                    </div>
+                  ) : (
+                    <div
+                      className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}
+                    >
+                      {formatDateTime(msg.time)}
+                    </div>
+                  )}
                 </div>
               </div>
             ))
@@ -221,7 +231,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               variant="ghost"
               size="sm"
             >
-              <Paperclip className="h-5 w-5" />
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-YC5YQZDWMSpZMzPSoTbIDgikg6TUTV.png"
+                alt="Attach file"
+                width={20}
+                height={20}
+                className="h-5 w-5"
+              />
             </Button>
             <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
           </div>
