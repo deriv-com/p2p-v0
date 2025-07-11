@@ -38,7 +38,7 @@ export default function BuySellPage() {
 
   useEffect(() => {
     fetchAdverts()
-  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedCurrencyFilter])
+  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -62,7 +62,7 @@ export default function BuySellPage() {
     try {
       const params: BuySellAPI.SearchParams = {
         type: activeTab,
-        account_currency: selectedCurrencyFilter, 
+        account_currency: selectedAccountCurrency, 
         currency: currency,
         paymentMethod: selectedPaymentMethod || undefined,
         sortBy: sortBy,
@@ -136,11 +136,11 @@ export default function BuySellPage() {
                   {CURRENCY_FILTERS.map((currencyFilter) => (
                     <Button
                       key={currencyFilter}
-                      variant={selectedCurrencyFilter === currencyFilter ? "default" : "outline"}
+                      variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setSelectedCurrencyFilter(currencyFilter)}
+                      onClick={() => setSelectedAccountCurrency(currencyFilter)}
                       className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        selectedCurrencyFilter === currencyFilter
+                        selectedAccountCurrency === currencyFilter
                           ? "bg-black text-white hover:bg-gray-800"
                           : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
                       }`}
