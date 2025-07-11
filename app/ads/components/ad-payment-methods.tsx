@@ -109,7 +109,7 @@ const AdPaymentMethods = () => {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
                         <div
-                          className={`${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"} rounded-full w-6 h-6`}
+                          className={`${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"} rounded-full h-3 w-3`}
                         />
                         <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
