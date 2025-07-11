@@ -212,39 +212,43 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       </div>
 
       <div className="p-4 border-t">
-        <div className="space-y-2">
-          <div className="relative">
-            <Input
-              value={message}
-              onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
-              onKeyDown={handleKeyDown}
-              placeholder="Enter message"
-              disabled={isSending}
-              className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
-            />
-            <Button
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
-              onClick={() => fileInputRef.current?.click()}
-              variant="ghost"
-              size="sm"
-            >
-              <Image
-                src="/icons/paperclip-icon.png"
-                alt="Attach file"
-                width={20}
-                height={20}
-                className="h-5 w-5"
-              />
-            </Button>
-            <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*,application/pdf" />
-          </div>
-          <div className="flex justify-between items-center">
-            <div></div>
-            <div className="text-xs text-[#0000003D] mr-16px">
-              {message.length}/{maxLength}
+          {(order.status === "cancelled" || order.status === "completed" || order.status === "timed_out") ? <div>
+              This conversation is closed.
+          </div> :
+            <div className="space-y-2">
+              <div className="relative">
+                <Input
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter message"
+                  disabled={isSending}
+                  className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                />
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="ghost"
+                  size="sm"
+                >
+                  <Image
+                    src="/icons/paperclip-icon.png"
+                    alt="Attach file"
+                    width={20}
+                    height={20}
+                    className="h-5 w-5"
+                  />
+                </Button>
+                <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*,application/pdf" />
+              </div>
+              <div className="flex justify-between items-center">
+                <div></div>
+                <div className="text-xs text-[#0000003D] mr-16px">
+                  {message.length}/{maxLength}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+        }
       </div>
     </div>
   )
