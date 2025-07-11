@@ -32,6 +32,7 @@ export interface Advertisement {
 export interface SearchParams {
   type?: string
   currency?: string
+  account_currency: string
   paymentMethod?: string
   amount?: number
   nickname?: string
@@ -57,6 +58,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     if (params) {
       if (params.type) queryParams.append("advert_type", params.type)
       if (params.currency) queryParams.append("payment_currency", params.currency)
+      if (params.account_currency) queryParams.append("account_currency", params.account_currency)
       if (params.paymentMethod) queryParams.append("paymentMethod", params.paymentMethod)
       if (params.amount) queryParams.append("amount", params.amount.toString())
       if (params.nickname) queryParams.append("nickname", params.nickname)
