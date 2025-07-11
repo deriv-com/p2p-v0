@@ -185,7 +185,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                   }
                   {msg.rejected ? 
                       <div className="text-xs text-error-text mt-[4px]"><div>Message not sent: {getChatErrorMessage(msg.tags)}</div>
-                      <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} className="h-5 w-5"/> 
+                      <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} /> 
                       </div> :
                       <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}>
                         {formatMessageTime(msg.time)}
