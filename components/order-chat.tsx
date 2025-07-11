@@ -238,7 +238,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 className="h-5 w-5"
               />
             </Button>
-            <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
+            <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*,application/pdf" />
           </div>
           <div className="flex justify-between items-center">
             <div></div>
