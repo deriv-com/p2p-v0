@@ -3,7 +3,6 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-// Remove Paperclip import - using custom image instead
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -232,7 +231,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               size="sm"
             >
               <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-YC5YQZDWMSpZMzPSoTbIDgikg6TUTV.png"
+                src="/icons/paperclip-icon.png"
                 alt="Attach file"
                 width={20}
                 height={20}
