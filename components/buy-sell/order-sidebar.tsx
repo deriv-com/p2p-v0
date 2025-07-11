@@ -333,7 +333,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="border-t m-4 mb-0 pt-[16px] text-sm">
+                <div className="border-t m-4 mb-0 pt-4 text-sm">
                   <h3 className="text-slate-500">
                     {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
                   </h3>
