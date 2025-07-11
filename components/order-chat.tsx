@@ -199,7 +199,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                     </div>
                   ) : (
                     <div
-                      className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}
+                      className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
                     >
                       {formatDateTime(msg.time)}
                     </div>
