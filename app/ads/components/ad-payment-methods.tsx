@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
-import { getPaymentMethodIcon, getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
+import { getPaymentMethodColour, getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
 import Image from "next/image"
 
 interface PaymentMethod {
@@ -108,13 +108,7 @@ const AdPaymentMethods = () => {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <Image
-                          src={getPaymentMethodIcon(method.type) || "/placeholder.svg"}
-                          alt={getCategoryDisplayName(method.type)}
-                          width={12}
-                          height={12}
-                          className="rounded-full"
-                        />
+                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-6 h-6`} />
                         <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox

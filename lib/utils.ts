@@ -48,6 +48,10 @@ export function getPaymentMethodIcon(type: string): string {
   return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
 }
 
+export function getPaymentMethodColour(type: string): string {
+  return type === "ewallet" ? "bg-eWalletsColour" : "bg-BankTransferColour"
+}
+
 export function getCategoryDisplayName(type: string): string {
   switch (type) {
     case "bank":
@@ -132,5 +136,4 @@ export function formatStatus(status: string, type: string): string {
   }
 
   return status
-  
-  }
+}

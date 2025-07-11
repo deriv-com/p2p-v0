@@ -79,7 +79,7 @@ const config: Config = {
           light: "rgba(55, 124, 252, 0.1)",
           DEFAULT: "#377cfc",
           50: "#E5F5FC",
-          100: "#017AAD"
+          100: "#017AAD",
         },
         grayscale: {
           DEFAULT: "100%",
@@ -142,6 +142,8 @@ const config: Config = {
           bank: "#008832",
           other: "#377CFC",
         },
+        eWalletsColour: "#1A79CB",
+        BankTransferColour: "#74B816",
       },
       borderRadius: {
         lg: "var(--radius)",
