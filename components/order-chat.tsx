@@ -5,7 +5,6 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocket } from "@/hooks/use-websocket"
 import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
@@ -215,12 +214,11 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       <div className="p-4 border-t">
         <div className="space-y-2">
           <div className="relative">
-            <Textarea
+            <Input
               value={message}
               onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
               onKeyDown={handleKeyDown}
               placeholder="Enter message"
-              rows={1}
               disabled={isSending}
               className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
             />
