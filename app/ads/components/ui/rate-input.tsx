@@ -5,7 +5,6 @@ import { AlertTriangle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface RateInputProps {
-  label?: string
   value: string
   onChange: (value: string) => void
   onBlur?: () => void
@@ -14,7 +13,7 @@ interface RateInputProps {
   error?: boolean
 }
 
-export function RateInput({ label = "Fixed rate", value, onChange, onBlur, step, min, error = false }: RateInputProps) {
+export function RateInput({ value, onChange, onBlur, step, min, error = false }: RateInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/[^0-9.]/g, "")
     onChange(value)
@@ -22,7 +21,6 @@ export function RateInput({ label = "Fixed rate", value, onChange, onBlur, step,
 
   return (
     <div className="flex flex-col">
-      <label className="block mb-2 text-black text-sm font-normal leading-5">{label}</label>
       <div
         className={cn(
           "flex rounded-lg overflow-hidden border transition-colors duration-200",
