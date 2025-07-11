@@ -216,7 +216,7 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
-      {order?.type && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />}
+      {order?.type && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} ${order?.account_currency}`} redirectUrl={"/orders"} />}
       <div className="container mx-auto">
           {isLoading ? (
               <div className="text-center py-12">
