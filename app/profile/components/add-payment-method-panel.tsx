@@ -34,7 +34,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
             onClick={onBack}
             className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
           >
-            <Image src="/public/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
+            <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
           </Button>
         )}
         <h2 className="text-xl font-semibold text-center">{title}</h2>
@@ -44,7 +44,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
           onClick={onClose}
           className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
         >
-          <Image src="/public/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
         </Button>
       </div>
       {children}
