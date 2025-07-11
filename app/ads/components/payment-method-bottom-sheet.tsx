@@ -232,7 +232,8 @@ export default function PaymentMethodBottomSheet({
               type="button"
               onClick={handleSelect}
               onMouseDown={(e) => e.stopPropagation()}
-              className="w-full h-[48px] bg-primary hover:bg-cyan-hover text-black rounded-full"
+              variant="black"
+              className="w-full"
             >
               Select
             </Button>
