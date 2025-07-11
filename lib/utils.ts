@@ -49,15 +49,13 @@ export function getPaymentMethodIcon(type: string): string {
 }
 
 export function getPaymentMethodColour(type: string): string {
-  switch (type.toLowerCase()) {
+  switch (type) {
     case "bank":
-    case "bank_transfer":
-      return "bg-[#74B816]"
+      return "bg-paymentMethod-bank"
     case "ewallet":
-    case "e_wallet":
-      return "bg-[#1A79CB]"
+      return "bg-paymentMethod-ewallet"
     default:
-      return "bg-[#1A79CB]"
+      return "bg-paymentMethod-other"
   }
 }
 
