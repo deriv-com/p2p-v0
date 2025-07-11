@@ -282,7 +282,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
           type="submit"
           onClick={handleSubmit}
           disabled={isLoading || !selectedMethod || !isFormValid()}
-          size="sm"
+          variant="black"
         >
           {isLoading ? "Adding..." : "Add"}
         </Button>
