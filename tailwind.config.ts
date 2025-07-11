@@ -87,7 +87,7 @@ const config: Config = {
         },
         yellow: {
           100: "#FFF7E6",
-          1000: "#A66C00"
+          1000: "#A66C00",
         },
         slate: {
           50: "#f8fafc",
