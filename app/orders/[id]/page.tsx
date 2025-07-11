@@ -203,30 +203,24 @@ export default function OrderDetailsPage() {
     )
   }
 
-  // Safely access properties with fallbacks
-  const orderType = order.type === "buy" ? "Buy" : "Sell"
-  const advertAccountCurrency = order.advert?.account_currency
-
-  // Safely access user properties
-  const counterpartyNickname = order.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
+  const orderType = order?.type === "buy" ? "Buy" : "Sell"
+  const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel =
-    order.type === "buy"
-      ? order.user.id == USER.id
+    order?.type === "buy"
+      ? order?.user.id == USER.id
         ? "Seller"
         : "Buyer"
-      : order.user.id == USER.id
+      : order?.user.id == USER.id
         ? "Buyer"
         : "Seller"
   const youPayReceiveLabel =
-    order.type === "buy"
-      ? order.user.id == USER.id
+    order?.type === "buy"
+      ? order?.user.id == USER.id
         ? "You receive"
         : "You pay"
-      : order.user.id == USER.id
+      : order?.user.id == USER.id
         ? "You pay"
         : "You receive"
-
-  const orderAmount = order.amount
 
   return (
     <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
@@ -257,8 +251,8 @@ export default function OrderDetailsPage() {
                       <div>
                         <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                         <p className="text-lg font-bold">
-                          {advertAccountCurrency}{" "}
-                          {Number(orderAmount).toLocaleString(undefined, {
+                          {order?.advert?.account_currency}{" "}
+                          {Number(order.amount).toLocaleString(undefined, {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2,
                           })}
@@ -396,19 +390,15 @@ export default function OrderDetailsPage() {
         </div>
       )}
 
-      {/* Rating Sidebar */}
       {showRatingSidebar && (
         <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
           <div className="bg-white w-full max-w-md h-full flex flex-col">
-            {/* Header */}
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-lg font-bold">Rate this transaction</h2>
               <button onClick={() => setShowRatingSidebar(false)} className="text-slate-500 hover:text-slate-700">
                 <X className="h-5 w-5" />
               </button>
             </div>
-
-            {/* Content */}
             <div className="flex-1 overflow-auto p-4">
               <div className="space-y-8">
                 {/* Star Rating */}
@@ -434,8 +424,6 @@ export default function OrderDetailsPage() {
                     ))}
                   </div>
                 </div>
-
-                {/* Recommendation */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium">Would you recommend this Seller?</h3>
                   <div className="flex gap-4">
@@ -465,8 +453,6 @@ export default function OrderDetailsPage() {
                 </div>
               </div>
             </div>
-
-            {/* Footer */}
             <div className="p-4 border-t">
               <Button onClick={handleSubmitReview} disabled={isSubmittingReview || rating === 0} className="w-full">
                 {isSubmittingReview ? (
