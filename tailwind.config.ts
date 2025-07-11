@@ -137,7 +137,8 @@ const config: Config = {
           icon: "#c40000",
           bg: "#fee2e2",
         },
-        "default-button-text": "#002A33",paymentMethod: {
+        "default-button-text": "#002A33",
+        paymentMethod: {
   bank: {
     DEFAULT: "#74B816",
   },
