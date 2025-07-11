@@ -46,7 +46,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setIsAnimating(true)
       setOrderStatus(null)
     } else {
-      // Reset animation state when closed
       setIsAnimating(false)
     }
   }, [isOpen])
@@ -137,6 +136,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const handleClose = () => {
     setIsAnimating(false)
     setTimeout(() => {
+      setTotalAmount(0)
       setSelectedPaymentMethods([])
       setAmount(null)
       setValidationError(null)
