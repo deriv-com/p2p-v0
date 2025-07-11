@@ -26,6 +26,15 @@ const AdPaymentMethods = () => {
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
 
+  // Local function to get payment method color
+  const getPaymentMethodColour = (type: string): string => {
+    if (type === "bank") {
+      return "bg-paymentMethod-bank"
+    } else {
+      return "bg-paymentMethod-ewallet"
+    }
+  }
+
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
@@ -108,9 +117,7 @@ const AdPaymentMethods = () => {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div
-                          className={`${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"} rounded-full h-3 w-3`}
-                        />
+                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-6 h-6`} />
                         <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
