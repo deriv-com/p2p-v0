@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import { formatPaymentMethodName } from "@/lib/utils"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -236,10 +237,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <div className="flex-1">
                             <div className="flex items-center mb-2">
                               <div
-                                className={`h-3 w-3 rounded-full mr-2 ${method.type === "bank" ? "bg-green-500" : "bg-blue-500"
+                                className={`h-3 w-3 rounded-full mr-2 ${method.type === "bank" ? "bg-payment-method-bank" : "bg-payment-method-other"
                                   }`}
                               />
-                              <span className="font-medium text-gray-600">{method.display_name}</span>
+                              <span className="font-medium text-gray-600">{formatPaymentMethodName(method.display_name)}</span>
                             </div>
                           </div>
                           <Checkbox
