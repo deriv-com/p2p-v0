@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -11,12 +13,13 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-default-button-text hover:bg-cyan-hover",
         hover: "bg-cyan-hover text-default-button-text",
-        disabled: "bg-primary opacity-24 pointer-events-none cursor-not-allowed text-default-button-text",
+        disabled: "bg-primary opacity-25 pointer-events-none cursor-not-allowed text-default-button-text",
+        black: "bg-black text-white hover:bg-black/90",
+        blackDisabled: "bg-black opacity-25 pointer-events-none cursor-not-allowed text-white",
         outline: "border border-[#181C25] bg-transparent text-foreground hover:bg-slate-100 px-7",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         secondary: "bg-secondary text-white hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        black: "bg-black text-white hover:bg-black/90",
       },
       size: {
         default: "h-[48px] min-h-[48px] max-h-[48px] px-7 gap-2 min-w-[96px]",
@@ -33,8 +36,19 @@ const buttonVariants = cva(
   },
 )
 
-const VALID_VARIANTS = ["default", "hover", "disabled", "outline", "destructive", "secondary", "ghost", "black"]
-const VALID_SIZES = ["default", "sm", "xs", "icon"]
+const VALID_VARIANTS = [
+  "default",
+  "hover",
+  "disabled",
+  "black",
+  "blackDisabled",
+  "outline",
+  "destructive",
+  "secondary",
+  "ghost",
+]
+
+const VALID_SIZES = ["default", "sm", "xs", "lg", "icon"]
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -44,7 +58,18 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, disabled, ...props }, ref) => {
-    const computedVariant = disabled ? "disabled" : VALID_VARIANTS.includes(variant as string) ? variant : "default"
+    let computedVariant: string
+
+    if (disabled) {
+      if (variant === "black") {
+        computedVariant = "blackDisabled"
+      } else {
+        computedVariant = "disabled"
+      }
+    } else {
+      computedVariant = VALID_VARIANTS.includes(variant as string) ? variant! : "default"
+    }
+
     const computedSize = VALID_SIZES.includes(size as string) ? size : "default"
 
     const Comp = asChild ? Slot : "button"
