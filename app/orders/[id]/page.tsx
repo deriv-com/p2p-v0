@@ -185,7 +185,7 @@ export default function OrderDetailsPage() {
     }
   }, [order])
 
-  if (error || !order) {
+  if (error) {
     return (
       <div className="px-4">
         <div className="text-center py-12">
