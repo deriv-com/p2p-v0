@@ -14,9 +14,9 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
 
-const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
-
 export default function BuySellPage() {
+    // TODO: Replace these once the currencies are ready
+    const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
   const [currency, setCurrency] = useState("IDR")
@@ -29,7 +29,7 @@ export default function BuySellPage() {
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all") // Updated default value
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all")
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [selectedCurrencyFilter, setSelectedCurrencyFilter] = useState("USD")
 
@@ -56,7 +56,6 @@ export default function BuySellPage() {
     fetchPaymentMethods()
   }, [])
 
-  // Update the fetchAdverts function to ensure adverts is always an array
   const fetchAdverts = async () => {
     setIsLoading(true)
     setError(null)
@@ -93,7 +92,6 @@ export default function BuySellPage() {
     router.push(`/advertiser/${userId}`)
   }
 
-  // Handle opening the order sidebar
   const handleOrderClick = (ad: Advertisement) => {
     setSelectedAd(ad)
     setIsOrderSidebarOpen(true)
@@ -133,7 +131,6 @@ export default function BuySellPage() {
                   </TabsList>
                 </Tabs>
 
-                {/* Currency Filter Pills */}
                 <div className="flex gap-2 flex-wrap">
                   {CURRENCY_FILTERS.map((currencyFilter) => (
                     <Button
