@@ -79,7 +79,8 @@ const config: Config = {
           light: "rgba(55, 124, 252, 0.1)",
           DEFAULT: "#377cfc",
           50: "#E5F5FC",
-          100: "#017AAD"
+          100: "#017AAD",
+          200: "#00D0FF",
         },
         grayscale: {
           DEFAULT: "100%",

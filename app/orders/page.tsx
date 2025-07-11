@@ -230,14 +230,13 @@ export default function OrdersPage() {
   )
 
   return (
-    <div className="flex flex-col h-full px-4">
+    <div className="flex flex-col h-full">
       <div className="flex-shrink-0">
-
         <div className="mb-6">
           <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
-            <TabsList>
-              <TabsTrigger value="active">Active orders</TabsTrigger>
-              <TabsTrigger value="past">Past orders</TabsTrigger>
+            <TabsList className="md:min-w-[330px]">
+              <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">Active orders</TabsTrigger>
+              <TabsTrigger className="w-full data-[state=active]:font-bold" value="past ">Past orders</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>

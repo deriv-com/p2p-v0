@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocket } from "@/hooks/use-websocket"
+import { getChatErrorMessage } from "@/lib/utils"
 
 type Message = {
   attachment: {
@@ -19,6 +20,8 @@ type Message = {
   message: string
   sender_is_self: boolean
   time: number
+  rejected: boolean
+  tags: string[]
 }
 
 type OrderChatProps = {
@@ -36,18 +39,14 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
 
-  // Use our custom WebSocket hook
   const { isConnected, joinChannel, getChatHistory } = useWebSocket({
     onMessage: (data) => {
-      // Handle incoming messages
       if (data && data.payload && data.payload.data) {
-        // Handle chat history
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
           setMessages(data.payload.data.chat_history)
           setIsLoading(false)
         }
 
-        // Handle new message
         if (data.payload.data.message) {
           const newMessage = data.payload.data
           setMessages((prev) => [...prev, newMessage])
@@ -55,17 +54,14 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       }
     },
     onOpen: () => {
-      // Join the orders channel when connection is established
       joinChannel("orders")
 
-      // Get chat history after joining the channel
       setTimeout(() => {
         getChatHistory("orders", orderId)
-      }, 1000)
+      }, 100)
     },
   })
 
-  // Auto scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }, [messages])
@@ -76,21 +72,17 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     setIsSending(true)
 
     try {
-      // Clear the input
       const messageToSend = message
       setMessage("")
 
-      // Send the message to the API
       const result = await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
 
       if (result.success) {
-        // Request updated chat history
         if (isConnected) {
           getChatHistory("orders", orderId)
         }
       }
     } catch (error) {
-      // Silent error handling
       console.log(error)
     } finally {
       setIsSending(false)
@@ -109,18 +101,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     if (files && files.length > 0) {
       const file = files[0]
 
-      // Show a loading state
       setIsSending(true)
 
       try {
-        // Convert file to base64 for sending
         const base64 = await fileToBase64(file)
-
-        // Send the file as an attachment
         const result = await OrdersAPI.sendChatMessage(orderId, "", base64)
 
         if (result.success) {
-          // Request updated chat history
           if (isConnected) {
             getChatHistory("orders", orderId)
           }
@@ -147,7 +134,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
   return (
     <div className="flex flex-col h-full">
-      {/* Counterparty info */}
       <div className="flex items-center p-4 border-b">
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
@@ -157,55 +143,58 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
         </div>
       </div>
-
-      {/* Important notice */}
-      <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
-        <div className="space-y-3">
-          <div className="flex items-start gap-[8px]">
-            <div className="flex-shrink-0 mt-0.5">
-              <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="w-5 h-5" />
-            </div>
-            <div className="text-sm">
-              <span className="font-semibold text-gray-900">Important:</span>
-              <span className="text-gray-700 ml-1">
-                Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
-                messages from numbers claiming to be from Deriv.
-              </span>
-              <div className="text-gray-700 mt-[16px]">
-                <span className="font-semibold">Note:</span>
-                <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
+      <div className="h-full overflow-auto">
+        <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
+          <div className="space-y-3">
+            <div className="flex items-start gap-[8px]">
+              <div className="flex-shrink-0 mt-0.5">
+                <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="w-5 h-5" />
+              </div>
+              <div className="text-sm">
+                <span className="font-semibold text-gray-900">Important:</span>
+                <span className="text-gray-700 ml-1">
+                  Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
+                  messages from numbers claiming to be from Deriv.
+                </span>
+                <div className="text-gray-700 mt-[16px]">
+                  <span className="font-semibold">Note:</span>
+                  <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {isLoading ? (
-          <div className="flex justify-center items-center h-full">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-          </div>
-        ) : (
-          messages.map((msg) => (
-            <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
-              <div className={`max-w-[80%] rounded-lg p-3 ${msg.sender_is_self ? "bg-blue-50" : "bg-slate-100"}`}>
-                {msg.attachment && (
-                  <Image
-                    alt={msg.attachment.name}
-                    src={msg.attachment.url || "/placeholder.svg"}
-                    width={200}
-                    height={200}
-                  />
-                )}
-                <div className="break-words">{msg.message}</div>
-                <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-blue-500" : "text-slate-500"}`}>
-                  {formatMessageTime(msg.time)}
+        <div className="flex-1 overflow-y-auto p-4">
+          {isLoading ? (
+            <div className="flex justify-center items-center h-full">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : (
+            messages.map((msg) => (
+              <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
+                <div className="max-w-[80%] rounded-lg pb-[16px]">
+                  {msg.attachment && (
+                    <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
+                      <div className={`${msg.sender_is_self? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}>
+                        <a href={msg.attachment.url} download>{msg.attachment.name}</a>
+                      </div>
+                    </div>
+                  )}
+                  {msg.message && 
+                  <div className={`break-words ${msg.sender_is_self ? msg.rejected ? "bg-blue-200" : "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>{msg.message}</div>
+                  }
+                  {msg.rejected ? 
+                      <div className="text-xs text-error-text mt-[4px]">Message not sent: {getChatErrorMessage(msg.tags)}</div> :
+                      <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}>
+                        {formatMessageTime(msg.time)}
+                      </div>
+                  }
                 </div>
               </div>
-            </div>
-          ))
-        )}
-        <div ref={messagesEndRef} />
+            ))
+          )}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
       <div className="p-4 border-t">
@@ -242,7 +231,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   )
 }
 
-// Helper functions
 function formatLastSeen(date: Date): string {
   const now = new Date()
   const diffMs = now.getTime() - date.getTime()

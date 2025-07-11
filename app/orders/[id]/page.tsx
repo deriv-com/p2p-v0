@@ -239,7 +239,7 @@ export default function OrderDetailsPage() {
   const orderAmount = order.amount
 
   return (
-    <div className="px-4 relative">
+    <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
       <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />
       <div className="container mx-auto">
         <div className="flex flex-col">
@@ -342,8 +342,7 @@ export default function OrderDetailsPage() {
                 </div>
               )}
             </div>
-            {/* Right panel - Chat */}
-            <div className="w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
+            <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
               <OrderChat
                 orderId={orderId}
                 counterpartyName={counterpartyNickname || "User"}
@@ -354,7 +353,6 @@ export default function OrderDetailsPage() {
         </div>
       </div>
 
-      {/* Cancel Confirmation Modal */}
       {showCancelConfirmation && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">

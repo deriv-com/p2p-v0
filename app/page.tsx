@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
@@ -114,17 +113,17 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden px-4">
+    <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex-shrink-0">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           {
             <div className="flex flex-row justify-between items-center gap-4">
               <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                <TabsList className="w-full md:min-w-3xs">
-                  <TabsTrigger className="w-full md:w-auto" value="sell">
+                <TabsList className="w-full md:min-w-[230px]">
+                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
                     Buy
                   </TabsTrigger>
-                  <TabsTrigger className="w-full md:w-auto" value="buy">
+                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
                     Sell
                   </TabsTrigger>
                 </TabsList>
@@ -145,7 +144,7 @@ export default function BuySellPage() {
                 </SelectContent>
               </Select>
             }
-            <div className="hidden md:block">
+            <div className="md:block">
               <Select
                 value={selectedPaymentMethod}
                 onValueChange={setSelectedPaymentMethod}
@@ -215,127 +214,14 @@ export default function BuySellPage() {
             <div className="text-center py-8">{error}</div>
           ) : adverts.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
-          
-                  <div className="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center mb-4">
-                    <AlertCircle className="h-8 w-8 text-slate-400" />
-                  </div>
-                  <p className="text-xl font-medium text-slate-800">No ads available.</p>
-              
-          
+              <Image src="/icons/search-icon.png" alt="No ads found" width={56} height={56} className="opacity-60" />
+              <p className="text-xl font-medium text-slate-800 mt-[24px]">No ads available.</p>
             </div>
           ) : (
             <>
-              <div className="md:hidden space-y-4">
-                {adverts.map((ad) => (
-                  <div key={ad.id} className="border rounded-lg p-4 bg-white">
-                    <div className="flex items-center mb-3">
-                      <div className="h-8 w-8 flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-2">
-                        {(ad.user?.nickname?.charAt(0) || "U").toUpperCase()}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center">
-                          <button
-                            onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                            className="font-medium hover:underline cursor-pointer"
-                          >
-                            {ad.user?.nickname || "Unknown"}
-                          </button>
-                          {ad.user?.is_favourite && (
-                            <span className="ml-2 px-2 py-0.5 border border-[#29823B] text-[#29823B]text-xs rounded-sm">
-                              Following
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center text-xs text-slate-500 mb-2">
-                      {ad.user_rating_average && (
-                        <span className="flex items-center">
-                          <Image
-                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
-                            alt="Rating"
-                            width={16}
-                            height={16}
-                            className="mr-1"
-                          />
-                          <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
-                        </span>
-                      )}
-                      {ad.user.completed_orders_count > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{ad.user.completed_orders_count} orders</span>
-                        </>
-                      )}
-
-                      {ad.user.completion_rate > 0 && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{ad.user.completion_rate}% completion</span>
-                        </>
-                      )}
-                    </div>
-
-                    <div className="text-lg font-bold mb-2">
-                      {ad.account_currency} 1.00 = {ad.payment_currency}{" "}
-                      {ad.exchange_rate
-                        ? ad.exchange_rate.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })
-                        : "N/A"}
-                    </div>
-
-                    <div className="text-sm mb-2">
-                      Limits: {ad.account_currency} {ad.minimum_order_amount || "N/A"} -{" "}
-                      {ad.actual_maximum_order_amount || "N/A"}
-                    </div>
-
-                    <div className="flex items-center text-xs text-slate-500 mb-3 mt-1">
-                      <div className="flex items-center bg-slate-100 rounded-sm px-2 py-1">
-                        <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
-                          alt="Clock"
-                          width={12}
-                          height={12}
-                          className="mr-1"
-                        />
-                        <span>{ad.order_expiry_period} min</span>
-                      </div>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <div className="flex flex-wrap gap-2">
-                        {ad.payment_methods?.map((method, index) => (
-                          <div key={index} className="flex items-center">
-                            <div
-                              className={`h-2 w-2 rounded-full mr-2 ${
-                                method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
-                              }`}
-                            ></div>
-                            <span className="text-sm">{method}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {USER.id != ad.user.id && (
-                        <Button
-                          size="sm"
-                          onClick={() => handleOrderClick(ad)}
-                          className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
-                        >
-                          {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="hidden md:block">
+              <div className="md:block">
                 <Table>
-                  <TableHeader className="border-b sticky top-0 bg-white">
+                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
                     <TableRow className="text-sm">
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
@@ -347,7 +233,7 @@ export default function BuySellPage() {
                   </TableHeader>
                   <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
-                      <TableRow key={ad.id}>
+                      <TableRow className="flex flex-col lg:table-row" key={ad.id}>
                         <TableCell className="py-4 px-4 align-top">
                           <div className="flex items-center">
                             <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
