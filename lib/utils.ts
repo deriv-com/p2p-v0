@@ -48,6 +48,7 @@ export function getPaymentMethodIcon(type: string): string {
   return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
 }
 
+// Tailwind classes for content detection: bg-paymentMethod-bank bg-paymentMethod-ewallet bg-paymentMethod-other
 export function getPaymentMethodColour(type: string): string {
   switch (type) {
     case "bank":
