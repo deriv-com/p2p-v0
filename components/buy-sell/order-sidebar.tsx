@@ -64,7 +64,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
-      // Validate amount against limits
       const minLimit = Number.parseFloat(ad.minimum_order_amount) || 0
       const maxLimit = Number.parseFloat(ad.actual_maximum_order_amount) || 0
 
@@ -169,7 +168,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const title = isBuy ? "Sell USD" : "Buy USD"
   const youSendText = isBuy ? "You receive" : "You pay"
 
-  // Calculate order limits
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
 
