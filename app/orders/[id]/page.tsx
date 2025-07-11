@@ -20,7 +20,6 @@ export default function OrderDetailsPage() {
   const orderId = params.id as string
 
   const [order, setOrder] = useState<Order | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [timeLeft, setTimeLeft] = useState<string>("--:--")
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false)
@@ -40,7 +39,6 @@ export default function OrderDetailsPage() {
   }, [orderId])
 
   const fetchOrderDetails = async () => {
-    setIsLoading(true)
     setError(null)
     try {
       // Use the mock data for now since we're having issues with the API
@@ -49,8 +47,6 @@ export default function OrderDetailsPage() {
     } catch (err) {
       console.error("Error fetching order details:", err)
       setError("Failed to load order details. Please try again.")
-    } finally {
-      setIsLoading(false)
     }
   }
 
@@ -188,17 +184,6 @@ export default function OrderDetailsPage() {
       if (intervalId) clearInterval(intervalId)
     }
   }, [order])
-
-  /*if (isLoading) {
-    return (
-      <div className="px-4">
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid  border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading order details...</p>
-        </div>
-      </div>
-    )
-  }*/
 
   if (error || !order) {
     return (
