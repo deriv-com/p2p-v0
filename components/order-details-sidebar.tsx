@@ -33,7 +33,10 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               <h3 className="text-sm text-slate-500 mb-1">Exchange rate ({order.advert?.account_currency} 1)</h3>
               <p className="font-bold">
                 {order.advert?.payment_currency}{" "}
-                {formatAmount(order.exchange_rate)}
+                {order.exchange_rate.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })}
               </p>
             </div>
             <div>
