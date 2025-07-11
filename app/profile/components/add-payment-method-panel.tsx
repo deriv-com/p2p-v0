@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-
+import * as React from "react"
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,8 +23,24 @@ interface PanelWrapperProps {
 }
 
 function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl flex flex-col">
+    <div
+      className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+        isMobile ? "inset-0 w-full" : "w-full max-w-md"
+      }`}
+    >
       <div className="p-6 border-b relative">
         {onBack && (
           <Button
@@ -67,7 +82,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     const fetchAvailablePaymentMethods = async () => {
       try {
         setIsLoadingMethods(true)
-
         const response = await getPaymentMethods()
 
         if (response && response.data && Array.isArray(response.data)) {
@@ -154,7 +168,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
 
     if (validateForm()) {
       const fieldValues = { ...details }
-
       fieldValues.instructions = instructions.trim() || "-"
 
       if (selectedMethod === "bank_transfer") {
@@ -197,7 +210,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     )
   }
 
-  // Show method selection list
   if (!showMethodDetails) {
     return (
       <PanelWrapper onClose={onClose} title="Select a payment method">
@@ -230,12 +242,10 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     )
   }
 
-  // Show method details form
   return (
     <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
         <div className="p-6 space-y-6">
-          {/* Method fields */}
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
@@ -259,7 +269,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
             </div>
           )}
 
-          {/* Instructions */}
           <div>
             <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
               Instructions
