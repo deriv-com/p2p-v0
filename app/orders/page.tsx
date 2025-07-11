@@ -62,15 +62,15 @@ export default function OrdersPage() {
   const getStatusBadgeStyle = (status: string, type: string) => {
     switch (status) {
       case "pending_payment": 
-        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
+        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-1000"
       case "pending_release": 
-        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
+        return type === "buy" ? "bg-yellow-100 text-yellow-1000" : "bg-blue-50 text-blue-800"
       case "completed":
         return "bg-green-100 text-green-800"
       case "cancelled":
         return "bg-slate-100 text-slate-800"
       case "disputed":
-        return "bg-yellow-1000 text-yellow-100"
+        return "bg-yellow-100 text-yellow-1000"
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
