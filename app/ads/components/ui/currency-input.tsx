@@ -5,6 +5,7 @@ import { AlertTriangle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string
   currency?: string
   onValueChange?: (value: string) => void
   placeholder?: string
@@ -13,6 +14,7 @@ interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 }
 
 export function CurrencyInput({
+  label,
   currency = "USD",
   onValueChange,
   placeholder = "0.00",
@@ -23,11 +25,9 @@ export function CurrencyInput({
   error = false,
   ...props
 }: CurrencyInputProps) {
-  // Combine the isEditMode prop with any existing disabled prop
   const isDisabled = isEditMode || disabled
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only process changes if not in edit mode
     if (!isEditMode) {
       if (onChange) onChange(e)
       if (onValueChange) onValueChange(e.target.value)
@@ -36,6 +36,7 @@ export function CurrencyInput({
 
   return (
     <div className="flex flex-col">
+      {label && <label className="block mb-2 text-black text-sm font-normal leading-5">{label}</label>}
       <div
         className={cn(
           "flex rounded-lg overflow-hidden border transition-colors duration-200",
