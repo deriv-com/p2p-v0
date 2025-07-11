@@ -26,7 +26,6 @@ const AdPaymentMethods = () => {
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
 
-  // Local function to get payment method color
   const getPaymentMethodColour = (type: string): string => {
     if (type === "bank") {
       return "bg-paymentMethod-bank"
@@ -117,7 +116,7 @@ const AdPaymentMethods = () => {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-6 h-6`} />
+                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
                         <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
