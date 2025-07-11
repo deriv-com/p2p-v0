@@ -212,10 +212,10 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         </div>
       </div>
 
-      <div className="p-4 border-t">
-          {isClosed ? <div>
+          {isClosed ? <div className="p-4 border-t text-center text-neutral-7 bg-[#0000000A]">
               This conversation is closed.
           </div> :
+          <div className="p-4 border-t">
             <div className="space-y-2">
               <div className="relative">
                 <Input
@@ -249,8 +249,9 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 </div>
               </div>
             </div>
+          </div>
         }
-      </div>
+    
     </div>
   )
 }
