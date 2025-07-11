@@ -54,7 +54,6 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
 
 export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: AddPaymentMethodPanelProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("")
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<AvailablePaymentMethod | null>(null)
   const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
   const [instructions, setInstructions] = useState("")
@@ -100,14 +99,12 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
     setSelectedMethod(paymentMethod.method)
-    setSelectedPaymentMethod(paymentMethod)
     setShowMethodDetails(true)
   }
 
   const handleBackToMethodList = () => {
     setShowMethodDetails(false)
     setSelectedMethod("")
-    setSelectedPaymentMethod(null)
     setDetails({})
     setErrors({})
     setTouched({})
