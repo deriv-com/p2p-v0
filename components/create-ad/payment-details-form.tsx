@@ -92,10 +92,9 @@ export default function PaymentDetailsForm({
             <div className="bg-blue-50 p-4 rounded-lg">
               <div className="flex items-center gap-2 text-sm text-blue-900">
                 <span>
-                  You're {isEditMode ? "editing" : "creating"} an ad to {initialData.type} USD{" "}
-                  {initialData.totalAmount}
+                  You're {isEditMode ? "editing" : "creating"} an ad to {initialData.type} USD {initialData.totalAmount}
                 </span>
-                <span>for IDR {((initialData.totalAmount || 0) * (initialData.fixedRate || 0))}</span>
+                <span>for IDR {(initialData.totalAmount || 0) * (initialData.fixedRate || 0)}</span>
               </div>
             </div>
 
@@ -107,10 +106,11 @@ export default function PaymentDetailsForm({
                     key={method}
                     type="button"
                     onClick={() => togglePaymentMethod(method)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded border ${paymentMethods.includes(method)
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded border ${
+                      paymentMethods.includes(method)
                         ? "border-red-500 bg-red-50"
                         : "border-gray-200 hover:border-gray-300"
-                      }`}
+                    }`}
                   >
                     <span className="text-sm">{method}</span>
                     {paymentMethods.includes(method) && <Check className="h-4 w-4 text-red-500" />}
@@ -128,7 +128,7 @@ export default function PaymentDetailsForm({
                 <Textarea
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
-                  placeholder="Enter your trade instructions"
+                  placeholder="Advertisers' instructions"
                   className="min-h-[120px] resize-none"
                   maxLength={300}
                 />
