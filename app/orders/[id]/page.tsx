@@ -324,6 +324,7 @@ export default function OrderDetailsPage() {
                     orderId={orderId}
                     counterpartyName={counterpartyNickname || "User"}
                     counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                    isClosed={["cancelled", "completed", "timed_out"].includes(order?.status))}
                   />
                 </div>
               </div>
