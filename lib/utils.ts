@@ -153,7 +153,7 @@ export function getChatErrorMessage(tags: string[]): string {
   return message
 }
 
-export function formatAmount(amount: string) {
+export function formatAmount(amount: string | number) {
   return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
