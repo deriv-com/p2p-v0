@@ -36,19 +36,6 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
                 {order.exchange_rate || "N/A"}
               </p>
             </div>
-
-            <div>
-              <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You buy" : "You sell"}</h3>
-              <p className="font-bold">
-                {order.advert?.account_currency}{" "}
-                {typeof order.amount === "object" && order.amount.value
-                  ? Number(order.amount.value)
-                  : typeof order.amount === "number"
-                    ? order.amount
-                    : Number(order.amount)}
-              </p>
-            </div>
-
             <div>
               <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You pay" : "You receive"}</h3>
               <p className="font-bold">
@@ -60,7 +47,17 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
                     : Number(order.price)}
               </p>
             </div>
-
+            <div>
+              <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You buy" : "You sell"}</h3>
+              <p className="font-bold">
+                {order.advert?.account_currency}{" "}
+                {typeof order.amount === "object" && order.amount.value
+                  ? Number(order.amount.value)
+                  : typeof order.amount === "number"
+                    ? order.amount
+                    : Number(order.amount)}
+              </p>
+            </div>
             <div>
               {order.type === "buy" ?
                 <h3 className="text-sm text-slate-500 mb-1">Seller</h3> :
