@@ -222,7 +222,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               placeholder="Enter message"
               rows={1}
               disabled={isSending}
-              className="w-full bg-gray-50 border-gray-200 rounded-[12px] pr-12 resize-none min-h-[48px] placeholder:text-gray-400"
+              className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
             />
             <Button
               className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
