@@ -33,7 +33,7 @@ export default function OrdersPage() {
 
       if (activeTab === "active") {
         filters.is_open = true
-      } else if (activeTab === "past") {
+      } else {
         filters.is_open = false
       }
 
@@ -61,16 +61,16 @@ export default function OrdersPage() {
 
   const getStatusBadgeStyle = (status: string, type: string) => {
     switch (status) {
-      case "pending_payment": 
-        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
-      case "pending_release": 
-        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-800"
+      case "pending_payment":
+        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-1000"
+      case "pending_release":
+        return type === "buy" ? "bg-yellow-100 text-yellow-1000" : "bg-blue-50 text-blue-800"
       case "completed":
         return "bg-green-100 text-green-800"
       case "cancelled":
         return "bg-slate-100 text-slate-800"
       case "disputed":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-1000"
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
@@ -110,18 +110,18 @@ export default function OrdersPage() {
                 <span className="text-base font-medium">
                   {typeof order.amount === "object" && order.amount.value
                     ? Number(order.amount.value).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })
-                    : typeof order.amount === "number"
-                      ? order.amount.toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })
+                    : typeof order.amount === "number"
+                      ? order.amount.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
                       : Number(order.amount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
                 </span>
               </div>
 
@@ -153,79 +153,90 @@ export default function OrdersPage() {
   )
 
   const DesktopOrderTable = () => (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-          {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
-            <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-            {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
-            {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
-            <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
-            {activeTab === "past" && (
-                <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">{order.created_at ? formatDate(order.created_at) : ""}</TableCell>
-              )}
-              <TableCell className="py-4 px-4 align-top">
-                <div>
-                  <div className="font-bold">
-                    {order.type === "buy" ? <span className="text-secondary text-base">Buy</span> : <span className="text-destructive text-base">Sell</span>}
-                    <span className="text-base">{" "} {order.advert.account_currency}{" "} {order.amount}</span>
-                  </div>
-                  <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
-                  <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.advert.user.nickname}</div>
-                </div>
-              </TableCell>
-               <TableCell className="py-4 px-4 align-top text-base">
-                <div className="font-bold">{order.advert.payment_currency}{" "} {order.payment_amount}</div>
-              </TableCell>
-              <TableCell className="py-4 px-4 align-top">
-                <span className={`h-[32px] flex justify-center items-center rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}>
-                  {formatStatus(order.status, order.type)}
-                </span>
-              </TableCell>
-              {activeTab === "active" && (
-                <TableCell className="py-4 px-4 align-top">
-                  
-                </TableCell>
-              )}
-              {activeTab === "past" && (
-                <TableCell className="py-4 px-4 align-top">
-                  {order.rating > 0 && (
-                    <div className="flex">
-                      <Image src="/icons/star-icon.png" alt="Chat" width={20} height={20} className="mr-1" />
-                      {order.rating}
-                    </div>
-                  )}
-                </TableCell>
-              )}
-              <TableCell className="py-4 px-4 align-top">
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    navigateToOrderDetails(order.id)
-                  }}
-                  className="text-slate-500 hover:text-slate-700"
-                  variant="ghost"
-                >
-                  <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                    alt="Chat"
-                    width={20}
-                    height={20}
-                  />
-                </Button>
-              </TableCell>
+    <div className="relative">
+      <div className="overflow-auto max-h-[calc(100vh-200px)]">
+        <Table>
+          <TableHeader className="sticky top-0 bg-white z-10 shadow-sm">
+            <TableRow>
+              {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
+              <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
+              <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
+              <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
+              {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
+              {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
+              <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {orders.map((order) => (
+              <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
+                {activeTab === "past" && (
+                  <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
+                    {order.created_at ? formatDate(order.created_at) : ""}
+                  </TableCell>
+                )}
+                <TableCell className="py-4 px-4 align-top">
+                  <div>
+                    <div className="font-bold">
+                      {order.type === "buy" ? (
+                        <span className="text-secondary text-base">Buy</span>
+                      ) : (
+                        <span className="text-destructive text-base">Sell</span>
+                      )}
+                      <span className="text-base">
+                        {" "}
+                        {order.advert.account_currency} {order.amount}
+                      </span>
+                    </div>
+                    <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
+                    <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.advert.user.nickname}</div>
+                  </div>
+                </TableCell>
+                <TableCell className="py-4 px-4 align-top text-base">
+                  <div className="font-bold">
+                    {order.advert.payment_currency} {order.payment_amount}
+                  </div>
+                </TableCell>
+                <TableCell className="py-4 px-4 align-top">
+                  <div
+                    className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
+                  >
+                    {formatStatus(order.status, order.type)}
+                  </div>
+                </TableCell>
+                {activeTab === "active" && <TableCell className="py-4 px-4 align-top"></TableCell>}
+                {activeTab === "past" && (
+                  <TableCell className="py-4 px-4 align-top">
+                    {order.rating > 0 && (
+                      <div className="flex">
+                        <Image src="/icons/star-icon.png" alt="Chat" width={20} height={20} className="mr-1" />
+                        {order.rating}
+                      </div>
+                    )}
+                  </TableCell>
+                )}
+                <TableCell className="py-4 px-4 align-top">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      navigateToOrderDetails(order.id)
+                    }}
+                    className="text-slate-500 hover:text-slate-700"
+                    variant="ghost"
+                  >
+                    <Image
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
+                      alt="Chat"
+                      width={20}
+                      height={20}
+                    />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   )
 
@@ -235,15 +246,19 @@ export default function OrdersPage() {
         <div className="mb-6">
           <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
             <TabsList className="md:min-w-[330px]">
-              <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">Active orders</TabsTrigger>
-              <TabsTrigger className="w-full data-[state=active]:font-bold" value="past ">Past orders</TabsTrigger>
+              <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
+                Active orders
+              </TabsTrigger>
+              <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
+                Past orders
+              </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
       </div>
 
       {/* Content - Scrollable area */}
-      <div className="flex-1 overflow-y-auto pb-4">
+      <div className="flex-1 pb-4">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>

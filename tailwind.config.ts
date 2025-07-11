@@ -85,6 +85,10 @@ const config: Config = {
         grayscale: {
           DEFAULT: "100%",
         },
+        yellow: {
+          100: "#FFF7E6",
+          1000: "#A66C00",
+        },
         slate: {
           50: "#f8fafc",
           75: "#F6F7F8",

@@ -20,13 +20,13 @@ export default function OrderDetailsPage() {
   const orderId = params.id as string
 
   const [order, setOrder] = useState<Order | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [timeLeft, setTimeLeft] = useState<string>("--:--")
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false)
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
   const [isConfirmLoading, setIsConfirmLoading] = useState(false)
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
+   const [isLoading, setIsLoading] = useState(true)
 
   // Rating states
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
@@ -40,7 +40,7 @@ export default function OrderDetailsPage() {
   }, [orderId])
 
   const fetchOrderDetails = async () => {
-    setIsLoading(true)
+      setIsLoading(true)
     setError(null)
     try {
       // Use the mock data for now since we're having issues with the API
@@ -49,7 +49,8 @@ export default function OrderDetailsPage() {
     } catch (err) {
       console.error("Error fetching order details:", err)
       setError("Failed to load order details. Please try again.")
-    } finally {
+    }
+    finally {
       setIsLoading(false)
     }
   }
@@ -189,18 +190,7 @@ export default function OrderDetailsPage() {
     }
   }, [order])
 
-  if (isLoading) {
-    return (
-      <div className="px-4">
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid  border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading order details...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (error || !order) {
+  if (error) {
     return (
       <div className="px-4">
         <div className="text-center py-12">
@@ -213,144 +203,143 @@ export default function OrderDetailsPage() {
     )
   }
 
-  // Safely access properties with fallbacks
-  const orderType = order.type === "buy" ? "Buy" : "Sell"
-  const advertAccountCurrency = order.advert?.account_currency
-
-  // Safely access user properties
-  const counterpartyNickname = order.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
+  const orderType = order?.type === "buy" ? "Buy" : "Sell"
+  const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel =
-    order.type === "buy"
-      ? order.user.id == USER.id
+    order?.type === "buy"
+      ? order?.user.id == USER.id
         ? "Seller"
         : "Buyer"
-      : order.user.id == USER.id
+      : order?.user.id == USER.id
         ? "Buyer"
         : "Seller"
   const youPayReceiveLabel =
-    order.type === "buy"
-      ? order.user.id == USER.id
+    order?.type === "buy"
+      ? order?.user.id == USER.id
         ? "You receive"
         : "You pay"
-      : order.user.id == USER.id
+      : order?.user.id == USER.id
         ? "You pay"
         : "You receive"
 
-  const orderAmount = order.amount
-
   return (
     <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
-      <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />
+      {orderType && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />}
       <div className="container mx-auto">
-        <div className="flex flex-col">
-          <div className="flex flex-row gap-6">
-            <div className="w-full lg:w-1/2 rounded-lg">
-              <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
-                <div className="flex items-center">
-                  <span className="text-blue-100 font-bold">
-                    {formatStatus(order.status, order.type)}
-                  </span>
-                </div>
-                {(order.status === "pending_payment" || order.status === "pending_release") &&
-                  <div className="flex items-center text-blue-100">
-                    <span>Time left: </span><span className="font-bold">{timeLeft}</span>
+          {isLoading ? (
+              <div className="text-center py-12">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                <p className="mt-2 text-slate-600">Loading order details...</p>
+              </div>) :
+            (<div className="flex flex-col">
+              <div className="flex flex-row gap-6">
+                <div className="w-full lg:w-1/2 rounded-lg">
+                  <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
+                    <div className="flex items-center">
+                      <span className="text-blue-100 font-bold">
+                        {formatStatus(order.status, order.type)}
+                      </span>
+                    </div>
+                    {(order.status === "pending_payment" || order.status === "pending_release") &&
+                      <div className="flex items-center text-blue-100">
+                        <span>Time left: </span><span className="font-bold">{timeLeft}</span>
+                      </div>
+                    }
                   </div>
-                }
-              </div>
-              <div className="p-4 border rounded-lg mb-[24px]">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-                    <p className="text-lg font-bold">
-                      {advertAccountCurrency}{" "}
-                      {Number(orderAmount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                    </p>
-                  </div>
-                  <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
-                    View order details
-                    <ChevronRight className="h-4 w-4 ml-1" />
-                  </button>
-                </div>
+                  <div className="p-4 border rounded-lg mb-[24px]">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
+                        <p className="text-lg font-bold">
+                          {order?.advert?.account_currency}{" "}
+                          {Number(order.amount).toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </p>
+                      </div>
+                      <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
+                        View order details
+                        <ChevronRight className="h-4 w-4 ml-1" />
+                      </button>
+                    </div>
 
-                <div>
-                  <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                  <p className="font-medium">{counterpartyNickname}</p>
-                </div>
-              </div>
-
-              <div className="space-y-6 mt-4">
-                <div className="space-y-4">
-                  {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
-                  {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
-                  <div className="bg-orange-50 rounded-[16px] p-[16px]">
-                    <div className="flex items-start gap-3">
-                    <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="h-5 w-5"/> 
-                      <p className="text-sm text-gray-900">
-                        Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
-                      </p>
+                    <div>
+                      <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                      <p className="font-medium">{counterpartyNickname}</p>
                     </div>
                   </div>
+                  <div className="space-y-6 mt-4">
+                    <div className="space-y-4">
+                      {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
+                      {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
+                      <div className="bg-orange-50 rounded-[16px] p-[16px]">
+                        <div className="flex items-start gap-3">
+                        <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="h-5 w-5"/> 
+                          <p className="text-sm text-gray-900">
+                            Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
+                    (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
+                      <div className="py-4 flex gap-4">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex-1"
+                          onClick={() => setShowCancelConfirmation(true)}
+                        >
+                          Cancel order
+                        </Button>
+                        <Button className="flex-1" size="sm" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                          {isPaymentLoading ? (
+                            <>
+                              <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                              Processing...
+                            </>
+                          ) : (
+                            "I've paid"
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
+                    (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
+                      <div className="p-4 flex gap-4">
+                        <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                          {isConfirmLoading ? (
+                            <>
+                              <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                              Processing...
+                            </>
+                          ) : (
+                            "Confirm"
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  {order.status === "completed" && order.is_reviewable && (
+                    <div className="p-4">
+                      <Button variant="destructive" size="sm" className="w-full" onClick={() => setShowRatingSidebar(true)}>
+                        Rate order
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
+                  <OrderChat
+                    orderId={orderId}
+                    counterpartyName={counterpartyNickname || "User"}
+                    counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                  />
                 </div>
               </div>
-
-              {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
-                (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                  <div className="py-4 flex gap-4">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="flex-1"
-                      onClick={() => setShowCancelConfirmation(true)}
-                    >
-                      Cancel order
-                    </Button>
-                    <Button className="flex-1" size="sm" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                      {isPaymentLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "I've paid"
-                      )}
-                    </Button>
-                  </div>
-                )}
-              {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
-                (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
-                  <div className="p-4 flex gap-4">
-                    <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                      {isConfirmLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "Confirm"
-                      )}
-                    </Button>
-                  </div>
-                )}
-              {order.status === "completed" && order.is_reviewable && (
-                <div className="p-4">
-                  <Button variant="destructive" size="sm" className="w-full" onClick={() => setShowRatingSidebar(true)}>
-                    Rate order
-                  </Button>
-                </div>
-              )}
-            </div>
-            <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
-              <OrderChat
-                orderId={orderId}
-                counterpartyName={counterpartyNickname || "User"}
-                counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-              />
-            </div>
-          </div>
-        </div>
+            </div>)
+        }
       </div>
 
       {showCancelConfirmation && (
@@ -401,19 +390,15 @@ export default function OrderDetailsPage() {
         </div>
       )}
 
-      {/* Rating Sidebar */}
       {showRatingSidebar && (
         <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
           <div className="bg-white w-full max-w-md h-full flex flex-col">
-            {/* Header */}
             <div className="flex justify-between items-center p-4 border-b">
               <h2 className="text-lg font-bold">Rate this transaction</h2>
               <button onClick={() => setShowRatingSidebar(false)} className="text-slate-500 hover:text-slate-700">
                 <X className="h-5 w-5" />
               </button>
             </div>
-
-            {/* Content */}
             <div className="flex-1 overflow-auto p-4">
               <div className="space-y-8">
                 {/* Star Rating */}
@@ -439,8 +424,6 @@ export default function OrderDetailsPage() {
                     ))}
                   </div>
                 </div>
-
-                {/* Recommendation */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium">Would you recommend this Seller?</h3>
                   <div className="flex gap-4">
@@ -470,8 +453,6 @@ export default function OrderDetailsPage() {
                 </div>
               </div>
             </div>
-
-            {/* Footer */}
             <div className="p-4 border-t">
               <Button onClick={handleSubmitReview} disabled={isSubmittingReview || rating === 0} className="w-full">
                 {isSubmittingReview ? (
