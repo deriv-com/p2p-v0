@@ -3,7 +3,7 @@
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
-import { formatAmount } from "@/lib/utils"
+import { formatAmount, formatDateTime } from "@/lib/utils"
 
 interface OrderDetailsSidebarProps {
   isOpen: boolean
@@ -48,6 +48,12 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               <p className="font-bold">
                 {order.advert?.account_currency}{" "}
                 {formatAmount(order.amount)}
+              </p>
+            </div>
+            <div>
+              <h3 className="text-sm text-slate-500 mb-1">Order time</h3>
+              <p className="font-bold">
+                {formatDateTime(order.created_at)}
               </p>
             </div>
             <div>
