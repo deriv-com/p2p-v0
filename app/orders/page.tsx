@@ -107,7 +107,7 @@ export default function OrdersPage() {
               <div className="mb-2">
                 <span className={`text-base font-medium ${orderTypeColor}`}>{orderType}</span>
                 <span className="text-base font-medium"> {order.advert.payment_currency} </span>
-                <span className="text-base font-medium"> {formatAmount(order.amount.value)}
+                <span className="text-base font-medium"> {formatAmount(order.amount)}
                 </span>
               </div>
 
