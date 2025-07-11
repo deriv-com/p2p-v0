@@ -10,7 +10,7 @@ import type { AdFormData, StatusModalState } from "../types"
 import { createAd, updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import { X, ArrowLeft } from "lucide-react"
+import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 
 const getPageTitle = (isEditMode: boolean, adType?: string) => {
@@ -557,13 +557,13 @@ export default function CreateAdPage() {
       >
         {currentStep === 1 && (
           <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
-            <ArrowLeft className="h-6 w-6" />
+            <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
           </button>
         )}
         {currentStep === 0 && <div></div>}
         <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
         <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
-          <X className="h-6 w-6" />
+          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
         </button>
       </div>
 

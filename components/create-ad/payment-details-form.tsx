@@ -3,7 +3,8 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Textarea } from "@/components/ui/textarea"
-import { Check, X, ArrowLeft } from "lucide-react"
+import { Check } from "lucide-react"
+import Image from "next/image"
 import type { AdFormData } from "@/lib/types/ad"
 
 interface PaymentDetailsFormProps {
@@ -73,7 +74,7 @@ export default function PaymentDetailsForm({
     <div className="h-full flex flex-col">
       <div className="p-6 border-b relative">
         <button onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-          <ArrowLeft className="h-5 w-5" />
+          <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} />
         </button>
         <h2 className="text-xl font-semibold text-center">
           {isEditMode ? "Edit payment details" : "Set payment details"}
@@ -82,7 +83,7 @@ export default function PaymentDetailsForm({
           onClick={onClose}
           className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
         >
-          <X className="h-5 w-5" />
+          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} />
         </button>
       </div>
 
