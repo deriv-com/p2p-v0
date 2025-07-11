@@ -188,7 +188,7 @@ export default function OrdersPage() {
               <TableCell className="py-4 px-4 align-top">
                 <div className={`px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}>
                   {formatStatus(order.status, order.type)}
-                </span>
+                </div>
               </TableCell>
               {activeTab === "active" && (
                 <TableCell className="py-4 px-4 align-top">
