@@ -229,7 +229,7 @@ export default function OrderDetailsPage() {
           {isLoading ? (
               <div className="text-center py-12">
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-                <p className="mt-2 text-slate-600">Loading orders...</p>
+                <p className="mt-2 text-slate-600">Loading order details...</p>
               </div>) :
             (<div className="flex flex-col">
               <div className="flex flex-row gap-6">
