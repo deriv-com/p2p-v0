@@ -40,7 +40,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You pay" : "You receive"}</h3>
               <p className="font-bold">
                 {order.advert?.payment_currency}{" "}
-                {formatAmount(order.pay)}
+                {formatAmount(order.payment_amount)}
               </p>
             </div>
             <div>
