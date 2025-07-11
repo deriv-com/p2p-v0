@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
-import { getPaymentMethodColour, getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
+import { getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
 import Image from "next/image"
 
 interface PaymentMethod {
@@ -72,20 +72,6 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const getBackgroundColorClass = (type: string) => {
-    const colorKey = getPaymentMethodColour(type)
-    switch (colorKey) {
-      case "bank":
-        return "bg-paymentMethod-bank"
-      case "ewallet":
-        return "bg-paymentMethod-ewallet"
-      case "other":
-        return "bg-paymentMethod-other"
-      default:
-        return "bg-paymentMethod-other"
-    }
-  }
-
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -122,7 +108,9 @@ const AdPaymentMethods = () => {
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center gap-2">
-                        <div className={`${getBackgroundColorClass(method.type)} rounded-full w-6 h-6`} />
+                        <div
+                          className={`${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"} rounded-full w-6 h-6`}
+                        />
                         <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
