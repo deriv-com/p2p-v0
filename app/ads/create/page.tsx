@@ -553,18 +553,17 @@ export default function CreateAdPage() {
   }
 `}</style>
       <div
-        className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+        className={`flex mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
       >
         {currentStep === 1 && (
-          <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
+          <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2 mr-2">
             <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
           </button>
         )}
-        {currentStep === 0 && <div></div>}
-        <div className="block md:hidden text-xl-bold text-black text-left">
+        <div className="block md:hidden text-xl-bold text-black flex-1 text-left">
           {getPageTitle(isEditMode, formData.type)}
         </div>
-        <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+        <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2 ml-2">
           <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
         </button>
       </div>
