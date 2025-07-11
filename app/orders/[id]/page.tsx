@@ -244,10 +244,7 @@ export default function OrderDetailsPage() {
                         <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                         <p className="text-lg font-bold">
                           {order?.advert?.account_currency}{" "}
-                          {Number(order.amount).toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                          })}
+                          {formatAmount(order.amount)}
                         </p>
                       </div>
                       <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
