@@ -154,5 +154,5 @@ export function getChatErrorMessage(tags: string[]): string {
 }
 
 export function formatAmount(amount: string) {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
