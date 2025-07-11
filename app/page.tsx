@@ -13,8 +13,11 @@ import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
+import { formatPaymentMethodName } from "@/lib/utils"
 
 export default function BuySellPage() {
+    // TODO: Replace these once the currencies are ready
+    const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
   const [currency, setCurrency] = useState("IDR")
@@ -27,15 +30,16 @@ export default function BuySellPage() {
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all") // Updated default value
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all")
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
+  const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("USD")
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
   useEffect(() => {
     fetchAdverts()
-  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod])
+  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -53,13 +57,13 @@ export default function BuySellPage() {
     fetchPaymentMethods()
   }, [])
 
-  // Update the fetchAdverts function to ensure adverts is always an array
   const fetchAdverts = async () => {
     setIsLoading(true)
     setError(null)
     try {
       const params: BuySellAPI.SearchParams = {
         type: activeTab,
+        account_currency: selectedAccountCurrency, 
         currency: currency,
         paymentMethod: selectedPaymentMethod || undefined,
         sortBy: sortBy,
@@ -90,7 +94,6 @@ export default function BuySellPage() {
     router.push(`/advertiser/${userId}`)
   }
 
-  // Handle opening the order sidebar
   const handleOrderClick = (ad: Advertisement) => {
     setSelectedAd(ad)
     setIsOrderSidebarOpen(true)
@@ -117,17 +120,37 @@ export default function BuySellPage() {
       <div className="flex-shrink-0">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           {
-            <div className="flex flex-row justify-between items-center gap-4">
-              <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                <TabsList className="w-full md:min-w-[230px]">
-                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
-                    Buy
-                  </TabsTrigger>
-                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
-                    Sell
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-[24px]">
+                <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+                  <TabsList className="w-full md:min-w-[230px]">
+                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+                      Buy
+                    </TabsTrigger>
+                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+                      Sell
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+
+                <div className="flex gap-[8px] flex-wrap">
+                  {CURRENCY_FILTERS.map((currencyFilter) => (
+                    <Button
+                      key={currencyFilter}
+                      variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedAccountCurrency(currencyFilter)}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        selectedAccountCurrency === currencyFilter
+                          ? "bg-black text-white hover:bg-gray-800"
+                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      {currencyFilter}
+                    </Button>
+                  ))}
+                </div>
+              </div>
             </div>
           }
           <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
@@ -303,11 +326,11 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-green-500" : "bg-blue-500"
+                                      method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
                                     }`}
                                   ></div>
                                 )}
-                                <span className="text-sm">{method}</span>
+                                <span className="text-xs">{formatPaymentMethodName(method)}</span>
                               </div>
                             ))}
                           </div>

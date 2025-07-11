@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import { formatPaymentMethodName } from "@/lib/utils"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -46,7 +47,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setIsAnimating(true)
       setOrderStatus(null)
     } else {
-      // Reset animation state when closed
       setIsAnimating(false)
     }
   }, [isOpen])
@@ -64,7 +64,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
-      // Validate amount against limits
       const minLimit = Number.parseFloat(ad.minimum_order_amount) || 0
       const maxLimit = Number.parseFloat(ad.actual_maximum_order_amount) || 0
 
@@ -138,6 +137,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const handleClose = () => {
     setIsAnimating(false)
     setTimeout(() => {
+      setTotalAmount(0)
       setSelectedPaymentMethods([])
       setAmount(null)
       setValidationError(null)
@@ -169,7 +169,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const title = isBuy ? "Sell USD" : "Buy USD"
   const youSendText = isBuy ? "You receive" : "You pay"
 
-  // Calculate order limits
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
 
@@ -238,10 +237,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <div className="flex-1">
                             <div className="flex items-center mb-2">
                               <div
-                                className={`h-3 w-3 rounded-full mr-2 ${method.type === "bank" ? "bg-green-500" : "bg-blue-500"
+                                className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-payment-method-bank" : "bg-payment-method-other"
                                   }`}
                               />
-                              <span className="font-medium text-gray-600">{method.display_name}</span>
+                              <span className="font-medium text-gray-600">{formatPaymentMethodName(method.display_name)}</span>
                             </div>
                           </div>
                           <Checkbox
@@ -274,7 +273,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               </div>
             ) : (
               <>
-                <div className="p-4 bg-gray-50 m-4 rounded-lg">
+                <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
                     <div className="flex items-center justify-between">
                       <Input value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
@@ -315,7 +314,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Rate ({ad.account_currency} 1)</span>
                     <span className="text-slate-1400">
-                      {ad.payment_currency} {ad.exchange_rate?.toLocaleString()}
+                      {ad.payment_currency} 
+                      {" "}
+                      {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
@@ -334,7 +338,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="border-t m-4 py-2 text-sm">
+                <div className="border-t m-4 mb-0 pt-4 text-sm">
                   <h3 className="text-slate-500">
                     {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
                   </h3>
@@ -342,19 +346,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     {ad.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-4 w-4 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                            ? "bg-green-500"
-                            : method.toLowerCase().includes("wallet") || method.toLowerCase().includes("ewallet")
-                              ? "bg-blue-500"
-                              : "bg-yellow-500"
+                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                            ? "bg-payment-method-bank" : "bg-payment-method-other"
                             }`}
                         />
                         <span className="text-slate-1400">
-                          {method.toLowerCase().includes("bank")
-                            ? "Bank transfer"
-                            : method.toLowerCase().includes("wallet") || method.toLowerCase().includes("ewallet")
-                              ? "eWallet"
-                              : method}
+                          {formatPaymentMethodName(method)}
                         </span>
                       </div>
                     ))}
