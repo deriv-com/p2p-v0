@@ -156,3 +156,15 @@ export function getChatErrorMessage(tags: string[]): string {
 export function formatAmount(amount: string) {
   return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+export function formatDateTime(datetime) {
+  const d = new Date(datetime);
+  return d.toLocaleString('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  }).replace(',', '');
+}
