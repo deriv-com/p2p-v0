@@ -30,10 +30,10 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               <p className="text-base font-bold">{order.id}</p>
             </div>
             <div>
-              <h3 className="text-sm text-slate-500 mb-1">Exchange rate</h3>
+              <h3 className="text-sm text-slate-500 mb-1">Exchange rate ({order.advert?.account_currency} 1)</h3>
               <p className="font-bold">
-                {order.advert?.account_currency} 1.00 = {order.advert?.payment_currency}{" "}
-                {order.exchange_rate || "N/A"}
+                {order.advert?.payment_currency}{" "}
+                {formatAmount(order.exchange_rate)}
               </p>
             </div>
             <div>
