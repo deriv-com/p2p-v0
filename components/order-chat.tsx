@@ -212,7 +212,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       </div>
 
       <div className="p-4 border-t">
-          {(order.status === "cancelled" || order.status === "completed" || order.status === "timed_out") ? <div>
+          {(order?.status === "cancelled" || order?.status === "completed" || order?.status === "timed_out") ? <div>
               This conversation is closed.
           </div> :
             <div className="space-y-2">
