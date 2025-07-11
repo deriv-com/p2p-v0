@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocket } from "@/hooks/use-websocket"
-import { getChatErrorMessage } from "@/lib/utils"
+import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
 
 type Message = {
   attachment: {
@@ -192,7 +192,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       <div className="text-xs text-error-text mt-[4px]">Message not sent: {getChatErrorMessage(msg.tags)}
                       </div> :
                       <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}>
-                        {formatMessageTime(msg.time)}
+                        {formatDateTime(msg.time)}
                       </div>
                   }
                 </div>
@@ -250,9 +250,4 @@ function formatLastSeen(date: Date): string {
   if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`
 
   return date.toLocaleDateString()
-}
-
-function formatMessageTime(time: number): string {
-  const date = new Date(time)
-  return date.toLocaleString()
 }
