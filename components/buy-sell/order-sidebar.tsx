@@ -314,7 +314,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Rate ({ad.account_currency} 1)</span>
                     <span className="text-slate-1400">
-                      {ad.payment_currency} {ad.exchange_rate?.toLocaleString()}
+                      {ad.payment_currency} 
+                      {" "}
+                      {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
