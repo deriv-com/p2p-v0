@@ -273,7 +273,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               </div>
             ) : (
               <>
-                <div className="p-4 bg-gray-50 m-4 rounded-lg">
+                <div className="p-4 bg-black/4 m-4 rounded-lg">
                   <div className="mb-2">
                     <div className="flex items-center justify-between">
                       <Input value={amount} onChange={handleAmountChange} placeholder="Enter amount" />
