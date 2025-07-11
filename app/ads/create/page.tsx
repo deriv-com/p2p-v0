@@ -561,7 +561,9 @@ export default function CreateAdPage() {
           </button>
         )}
         {currentStep === 0 && <div></div>}
-        <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
+        <div className="block md:hidden text-xl-bold text-black text-left">
+          {getPageTitle(isEditMode, formData.type)}
+        </div>
         <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
           <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
         </button>
