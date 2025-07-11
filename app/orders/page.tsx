@@ -185,7 +185,9 @@ export default function OrdersPage() {
                       )}
                       <span className="text-base">
                         {" "}
-                        {order.advert.account_currency} {order.amount.toLocaleString()}
+                        {order.advert.account_currency} {order.amount.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,)}
                       </span>
                     </div>
                     <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
@@ -194,7 +196,9 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top text-base">
                   <div className="font-bold">
-                    {order.advert.payment_currency} {order.payment_amount.toLocaleString()}
+                    {order.advert.payment_currency} {order.payment_amount.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,)}
                   </div>
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top">
