@@ -26,7 +26,6 @@ const AdPaymentMethods = () => {
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
 
-  // Local function to get payment method color
   const getPaymentMethodColour = (type: string): string => {
     if (type === "bank") {
       return "bg-paymentMethod-bank"
