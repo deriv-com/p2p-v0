@@ -13,6 +13,7 @@ import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
+import { formatPaymentMethodName } from "@/lib/utils"
 
 export default function BuySellPage() {
     // TODO: Replace these once the currencies are ready
@@ -329,7 +330,7 @@ export default function BuySellPage() {
                                     }`}
                                   ></div>
                                 )}
-                                <span className="text-sm">{method}</span>
+                                <span className="text-sm">{formatPaymentMethodName(method)}</span>
                               </div>
                             ))}
                           </div>
