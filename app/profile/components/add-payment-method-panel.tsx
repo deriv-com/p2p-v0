@@ -239,20 +239,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
         <div className="p-6 space-y-6">
-          {/* Selected method display */}
-          {selectedPaymentMethod && (
-            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
-              <Image
-                src={getPaymentMethodIcon(selectedPaymentMethod.type) || "/placeholder.svg"}
-                alt={selectedPaymentMethod.display_name}
-                width={20}
-                height={20}
-                className="w-5 h-5"
-              />
-              <span className="font-medium">{selectedPaymentMethod.display_name}</span>
-            </div>
-          )}
-
           {/* Method fields */}
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
