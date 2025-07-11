@@ -38,7 +38,7 @@ export default function BuySellPage() {
 
   useEffect(() => {
     fetchAdverts()
-  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod])
+  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedCurrencyFilter])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -62,6 +62,7 @@ export default function BuySellPage() {
     try {
       const params: BuySellAPI.SearchParams = {
         type: activeTab,
+        account_currency: selectedCurrencyFilter, 
         currency: currency,
         paymentMethod: selectedPaymentMethod || undefined,
         sortBy: sortBy,
