@@ -181,11 +181,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                     </div>
                   )}
                   {msg.message && 
-                  <div className={`break-words ${msg.sender_is_self ? msg.rejected ? "bg-blue-200" : "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>{msg.message}</div>
+                  <div className={`break-words ${msg.sender_is_self ? msg.rejected ? "bg-blue-200" : "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px] flex items-center`}>
+                    <div>{msg.message}<div>
+                    <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} /> 
+                  </div>
                   }
                   {msg.rejected ? 
-                      <div className="text-xs text-error-text mt-[4px]"><div>Message not sent: {getChatErrorMessage(msg.tags)}</div>
-                      <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} /> 
+                      <div className="text-xs text-error-text mt-[4px]">Message not sent: {getChatErrorMessage(msg.tags)}
                       </div> :
                       <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}>
                         {formatMessageTime(msg.time)}
