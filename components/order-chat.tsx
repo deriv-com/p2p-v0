@@ -26,9 +26,10 @@ type OrderChatProps = {
   orderId: string
   counterpartyName: string
   counterpartyInitial: string
+  isClosed: boolean
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial }: OrderChatProps) {
+export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed }: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -212,7 +213,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       </div>
 
       <div className="p-4 border-t">
-          {(["cancelled", "completed", "timed_out"].includes(order?.status))  ? <div>
+          {isClosed ? <div>
               This conversation is closed.
           </div> :
             <div className="space-y-2">
