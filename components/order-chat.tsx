@@ -212,7 +212,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         </div>
       </div>
 
-          {isClosed ? <div className="p-4 border-t text-center text-neutral-7 bg-[#0000000A]">
+          {isClosed ? <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
               This conversation is closed.
           </div> :
           <div className="p-4 border-t">
