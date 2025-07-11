@@ -120,7 +120,7 @@ const AdPaymentMethods = () => {
                       <Checkbox
                         checked={isSelected}
                         onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-                        className={`border-0 transition-colors ${isSelected ? "bg-black text-white" : "bg-white"}`}
+                        className="data-[state=checked]:!bg-black data-[state=checked]:!border-black"
                       />
                     </div>
                     <div className="space-y-1">
