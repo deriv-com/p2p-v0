@@ -24,7 +24,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
           </Button>
         </div>
         <div className="flex-1 overflow-auto p-4">
-          <div className="space-y-6">
+          <div className="space-y-[16px]">
             <div>
               <h3 className="text-sm text-slate-500 mb-1">Order ID</h3>
               <p className="text-base font-bold">{order.id}</p>
