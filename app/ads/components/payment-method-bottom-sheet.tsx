@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
@@ -25,8 +27,10 @@ const PaymentMethodBottomSheet = ({
     }
   }, [open, selectedMethods])
 
-  const handleReset = () => {
-    setSelectedMethods(initialSelectedMethods)
+  const handleReset = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setInitialSelectedMethods(selectedMethods)
   }
 
   const handleSelect = () => {
@@ -44,10 +48,10 @@ const PaymentMethodBottomSheet = ({
         <div className="flex justify-between mt-4">
           <Button
             type="button"
-            variant="outline"
             onClick={handleReset}
             onMouseDown={(e) => e.stopPropagation()}
-            className="w-full h-[48px] border-black text-black rounded-full"
+            variant="outline"
+            className="w-full h-[48px] border-black rounded-full"
           >
             Reset
           </Button>
