@@ -149,42 +149,34 @@ export default function OrderDetailsPage() {
     const calculateTimeLeft = () => {
       const now = new Date()
       const expiryTime = new Date(order.expires_at)
-
-      // Calculate time difference in milliseconds
       const diff = expiryTime.getTime() - now.getTime()
 
       if (diff <= 0) {
-        // Time has expired
         setTimeLeft("00:00")
         return false
       }
 
-      // Convert to minutes and seconds
       const minutes = Math.floor(diff / 60000)
       const seconds = Math.floor((diff % 60000) / 1000)
 
-      // Format as MM:SS
+
       setTimeLeft(`${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`)
       return true
     }
 
-    // Calculate immediately
     const hasTimeLeft = calculateTimeLeft()
 
-    // Set up interval to update every second if time hasn't expired
     let intervalId: NodeJS.Timeout | null = null
     if (hasTimeLeft) {
       intervalId = setInterval(() => {
         const stillHasTime = calculateTimeLeft()
         if (!stillHasTime && intervalId) {
           clearInterval(intervalId)
-          // Optionally refresh order details when timer expires
           fetchOrderDetails()
         }
       }, 1000)
     }
 
-    // Clean up interval on unmount
     return () => {
       if (intervalId) clearInterval(intervalId)
     }
@@ -224,7 +216,7 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
-      {orderType && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />}
+      {order?.type && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} order`} redirectUrl={"/orders"} />}
       <div className="container mx-auto">
           {isLoading ? (
               <div className="text-center py-12">
