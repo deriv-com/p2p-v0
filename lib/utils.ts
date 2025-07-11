@@ -49,7 +49,14 @@ export function getPaymentMethodIcon(type: string): string {
 }
 
 export function getPaymentMethodColour(type: string): string {
-  return type === "ewallet" ? "bg-eWalletsColour" : "bg-BankTransferColour"
+  switch (type) {
+    case "bank":
+      return "bg-paymentMethod-bank"
+    case "ewallet":
+      return "bg-paymentMethod-ewallet"
+    default:
+      return "bg-paymentMethod-other"
+  }
 }
 
 export function getCategoryDisplayName(type: string): string {
