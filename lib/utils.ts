@@ -1,58 +1,139 @@
-import { type ClassValue, clsx } from "clsx"
+import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function getPaymentMethodColour(type: string): string {
-  switch (type) {
-    case "bank":
-      return "bg-paymentMethod-bank"
-    case "ewallet":
-      return "bg-paymentMethod-ewallet"
-    default:
-      return "bg-paymentMethod-other"
-  }
+interface AvailablePaymentMethod {
+  id: number
+  method: string
+  display_name: string
+  type: string
+  fields: Record<
+    string,
+    {
+      display_name: string
+      required: boolean
+      value?: string
+    }
+  >
 }
 
-export function getPaymentMethodIcon(type: string): string | null {
-  switch (type) {
-    case "bank":
-      return "/icons/bank-transfer-icon.png"
-    case "ewallet":
-      return "/icons/ewallet-icon.png"
-    default:
-      return null
-  }
+interface PaymentMethodField {
+  name: string
+  label: string
+  type: string
+  required: boolean
+}
+
+export function getPaymentMethodFields(
+  method: string,
+  availablePaymentMethods: AvailablePaymentMethod[],
+): PaymentMethodField[] {
+  const paymentMethod = availablePaymentMethods.find((pm) => pm.method === method)
+  if (!paymentMethod) return []
+
+  return Object.entries(paymentMethod.fields)
+    .filter(([key]) => key !== "instructions")
+    .map(([key, field]) => ({
+      name: key,
+      label: field.display_name,
+      type: "text",
+      required: field.required,
+    }))
+}
+
+export function getPaymentMethodIcon(type: string): string {
+  return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
+}
+
+export function getPaymentMethodColour(type: string): string {
+  return type === "ewallet" ? "bg-eWalletsColour" : "bg-BankTransferColour"
 }
 
 export function getCategoryDisplayName(type: string): string {
   switch (type) {
     case "bank":
-      return "Bank Transfer"
+      return "Bank transfer"
     case "ewallet":
-      return "E-Wallet"
+      return "eWallet"
     default:
-      return type.charAt(0).toUpperCase() + type.slice(1)
+      return "Other"
   }
 }
 
-export function getMethodDisplayDetails(method: any): { primary: string; secondary: string } {
-  if (method.type === "bank") {
-    return {
-      primary: method.fields?.bank_name || method.display_name,
-      secondary: method.fields?.account_number ? `****${method.fields.account_number.slice(-4)}` : "",
-    }
-  } else if (method.type === "ewallet") {
-    return {
-      primary: method.display_name,
-      secondary: method.fields?.account_id || method.fields?.phone_number || "",
+export const maskAccountNumber = (accountNumber: any): string => {
+  if (!accountNumber) return ""
+
+  let rawValue = accountNumber
+
+  if (typeof accountNumber === "object" && accountNumber !== null) {
+    if ("value" in accountNumber) {
+      rawValue = accountNumber.value
     }
   }
 
-  return {
-    primary: method.display_name,
-    secondary: "",
+  const accountStr = String(rawValue)
+
+  if (accountStr.length <= 4) {
+    return accountStr
   }
+
+  return "*".repeat(accountStr.length - 4) + accountStr.slice(-4)
+}
+
+export function formatPaymentMethodName(methodName: string): string {
+  if (!methodName) return ""
+
+  return methodName
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ")
+}
+
+export function getMethodDisplayDetails(method: {
+  type: string
+  fields: Record<string, any>
+  display_name: string
+}) {
+  if (method.type === "bank") {
+    const account = method.fields.account?.value || ""
+    const bankName = method.fields.bank_name?.value || "Bank Transfer"
+    const maskedAccount = maskAccountNumber(account)
+
+    return {
+      primary: maskedAccount,
+      secondary: bankName,
+    }
+  } else {
+    const account = method.fields.account?.value || ""
+    const displayValue = account || method.display_name
+
+    return {
+      primary: displayValue,
+      secondary: method.display_name,
+    }
+  }
+}
+
+export function formatStatus(status: string, type: string): string {
+  if (!status) return ""
+
+  const statusMap: Record<string, string> = {
+    refunded: "Refunded",
+    cancelled: "Cancelled",
+    timed_out: "Expired",
+    completed: "Complete",
+    pending_payment: type === "buy" ? "Complete payment" : "Awaiting payment",
+    pending_release: type === "buy" ? "Waiting seller's confirmation" : "Confirm payment",
+    under_dispute: "Under dispute",
+  }
+
+  const lowerStatus = status.toLowerCase()
+  if (statusMap[lowerStatus]) {
+    return statusMap[lowerStatus]
+  }
+
+  return status
 }
