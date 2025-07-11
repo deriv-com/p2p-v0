@@ -137,18 +137,18 @@ const config: Config = {
           icon: "#c40000",
           bg: "#fee2e2",
         },
-        "default-button-text": "#002A33",
-  paymentMethod: {
+        "default-button-text": "#002A33",paymentMethod: {
   bank: {
-    500: "#74B816",
+    DEFAULT: "#74B816",
   },
   ewallet: {
-    500: "#1A79CB",
+    DEFAULT: "#1A79CB",
   },
   other: {
-    500: "#1A79CB",
+    DEFAULT: "#1A79CB",
   },
 },
+
       },
       borderRadius: {
         lg: "var(--radius)",
