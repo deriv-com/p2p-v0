@@ -28,7 +28,6 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               <h3 className="text-sm text-slate-500 mb-1">Order ID</h3>
               <p className="text-base font-bold">{order.id}</p>
             </div>
-
             <div>
               <h3 className="text-sm text-slate-500 mb-1">Exchange rate</h3>
               <p className="font-bold">
@@ -48,7 +47,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               </p>
             </div>
             <div>
-              <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You buy" : "You sell"}</h3>
+              <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You receive" : "You send"}</h3>
               <p className="font-bold">
                 {order.advert?.account_currency}{" "}
                 {typeof order.amount === "object" && order.amount.value
