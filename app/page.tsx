@@ -330,7 +330,7 @@ export default function BuySellPage() {
                                     }`}
                                   ></div>
                                 )}
-                                <span className="text-sm">{formatPaymentMethodName(method)}</span>
+                                <span className="text-xs">{formatPaymentMethodName(method)}</span>
                               </div>
                             ))}
                           </div>
