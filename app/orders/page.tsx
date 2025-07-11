@@ -33,7 +33,7 @@ export default function OrdersPage() {
 
       if (activeTab === "active") {
         filters.is_open = true
-      } else if (activeTab === "past") {
+      } else {
         filters.is_open = false
       }
 
