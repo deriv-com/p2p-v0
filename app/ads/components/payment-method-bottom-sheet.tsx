@@ -45,21 +45,17 @@ export default function PaymentMethodBottomSheet({
       .replace(/[^a-z0-9_]/g, "")
   }
 
-
   const isDisplayName = (value: string): boolean => {
     return value.includes(" ") || /[A-Z]/.test(value)
   }
-
 
   const normalizeMethodName = (methodName: string): string => {
     return isDisplayName(methodName) ? convertToSnakeCase(methodName) : methodName
   }
 
-
   const filteredMethods = availableMethods.filter((method) =>
     method.display_name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
-
 
   useEffect(() => {
     if (isOpen) {
@@ -67,7 +63,6 @@ export default function PaymentMethodBottomSheet({
       setSearchQuery("")
     }
   }, [isOpen, selectedMethods])
-
 
   const toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
     e.preventDefault()
@@ -83,15 +78,12 @@ export default function PaymentMethodBottomSheet({
     }
   }
 
-
   const isMethodSelected = (method: PaymentMethod) => {
     const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
     return normalizedSelected.includes(method.method)
   }
 
-
   const isMaxReached = localSelectedMethods.length >= maxSelections
-
 
   const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -100,13 +92,11 @@ export default function PaymentMethodBottomSheet({
     onClose()
   }
 
-
   const handleCancel = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     onClose()
   }
-
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -115,7 +105,6 @@ export default function PaymentMethodBottomSheet({
       onClose()
     }
   }
-
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setStartY(e.touches[0].clientY)
@@ -130,7 +119,6 @@ export default function PaymentMethodBottomSheet({
 
   const handleTouchEnd = () => {
     if (isDragging) {
-
       if (currentY - startY > 100) {
         onClose()
       }
@@ -138,14 +126,12 @@ export default function PaymentMethodBottomSheet({
     }
   }
 
-
   const getTransformStyle = () => {
     if (isDragging && currentY > startY) {
       return { transform: `translateY(${currentY - startY}px)` }
     }
     return {}
   }
-
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -214,12 +200,13 @@ export default function PaymentMethodBottomSheet({
                   disabled={!isMethodSelected(method) && isMaxReached}
                 >
                   <div
-                    className={`w-10 h-10 flex items-center justify-center rounded-md border ${isMethodSelected(method)
-                      ? "bg-primary border-primary"
-                      : isMaxReached
-                        ? "border-gray-200 bg-gray-100"
-                        : "border-gray-200"
-                      }`}
+                    className={`w-10 h-10 flex items-center justify-center rounded-md border ${
+                      isMethodSelected(method)
+                        ? "bg-black border-black"
+                        : isMaxReached
+                          ? "border-gray-200 bg-gray-100"
+                          : "border-gray-200"
+                    }`}
                   >
                     {isMethodSelected(method) && <Check className="h-6 w-6 text-white" />}
                   </div>
