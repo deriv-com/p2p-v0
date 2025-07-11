@@ -341,19 +341,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     {ad.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-4 w-4 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                            ? "bg-green-500"
-                            : method.toLowerCase().includes("wallet") || method.toLowerCase().includes("ewallet")
-                              ? "bg-blue-500"
-                              : "bg-yellow-500"
+                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                            ? "bg-payment-method-bank" : "bg-payment-method-other"
                             }`}
                         />
                         <span className="text-slate-1400">
-                          {method.toLowerCase().includes("bank")
-                            ? "Bank transfer"
-                            : method.toLowerCase().includes("wallet") || method.toLowerCase().includes("ewallet")
-                              ? "eWallet"
-                              : method}
+                          {formatPaymentMethodName(method)}
                         </span>
                       </div>
                     ))}
