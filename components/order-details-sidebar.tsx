@@ -3,6 +3,7 @@
 import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
+import { formatAmount } from "@/lib/utils"
 
 interface OrderDetailsSidebarProps {
   isOpen: boolean
@@ -39,22 +40,14 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You pay" : "You receive"}</h3>
               <p className="font-bold">
                 {order.advert?.payment_currency}{" "}
-                {typeof order.price === "object" && order.price.value
-                  ? Number(order.price.value)
-                  : typeof order.price === "number"
-                    ? order.price
-                    : Number(order.price)}
+                {formatAmount(order.pay)}
               </p>
             </div>
             <div>
               <h3 className="text-sm text-slate-500 mb-1">{order.type === "buy" ? "You receive" : "You send"}</h3>
               <p className="font-bold">
                 {order.advert?.account_currency}{" "}
-                {typeof order.amount === "object" && order.amount.value
-                  ? Number(order.amount.value)
-                  : typeof order.amount === "number"
-                    ? order.amount
-                    : Number(order.amount)}
+                {formatAmount(order.amount)}
               </p>
             </div>
             <div>
