@@ -189,7 +189,7 @@ export default function OrderDetailsPage() {
     }
   }, [order])
 
-  if (isLoading) {
+  /*if (isLoading) {
     return (
       <div className="px-4">
         <div className="text-center py-12">
@@ -198,7 +198,7 @@ export default function OrderDetailsPage() {
         </div>
       </div>
     )
-  }
+  }*/
 
   if (error || !order) {
     return (
