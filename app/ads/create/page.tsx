@@ -521,8 +521,8 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0 z-50 overflow-hidden">
-      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container h-full pb-24 px-4 md:px-0 overflow-hidden">
+    <div className="fixed w-full h-full bg-white top-0 left-0">
+      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">
         <style jsx global>{`
           input::placeholder {
             font-weight: 400;
@@ -546,8 +546,8 @@ export default function CreateAdPage() {
     :global(#__next),
     :global(main),
     :global(.container) {
-      overflow: hidden !important;
-      height: 100vh !important;
+      overflow-y: auto !important;
+      height: auto !important;
     }
   `}</style>
         <div
