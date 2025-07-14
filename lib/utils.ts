@@ -60,6 +60,14 @@ export function getPaymentMethodColour(type: string): string {
   }
 }
 
+export function getPaymentMethodColourByName(methodName: string): string {
+  const lowerMethod = methodName.toLowerCase()
+  if (lowerMethod.includes("bank") || lowerMethod.includes("transfer")) {
+    return "bg-paymentMethod-bank"
+  }
+  return "bg-paymentMethod-other"
+}
+
 export function getCategoryDisplayName(type: string): string {
   switch (type) {
     case "bank":

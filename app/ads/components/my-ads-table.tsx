@@ -12,7 +12,7 @@ import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -84,13 +84,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
       <div className="space-y-1">
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
-            <span
-              className={`w-2 h-2 rounded-full mr-2 ${
-                method.toLowerCase().includes("bank") || method.toLowerCase().includes("transfer")
-                  ? "bg-paymentMethod-bank"
-                  : "bg-paymentMethod-other"
-              }`}
-            ></span>
+            <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
             <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
           </div>
         ))}
