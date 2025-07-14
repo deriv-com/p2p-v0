@@ -23,7 +23,7 @@ export default function StatusModal({
   onClose,
   adId,
   adType,
-  actionButtonText,
+  actionButtonText = "OK",
   isUpdate = false,
 }: StatusModalProps) {
   const modalStyles = {
@@ -33,15 +33,6 @@ export default function StatusModal({
     maxHeight: "748.8px",
     borderRadius: "32px",
   }
-
-  const getDefaultButtonText = () => {
-    if (type === "error" || isUpdate) {
-      return "Update ad"
-    }
-    return "OK"
-  }
-
-  const buttonText = actionButtonText || getDefaultButtonText()
 
   return (
     <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -138,7 +129,7 @@ export default function StatusModal({
           </div>
 
           <Button onClick={onClose} variant="black" className="w-full">
-            {buttonText}
+            {actionButtonText}
           </Button>
         </div>
       </AlertDialogContent>
