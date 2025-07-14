@@ -109,27 +109,8 @@ export default function PaymentDetailsForm({
   }
 
   const handleSelectPaymentMethods = (methods: string[]) => {
-    console.log("🔍 Payment methods selected:", methods)
     setTouched(true)
-
-    // Force immediate state update using callback form
-    setPaymentMethods(() => {
-      // Trigger validation event with the new methods
-      setTimeout(() => {
-        const event = new CustomEvent("paymentFormValidationChange", {
-          detail: {
-            isValid: methods.length > 0 || initialData.type === "sell",
-            formData: {
-              paymentMethods: methods,
-              instructions,
-            },
-          },
-        })
-        document.dispatchEvent(event)
-      }, 0)
-
-      return methods
-    })
+    setPaymentMethods(methods)
   }
 
   const handleOpenBottomSheet = () => {
@@ -158,6 +139,7 @@ export default function PaymentDetailsForm({
           instructions,
         },
       },
+      bubbles: true,
     })
     document.dispatchEvent(event)
   }, [paymentMethods, instructions])
@@ -196,7 +178,10 @@ export default function PaymentDetailsForm({
                       <PaymentMethodBottomSheet
                         isOpen={bottomSheetOpen}
                         onClose={handleCloseBottomSheet}
-                        onSelect={handleSelectPaymentMethods}
+                        onSelect={(methods) => {
+                          handleSelectPaymentMethods(methods)
+                          handleCloseBottomSheet()
+                        }}
                         selectedMethods={paymentMethods}
                         availableMethods={availablePaymentMethods}
                         maxSelections={MAX_PAYMENT_METHODS}
