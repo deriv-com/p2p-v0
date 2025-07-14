@@ -46,9 +46,9 @@ export default function StatusModal({
               } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
             >
               {type === "success" ? (
-                <Image src="/icons/success_icon_round.png" alt="Success" width={32} height={32} className="w-8 h-8" />
+                <Image src="/icons/success_icon_round.png" alt="Success" width={56} height={56} className="w-14 h-14" />
               ) : (
-                <Image src="/icons/error_icon_round.png" alt="Error" width={32} height={32} className="w-8 h-8" />
+                <Image src="/icons/error_icon_round.png" alt="Error" width={56} height={56} className="w-14 h-14" />
               )}
             </div>
           </div>
