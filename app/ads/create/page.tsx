@@ -303,8 +303,13 @@ export default function CreateAdPage() {
   }
 
   const handlePaymentDetailsSubmit = async (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+    console.log("🔍 Payment details submit - received data:", data)
+    console.log("🔍 Payment details submit - errors:", errors)
+
     const finalData = { ...formData, ...data }
     formDataRef.current = finalData
+
+    console.log("🔍 Final data before API call:", finalData)
 
     if (errors && Object.keys(errors).length > 0) {
       return
@@ -329,6 +334,8 @@ export default function CreateAdPage() {
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
+
+        console.log("🔍 Update payload:", payload)
 
         const updateResult = await updateAd(adId, payload)
 
@@ -366,7 +373,11 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
+        console.log("🔍 Create payload:", payload)
+
         const result = await createAd(payload)
+
+        console.log("🔍 API result:", result)
 
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
@@ -384,6 +395,7 @@ export default function CreateAdPage() {
         router.push("/ads")
       }
     } catch (error) {
+      console.log("🔍 API Error:", error)
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",

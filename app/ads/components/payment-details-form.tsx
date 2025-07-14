@@ -80,6 +80,9 @@ export default function PaymentDetailsForm({
     e.preventDefault()
     setTouched(true)
 
+    console.log("🔍 Form submit - paymentMethods:", paymentMethods)
+    console.log("🔍 Form submit - initialData.type:", initialData.type)
+
     const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
@@ -90,6 +93,9 @@ export default function PaymentDetailsForm({
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
+
+    console.log("🔍 Form data being submitted:", formData)
+    console.log("🔍 Form valid:", formValid)
 
     if (formValid) {
       onSubmit(formData)
@@ -109,6 +115,7 @@ export default function PaymentDetailsForm({
   }
 
   const handleSelectPaymentMethods = (methods: string[]) => {
+    console.log("🔍 Payment methods selected:", methods)
     setTouched(true)
     setPaymentMethods(methods)
 
@@ -122,8 +129,8 @@ export default function PaymentDetailsForm({
             instructions,
           },
         },
-        bubbles: true,
       })
+      console.log("🔍 Dispatching validation event with methods:", methods)
       document.dispatchEvent(event)
     }, 0)
   }
@@ -154,7 +161,6 @@ export default function PaymentDetailsForm({
           instructions,
         },
       },
-      bubbles: true,
     })
     document.dispatchEvent(event)
   }, [paymentMethods, instructions])

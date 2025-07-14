@@ -73,6 +73,10 @@ export default function PaymentMethodBottomSheet({
     const methodName = method.method
     const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
 
+    console.log("🔍 Toggle method - method.method:", methodName)
+    console.log("🔍 Toggle method - current selected:", localSelectedMethods)
+    console.log("🔍 Toggle method - normalized selected:", normalizedSelected)
+
     if (normalizedSelected.includes(methodName)) {
       setLocalSelectedMethods(localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName))
     } else if (localSelectedMethods.length < maxSelections) {
@@ -90,6 +94,11 @@ export default function PaymentMethodBottomSheet({
   const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    console.log("🔍 Bottom sheet - selecting methods:", localSelectedMethods)
+    console.log(
+      "🔍 Bottom sheet - available methods:",
+      availableMethods.map((m) => ({ method: m.method, display_name: m.display_name })),
+    )
     onSelect(localSelectedMethods)
     onClose()
   }
