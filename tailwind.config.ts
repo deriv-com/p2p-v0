@@ -7,6 +7,7 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet", "bg-paymentMethod-other"],
   theme: {
     extend: {
       opacity: {
