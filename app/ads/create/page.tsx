@@ -339,7 +339,6 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        // Store update success data in localStorage like create mode
         localStorage.setItem(
           "adUpdateSuccess",
           JSON.stringify({
@@ -348,7 +347,6 @@ export default function CreateAdPage() {
           }),
         )
 
-        // Navigate to ads page immediately
         router.push("/ads")
       } else {
         const payload = {
