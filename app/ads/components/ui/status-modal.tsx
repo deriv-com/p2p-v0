@@ -40,17 +40,11 @@ export default function StatusModal({
         {/* Upper section with grey background */}
         <div className="bg-gray-100 relative p-6 pb-12">
           <div className="flex justify-center">
-            <div
-              className={`${
-                type === "success" ? "bg-success-bg" : "bg-warning-bg"
-              } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
-            >
-              {type === "success" ? (
-                <Image src="/icons/success_icon_round.png" alt="Success" width={56} height={56} className="w-14 h-14" />
-              ) : (
-                <Image src="/icons/error_icon_round.png" alt="Error" width={56} height={56} className="w-14 h-14" />
-              )}
-            </div>
+            {type === "success" ? (
+              <Image src="/icons/success_icon_round.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+            ) : (
+              <Image src="/icons/error_icon_round.png" alt="Error" width={56} height={56} className="w-14 h-14" />
+            )}
           </div>
 
           <button
