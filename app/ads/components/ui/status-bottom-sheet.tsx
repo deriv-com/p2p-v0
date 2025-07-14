@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useEffect, useRef, useState } from "react"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
@@ -31,109 +29,105 @@ export default function StatusBottomSheet({
   actionButtonText = "OK",
   isUpdate = false,
 }: StatusBottomSheetProps) {
-  const [startY, setStartY] = useState(0)
-  const [currentY, setCurrentY] = useState(0)
-  const [isDragging, setIsDragging] = useState(false)
-  const bottomSheetRef = useRef<HTMLDivElement>(null)
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setStartY(e.touches[0].clientY)
-    setIsDragging(true)
-  }
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (isDragging) {
-      setCurrentY(e.touches[0].clientY)
-    }
-  }
-
-  const handleTouchEnd = () => {
-    if (isDragging) {
-      if (currentY - startY > 100) {
-        onClose()
-      }
-      setIsDragging(false)
-    }
-  }
-
-  const getTransformStyle = () => {
-    if (isDragging && currentY > startY) {
-      return { transform: `translateY(${currentY - startY}px)` }
-    }
-    return {}
-  }
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
-    return () => {
-      document.body.style.overflow = ""
-    }
-  }, [isOpen])
-
-  if (!isOpen) return null
-
-  const getIconSrc = () => {
-    return type === "success" ? "/icons/success_icon_round.png" : "/icons/error_icon_round.png"
-  }
-
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
-      <div
-        ref={bottomSheetRef}
-        className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[32px] max-h-[90vh] overflow-y-auto z-[60]"
-        style={getTransformStyle()}
-        onClick={(e) => e.stopPropagation()}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        <div className="bg-gray-100 pb-8">
-          <div className="w-full flex justify-center pt-4 pb-2">
-            <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
+    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent side="bottom" className="p-0 rounded-t-3xl border-none">
+        <div className="bg-gray-100 relative p-6 pb-12 rounded-t-3xl">
+          <div className="flex justify-center">
+            {type === "success" ? (
+              <Image src="/icons/success_icon_round.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+            ) : (
+              <Image src="/icons/error_icon_round.png" alt="Error" width={56} height={56} className="w-14 h-14" />
+            )}
           </div>
 
-          <div className="flex justify-center mb-8 mt-4">
-            <div className="flex items-center justify-center w-[72px] h-[72px]">
-              <Image
-                src={getIconSrc() || "/placeholder.svg"}
-                alt={type === "success" ? "Success" : "Error"}
-                width={72}
-                height={72}
-                className="w-[72px] h-[72px]"
-              />
-            </div>
-          </div>
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 text-black hover:text-gray-700 p-2"
+            aria-label="Close"
+          >
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} className="w-12 h-12" />
+          </button>
         </div>
 
-        <div className="px-6 pb-8">
-          <h2 className="mb-6 font-bold text-lg leading-7">{title}</h2>
+        <div className="p-6">
+          <div className="mb-12">
+            <h2
+              className="font-bold mb-6"
+              style={{
+                fontSize: "20px",
+                lineHeight: "100%",
+                letterSpacing: "0%",
+                fontWeight: 700,
+              }}
+            >
+              {title}
+            </h2>
 
-          {type === "success" && (
-            <>
-              <p className="mb-6 font-normal text-base leading-6">
-                {isUpdate
-                  ? `You've successfully updated Ad${adType && adId ? ` (${adType} ${adId})` : "."}`
-                  : `You've successfully created Ad${adType && adId ? ` (${adType} ${adId})` : "."}`}
+            {type === "success" && (
+              <>
+                <p
+                  className="text-gray-900 mb-6"
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    letterSpacing: "0%",
+                    fontWeight: 400,
+                  }}
+                >
+                  {isUpdate
+                    ? `You've successfully updated Ad${adType && adId ? ` (${adType} ${adId})` : "."}`
+                    : `You've successfully created Ad${adType && adId ? ` (${adType} ${adId})` : "."}`}
+                </p>
+
+                <p
+                  className="text-gray-900"
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: "24px",
+                    letterSpacing: "0%",
+                    fontWeight: 400,
+                  }}
+                >
+                  {message}
+                </p>
+              </>
+            )}
+
+            {type !== "success" && (
+              <p
+                className="text-gray-900"
+                style={{
+                  fontSize: "16px",
+                  lineHeight: "24px",
+                  letterSpacing: "0%",
+                  fontWeight: 400,
+                }}
+              >
+                {message}
               </p>
-              <p className="font-normal text-base leading-6">{message}</p>
-            </>
-          )}
+            )}
 
-          {type !== "success" && <p className="font-normal text-base leading-6">{message}</p>}
-
-          {subMessage && <p className="mt-6 font-normal text-base leading-6">{subMessage}</p>}
-
-          <div className="mt-12">
-            <Button onClick={onClose} variant="black" className="w-full h-14">
-              {actionButtonText}
-            </Button>
+            {subMessage && (
+              <p
+                className="text-gray-900 mt-6"
+                style={{
+                  fontSize: "16px",
+                  lineHeight: "24px",
+                  letterSpacing: "0%",
+                  fontWeight: 400,
+                }}
+              >
+                {subMessage}
+              </p>
+            )}
           </div>
+
+          <Button onClick={onClose} variant="black" className="w-full">
+            {actionButtonText}
+          </Button>
         </div>
-      </div>
-    </div>
+      </SheetContent>
+    </Sheet>
   )
 }
