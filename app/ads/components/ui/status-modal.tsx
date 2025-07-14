@@ -34,7 +34,6 @@ export default function StatusModal({
     borderRadius: "32px",
   }
 
-  // Set default button text based on modal type and update status
   const getDefaultButtonText = () => {
     if (type === "error" || isUpdate) {
       return "Update ad"
@@ -47,7 +46,6 @@ export default function StatusModal({
   return (
     <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <AlertDialogContent className="p-0 overflow-hidden border-none" style={modalStyles}>
-        {/* Upper section with grey background */}
         <div className="bg-gray-100 relative p-6 pb-12">
           <div className="flex justify-center">
             {type === "success" ? (
@@ -66,7 +64,6 @@ export default function StatusModal({
           </button>
         </div>
 
-        {/* Content section */}
         <div className="p-6">
           <div className="mb-12">
             <h2
