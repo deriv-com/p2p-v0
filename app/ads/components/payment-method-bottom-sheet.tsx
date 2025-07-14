@@ -84,10 +84,11 @@ export default function PaymentMethodBottomSheet({
 }
 
 
-  const isMethodSelected = (method: PaymentMethod) => {
-    const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
-    return normalizedSelected.includes(method.method)
-  }
+const isMethodSelected = (method: PaymentMethod) => {
+  const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
+  const normalizedMethod = normalizeMethodName(method.method)
+  return normalizedSelected.includes(normalizedMethod)
+}
 
   const isMaxReached = localSelectedMethods.length >= maxSelections
 
