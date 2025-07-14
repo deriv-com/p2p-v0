@@ -49,10 +49,10 @@ export default function StatusModal({
 
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 text-black hover:text-gray-700"
+            className="absolute top-6 right-6 text-black hover:text-gray-700 p-2"
             aria-label="Close"
           >
-            <Image src="/icons/button-close.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+            <Image src="/icons/button-close.png" alt="Close" width={24} height={24} className="w-6 h-6" />
           </button>
         </div>
 
