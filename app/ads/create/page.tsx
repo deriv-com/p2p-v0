@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useRef, useEffect, useMemo } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
@@ -46,6 +44,19 @@ export default function CreateAdPage() {
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
+  useEffect(() => {
+    const mode = searchParams.get("mode")
+    const id = searchParams.get("id")
+
+    if (mode === "edit" && id) {
+      setLocalEditMode(true)
+      setLocalAdId(id)
+    }
+  }, [searchParams])
+
+  const isEditMode = localEditMode
+  const adId = localAdId
+
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
   const [statusModal, setStatusModal] = useState<StatusModalState>({
@@ -82,49 +93,6 @@ export default function CreateAdPage() {
       .replace(/\s+/g, "_")
       .replace(/[^a-z0-9_]/g, "")
   }
-
-  const isButtonDisabled = useMemo(() => {
-    const disabled =
-      isSubmitting ||
-      (currentStep === 0 && !adFormValid) ||
-      (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
-      (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-      isBottomSheetOpen
-
-    if (isMobile && disabled) {
-      console.log("Button disabled reason:", {
-        isSubmitting,
-        step0Invalid: currentStep === 0 && !adFormValid,
-        step1BuyInvalid: currentStep === 1 && formData.type === "buy" && !paymentFormValid,
-        step1SellInvalid: currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods,
-        isBottomSheetOpen,
-      })
-    }
-
-    return disabled
-  }, [
-    isSubmitting,
-    currentStep,
-    adFormValid,
-    formData.type,
-    paymentFormValid,
-    hasSelectedPaymentMethods,
-    isBottomSheetOpen,
-    isMobile,
-  ])
-
-  useEffect(() => {
-    const mode = searchParams.get("mode")
-    const id = searchParams.get("id")
-
-    if (mode === "edit" && id) {
-      setLocalEditMode(true)
-      setLocalAdId(id)
-    }
-  }, [searchParams])
-
-  const isEditMode = localEditMode
-  const adId = localAdId
 
   useEffect(() => {
     const loadInitialData = async () => {
@@ -490,89 +458,58 @@ export default function CreateAdPage() {
     setIsBottomSheetOpen(isOpen)
   }
 
-  const handleButtonClick = async (e?: React.MouseEvent) => {
-    // Prevent default behavior and event bubbling
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
+  const handleButtonClick = () => {
+    console.log("handleButtonClick triggered")
+    console.log("currentStep:", currentStep)
+    console.log("adFormValid:", adFormValid)
+    console.log("paymentFormValid:", paymentFormValid)
+    console.log("hasSelectedPaymentMethods:", hasSelectedPaymentMethods)
+    console.log("isSubmitting:", isSubmitting)
+    console.log("isBottomSheetOpen:", isBottomSheetOpen)
 
-    // Prevent multiple rapid clicks
-    if (isSubmitting) {
-      return
-    }
-
-    // Early return conditions with better logging
     if (isBottomSheetOpen) {
-      console.log("Button click blocked: Bottom sheet is open")
+      console.log("Button click ignored because bottom sheet is open")
       return
     }
 
     if (currentStep === 0 && !adFormValid) {
-      console.log("Button click blocked: Ad form is not valid")
+      console.log("Button click ignored because ad form is invalid")
       return
     }
 
     if (currentStep === 1) {
       if (formData.type === "buy" && !paymentFormValid) {
-        console.log("Button click blocked: Payment form is not valid for buy ad")
+        console.log("Button click ignored because payment form is invalid for BUY ad")
         return
       }
 
       if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        console.log("Button click blocked: No payment methods selected for sell ad")
+        console.log("Button click ignored because no payment methods selected for SELL ad")
+        return
+      }
+
+      if (isSubmitting) {
+        console.log("Button click ignored because submission is in progress")
         return
       }
     }
 
-    try {
-      if (currentStep === 0) {
-        // Handle step 0 - Ad Details Form
-        const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
-        if (adDetailsForm) {
-          // For mobile, directly call the form's onSubmit handler instead of dispatching event
-          if (isMobile) {
-            const formEvent = new Event("submit", { cancelable: true, bubbles: true })
-            Object.defineProperty(formEvent, "target", { value: adDetailsForm })
-            Object.defineProperty(formEvent, "currentTarget", { value: adDetailsForm })
-
-            const result = adDetailsForm.dispatchEvent(formEvent)
-            if (!result) {
-              console.warn("Ad details form submission was cancelled")
-              return
-            }
-          } else {
-            adDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-          }
-        } else {
-          console.error("Ad details form not found")
-          return
-        }
+    if (currentStep === 0) {
+      console.log("Dispatching submit event for ad-details-form")
+      const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
+      if (adDetailsFormData) {
+        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       } else {
-        // Handle step 1 - Payment Details Form
-        const paymentDetailsForm = document.getElementById("payment-details-form") as HTMLFormElement
-        if (paymentDetailsForm) {
-          // For mobile, directly call the form's onSubmit handler instead of dispatching event
-          if (isMobile) {
-            const formEvent = new Event("submit", { cancelable: true, bubbles: true })
-            Object.defineProperty(formEvent, "target", { value: paymentDetailsForm })
-            Object.defineProperty(formEvent, "currentTarget", { value: paymentDetailsForm })
-
-            const result = paymentDetailsForm.dispatchEvent(formEvent)
-            if (!result) {
-              console.warn("Payment details form submission was cancelled")
-              return
-            }
-          } else {
-            paymentDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-          }
-        } else {
-          console.error("Payment details form not found")
-          return
-        }
+        console.log("ad-details-form not found")
       }
-    } catch (error) {
-      console.error("Error in handleButtonClick:", error)
+    } else {
+      console.log("Dispatching submit event for payment-details-form")
+      const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
+      if (paymentDetailsFormData) {
+        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+      } else {
+        console.log("payment-details-form not found")
+      }
     }
   }
 
@@ -584,31 +521,6 @@ export default function CreateAdPage() {
     router.push("/ads")
   }
 
-  useEffect(() => {
-    if (isMobile) {
-      console.log("Mobile button state:", {
-        currentStep,
-        adFormValid,
-        paymentFormValid,
-        hasSelectedPaymentMethods,
-        isSubmitting,
-        isBottomSheetOpen,
-        formDataType: formData.type,
-        isButtonDisabled,
-      })
-    }
-  }, [
-    currentStep,
-    adFormValid,
-    paymentFormValid,
-    hasSelectedPaymentMethods,
-    isSubmitting,
-    isBottomSheetOpen,
-    formData.type,
-    isButtonDisabled,
-    isMobile,
-  ])
-
   if (isLoading) {
     return (
       <div className="flex h-screen items-center justify-center">
@@ -619,6 +531,13 @@ export default function CreateAdPage() {
       </div>
     )
   }
+
+  const isButtonDisabled =
+    isSubmitting ||
+    (currentStep === 0 && !adFormValid) ||
+    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
+    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    isBottomSheetOpen
 
   return (
     <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">
@@ -710,20 +629,7 @@ export default function CreateAdPage() {
       {isMobile ? (
         <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
           <div className="mx-6">
-            <Button
-              onClick={handleButtonClick}
-              disabled={isButtonDisabled}
-              className="w-full"
-              type="button"
-              onTouchStart={(e) => {
-                // Prevent iOS double-tap zoom
-                e.preventDefault()
-              }}
-              onTouchEnd={(e) => {
-                // Ensure touch events work properly
-                e.preventDefault()
-              }}
-            >
+            <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
               {getButtonText(isEditMode, isSubmitting, currentStep)}
             </Button>
           </div>
