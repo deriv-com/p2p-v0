@@ -1,7 +1,7 @@
 "use client"
 import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
-import { CheckCircle, AlertCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 interface StatusModalProps {
   type: "success" | "error" | "warning"
@@ -46,9 +46,9 @@ export default function StatusModal({
               } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
             >
               {type === "success" ? (
-                <CheckCircle className="h-8 w-8 text-success-icon" />
+                <Image src="/icons/success_icon_round.png" alt="Success" width={32} height={32} className="w-8 h-8" />
               ) : (
-                <AlertCircle className="h-8 w-8 text-warning-icon" />
+                <Image src="/icons/error_icon_round.png" alt="Error" width={32} height={32} className="w-8 h-8" />
               )}
             </div>
           </div>
@@ -58,7 +58,7 @@ export default function StatusModal({
             className="absolute top-6 right-6 text-black hover:text-gray-700"
             aria-label="Close"
           >
-            <X className="h-5 w-5" />
+            <Image src="/icons/button-close.png" alt="Close" width={20} height={20} className="w-5 h-5" />
           </button>
         </div>
 
