@@ -35,9 +35,14 @@ export default function StatusModal({
   }
 
   // Set default button text based on modal type and update status
-  const defaultButtonText = type === "error" ? (isUpdate ? "Update ad" : "Create ad") : "OK"
+  const getDefaultButtonText = () => {
+    if (type === "error" || isUpdate) {
+      return "Update ad"
+    }
+    return "OK"
+  }
 
-  const buttonText = actionButtonText || defaultButtonText
+  const buttonText = actionButtonText || getDefaultButtonText()
 
   return (
     <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
