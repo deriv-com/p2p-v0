@@ -39,6 +39,10 @@ export default function PaymentMethodBottomSheet({
   const [isDragging, setIsDragging] = useState(false)
   const bottomSheetRef = useRef<HTMLDivElement>(null)
 
+  console.log("PaymentMethodBottomSheet render - isOpen:", isOpen)
+  console.log("PaymentMethodBottomSheet render - selectedMethods:", selectedMethods)
+  console.log("PaymentMethodBottomSheet render - localSelectedMethods:", localSelectedMethods)
+
   const convertToSnakeCase = (str: string): string => {
     return str
       .toLowerCase()
@@ -59,7 +63,9 @@ export default function PaymentMethodBottomSheet({
   )
 
   useEffect(() => {
+    console.log("PaymentMethodBottomSheet useEffect - isOpen changed:", isOpen)
     if (isOpen) {
+      console.log("Bottom sheet opening - setting local state from selectedMethods:", selectedMethods)
       setLocalSelectedMethods(selectedMethods)
       setInitialSelectedMethods(selectedMethods)
       setSearchQuery("")
@@ -70,19 +76,30 @@ export default function PaymentMethodBottomSheet({
     e.preventDefault()
     e.stopPropagation()
 
+    console.log("toggleMethod called for:", method.method)
+    console.log("Current localSelectedMethods:", localSelectedMethods)
+
     const methodName = method.method
     const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
 
     if (normalizedSelected.includes(methodName)) {
-      setLocalSelectedMethods(localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName))
+      const newMethods = localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName)
+      console.log("Removing method, new local methods:", newMethods)
+      setLocalSelectedMethods(newMethods)
     } else if (localSelectedMethods.length < maxSelections) {
-      setLocalSelectedMethods([...localSelectedMethods, methodName])
+      const newMethods = [...localSelectedMethods, methodName]
+      console.log("Adding method, new local methods:", newMethods)
+      setLocalSelectedMethods(newMethods)
+    } else {
+      console.log("Max selections reached, cannot add more methods")
     }
   }
 
   const isMethodSelected = (method: PaymentMethod) => {
     const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
-    return normalizedSelected.includes(method.method)
+    const isSelected = normalizedSelected.includes(method.method)
+    console.log(`Method ${method.method} selected:`, isSelected)
+    return isSelected
   }
 
   const isMaxReached = localSelectedMethods.length >= maxSelections
@@ -90,6 +107,7 @@ export default function PaymentMethodBottomSheet({
   const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    console.log("handleSelect called with localSelectedMethods:", localSelectedMethods)
     onSelect(localSelectedMethods)
     onClose()
   }
@@ -97,6 +115,7 @@ export default function PaymentMethodBottomSheet({
   const handleReset = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
+    console.log("handleReset called - resetting to initial:", initialSelectedMethods)
     setLocalSelectedMethods(initialSelectedMethods)
   }
 
@@ -104,6 +123,7 @@ export default function PaymentMethodBottomSheet({
     if (e.target === e.currentTarget) {
       e.preventDefault()
       e.stopPropagation()
+      console.log("Overlay clicked - closing bottom sheet")
       onClose()
     }
   }
@@ -122,6 +142,7 @@ export default function PaymentMethodBottomSheet({
   const handleTouchEnd = () => {
     if (isDragging) {
       if (currentY - startY > 100) {
+        console.log("Swipe down detected - closing bottom sheet")
         onClose()
       }
       setIsDragging(false)
@@ -236,8 +257,9 @@ export default function PaymentMethodBottomSheet({
               onMouseDown={(e) => e.stopPropagation()}
               variant="black"
               className="w-full"
+              disabled={localSelectedMethods.length === 0}
             >
-              Select
+              Select ({localSelectedMethods.length})
             </Button>
             <Button
               type="button"
