@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Check, ChevronDown, ChevronUp, Search } from "lucide-react"
@@ -39,7 +39,6 @@ export default function PaymentDetailsForm({
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
-  const currentPaymentMethodsRef = useRef<string[]>(initialData.paymentMethods || [])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -74,21 +73,20 @@ export default function PaymentDetailsForm({
     if (initialData.type === "sell") {
       return true
     }
-    return currentPaymentMethodsRef.current.length > 0
+    return paymentMethods.length > 0
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setTouched(true)
 
-    const currentMethods = currentPaymentMethodsRef.current
-    const formValid = initialData.type === "sell" ? true : currentMethods.length > 0
+    const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
     const selectedPaymentMethodIds = initialData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
     const formData = {
-      paymentMethods: currentMethods,
+      paymentMethods,
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
@@ -104,20 +102,16 @@ export default function PaymentDetailsForm({
     setTouched(true)
 
     if (paymentMethods.includes(methodId)) {
-      const newMethods = paymentMethods.filter((m) => m !== methodId)
-      setPaymentMethods(newMethods)
-      currentPaymentMethodsRef.current = newMethods
+      setPaymentMethods(paymentMethods.filter((m) => m !== methodId))
     } else if (paymentMethods.length < MAX_PAYMENT_METHODS) {
-      const newMethods = [...paymentMethods, methodId]
-      setPaymentMethods(newMethods)
-      currentPaymentMethodsRef.current = newMethods
+      setPaymentMethods([...paymentMethods, methodId])
     }
   }
 
   const handleSelectPaymentMethods = (methods: string[]) => {
+    console.log("🔍 Payment methods selected:", methods)
     setTouched(true)
     setPaymentMethods(methods)
-    currentPaymentMethodsRef.current = methods
 
     // Trigger validation event immediately after setting payment methods
     setTimeout(() => {
@@ -152,7 +146,6 @@ export default function PaymentDetailsForm({
   const isMaxReached = paymentMethods.length >= MAX_PAYMENT_METHODS
 
   useEffect(() => {
-    currentPaymentMethodsRef.current = paymentMethods
     const event = new CustomEvent("paymentFormValidationChange", {
       detail: {
         isValid: isFormValid(),
@@ -199,10 +192,7 @@ export default function PaymentDetailsForm({
                       <PaymentMethodBottomSheet
                         isOpen={bottomSheetOpen}
                         onClose={handleCloseBottomSheet}
-                        onSelect={(methods) => {
-                          handleSelectPaymentMethods(methods)
-                          handleCloseBottomSheet()
-                        }}
+                        onSelect={handleSelectPaymentMethods}
                         selectedMethods={paymentMethods}
                         availableMethods={availablePaymentMethods}
                         maxSelections={MAX_PAYMENT_METHODS}
