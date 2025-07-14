@@ -37,11 +37,13 @@ export default function StatusModal({
   return (
     <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <AlertDialogContent className="p-0 overflow-hidden border-none" style={modalStyles}>
-        <div className="relative p-6">
-          <div className="flex justify-center mb-12">
+        {/* Upper section with grey background */}
+        <div className="bg-gray-100 relative p-6 pb-12">
+          <div className="flex justify-center">
             <div
-              className={`${type === "success" ? "bg-success-bg" : "bg-warning-bg"
-                } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
+              className={`${
+                type === "success" ? "bg-success-bg" : "bg-warning-bg"
+              } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
             >
               {type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
@@ -49,16 +51,19 @@ export default function StatusModal({
                 <AlertCircle className="h-8 w-8 text-warning-icon" />
               )}
             </div>
-
-            <button
-              onClick={onClose}
-              className="absolute top-6 right-6 text-black hover:text-gray-700"
-              aria-label="Close"
-            >
-              <X className="h-5 w-5" />
-            </button>
           </div>
 
+          <button
+            onClick={onClose}
+            className="absolute top-6 right-6 text-black hover:text-gray-700"
+            aria-label="Close"
+          >
+            <X className="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Content section */}
+        <div className="p-6">
           <div className="mb-12">
             <h2
               className="font-bold mb-6"
@@ -131,7 +136,7 @@ export default function StatusModal({
             )}
           </div>
 
-          <Button onClick={onClose} variant="default">
+          <Button onClick={onClose} variant="black" className="w-full">
             {actionButtonText}
           </Button>
         </div>
