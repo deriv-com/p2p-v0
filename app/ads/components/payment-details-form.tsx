@@ -40,8 +40,6 @@ export default function PaymentDetailsForm({
   const [searchQuery, setSearchQuery] = useState("")
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
 
-  console.log("PaymentDetailsForm render - paymentMethods:", paymentMethods)
-
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
@@ -82,9 +80,6 @@ export default function PaymentDetailsForm({
     e.preventDefault()
     setTouched(true)
 
-    console.log("PaymentDetailsForm handleSubmit - paymentMethods:", paymentMethods)
-    console.log("PaymentDetailsForm handleSubmit - paymentMethods.length:", paymentMethods.length)
-
     const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
@@ -113,11 +108,9 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const handlePaymentMethodsSave = (methods: string[]) => {
-    console.log("PaymentDetailsForm handlePaymentMethodsSave - received methods:", methods)
+  const handleSelectPaymentMethods = (methods: string[]) => {
     setTouched(true)
     setPaymentMethods(methods)
-    console.log("PaymentDetailsForm - paymentMethods state updated to:", methods)
   }
 
   const handleOpenBottomSheet = () => {
@@ -185,7 +178,10 @@ export default function PaymentDetailsForm({
                       <PaymentMethodBottomSheet
                         isOpen={bottomSheetOpen}
                         onClose={handleCloseBottomSheet}
-                        onSave={handlePaymentMethodsSave}
+                        onSelect={(methods) => {
+                          handleSelectPaymentMethods(methods)
+                          handleCloseBottomSheet()
+                        }}
                         selectedMethods={paymentMethods}
                         availableMethods={availablePaymentMethods}
                         maxSelections={MAX_PAYMENT_METHODS}

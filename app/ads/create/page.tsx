@@ -177,9 +177,6 @@ export default function CreateAdPage() {
     const checkSelectedPaymentMethods = () => {
       if (formData.type === "sell" && typeof window !== "undefined") {
         const selectedIds = (window as any).adPaymentMethodIds || []
-        console.log("Selected Payment Method IDs:", selectedIds)
-        console.log("selectedPaymentMethods.length:", selectedIds.length)
-        console.log("hasSelectedPaymentMethods will be set to:", selectedIds.length > 0)
         setHasSelectedPaymentMethods(selectedIds.length > 0)
       }
     }
@@ -192,24 +189,18 @@ export default function CreateAdPage() {
 
   useEffect(() => {
     const handleAdFormValidation = (e: any) => {
-      console.log("Ad form validation event received:", e.detail)
-      console.log("Ad form isValid:", e.detail.isValid)
       setAdFormValid(e.detail.isValid)
       if (e.detail.isValid) {
         const updatedData = { ...formData, ...e.detail.formData }
-        console.log("Updated form data from ad form:", updatedData)
         setFormData(updatedData)
         formDataRef.current = updatedData
       }
     }
 
     const handlePaymentFormValidation = (e: any) => {
-      console.log("Payment form validation event received:", e.detail)
-      console.log("Payment form isValid:", e.detail.isValid)
       setPaymentFormValid(e.detail.isValid)
       if (e.detail.isValid) {
         const updatedData = { ...formData, ...e.detail.formData }
-        console.log("Updated form data from payment form:", updatedData)
         setFormData(updatedData)
         formDataRef.current = updatedData
       }
@@ -256,17 +247,12 @@ export default function CreateAdPage() {
   }, [])
 
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
-    console.log("handleAdDetailsNext called with data:", data)
-    console.log("handleAdDetailsNext called with errors:", errors)
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
     formDataRef.current = updatedData
 
     if (!errors || Object.keys(errors).length === 0) {
-      console.log("Moving to step 1")
       setCurrentStep(1)
-    } else {
-      console.log("Staying on step 0 due to errors")
     }
   }
 
@@ -317,23 +303,17 @@ export default function CreateAdPage() {
   }
 
   const handlePaymentDetailsSubmit = async (data: Partial<AdFormData>, errors?: Record<string, string>) => {
-    console.log("handlePaymentDetailsSubmit called with data:", data)
-    console.log("handlePaymentDetailsSubmit called with errors:", errors)
-
     const finalData = { ...formData, ...data }
     formDataRef.current = finalData
 
     if (errors && Object.keys(errors).length > 0) {
-      console.log("Exiting due to errors in payment details submit")
       return
     }
 
-    console.log("Starting submission process...")
     setIsSubmitting(true)
 
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
-      console.log("Selected payment method IDs for submission:", selectedPaymentMethodIds)
 
       if (isEditMode && adId) {
         const payload = {
@@ -350,7 +330,6 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        console.log("Update payload:", payload)
         const updateResult = await updateAd(adId, payload)
 
         if (updateResult.errors && updateResult.errors.length > 0) {
@@ -387,7 +366,6 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        console.log("Create payload:", payload)
         const result = await createAd(payload)
 
         if (result.errors && result.errors.length > 0) {
@@ -406,7 +384,6 @@ export default function CreateAdPage() {
         router.push("/ads")
       }
     } catch (error) {
-      console.log("Error in handlePaymentDetailsSubmit:", error)
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
@@ -473,75 +450,46 @@ export default function CreateAdPage() {
         actionButtonText: errorInfo.actionButtonText,
       })
     } finally {
-      console.log("Setting isSubmitting to false")
       setIsSubmitting(false)
     }
   }
 
   const handleBottomSheetOpenChange = (isOpen: boolean) => {
-    console.log("Bottom sheet open change:", isOpen)
     setIsBottomSheetOpen(isOpen)
   }
 
   const handleButtonClick = () => {
-    console.log("== Button Click Debug ==")
-    console.log("isMobile:", isMobile)
-    console.log("currentStep:", currentStep)
-    console.log("adFormValid:", adFormValid)
-    console.log("paymentFormValid:", paymentFormValid)
-    console.log("hasSelectedPaymentMethods:", hasSelectedPaymentMethods)
-    console.log("isSubmitting:", isSubmitting)
-    console.log("isBottomSheetOpen:", isBottomSheetOpen)
-    console.log("formData.type:", formData.type)
-
     if (isBottomSheetOpen) {
-      console.log("Button click ignored because bottom sheet is open")
       return
     }
 
     if (currentStep === 0 && !adFormValid) {
-      console.log("Button click ignored because ad form is invalid")
       return
     }
 
     if (currentStep === 1) {
       if (formData.type === "buy" && !paymentFormValid) {
-        console.log("Button click ignored because payment form is invalid for BUY ad")
         return
       }
 
       if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        console.log("Button click ignored because no payment methods selected for SELL ad")
         return
       }
 
       if (isSubmitting) {
-        console.log("Button click ignored because submission is in progress")
         return
       }
     }
 
     if (currentStep === 0) {
-      console.log("Dispatching submit event for ad-details-form")
       const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
       if (adDetailsFormData) {
-        console.log("Found ad-details-form element, dispatching submit event")
-        const event = new Event("submit", { cancelable: true, bubbles: true })
-        const dispatched = adDetailsFormData.dispatchEvent(event)
-        console.log("Submit event dispatched successfully:", dispatched)
-      } else {
-        console.log("ad-details-form not found")
+        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
     } else {
-      console.log("Dispatching submit event for payment-details-form")
       const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
       if (paymentDetailsFormData) {
-        console.log("Found payment-details-form element, dispatching submit event")
-        const event = new Event("submit", { cancelable: true, bubbles: true })
-        const dispatched = paymentDetailsFormData.dispatchEvent(event)
-        console.log("Submit event dispatched successfully:", dispatched)
-      } else {
-        console.log("payment-details-form not found")
+        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
     }
   }
@@ -553,27 +501,6 @@ export default function CreateAdPage() {
   const handleClose = () => {
     router.push("/ads")
   }
-
-  // Log state changes
-  useEffect(() => {
-    console.log("State change - adFormValid:", adFormValid)
-  }, [adFormValid])
-
-  useEffect(() => {
-    console.log("State change - paymentFormValid:", paymentFormValid)
-  }, [paymentFormValid])
-
-  useEffect(() => {
-    console.log("State change - hasSelectedPaymentMethods:", hasSelectedPaymentMethods)
-  }, [hasSelectedPaymentMethods])
-
-  useEffect(() => {
-    console.log("State change - currentStep:", currentStep)
-  }, [currentStep])
-
-  useEffect(() => {
-    console.log("State change - formData:", formData)
-  }, [formData])
 
   if (isLoading) {
     return (
@@ -592,8 +519,6 @@ export default function CreateAdPage() {
     (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
     isBottomSheetOpen
-
-  console.log("Render - isButtonDisabled:", isButtonDisabled)
 
   return (
     <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">

@@ -17,7 +17,7 @@ interface PaymentMethod {
 interface PaymentMethodBottomSheetProps {
   isOpen: boolean
   onClose: () => void
-  onSave: (methods: string[]) => void
+  onSelect: (methods: string[]) => void
   selectedMethods: string[]
   availableMethods: PaymentMethod[]
   maxSelections: number
@@ -26,7 +26,7 @@ interface PaymentMethodBottomSheetProps {
 export default function PaymentMethodBottomSheet({
   isOpen,
   onClose,
-  onSave,
+  onSelect,
   selectedMethods,
   availableMethods,
   maxSelections = 3,
@@ -60,30 +60,26 @@ export default function PaymentMethodBottomSheet({
 
   useEffect(() => {
     if (isOpen) {
-      console.log("Bottom sheet opening - initializing with selectedMethods:", selectedMethods)
       setLocalSelectedMethods(selectedMethods)
       setInitialSelectedMethods(selectedMethods)
       setSearchQuery("")
     }
-  }, [isOpen, selectedMethods])
+  }, [isOpen, selectedMethodsconst toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
+  e.preventDefault()
+  e.stopPropagation()
 
-  const toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const methodName = normalizeMethodName(method.method)
+  const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
 
-    const methodName = method.method
-    const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
-
-    if (normalizedSelected.includes(methodName)) {
-      const newMethods = localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName)
-      console.log("Removing method, new selection:", newMethods)
-      setLocalSelectedMethods(newMethods)
-    } else if (localSelectedMethods.length < maxSelections) {
-      const newMethods = [...localSelectedMethods, methodName]
-      console.log("Adding method, new selection:", newMethods)
-      setLocalSelectedMethods(newMethods)
-    }
+  if (normalizedSelected.includes(methodName)) {
+    setLocalSelectedMethods(
+      localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName)
+    )
+  } else if (localSelectedMethods.length < maxSelections) {
+    setLocalSelectedMethods([...localSelectedMethods, methodName])
   }
+}
+
 
   const isMethodSelected = (method: PaymentMethod) => {
     const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
@@ -92,11 +88,10 @@ export default function PaymentMethodBottomSheet({
 
   const isMaxReached = localSelectedMethods.length >= maxSelections
 
-  const handleSave = (e: React.MouseEvent) => {
+  const handleSelect = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log("Bottom sheet handleSave - calling onSave with:", localSelectedMethods)
-    onSave(localSelectedMethods)
+    onSelect(localSelectedMethods)
     onClose()
   }
 
@@ -238,7 +233,7 @@ export default function PaymentMethodBottomSheet({
           <div className="space-y-3">
             <Button
               type="button"
-              onClick={handleSave}
+              onClick={handleSelect}
               onMouseDown={(e) => e.stopPropagation()}
               variant="black"
               className="w-full"
