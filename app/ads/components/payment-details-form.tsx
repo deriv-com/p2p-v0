@@ -86,7 +86,7 @@ export default function PaymentDetailsForm({
     const selectedPaymentMethodIds = initialData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
     const formData = {
-      paymentMethods,
+      paymentMethods: paymentMethods, // Make sure this is the current state
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
@@ -111,6 +111,21 @@ export default function PaymentDetailsForm({
   const handleSelectPaymentMethods = (methods: string[]) => {
     setTouched(true)
     setPaymentMethods(methods)
+
+    // Trigger validation event immediately
+    setTimeout(() => {
+      const event = new CustomEvent("paymentFormValidationChange", {
+        detail: {
+          isValid: methods.length > 0 || initialData.type === "sell",
+          formData: {
+            paymentMethods: methods,
+            instructions,
+          },
+        },
+        bubbles: true,
+      })
+      document.dispatchEvent(event)
+    }, 0)
   }
 
   const handleOpenBottomSheet = () => {
