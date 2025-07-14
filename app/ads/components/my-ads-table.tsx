@@ -118,10 +118,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     window.location.href = editUrl
   }
 
-  const handleCopy = () => {}
-
-  const handleShare = () => {}
-
   const handleToggleStatus = async (ad: Ad) => {
     try {
       setIsTogglingStatus(true)
@@ -305,11 +301,17 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                           <Power className="h-4 w-4" />
                           {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleCopy(ad.id)}>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2"
+                          onSelect={() => console.log("clicked copy")}
+                        >
                           <Copy className="h-4 w-4" />
                           Copy
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleShare(ad.id)}>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2"
+                          onSelect={() => console.log("clicked share")}
+                        >
                           <Share2 className="h-4 w-4" />
                           Share
                         </DropdownMenuItem>
