@@ -134,25 +134,21 @@ export default function PaymentDetailsForm({
   }
 
   const handleSelectPaymentMethods = (methods: string[]) => {
-    console.log("handleSelectPaymentMethods called with:", methods)
     setTouched(true)
     setPaymentMethods(methods)
 
-    // Trigger validation immediately after selection
-    setTimeout(() => {
-      const event = new CustomEvent("paymentFormValidationChange", {
-        detail: {
-          isValid: methods.length > 0,
-          formData: {
-            paymentMethods: methods,
-            instructions,
-          },
+    // Immediately dispatch validation event
+    const event = new CustomEvent("paymentFormValidationChange", {
+      detail: {
+        isValid: methods.length > 0,
+        formData: {
+          paymentMethods: methods,
+          instructions,
         },
-        bubbles: true,
-      })
-      console.log("Dispatching validation event with methods:", methods)
-      document.dispatchEvent(event)
-    }, 0)
+      },
+      bubbles: true,
+    })
+    document.dispatchEvent(event)
   }
 
   const handleOpenBottomSheet = () => {
