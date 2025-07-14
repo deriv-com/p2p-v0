@@ -64,7 +64,10 @@ export default function PaymentMethodBottomSheet({
       setInitialSelectedMethods(selectedMethods)
       setSearchQuery("")
     }
-  }, [isOpen, selectedMethodsconst toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
+  }, [isOpen, selectedMethods])
+
+ 
+ const toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
   e.preventDefault()
   e.stopPropagation()
 
