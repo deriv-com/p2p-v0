@@ -23,7 +23,7 @@ export default function StatusModal({
   onClose,
   adId,
   adType,
-  actionButtonText = "OK",
+  actionButtonText,
   isUpdate = false,
 }: StatusModalProps) {
   const modalStyles = {
@@ -33,6 +33,11 @@ export default function StatusModal({
     maxHeight: "748.8px",
     borderRadius: "32px",
   }
+
+  // Set default button text based on modal type and update status
+  const defaultButtonText = type === "error" ? (isUpdate ? "Update ad" : "Create ad") : "OK"
+
+  const buttonText = actionButtonText || defaultButtonText
 
   return (
     <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -131,7 +136,7 @@ export default function StatusModal({
           </div>
 
           <Button onClick={onClose} variant="black" className="w-full">
-            {actionButtonText}
+            {buttonText}
           </Button>
         </div>
       </AlertDialogContent>
