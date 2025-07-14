@@ -52,7 +52,7 @@ export default function StatusModal({
             className="absolute top-6 right-6 text-black hover:text-gray-700 p-2"
             aria-label="Close"
           >
-            <Image src="/icons/button-close.png" alt="Close" width={24} height={24} className="w-6 h-6" />
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} className="w-12 h-12" />
           </button>
         </div>
 
