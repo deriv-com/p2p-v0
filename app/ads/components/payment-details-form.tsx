@@ -4,7 +4,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { ChevronDown, ChevronUp, Search } from 'lucide-react'
+import { Check, ChevronDown, ChevronUp, Search } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
@@ -12,7 +12,6 @@ import PaymentMethodBottomSheet from "./payment-method-bottom-sheet"
 import { Button } from "@/components/ui/button"
 import { API, AUTH } from "@/lib/local-variables"
 import AdPaymentMethods from "./ad-payment-methods"
-import Image from "next/image"
 
 interface PaymentMethod {
   display_name: string
@@ -251,15 +250,7 @@ export default function PaymentDetailsForm({
                                 isMethodSelected(method.method) ? "bg-black border-black" : "border-gray-300"
                               }`}
                             >
-                              {isMethodSelected(method.method) && (
-                                <Image
-                                  src="/icons/check.svg"
-                                  alt="Check"
-                                  width={12}
-                                  height={12}
-                                  className="w-3 h-3"
-                                />
-                              )}
+                              {isMethodSelected(method.method) && <Check className="h-3 w-3 text-white" />}
                             </div>
                             <span>{method.display_name}</span>
                           </DropdownMenuItem>
