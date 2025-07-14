@@ -164,7 +164,7 @@ export default function CreateAdPage() {
           }
         }
       } catch (error) {
-        console.log(error)
+        // Error handled silently
       } finally {
         setIsLoading(false)
       }
@@ -239,7 +239,7 @@ export default function CreateAdPage() {
           localStorage.removeItem("adUpdateSuccess")
         }
       } catch (error) {
-        console.log(error)
+        // Error handled silently
       }
     }
 
