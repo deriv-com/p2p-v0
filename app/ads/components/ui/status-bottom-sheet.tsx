@@ -91,15 +91,15 @@ export default function StatusBottomSheet({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="w-full flex justify-center pt-4 pb-2">
-          <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
-        </div>
+        <div className="bg-gray-100 pb-8">
+          <div className="w-full flex justify-center pt-4 pb-2">
+            <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
+          </div>
 
-        <div className="px-6 pb-8">
           <div className="flex justify-center mb-8 mt-4">
             <div className="flex items-center justify-center w-[72px] h-[72px]">
               <Image
-                src={getIconSrc()}
+                src={getIconSrc() || "/placeholder.svg"}
                 alt={type === "success" ? "Success" : "Error"}
                 width={72}
                 height={72}
@@ -107,7 +107,9 @@ export default function StatusBottomSheet({
               />
             </div>
           </div>
+        </div>
 
+        <div className="px-6 pb-8">
           <h2 className="mb-6 font-bold text-lg leading-7">{title}</h2>
 
           {type === "success" && (
@@ -126,7 +128,7 @@ export default function StatusBottomSheet({
           {subMessage && <p className="mt-6 font-normal text-base leading-6">{subMessage}</p>}
 
           <div className="mt-12">
-            <Button onClick={onClose} variant="default" className="w-full h-14">
+            <Button onClick={onClose} variant="black" className="w-full h-14">
               {actionButtonText}
             </Button>
           </div>
