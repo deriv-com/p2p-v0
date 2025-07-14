@@ -80,16 +80,24 @@ export default function PaymentDetailsForm({
     e.preventDefault()
     setTouched(true)
 
-    console.log("🔍 Form submit - paymentMethods:", paymentMethods)
+    // Use the most up-to-date payment methods from the validation event
+    const currentPaymentMethods =
+      paymentMethods.length > 0
+        ? paymentMethods
+        : (document.querySelector("[data-payment-methods]") as any)?.dataset?.paymentMethods
+          ? JSON.parse((document.querySelector("[data-payment-methods]") as any).dataset.paymentMethods)
+          : paymentMethods
+
+    console.log("🔍 Form submit - paymentMethods:", currentPaymentMethods)
     console.log("🔍 Form submit - initialData.type:", initialData.type)
 
-    const formValid = isFormValid()
+    const formValid = initialData.type === "sell" ? true : currentPaymentMethods.length > 0
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
     const selectedPaymentMethodIds = initialData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
     const formData = {
-      paymentMethods,
+      paymentMethods: currentPaymentMethods,
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
