@@ -91,7 +91,7 @@ export default function StatusBottomSheet({
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="bg-gray-100 pb-8">
+        <div className="bg-gray-100 pb-6">
           <div className="w-full flex justify-center pt-4 pb-2">
             <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
           </div>
@@ -110,7 +110,7 @@ export default function StatusBottomSheet({
         </div>
 
         <div className="px-6 pb-8">
-          <h2 className="mb-6 font-bold text-lg leading-7">{title}</h2>
+          <h2 className="mb-6 mt-4 font-bold text-lg leading-7">{title}</h2>
 
           {type === "success" && (
             <>
