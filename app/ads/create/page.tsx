@@ -339,16 +339,17 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        // Show success modal on the create page itself in edit mode
-        setStatusModal({
-          show: true,
-          type: "success",
-          title: "Ad updated",
-          message: "Your ad has been updated successfully.",
-          actionButtonText: "OK",
-        })
+        // Store update success data in localStorage like create mode
+        localStorage.setItem(
+          "adUpdateSuccess",
+          JSON.stringify({
+            type: finalData.type,
+            id: adId,
+          }),
+        )
 
-        // Don't navigate immediately - let the user see the modal and close it
+        // Navigate to ads page immediately
+        router.push("/ads")
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -382,7 +383,6 @@ export default function CreateAdPage() {
           }),
         )
 
-        // Navigate to ads page for create mode
         router.push("/ads")
       }
     } catch (error) {
@@ -390,7 +390,7 @@ export default function CreateAdPage() {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
         type: "error" as "error" | "warning",
-        actionButtonText: "OK",
+        actionButtonText: "Update ad",
       }
 
       if (error instanceof Error) {
@@ -400,7 +400,7 @@ export default function CreateAdPage() {
             message:
               "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
             type: "warning",
-            actionButtonText: "OK",
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           errorInfo = {
@@ -408,7 +408,7 @@ export default function CreateAdPage() {
             message:
               "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
             type: "warning",
-            actionButtonText: "OK",
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
           errorInfo = {
@@ -416,28 +416,28 @@ export default function CreateAdPage() {
             message:
               "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
             type: "error",
-            actionButtonText: "OK",
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
             title: "Insufficient balance",
             message: "You don't have enough balance to create this ad.",
             type: "error",
-            actionButtonText: "OK",
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
           errorInfo = {
             title: "Invalid values",
             message: error.message || "Please check your input values.",
             type: "error",
-            actionButtonText: "OK",
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "AdvertTotalAmountExceeded") {
           errorInfo = {
             title: "Amount exceeds balance",
             message: "The total amount exceeds your available balance. Please enter a smaller amount.",
             type: "error",
-            actionButtonText: "OK",
+            actionButtonText: "Update ad",
           }
         } else {
           errorInfo.message = error.message || errorInfo.message
@@ -498,11 +498,6 @@ export default function CreateAdPage() {
 
   const handleModalClose = () => {
     setStatusModal((prev) => ({ ...prev, show: false }))
-
-    // Navigate to ads page when modal is closed in edit mode
-    if (isEditMode && statusModal.type === "success") {
-      router.push("/ads")
-    }
   }
 
   const handleClose = () => {
