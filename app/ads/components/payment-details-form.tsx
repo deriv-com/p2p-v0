@@ -40,26 +40,22 @@ export default function PaymentDetailsForm({
   const [searchQuery, setSearchQuery] = useState("")
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
 
-  console.log("PaymentDetailsForm render - paymentMethods:", paymentMethods)
-  console.log("PaymentDetailsForm render - initialData.type:", initialData.type)
-
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
         const headers = AUTH.getAuthHeader()
         const response = await fetch(`${API.baseUrl}${API.endpoints.availablePaymentMethods}`, {
           headers,
+          //credentials: "include",
         })
         const responseData = await response.json()
 
         if (responseData && responseData.data && Array.isArray(responseData.data)) {
-          console.log("Available payment methods fetched:", responseData.data)
           setAvailablePaymentMethods(responseData.data)
         } else {
           setAvailablePaymentMethods([])
         }
-      } catch (error) {
-        console.log("Error fetching payment methods:", error)
+      } catch {
         setAvailablePaymentMethods([])
       }
     }
@@ -75,13 +71,8 @@ export default function PaymentDetailsForm({
 
   const isFormValid = () => {
     if (initialData.type === "sell") {
-      // For sell ads, check if payment methods are selected via the AdPaymentMethods component
-      const selectedPaymentMethodIds = (window as any).adPaymentMethodIds || []
-      console.log("Sell ad validation - selectedPaymentMethodIds:", selectedPaymentMethodIds)
-      return selectedPaymentMethodIds.length > 0
+      return true
     }
-    // For buy ads, check the paymentMethods state
-    console.log("Buy ad validation - paymentMethods.length:", paymentMethods.length)
     return paymentMethods.length > 0
   }
 
@@ -89,27 +80,16 @@ export default function PaymentDetailsForm({
     e.preventDefault()
     setTouched(true)
 
-    console.log("PaymentDetailsForm handleSubmit called")
-    console.log("Current paymentMethods state:", paymentMethods)
-    console.log("Current instructions:", instructions)
-    console.log("Ad type:", initialData.type)
-
     const formValid = isFormValid()
-    console.log("Form validation result:", formValid)
-
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
     const selectedPaymentMethodIds = initialData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
-    console.log("Selected payment method IDs for submission:", selectedPaymentMethodIds)
 
     const formData = {
       paymentMethods,
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
-
-    console.log("Submitting form data:", formData)
-    console.log("Submitting errors:", errors)
 
     if (formValid) {
       onSubmit(formData)
@@ -119,17 +99,12 @@ export default function PaymentDetailsForm({
   }
 
   const togglePaymentMethod = (methodId: string) => {
-    console.log("togglePaymentMethod called with:", methodId)
     setTouched(true)
 
     if (paymentMethods.includes(methodId)) {
-      const newMethods = paymentMethods.filter((m) => m !== methodId)
-      console.log("Removing method, new array:", newMethods)
-      setPaymentMethods(newMethods)
+      setPaymentMethods(paymentMethods.filter((m) => m !== methodId))
     } else if (paymentMethods.length < MAX_PAYMENT_METHODS) {
-      const newMethods = [...paymentMethods, methodId]
-      console.log("Adding method, new array:", newMethods)
-      setPaymentMethods(newMethods)
+      setPaymentMethods([...paymentMethods, methodId])
     }
   }
 
@@ -152,7 +127,6 @@ export default function PaymentDetailsForm({
   }
 
   const handleOpenBottomSheet = () => {
-    console.log("Opening bottom sheet")
     setBottomSheetOpen(true)
     if (onBottomSheetOpenChange) {
       onBottomSheetOpenChange(true)
@@ -160,7 +134,6 @@ export default function PaymentDetailsForm({
   }
 
   const handleCloseBottomSheet = () => {
-    console.log("Closing bottom sheet")
     setBottomSheetOpen(false)
     if (onBottomSheetOpenChange) {
       onBottomSheetOpenChange(false)
@@ -171,11 +144,6 @@ export default function PaymentDetailsForm({
   const isMaxReached = paymentMethods.length >= MAX_PAYMENT_METHODS
 
   useEffect(() => {
-    console.log("PaymentDetailsForm validation effect triggered")
-    console.log("Current paymentMethods:", paymentMethods)
-    console.log("Current instructions:", instructions)
-    console.log("Form validity:", isFormValid())
-
     const event = new CustomEvent("paymentFormValidationChange", {
       detail: {
         isValid: isFormValid(),
@@ -187,36 +155,7 @@ export default function PaymentDetailsForm({
       bubbles: true,
     })
     document.dispatchEvent(event)
-  }, [paymentMethods, instructions, initialData.type])
-
-  // Sync with window.adPaymentMethodIds for sell ads
-  useEffect(() => {
-    if (initialData.type === "sell") {
-      const checkPaymentMethodIds = () => {
-        const selectedIds = (window as any).adPaymentMethodIds || []
-        console.log("Checking sell ad payment method IDs:", selectedIds)
-
-        // Dispatch validation event for sell ads based on selected IDs
-        const event = new CustomEvent("paymentFormValidationChange", {
-          detail: {
-            isValid: selectedIds.length > 0,
-            formData: {
-              paymentMethods: [],
-              payment_method_ids: selectedIds,
-              instructions,
-            },
-          },
-          bubbles: true,
-        })
-        document.dispatchEvent(event)
-      }
-
-      // Check immediately and then periodically
-      checkPaymentMethodIds()
-      const interval = setInterval(checkPaymentMethodIds, 500)
-      return () => clearInterval(interval)
-    }
-  }, [initialData.type, instructions])
+  }, [paymentMethods, instructions])
 
   return (
     <div className="h-full flex flex-col">
@@ -240,7 +179,6 @@ export default function PaymentDetailsForm({
                         onClick={(e) => {
                           e.preventDefault()
                           e.stopPropagation()
-                          console.log("Mobile payment method button clicked")
                           handleOpenBottomSheet()
                         }}
                       >
@@ -254,7 +192,6 @@ export default function PaymentDetailsForm({
                         isOpen={bottomSheetOpen}
                         onClose={handleCloseBottomSheet}
                         onSelect={(methods) => {
-                          console.log("Bottom sheet onSelect called with:", methods)
                           handleSelectPaymentMethods(methods)
                           handleCloseBottomSheet()
                         }}
