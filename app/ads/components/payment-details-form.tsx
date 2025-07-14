@@ -40,6 +40,9 @@ export default function PaymentDetailsForm({
   const [searchQuery, setSearchQuery] = useState("")
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
 
+  console.log("PaymentDetailsForm render - paymentMethods:", paymentMethods)
+  console.log("PaymentDetailsForm render - initialData.type:", initialData.type)
+
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
@@ -80,6 +83,9 @@ export default function PaymentDetailsForm({
     e.preventDefault()
     setTouched(true)
 
+    console.log("PaymentDetailsForm handleSubmit - paymentMethods:", paymentMethods)
+    console.log("PaymentDetailsForm handleSubmit - paymentMethods.length:", paymentMethods.length)
+
     const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
@@ -90,6 +96,8 @@ export default function PaymentDetailsForm({
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
+
+    console.log("PaymentDetailsForm submitting formData:", formData)
 
     if (formValid) {
       onSubmit(formData)
@@ -108,7 +116,8 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const handleSelectPaymentMethods = (methods: string[]) => {
+  const handlePaymentMethodsChange = (methods: string[]) => {
+    console.log("handlePaymentMethodsChange called with:", methods)
     setTouched(true)
     setPaymentMethods(methods)
 
@@ -191,13 +200,10 @@ export default function PaymentDetailsForm({
                       <PaymentMethodBottomSheet
                         isOpen={bottomSheetOpen}
                         onClose={handleCloseBottomSheet}
-                        onSelect={(methods) => {
-                          handleSelectPaymentMethods(methods)
-                          handleCloseBottomSheet()
-                        }}
                         selectedMethods={paymentMethods}
                         availableMethods={availablePaymentMethods}
                         maxSelections={MAX_PAYMENT_METHODS}
+                        onChange={handlePaymentMethodsChange}
                       />
                     </>
                   ) : (
