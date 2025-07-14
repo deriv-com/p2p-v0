@@ -86,7 +86,7 @@ export default function PaymentDetailsForm({
     const selectedPaymentMethodIds = initialData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
     const formData = {
-      paymentMethods: paymentMethods, // Make sure this is the current state
+      paymentMethods,
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
@@ -112,7 +112,7 @@ export default function PaymentDetailsForm({
     setTouched(true)
     setPaymentMethods(methods)
 
-    // Trigger validation event immediately
+    // Trigger validation event immediately after setting payment methods
     setTimeout(() => {
       const event = new CustomEvent("paymentFormValidationChange", {
         detail: {
