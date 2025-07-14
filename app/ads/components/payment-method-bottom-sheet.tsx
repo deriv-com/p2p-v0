@@ -66,29 +66,24 @@ export default function PaymentMethodBottomSheet({
     }
   }, [isOpen, selectedMethods])
 
- 
- const toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
-  e.preventDefault()
-  e.stopPropagation()
+  const toggleMethod = (method: PaymentMethod, e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
 
-  const methodName = normalizeMethodName(method.method)
-  const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
+    const methodName = method.method
+    const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
 
-  if (normalizedSelected.includes(methodName)) {
-    setLocalSelectedMethods(
-      localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName)
-    )
-  } else if (localSelectedMethods.length < maxSelections) {
-    setLocalSelectedMethods([...localSelectedMethods, methodName])
+    if (normalizedSelected.includes(methodName)) {
+      setLocalSelectedMethods(localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName))
+    } else if (localSelectedMethods.length < maxSelections) {
+      setLocalSelectedMethods([...localSelectedMethods, methodName])
+    }
   }
-}
 
-
-const isMethodSelected = (method: PaymentMethod) => {
-  const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
-  const normalizedMethod = normalizeMethodName(method.method)
-  return normalizedSelected.includes(normalizedMethod)
-}
+  const isMethodSelected = (method: PaymentMethod) => {
+    const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
+    return normalizedSelected.includes(method.method)
+  }
 
   const isMaxReached = localSelectedMethods.length >= maxSelections
 
