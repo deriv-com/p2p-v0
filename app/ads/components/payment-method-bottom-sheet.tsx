@@ -17,19 +17,19 @@ interface PaymentMethod {
 interface PaymentMethodBottomSheetProps {
   isOpen: boolean
   onClose: () => void
+  onSave: (methods: string[]) => void
   selectedMethods: string[]
   availableMethods: PaymentMethod[]
   maxSelections: number
-  onChange: (methods: string[]) => void
 }
 
 export default function PaymentMethodBottomSheet({
   isOpen,
   onClose,
+  onSave,
   selectedMethods,
   availableMethods,
   maxSelections = 3,
-  onChange,
 }: PaymentMethodBottomSheetProps) {
   const [localSelectedMethods, setLocalSelectedMethods] = useState<string[]>(selectedMethods)
   const [initialSelectedMethods, setInitialSelectedMethods] = useState<string[]>(selectedMethods)
@@ -38,9 +38,6 @@ export default function PaymentMethodBottomSheet({
   const [currentY, setCurrentY] = useState(0)
   const [isDragging, setIsDragging] = useState(false)
   const bottomSheetRef = useRef<HTMLDivElement>(null)
-
-  console.log("PaymentMethodBottomSheet render - selectedMethods prop:", selectedMethods)
-  console.log("PaymentMethodBottomSheet render - localSelectedMethods:", localSelectedMethods)
 
   const convertToSnakeCase = (str: string): string => {
     return str
@@ -62,8 +59,8 @@ export default function PaymentMethodBottomSheet({
   )
 
   useEffect(() => {
-    console.log("PaymentMethodBottomSheet useEffect - isOpen:", isOpen, "selectedMethods:", selectedMethods)
     if (isOpen) {
+      console.log("Bottom sheet opening - initializing with selectedMethods:", selectedMethods)
       setLocalSelectedMethods(selectedMethods)
       setInitialSelectedMethods(selectedMethods)
       setSearchQuery("")
@@ -74,19 +71,16 @@ export default function PaymentMethodBottomSheet({
     e.preventDefault()
     e.stopPropagation()
 
-    console.log("toggleMethod called for:", method.method)
-    console.log("Current localSelectedMethods before toggle:", localSelectedMethods)
-
     const methodName = method.method
     const normalizedSelected = localSelectedMethods.map(normalizeMethodName)
 
     if (normalizedSelected.includes(methodName)) {
       const newMethods = localSelectedMethods.filter((m) => normalizeMethodName(m) !== methodName)
-      console.log("Removing method, new localSelectedMethods:", newMethods)
+      console.log("Removing method, new selection:", newMethods)
       setLocalSelectedMethods(newMethods)
     } else if (localSelectedMethods.length < maxSelections) {
       const newMethods = [...localSelectedMethods, methodName]
-      console.log("Adding method, new localSelectedMethods:", newMethods)
+      console.log("Adding method, new selection:", newMethods)
       setLocalSelectedMethods(newMethods)
     }
   }
@@ -98,18 +92,17 @@ export default function PaymentMethodBottomSheet({
 
   const isMaxReached = localSelectedMethods.length >= maxSelections
 
-  const handleSelect = (e: React.MouseEvent) => {
+  const handleSave = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log("handleSelect called - passing localSelectedMethods to parent:", localSelectedMethods)
-    onChange(localSelectedMethods)
+    console.log("Bottom sheet handleSave - calling onSave with:", localSelectedMethods)
+    onSave(localSelectedMethods)
     onClose()
   }
 
   const handleReset = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    console.log("handleReset called - resetting to initial:", initialSelectedMethods)
     setLocalSelectedMethods(initialSelectedMethods)
   }
 
@@ -117,7 +110,6 @@ export default function PaymentMethodBottomSheet({
     if (e.target === e.currentTarget) {
       e.preventDefault()
       e.stopPropagation()
-      console.log("Overlay clicked - closing without saving changes")
       onClose()
     }
   }
@@ -136,7 +128,6 @@ export default function PaymentMethodBottomSheet({
   const handleTouchEnd = () => {
     if (isDragging) {
       if (currentY - startY > 100) {
-        console.log("Swipe down detected - closing without saving changes")
         onClose()
       }
       setIsDragging(false)
@@ -247,12 +238,12 @@ export default function PaymentMethodBottomSheet({
           <div className="space-y-3">
             <Button
               type="button"
-              onClick={handleSelect}
+              onClick={handleSave}
               onMouseDown={(e) => e.stopPropagation()}
               variant="black"
               className="w-full"
             >
-              Select ({localSelectedMethods.length})
+              Select
             </Button>
             <Button
               type="button"

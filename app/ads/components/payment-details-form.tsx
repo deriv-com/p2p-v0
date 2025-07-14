@@ -41,7 +41,6 @@ export default function PaymentDetailsForm({
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
 
   console.log("PaymentDetailsForm render - paymentMethods:", paymentMethods)
-  console.log("PaymentDetailsForm render - initialData.type:", initialData.type)
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -97,8 +96,6 @@ export default function PaymentDetailsForm({
       instructions,
     }
 
-    console.log("PaymentDetailsForm submitting formData:", formData)
-
     if (formValid) {
       onSubmit(formData)
     } else {
@@ -116,23 +113,11 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const handlePaymentMethodsChange = (methods: string[]) => {
-    console.log("handlePaymentMethodsChange called with:", methods)
+  const handlePaymentMethodsSave = (methods: string[]) => {
+    console.log("PaymentDetailsForm handlePaymentMethodsSave - received methods:", methods)
     setTouched(true)
     setPaymentMethods(methods)
-
-    // Immediately dispatch validation event
-    const event = new CustomEvent("paymentFormValidationChange", {
-      detail: {
-        isValid: methods.length > 0,
-        formData: {
-          paymentMethods: methods,
-          instructions,
-        },
-      },
-      bubbles: true,
-    })
-    document.dispatchEvent(event)
+    console.log("PaymentDetailsForm - paymentMethods state updated to:", methods)
   }
 
   const handleOpenBottomSheet = () => {
@@ -200,10 +185,10 @@ export default function PaymentDetailsForm({
                       <PaymentMethodBottomSheet
                         isOpen={bottomSheetOpen}
                         onClose={handleCloseBottomSheet}
+                        onSave={handlePaymentMethodsSave}
                         selectedMethods={paymentMethods}
                         availableMethods={availablePaymentMethods}
                         maxSelections={MAX_PAYMENT_METHODS}
-                        onChange={handlePaymentMethodsChange}
                       />
                     </>
                   ) : (
