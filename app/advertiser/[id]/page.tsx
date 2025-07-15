@@ -239,8 +239,6 @@ export default function AdvertiserProfilePage() {
   return (
     <div>
       <Navigation title="Back" isVisible={false} />
-
-      {/* Profile header */}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="container mx-auto pb-6">
           <div className="flex flex-col md:flex-row md:items-start gap-4">
@@ -298,8 +296,6 @@ export default function AdvertiserProfilePage() {
                   </div>
                 </div>
               </div>
-
-              {/* Verification badges */}
               <div className="flex flex-wrap gap-2 mt-4">
                 {profile?.isVerified.id && (
                   <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
@@ -323,8 +319,6 @@ export default function AdvertiserProfilePage() {
             </div>
           </div>
         </div>
-
-        {/* Stats section */}
         <div className="container mx-auto pb-6">
           <div className="bg-slate-50 rounded-lg p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -379,8 +373,6 @@ export default function AdvertiserProfilePage() {
           <div className="font-bold mt-1">{`USD ${profile?.stats.tradeVolume.amount}`}</div>
         </div>
       </div>
-
-      {/* Tabs section */}
       <div className="container mx-auto pb-6 hidden">
         <Tabs value={activeSection} onValueChange={(value) => setActiveSection(value as "ads")} className="border-b">
           <TabsList className="bg-transparent border-b-0 p-0 h-auto">
@@ -396,7 +388,6 @@ export default function AdvertiserProfilePage() {
 
       {activeSection === "ads" && (
         <>
-          {/* Buy/Sell tabs */}
           <div className="container mx-auto pb-4">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
               <TabsList>
@@ -405,14 +396,12 @@ export default function AdvertiserProfilePage() {
               </TabsList>
             </Tabs>
           </div>
-
-          {/* Ads list */}
           <div className="container mx-auto pb-8">
             {filteredAdverts.length > 0 ? (
               <>
                 <div>
                   <Table>
-                    <TableHeader className="border-b sticky top-0 bg-white">
+                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
                       <TableRow className="text-sm">
                         <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
                         <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Order limits</TableHead>
