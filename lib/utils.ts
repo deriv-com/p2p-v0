@@ -55,7 +55,7 @@ export function getPaymentMethodColour(type: string): string {
     case "ewallet":
       return "bg-paymentMethod-ewallet"
     default:
-      return "bg-paymentMethod-other"
+      return "bg-paymentMethod-ewallet"
   }
 }
 
