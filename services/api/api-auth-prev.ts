@@ -91,7 +91,7 @@ export async function getSession(): Promise<VerificationResponse> {
 
         const response = await fetch(`${API.coreUrl}/users/me`, {
             method: "GET",
-            headers: AUTH.getHeaders
+            headers: AUTH.getHeaders()
         })
 
         if (!response.ok) {
