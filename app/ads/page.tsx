@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
@@ -15,17 +15,35 @@ import { StatusBanner } from "@/components/ui/status-banner"
 
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
-import { useNotificationStore } from "@/stores/notification-store"
 
 export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [successModal, setSuccessModal] = useState<{
+    show: boolean
+    type: string
+    id: string
+  }>({
+    show: false,
+    type: "",
+    id: "",
+  })
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
+
+  const [updateModal, setUpdateModal] = useState<{
+    show: boolean
+    type: string
+    id: string
+  }>({
+    show: false,
+    type: "",
+    id: "",
+  })
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const { successModal, clearSuccessModal } = useNotificationStore()
+  const searchParams = useSearchParams()
 
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -72,29 +90,78 @@ export default function AdsPage() {
   useEffect(() => {
     const checkForSuccessData = () => {
       try {
+        // Check URL parameters first (new approach)
+        const success = searchParams.get("success")
+        const type = searchParams.get("type")
+        const id = searchParams.get("id")
+
+        console.log("🔍 Checking URL params:", { success, type, id })
+
+        if (success && type && id) {
+          if (success === "created") {
+            console.log("✅ Found creation success in URL params")
+            setSuccessModal({
+              show: true,
+              type: type,
+              id: id,
+            })
+          } else if (success === "updated") {
+            console.log("✅ Found update success in URL params")
+            setUpdateModal({
+              show: true,
+              type: type,
+              id: id,
+            })
+          }
+
+          // Clean up URL parameters
+          console.log("🧹 Cleaning up URL parameters")
+          router.replace("/ads", { scroll: false })
+          return
+        }
+
+        // Fallback to localStorage (backward compatibility)
         const creationDataStr = localStorage.getItem("adCreationSuccess")
         if (creationDataStr) {
+          console.log("📦 Found creation success in localStorage (fallback)")
           const successData = JSON.parse(creationDataStr) as SuccessData
-          // This is kept for backward compatibility, but new flow uses Zustand
+          setSuccessModal({
+            show: true,
+            type: successData.type,
+            id: successData.id,
+          })
           localStorage.removeItem("adCreationSuccess")
         }
 
         const updateDataStr = localStorage.getItem("adUpdateSuccess")
         if (updateDataStr) {
+          console.log("📦 Found update success in localStorage (fallback)")
+          const updateData = JSON.parse(updateDataStr) as SuccessData
+          setUpdateModal({
+            show: true,
+            type: updateData.type,
+            id: updateData.id,
+          })
           localStorage.removeItem("adUpdateSuccess")
         }
       } catch (err) {
-        console.error("Error checking for success data:", err)
+        console.error("❌ Error checking for success data:", err)
       }
     }
 
     fetchAds().then(() => {
       checkForSuccessData()
     })
-  }, [])
+  }, [searchParams, router])
 
   const handleCloseSuccessModal = () => {
-    clearSuccessModal()
+    console.log("🔒 Closing success modal")
+    setSuccessModal((prev) => ({ ...prev, show: false }))
+  }
+
+  const handleCloseUpdateModal = () => {
+    console.log("🔒 Closing update modal")
+    setUpdateModal((prev) => ({ ...prev, show: false }))
   }
 
   const handleCloseErrorModal = () => {
@@ -154,16 +221,12 @@ export default function AdsPage() {
       {successModal.show && !isMobile && (
         <StatusModal
           type="success"
-          title={successModal.type === "created" ? "Ad created" : "Ad updated"}
-          message={
-            successModal.type === "created"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
-          }
+          title="Ad created"
+          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
           onClose={handleCloseSuccessModal}
-          adType={successModal.adType}
-          adId={successModal.adId}
-          isUpdate={successModal.type === "updated"}
+          adType={successModal.type}
+          adId={successModal.id}
+          isUpdate={false}
         />
       )}
 
@@ -172,15 +235,36 @@ export default function AdsPage() {
           isOpen={successModal.show}
           onClose={handleCloseSuccessModal}
           type="success"
-          title={successModal.type === "created" ? "Ad created" : "Ad updated"}
-          message={
-            successModal.type === "created"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
-          }
-          adType={successModal.adType}
-          adId={successModal.adId}
-          isUpdate={successModal.type === "updated"}
+          title="Ad created"
+          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
+          adType={successModal.type}
+          adId={successModal.id}
+          isUpdate={false}
+        />
+      )}
+
+      {updateModal.show && !isMobile && (
+        <StatusModal
+          type="success"
+          title="Ad updated"
+          message="Your changes have been saved and are now live."
+          onClose={handleCloseUpdateModal}
+          adType={updateModal.type}
+          adId={updateModal.id}
+          isUpdate={true}
+        />
+      )}
+
+      {updateModal.show && isMobile && (
+        <StatusBottomSheet
+          isOpen={updateModal.show}
+          onClose={handleCloseUpdateModal}
+          type="success"
+          title="Ad updated"
+          message="Your changes have been saved and are now live."
+          adType={updateModal.type}
+          adId={updateModal.id}
+          isUpdate={true}
         />
       )}
 

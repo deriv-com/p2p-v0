@@ -12,7 +12,6 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
-import { useNotificationStore } from "@/stores/notification-store"
 
 const getPageTitle = (isEditMode: boolean, adType?: string) => {
   if (isEditMode && adType) {
@@ -41,7 +40,6 @@ export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
-  const { setSuccessModal } = useNotificationStore()
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
@@ -318,6 +316,7 @@ export default function CreateAdPage() {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
       if (isEditMode && adId) {
+        console.log("🔄 Updating ad with ID:", adId)
         const payload = {
           is_active: true,
           minimum_order_amount: finalData.minAmount || 0,
@@ -341,15 +340,15 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        // Set success notification in Zustand store
-        setSuccessModal({
-          type: "updated",
-          adType: finalData.type || "buy",
-          adId: adId,
+        console.log("✅ Ad updated successfully, navigating to ads page with params")
+        const params = new URLSearchParams({
+          success: "updated",
+          type: finalData.type || "buy",
+          id: adId,
         })
-
-        router.push("/ads")
+        router.push(`/ads?${params.toString()}`)
       } else {
+        console.log("🆕 Creating new ad")
         const payload = {
           type: finalData.type || "buy",
           account_currency: "USD",
@@ -374,16 +373,16 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        // Set success notification in Zustand store
-        setSuccessModal({
-          type: "created",
-          adType: result.data.type,
-          adId: result.data.id,
+        console.log("✅ Ad created successfully, navigating to ads page with params")
+        const params = new URLSearchParams({
+          success: "created",
+          type: result.data.type,
+          id: result.data.id,
         })
-
-        router.push("/ads")
+        router.push(`/ads?${params.toString()}`)
       }
     } catch (error) {
+      console.error("❌ Error in ad submission:", error)
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
