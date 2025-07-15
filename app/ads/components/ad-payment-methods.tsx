@@ -1,125 +1,163 @@
 "use client"
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Plus, X } from "lucide-react"
-import { PaymentMethodBottomSheet } from "./payment-method-bottom-sheet"
-import { getPaymentMethodIcon, getPaymentMethodColour, getMethodDisplayDetails } from "@/lib/utils"
+import { Checkbox } from "@/components/ui/checkbox"
+import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
+import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
+import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
+import Image from "next/image"
 
 interface PaymentMethod {
   id: number
   method: string
-  display_name: string
   type: string
+  display_name: string
   fields: Record<string, any>
+  created_at?: number
+  is_default?: boolean
 }
 
-interface AdPaymentMethodsProps {
-  selectedPaymentMethods: PaymentMethod[]
-  onPaymentMethodsChange: (methods: PaymentMethod[]) => void
-  availablePaymentMethods: PaymentMethod[]
-}
+const AdPaymentMethods = () => {
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
+  const [selectedMethods, setSelectedMethods] = useState<number[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [showAddPanel, setShowAddPanel] = useState(false)
+  const [isAddingMethod, setIsAddingMethod] = useState(false)
 
-export function AdPaymentMethods({
-  selectedPaymentMethods,
-  onPaymentMethodsChange,
-  availablePaymentMethods,
-}: AdPaymentMethodsProps) {
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-
-  const handleAddPaymentMethod = (method: PaymentMethod) => {
-    const isAlreadySelected = selectedPaymentMethods.some((selected) => selected.id === method.id)
-
-    if (!isAlreadySelected) {
-      onPaymentMethodsChange([...selectedPaymentMethods, method])
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      try {
+        const data = await getUserPaymentMethods()
+        setPaymentMethods(data)
+      } catch (error) {
+        console.log(error)
+        setPaymentMethods([])
+      } finally {
+        setIsLoading(false)
+      }
     }
-    setIsBottomSheetOpen(false)
+
+    fetchPaymentMethods()
+  }, [])
+
+  useEffect(() => {
+    ;(window as any).adPaymentMethodIds = selectedMethods
+  }, [selectedMethods])
+
+  const handleCheckboxChange = (methodId: number, checked: boolean) => {
+    if (checked && selectedMethods.length >= 3) {
+      return
+    }
+
+    const newSelection = checked ? [...selectedMethods, methodId] : selectedMethods.filter((id) => id !== methodId)
+    setSelectedMethods(newSelection)
   }
 
-  const handleRemovePaymentMethod = (methodId: number) => {
-    onPaymentMethodsChange(selectedPaymentMethods.filter((method) => method.id !== methodId))
+  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
+    try {
+      setIsAddingMethod(true)
+      const result = await addPaymentMethod(method, fields)
+
+      if (result.success) {
+        const data = await getUserPaymentMethods()
+        setPaymentMethods(data)
+        setShowAddPanel(false)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsAddingMethod(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <CustomShimmer className="h-6 w-48" />
+          <CustomShimmer className="h-4 w-64" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <CustomShimmer className="h-24 w-full" />
+          <CustomShimmer className="h-24 w-full" />
+          <CustomShimmer className="h-24 w-full" />
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Payment methods</h3>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => setIsBottomSheetOpen(true)}
-          className="flex items-center gap-2"
-        >
-          <Plus className="h-4 w-4" />
-          Add
-        </Button>
+    <>
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
+        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
+
+        <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
+          <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
+            {paymentMethods.map((method) => {
+              const isSelected = selectedMethods.includes(method.id)
+              const displayDetails = getMethodDisplayDetails(method)
+
+              return (
+                <Card
+                  key={method.id}
+                  className="cursor-pointer transition-all duration-200 bg-gray-100 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                >
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
+                        <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                      </div>
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
+                        className="!border-black data-[state=checked]:!bg-black data-[state=checked]:!border-black"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="font-medium text-gray-900">{displayDetails.primary}</div>
+                      <div className="text-sm text-gray-500">{displayDetails.secondary}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+
+            <Card
+              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
+              onClick={() => setShowAddPanel(true)}
+            >
+              <CardContent className="p-4 h-full flex items-center justify-center">
+                <div className="text-center">
+                  <Image
+                    src="/icons/plus_icon.png"
+                    alt="Add payment method"
+                    width={32}
+                    height={32}
+                    className="mx-auto mb-2"
+                  />
+                  <p className="text-sm font-medium text-black">Add payment method</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
 
-      {selectedPaymentMethods.length === 0 ? (
-        <Card className="border-dashed">
-          <CardContent className="flex flex-col items-center justify-center py-8 text-center">
-            <div className="text-muted-foreground mb-4">No payment methods selected</div>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setIsBottomSheetOpen(true)}
-              className="flex items-center gap-2"
-            >
-              <Plus className="h-4 w-4" />
-              Add payment method
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-3">
-          {selectedPaymentMethods.map((method) => {
-            const displayDetails = getMethodDisplayDetails(method)
-
-            return (
-              <Card key={method.id} className="relative">
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`w-10 h-10 rounded-lg ${getPaymentMethodColour(method.type)} flex items-center justify-center`}
-                      >
-                        <img
-                          src={getPaymentMethodIcon(method.type) || "/placeholder.svg"}
-                          alt={method.display_name}
-                          className="w-6 h-6"
-                        />
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">{displayDetails.primary}</div>
-                        <div className="text-xs text-muted-foreground">{displayDetails.secondary}</div>
-                      </div>
-                    </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => handleRemovePaymentMethod(method.id)}
-                      className="h-8 w-8 p-0 hover:bg-destructive/10 hover:text-destructive"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+      {showAddPanel && (
+        <AddPaymentMethodPanel
+          onClose={() => setShowAddPanel(false)}
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingMethod}
+        />
       )}
-
-      <PaymentMethodBottomSheet
-        isOpen={isBottomSheetOpen}
-        onClose={() => setIsBottomSheetOpen(false)}
-        onSelectPaymentMethod={handleAddPaymentMethod}
-        availablePaymentMethods={availablePaymentMethods}
-        selectedPaymentMethods={selectedPaymentMethods}
-      />
-    </div>
+    </>
   )
 }
+
+export default AdPaymentMethods
