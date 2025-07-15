@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
@@ -43,6 +43,7 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -88,45 +89,40 @@ export default function AdsPage() {
 
   useEffect(() => {
     const checkForSuccessData = () => {
-      const urlParams = new URLSearchParams(window.location.search)
-
       // Check for creation success
-      if (urlParams.get("created") === "true") {
-        const type = urlParams.get("type")
-        const id = urlParams.get("id")
-        if (type && id) {
-          setSuccessModal({
-            show: true,
-            type: type,
-            id: id,
-          })
-          // Clean up URL parameters
-          const newUrl = window.location.pathname
-          window.history.replaceState({}, "", newUrl)
-        }
+      const created = searchParams.get("created")
+      const updated = searchParams.get("updated")
+      const type = searchParams.get("type")
+      const id = searchParams.get("id")
+
+      console.log("URL params:", { created, updated, type, id })
+
+      if (created === "true" && type && id) {
+        setSuccessModal({
+          show: true,
+          type: type,
+          id: id,
+        })
+        // Clean up URL parameters
+        router.replace("/ads")
       }
 
       // Check for update success
-      if (urlParams.get("updated") === "true") {
-        const type = urlParams.get("type")
-        const id = urlParams.get("id")
-        if (type && id) {
-          setUpdateModal({
-            show: true,
-            type: type,
-            id: id,
-          })
-          // Clean up URL parameters
-          const newUrl = window.location.pathname
-          window.history.replaceState({}, "", newUrl)
-        }
+      if (updated === "true" && type && id) {
+        setUpdateModal({
+          show: true,
+          type: type,
+          id: id,
+        })
+        // Clean up URL parameters
+        router.replace("/ads")
       }
     }
 
     fetchAds().then(() => {
       checkForSuccessData()
     })
-  }, [])
+  }, [searchParams, router])
 
   const handleCloseSuccessModal = () => {
     setSuccessModal((prev) => ({ ...prev, show: false }))
