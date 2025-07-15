@@ -91,7 +91,11 @@ export async function getSession(): Promise<VerificationResponse> {
 
         const response = await fetch(`${API.coreUrl}/users/me`, {
             method: "GET",
-            headers: AUTH.getAuthHeader()
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "X-Branch": "development",
+            }
         })
 
         if (!response.ok) {
