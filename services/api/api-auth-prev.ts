@@ -89,6 +89,25 @@ export async function getSession(): Promise<VerificationResponse> {
             }
         }
 
+        const response = await fetch(`${API.coreUrl}/users/me`, {
+            method: "GET",
+        })
+
+        if (!response.ok) {
+             return {
+                errors: ["No token found"]
+            }
+        }
+
+        const result = await response.json()
+        const { data } = result
+
+        if(data.errors) {
+            return {
+                errors: ["No token found"]
+            }
+        }
+
         return {
             access_token: token
         }
