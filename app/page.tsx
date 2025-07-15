@@ -254,7 +254,7 @@ export default function BuySellPage() {
                       <TableHead className="text-right py-4 px-4"></TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
+                  <TableBody className="bg-white divide-x lg:divide-y divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
                       <TableRow className="flex flex-col lg:table-row" key={ad.id}>
                         <TableCell className="py-4 px-4 align-top">
