@@ -55,7 +55,7 @@ export function getPaymentMethodColour(type: string): string {
     case "ewallet":
       return "bg-paymentMethod-ewallet"
     default:
-      return "bg-paymentMethod-other"
+      return "bg-paymentMethod-ewallet"
   }
 }
 
@@ -64,7 +64,7 @@ export function getPaymentMethodColourByName(methodName: string): string {
   if (lowerMethod.includes("bank") || lowerMethod.includes("transfer")) {
     return "bg-paymentMethod-bank"
   }
-  return "bg-paymentMethod-other"
+  return "bg-paymentMethod-ewallet"
 }
 
 export function getCategoryDisplayName(type: string): string {
@@ -159,12 +159,15 @@ export function getChatErrorMessage(tags: string[]): string {
     link: "Links and URLs are not permitted in this chat.",
     profanity: "Please keep the conversation professional and avoid offensive language.",
     promotional_content: "Promotional content and advertisements are not allowed.",
-    off_platform_communication: "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
+    off_platform_communication:
+      "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
     human_attention: "Threatening or harassing language is not tolerated. Please communicate respectfully.",
     harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
-    fake_identity: "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
-    sensitive_data_requests: "Your message requires additional review. Please wait while we connect you with a specialist.",
-    miscellaneous: "Your message doesn't meet our community guidelines. Please try again."
+    fake_identity:
+      "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
+    sensitive_data_requests:
+      "Your message requires additional review. Please wait while we connect you with a specialist.",
+    miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
   }
 
   const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
@@ -173,18 +176,20 @@ export function getChatErrorMessage(tags: string[]): string {
 }
 
 export function formatAmount(amount: string) {
-  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 export function formatDateTime(datetime) {
-  const d = new Date(datetime);
-  
-  return d.toLocaleString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  }).replace(',', '');
+  const d = new Date(datetime)
+
+  return d
+    .toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    .replace(",", "")
 }
