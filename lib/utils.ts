@@ -152,6 +152,7 @@ export function formatStatus(status: string, type: string): string {
 
   return status
 }
+
 export function getChatErrorMessage(tags: string[]): string {
   const messageTypeFormatters: Record<string, string> = {
     pii: "Please avoid sharing personal information like phone numbers, addresses, or ID details for your security.",
