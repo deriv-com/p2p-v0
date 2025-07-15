@@ -173,8 +173,8 @@ export function getChatErrorMessage(tags: string[]): string {
 }
 
 export function formatAmount(amount: string) {
-  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-}
+  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
 
 
 export function formatDateTime(datetime) {
