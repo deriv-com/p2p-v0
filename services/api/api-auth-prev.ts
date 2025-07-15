@@ -89,7 +89,7 @@ export async function getSession(): Promise<VerificationResponse> {
             }
         }
 
-        const response = await fetch(`${API.coreUrl}/users/me`, {
+        const response = await fetch(`${API.baseUrl}/users/me`, {
             method: "GET",
             headers: {
                 Authorization: `Bearer ${token}`,
