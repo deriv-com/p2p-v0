@@ -218,7 +218,7 @@ export default function BuySellPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="exchange_rate">Sort by: Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating">Sort by: User rating (high-low)</SelectItem>
+                  <SelectItem value="user_rating_average_lifetime">Sort by: User rating (high-low)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
