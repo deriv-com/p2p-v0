@@ -177,8 +177,7 @@ export function formatAmount(amount: string) {
 export function formatDateTime(datetime) {
   const d = new Date(datetime)
 
-  return d
-    .toLocaleString("en-GB", {
+  return d.toLocaleString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
