@@ -410,53 +410,7 @@ export default function AdvertiserProfilePage() {
           <div className="container mx-auto pb-8">
             {filteredAdverts.length > 0 ? (
               <>
-                {/* Mobile Card View */}
-                <div className="md:hidden space-y-4">
-                  {filteredAdverts.map((ad) => (
-                    <div key={ad.id} className="border rounded-lg p-4 bg-white">
-                      <div className="text-lg font-bold mb-2">
-                        IDR {ad.exchange_rate.toLocaleString()}
-                        {ad.exchange_rate_type === "floating" && (
-                          <span className="text-xs text-slate-500 ml-1">0.1%</span>
-                        )}
-                      </div>
-
-                      <div className="mb-2">
-                        USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
-                      </div>
-                      <div className="flex items-center text-xs text-slate-500 mb-3">
-                        <Clock className="h-4 w-4 mr-1" />
-                        <span>{ad.order_expiry_period} min</span>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {ad.payment_methods?.map((method, index) => (
-                          <div key={index} className="flex items-center">
-                            <div
-                              className={`h-2 w-2 rounded-full mr-2 ${
-                                method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
-                              }`}
-                            ></div>
-                            <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {USER.id !== ad.user.id && (
-                        <Button
-                          size="sm"
-                          onClick={() => handleOrderClick(ad, activeTab === "buy" ? "buy" : "sell")}
-                          className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
-                        >
-                          {activeTab === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Desktop Table View */}
-                <div className="hidden md:block">
+                <div>
                   <Table>
                     <TableHeader className="border-b sticky top-0 bg-white">
                       <TableRow className="text-sm">
