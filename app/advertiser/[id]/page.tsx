@@ -422,7 +422,7 @@ export default function AdvertiserProfilePage() {
                             <div>
                               USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                             </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1">
+                            <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1 w-fit">
                               <Clock className="h-4 w-4 mr-1" />
                               <span>{ad.order_expiry_period} min</span>
                             </div>
