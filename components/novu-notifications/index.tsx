@@ -2,7 +2,7 @@
 
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
-import { USER, NOTIFICATIONS, AUTH } from "@/lib/local-variables"
+import { AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 
 import { useRouter } from "next/navigation"
 
