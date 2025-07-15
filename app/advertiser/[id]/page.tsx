@@ -349,7 +349,7 @@ export default function AdvertiserProfilePage() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6 border border-[#E9ECEF] p-[16px] rounded-lg">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 border border-[#E9ECEF] p-[16px] rounded-lg">
         <div>
           <div className="text-xs text-slate-500">Buy completion (30d)</div>
           <div className="font-bold mt-1">
