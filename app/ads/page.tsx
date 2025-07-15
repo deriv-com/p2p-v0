@@ -96,8 +96,6 @@ export default function AdsPage() {
         const id = searchParams.get("id")
 
         console.log("🔍 Checking URL params:", { success, type, id })
-        console.log("🔍 Full URL:", window.location.href)
-        console.log("🔍 Search params string:", searchParams.toString())
 
         if (success && type && id) {
           if (success === "created") {
@@ -116,11 +114,9 @@ export default function AdsPage() {
             })
           }
 
-          // Clean up URL parameters after a short delay to ensure modal is shown
+          // Clean up URL parameters
           console.log("🧹 Cleaning up URL parameters")
-          setTimeout(() => {
-            router.replace("/ads", { scroll: false })
-          }, 100)
+          router.replace("/ads", { scroll: false })
           return
         }
 
