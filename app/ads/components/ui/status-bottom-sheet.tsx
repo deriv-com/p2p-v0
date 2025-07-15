@@ -99,7 +99,7 @@ export default function StatusBottomSheet({
           <div className="flex justify-center mb-8 mt-4">
             <div className="flex items-center justify-center w-[72px] h-[72px]">
               <Image
-                src={getIconSrc() || "/placeholder.svg"}
+                src={getIconSrc()}
                 alt={type === "success" ? "Success" : "Error"}
                 width={72}
                 height={72}
