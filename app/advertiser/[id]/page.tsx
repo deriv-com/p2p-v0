@@ -389,10 +389,14 @@ export default function AdvertiserProfilePage() {
       {activeSection === "ads" && (
         <>
           <div className="container mx-auto pb-4">
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-              <TabsList>
-                <TabsTrigger value="sell">Buy Ads</TabsTrigger>
-                <TabsTrigger value="buy">Sell Ads</TabsTrigger>
+            <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+              <TabsList className="w-full md:min-w-[230px]">
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+                  Buy
+                </TabsTrigger>
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+                  Sell
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
