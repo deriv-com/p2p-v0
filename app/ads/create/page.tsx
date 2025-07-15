@@ -341,12 +341,9 @@ export default function CreateAdPage() {
         localStorage.removeItem("editAdData")
 
         console.log("✅ Ad updated successfully, navigating to ads page with params")
-        const params = new URLSearchParams({
-          success: "updated",
-          type: finalData.type || "buy",
-          id: adId,
-        })
-        router.push(`/ads?${params.toString()}`)
+        const targetUrl = `/ads?success=updated&type=${encodeURIComponent(finalData.type || "buy")}&id=${encodeURIComponent(adId)}`
+        console.log("🎯 Target URL:", targetUrl)
+        router.push(targetUrl)
       } else {
         console.log("🆕 Creating new ad")
         const payload = {
@@ -373,13 +370,12 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        console.log("✅ Ad created successfully, navigating to ads page with params")
-        const params = new URLSearchParams({
-          success: "created",
-          type: result.data.type,
-          id: result.data.id,
-        })
-        router.push(`/ads?${params.toString()}`)
+        console.log("✅ Ad created successfully, result:", result.data)
+        const targetUrl = `/ads?success=created&type=${encodeURIComponent(result.data.type)}&id=${encodeURIComponent(result.data.id)}`
+        console.log("🎯 Target URL:", targetUrl)
+
+        // Use window.location.href for immediate navigation with parameters
+        window.location.href = targetUrl
       }
     } catch (error) {
       console.error("❌ Error in ad submission:", error)
