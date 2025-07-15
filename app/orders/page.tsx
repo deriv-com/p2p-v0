@@ -9,7 +9,6 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Card, CardContent } from "@/components/ui/card"
 import { formatAmount, formatStatus } from "@/lib/utils"
 
 export default function OrdersPage() {
@@ -82,67 +81,11 @@ export default function OrdersPage() {
     router.push(`/orders/${orderId}`)
   }
 
-  const MobileOrderCards = () => (
-    <div className="space-y-4">
-      {orders.map((order) => {
-        const orderType = order.type
-        const orderTypeColor = orderType === "buy" ? "text-green-500" : "text-red-500"
-        const statusText = order.status
-        const statusStyle = getStatusBadgeStyle(order.status, orderType)
-
-        return (
-          <Card
-            key={order.id}
-            className="cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => navigateToOrderDetails(order.id)}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs ${statusStyle}`}>{statusText}</span>
-                <div className="flex items-center text-slate-500">
-                  <span className="text-xs">00:59:59</span>
-                </div>
-              </div>
-
-              <div className="mb-2">
-                <span className={`text-base font-medium ${orderTypeColor}`}>{orderType}</span>
-                <span className="text-base font-medium"> {order.advert.payment_currency} </span>
-                <span className="text-base font-medium"> {formatAmount(order.amount)}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="text-xs text-slate-500">ID: {order.id}</div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigateToOrderDetails(order.id)
-                    }}
-                    className="text-slate-500 hover:text-slate-700"
-                    variant="ghost"
-                  >
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                      alt="Chat"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
-    </div>
-  )
-
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
         <Table>
-          <TableHeader className="sticky top-0 bg-white z-10 shadow-sm">
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-10 shadow-sm">
             <TableRow>
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
@@ -153,9 +96,9 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
-              <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
+              <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={order.id} onClick={() => navigateToOrderDetails(order.id)}>
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
                     {order.created_at ? formatDate(order.created_at) : ""}
@@ -242,8 +185,6 @@ export default function OrdersPage() {
           </Tabs>
         </div>
       </div>
-
-      {/* Content - Scrollable area */}
       <div className="flex-1 pb-4">
         {isLoading ? (
           <div className="text-center py-12">
@@ -269,14 +210,9 @@ export default function OrdersPage() {
             </Button>
           </div>
         ) : (
-          <>
-            <div className="md:hidden">
-              <MobileOrderCards />
-            </div>
-            <div className="hidden md:block">
+            <div>
               <DesktopOrderTable />
             </div>
-          </>
         )}
       </div>
     </div>

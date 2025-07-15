@@ -217,8 +217,8 @@ export default function BuySellPage() {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="exchange_rate">Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating_average">User rating (high-low)</SelectItem>
+                  <SelectItem value="exchange_rate">Sort by: Exchange rate (high-low)</SelectItem>
+                  <SelectItem value="user_rating_average_lifetime">Sort by: User rating (high-low)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -254,9 +254,9 @@ export default function BuySellPage() {
                       <TableHead className="text-right py-4 px-4"></TableHead>
                     </TableRow>
                   </TableHeader>
-                  <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
+                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
-                      <TableRow className="flex flex-col lg:table-row" key={ad.id}>
+                      <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
                         <TableCell className="py-4 px-4 align-top">
                           <div className="flex items-center">
                             <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">

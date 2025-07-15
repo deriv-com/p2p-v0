@@ -17,7 +17,7 @@ export default function Main({
 }>) {
   const pathname = usePathname()
   const router = useRouter()
-  const [isHeaderVisible, setIsHeaderVisible] = useState(false)
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true)
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
@@ -31,7 +31,6 @@ export default function Main({
           router.push("/login")
         } else {
            AuthPrevAPI.getSocketToken(response.access_token) 
-          setIsHeaderVisible(true)
           router.push(pathname)
         }
       } catch (error) {

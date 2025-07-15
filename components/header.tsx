@@ -22,7 +22,7 @@ export default function Header() {
       <div>
         <nav className="flex h-12 border-b border-slate-200">
           {navItems.map((item) => {
-            const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
+            const isActive = item.href === "/" ? pathname === "/" || pathname.startsWith("/advertiser")  : pathname.startsWith(item.href)
 
             return (
               <Link

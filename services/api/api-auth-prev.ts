@@ -1,4 +1,4 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 
 export interface LoginRequest {
     email: string
@@ -84,6 +84,31 @@ export async function getSession(): Promise<VerificationResponse> {
     try {
         const token = getAuthToken();
         if (!token) {
+            return {
+                errors: ["No token found"]
+            }
+        }
+
+        // TODO: To be removed once the session-based authentication is implemented
+        const response = await fetch(`${API.baseUrl}/users/me`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+                "X-Branch": "development",
+            }
+        })
+
+        if (!response.ok) {
+             return {
+                errors: ["No token found"]
+            }
+        }
+
+        const result = await response.json()
+        const { data } = result
+
+        if(data.errors) {
             return {
                 errors: ["No token found"]
             }

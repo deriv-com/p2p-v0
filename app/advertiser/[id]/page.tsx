@@ -10,7 +10,7 @@ import { USER } from "@/lib/local-variables"
 import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
-import { cn } from "@/lib/utils"
+import { cn, formatPaymentMethodName } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -239,8 +239,6 @@ export default function AdvertiserProfilePage() {
   return (
     <div>
       <Navigation title="Back" isVisible={false} />
-
-      {/* Profile header */}
       <div className="flex flex-col md:flex-row justify-between">
         <div className="container mx-auto pb-6">
           <div className="flex flex-col md:flex-row md:items-start gap-4">
@@ -298,8 +296,6 @@ export default function AdvertiserProfilePage() {
                   </div>
                 </div>
               </div>
-
-              {/* Verification badges */}
               <div className="flex flex-wrap gap-2 mt-4">
                 {profile?.isVerified.id && (
                   <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
@@ -323,8 +319,6 @@ export default function AdvertiserProfilePage() {
             </div>
           </div>
         </div>
-
-        {/* Stats section */}
         <div className="container mx-auto pb-6">
           <div className="bg-slate-50 rounded-lg p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -349,7 +343,7 @@ export default function AdvertiserProfilePage() {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6 border border-[#E9ECEF] p-[16px] rounded-lg">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 border border-[#E9ECEF] p-[16px] rounded-lg">
         <div>
           <div className="text-xs text-slate-500">Buy completion (30d)</div>
           <div className="font-bold mt-1">
@@ -379,8 +373,6 @@ export default function AdvertiserProfilePage() {
           <div className="font-bold mt-1">{`USD ${profile?.stats.tradeVolume.amount}`}</div>
         </div>
       </div>
-
-      {/* Tabs section */}
       <div className="container mx-auto pb-6 hidden">
         <Tabs value={activeSection} onValueChange={(value) => setActiveSection(value as "ads")} className="border-b">
           <TabsList className="bg-transparent border-b-0 p-0 h-auto">
@@ -396,72 +388,24 @@ export default function AdvertiserProfilePage() {
 
       {activeSection === "ads" && (
         <>
-          {/* Buy/Sell tabs */}
           <div className="container mx-auto pb-4">
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-              <TabsList>
-                <TabsTrigger value="sell">Buy Ads</TabsTrigger>
-                <TabsTrigger value="buy">Sell Ads</TabsTrigger>
+            <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+              <TabsList className="w-auto md:min-w-[230px]">
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+                  Buy Ads
+                </TabsTrigger>
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+                  Sell Ads
+                </TabsTrigger>
               </TabsList>
             </Tabs>
           </div>
-
-          {/* Ads list */}
           <div className="container mx-auto pb-8">
             {filteredAdverts.length > 0 ? (
               <>
-                {/* Mobile Card View */}
-                <div className="md:hidden space-y-4">
-                  {filteredAdverts.map((ad) => (
-                    <div key={ad.id} className="border rounded-lg p-4 bg-white">
-                      <div className="text-lg font-bold mb-2">
-                        IDR {ad.exchange_rate.toLocaleString()}
-                        {ad.exchange_rate_type === "floating" && (
-                          <span className="text-xs text-slate-500 ml-1">0.1%</span>
-                        )}
-                      </div>
-
-                      <div className="mb-2">
-                        USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
-                      </div>
-                      <div className="flex items-center text-xs text-slate-500 mb-3">
-                        <Clock className="h-4 w-4 mr-1" />
-                        <span>{ad.order_expiry_period} min</span>
-                      </div>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {ad.payment_methods?.map((method, index) => (
-                          <div key={index} className="flex items-center">
-                            <div
-                              className={`h-2 w-2 rounded-full mr-1 ${method.toLowerCase().includes("bank")
-                                ? "bg-green-500"
-                                : method.toLowerCase().includes("skrill")
-                                  ? "bg-blue-500"
-                                  : "bg-yellow-500"
-                                }`}
-                            ></div>
-                            <span className="text-sm">{method}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {USER.id !== ad.user.id && (
-                        <Button
-                          size="sm"
-                          onClick={() => handleOrderClick(ad, activeTab === "buy" ? "buy" : "sell")}
-                          className="rounded-full bg-[#00C390] hover:bg-[#00B380]"
-                        >
-                          {activeTab === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                        </Button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Desktop Table View */}
-                <div className="hidden md:block">
+                <div>
                   <Table>
-                    <TableHeader className="border-b sticky top-0 bg-white">
+                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
                       <TableRow className="text-sm">
                         <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
                         <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Order limits</TableHead>
@@ -471,9 +415,9 @@ export default function AdvertiserProfilePage() {
                         <TableHead className="text-right py-4 px-4"></TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
+                    <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                       {filteredAdverts.map((ad) => (
-                        <TableRow key={ad.id}>
+                        <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
                           <TableCell className="py-4 px-4">
                             <div className="font-bold">IDR {ad.exchange_rate.toLocaleString()}</div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
@@ -482,7 +426,7 @@ export default function AdvertiserProfilePage() {
                             <div>
                               USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                             </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-1">
+                            <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1 w-fit">
                               <Clock className="h-4 w-4 mr-1" />
                               <span>{ad.order_expiry_period} min</span>
                             </div>
@@ -492,14 +436,11 @@ export default function AdvertiserProfilePage() {
                               {ad.payment_methods?.map((method, index) => (
                                 <div key={index} className="flex items-center">
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-1 ${method.toLowerCase().includes("bank")
-                                      ? "bg-green-500"
-                                      : method.toLowerCase().includes("skrill")
-                                        ? "bg-blue-500"
-                                        : "bg-yellow-500"
-                                      }`}
+                                    className={`h-2 w-2 rounded-full mr-2 ${
+                                      method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
+                                    }`}
                                   ></div>
-                                  <span className="text-sm">{method}</span>
+                                  <span className="text-sm">{formatPaymentMethodName(method)}</span>
                                 </div>
                               ))}
                             </div>
