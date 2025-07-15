@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { MoreVertical, Pencil, Copy, Share2, Power, Trash2, Search } from "lucide-react"
+import { MoreVertical, Pencil, Power, Trash2, Search } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -294,20 +294,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                         >
                           <Power className="h-4 w-4" />
                           {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2"
-                          onSelect={() => console.log("clicked copy")}
-                        >
-                          <Copy className="h-4 w-4" />
-                          Copy
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2"
-                          onSelect={() => console.log("clicked share")}
-                        >
-                          <Share2 className="h-4 w-4" />
-                          Share
                         </DropdownMenuItem>
                         <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleDelete(ad.id)}>
                           <Trash2 className="h-4 w-4" />
