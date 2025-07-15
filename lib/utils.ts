@@ -163,10 +163,8 @@ export function getChatErrorMessage(tags: string[]): string {
       "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
     human_attention: "Threatening or harassing language is not tolerated. Please communicate respectfully.",
     harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
-    fake_identity:
-      "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
-    sensitive_data_requests:
-      "Your message requires additional review. Please wait while we connect you with a specialist.",
+    fake_identity:"Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
+    sensitive_data_requests:"Your message requires additional review. Please wait while we connect you with a specialist.",
     miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
   }
   const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
