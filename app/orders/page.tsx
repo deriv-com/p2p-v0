@@ -10,7 +10,7 @@ import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardContent } from "@/components/ui/card"
-import { formatStatus } from "@/lib/utils"
+import { formatAmount, formatStatus } from "@/lib/utils"
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -107,21 +107,7 @@ export default function OrdersPage() {
               <div className="mb-2">
                 <span className={`text-base font-medium ${orderTypeColor}`}>{orderType}</span>
                 <span className="text-base font-medium"> {order.advert.payment_currency} </span>
-                <span className="text-base font-medium">
-                  {typeof order.amount === "object" && order.amount.value
-                    ? Number(order.amount.value).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
-                    : typeof order.amount === "number"
-                      ? order.amount.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                      : Number(order.amount).toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
+                <span className="text-base font-medium"> {formatAmount(order.amount)}
                 </span>
               </div>
 
@@ -185,7 +171,7 @@ export default function OrdersPage() {
                       )}
                       <span className="text-base">
                         {" "}
-                        {order.advert.account_currency} {order.amount}
+                        {order.advert.account_currency} {formatAmount(order.amount)}
                       </span>
                     </div>
                     <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
@@ -194,7 +180,7 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top text-base">
                   <div className="font-bold">
-                    {order.advert.payment_currency} {order.payment_amount}
+                    {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top">

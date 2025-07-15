@@ -3,13 +3,11 @@
 import type React from "react"
 import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
-import { Paperclip } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocket } from "@/hooks/use-websocket"
-import { getChatErrorMessage } from "@/lib/utils"
+import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
 
 type Message = {
   attachment: {
@@ -28,9 +26,10 @@ type OrderChatProps = {
   orderId: string
   counterpartyName: string
   counterpartyInitial: string
+  isClosed: boolean
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial }: OrderChatProps) {
+export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed }: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -175,26 +174,36 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                 <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
-                      <div className={`${msg.sender_is_self? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}>
-                        <a href={msg.attachment.url} download>{msg.attachment.name}</a>
+                      <div
+                        className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
+                      >
+                        <a href={msg.attachment.url} target="_blank" download>
+                          {msg.attachment.name}
+                        </a>
                       </div>
                     </div>
                   )}
-                  {msg.message && 
-                  <div className="flex items-center">
-                    <div className={`break-words ${msg.sender_is_self ? msg.rejected ? "bg-blue-200 opacity-50" : "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}>
-                      {msg.message}
-                    </div>
-                    {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
-                  </div>
-                  }
-                  {msg.rejected ? 
-                      <div className="text-xs text-error-text mt-[4px]">Message not sent: {getChatErrorMessage(msg.tags)}
-                      </div> :
-                      <div className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text" : "text-neutral-7"}`}>
-                        {formatMessageTime(msg.time)}
+                  {msg.message && (
+                    <div className="flex items-center">
+                      <div
+                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-blue-200 opacity-50" : "bg-primary") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
+                      >
+                        {msg.message}
                       </div>
-                  }
+                      {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
+                    </div>
+                  )}
+                  {msg.rejected ? (
+                    <div className="text-xs text-error-text mt-[4px]">
+                      Message not sent: {getChatErrorMessage(msg.tags)}
+                    </div>
+                  ) : (
+                    <div
+                      className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
+                    >
+                      {formatDateTime(msg.time)}
+                    </div>
+                  )}
                 </div>
               </div>
             ))
@@ -203,36 +212,46 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         </div>
       </div>
 
-      <div className="p-4 border-t">
-        <div className="space-y-2">
-          <div className="relative">
-            <Textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
-              onKeyDown={handleKeyDown}
-              placeholder="Enter message"
-              rows={1}
-              disabled={isSending}
-              className="w-full bg-gray-50 border-gray-200 rounded-[12px] pr-12 resize-none min-h-[48px] placeholder:text-gray-400"
-            />
-            <Button
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
-              onClick={() => fileInputRef.current?.click()}
-              variant="ghost"
-              size="sm"
-            >
-              <Paperclip className="h-5 w-5" />
-            </Button>
-            <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*" />
-          </div>
-          <div className="flex justify-between items-center">
-            <div></div>
-            <div className="text-xs text-gray-400">
-              {message.length}/{maxLength}
+          {isClosed ? <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
+              This conversation is closed.
+          </div> :
+          <div className="p-4 border-t">
+            <div className="space-y-2">
+              <div className="relative">
+                <Input
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter message"
+                  disabled={isSending}
+                  className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                />
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="ghost"
+                  size="sm"
+                >
+                  <Image
+                    src="/icons/paperclip-icon.png"
+                    alt="Attach file"
+                    width={20}
+                    height={20}
+                    className="h-5 w-5"
+                  />
+                </Button>
+                <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*,application/pdf" />
+              </div>
+              <div className="flex justify-between items-center">
+                <div></div>
+                <div className="text-xs text-[#0000003D] mr-16px">
+                  {message.length}/{maxLength}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        }
+    
     </div>
   )
 }
@@ -250,9 +269,4 @@ function formatLastSeen(date: Date): string {
   if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`
 
   return date.toLocaleDateString()
-}
-
-function formatMessageTime(time: number): string {
-  const date = new Date(time)
-  return date.toLocaleString()
 }
