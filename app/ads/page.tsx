@@ -1,13 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
-import type { MyAd } from "./types"
+import type { MyAd, SuccessData } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -15,35 +15,17 @@ import { StatusBanner } from "@/components/ui/status-banner"
 
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
+import { useNotificationStore } from "@/stores/notification-store"
 
 export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [successModal, setSuccessModal] = useState<{
-    show: boolean
-    type: string
-    id: string
-  }>({
-    show: false,
-    type: "",
-    id: "",
-  })
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
-
-  const [updateModal, setUpdateModal] = useState<{
-    show: boolean
-    type: string
-    id: string
-  }>({
-    show: false,
-    type: "",
-    id: "",
-  })
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const searchParams = useSearchParams()
+  const { successModal, clearSuccessModal } = useNotificationStore()
 
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -89,47 +71,30 @@ export default function AdsPage() {
 
   useEffect(() => {
     const checkForSuccessData = () => {
-      // Check for creation success
-      const created = searchParams.get("created")
-      const updated = searchParams.get("updated")
-      const type = searchParams.get("type")
-      const id = searchParams.get("id")
+      try {
+        const creationDataStr = localStorage.getItem("adCreationSuccess")
+        if (creationDataStr) {
+          const successData = JSON.parse(creationDataStr) as SuccessData
+          // This is kept for backward compatibility, but new flow uses Zustand
+          localStorage.removeItem("adCreationSuccess")
+        }
 
-      console.log("URL params:", { created, updated, type, id })
-
-      if (created === "true" && type && id) {
-        setSuccessModal({
-          show: true,
-          type: type,
-          id: id,
-        })
-        // Clean up URL parameters
-        router.replace("/ads")
-      }
-
-      // Check for update success
-      if (updated === "true" && type && id) {
-        setUpdateModal({
-          show: true,
-          type: type,
-          id: id,
-        })
-        // Clean up URL parameters
-        router.replace("/ads")
+        const updateDataStr = localStorage.getItem("adUpdateSuccess")
+        if (updateDataStr) {
+          localStorage.removeItem("adUpdateSuccess")
+        }
+      } catch (err) {
+        console.error("Error checking for success data:", err)
       }
     }
 
     fetchAds().then(() => {
       checkForSuccessData()
     })
-  }, [searchParams, router])
+  }, [])
 
   const handleCloseSuccessModal = () => {
-    setSuccessModal((prev) => ({ ...prev, show: false }))
-  }
-
-  const handleCloseUpdateModal = () => {
-    setUpdateModal((prev) => ({ ...prev, show: false }))
+    clearSuccessModal()
   }
 
   const handleCloseErrorModal = () => {
@@ -189,12 +154,16 @@ export default function AdsPage() {
       {successModal.show && !isMobile && (
         <StatusModal
           type="success"
-          title="Ad created"
-          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
+          title={successModal.type === "created" ? "Ad created" : "Ad updated"}
+          message={
+            successModal.type === "created"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
           onClose={handleCloseSuccessModal}
-          adType={successModal.type}
-          adId={successModal.id}
-          isUpdate={false}
+          adType={successModal.adType}
+          adId={successModal.adId}
+          isUpdate={successModal.type === "updated"}
         />
       )}
 
@@ -203,36 +172,15 @@ export default function AdsPage() {
           isOpen={successModal.show}
           onClose={handleCloseSuccessModal}
           type="success"
-          title="Ad created"
-          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
-          adType={successModal.type}
-          adId={successModal.id}
-          isUpdate={false}
-        />
-      )}
-
-      {updateModal.show && !isMobile && (
-        <StatusModal
-          type="success"
-          title="Ad updated"
-          message="Your changes have been saved and are now live."
-          onClose={handleCloseUpdateModal}
-          adType={updateModal.type}
-          adId={updateModal.id}
-          isUpdate={true}
-        />
-      )}
-
-      {updateModal.show && isMobile && (
-        <StatusBottomSheet
-          isOpen={updateModal.show}
-          onClose={handleCloseUpdateModal}
-          type="success"
-          title="Ad updated"
-          message="Your changes have been saved and are now live."
-          adType={updateModal.type}
-          adId={updateModal.id}
-          isUpdate={true}
+          title={successModal.type === "created" ? "Ad created" : "Ad updated"}
+          message={
+            successModal.type === "created"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          adType={successModal.adType}
+          adId={successModal.adId}
+          isUpdate={successModal.type === "updated"}
         />
       )}
 

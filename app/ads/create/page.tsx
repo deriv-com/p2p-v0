@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
+import { useNotificationStore } from "@/stores/notification-store"
 
 const getPageTitle = (isEditMode: boolean, adType?: string) => {
   if (isEditMode && adType) {
@@ -40,6 +41,7 @@ export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
+  const { setSuccessModal } = useNotificationStore()
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
@@ -339,7 +341,14 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        router.push(`/ads?updated=true&type=${finalData.type}&id=${adId}`)
+        // Set success notification in Zustand store
+        setSuccessModal({
+          type: "updated",
+          adType: finalData.type || "buy",
+          adId: adId,
+        })
+
+        router.push("/ads")
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -365,7 +374,14 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        router.push(`/ads?created=true&type=${result.data.type}&id=${result.data.id}`)
+        // Set success notification in Zustand store
+        setSuccessModal({
+          type: "created",
+          adType: result.data.type,
+          adId: result.data.id,
+        })
+
+        router.push("/ads")
       }
     } catch (error) {
       let errorInfo = {
