@@ -82,62 +82,6 @@ export default function OrdersPage() {
     router.push(`/orders/${orderId}`)
   }
 
-  const MobileOrderCards = () => (
-    <div className="space-y-4">
-      {orders.map((order) => {
-        const orderType = order.type
-        const orderTypeColor = orderType === "buy" ? "text-green-500" : "text-red-500"
-        const statusText = order.status
-        const statusStyle = getStatusBadgeStyle(order.status, orderType)
-
-        return (
-          <Card
-            key={order.id}
-            className="cursor-pointer hover:shadow-md transition-shadow"
-            onClick={() => navigateToOrderDetails(order.id)}
-          >
-            <CardContent className="p-4">
-              <div className="flex justify-between items-center mb-4">
-                <span className={`px-3 py-1 rounded-full text-xs ${statusStyle}`}>{statusText}</span>
-                <div className="flex items-center text-slate-500">
-                  <span className="text-xs">00:59:59</span>
-                </div>
-              </div>
-
-              <div className="mb-2">
-                <span className={`text-base font-medium ${orderTypeColor}`}>{orderType}</span>
-                <span className="text-base font-medium"> {order.advert.payment_currency} </span>
-                <span className="text-base font-medium"> {formatAmount(order.amount)}
-                </span>
-              </div>
-
-              <div className="flex justify-between items-center">
-                <div className="text-xs text-slate-500">ID: {order.id}</div>
-                <div className="flex items-center space-x-2">
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigateToOrderDetails(order.id)
-                    }}
-                    className="text-slate-500 hover:text-slate-700"
-                    variant="ghost"
-                  >
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                      alt="Chat"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
-    </div>
-  )
-
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -269,14 +213,9 @@ export default function OrdersPage() {
             </Button>
           </div>
         ) : (
-          <>
-            <div className="md:hidden">
-              <MobileOrderCards />
-            </div>
             <div className="hidden md:block">
               <DesktopOrderTable />
             </div>
-          </>
         )}
       </div>
     </div>
