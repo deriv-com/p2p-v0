@@ -436,7 +436,7 @@ export default function AdvertiserProfilePage() {
                                       method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
                                     }`}
                                   ></div>
-                                  <span className="text-sm">{method}</span>
+                                  <span className="text-sm">{formatPaymentMethodName(method)}</span>
                                 </div>
                               ))}
                             </div>
