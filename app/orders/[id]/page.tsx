@@ -277,13 +277,12 @@ export default function OrderDetailsPage() {
                       <div className="py-4 flex gap-4">
                         <Button
                           variant="outline"
-                          size="sm"
                           className="flex-1"
                           onClick={() => setShowCancelConfirmation(true)}
                         >
                           Cancel order
                         </Button>
-                        <Button className="flex-1" size="sm" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                        <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
                           {isPaymentLoading ? (
                             <>
                               <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
