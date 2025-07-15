@@ -10,7 +10,7 @@ import { USER } from "@/lib/local-variables"
 import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
-import { cn } from "@/lib/utils"
+import { cn, formatPaymentMethodName } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
@@ -440,7 +440,7 @@ export default function AdvertiserProfilePage() {
                                   : "bg-yellow-500"
                                 }`}
                             ></div>
-                            <span className="text-sm">{method}</span>
+                            <span className="text-sm">{formatPaymentMethodName(method)}</span>
                           </div>
                         ))}
                       </div>
