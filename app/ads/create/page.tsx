@@ -522,7 +522,7 @@ export default function CreateAdPage() {
 
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0">
-      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">
+      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-32 px-4 md:px-0">
         <style jsx global>{`
           input::placeholder {
             font-weight: 400;
@@ -587,7 +587,7 @@ export default function CreateAdPage() {
           </div>
         )}
 
-        <div className="relative">
+        <div className="relative mb-8 md:mb-0">
           {currentStep === 0 ? (
             <AdDetailsForm
               onNext={handleAdDetailsNext}
