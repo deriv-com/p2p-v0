@@ -1,345 +1,281 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { useSearchParams, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Plus, Search } from "lucide-react"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import MyAdsTable from "./components/my-ads-table"
+import MyAdsHeader from "./components/my-ads-header"
+import { getUserAdverts } from "./api/api-ads"
+import { USER } from "@/lib/local-variables"
+import { Plus } from "lucide-react"
+import type { MyAd, SuccessData } from "./types"
+import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { getUserAdverts, deleteAd } from "./api/api-ads"
+import { Button } from "@/components/ui/button"
+import { StatusBanner } from "@/components/ui/status-banner"
+
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
-import DeleteConfirmationDialog from "./components/ui/delete-confirmation-dialog"
-import MyAdsTable from "./components/my-ads-table"
-import MyAdsMobileView from "./components/my-ads-mobile-view"
-
-interface Ad {
-  id: string
-  type: "buy" | "sell"
-  currency: string
-  amount: string
-  rate: {
-    display: string
-    value: string
-  }
-  limits: string
-  paymentMethods: string[]
-  completion: string
-  avgTime: string
-  status: "active" | "inactive" | "archived"
-  available: {
-    current: number
-    total: number
-  }
-  description?: string
-}
-
-interface StatusModalState {
-  show: boolean
-  type: "success" | "error" | "warning"
-  title: string
-  message: string
-  subMessage?: string
-  adType?: string
-  adId?: string
-  actionButtonText?: string
-}
 
 export default function AdsPage() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const isMobile = useIsMobile()
-
-  const [ads, setAds] = useState<Ad[]>([])
+  const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState("active")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [sortBy, setSortBy] = useState("newest")
-  const [statusModal, setStatusModal] = useState<StatusModalState>({
-    show: false,
-    type: "success",
-    title: "",
-    message: "",
-    subMessage: "",
-  })
-  const [deleteDialog, setDeleteDialog] = useState<{
+  const [error, setError] = useState<string | null>(null)
+  const [successModal, setSuccessModal] = useState<{
     show: boolean
-    adId: string | null
-    adType: string
+    type: string
+    id: string
   }>({
     show: false,
-    adId: null,
-    adType: "",
+    type: "",
+    id: "",
+  })
+  const [showDeletedBanner, setShowDeletedBanner] = useState(false)
+
+  const [updateModal, setUpdateModal] = useState<{
+    show: boolean
+    type: string
+    id: string
+  }>({
+    show: false,
+    type: "",
+    id: "",
   })
 
-  // Check for success parameters from URL
-  useEffect(() => {
-    const success = searchParams.get("success")
-    const type = searchParams.get("type")
-    const id = searchParams.get("id")
+  const isMobile = useIsMobile()
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-    console.log("🔍 Checking URL params:", { success, type, id })
-
-    if (success && type && id) {
-      if (success === "created") {
-        setStatusModal({
-          show: true,
-          type: "success",
-          title: "Ad created",
-          message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
-          adType: type.toUpperCase(),
-          adId: id,
-        })
-      } else if (success === "updated") {
-        setStatusModal({
-          show: true,
-          type: "success",
-          title: "Ad updated",
-          message: "Your ad has been successfully updated.",
-          adType: type.toUpperCase(),
-          adId: id,
-        })
-      }
-
-      // Clean up URL parameters
-      const newUrl = window.location.pathname
-      window.history.replaceState({}, "", newUrl)
-    }
-  }, [searchParams])
-
-  useEffect(() => {
-    fetchAds()
-  }, [])
+  const [errorModal, setErrorModal] = useState({
+    show: false,
+    title: "Error",
+    message: "",
+  })
 
   const fetchAds = async () => {
     try {
       setLoading(true)
-      const response = await getUserAdverts()
+      setError(null)
+      console.log(`Fetching adverts for user ID: ${USER.id}`)
+      const userAdverts = await getUserAdverts()
+      console.log("User adverts response:", userAdverts)
 
-      if (response && response.length > 0) {
-        const formattedAds: Ad[] = response.map((ad: any) => ({
-          id: ad.id.toString(),
-          type: ad.type,
-          currency: "USD/IDR",
-          amount: `${ad.available_amount || 0}`,
-          rate: {
-            display: `IDR ${ad.exchange_rate || 0}`,
-            value: `IDR ${ad.exchange_rate || 0}`,
-          },
-          limits: `IDR ${ad.minimum_order_amount || 0} - ${ad.maximum_order_amount || 0}`,
-          paymentMethods: ad.payment_method_names || ad.payment_method_ids || [],
-          completion: "100%",
-          avgTime: "1 min",
-          status: ad.is_active ? "active" : "inactive",
-          available: {
-            current: ad.available_amount || 0,
-            total: ad.available_amount || 0,
-          },
-          description: ad.description || "",
-        }))
-        setAds(formattedAds)
-      }
-    } catch (error) {
-      console.error("Error fetching ads:", error)
+      setAds(userAdverts)
+    } catch (err) {
+      console.error("Error fetching ads:", err)
+      setError("Failed to load ads. Please try again later.")
+      setAds([])
+
+      setErrorModal({
+        show: true,
+        title: "Error Loading Ads",
+        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+      })
     } finally {
       setLoading(false)
     }
   }
 
-  const handleCreateAd = () => {
-    router.push("/ads/create")
+  const handleAdUpdated = (status?: string) => {
+    console.log("Ad updated (deleted or status changed), refreshing list...")
+    fetchAds()
+
+    if (status === "deleted") {
+      setShowDeletedBanner(true)
+      setTimeout(() => {
+        setShowDeletedBanner(false)
+      }, 3000)
+    }
   }
 
-  const handleEditAd = (ad: Ad) => {
-    const editData = {
-      id: ad.id,
-      type: ad.type,
-      rate: ad.rate,
-      limits: ad.limits,
-      paymentMethods: ad.paymentMethods,
-      available: ad.available,
-      description: ad.description,
+  useEffect(() => {
+    const checkForSuccessData = () => {
+      try {
+        // Check URL parameters first (new approach)
+        const success = searchParams.get("success")
+        const type = searchParams.get("type")
+        const id = searchParams.get("id")
+
+        console.log("🔍 Checking URL params:", { success, type, id })
+
+        if (success && type && id) {
+          if (success === "created") {
+            console.log("✅ Found creation success in URL params")
+            setSuccessModal({
+              show: true,
+              type: type,
+              id: id,
+            })
+          } else if (success === "updated") {
+            console.log("✅ Found update success in URL params")
+            setUpdateModal({
+              show: true,
+              type: type,
+              id: id,
+            })
+          }
+
+          // Clean up URL parameters
+          console.log("🧹 Cleaning up URL parameters")
+          router.replace("/ads", { scroll: false })
+          return
+        }
+
+        // Fallback to localStorage (backward compatibility)
+        const creationDataStr = localStorage.getItem("adCreationSuccess")
+        if (creationDataStr) {
+          console.log("📦 Found creation success in localStorage (fallback)")
+          const successData = JSON.parse(creationDataStr) as SuccessData
+          setSuccessModal({
+            show: true,
+            type: successData.type,
+            id: successData.id,
+          })
+          localStorage.removeItem("adCreationSuccess")
+        }
+
+        const updateDataStr = localStorage.getItem("adUpdateSuccess")
+        if (updateDataStr) {
+          console.log("📦 Found update success in localStorage (fallback)")
+          const updateData = JSON.parse(updateDataStr) as SuccessData
+          setUpdateModal({
+            show: true,
+            type: updateData.type,
+            id: updateData.id,
+          })
+          localStorage.removeItem("adUpdateSuccess")
+        }
+      } catch (err) {
+        console.error("❌ Error checking for success data:", err)
+      }
     }
 
-    localStorage.setItem("editAdData", JSON.stringify(editData))
-    router.push(`/ads/create?mode=edit&id=${ad.id}`)
-  }
-
-  const handleDeleteAd = (ad: Ad) => {
-    setDeleteDialog({
-      show: true,
-      adId: ad.id,
-      adType: ad.type,
+    fetchAds().then(() => {
+      checkForSuccessData()
     })
+  }, [searchParams, router])
+
+  const handleCloseSuccessModal = () => {
+    console.log("🔒 Closing success modal")
+    setSuccessModal((prev) => ({ ...prev, show: false }))
   }
 
-  const confirmDelete = async () => {
-    if (!deleteDialog.adId) return
-
-    try {
-      await deleteAd(deleteDialog.adId)
-      setAds(ads.filter((ad) => ad.id !== deleteDialog.adId))
-      setDeleteDialog({ show: false, adId: null, adType: "" })
-
-      setStatusModal({
-        show: true,
-        type: "success",
-        title: "Ad deleted",
-        message: "Your ad has been successfully deleted.",
-      })
-    } catch (error) {
-      console.error("Error deleting ad:", error)
-      setStatusModal({
-        show: true,
-        type: "error",
-        title: "Failed to delete ad",
-        message: "Please try again.",
-      })
-    }
+  const handleCloseUpdateModal = () => {
+    console.log("🔒 Closing update modal")
+    setUpdateModal((prev) => ({ ...prev, show: false }))
   }
 
-  const filteredAds = ads.filter((ad) => {
-    const matchesTab = activeTab === "all" || ad.status === activeTab
-    const matchesSearch =
-      ad.currency.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      ad.type.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesTab && matchesSearch
-  })
-
-  const sortedAds = [...filteredAds].sort((a, b) => {
-    switch (sortBy) {
-      case "newest":
-        return Number.parseInt(b.id) - Number.parseInt(a.id)
-      case "oldest":
-        return Number.parseInt(a.id) - Number.parseInt(b.id)
-      case "amount":
-        return Number.parseFloat(b.amount) - Number.parseFloat(a.amount)
-      default:
-        return 0
-    }
-  })
-
-  const handleModalClose = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
-  }
-
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-          <p className="mt-2 text-gray-600">Loading ads...</p>
-        </div>
-      </div>
-    )
+  const handleCloseErrorModal = () => {
+    setErrorModal((prev) => ({ ...prev, show: false }))
   }
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">My Ads</h1>
-          <p className="text-gray-600">Manage your buy and sell advertisements</p>
-        </div>
-        <Button onClick={handleCreateAd} className="w-full sm:w-auto">
-          <Plus className="w-4 h-4 mr-2" />
-          Create New Ad
-        </Button>
+    <div className="flex flex-col h-screen">
+      {showDeletedBanner && (
+        <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
+      )}
+
+      <div className="flex-none container mx-auto pr-4">
+        <MyAdsHeader hasAds={ads.length > 0} />
+        {ads.length > 0 && !isMobile && (
+          <Button
+            onClick={() => router.push("/ads/create")}
+            variant="cyan"
+            size="pill"
+            className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
+          >
+            <Plus className="h-5 w-5" />
+            Create ad
+          </Button>
+        )}
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            placeholder="Search ads..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
-          />
+      {ads.length > 0 && isMobile && (
+        <div className="fixed bottom-20 right-4 z-10">
+          <Button
+            onClick={() => router.push("/ads/create")}
+            variant="cyan"
+            size="pill"
+            className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
+          >
+            <Plus className="h-5 w-5" />
+            Create ad
+          </Button>
         </div>
-        <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-full sm:w-[180px]">
-            <SelectValue placeholder="Sort by" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="newest">Newest First</SelectItem>
-            <SelectItem value="oldest">Oldest First</SelectItem>
-            <SelectItem value="amount">Amount</SelectItem>
-          </SelectContent>
-        </Select>
+      )}
+
+      <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="mt-2 text-gray-600">Loading your ads...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-8 text-red-500">{error}</div>
+        ) : isMobile ? (
+          <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
+        ) : (
+          <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+        )}
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="active">Active ({ads.filter((ad) => ad.status === "active").length})</TabsTrigger>
-          <TabsTrigger value="inactive">Inactive ({ads.filter((ad) => ad.status === "inactive").length})</TabsTrigger>
-          <TabsTrigger value="all">All ({ads.length})</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value={activeTab} className="space-y-4">
-          {sortedAds.length === 0 ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center py-12">
-                <div className="text-center">
-                  <h3 className="text-lg font-semibold mb-2">No ads found</h3>
-                  <p className="text-gray-600 mb-4">
-                    {activeTab === "active" ? "You don't have any active ads yet." : `No ${activeTab} ads found.`}
-                  </p>
-                  <Button onClick={handleCreateAd}>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Create Your First Ad
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <>
-              {isMobile ? (
-                <MyAdsMobileView ads={sortedAds} onEdit={handleEditAd} onDelete={handleDeleteAd} />
-              ) : (
-                <MyAdsTable ads={sortedAds} onEdit={handleEditAd} onDelete={handleDeleteAd} />
-              )}
-            </>
-          )}
-        </TabsContent>
-      </Tabs>
-
-      {statusModal.show && !isMobile && (
+      {successModal.show && !isMobile && (
         <StatusModal
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          subMessage={statusModal.subMessage}
-          adType={statusModal.adType}
-          adId={statusModal.adId}
-          onClose={handleModalClose}
-          actionButtonText={statusModal.actionButtonText}
+          type="success"
+          title="Ad created"
+          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
+          onClose={handleCloseSuccessModal}
+          adType={successModal.type}
+          adId={successModal.id}
+          isUpdate={false}
         />
       )}
 
-      {statusModal.show && isMobile && (
+      {successModal.show && isMobile && (
         <StatusBottomSheet
-          isOpen={statusModal.show}
-          onClose={handleModalClose}
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          subMessage={statusModal.subMessage}
-          adType={statusModal.adType}
-          adId={statusModal.adId}
-          actionButtonText={statusModal.actionButtonText}
+          isOpen={successModal.show}
+          onClose={handleCloseSuccessModal}
+          type="success"
+          title="Ad created"
+          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
+          adType={successModal.type}
+          adId={successModal.id}
+          isUpdate={false}
         />
       )}
 
-      <DeleteConfirmationDialog
-        isOpen={deleteDialog.show}
-        onClose={() => setDeleteDialog({ show: false, adId: null, adType: "" })}
-        onConfirm={confirmDelete}
-        adType={deleteDialog.adType}
-      />
+      {updateModal.show && !isMobile && (
+        <StatusModal
+          type="success"
+          title="Ad updated"
+          message="Your changes have been saved and are now live."
+          onClose={handleCloseUpdateModal}
+          adType={updateModal.type}
+          adId={updateModal.id}
+          isUpdate={true}
+        />
+      )}
+
+      {updateModal.show && isMobile && (
+        <StatusBottomSheet
+          isOpen={updateModal.show}
+          onClose={handleCloseUpdateModal}
+          type="success"
+          title="Ad updated"
+          message="Your changes have been saved and are now live."
+          adType={updateModal.type}
+          adId={updateModal.id}
+          isUpdate={true}
+        />
+      )}
+
+      {errorModal.show && (
+        <StatusModal
+          type="error"
+          title={errorModal.title}
+          message={errorModal.message}
+          onClose={handleCloseErrorModal}
+        />
+      )}
     </div>
   )
 }
