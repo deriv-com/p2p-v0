@@ -99,7 +99,7 @@ export default function OrdersPage() {
           </TableHeader>
           <TableBody>
             {orders.map((order) => (
-              <TableRow key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
+              <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
                     {order.created_at ? formatDate(order.created_at) : ""}
