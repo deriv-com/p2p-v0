@@ -411,9 +411,9 @@ export default function AdvertiserProfilePage() {
                         <TableHead className="text-right py-4 px-4"></TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody className="bg-white divide-y divide-slate-200 font-normal text-sm">
+                    <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                       {filteredAdverts.map((ad) => (
-                        <TableRow key={ad.id}>
+                        <TableRow className="border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
                           <TableCell className="py-4 px-4">
                             <div className="font-bold">IDR {ad.exchange_rate.toLocaleString()}</div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
