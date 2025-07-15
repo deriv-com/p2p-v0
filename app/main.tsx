@@ -17,7 +17,7 @@ export default function Main({
 }>) {
   const pathname = usePathname()
   const router = useRouter()
-  const [isHeaderVisible, setIsHeaderVisible] = useState(false)
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true)
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
