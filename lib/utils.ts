@@ -169,7 +169,6 @@ export function getChatErrorMessage(tags: string[]): string {
       "Your message requires additional review. Please wait while we connect you with a specialist.",
     miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
   }
-
   const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
   return message
 }
