@@ -7,15 +7,13 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex flex-row items-center justify-center gap-2 rounded-full font-extrabold text-base leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 z-0 font-[800] text-[16px] leading-[16px] text-center text-default-button-text",
+  "inline-flex flex-row items-center justify-center gap-2 rounded-full font-extrabold text-base leading-none transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 z-0 font-[800] text-[16px] leading-[16px] text-center text-default-button-text disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none",
   {
     variants: {
       variant: {
         default: "bg-primary text-default-button-text hover:bg-cyan-hover",
         hover: "bg-cyan-hover text-default-button-text",
-        disabled: "bg-primary opacity-25 pointer-events-none cursor-not-allowed text-default-button-text",
         black: "bg-black text-white hover:bg-black/90",
-        blackDisabled: "bg-black opacity-25 pointer-events-none cursor-not-allowed text-white",
         outline: "border border-[#181C25] bg-transparent text-foreground hover:bg-slate-100 px-7",
         destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         secondary: "bg-secondary text-white hover:bg-secondary/80",
@@ -36,17 +34,7 @@ const buttonVariants = cva(
   },
 )
 
-const VALID_VARIANTS = [
-  "default",
-  "hover",
-  "disabled",
-  "black",
-  "blackDisabled",
-  "outline",
-  "destructive",
-  "secondary",
-  "ghost",
-]
+const VALID_VARIANTS = ["default", "hover", "black", "outline", "destructive", "secondary", "ghost"]
 
 const VALID_SIZES = ["default", "sm", "xs", "lg", "icon"]
 
@@ -58,18 +46,7 @@ export interface ButtonProps
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, disabled, ...props }, ref) => {
-    let computedVariant: string
-
-    if (disabled) {
-      if (variant === "black") {
-        computedVariant = "blackDisabled"
-      } else {
-        computedVariant = "disabled"
-      }
-    } else {
-      computedVariant = VALID_VARIANTS.includes(variant as string) ? variant! : "default"
-    }
-
+    const computedVariant = VALID_VARIANTS.includes(variant as string) ? variant! : "default"
     const computedSize = VALID_SIZES.includes(size as string) ? size : "default"
 
     const Comp = asChild ? Slot : "button"
