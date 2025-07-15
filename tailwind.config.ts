@@ -143,7 +143,7 @@ const config: Config = {
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",
-          other: "#1A79CB",
+      
         },
       },
       borderRadius: {
