@@ -305,14 +305,12 @@ export default function CreateAdPage() {
         localStorage.removeItem("editAdData")
 
         console.log("✅ Ad updated successfully, navigating to ads page")
-        router.push({
-          pathname: "/ads",
-          query: {
-            success: "updated",
-            type: finalData.type || "buy",
-            id: adId,
-          },
+        const params = new URLSearchParams({
+          success: "updated",
+          type: finalData.type || "buy",
+          id: adId,
         })
+        router.push(`/ads?${params.toString()}`)
       } else {
         console.log("🆕 Creating new ad")
         const payload = {
@@ -340,14 +338,12 @@ export default function CreateAdPage() {
         }
 
         console.log("✅ Ad created successfully, navigating to ads page")
-        router.push({
-          pathname: "/ads",
-          query: {
-            success: "created",
-            type: result.data.type,
-            id: result.data.id,
-          },
+        const params = new URLSearchParams({
+          success: "created",
+          type: result.data.type,
+          id: result.data.id.toString(),
         })
+        router.push(`/ads?${params.toString()}`)
       }
     } catch (error) {
       console.error("❌ Error in ad submission:", error)
