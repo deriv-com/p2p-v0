@@ -210,7 +210,7 @@ export default function OrdersPage() {
             </Button>
           </div>
         ) : (
-            <div className="hidden md:block">
+            <div>
               <DesktopOrderTable />
             </div>
         )}
