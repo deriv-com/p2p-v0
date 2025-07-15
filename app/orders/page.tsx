@@ -97,7 +97,7 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={order.id} className="cursor-pointer" onClick={() => navigateToOrderDetails(order.id)}>
                 {activeTab === "past" && (
