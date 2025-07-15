@@ -390,12 +390,12 @@ export default function AdvertiserProfilePage() {
         <>
           <div className="container mx-auto pb-4">
             <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-              <TabsList className="w-full md:min-w-[230px]">
+              <TabsList className="w-auto md:min-w-[230px]">
                 <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
-                  Buy
+                  Buy Ads
                 </TabsTrigger>
                 <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
-                  Sell
+                  Sell Ads
                 </TabsTrigger>
               </TabsList>
             </Tabs>
