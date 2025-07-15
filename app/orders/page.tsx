@@ -186,8 +186,6 @@ export default function OrdersPage() {
           </Tabs>
         </div>
       </div>
-
-      {/* Content - Scrollable area */}
       <div className="flex-1 pb-4">
         {isLoading ? (
           <div className="text-center py-12">
