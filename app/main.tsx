@@ -9,38 +9,6 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 import "./globals.css"
-import { AUTH, NOTIFICATIONS } from "@/lib/local-variables"
-
-async function fetchSubscriberHash() {
-  try {
-    const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: AUTH.getAuthHeader(),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch subscriber hash: ${response.status}`)
-    }
-
-    const responseData = await response.json()
-
-    const subscriberData = responseData.data?.subscriber || responseData.subscriber
-
-    if (!subscriberData) {
-      throw new Error("Invalid response structure: missing subscriber data")
-    }
-
-    return {
-      subscriberHash: subscriberData.subscriberHash,
-      subscriberId: subscriberData.subscriberId,
-    }
-  } catch (error) {
-    console.log(error)
-    return null
-  }
-}
 
 export default function Main({
   children,
@@ -62,21 +30,16 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
-          AuthPrevAPI.getSocketToken(response.access_token)
+           AuthPrevAPI.getSocketToken(response.access_token) 
           setIsHeaderVisible(true)
           router.push(pathname)
-
-          // Test fetchSubscriberHash on app load
-          console.log("Testing fetchSubscriberHash...")
-          const subscriberData = await fetchSubscriberHash()
-          console.log("Subscriber data:", subscriberData)
         }
       } catch (error) {
-        console.error("Error fetching data:", error)
+        console.error('Error fetching data:', error);
       }
-    }
+    };
 
-    fetchSessionData()
+    fetchSessionData();
   }, [pathname, router])
 
   if (pathname === "/login") {
@@ -87,8 +50,7 @@ export default function Main({
     <>
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto max-w-[1232px]">
         {isHeaderVisible && <Sidebar />}
-        <div className="flex-1">
-          {isHeaderVisible && <Header />}
+        <div className="flex-1">{isHeaderVisible && <Header />}
           <div className="container mx-auto p-4">{children}</div>
         </div>
       </div>
