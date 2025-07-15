@@ -164,10 +164,11 @@ export function getChatErrorMessage(tags: string[]): string {
     harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
     fake_identity: "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
     sensitive_data_requests: "Your message requires additional review. Please wait while we connect you with a specialist.",
-    miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
+    miscellaneous: "Your message doesn't meet our community guidelines. Please try again."
   }
-  
+
   const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
+
   return message
 }
 
