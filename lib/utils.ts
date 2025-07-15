@@ -64,7 +64,7 @@ export function getPaymentMethodColourByName(methodName: string): string {
   if (lowerMethod.includes("bank") || lowerMethod.includes("transfer")) {
     return "bg-paymentMethod-bank"
   }
-  return "bg-paymentMethod-ewallet
+  return "bg-paymentMethod-ewallet"
 }
 
 export function getCategoryDisplayName(type: string): string {
