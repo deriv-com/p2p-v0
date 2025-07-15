@@ -7,7 +7,7 @@ import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
-import type { MyAd, SuccessData } from "./types"
+import type { MyAd } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -88,30 +88,38 @@ export default function AdsPage() {
 
   useEffect(() => {
     const checkForSuccessData = () => {
-      try {
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
+      const urlParams = new URLSearchParams(window.location.search)
+
+      // Check for creation success
+      if (urlParams.get("created") === "true") {
+        const type = urlParams.get("type")
+        const id = urlParams.get("id")
+        if (type && id) {
           setSuccessModal({
             show: true,
-            type: successData.type,
-            id: successData.id,
+            type: type,
+            id: id,
           })
-          localStorage.removeItem("adCreationSuccess")
+          // Clean up URL parameters
+          const newUrl = window.location.pathname
+          window.history.replaceState({}, "", newUrl)
         }
+      }
 
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          const updateData = JSON.parse(updateDataStr) as SuccessData
+      // Check for update success
+      if (urlParams.get("updated") === "true") {
+        const type = urlParams.get("type")
+        const id = urlParams.get("id")
+        if (type && id) {
           setUpdateModal({
             show: true,
-            type: updateData.type,
-            id: updateData.id,
+            type: type,
+            id: id,
           })
-          localStorage.removeItem("adUpdateSuccess")
+          // Clean up URL parameters
+          const newUrl = window.location.pathname
+          window.history.replaceState({}, "", newUrl)
         }
-      } catch (err) {
-        console.error("Error checking for success data:", err)
       }
     }
 
