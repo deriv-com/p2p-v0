@@ -242,7 +242,7 @@ export default function OrderDetailsPage() {
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-                        <p className="text-lg font-bold">
+                        <p className="font-bold">
                           {order?.advert?.account_currency}{" "}
                           {formatAmount(order.amount)}
                         </p>
@@ -252,10 +252,9 @@ export default function OrderDetailsPage() {
                         <ChevronRight className="h-4 w-4 ml-1" />
                       </button>
                     </div>
-
                     <div>
                       <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                      <p className="font-medium">{counterpartyNickname}</p>
+                      <p className="font-bold">{counterpartyNickname}</p>
                     </div>
                   </div>
                   <div className="space-y-6 mt-4">
