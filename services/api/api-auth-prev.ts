@@ -89,6 +89,7 @@ export async function getSession(): Promise<VerificationResponse> {
             }
         }
 
+        // TODO: To be removed once the session-based authentication is implemented
         const response = await fetch(`${API.baseUrl}/users/me`, {
             method: "GET",
             headers: {
