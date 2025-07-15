@@ -1,4 +1,4 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 
 export interface LoginRequest {
     email: string
@@ -91,6 +91,7 @@ export async function getSession(): Promise<VerificationResponse> {
 
         const response = await fetch(`${API.coreUrl}/users/me`, {
             method: "GET",
+            headers: AUTH.getHeaders
         })
 
         if (!response.ok) {
