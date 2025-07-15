@@ -433,14 +433,11 @@ export default function AdvertiserProfilePage() {
                         {ad.payment_methods?.map((method, index) => (
                           <div key={index} className="flex items-center">
                             <div
-                              className={`h-2 w-2 rounded-full mr-1 ${method.toLowerCase().includes("bank")
-                                ? "bg-green-500"
-                                : method.toLowerCase().includes("skrill")
-                                  ? "bg-blue-500"
-                                  : "bg-yellow-500"
-                                }`}
+                              className={`h-2 w-2 rounded-full mr-2 ${
+                                method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
+                              }`}
                             ></div>
-                            <span className="text-sm">{formatPaymentMethodName(method)}</span>
+                            <span className="text-xs">{formatPaymentMethodName(method)}</span>
                           </div>
                         ))}
                       </div>
