@@ -479,7 +479,7 @@ export default function AdvertiserProfilePage() {
                             <div>
                               USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                             </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-1">
+                            <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1">
                               <Clock className="h-4 w-4 mr-1" />
                               <span>{ad.order_expiry_period} min</span>
                             </div>
@@ -489,12 +489,9 @@ export default function AdvertiserProfilePage() {
                               {ad.payment_methods?.map((method, index) => (
                                 <div key={index} className="flex items-center">
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-1 ${method.toLowerCase().includes("bank")
-                                      ? "bg-green-500"
-                                      : method.toLowerCase().includes("skrill")
-                                        ? "bg-blue-500"
-                                        : "bg-yellow-500"
-                                      }`}
+                                    className={`h-2 w-2 rounded-full mr-2 ${
+                                      method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
+                                    }`}
                                   ></div>
                                   <span className="text-sm">{method}</span>
                                 </div>
