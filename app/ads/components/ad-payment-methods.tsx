@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
-import { getCategoryDisplayName, getMethodDisplayDetails } from "@/lib/utils"
+import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
 
 interface PaymentMethod {
@@ -25,14 +25,6 @@ const AdPaymentMethods = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
-
-  const getPaymentMethodColour = (type: string): string => {
-    if (type === "bank") {
-      return "bg-paymentMethod-bank"
-    } else {
-      return "bg-paymentMethod-ewallet"
-    }
-  }
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
