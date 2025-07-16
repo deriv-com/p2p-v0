@@ -51,6 +51,9 @@ export default function AdsPage() {
     message: "",
   })
 
+  // Track if we need to clean URL params when modal closes
+  const [shouldCleanUrlOnClose, setShouldCleanUrlOnClose] = useState(false)
+
   const fetchAds = async () => {
     try {
       setLoading(true)
@@ -91,7 +94,7 @@ export default function AdsPage() {
   useEffect(() => {
     const checkForSuccessData = () => {
       try {
-        // Check URL parameters first (new approach)
+        // Check URL parameters first
         const success = searchParams.get("success")
         const type = searchParams.get("type")
         const id = searchParams.get("id")
@@ -101,6 +104,8 @@ export default function AdsPage() {
         console.log("🔍 Search params string:", searchParams.toString())
 
         if (success && type && id) {
+          setShouldCleanUrlOnClose(true) // Mark that we need to clean URL when modal closes
+
           if (success === "created") {
             console.log("✅ Found creation success in URL params")
             setSuccessModal({
@@ -116,12 +121,6 @@ export default function AdsPage() {
               id: id,
             })
           }
-
-          // Clean up URL parameters after a short delay to ensure modal is shown
-          console.log("🧹 Cleaning up URL parameters")
-          setTimeout(() => {
-            router.replace("/ads", { scroll: false })
-          }, 100)
           return
         }
 
@@ -163,14 +162,30 @@ export default function AdsPage() {
     fetchAds()
   }, [])
 
+  const cleanUrlParams = () => {
+    if (shouldCleanUrlOnClose) {
+      console.log("🧹 Cleaning up URL parameters on modal close")
+
+      // Option 1: Using Next.js router (recommended for Next.js apps)
+      router.replace("/ads", { scroll: false })
+
+      // Option 2: Using window.location (simpler but less Next.js-friendly)
+      // window.history.replaceState({}, '', '/ads')
+
+      setShouldCleanUrlOnClose(false)
+    }
+  }
+
   const handleCloseSuccessModal = () => {
     console.log("🔒 Closing success modal")
     setSuccessModal((prev) => ({ ...prev, show: false }))
+    cleanUrlParams() // Clean URL when modal actually closes
   }
 
   const handleCloseUpdateModal = () => {
     console.log("🔒 Closing update modal")
     setUpdateModal((prev) => ({ ...prev, show: false }))
+    cleanUrlParams() // Clean URL when modal actually closes
   }
 
   const handleCloseErrorModal = () => {
