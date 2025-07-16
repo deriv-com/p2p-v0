@@ -309,6 +309,7 @@ export default function CreateAdPage() {
           id: adId,
         })
 
+        console.log("Navigating to:", `/ads?${params.toString()}`)
         window.location.href = `/ads?${params.toString()}`
       } else {
         const payload = {
@@ -328,7 +329,9 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
+        console.log("Creating ad with payload:", payload)
         const result = await createAd(payload)
+        console.log("Create ad result:", result)
 
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
@@ -341,9 +344,11 @@ export default function CreateAdPage() {
           id: result.data.id,
         })
 
+        console.log("Navigating to:", `/ads?${params.toString()}`)
         window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
+      console.error("Error in handlePaymentDetailsSubmit:", error)
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",

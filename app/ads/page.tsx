@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
@@ -30,6 +30,7 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -76,12 +77,14 @@ export default function AdsPage() {
   useEffect(() => {
     const checkForSuccessParams = () => {
       try {
-        const searchParams = new URLSearchParams(window.location.search)
         const success = searchParams.get("success")
         const type = searchParams.get("type")
         const id = searchParams.get("id")
 
+        console.log("URL params:", { success, type, id })
+
         if (success && type && id && (success === "create" || success === "update")) {
+          console.log("Setting status data:", { success, type, id })
           setStatusData({
             show: true,
             success,
@@ -97,15 +100,20 @@ export default function AdsPage() {
     fetchAds().then(() => {
       checkForSuccessParams()
     })
-  }, [])
+  }, [searchParams])
 
   const handleCloseStatusModal = () => {
+    console.log("Closing status modal")
     setStatusData(null)
+    // Clear URL parameters
+    router.replace("/ads")
   }
 
   const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
   }
+
+  console.log("Current statusData:", statusData)
 
   return (
     <div className="flex flex-col h-screen">
