@@ -17,7 +17,6 @@ import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 
 interface StatusFeedback {
-  show: boolean
   success: "create" | "update"
   type: string
   id: string
@@ -29,7 +28,6 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusFeedback, setStatusFeedback] = useState<StatusFeedback | null>(null)
-  const [pendingStatusFeedback, setPendingStatusFeedback] = useState<StatusFeedback | null>(null)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -41,79 +39,64 @@ export default function AdsPage() {
     message: "",
   })
 
-  // Check for URL-based success feedback parameters immediately
+  // 1️⃣ Read URL params ONCE immediately
   useEffect(() => {
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
 
     if (success && type && id && (success === "create" || success === "update")) {
-      const feedbackData = {
-        show: true,
-        success,
-        type,
-        id,
-      }
-
-      // Store the feedback data but don't show it yet
-      setPendingStatusFeedback(feedbackData)
-
-      // Clean URL immediately after reading params
+      // Store immediately
+      setStatusFeedback({ success, type, id })
+      // Clean URL
       router.replace("/ads", { scroll: false })
     }
   }, [searchParams, router])
 
-  // Fetch ads on component mount
+  // 2️⃣ Fetch ads on mount
   useEffect(() => {
+    const fetchAds = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        console.log(`Fetching adverts for user ID: ${USER.id}`)
+        const userAdverts = await getUserAdverts()
+        console.log("User adverts response:", userAdverts)
+        setAds(userAdverts)
+      } catch (err) {
+        console.error("Error fetching ads:", err)
+        setError("Failed to load ads. Please try again later.")
+        setAds([])
+
+        setErrorModal({
+          show: true,
+          title: "Error Loading Ads",
+          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+        })
+      } finally {
+        setLoading(false)
+      }
+    }
+
     fetchAds()
   }, [])
 
-  // Show status feedback only after ads have loaded (or failed to load)
-  useEffect(() => {
-    if (!loading && pendingStatusFeedback) {
-      // Small delay to ensure page is fully rendered
-      const timer = setTimeout(() => {
-        setStatusFeedback(pendingStatusFeedback)
-        setPendingStatusFeedback(null)
-      }, 100)
-
-      return () => clearTimeout(timer)
-    }
-  }, [loading, pendingStatusFeedback])
-
-  const fetchAds = async () => {
-    try {
-      setLoading(true)
-      setError(null)
-      console.log(`Fetching adverts for user ID: ${USER.id}`)
-      const userAdverts = await getUserAdverts()
-      console.log("User adverts response:", userAdverts)
-
-      setAds(userAdverts)
-    } catch (err) {
-      console.error("Error fetching ads:", err)
-      setError("Failed to load ads. Please try again later.")
-      setAds([])
-
-      setErrorModal({
-        show: true,
-        title: "Error Loading Ads",
-        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-      })
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const handleAdUpdated = (status?: string) => {
-    console.log("Ad updated (deleted or status changed), refreshing list...")
-    fetchAds()
+    console.log("Ad updated, refreshing list...")
+    // Re-fetch
+    const reload = async () => {
+      try {
+        const userAdverts = await getUserAdverts()
+        setAds(userAdverts)
+      } catch (err) {
+        console.error("Error reloading ads:", err)
+      }
+    }
+    reload()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
-      setTimeout(() => {
-        setShowDeletedBanner(false)
-      }, 3000)
+      setTimeout(() => setShowDeletedBanner(false), 3000)
     }
   }
 
@@ -175,8 +158,8 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* Success Feedback Modal - Only shown after page content has loaded */}
-      {statusFeedback?.show && !isMobile && (
+      {/* 3️⃣ Show status modal ONLY if ads finished loading and we have feedback */}
+      {!loading && statusFeedback && !isMobile && (
         <StatusModal
           type="success"
           title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
@@ -192,9 +175,9 @@ export default function AdsPage() {
         />
       )}
 
-      {statusFeedback?.show && isMobile && (
+      {!loading && statusFeedback && isMobile && (
         <StatusBottomSheet
-          isOpen={statusFeedback.show}
+          isOpen
           onClose={handleCloseStatusFeedback}
           type="success"
           title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
