@@ -41,40 +41,30 @@ export default function AdsPage() {
 
   // Read URL params ONCE immediately
   useEffect(() => {
-    console.log("🔍 AdsPage: Checking URL params...")
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
 
-    console.log("🔍 URL params:", { success, type, id })
-
     if (success && type && id && (success === "create" || success === "update")) {
-      console.log("✅ Valid success params found, storing feedback...")
       // Store immediately
       setStatusFeedback({ success, type, id })
       // Clean URL
-      console.log("🧹 Cleaning URL...")
       router.replace("/ads", { scroll: false })
-    } else {
-      console.log("❌ No valid success params found")
     }
   }, [searchParams, router])
 
   // Fetch ads on mount
   useEffect(() => {
-    console.log("🚀 AdsPage: Starting to fetch ads...")
-
     const fetchAds = async () => {
       try {
         setLoading(true)
         setError(null)
-        console.log(`📡 Fetching adverts for user ID: ${USER.id}`)
+        console.log(`Fetching adverts for user ID: ${USER.id}`)
         const userAdverts = await getUserAdverts()
-        console.log("📊 User adverts response:", userAdverts)
-        console.log(`✅ Successfully fetched ${userAdverts.length} ads`)
+        console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
       } catch (err) {
-        console.error("❌ Error fetching ads:", err)
+        console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
 
@@ -84,7 +74,6 @@ export default function AdsPage() {
           message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
         })
       } finally {
-        console.log("🏁 Ads fetch completed, setting loading to false")
         setLoading(false)
       }
     }
@@ -92,58 +81,32 @@ export default function AdsPage() {
     fetchAds()
   }, [])
 
-  // Log when modal should show
-  useEffect(() => {
-    console.log("🎭 Modal visibility check:", {
-      loading,
-      statusFeedback,
-      shouldShowModal: !loading && statusFeedback,
-      isMobile,
-    })
-  }, [loading, statusFeedback, isMobile])
-
   const handleAdUpdated = (status?: string) => {
-    console.log("🔄 Ad updated, refreshing list...", { status })
+    console.log("Ad updated, refreshing list...")
     // Re-fetch
     const reload = async () => {
       try {
         const userAdverts = await getUserAdverts()
-        console.log("🔄 Reloaded ads:", userAdverts.length)
         setAds(userAdverts)
       } catch (err) {
-        console.error("❌ Error reloading ads:", err)
+        console.error("Error reloading ads:", err)
       }
     }
     reload()
 
     if (status === "deleted") {
-      console.log("🗑️ Showing deleted banner")
       setShowDeletedBanner(true)
-      setTimeout(() => {
-        console.log("🗑️ Hiding deleted banner")
-        setShowDeletedBanner(false)
-      }, 3000)
+      setTimeout(() => setShowDeletedBanner(false), 3000)
     }
   }
 
   const handleCloseStatusFeedback = () => {
-    console.log("❌ Closing status feedback modal")
     setStatusFeedback(null)
   }
 
   const handleCloseErrorModal = () => {
-    console.log("❌ Closing error modal")
     setErrorModal((prev) => ({ ...prev, show: false }))
   }
-
-  console.log("🎨 AdsPage render:", {
-    loading,
-    adsCount: ads.length,
-    error,
-    statusFeedback,
-    showDeletedBanner,
-    isMobile,
-  })
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -197,54 +160,45 @@ export default function AdsPage() {
 
       {/* Show status modal ONLY if ads finished loading and we have feedback */}
       {!loading && statusFeedback && !isMobile && (
-        <>
-          {console.log("🎭 Rendering desktop StatusModal")}
-          <StatusModal
-            type="success"
-            title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
-            message={
-              statusFeedback.success === "create"
-                ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-                : "Your changes have been saved and are now live."
-            }
-            onClose={handleCloseStatusFeedback}
-            adType={statusFeedback.type}
-            adId={statusFeedback.id}
-            isUpdate={statusFeedback.success === "update"}
-          />
-        </>
+        <StatusModal
+          type="success"
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
+          message={
+            statusFeedback.success === "create"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          onClose={handleCloseStatusFeedback}
+          adType={statusFeedback.type}
+          adId={statusFeedback.id}
+          isUpdate={statusFeedback.success === "update"}
+        />
       )}
 
       {!loading && statusFeedback && isMobile && (
-        <>
-          {console.log("🎭 Rendering mobile StatusBottomSheet")}
-          <StatusBottomSheet
-            isOpen
-            onClose={handleCloseStatusFeedback}
-            type="success"
-            title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
-            message={
-              statusFeedback.success === "create"
-                ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-                : "Your changes have been saved and are now live."
-            }
-            adType={statusFeedback.type}
-            adId={statusFeedback.id}
-            isUpdate={statusFeedback.success === "update"}
-          />
-        </>
+        <StatusBottomSheet
+          isOpen
+          onClose={handleCloseStatusFeedback}
+          type="success"
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
+          message={
+            statusFeedback.success === "create"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          adType={statusFeedback.type}
+          adId={statusFeedback.id}
+          isUpdate={statusFeedback.success === "update"}
+        />
       )}
 
       {errorModal.show && (
-        <>
-          {console.log("🎭 Rendering error modal")}
-          <StatusModal
-            type="error"
-            title={errorModal.title}
-            message={errorModal.message}
-            onClose={handleCloseErrorModal}
-          />
-        </>
+        <StatusModal
+          type="error"
+          title={errorModal.title}
+          message={errorModal.message}
+          onClose={handleCloseErrorModal}
+        />
       )}
     </div>
   )
