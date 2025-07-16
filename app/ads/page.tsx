@@ -16,17 +16,19 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 
+interface StatusFeedback {
+  show: boolean
+  success: "create" | "update"
+  type: string
+  id: string
+}
+
 export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [statusData, setStatusData] = useState<{
-    show: boolean
-    success: "create" | "update"
-    type: string
-    id: string
-  } | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
+  const [statusFeedback, setStatusFeedback] = useState<StatusFeedback | null>(null)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -37,6 +39,30 @@ export default function AdsPage() {
     title: "Error",
     message: "",
   })
+
+  // Separate effect for handling URL-based success feedback
+  useEffect(() => {
+    const success = searchParams.get("success")
+    const type = searchParams.get("type")
+    const id = searchParams.get("id")
+
+    if (success && type && id && (success === "create" || success === "update")) {
+      setStatusFeedback({
+        show: true,
+        success,
+        type,
+        id,
+      })
+
+      // Clean URL immediately after reading params
+      router.replace("/ads", { scroll: false })
+    }
+  }, [searchParams, router])
+
+  // Separate effect for fetching ads - completely independent
+  useEffect(() => {
+    fetchAds()
+  }, [])
 
   const fetchAds = async () => {
     try {
@@ -74,49 +100,16 @@ export default function AdsPage() {
     }
   }
 
-  useEffect(() => {
-    const checkForSuccessParams = () => {
-      try {
-        const success = searchParams.get("success")
-        const type = searchParams.get("type")
-        const id = searchParams.get("id")
-
-        console.log("URL params:", { success, type, id })
-
-        if (success && type && id && (success === "create" || success === "update")) {
-          console.log("Setting status data:", { success, type, id })
-          setStatusData({
-            show: true,
-            success,
-            type,
-            id,
-          })
-        }
-      } catch (err) {
-        console.error("Error checking for success params:", err)
-      }
-    }
-
-    fetchAds().then(() => {
-      checkForSuccessParams()
-    })
-  }, [searchParams])
-
-  const handleCloseStatusModal = () => {
-    console.log("Closing status modal")
-    setStatusData(null)
-    // Clear URL parameters
-    router.replace("/ads")
+  const handleCloseStatusFeedback = () => {
+    setStatusFeedback(null)
   }
 
   const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
   }
 
-  console.log("Current statusData:", statusData)
-
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-white">
       {showDeletedBanner && (
         <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
       )}
@@ -165,36 +158,37 @@ export default function AdsPage() {
         )}
       </div>
 
-      {statusData?.show && !isMobile && (
+      {/* Success Feedback Modal - Completely independent overlay */}
+      {statusFeedback?.show && !isMobile && (
         <StatusModal
           type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
           message={
-            statusData.success === "create"
+            statusFeedback.success === "create"
               ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
               : "Your changes have been saved and are now live."
           }
-          onClose={handleCloseStatusModal}
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
+          onClose={handleCloseStatusFeedback}
+          adType={statusFeedback.type}
+          adId={statusFeedback.id}
+          isUpdate={statusFeedback.success === "update"}
         />
       )}
 
-      {statusData?.show && isMobile && (
+      {statusFeedback?.show && isMobile && (
         <StatusBottomSheet
-          isOpen={statusData.show}
-          onClose={handleCloseStatusModal}
+          isOpen={statusFeedback.show}
+          onClose={handleCloseStatusFeedback}
           type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
           message={
-            statusData.success === "create"
+            statusFeedback.success === "create"
               ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
               : "Your changes have been saved and are now live."
           }
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
+          adType={statusFeedback.type}
+          adId={statusFeedback.id}
+          isUpdate={statusFeedback.success === "update"}
         />
       )}
 
