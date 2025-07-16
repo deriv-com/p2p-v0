@@ -2,8 +2,9 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { ArrowLeft, X } from "lucide-react"
+import { X } from "lucide-react"
 import BalanceInfoPopup from "@/components/balance-info-popup"
+import Image from "next/image"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
@@ -12,19 +13,15 @@ interface NavigationProps {
   title: string
 }
 
-export default function Navigation({
-  isBackBtnVisible = true,
-  redirectUrl = "/",
-  title,
-}: NavigationProps) {
+export default function Navigation({ isBackBtnVisible = true, redirectUrl = "/", title }: NavigationProps) {
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   return (
     <div className="mb-4 border-b -mx-[24px] md:-mx-0 px-[16px] py-[4px]">
       <div className="flex items-center justify-between md:px-0">
-        {(isBackBtnVisible && title) ? (
+        {isBackBtnVisible && title ? (
           <Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <ArrowLeft className="h-5 w-5 mr-2" />
+            <Image src="/icons/arrow-left-custom.png" alt="Back" width={20} height={20} className="mr-2" />
             <h1 className="text-xl font-bold">{title}</h1>
           </Link>
         ) : (
