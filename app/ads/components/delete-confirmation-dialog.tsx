@@ -21,7 +21,7 @@ interface DeleteConfirmationDialogProps {
   onCancel: () => void
 }
 
-export function DeleteConfirmationDialog({
+export default function DeleteConfirmationDialog({
   open,
   title,
   description,
@@ -52,3 +52,6 @@ export function DeleteConfirmationDialog({
     </AlertDialog>
   )
 }
+
+// Keep the named export for backward compatibility
+export { DeleteConfirmationDialog }
