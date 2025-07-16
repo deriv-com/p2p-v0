@@ -38,10 +38,8 @@ export default function AdsPage() {
     type: "",
     id: "",
   })
-
   const isMobile = useIsMobile()
   const router = useRouter()
-
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
