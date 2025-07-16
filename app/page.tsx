@@ -257,7 +257,7 @@ export default function BuySellPage() {
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
                       <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
-                        <TableCell className="py-4 px-4 align-top">
+                        <TableCell className="p-2 lg:p-4 align-top">
                           <div className="flex items-center">
                             <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
@@ -293,7 +293,7 @@ export default function BuySellPage() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="py-4 px-4 align-top">
+                        <TableCell className="p-2 lg:p-4 align-top">
                           <div className="font-bold text-base">
                             {ad.payment_currency}{" "}
                             {ad.exchange_rate
@@ -319,7 +319,7 @@ export default function BuySellPage() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="py-4 px-4 sm:table-cell align-top">
+                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top">
                           <div className="flex flex-col flex-wrap gap-2">
                             {ad.payment_methods?.map((method, index) => (
                               <div key={index} className="flex items-center">
@@ -335,7 +335,7 @@ export default function BuySellPage() {
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell className="py-4 px-4 text-right align-top">
+                        <TableCell className="p-2 lg:p-4 text-right align-top">
                           {USER.id != ad.user.id && (
                             <Button
                               variant={ad.type === "buy" ? "destructive" : "secondary"}
