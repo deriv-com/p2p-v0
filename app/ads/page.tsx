@@ -39,21 +39,7 @@ export default function AdsPage() {
     message: "",
   })
 
-  // Read URL params ONCE immediately
-  useEffect(() => {
-    const success = searchParams.get("success")
-    const type = searchParams.get("type")
-    const id = searchParams.get("id")
-
-    if (success && type && id && (success === "create" || success === "update")) {
-      // Store immediately
-      setStatusFeedback({ success, type, id })
-      // Clean URL
-      router.replace("/ads", { scroll: false })
-    }
-  }, [searchParams, router])
-
-  // Fetch ads on mount
+  // Single useEffect to fetch ads and then check URL params
   useEffect(() => {
     const fetchAds = async () => {
       try {
@@ -63,6 +49,17 @@ export default function AdsPage() {
         const userAdverts = await getUserAdverts()
         console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
+
+        // After ads loaded, check for URL params and set feedback
+        const success = searchParams.get("success")
+        const type = searchParams.get("type")
+        const id = searchParams.get("id")
+
+        if (success && type && id && (success === "create" || success === "update")) {
+          console.log("Setting status feedback:", { success, type, id })
+          setStatusFeedback({ success, type, id })
+          router.replace("/ads", { scroll: false })
+        }
       } catch (err) {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
@@ -79,7 +76,7 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  }, [])
+  }, [searchParams, router])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")

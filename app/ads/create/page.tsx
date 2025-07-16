@@ -1,17 +1,19 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useRef } from "react"
+
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
 import StatusModal from "../components/ui/status-modal"
 import StatusBottomSheet from "../components/ui/status-bottom-sheet"
-import type { AdFormData, StatusModalState } from "../types"
-import { createAd, updateAd } from "../api/api-ads"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { ProgressSteps } from "../components/ui/progress-steps"
+import ProgressSteps from "../components/progress-steps"
+import { PaymentSelectionProvider } from "../components/payment-selection-context"
+import { createAdvert, updateAdvert } from "../api/api-ads"
+import type { AdFormData, StatusModalState, CreateAdvertRequest } from "../types"
 
 const getPageTitle = (isEditMode: boolean, adType?: string) => {
   if (isEditMode && adType) {
@@ -36,28 +38,18 @@ const getErrorTitle = (isEditMode: boolean) => {
   return isEditMode ? "Failed to update ad" : "Failed to create ad"
 }
 
+const convertToSnakeCase = (str: string): string => {
+  return str
+    .toLowerCase()
+    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9_]/g, "")
+}
+
 export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const isMobile = useIsMobile()
-
-  const [localEditMode, setLocalEditMode] = useState<boolean>(false)
-  const [localAdId, setLocalAdId] = useState<string | null>(null)
-
-  useEffect(() => {
-    const mode = searchParams.get("mode")
-    const id = searchParams.get("id")
-
-    if (mode === "edit" && id) {
-      setLocalEditMode(true)
-      setLocalAdId(id)
-    }
-  }, [searchParams])
-
-  const isEditMode = localEditMode
-  const adId = localAdId
-
   const [currentStep, setCurrentStep] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
   const [statusModal, setStatusModal] = useState<StatusModalState>({
     show: false,
@@ -66,14 +58,13 @@ export default function CreateAdPage() {
     message: "",
     subMessage: "",
   })
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [adId, setAdId] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
-
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
-
   const formDataRef = useRef<Partial<AdFormData>>({})
 
   const steps = [
@@ -82,81 +73,19 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
-  const convertToSnakeCase = (str: string): string => {
-    return str
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "")
-  }
-
   useEffect(() => {
     const loadInitialData = async () => {
       try {
         setIsLoading(true)
 
-        if (isEditMode) {
-          const editData = localStorage.getItem("editAdData")
-          if (editData) {
-            const parsedData = JSON.parse(editData)
+        const mode = searchParams.get("mode")
+        const id = searchParams.get("id")
 
-            let rateValue = 0
-            if (parsedData.rate && parsedData.rate.value) {
-              const rateMatch = parsedData.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
-              if (rateMatch && rateMatch[2]) {
-                rateValue = Number.parseFloat(rateMatch[2])
-              }
-            }
-
-            let minAmount = 0
-            let maxAmount = 0
-
-            if (typeof parsedData.limits === "string") {
-              const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
-              if (limitsMatch) {
-                minAmount = Number.parseFloat(limitsMatch[2])
-                maxAmount = Number.parseFloat(limitsMatch[3])
-              }
-            } else if (parsedData.limits && typeof parsedData.limits === "object") {
-              minAmount = parsedData.limits.min || 0
-              maxAmount = parsedData.limits.max || 0
-            }
-
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
-
-            if (parsedData.paymentMethods && Array.isArray(parsedData.paymentMethods)) {
-              if (parsedData.type?.toLowerCase() === "buy") {
-                paymentMethodNames = parsedData.paymentMethods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
-              } else {
-                paymentMethodIds = parsedData.paymentMethods
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
-
-                if (typeof window !== "undefined") {
-                  ;(window as any).adPaymentMethodIds = paymentMethodIds
-                }
-              }
-            }
-
-            const formattedData: Partial<AdFormData> = {
-              type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
-              totalAmount: parsedData.available?.current || 0,
-              fixedRate: rateValue,
-              minAmount: minAmount,
-              maxAmount: maxAmount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: parsedData.description || "",
-            }
-
-            setFormData(formattedData)
-            formDataRef.current = formattedData
-          }
+        if (mode === "edit" && id) {
+          setIsEditMode(true)
+          setAdId(id)
+          // In a real app, you'd fetch the ad data here
+          // For now, we'll just set edit mode
         }
       } catch (error) {
         console.log(error)
@@ -166,7 +95,7 @@ export default function CreateAdPage() {
     }
 
     loadInitialData()
-  }, [isEditMode])
+  }, [searchParams])
 
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
@@ -294,14 +223,12 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        const updateResult = await updateAd(adId, payload)
+        const updateResult = await updateAdvert({ id: adId, ...payload })
 
         if (updateResult.errors && updateResult.errors.length > 0) {
           const errorMessage = formatErrorMessage(updateResult.errors)
           throw new Error(errorMessage)
         }
-
-        localStorage.removeItem("editAdData")
 
         const params = new URLSearchParams({
           success: "update",
@@ -328,7 +255,7 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        const result = await createAd(payload)
+        const result = await createAdvert(payload as CreateAdvertRequest)
 
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
@@ -481,72 +408,72 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0">
-      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
-        <div
-          className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-        >
-          {currentStep === 1 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setCurrentStep(0)}
-              className="text-gray-700 hover:text-gray-900 p-2"
-            >
-              <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+    <PaymentSelectionProvider>
+      <div className="fixed w-full h-full bg-white top-0 left-0">
+        <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
+          <div
+            className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+          >
+            {currentStep === 1 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setCurrentStep(0)}
+                className="text-gray-700 hover:text-gray-900 p-2"
+              >
+                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+              </Button>
+            )}
+            {currentStep === 0 && <div></div>}
+            <div className="block md:hidden text-xl-bold text-black text-left">
+              {getPageTitle(isEditMode, formData.type)}
+            </div>
+            <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
             </Button>
-          )}
-          {currentStep === 0 && <div></div>}
-          <div className="block md:hidden text-xl-bold text-black text-left">
+          </div>
+
+          <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
             {getPageTitle(isEditMode, formData.type)}
           </div>
-          <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
 
-        <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
-          {getPageTitle(isEditMode, formData.type)}
-        </div>
+          <ProgressSteps currentStep={currentStep} steps={steps} />
 
-        <ProgressSteps currentStep={currentStep} steps={steps} />
-
-        {currentStep === 0 && (
-          <div className="block md:hidden mt-4 mb-6 text-left">
-            <div className="text-sm font-normal text-slate-1600">Step 1</div>
-            <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
-          </div>
-        )}
-
-        {currentStep === 1 && (
-          <div className="block md:hidden mt-4 mb-6 text-left">
-            <div className="text-sm font-normal text-slate-1600">Step 2</div>
-            <div className="text-lg font-bold text-slate-1600">Payment details</div>
-          </div>
-        )}
-
-        <div className="relative mb-16 md:mb-0">
-          {currentStep === 0 ? (
-            <AdDetailsForm
-              onNext={handleAdDetailsNext}
-              onClose={handleClose}
-              initialData={formData}
-              isEditMode={isEditMode}
-            />
-          ) : (
-            <PaymentDetailsForm
-              onBack={() => setCurrentStep(0)}
-              onSubmit={handlePaymentDetailsSubmit}
-              onClose={handleClose}
-              initialData={formData}
-              isSubmitting={isSubmitting}
-              isEditMode={isEditMode}
-              onBottomSheetOpenChange={handleBottomSheetOpenChange}
-            />
+          {currentStep === 0 && (
+            <div className="block md:hidden mt-4 mb-6 text-left">
+              <div className="text-sm font-normal text-slate-1600">Step 1</div>
+              <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
+            </div>
           )}
-        </div>
 
-        {isMobile ? (
+          {currentStep === 1 && (
+            <div className="block md:hidden mt-4 mb-6 text-left">
+              <div className="text-sm font-normal text-slate-1600">Step 2</div>
+              <div className="text-lg font-bold text-slate-1600">Payment details</div>
+            </div>
+          )}
+
+          <div className="relative mb-16 md:mb-0">
+            {currentStep === 0 ? (
+              <AdDetailsForm
+                onNext={handleAdDetailsNext}
+                onClose={handleClose}
+                initialData={formData}
+                isEditMode={isEditMode}
+              />
+            ) : (
+              <PaymentDetailsForm
+                onBack={() => setCurrentStep(0)}
+                onSubmit={handlePaymentDetailsSubmit}
+                onClose={handleClose}
+                initialData={formData}
+                isSubmitting={isSubmitting}
+                isEditMode={isEditMode}
+                onBottomSheetOpenChange={handleBottomSheetOpenChange}
+              />
+            )}
+          </div>
+
           <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
             <div className="mx-6">
               <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
@@ -554,43 +481,41 @@ export default function CreateAdPage() {
               </Button>
             </div>
           </div>
-        ) : (
-          <div className="hidden md:block"></div>
-        )}
 
-        <div className="hidden md:flex justify-end mt-8">
-          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-            {getButtonText(isEditMode, isSubmitting, currentStep)}
-          </Button>
+          <div className="hidden md:flex justify-end mt-8">
+            <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+              {getButtonText(isEditMode, isSubmitting, currentStep)}
+            </Button>
+          </div>
+
+          {statusModal.show && !isEditMode && (
+            <StatusModal
+              type={statusModal.type}
+              title={statusModal.title}
+              message={statusModal.message}
+              subMessage={statusModal.subMessage}
+              adType={statusModal.adType}
+              adId={statusModal.adId}
+              onClose={handleModalClose}
+              actionButtonText={statusModal.actionButtonText}
+            />
+          )}
+
+          {statusModal.show && isEditMode && (
+            <StatusBottomSheet
+              isOpen={statusModal.show}
+              onClose={handleModalClose}
+              type={statusModal.type}
+              title={statusModal.title}
+              message={statusModal.message}
+              subMessage={statusModal.subMessage}
+              adType={statusModal.adType}
+              adId={statusModal.adId}
+              actionButtonText={statusModal.actionButtonText}
+            />
+          )}
         </div>
-
-        {statusModal.show && !isMobile && (
-          <StatusModal
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            subMessage={statusModal.subMessage}
-            adType={statusModal.adType}
-            adId={statusModal.adId}
-            onClose={handleModalClose}
-            actionButtonText={statusModal.actionButtonText}
-          />
-        )}
-
-        {statusModal.show && isMobile && (
-          <StatusBottomSheet
-            isOpen={statusModal.show}
-            onClose={handleModalClose}
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            subMessage={statusModal.subMessage}
-            adType={statusModal.adType}
-            adId={statusModal.adId}
-            actionButtonText={statusModal.actionButtonText}
-          />
-        )}
       </div>
-    </div>
+    </PaymentSelectionProvider>
   )
 }
