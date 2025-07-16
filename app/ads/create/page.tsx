@@ -24,11 +24,9 @@ const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: 
   if (isSubmitting) {
     return isEditMode ? "Saving..." : "Creating..."
   }
-
   if (currentStep === 0) {
     return "Next"
   }
-
   return isEditMode ? "Save Details" : "Create Ad"
 }
 
@@ -47,7 +45,6 @@ export default function CreateAdPage() {
   useEffect(() => {
     const mode = searchParams.get("mode")
     const id = searchParams.get("id")
-
     if (mode === "edit" && id) {
       setLocalEditMode(true)
       setLocalAdId(id)
@@ -68,7 +65,6 @@ export default function CreateAdPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
@@ -98,7 +94,6 @@ export default function CreateAdPage() {
     const loadInitialData = async () => {
       try {
         setIsLoading(true)
-
         if (isEditMode) {
           const editData = localStorage.getItem("editAdData")
           if (editData) {
@@ -114,7 +109,6 @@ export default function CreateAdPage() {
 
             let minAmount = 0
             let maxAmount = 0
-
             if (typeof parsedData.limits === "string") {
               const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
               if (limitsMatch) {
@@ -183,7 +177,6 @@ export default function CreateAdPage() {
 
     checkSelectedPaymentMethods()
     const interval = setInterval(checkSelectedPaymentMethods, 100)
-
     return () => clearInterval(interval)
   }, [formData.type])
 
@@ -336,7 +329,6 @@ export default function CreateAdPage() {
         }
 
         localStorage.removeItem("editAdData")
-
         localStorage.setItem(
           "adUpdateSuccess",
           JSON.stringify({
@@ -469,11 +461,9 @@ export default function CreateAdPage() {
       if (formData.type === "buy" && !paymentFormValid) {
         return
       }
-
       if (formData.type === "sell" && !hasSelectedPaymentMethods) {
         return
       }
-
       if (isSubmitting) {
         return
       }
@@ -535,9 +525,11 @@ export default function CreateAdPage() {
             </Button>
           )}
           {currentStep === 0 && <div></div>}
+
           <div className="block md:hidden text-xl-bold text-black text-left">
             {getPageTitle(isEditMode, formData.type)}
           </div>
+
           <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
