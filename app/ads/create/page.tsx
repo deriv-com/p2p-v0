@@ -24,9 +24,11 @@ const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: 
   if (isSubmitting) {
     return isEditMode ? "Saving..." : "Creating..."
   }
+
   if (currentStep === 0) {
     return "Next"
   }
+
   return isEditMode ? "Save Details" : "Create Ad"
 }
 
@@ -38,12 +40,14 @@ export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
+
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
   useEffect(() => {
     const mode = searchParams.get("mode")
     const id = searchParams.get("id")
+
     if (mode === "edit" && id) {
       setLocalEditMode(true)
       setLocalAdId(id)
@@ -64,6 +68,7 @@ export default function CreateAdPage() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
@@ -77,11 +82,6 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
-  interface SuccessData {
-    type?: string
-    id?: string
-  }
-
   const convertToSnakeCase = (str: string): string => {
     return str
       .toLowerCase()
@@ -93,6 +93,7 @@ export default function CreateAdPage() {
     const loadInitialData = async () => {
       try {
         setIsLoading(true)
+
         if (isEditMode) {
           const editData = localStorage.getItem("editAdData")
           if (editData) {
@@ -108,6 +109,7 @@ export default function CreateAdPage() {
 
             let minAmount = 0
             let maxAmount = 0
+
             if (typeof parsedData.limits === "string") {
               const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
               if (limitsMatch) {
@@ -176,6 +178,7 @@ export default function CreateAdPage() {
 
     checkSelectedPaymentMethods()
     const interval = setInterval(checkSelectedPaymentMethods, 100)
+
     return () => clearInterval(interval)
   }, [formData.type])
 
@@ -206,35 +209,6 @@ export default function CreateAdPage() {
       document.removeEventListener("paymentFormValidationChange", handlePaymentFormValidation)
     }
   }, [formData])
-
-  useEffect(() => {
-    const checkForSuccessData = () => {
-      try {
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
-          setStatusModal({
-            show: true,
-            type: "success",
-            title: "Ad created",
-            message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
-            adType: successData.type?.toUpperCase(),
-            adId: successData.id,
-          })
-          localStorage.removeItem("adCreationSuccess")
-        }
-
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          localStorage.removeItem("adUpdateSuccess")
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    checkForSuccessData()
-  }, [])
 
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
@@ -328,15 +302,14 @@ export default function CreateAdPage() {
         }
 
         localStorage.removeItem("editAdData")
-        localStorage.setItem(
-          "adUpdateSuccess",
-          JSON.stringify({
-            type: finalData.type,
-            id: adId,
-          }),
-        )
 
-        router.push("/ads")
+        const params = new URLSearchParams({
+          success: "update",
+          type: finalData.type || "buy",
+          id: adId,
+        })
+
+        window.location.href = `/ads?${params.toString()}`
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -362,15 +335,13 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        localStorage.setItem(
-          "adCreationSuccess",
-          JSON.stringify({
-            type: result.data.type,
-            id: result.data.id,
-          }),
-        )
+        const params = new URLSearchParams({
+          success: "create",
+          type: result.data.type,
+          id: result.data.id,
+        })
 
-        router.push("/ads")
+        window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
       let errorInfo = {
@@ -460,9 +431,11 @@ export default function CreateAdPage() {
       if (formData.type === "buy" && !paymentFormValid) {
         return
       }
+
       if (formData.type === "sell" && !hasSelectedPaymentMethods) {
         return
       }
+
       if (isSubmitting) {
         return
       }
