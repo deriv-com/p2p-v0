@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
-import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
 import type { MyAd } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
@@ -55,9 +54,7 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
-      console.log(`Fetching adverts for user ID: ${USER.id}`)
       const userAdverts = await getUserAdverts()
-      console.log("User adverts response:", userAdverts)
       setAds(userAdverts)
     } catch (err) {
       console.error("Error fetching ads:", err)
@@ -75,7 +72,6 @@ export default function AdsPage() {
   }
 
   const handleAdUpdated = (status?: string) => {
-    console.log("Ad updated (deleted or status changed), refreshing list...")
     fetchAds()
 
     if (status === "deleted") {
@@ -87,58 +83,31 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    const checkForSuccessData = () => {
-      try {
-        const success = searchParams.get("success")
-        const type = searchParams.get("type")
-        const id = searchParams.get("id")
-
-        console.log("🔍 Checking URL params:", { success, type, id })
-        console.log("🔍 Full URL:", window.location.href)
-        console.log("🔍 Search params string:", searchParams.toString())
-
-        if (success && type && id) {
-          console.log("✅ Found URL parameters, setting up modal")
-
-          if (success === "created") {
-            console.log("✅ Setting up creation success modal")
-            setSuccessModal({
-              show: true,
-              type: type,
-              id: id,
-            })
-          } else if (success === "updated") {
-            console.log("✅ Setting up update success modal")
-            setUpdateModal({
-              show: true,
-              type: type,
-              id: id,
-            })
-          }
-
-          window.history.replaceState({}, "", "/ads")
-        } else {
-          console.log("❌ No URL parameters found or incomplete")
-        }
-      } catch (err) {
-        console.error("❌ Error checking for success data:", err)
-      }
-    }
-
-    checkForSuccessData()
-  }, [searchParams])
-
-  useEffect(() => {
     fetchAds()
   }, [])
 
+  useEffect(() => {
+    if (!loading) {
+      const success = searchParams.get("success")
+      const type = searchParams.get("type")
+      const id = searchParams.get("id")
+
+      if (success && type && id) {
+        if (success === "created") {
+          setSuccessModal({ show: true, type, id })
+        } else if (success === "updated") {
+          setUpdateModal({ show: true, type, id })
+        }
+        window.history.replaceState({}, "", "/ads")
+      }
+    }
+  }, [loading, searchParams])
+
   const handleCloseSuccessModal = () => {
-    console.log("🔒 Closing success modal")
     setSuccessModal((prev) => ({ ...prev, show: false }))
   }
 
   const handleCloseUpdateModal = () => {
-    console.log("🔒 Closing update modal")
     setUpdateModal((prev) => ({ ...prev, show: false }))
   }
 
