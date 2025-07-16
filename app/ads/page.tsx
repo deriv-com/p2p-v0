@@ -12,7 +12,6 @@ import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
-
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 
@@ -61,7 +60,6 @@ export default function AdsPage() {
       console.error("Error fetching ads:", err)
       setError("Failed to load ads. Please try again later.")
       setAds([])
-
       setErrorModal({
         show: true,
         title: "Error Loading Ads",
@@ -75,7 +73,6 @@ export default function AdsPage() {
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated (deleted or status changed), refreshing list...")
     fetchAds()
-
     if (status === "deleted") {
       setShowDeletedBanner(true)
       setTimeout(() => {

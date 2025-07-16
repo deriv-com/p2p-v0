@@ -38,7 +38,6 @@ export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
-
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
@@ -525,11 +524,9 @@ export default function CreateAdPage() {
             </Button>
           )}
           {currentStep === 0 && <div></div>}
-
           <div className="block md:hidden text-xl-bold text-black text-left">
             {getPageTitle(isEditMode, formData.type)}
           </div>
-
           <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
