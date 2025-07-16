@@ -60,30 +60,31 @@ export default function AdsPage() {
         const userAdverts = await getUserAdverts()
         console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
+
+        // Step 3: Only after loading is complete and ads are set, show status modal
+        setLoading(false)
+
+        // Wait for next tick to ensure ads are rendered on screen
+        if (pendingStatusFeedback && !errorModal.show) {
+          setTimeout(() => {
+            setStatusFeedback(pendingStatusFeedback)
+          }, 200)
+        }
       } catch (err) {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
+        setLoading(false)
         setErrorModal({
           show: true,
           title: "Error Loading Ads",
           message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
         })
-      } finally {
-        setLoading(false)
-      }
-
-      // Step 3: After ads are loaded, show status modal if no modal is currently displayed
-      if (pendingStatusFeedback && !errorModal.show) {
-        // Small delay to ensure ads are rendered on screen
-        setTimeout(() => {
-          setStatusFeedback(pendingStatusFeedback)
-        }, 100)
       }
     }
 
     handlePageLoad()
-  }, [searchParams, router]) // Only depend on searchParams and router
+  }, [searchParams, router])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
@@ -162,8 +163,8 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* Show status modal only if ads are loaded and we have feedback and no error modal */}
-      {!loading && statusFeedback && !errorModal.show && !isMobile && (
+      {/* Show status modal only after loading is complete and no error modal */}
+      {statusFeedback && !loading && !errorModal.show && !isMobile && (
         <StatusModal
           type="success"
           title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
@@ -179,7 +180,7 @@ export default function AdsPage() {
         />
       )}
 
-      {!loading && statusFeedback && !errorModal.show && isMobile && (
+      {statusFeedback && !loading && !errorModal.show && isMobile && (
         <StatusBottomSheet
           isOpen
           onClose={handleCloseStatusFeedback}
