@@ -1,195 +1,331 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { MoreVertical, Pencil, Power, Trash2, Search } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { MoreHorizontal, Edit, Trash2 } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { deleteAdvert, updateAdvertStatus } from "../api/api-ads"
-import type { MyAd } from "../types"
-import DeleteConfirmationDialog from "./ui/delete-confirmation-dialog"
-import StatusBottomSheet from "./ui/status-bottom-sheet"
-import { useRouter } from "next/navigation"
+import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
+import type { Ad } from "../types"
+import { cn } from "@/lib/utils"
+import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
+import StatusModal from "./ui/status-modal"
+import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 
 interface MyAdsTableProps {
-  ads: MyAd[]
-  onAdDeleted: (status?: string) => void
+  ads: Ad[]
+  onAdDeleted?: (status?: string) => void
 }
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
-  const [deleteDialog, setDeleteDialog] = useState<{
-    isOpen: boolean
-    ad: MyAd | null
-  }>({
-    isOpen: false,
-    ad: null,
-  })
-  const [statusSheet, setStatusSheet] = useState<{
-    isOpen: boolean
-    ad: MyAd | null
-  }>({
-    isOpen: false,
-    ad: null,
-  })
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false)
-
   const router = useRouter()
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [isTogglingStatus, setIsTogglingStatus] = useState(false)
+  const [errorModal, setErrorModal] = useState({
+    show: false,
+    title: "",
+    message: "",
+  })
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
+    show: false,
+    adId: "",
+  })
 
-  const handleDeleteClick = (ad: MyAd) => {
-    setDeleteDialog({ isOpen: true, ad })
+  const formatLimits = (ad: Ad) => {
+    if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
+      return `USD ${ad.minimum_order_amount} - ${ad.actual_maximum_order_amount}`
+    }
+
+    if (typeof ad.limits === "string") {
+      return ad.limits
+    }
+    if (ad.limits && typeof ad.limits === "object") {
+      return `${ad.limits.currency} ${ad.limits.min} - ${ad.limits.max}`
+    }
+    return "N/A"
   }
 
-  const handleStatusClick = (ad: MyAd) => {
-    setStatusSheet({ isOpen: true, ad })
+  const getAvailableAmount = (ad: Ad) => {
+    if (
+      ad.available_amount !== undefined &&
+      ad.open_order_amount !== undefined &&
+      ad.completed_order_amount !== undefined
+    ) {
+      const available = Number.parseFloat(ad.available_amount) || 0
+      const openOrder = Number.parseFloat(ad.open_order_amount) || 0
+      const completed = Number.parseFloat(ad.completed_order_amount) || 0
+      const total = available + openOrder + completed
+
+      return {
+        current: available,
+        total: total,
+        percentage: total > 0 ? (available / total) * 100 : 0,
+      }
+    }
+
+    if (ad.available) {
+      const current = Number.parseFloat(ad.available.current) || 0
+      const total = Number.parseFloat(ad.available.total) || 0
+      return {
+        current: current,
+        total: total,
+        percentage: total > 0 ? (current / total) * 100 : 0,
+      }
+    }
+
+    return { current: 0, total: 0, percentage: 0 }
   }
 
-  const handleEditClick = (ad: MyAd) => {
-    router.push(`/ads/create?edit=${ad.id}`)
+  const formatPaymentMethods = (methods: string[]) => {
+    if (!methods || methods.length === 0) return "None"
+    return (
+      <div className="space-y-1">
+        {methods.map((method, index) => (
+          <div key={index} className="flex items-center">
+            <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
+            <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
+          </div>
+        ))}
+      </div>
+    )
   }
 
-  const handleDeleteConfirm = async () => {
-    if (!deleteDialog.ad) return
+  const getStatusBadge = (isActive: boolean) => {
+    if (isActive) {
+      return <Badge variant="success-light">Active</Badge>
+    }
+    return <Badge variant="error-light">Inactive</Badge>
+  }
 
+  const handleEdit = (ad: Ad) => {
+    const editData = {
+      ...ad,
+      description: ad.description || "",
+    }
+
+    localStorage.setItem("editAdData", JSON.stringify(editData))
+
+    const editUrl = `/ads/create?mode=edit&id=${ad.id}`
+
+    window.location.href = editUrl
+  }
+
+  const handleToggleStatus = async (ad: Ad) => {
+    try {
+      setIsTogglingStatus(true)
+
+      const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
+      const isListed = !isActive
+
+      const updateResult = await toggleAdActiveStatus(ad.id, isListed)
+
+      if (updateResult.errors && updateResult.errors.length > 0) {
+        const errorMessage =
+          updateResult.errors[0].message || `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`
+        throw new Error(errorMessage)
+      }
+
+      if (onAdDeleted) {
+        onAdDeleted()
+      }
+    } catch (error) {
+      const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
+      setErrorModal({
+        show: true,
+        title: `Failed to ${isActive ? "Deactivate" : "Activate"} Ad`,
+        message:
+          error instanceof Error
+            ? error.message
+            : `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`,
+      })
+    } finally {
+      setIsTogglingStatus(false)
+    }
+  }
+
+  const handleDelete = (adId: string) => {
+    setDeleteConfirmModal({
+      show: true,
+      adId: adId,
+    })
+  }
+
+  const confirmDelete = async () => {
     try {
       setIsDeleting(true)
-      await deleteAdvert(deleteDialog.ad.id)
-      setDeleteDialog({ isOpen: false, ad: null })
-      onAdDeleted("deleted")
+      const result = await deleteAd(deleteConfirmModal.adId)
+
+      if (result.errors && result.errors.length > 0) {
+        const errorMessage = result.errors[0].message || "Failed to delete ad. Please try again."
+        throw new Error(errorMessage)
+      }
+
+      if (onAdDeleted) {
+        onAdDeleted("deleted")
+      }
+
+      setDeleteConfirmModal({ show: false, adId: "" })
     } catch (error) {
-      console.error("Error deleting ad:", error)
+      setErrorModal({
+        show: true,
+        title: "Failed to Delete Ad",
+        message: error instanceof Error ? error.message : "Failed to delete ad. Please try again.",
+      })
     } finally {
       setIsDeleting(false)
     }
   }
 
-  const handleStatusUpdate = async (newStatus: "active" | "inactive") => {
-    if (!statusSheet.ad) return
-
-    try {
-      setIsUpdatingStatus(true)
-      await updateAdvertStatus(statusSheet.ad.id, newStatus)
-      setStatusSheet({ isOpen: false, ad: null })
-      onAdDeleted() // Refresh the list
-    } catch (error) {
-      console.error("Error updating ad status:", error)
-    } finally {
-      setIsUpdatingStatus(false)
-    }
+  const cancelDelete = () => {
+    setDeleteConfirmModal({ show: false, adId: "" })
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status.toLowerCase()) {
-      case "active":
-        return <Badge variant="success">Active</Badge>
-      case "inactive":
-        return <Badge variant="secondary">Inactive</Badge>
-      case "archived":
-        return <Badge variant="destructive">Archived</Badge>
-      default:
-        return <Badge variant="secondary">{status}</Badge>
-    }
+  const handleCloseErrorModal = () => {
+    setErrorModal({
+      show: false,
+      title: "",
+      message: "",
+    })
   }
 
-  const formatCurrency = (amount: number, currency: string) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: currency,
-      minimumFractionDigits: 2,
-    }).format(amount)
+  if (ads.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-16">
+        <div className="bg-gray-100 rounded-full p-6 mb-6">
+          <Search className="h-12 w-12 text-gray-400" />
+        </div>
+        <h2 className="text-xl font-semibold mb-2">You have no ads</h2>
+        <p className="text-gray-600 mb-6 text-center max-w-md">
+          Looking to buy or sell USD? You can post your own ad for others to respond.
+        </p>
+        <Button onClick={() => router.push("/ads/create")} variant="cyan" size="pill">
+          Create ad
+        </Button>
+      </div>
+    )
   }
 
   return (
     <>
-      <div className="rounded-md border">
+      <div className="w-full">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Ad ID</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead>Rate</TableHead>
-              <TableHead>Available</TableHead>
-              <TableHead>Payment methods</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="w-[50px]"></TableHead>
+            <TableRow className="border-b">
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+                Ad ID
+              </TableHead>
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+                Available amount
+              </TableHead>
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+                Payment methods
+              </TableHead>
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {ads.map((ad) => (
-              <TableRow key={ad.id}>
-                <TableCell className="font-medium">{ad.id}</TableCell>
-                <TableCell>
-                  <Badge variant={ad.type === "buy" ? "default" : "secondary"}>
-                    {ad.type === "buy" ? "Buy" : "Sell"}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  {formatCurrency(ad.min_order_amount, ad.account_currency)} -{" "}
-                  {formatCurrency(ad.max_order_amount, ad.account_currency)}
-                </TableCell>
-                <TableCell>{formatCurrency(ad.rate, ad.local_currency)}</TableCell>
-                <TableCell>{formatCurrency(ad.remaining_amount, ad.account_currency)}</TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-1">
-                    {ad.payment_method_names?.slice(0, 2).map((method, index) => (
-                      <Badge key={index} variant="outline" className="text-xs">
-                        {method}
-                      </Badge>
-                    ))}
-                    {ad.payment_method_names && ad.payment_method_names.length > 2 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{ad.payment_method_names.length - 2}
-                      </Badge>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <button onClick={() => handleStatusClick(ad)} className="hover:opacity-80">
-                    {getStatusBadge(ad.status)}
-                  </button>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEditClick(ad)}>
-                        <Edit className="mr-2 h-4 w-4" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => handleDeleteClick(ad)} className="text-red-600">
-                        <Trash2 className="mr-2 h-4 w-4" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
+            {ads.map((ad, index) => {
+              const availableData = getAvailableAmount(ad)
+              const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
+              const adType = ad.type || "Buy"
+              const rate = ad.exchange_rate || ad.rate?.value || "N/A"
+              const paymentMethods = ad.payment_methods || ad.paymentMethods || []
+
+              return (
+                <TableRow key={index} className={cn("border-b", !isActive ? "opacity-60" : "")}>
+                  <TableCell className="py-4">
+                    <div>
+                      <div className="mb-1">
+                        <span
+                          className={cn(
+                            "font-bold text-base leading-6",
+                            adType.toLowerCase() === "buy" ? "text-buy" : "text-sell",
+                          )}
+                        >
+                          {adType}
+                        </span>
+                        <span className="text-gray-900 text-base font-normal leading-6"> {ad.id}</span>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs font-normal leading-5 text-slate-500">Rate:</span>
+                          <span className="text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs font-normal leading-5 text-slate-500">Limits:</span>
+                          <span className="text-sm font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                            {formatLimits(ad)}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-4">
+                    <div className="mb-1">
+                      USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
+                    </div>
+                    <div className="h-2 bg-gray-200 rounded-full w-full max-w-[180px] overflow-hidden">
+                      <div
+                        className="h-full bg-black rounded-full"
+                        style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
+                      ></div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-4">{formatPaymentMethods(paymentMethods)}</TableCell>
+                  <TableCell className="py-4">{getStatusBadge(isActive)}</TableCell>
+                  <TableCell className="py-4 text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-1 hover:bg-gray-100 rounded-full">
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-[160px]">
+                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleEdit(ad)}>
+                          <Pencil className="h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2"
+                          onSelect={() => handleToggleStatus(ad)}
+                          disabled={isTogglingStatus}
+                        >
+                          <Power className="h-4 w-4" />
+                          {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleDelete(ad.id)}>
+                          <Trash2 className="h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </div>
 
       <DeleteConfirmationDialog
-        isOpen={deleteDialog.isOpen}
-        onClose={() => setDeleteDialog({ isOpen: false, ad: null })}
-        onConfirm={handleDeleteConfirm}
-        isLoading={isDeleting}
-        adId={deleteDialog.ad?.id || ""}
+        open={deleteConfirmModal.show}
+        title="Delete ad?"
+        description="You will not be able to restore it."
+        isDeleting={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
       />
 
-      <StatusBottomSheet
-        isOpen={statusSheet.isOpen}
-        onClose={() => setStatusSheet({ isOpen: false, ad: null })}
-        currentStatus={statusSheet.ad?.status || ""}
-        onStatusUpdate={handleStatusUpdate}
-        isLoading={isUpdatingStatus}
-      />
+      {errorModal.show && (
+        <StatusModal
+          type="error"
+          title={errorModal.title}
+          message={errorModal.message}
+          onClose={handleCloseErrorModal}
+        />
+      )}
     </>
   )
 }
