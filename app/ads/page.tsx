@@ -39,7 +39,7 @@ export default function AdsPage() {
     message: "",
   })
 
-  // 1️⃣ Read URL params ONCE immediately
+  // Read URL params ONCE immediately
   useEffect(() => {
     const success = searchParams.get("success")
     const type = searchParams.get("type")
@@ -53,7 +53,7 @@ export default function AdsPage() {
     }
   }, [searchParams, router])
 
-  // 2️⃣ Fetch ads on mount
+  // Fetch ads on mount
   useEffect(() => {
     const fetchAds = async () => {
       try {
@@ -158,7 +158,7 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* 3️⃣ Show status modal ONLY if ads finished loading and we have feedback */}
+      {/* Show status modal ONLY if ads finished loading and we have feedback */}
       {!loading && statusFeedback && !isMobile && (
         <StatusModal
           type="success"
