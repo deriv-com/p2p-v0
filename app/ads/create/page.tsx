@@ -82,11 +82,6 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
-  interface SuccessData {
-    type?: string
-    id?: string
-  }
-
   const convertToSnakeCase = (str: string): string => {
     return str
       .toLowerCase()
