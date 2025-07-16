@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { X } from "lucide-react"
 import BalanceInfoPopup from "@/components/balance-info-popup"
 import Image from "next/image"
 
@@ -21,14 +20,20 @@ export default function Navigation({ isBackBtnVisible = true, redirectUrl = "/",
       <div className="flex items-center justify-between md:px-0">
         {isBackBtnVisible && title ? (
           <Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
+            <Image
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6zR2xbfacfAsybAX3o6RLAyJJ5ay8g.png"
+              alt="Back"
+              width={20}
+              height={20}
+              className="mr-2"
+            />
             <h1 className="text-xl font-bold">{title}</h1>
           </Link>
         ) : (
           <>
             <h1 className="text-xl font-bold">{title}</h1>
             <Link href={redirectUrl}>
-              <X className="h-5 w-5" />
+              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="h-5 w-5" />
             </Link>
           </>
         )}
