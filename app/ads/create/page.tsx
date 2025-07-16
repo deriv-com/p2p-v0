@@ -294,6 +294,7 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
+        console.log("🔄 Updating ad with payload:", payload)
         const updateResult = await updateAd(adId, payload)
 
         if (updateResult.errors && updateResult.errors.length > 0) {
@@ -309,6 +310,7 @@ export default function CreateAdPage() {
           id: adId,
         })
 
+        console.log("🚀 Navigating to ads page with params:", params.toString())
         router.push(`/ads?${params.toString()}`)
       } else {
         const payload = {
@@ -328,6 +330,7 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
+        console.log("🔄 Creating ad with payload:", payload)
         const result = await createAd(payload)
 
         if (result.errors && result.errors.length > 0) {
@@ -341,9 +344,11 @@ export default function CreateAdPage() {
           id: result.data.id,
         })
 
+        console.log("🚀 Navigating to ads page with params:", params.toString())
         router.push(`/ads?${params.toString()}`)
       }
     } catch (error) {
+      console.error("❌ Error in handlePaymentDetailsSubmit:", error)
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
