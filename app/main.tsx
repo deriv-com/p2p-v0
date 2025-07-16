@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
+import Navigation from "@/components/navigation"
 import Sidebar from "@/components/sidebar"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 import "./globals.css"
@@ -55,6 +56,7 @@ export default function Main({
       </div>
       <div className="md:hidden container mx-auto p-[24px] pt-[8px] h-[calc(100%-2rem)] relative">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
+        <Navigation />
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
