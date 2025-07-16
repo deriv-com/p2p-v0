@@ -82,11 +82,6 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
-  interface SuccessData {
-    type?: string
-    id?: string
-  }
-
   const convertToSnakeCase = (str: string): string => {
     return str
       .toLowerCase()
@@ -214,37 +209,6 @@ export default function CreateAdPage() {
       document.removeEventListener("paymentFormValidationChange", handlePaymentFormValidation)
     }
   }, [formData])
-
-  useEffect(() => {
-    const checkForSuccessData = () => {
-      try {
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
-
-          setStatusModal({
-            show: true,
-            type: "success",
-            title: "Ad created",
-            message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
-            adType: successData.type?.toUpperCase(),
-            adId: successData.id,
-          })
-
-          localStorage.removeItem("adCreationSuccess")
-        }
-
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          localStorage.removeItem("adUpdateSuccess")
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    checkForSuccessData()
-  }, [])
 
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }

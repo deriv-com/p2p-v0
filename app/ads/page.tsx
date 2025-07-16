@@ -6,7 +6,7 @@ import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import { Plus } from "lucide-react"
-import type { MyAd, SuccessData } from "./types"
+import type { MyAd } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -106,29 +106,6 @@ export default function AdsPage() {
               id: id,
             })
           }
-          return
-        }
-
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
-          setSuccessModal({
-            show: true,
-            type: successData.type,
-            id: successData.id,
-          })
-          localStorage.removeItem("adCreationSuccess")
-        }
-
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          const updateData = JSON.parse(updateDataStr) as SuccessData
-          setUpdateModal({
-            show: true,
-            type: updateData.type,
-            id: updateData.id,
-          })
-          localStorage.removeItem("adUpdateSuccess")
         }
       } catch (err) {
         console.error("Error checking for success data:", err)
