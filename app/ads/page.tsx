@@ -51,12 +51,6 @@ export default function AdsPage() {
     message: "",
   })
 
-  const [storedParams, setStoredParams] = useState<{
-    success?: string
-    type?: string
-    id?: string
-  }>({})
-
   const fetchAds = async () => {
     try {
       setLoading(true)
@@ -104,9 +98,7 @@ export default function AdsPage() {
         console.log("🔍 Search params string:", searchParams.toString())
 
         if (success && type && id) {
-          console.log("✅ Found URL parameters, storing and setting up modal")
-
-          setStoredParams({ success, type, id })
+          console.log("✅ Found URL parameters, setting up modal")
 
           if (success === "created") {
             console.log("✅ Setting up creation success modal")
@@ -143,13 +135,11 @@ export default function AdsPage() {
   const handleCloseSuccessModal = () => {
     console.log("🔒 Closing success modal")
     setSuccessModal((prev) => ({ ...prev, show: false }))
-    setStoredParams({})
   }
 
   const handleCloseUpdateModal = () => {
     console.log("🔒 Closing update modal")
     setUpdateModal((prev) => ({ ...prev, show: false }))
-    setStoredParams({})
   }
 
   const handleCloseErrorModal = () => {
