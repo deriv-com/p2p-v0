@@ -21,7 +21,7 @@ export default function Navigation({ isBackBtnVisible = true, redirectUrl = "/",
       <div className="flex items-center justify-between md:px-0">
         {isBackBtnVisible && title ? (
           <Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <Image src="/icons/arrow-left-custom.png" alt="Back" width={20} height={20} className="mr-2" />
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-2" />
             <h1 className="text-xl font-bold">{title}</h1>
           </Link>
         ) : (
