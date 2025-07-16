@@ -1,471 +1,193 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import AdDetailsForm from "../components/ad-details-form"
-import PaymentDetailsForm from "../components/payment-details-form"
-import StatusModal from "../components/ui/status-modal"
-import StatusBottomSheet from "../components/ui/status-bottom-sheet"
-import type { AdFormData, StatusModalState } from "../types"
-import { createAd, updateAd } from "../api/api-ads"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { ProgressSteps } from "../components/ui/progress-steps"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowLeft, Check } from "lucide-react"
+import AdDetailsForm from "../components/ad-details-form"
+import AdPaymentMethods from "../components/ad-payment-methods"
+import PaymentDetailsForm from "../components/payment-details-form"
+import ProgressSteps from "../components/progress-steps"
+import { createAdvert, updateAdvert, getAdvertById } from "../api/api-ads"
+import { PaymentSelectionProvider } from "../components/payment-selection-context"
+import type { CreateAdvertRequest, MyAd } from "../types"
+import { useIsMobile } from "@/hooks/use-mobile"
 
-const getPageTitle = (isEditMode: boolean, adType?: string) => {
-  if (isEditMode && adType) {
-    return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
-  }
-  return "Create new ad"
-}
-
-const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: number) => {
-  if (isSubmitting) {
-    return isEditMode ? "Saving..." : "Creating..."
-  }
-
-  if (currentStep === 0) {
-    return "Next"
-  }
-
-  return isEditMode ? "Save Details" : "Create Ad"
-}
-
-const getErrorTitle = (isEditMode: boolean) => {
-  return isEditMode ? "Failed to update ad" : "Failed to create ad"
-}
+const STEPS = [
+  { id: 1, title: "Ad details", description: "Set your ad type, currency and rate" },
+  { id: 2, title: "Payment methods", description: "Choose how you want to receive payment" },
+  { id: 3, title: "Payment details", description: "Add your payment information" },
+]
 
 export default function CreateAdPage() {
+  const [currentStep, setCurrentStep] = useState(1)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [adData, setAdData] = useState<Partial<CreateAdvertRequest>>({})
+  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
+  const [paymentDetails, setPaymentDetails] = useState<Record<string, any>>({})
+  const [isEditMode, setIsEditMode] = useState(false)
+  const [editAdId, setEditAdId] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
   const router = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
 
-  const [localEditMode, setLocalEditMode] = useState<boolean>(false)
-  const [localAdId, setLocalAdId] = useState<string | null>(null)
-
   useEffect(() => {
-    const mode = searchParams.get("mode")
-    const id = searchParams.get("id")
-
-    if (mode === "edit" && id) {
-      setLocalEditMode(true)
-      setLocalAdId(id)
-    }
-  }, [searchParams])
-
-  const isEditMode = localEditMode
-  const adId = localAdId
-
-  const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<Partial<AdFormData>>({})
-  const [statusModal, setStatusModal] = useState<StatusModalState>({
-    show: false,
-    type: "success",
-    title: "",
-    message: "",
-    subMessage: "",
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-
-  const [adFormValid, setAdFormValid] = useState(false)
-  const [paymentFormValid, setPaymentFormValid] = useState(false)
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
-
-  const formDataRef = useRef<Partial<AdFormData>>({})
-
-  const steps = [
-    { title: "Set Type and Price", completed: currentStep > 0 },
-    { title: "Set payment details", completed: currentStep > 1 },
-    { title: "Set ad conditions", completed: currentStep > 2 },
-  ]
-
-  const convertToSnakeCase = (str: string): string => {
-    return str
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "")
-  }
-
-  useEffect(() => {
-    const loadInitialData = async () => {
+    const fetchAds = async () => {
       try {
-        setIsLoading(true)
+        setLoading(true)
 
-        if (isEditMode) {
-          const editData = localStorage.getItem("editAdData")
-          if (editData) {
-            const parsedData = JSON.parse(editData)
+        // Check if we're in edit mode
+        const mode = searchParams.get("mode")
+        const id = searchParams.get("id")
 
-            let rateValue = 0
-            if (parsedData.rate && parsedData.rate.value) {
-              const rateMatch = parsedData.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
-              if (rateMatch && rateMatch[2]) {
-                rateValue = Number.parseFloat(rateMatch[2])
-              }
+        if (mode === "edit" && id) {
+          setIsEditMode(true)
+          setEditAdId(id)
+
+          // Try to get data from localStorage first (for immediate editing)
+          const storedData = localStorage.getItem("editAdData")
+          if (storedData) {
+            try {
+              const editData = JSON.parse(storedData) as MyAd
+              setAdData({
+                type: editData.type,
+                amount: editData.amount,
+                min_order_amount: editData.min_order_amount,
+                max_order_amount: editData.max_order_amount,
+                rate: editData.rate,
+                rate_type: editData.rate_type,
+                description: editData.description,
+                local_currency: editData.local_currency,
+                account_currency: editData.account_currency,
+              })
+              setSelectedPaymentMethods(editData.payment_method_names || [])
+              localStorage.removeItem("editAdData")
+            } catch (err) {
+              console.error("Error parsing stored edit data:", err)
             }
+          }
 
-            let minAmount = 0
-            let maxAmount = 0
-
-            if (typeof parsedData.limits === "string") {
-              const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
-              if (limitsMatch) {
-                minAmount = Number.parseFloat(limitsMatch[2])
-                maxAmount = Number.parseFloat(limitsMatch[3])
-              }
-            } else if (parsedData.limits && typeof parsedData.limits === "object") {
-              minAmount = parsedData.limits.min || 0
-              maxAmount = parsedData.limits.max || 0
-            }
-
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
-
-            if (parsedData.paymentMethods && Array.isArray(parsedData.paymentMethods)) {
-              if (parsedData.type?.toLowerCase() === "buy") {
-                paymentMethodNames = parsedData.paymentMethods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
-              } else {
-                paymentMethodIds = parsedData.paymentMethods
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
-
-                if (typeof window !== "undefined") {
-                  ;(window as any).adPaymentMethodIds = paymentMethodIds
-                }
-              }
-            }
-
-            const formattedData: Partial<AdFormData> = {
-              type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
-              totalAmount: parsedData.available?.current || 0,
-              fixedRate: rateValue,
-              minAmount: minAmount,
-              maxAmount: maxAmount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: parsedData.description || "",
-            }
-
-            setFormData(formattedData)
-            formDataRef.current = formattedData
+          // Also fetch fresh data from API
+          try {
+            const freshAdData = await getAdvertById(id)
+            setAdData({
+              type: freshAdData.type,
+              amount: freshAdData.amount,
+              min_order_amount: freshAdData.min_order_amount,
+              max_order_amount: freshAdData.max_order_amount,
+              rate: freshAdData.rate,
+              rate_type: freshAdData.rate_type,
+              description: freshAdData.description,
+              local_currency: freshAdData.local_currency,
+              account_currency: freshAdData.account_currency,
+            })
+            setSelectedPaymentMethods(freshAdData.payment_method_names || [])
+          } catch (err) {
+            console.error("Error fetching ad data:", err)
           }
         }
-      } catch (error) {
-        console.log(error)
+      } catch (err) {
+        console.error("Error in fetchAds:", err)
       } finally {
-        setIsLoading(false)
+        setLoading(false)
       }
     }
 
-    loadInitialData()
-  }, [isEditMode])
+    fetchAds()
+  }, [searchParams])
 
-  useEffect(() => {
-    const checkSelectedPaymentMethods = () => {
-      if (formData.type === "sell" && typeof window !== "undefined") {
-        const selectedIds = (window as any).adPaymentMethodIds || []
-        setHasSelectedPaymentMethods(selectedIds.length > 0)
-      }
-    }
-
-    checkSelectedPaymentMethods()
-    const interval = setInterval(checkSelectedPaymentMethods, 100)
-
-    return () => clearInterval(interval)
-  }, [formData.type])
-
-  useEffect(() => {
-    const handleAdFormValidation = (e: any) => {
-      setAdFormValid(e.detail.isValid)
-      if (e.detail.isValid) {
-        const updatedData = { ...formData, ...e.detail.formData }
-        setFormData(updatedData)
-        formDataRef.current = updatedData
-      }
-    }
-
-    const handlePaymentFormValidation = (e: any) => {
-      setPaymentFormValid(e.detail.isValid)
-      if (e.detail.isValid) {
-        const updatedData = { ...formData, ...e.detail.formData }
-        setFormData(updatedData)
-        formDataRef.current = updatedData
-      }
-    }
-
-    document.addEventListener("adFormValidationChange", handleAdFormValidation)
-    document.addEventListener("paymentFormValidationChange", handlePaymentFormValidation)
-
-    return () => {
-      document.removeEventListener("adFormValidationChange", handleAdFormValidation)
-      document.removeEventListener("paymentFormValidationChange", handlePaymentFormValidation)
-    }
-  }, [formData])
-
-  const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
-    const updatedData = { ...formData, ...data }
-    setFormData(updatedData)
-    formDataRef.current = updatedData
-
-    if (!errors || Object.keys(errors).length === 0) {
-      setCurrentStep(1)
+  const handleNext = () => {
+    if (currentStep < STEPS.length) {
+      setCurrentStep(currentStep + 1)
     }
   }
 
-  const formatErrorMessage = (errors: any[]): string => {
-    if (!errors || errors.length === 0) {
-      return "An unknown error occurred"
+  const handleBack = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+    } else {
+      router.push("/ads")
     }
-
-    if (errors[0].code === "AdvertExchangeRateDuplicate") {
-      const error = new Error(
-        "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
-      )
-      error.name = "AdvertExchangeRateDuplicate"
-      throw error
-    }
-
-    if (errors[0].code === "AdvertOrderRangeOverlap") {
-      const error = new Error(
-        "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
-      )
-      error.name = "AdvertOrderRangeOverlap"
-      throw error
-    }
-
-    if (errors[0].message) {
-      return errors[0].message
-    }
-
-    if (errors[0].code) {
-      const errorCodeMap: Record<string, string> = {
-        AdvertLimitReached: "You've reached the maximum number of ads allowed.",
-        InvalidExchangeRate: "The exchange rate you provided is invalid.",
-        InvalidOrderAmount: "The order amount limits are invalid.",
-        InsufficientBalance: "You don't have enough balance to create this ad.",
-        AdvertTotalAmountExceeded: "The total amount exceeds your available balance. Please enter a smaller amount.",
-      }
-
-      if (errorCodeMap[errors[0].code]) {
-        const error = new Error(errorCodeMap[errors[0].code])
-        error.name = errors[0].code
-        throw error
-      }
-
-      return `Error: ${errors[0].code}. Please try again or contact support.`
-    }
-
-    return "There was an error processing your request. Please try again."
   }
 
-  const handlePaymentDetailsSubmit = async (data: Partial<AdFormData>, errors?: Record<string, string>) => {
-    const finalData = { ...formData, ...data }
-    formDataRef.current = finalData
+  const handleAdDataChange = (data: Partial<CreateAdvertRequest>) => {
+    setAdData((prev) => ({ ...prev, ...data }))
+  }
 
-    if (errors && Object.keys(errors).length > 0) {
-      return
-    }
+  const handlePaymentMethodsChange = (methods: string[]) => {
+    setSelectedPaymentMethods(methods)
+  }
 
-    setIsSubmitting(true)
+  const handlePaymentDetailsChange = (details: Record<string, any>) => {
+    setPaymentDetails(details)
+  }
 
+  const handleSubmit = async () => {
     try {
-      const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
+      setIsSubmitting(true)
 
-      if (isEditMode && adId) {
-        const payload = {
-          is_active: true,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed",
-          order_expiry_period: 15,
-          description: finalData.instructions || "",
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
+      const submitData: CreateAdvertRequest = {
+        ...adData,
+        payment_method_names: selectedPaymentMethods,
+        payment_method_details: paymentDetails,
+      } as CreateAdvertRequest
 
-        const updateResult = await updateAd(adId, payload)
+      console.log("Submitting ad data:", submitData)
 
-        if (updateResult.errors && updateResult.errors.length > 0) {
-          const errorMessage = formatErrorMessage(updateResult.errors)
-          throw new Error(errorMessage)
-        }
+      let result
+      if (isEditMode && editAdId) {
+        result = await updateAdvert(editAdId, submitData)
+        console.log("Ad updated successfully:", result)
 
-        localStorage.removeItem("editAdData")
-
+        // Navigate with success parameters for update
         const params = new URLSearchParams({
           success: "update",
-          type: finalData.type || "buy",
-          id: adId,
+          type: submitData.type,
+          id: editAdId,
         })
-
         window.location.href = `/ads?${params.toString()}`
       } else {
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: "USD",
-          payment_currency: "IDR",
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed" as const,
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: 15,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
+        result = await createAdvert(submitData)
+        console.log("Ad created successfully:", result)
 
-        const result = await createAd(payload)
-
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        }
-
+        // Navigate with success parameters for create
         const params = new URLSearchParams({
           success: "create",
-          type: result.data.type,
-          id: result.data.id,
+          type: submitData.type,
+          id: result.id || "new",
         })
-
         window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
-      let errorInfo = {
-        title: getErrorTitle(isEditMode),
-        message: "Please try again.",
-        type: "error" as "error" | "warning",
-        actionButtonText: "Update ad",
-      }
-
-      if (error instanceof Error) {
-        if (error.name === "AdvertExchangeRateDuplicate") {
-          errorInfo = {
-            title: "You already have an ad with this rate.",
-            message:
-              "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
-            type: "warning",
-            actionButtonText: "Update ad",
-          }
-        } else if (error.name === "AdvertOrderRangeOverlap") {
-          errorInfo = {
-            title: "You already have an ad with this range.",
-            message:
-              "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
-            type: "warning",
-            actionButtonText: "Update ad",
-          }
-        } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
-          errorInfo = {
-            title: "Ad limit reached",
-            message:
-              "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
-            type: "error",
-            actionButtonText: "Update ad",
-          }
-        } else if (error.name === "InsufficientBalance") {
-          errorInfo = {
-            title: "Insufficient balance",
-            message: "You don't have enough balance to create this ad.",
-            type: "error",
-            actionButtonText: "Update ad",
-          }
-        } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
-          errorInfo = {
-            title: "Invalid values",
-            message: error.message || "Please check your input values.",
-            type: "error",
-            actionButtonText: "Update ad",
-          }
-        } else if (error.name === "AdvertTotalAmountExceeded") {
-          errorInfo = {
-            title: "Amount exceeds balance",
-            message: "The total amount exceeds your available balance. Please enter a smaller amount.",
-            type: "error",
-            actionButtonText: "Update ad",
-          }
-        } else {
-          errorInfo.message = error.message || errorInfo.message
-        }
-      }
-
-      setStatusModal({
-        show: true,
-        type: errorInfo.type,
-        title: errorInfo.title,
-        message: errorInfo.message,
-        actionButtonText: errorInfo.actionButtonText,
-      })
+      console.error("Error submitting ad:", error)
+      // Handle error - could show error modal here
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleBottomSheetOpenChange = (isOpen: boolean) => {
-    setIsBottomSheetOpen(isOpen)
-  }
-
-  const handleButtonClick = () => {
-    if (isBottomSheetOpen) {
-      return
-    }
-
-    if (currentStep === 0 && !adFormValid) {
-      return
-    }
-
-    if (currentStep === 1) {
-      if (formData.type === "buy" && !paymentFormValid) {
-        return
-      }
-
-      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        return
-      }
-
-      if (isSubmitting) {
-        return
-      }
-    }
-
-    if (currentStep === 0) {
-      const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
-      if (adDetailsFormData) {
-        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
-    } else {
-      const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
-      if (paymentDetailsFormData) {
-        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
+  const canProceed = () => {
+    switch (currentStep) {
+      case 1:
+        return adData.type && adData.amount && adData.rate && adData.local_currency
+      case 2:
+        return selectedPaymentMethods.length > 0
+      case 3:
+        return Object.keys(paymentDetails).length > 0
+      default:
+        return false
     }
   }
 
-  const handleModalClose = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
-  }
+  const isLastStep = currentStep === STEPS.length
 
-  const handleClose = () => {
-    router.push("/ads")
-  }
-
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
+      <div className="container mx-auto p-4 bg-white min-h-screen">
+        <div className="text-center py-8">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
           <p className="mt-2 text-gray-600">Loading...</p>
         </div>
@@ -473,124 +195,81 @@ export default function CreateAdPage() {
     )
   }
 
-  const isButtonDisabled =
-    isSubmitting ||
-    (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-    isBottomSheetOpen
-
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0">
-      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
-        <div
-          className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-        >
-          {currentStep === 1 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setCurrentStep(0)}
-              className="text-gray-700 hover:text-gray-900 p-2"
-            >
-              <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+    <PaymentSelectionProvider>
+      <div className="container mx-auto p-4 bg-white min-h-screen">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="flex items-center gap-4 mb-6">
+            <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
+              <ArrowLeft className="h-4 w-4" />
             </Button>
-          )}
-          {currentStep === 0 && <div></div>}
-          <div className="block md:hidden text-xl-bold text-black text-left">
-            {getPageTitle(isEditMode, formData.type)}
-          </div>
-          <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
-
-        <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
-          {getPageTitle(isEditMode, formData.type)}
-        </div>
-
-        <ProgressSteps currentStep={currentStep} steps={steps} />
-
-        {currentStep === 0 && (
-          <div className="block md:hidden mt-4 mb-6 text-left">
-            <div className="text-sm font-normal text-slate-1600">Step 1</div>
-            <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
-          </div>
-        )}
-
-        {currentStep === 1 && (
-          <div className="block md:hidden mt-4 mb-6 text-left">
-            <div className="text-sm font-normal text-slate-1600">Step 2</div>
-            <div className="text-lg font-bold text-slate-1600">Payment details</div>
-          </div>
-        )}
-
-        <div className="relative mb-16 md:mb-0">
-          {currentStep === 0 ? (
-            <AdDetailsForm
-              onNext={handleAdDetailsNext}
-              onClose={handleClose}
-              initialData={formData}
-              isEditMode={isEditMode}
-            />
-          ) : (
-            <PaymentDetailsForm
-              onBack={() => setCurrentStep(0)}
-              onSubmit={handlePaymentDetailsSubmit}
-              onClose={handleClose}
-              initialData={formData}
-              isSubmitting={isSubmitting}
-              isEditMode={isEditMode}
-              onBottomSheetOpenChange={handleBottomSheetOpenChange}
-            />
-          )}
-        </div>
-
-        {isMobile ? (
-          <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
-            <div className="mx-6">
-              <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                {getButtonText(isEditMode, isSubmitting, currentStep)}
-              </Button>
+            <div>
+              <h1 className="text-2xl font-bold">{isEditMode ? "Edit ad" : "Create ad"}</h1>
+              <p className="text-gray-600">{isEditMode ? "Update your existing ad" : "Create a new P2P ad"}</p>
             </div>
           </div>
-        ) : (
-          <div className="hidden md:block"></div>
-        )}
 
-        <div className="hidden md:flex justify-end mt-8">
-          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-            {getButtonText(isEditMode, isSubmitting, currentStep)}
-          </Button>
+          {/* Progress Steps */}
+          <div className="mb-8">
+            <ProgressSteps steps={STEPS} currentStep={currentStep} />
+          </div>
+
+          {/* Step Content */}
+          <Card>
+            <CardHeader>
+              <CardTitle>{STEPS[currentStep - 1].title}</CardTitle>
+              <p className="text-gray-600">{STEPS[currentStep - 1].description}</p>
+            </CardHeader>
+            <CardContent>
+              {currentStep === 1 && (
+                <AdDetailsForm data={adData} onChange={handleAdDataChange} isEditMode={isEditMode} />
+              )}
+              {currentStep === 2 && (
+                <AdPaymentMethods
+                  selectedMethods={selectedPaymentMethods}
+                  onChange={handlePaymentMethodsChange}
+                  adType={adData.type || "buy"}
+                />
+              )}
+              {currentStep === 3 && (
+                <PaymentDetailsForm
+                  selectedMethods={selectedPaymentMethods}
+                  details={paymentDetails}
+                  onChange={handlePaymentDetailsChange}
+                />
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Navigation */}
+          <div className="flex justify-between mt-8">
+            <Button variant="outline" onClick={handleBack}>
+              {currentStep === 1 ? "Cancel" : "Back"}
+            </Button>
+
+            {isLastStep ? (
+              <Button onClick={handleSubmit} disabled={!canProceed() || isSubmitting} className="min-w-[120px]">
+                {isSubmitting ? (
+                  <div className="flex items-center gap-2">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-r-transparent"></div>
+                    {isEditMode ? "Updating..." : "Creating..."}
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Check className="h-4 w-4" />
+                    {isEditMode ? "Update ad" : "Create ad"}
+                  </div>
+                )}
+              </Button>
+            ) : (
+              <Button onClick={handleNext} disabled={!canProceed()}>
+                Next
+              </Button>
+            )}
+          </div>
         </div>
-
-        {statusModal.show && !isMobile && (
-          <StatusModal
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            subMessage={statusModal.subMessage}
-            adType={statusModal.adType}
-            adId={statusModal.adId}
-            onClose={handleModalClose}
-            actionButtonText={statusModal.actionButtonText}
-          />
-        )}
-
-        {statusModal.show && isMobile && (
-          <StatusBottomSheet
-            isOpen={statusModal.show}
-            onClose={handleModalClose}
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            subMessage={statusModal.subMessage}
-            adType={statusModal.adType}
-            adId={statusModal.adId}
-            actionButtonText={statusModal.actionButtonText}
-          />
-        )}
       </div>
-    </div>
+    </PaymentSelectionProvider>
   )
 }

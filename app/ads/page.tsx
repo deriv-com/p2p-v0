@@ -39,7 +39,6 @@ export default function AdsPage() {
     message: "",
   })
 
-  // Single useEffect to fetch ads and then check URL params
   useEffect(() => {
     const fetchAds = async () => {
       try {
@@ -50,15 +49,17 @@ export default function AdsPage() {
         console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
 
-        // After ads loaded, check for URL params and set feedback
-        const success = searchParams.get("success")
-        const type = searchParams.get("type")
-        const id = searchParams.get("id")
+        // Check if no modal is currently open before setting feedback
+        if (!statusFeedback && !errorModal.show) {
+          const success = searchParams.get("success")
+          const type = searchParams.get("type")
+          const id = searchParams.get("id")
 
-        if (success && type && id && (success === "create" || success === "update")) {
-          console.log("Setting status feedback:", { success, type, id })
-          setStatusFeedback({ success, type, id })
-          router.replace("/ads", { scroll: false })
+          if (success && type && id && (success === "create" || success === "update")) {
+            console.log("Setting status feedback:", { success, type, id })
+            setStatusFeedback({ success, type, id })
+            router.replace("/ads", { scroll: false })
+          }
         }
       } catch (err) {
         console.error("Error fetching ads:", err)
@@ -76,7 +77,7 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  }, [searchParams, router])
+  }, [searchParams, router, statusFeedback, errorModal.show])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
