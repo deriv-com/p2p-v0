@@ -339,15 +339,13 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        localStorage.setItem(
-          "adUpdateSuccess",
-          JSON.stringify({
-            type: finalData.type,
-            id: adId,
-          }),
-        )
+        const params = new URLSearchParams({
+          success: "updated",
+          type: finalData.type || "buy",
+          id: adId,
+        })
 
-        router.push("/ads")
+        router.push(`/ads?${params.toString()}`)
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -373,15 +371,13 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        localStorage.setItem(
-          "adCreationSuccess",
-          JSON.stringify({
-            type: result.data.type,
-            id: result.data.id,
-          }),
-        )
+        const params = new URLSearchParams({
+          success: "created",
+          type: result.data.type,
+          id: result.data.id,
+        })
 
-        router.push("/ads")
+        router.push(`/ads?${params.toString()}`)
       }
     } catch (error) {
       let errorInfo = {

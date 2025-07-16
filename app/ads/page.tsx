@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
-import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
 import type { MyAd, SuccessData } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
@@ -51,20 +50,15 @@ export default function AdsPage() {
     message: "",
   })
 
-  // Track if we need to clean URL params when modal closes
   const [shouldCleanUrlOnClose, setShouldCleanUrlOnClose] = useState(false)
 
   const fetchAds = async () => {
     try {
       setLoading(true)
       setError(null)
-      console.log(`Fetching adverts for user ID: ${USER.id}`)
       const userAdverts = await getUserAdverts()
-      console.log("User adverts response:", userAdverts)
-
       setAds(userAdverts)
     } catch (err) {
-      console.error("Error fetching ads:", err)
       setError("Failed to load ads. Please try again later.")
       setAds([])
 
@@ -79,7 +73,6 @@ export default function AdsPage() {
   }
 
   const handleAdUpdated = (status?: string) => {
-    console.log("Ad updated (deleted or status changed), refreshing list...")
     fetchAds()
 
     if (status === "deleted") {
@@ -90,31 +83,23 @@ export default function AdsPage() {
     }
   }
 
-  // Check for URL parameters immediately when component mounts
   useEffect(() => {
     const checkForSuccessData = () => {
       try {
-        // Check URL parameters first
         const success = searchParams.get("success")
         const type = searchParams.get("type")
         const id = searchParams.get("id")
 
-        console.log("🔍 Checking URL params:", { success, type, id })
-        console.log("🔍 Full URL:", window.location.href)
-        console.log("🔍 Search params string:", searchParams.toString())
-
         if (success && type && id) {
-          setShouldCleanUrlOnClose(true) // Mark that we need to clean URL when modal closes
+          setShouldCleanUrlOnClose(true)
 
           if (success === "created") {
-            console.log("✅ Found creation success in URL params")
             setSuccessModal({
               show: true,
               type: type,
               id: id,
             })
           } else if (success === "updated") {
-            console.log("✅ Found update success in URL params")
             setUpdateModal({
               show: true,
               type: type,
@@ -124,10 +109,8 @@ export default function AdsPage() {
           return
         }
 
-        // Fallback to localStorage (backward compatibility)
         const creationDataStr = localStorage.getItem("adCreationSuccess")
         if (creationDataStr) {
-          console.log("📦 Found creation success in localStorage (fallback)")
           const successData = JSON.parse(creationDataStr) as SuccessData
           setSuccessModal({
             show: true,
@@ -139,7 +122,6 @@ export default function AdsPage() {
 
         const updateDataStr = localStorage.getItem("adUpdateSuccess")
         if (updateDataStr) {
-          console.log("📦 Found update success in localStorage (fallback)")
           const updateData = JSON.parse(updateDataStr) as SuccessData
           setUpdateModal({
             show: true,
@@ -149,43 +131,32 @@ export default function AdsPage() {
           localStorage.removeItem("adUpdateSuccess")
         }
       } catch (err) {
-        console.error("❌ Error checking for success data:", err)
+        console.error("Error checking for success data:", err)
       }
     }
 
-    // Check for success data immediately
     checkForSuccessData()
   }, [searchParams, router])
 
-  // Fetch ads separately
   useEffect(() => {
     fetchAds()
   }, [])
 
   const cleanUrlParams = () => {
     if (shouldCleanUrlOnClose) {
-      console.log("🧹 Cleaning up URL parameters on modal close")
-
-      // Option 1: Using Next.js router (recommended for Next.js apps)
       router.replace("/ads", { scroll: false })
-
-      // Option 2: Using window.location (simpler but less Next.js-friendly)
-      // window.history.replaceState({}, '', '/ads')
-
       setShouldCleanUrlOnClose(false)
     }
   }
 
   const handleCloseSuccessModal = () => {
-    console.log("🔒 Closing success modal")
     setSuccessModal((prev) => ({ ...prev, show: false }))
-    cleanUrlParams() // Clean URL when modal actually closes
+    cleanUrlParams()
   }
 
   const handleCloseUpdateModal = () => {
-    console.log("🔒 Closing update modal")
     setUpdateModal((prev) => ({ ...prev, show: false }))
-    cleanUrlParams() // Clean URL when modal actually closes
+    cleanUrlParams()
   }
 
   const handleCloseErrorModal = () => {
