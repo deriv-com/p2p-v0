@@ -39,6 +39,7 @@ export default function AdsPage() {
     message: "",
   })
 
+  // ✅ Single effect: load ads and handle URL params once
   useEffect(() => {
     const fetchAds = async () => {
       try {
@@ -49,8 +50,8 @@ export default function AdsPage() {
         console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
 
-        // Check if no modal is currently open before setting feedback
-        if (!statusFeedback && !errorModal.show) {
+        // ✅ After ads load, check URL params once if no modal is showing
+        if (!statusFeedback) {
           const success = searchParams.get("success")
           const type = searchParams.get("type")
           const id = searchParams.get("id")
@@ -58,6 +59,7 @@ export default function AdsPage() {
           if (success && type && id && (success === "create" || success === "update")) {
             console.log("Setting status feedback:", { success, type, id })
             setStatusFeedback({ success, type, id })
+            // Clean URL immediately
             router.replace("/ads", { scroll: false })
           }
         }
@@ -77,11 +79,10 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  }, [searchParams, router, statusFeedback, errorModal.show])
+  }, [statusFeedback, searchParams, router])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
-    // Re-fetch
     const reload = async () => {
       try {
         const userAdverts = await getUserAdverts()
@@ -156,7 +157,6 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* Show status modal ONLY if ads finished loading and we have feedback */}
       {!loading && statusFeedback && !isMobile && (
         <StatusModal
           type="success"
