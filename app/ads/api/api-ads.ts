@@ -3,20 +3,20 @@ import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "@/servi
 
 export async function getCurrencies(): Promise<string[]> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`
+    const url = `${API.baseUrl}${API.endpoints.settings}`;
     const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
       headers,
       //credentials: "include",
-    })
-    await response.text()
+    });
+    await response.text();
   } catch (error) {
-    console.log("Error fetching currencies:", error)
+    console.log("Error fetching currencies:", error);
   }
 
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
+  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"];
 }
 
 export async function getUserAdverts(): Promise<MyAd[]> {
@@ -48,7 +48,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     try {
       apiData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
+      console.log(e);
       apiData = { data: [] }
     }
 
@@ -95,10 +95,12 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       }
     })
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return []
   }
 }
+
+
 
 export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
   try {
@@ -131,7 +133,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
+      console.log(e);
       responseData = {}
     }
 
@@ -189,7 +191,7 @@ export async function toggleAdActiveStatus(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
+      console.log(e);
       responseData = {}
     }
 
@@ -221,6 +223,8 @@ export async function toggleAdActiveStatus(
   }
 }
 
+
+
 export async function deleteAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
@@ -238,7 +242,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
+      console.log(e);
       responseData = {}
     }
 
@@ -288,7 +292,7 @@ export async function createAd(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
+      console.log(e);
       responseData = { raw: responseText }
     }
 
@@ -393,7 +397,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
+      console.log(e);
       responseData = {}
     }
 
@@ -420,16 +424,11 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
   }
 }
 
-export async function deleteAdvert(id: string): Promise<{ success: boolean; errors?: any[] }> {
-  return deleteAd(id)
-}
-
 export const AdsAPI = {
   getCurrencies,
   getUserAdverts,
   toggleAdActiveStatus,
   deleteAd,
-  deleteAdvert, // Add this line
   createAd,
   updateAd,
   activateAd,

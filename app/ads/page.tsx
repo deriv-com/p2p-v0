@@ -1,15 +1,20 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import MyAdsTable from "./components/my-ads-table"
+import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
-import { MyAdsHeader } from "./components/my-ads-header"
-import { MyAdsTable } from "./components/my-ads-table"
-import { MyAdsMobileView } from "./components/my-ads-mobile-view"
-import { StatusModal } from "./components/ui/status-modal"
-import { StatusBottomSheet } from "./components/ui/status-bottom-sheet"
-import { useMobile } from "@/hooks/use-mobile"
-import type { MyAd } from "@/services/api/api-my-ads"
+import { USER } from "@/lib/local-variables"
+import { Plus } from "lucide-react"
+import type { MyAd } from "./types"
+import MobileMyAdsList from "./components/mobile-my-ads-list"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { Button } from "@/components/ui/button"
+import { StatusBanner } from "@/components/ui/status-banner"
+
+import StatusModal from "./components/ui/status-modal"
+import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 
 interface StatusFeedback {
   success: "create" | "update"
@@ -17,70 +22,55 @@ interface StatusFeedback {
   id: string
 }
 
-interface ErrorModal {
-  show: boolean
-  title: string
-  message: string
-}
-
 export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusFeedback, setStatusFeedback] = useState<StatusFeedback | null>(null)
-  const [errorModal, setErrorModal] = useState<ErrorModal>({
+
+  const isMobile = useIsMobile()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const [errorModal, setErrorModal] = useState({
     show: false,
-    title: "",
+    title: "Error",
     message: "",
   })
 
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const isMobile = useMobile()
-
-  console.log("🎨 AdsPage render:", { loading, statusFeedback, adsCount: ads.length })
-
+  // Single useEffect to fetch ads and then check URL params
   useEffect(() => {
     const fetchAds = async () => {
       try {
-        console.log("🚀 AdsPage: Starting to fetch ads...")
         setLoading(true)
         setError(null)
-
-        console.log("📡 Fetching adverts for user ID:", "current_user")
+        console.log(`Fetching adverts for user ID: ${USER.id}`)
         const userAdverts = await getUserAdverts()
-        console.log("📊 User adverts response:", userAdverts)
-
+        console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
-        console.log("✅ Successfully fetched", userAdverts.length, "ads")
 
         // After ads loaded, check for URL params and set feedback
-        console.log("🔍 AdsPage: Checking URL params after ads loaded...")
         const success = searchParams.get("success")
         const type = searchParams.get("type")
         const id = searchParams.get("id")
 
-        console.log("🔍 URL params:", { success, type, id })
-
         if (success && type && id && (success === "create" || success === "update")) {
-          console.log("✅ Valid success params found, setting status feedback")
+          console.log("Setting status feedback:", { success, type, id })
           setStatusFeedback({ success, type, id })
-          console.log("🧹 Cleaning URL...")
           router.replace("/ads", { scroll: false })
-        } else {
-          console.log("❌ No valid success params found")
         }
       } catch (err) {
-        console.error("❌ Error fetching ads:", err)
+        console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
+
         setErrorModal({
           show: true,
           title: "Error Loading Ads",
           message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
         })
       } finally {
-        console.log("🏁 Ads fetch completed, setting loading to false")
         setLoading(false)
       }
     }
@@ -88,100 +78,125 @@ export default function AdsPage() {
     fetchAds()
   }, [searchParams, router])
 
-  const handleCloseStatusModal = () => {
-    console.log("🎭 Closing status modal")
+  const handleAdUpdated = (status?: string) => {
+    console.log("Ad updated, refreshing list...")
+    // Re-fetch
+    const reload = async () => {
+      try {
+        const userAdverts = await getUserAdverts()
+        setAds(userAdverts)
+      } catch (err) {
+        console.error("Error reloading ads:", err)
+      }
+    }
+    reload()
+
+    if (status === "deleted") {
+      setShowDeletedBanner(true)
+      setTimeout(() => setShowDeletedBanner(false), 3000)
+    }
+  }
+
+  const handleCloseStatusFeedback = () => {
     setStatusFeedback(null)
   }
 
   const handleCloseErrorModal = () => {
-    setErrorModal({ show: false, title: "", message: "" })
+    setErrorModal((prev) => ({ ...prev, show: false }))
   }
-
-  const getStatusModalProps = () => {
-    if (!statusFeedback) return null
-
-    const isCreate = statusFeedback.success === "create"
-    const actionText = isCreate ? "created" : "updated"
-
-    return {
-      title: `Ad ${actionText} successfully`,
-      message: `Your ${statusFeedback.type} ad has been ${actionText} successfully.`,
-      type: "success" as const,
-    }
-  }
-
-  const statusModalProps = getStatusModalProps()
-  const shouldShowModal = !loading && statusFeedback && statusModalProps
-
-  console.log("🎭 Modal visibility check:", {
-    loading,
-    statusFeedback: !!statusFeedback,
-    shouldShowModal,
-  })
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="container mx-auto px-4 py-6">
-        <MyAdsHeader />
+    <div className="flex flex-col h-screen bg-white">
+      {showDeletedBanner && (
+        <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
+      )}
 
-        {isMobile ? (
-          <MyAdsMobileView ads={ads} loading={loading} error={error} onAdsUpdate={setAds} />
-        ) : (
-          <MyAdsTable ads={ads} loading={loading} error={error} onAdsUpdate={setAds} />
-        )}
-
-        {/* Status Modal - Desktop */}
-        {!isMobile && shouldShowModal && (
-          <>
-            {console.log("🎭 Rendering desktop StatusModal")}
-            <StatusModal
-              isOpen={true}
-              onClose={handleCloseStatusModal}
-              title={statusModalProps.title}
-              message={statusModalProps.message}
-              type={statusModalProps.type}
-            />
-          </>
-        )}
-
-        {/* Status Bottom Sheet - Mobile */}
-        {isMobile && shouldShowModal && (
-          <>
-            {console.log("🎭 Rendering mobile StatusBottomSheet")}
-            <StatusBottomSheet
-              isOpen={true}
-              onClose={handleCloseStatusModal}
-              title={statusModalProps.title}
-              message={statusModalProps.message}
-              type={statusModalProps.type}
-            />
-          </>
-        )}
-
-        {/* Error Modal */}
-        {errorModal.show && (
-          <>
-            {console.log("🎭 Rendering error modal")}
-            {isMobile ? (
-              <StatusBottomSheet
-                isOpen={true}
-                onClose={handleCloseErrorModal}
-                title={errorModal.title}
-                message={errorModal.message}
-                type="error"
-              />
-            ) : (
-              <StatusModal
-                isOpen={true}
-                onClose={handleCloseErrorModal}
-                title={errorModal.title}
-                message={errorModal.message}
-                type="error"
-              />
-            )}
-          </>
+      <div className="flex-none container mx-auto pr-4">
+        <MyAdsHeader hasAds={ads.length > 0} />
+        {ads.length > 0 && !isMobile && (
+          <Button
+            onClick={() => router.push("/ads/create")}
+            variant="cyan"
+            size="pill"
+            className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
+          >
+            <Plus className="h-5 w-5" />
+            Create ad
+          </Button>
         )}
       </div>
+
+      {ads.length > 0 && isMobile && (
+        <div className="fixed bottom-20 right-4 z-10">
+          <Button
+            onClick={() => router.push("/ads/create")}
+            variant="cyan"
+            size="pill"
+            className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
+          >
+            <Plus className="h-5 w-5" />
+            Create ad
+          </Button>
+        </div>
+      )}
+
+      <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+            <p className="mt-2 text-gray-600">Loading your ads...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-8 text-red-500">{error}</div>
+        ) : isMobile ? (
+          <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
+        ) : (
+          <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+        )}
+      </div>
+
+      {/* Show status modal ONLY if ads finished loading and we have feedback */}
+      {!loading && statusFeedback && !isMobile && (
+        <StatusModal
+          type="success"
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
+          message={
+            statusFeedback.success === "create"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          onClose={handleCloseStatusFeedback}
+          adType={statusFeedback.type}
+          adId={statusFeedback.id}
+          isUpdate={statusFeedback.success === "update"}
+        />
+      )}
+
+      {!loading && statusFeedback && isMobile && (
+        <StatusBottomSheet
+          isOpen
+          onClose={handleCloseStatusFeedback}
+          type="success"
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
+          message={
+            statusFeedback.success === "create"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          adType={statusFeedback.type}
+          adId={statusFeedback.id}
+          isUpdate={statusFeedback.success === "update"}
+        />
+      )}
+
+      {errorModal.show && (
+        <StatusModal
+          type="error"
+          title={errorModal.title}
+          message={errorModal.message}
+          onClose={handleCloseErrorModal}
+        />
+      )}
     </div>
   )
 }
