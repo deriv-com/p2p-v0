@@ -29,6 +29,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusFeedback, setStatusFeedback] = useState<StatusFeedback | null>(null)
+  const [pendingStatusFeedback, setPendingStatusFeedback] = useState<StatusFeedback | null>(null)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -40,29 +41,45 @@ export default function AdsPage() {
     message: "",
   })
 
-  // Separate effect for handling URL-based success feedback
+  // Check for URL-based success feedback parameters immediately
   useEffect(() => {
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
 
     if (success && type && id && (success === "create" || success === "update")) {
-      setStatusFeedback({
+      const feedbackData = {
         show: true,
         success,
         type,
         id,
-      })
+      }
+
+      // Store the feedback data but don't show it yet
+      setPendingStatusFeedback(feedbackData)
 
       // Clean URL immediately after reading params
       router.replace("/ads", { scroll: false })
     }
   }, [searchParams, router])
 
-  // Separate effect for fetching ads - completely independent
+  // Fetch ads on component mount
   useEffect(() => {
     fetchAds()
   }, [])
+
+  // Show status feedback only after ads have loaded (or failed to load)
+  useEffect(() => {
+    if (!loading && pendingStatusFeedback) {
+      // Small delay to ensure page is fully rendered
+      const timer = setTimeout(() => {
+        setStatusFeedback(pendingStatusFeedback)
+        setPendingStatusFeedback(null)
+      }, 100)
+
+      return () => clearTimeout(timer)
+    }
+  }, [loading, pendingStatusFeedback])
 
   const fetchAds = async () => {
     try {
@@ -158,7 +175,7 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* Success Feedback Modal - Completely independent overlay */}
+      {/* Success Feedback Modal - Only shown after page content has loaded */}
       {statusFeedback?.show && !isMobile && (
         <StatusModal
           type="success"
