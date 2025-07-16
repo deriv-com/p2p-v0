@@ -51,7 +51,11 @@ export default function AdsPage() {
     message: "",
   })
 
-  const [shouldCleanUrlOnClose, setShouldCleanUrlOnClose] = useState(false)
+  const [storedParams, setStoredParams] = useState<{
+    success?: string
+    type?: string
+    id?: string
+  }>({})
 
   const fetchAds = async () => {
     try {
@@ -100,8 +104,9 @@ export default function AdsPage() {
         console.log("🔍 Search params string:", searchParams.toString())
 
         if (success && type && id) {
-          console.log("✅ Found URL parameters, setting up modal")
-          setShouldCleanUrlOnClose(true)
+          console.log("✅ Found URL parameters, storing and setting up modal")
+
+          setStoredParams({ success, type, id })
 
           if (success === "created") {
             console.log("✅ Setting up creation success modal")
@@ -118,6 +123,8 @@ export default function AdsPage() {
               id: id,
             })
           }
+
+          window.history.replaceState({}, "", "/ads")
         } else {
           console.log("❌ No URL parameters found or incomplete")
         }
@@ -133,24 +140,16 @@ export default function AdsPage() {
     fetchAds()
   }, [])
 
-  const cleanUrlParams = () => {
-    if (shouldCleanUrlOnClose) {
-      console.log("🧹 Cleaning up URL parameters on modal close")
-      router.replace("/ads", { scroll: false })
-      setShouldCleanUrlOnClose(false)
-    }
-  }
-
   const handleCloseSuccessModal = () => {
     console.log("🔒 Closing success modal")
     setSuccessModal((prev) => ({ ...prev, show: false }))
-    cleanUrlParams()
+    setStoredParams({})
   }
 
   const handleCloseUpdateModal = () => {
     console.log("🔒 Closing update modal")
     setUpdateModal((prev) => ({ ...prev, show: false }))
-    cleanUrlParams()
+    setStoredParams({})
   }
 
   const handleCloseErrorModal = () => {

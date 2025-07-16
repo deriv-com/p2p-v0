@@ -310,8 +310,8 @@ export default function CreateAdPage() {
           id: adId,
         })
 
-        console.log("🚀 Navigating to ads page with params:", params.toString())
-        router.push(`/ads?${params.toString()}`)
+        console.log("🚀 Navigating to ads page with window.location.href and params:", params.toString())
+        window.location.href = `/ads?${params.toString()}`
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -344,8 +344,8 @@ export default function CreateAdPage() {
           id: result.data.id,
         })
 
-        console.log("🚀 Navigating to ads page with params:", params.toString())
-        router.push(`/ads?${params.toString()}`)
+        console.log("🚀 Navigating to ads page with window.location.href and params:", params.toString())
+        window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
       console.error("❌ Error in handlePaymentDetailsSubmit:", error)
