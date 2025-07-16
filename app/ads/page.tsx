@@ -1,201 +1,193 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect } from "react"
+import { useSearchParams } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useIsMobile } from "@/hooks/use-mobile"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
-import { getUserAdverts } from "./api/api-ads"
-import { USER } from "@/lib/local-variables"
-import { Plus } from "lucide-react"
-import type { MyAd } from "./types"
-import MobileMyAdsList from "./components/mobile-my-ads-list"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { Button } from "@/components/ui/button"
-import { StatusBanner } from "@/components/ui/status-banner"
-
+import MyAdsMobileView from "./components/my-ads-mobile-view"
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
+import { getMyAds } from "./api/api-ads"
+import type { Ad } from "./types"
+
+interface StatusData {
+  show: boolean
+  type: string
+  id: string
+  success: "create" | "update"
+}
 
 export default function AdsPage() {
-  const [ads, setAds] = useState<MyAd[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [statusData, setStatusData] = useState<{
-    show: boolean
-    success: "create" | "update"
-    type: string
-    id: string
-  } | null>(null)
-  const [showDeletedBanner, setShowDeletedBanner] = useState(false)
-
+  const searchParams = useSearchParams()
   const isMobile = useIsMobile()
-  const router = useRouter()
-
-  const [errorModal, setErrorModal] = useState({
-    show: false,
-    title: "Error",
-    message: "",
-  })
+  const [ads, setAds] = useState<Ad[]>([])
+  const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState("active")
+  const [statusData, setStatusData] = useState<StatusData | null>(null)
 
   const fetchAds = async () => {
     try {
       setLoading(true)
-      setError(null)
-      console.log(`Fetching adverts for user ID: ${USER.id}`)
-      const userAdverts = await getUserAdverts()
-      console.log("User adverts response:", userAdverts)
-
-      setAds(userAdverts)
-    } catch (err) {
-      console.error("Error fetching ads:", err)
-      setError("Failed to load ads. Please try again later.")
-      setAds([])
-
-      setErrorModal({
-        show: true,
-        title: "Error Loading Ads",
-        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-      })
+      const response = await getMyAds()
+      if (response.data) {
+        setAds(response.data)
+      }
+    } catch (error) {
+      console.error("Error fetching ads:", error)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleAdUpdated = (status?: string) => {
-    console.log("Ad updated (deleted or status changed), refreshing list...")
-    fetchAds()
-
-    if (status === "deleted") {
-      setShowDeletedBanner(true)
-      setTimeout(() => {
-        setShowDeletedBanner(false)
-      }, 3000)
-    }
-  }
-
   useEffect(() => {
-    const checkForSuccessParams = () => {
-      try {
-        const searchParams = new URLSearchParams(window.location.search)
-        const success = searchParams.get("success")
-        const type = searchParams.get("type")
-        const id = searchParams.get("id")
-
-        if (success && type && id && (success === "create" || success === "update")) {
-          setStatusData({
-            show: true,
-            success,
-            type,
-            id,
-          })
-        }
-      } catch (err) {
-        console.error("Error checking for success params:", err)
-      }
-    }
-
     fetchAds().then(() => {
-      checkForSuccessParams()
-    })
-  }, [])
+      // Check for success parameters after ads are fetched
+      const success = searchParams.get("success")
+      const type = searchParams.get("type")
+      const id = searchParams.get("id")
 
-  const handleCloseStatusModal = () => {
+      if (success && type && id && (success === "create" || success === "update")) {
+        setStatusData({
+          show: true,
+          type,
+          id,
+          success,
+        })
+      }
+    })
+  }, [searchParams])
+
+  const handleStatusModalClose = () => {
     setStatusData(null)
   }
 
-  const handleCloseErrorModal = () => {
-    setErrorModal((prev) => ({ ...prev, show: false }))
+  const getStatusModalProps = () => {
+    if (!statusData) return null
+
+    const isCreate = statusData.success === "create"
+
+    return {
+      type: "success" as const,
+      title: isCreate ? "Ad created" : "Ad updated",
+      message: isCreate
+        ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+        : "Your ad has been successfully updated.",
+      adType: statusData.type.toUpperCase(),
+      adId: statusData.id,
+    }
+  }
+
+  const statusModalProps = getStatusModalProps()
+
+  const activeAds = ads.filter((ad) => ad.status === "active")
+  const inactiveAds = ads.filter((ad) => ad.status === "inactive")
+
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+          <p className="mt-2 text-gray-600">Loading ads...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="flex flex-col h-screen">
-      {showDeletedBanner && (
-        <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
-      )}
+    <div className="container mx-auto p-4 space-y-6">
+      <MyAdsHeader />
 
-      <div className="flex-none container mx-auto pr-4">
-        <MyAdsHeader hasAds={ads.length > 0} />
-        {ads.length > 0 && !isMobile && (
-          <Button
-            onClick={() => router.push("/ads/create")}
-            variant="cyan"
-            size="pill"
-            className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
-          >
-            <Plus className="h-5 w-5" />
-            Create ad
-          </Button>
-        )}
-      </div>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="active" className="flex items-center gap-2">
+            Active ads
+            {activeAds.length > 0 && (
+              <Badge variant="secondary" className="ml-1">
+                {activeAds.length}
+              </Badge>
+            )}
+          </TabsTrigger>
+          <TabsTrigger value="inactive" className="flex items-center gap-2">
+            Inactive ads
+            {inactiveAds.length > 0 && (
+              <Badge variant="secondary" className="ml-1">
+                {inactiveAds.length}
+              </Badge>
+            )}
+          </TabsTrigger>
+        </TabsList>
 
-      {ads.length > 0 && isMobile && (
-        <div className="fixed bottom-20 right-4 z-10">
-          <Button
-            onClick={() => router.push("/ads/create")}
-            variant="cyan"
-            size="pill"
-            className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
-          >
-            <Plus className="h-5 w-5" />
-            Create ad
-          </Button>
-        </div>
-      )}
+        <TabsContent value="active" className="space-y-4">
+          {activeAds.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <div className="text-center space-y-4">
+                  <h3 className="text-lg font-semibold">No active ads</h3>
+                  <p className="text-gray-600">Create your first ad to start trading</p>
+                  <Button asChild>
+                    <a href="/ads/create">Create ad</a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {isMobile ? (
+                <MyAdsMobileView ads={activeAds} onRefresh={fetchAds} />
+              ) : (
+                <MyAdsTable ads={activeAds} onRefresh={fetchAds} />
+              )}
+            </>
+          )}
+        </TabsContent>
 
-      <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-        {loading ? (
-          <div className="text-center py-8">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-            <p className="mt-2 text-gray-600">Loading your ads...</p>
-          </div>
-        ) : error ? (
-          <div className="text-center py-8 text-red-500">{error}</div>
-        ) : isMobile ? (
-          <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
-        ) : (
-          <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
-        )}
-      </div>
+        <TabsContent value="inactive" className="space-y-4">
+          {inactiveAds.length === 0 ? (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <div className="text-center space-y-4">
+                  <h3 className="text-lg font-semibold">No inactive ads</h3>
+                  <p className="text-gray-600">Your inactive ads will appear here</p>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <>
+              {isMobile ? (
+                <MyAdsMobileView ads={inactiveAds} onRefresh={fetchAds} />
+              ) : (
+                <MyAdsTable ads={inactiveAds} onRefresh={fetchAds} />
+              )}
+            </>
+          )}
+        </TabsContent>
+      </Tabs>
 
-      {statusData?.show && !isMobile && (
+      {statusData && statusModalProps && !isMobile && (
         <StatusModal
-          type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
-          message={
-            statusData.success === "create"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
-          }
-          onClose={handleCloseStatusModal}
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
+          type={statusModalProps.type}
+          title={statusModalProps.title}
+          message={statusModalProps.message}
+          adType={statusModalProps.adType}
+          adId={statusModalProps.adId}
+          onClose={handleStatusModalClose}
         />
       )}
 
-      {statusData?.show && isMobile && (
+      {statusData && statusModalProps && isMobile && (
         <StatusBottomSheet
           isOpen={statusData.show}
-          onClose={handleCloseStatusModal}
-          type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
-          message={
-            statusData.success === "create"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
-          }
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
-        />
-      )}
-
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={handleCloseErrorModal}
+          onClose={handleStatusModalClose}
+          type={statusModalProps.type}
+          title={statusModalProps.title}
+          message={statusModalProps.message}
+          adType={statusModalProps.adType}
+          adId={statusModalProps.adId}
         />
       )}
     </div>

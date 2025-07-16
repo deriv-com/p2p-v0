@@ -215,37 +215,6 @@ export default function CreateAdPage() {
     }
   }, [formData])
 
-  useEffect(() => {
-    const checkForSuccessData = () => {
-      try {
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
-
-          setStatusModal({
-            show: true,
-            type: "success",
-            title: "Ad created",
-            message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
-            adType: successData.type?.toUpperCase(),
-            adId: successData.id,
-          })
-
-          localStorage.removeItem("adCreationSuccess")
-        }
-
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          localStorage.removeItem("adUpdateSuccess")
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    checkForSuccessData()
-  }, [])
-
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
@@ -339,15 +308,13 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        localStorage.setItem(
-          "adUpdateSuccess",
-          JSON.stringify({
-            type: finalData.type,
-            id: adId,
-          }),
-        )
+        const params = new URLSearchParams({
+          success: "update",
+          type: finalData.type || "buy",
+          id: adId,
+        })
 
-        router.push("/ads")
+        window.location.href = `/ads?${params.toString()}`
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -373,15 +340,13 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        localStorage.setItem(
-          "adCreationSuccess",
-          JSON.stringify({
-            type: result.data.type,
-            id: result.data.id,
-          }),
-        )
+        const params = new URLSearchParams({
+          success: "create",
+          type: result.data.type,
+          id: result.data.id,
+        })
 
-        router.push("/ads")
+        window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
       let errorInfo = {
