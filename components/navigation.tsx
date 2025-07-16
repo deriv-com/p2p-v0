@@ -20,8 +20,8 @@ export default function Navigation({
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   return (
-    <div className="mb-4">
-      <div className="flex items-center justify-between -mx-8 md:-mx-0 md:px-0 border-b md:border-none">
+    <div className="mb-4 border-b -mx-[24px] md:-mx-0 px-[16px] py-[4px]">
+      <div className="flex items-center justify-between md:px-0">
         {(isBackBtnVisible && title) ? (
           <Link href={redirectUrl} className="flex items-center text-slate-1400">
             <ArrowLeft className="h-5 w-5 mr-2" />
