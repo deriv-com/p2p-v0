@@ -27,6 +27,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusFeedback, setStatusFeedback] = useState<StatusFeedback | null>(null)
+  const [paramsParsed, setParamsParsed] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -38,8 +39,10 @@ export default function AdsPage() {
     message: "",
   })
 
-  // Store params ONCE
+  // ✅ Only parse URL params ONCE — bulletproof
   useEffect(() => {
+    if (paramsParsed) return
+
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
@@ -48,7 +51,9 @@ export default function AdsPage() {
       setStatusFeedback({ success, type, id })
       router.replace("/ads", { scroll: false })
     }
-  }, [searchParams, router])
+
+    setParamsParsed(true)
+  }, [paramsParsed, router, searchParams])
 
   // Load ads ONCE
   useEffect(() => {
@@ -151,7 +156,7 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* Only ONE place for status modals */}
+      {/* ✅ Show status only ONCE, correctly */}
       {!loading && statusFeedback && !isMobile && (
         <StatusModal
           type="success"
