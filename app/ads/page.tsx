@@ -7,7 +7,7 @@ import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
-import type { MyAd, SuccessData } from "./types"
+import type { MyAd } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -20,26 +20,13 @@ export default function AdsPage() {
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [successModal, setSuccessModal] = useState<{
+  const [statusData, setStatusData] = useState<{
     show: boolean
+    success: "create" | "update"
     type: string
     id: string
-  }>({
-    show: false,
-    type: "",
-    id: "",
-  })
+  } | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
-
-  const [updateModal, setUpdateModal] = useState<{
-    show: boolean
-    type: string
-    id: string
-  }>({
-    show: false,
-    type: "",
-    id: "",
-  })
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -87,45 +74,33 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    const checkForSuccessData = () => {
+    const checkForSuccessParams = () => {
       try {
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
-          setSuccessModal({
-            show: true,
-            type: successData.type,
-            id: successData.id,
-          })
-          localStorage.removeItem("adCreationSuccess")
-        }
+        const searchParams = new URLSearchParams(window.location.search)
+        const success = searchParams.get("success")
+        const type = searchParams.get("type")
+        const id = searchParams.get("id")
 
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          const updateData = JSON.parse(updateDataStr) as SuccessData
-          setUpdateModal({
+        if (success && type && id && (success === "create" || success === "update")) {
+          setStatusData({
             show: true,
-            type: updateData.type,
-            id: updateData.id,
+            success,
+            type,
+            id,
           })
-          localStorage.removeItem("adUpdateSuccess")
         }
       } catch (err) {
-        console.error("Error checking for success data:", err)
+        console.error("Error checking for success params:", err)
       }
     }
 
     fetchAds().then(() => {
-      checkForSuccessData()
+      checkForSuccessParams()
     })
   }, [])
 
-  const handleCloseSuccessModal = () => {
-    setSuccessModal((prev) => ({ ...prev, show: false }))
-  }
-
-  const handleCloseUpdateModal = () => {
-    setUpdateModal((prev) => ({ ...prev, show: false }))
+  const handleCloseStatusModal = () => {
+    setStatusData(null)
   }
 
   const handleCloseErrorModal = () => {
@@ -182,53 +157,36 @@ export default function AdsPage() {
         )}
       </div>
 
-      {successModal.show && !isMobile && (
+      {statusData?.show && !isMobile && (
         <StatusModal
           type="success"
-          title="Ad created"
-          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
-          onClose={handleCloseSuccessModal}
-          adType={successModal.type}
-          adId={successModal.id}
-          isUpdate={false}
+          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
+          message={
+            statusData.success === "create"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          onClose={handleCloseStatusModal}
+          adType={statusData.type}
+          adId={statusData.id}
+          isUpdate={statusData.success === "update"}
         />
       )}
 
-      {successModal.show && isMobile && (
+      {statusData?.show && isMobile && (
         <StatusBottomSheet
-          isOpen={successModal.show}
-          onClose={handleCloseSuccessModal}
+          isOpen={statusData.show}
+          onClose={handleCloseStatusModal}
           type="success"
-          title="Ad created"
-          message="If your ad doesn't receive an order within 3 days, it will be deactivated."
-          adType={successModal.type}
-          adId={successModal.id}
-          isUpdate={false}
-        />
-      )}
-
-      {updateModal.show && !isMobile && (
-        <StatusModal
-          type="success"
-          title="Ad updated"
-          message="Your changes have been saved and are now live."
-          onClose={handleCloseUpdateModal}
-          adType={updateModal.type}
-          adId={updateModal.id}
-          isUpdate={true}
-        />
-      )}
-
-      {updateModal.show && isMobile && (
-        <StatusBottomSheet
-          isOpen={updateModal.show}
-          onClose={handleCloseUpdateModal}
-          type="success"
-          title="Ad updated"
-          message="Your changes have been saved and are now live."
-          adType={updateModal.type}
-          adId={updateModal.id}
-          isUpdate={true}
+          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
+          message={
+            statusData.success === "create"
+              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+              : "Your changes have been saved and are now live."
+          }
+          adType={statusData.type}
+          adId={statusData.id}
+          isUpdate={statusData.success === "update"}
         />
       )}
 
