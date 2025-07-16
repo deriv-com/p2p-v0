@@ -65,7 +65,7 @@ export default function AdsPage() {
         setLoading(false)
 
         // Wait for next tick to ensure ads are rendered on screen
-        if (pendingStatusFeedback && !errorModal.show) {
+        if (pendingStatusFeedback && !errorModal.show && statusFeedback === null) {
           setTimeout(() => {
             setStatusFeedback(pendingStatusFeedback)
           }, 200)
