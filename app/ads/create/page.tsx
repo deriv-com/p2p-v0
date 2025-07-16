@@ -82,6 +82,11 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
+  interface SuccessData {
+    type?: string
+    id?: string
+  }
+
   const convertToSnakeCase = (str: string): string => {
     return str
       .toLowerCase()
@@ -210,6 +215,37 @@ export default function CreateAdPage() {
     }
   }, [formData])
 
+  useEffect(() => {
+    const checkForSuccessData = () => {
+      try {
+        const creationDataStr = localStorage.getItem("adCreationSuccess")
+        if (creationDataStr) {
+          const successData = JSON.parse(creationDataStr) as SuccessData
+
+          setStatusModal({
+            show: true,
+            type: "success",
+            title: "Ad created",
+            message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
+            adType: successData.type?.toUpperCase(),
+            adId: successData.id,
+          })
+
+          localStorage.removeItem("adCreationSuccess")
+        }
+
+        const updateDataStr = localStorage.getItem("adUpdateSuccess")
+        if (updateDataStr) {
+          localStorage.removeItem("adUpdateSuccess")
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    checkForSuccessData()
+  }, [])
+
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
@@ -294,7 +330,6 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        console.log("🔄 Updating ad with payload:", payload)
         const updateResult = await updateAd(adId, payload)
 
         if (updateResult.errors && updateResult.errors.length > 0) {
@@ -304,14 +339,15 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        const params = new URLSearchParams({
-          success: "updated",
-          type: finalData.type || "buy",
-          id: adId,
-        })
+        localStorage.setItem(
+          "adUpdateSuccess",
+          JSON.stringify({
+            type: finalData.type,
+            id: adId,
+          }),
+        )
 
-        console.log("🚀 Navigating to ads page with window.location.href and params:", params.toString())
-        window.location.href = `/ads?${params.toString()}`
+        router.push("/ads")
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -330,7 +366,6 @@ export default function CreateAdPage() {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        console.log("🔄 Creating ad with payload:", payload)
         const result = await createAd(payload)
 
         if (result.errors && result.errors.length > 0) {
@@ -338,17 +373,17 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        const params = new URLSearchParams({
-          success: "created",
-          type: result.data.type,
-          id: result.data.id,
-        })
+        localStorage.setItem(
+          "adCreationSuccess",
+          JSON.stringify({
+            type: result.data.type,
+            id: result.data.id,
+          }),
+        )
 
-        console.log("🚀 Navigating to ads page with window.location.href and params:", params.toString())
-        window.location.href = `/ads?${params.toString()}`
+        router.push("/ads")
       }
     } catch (error) {
-      console.error("❌ Error in handlePaymentDetailsSubmit:", error)
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
@@ -488,33 +523,6 @@ export default function CreateAdPage() {
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0">
       <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
-        <style jsx global>{`
-          input::placeholder {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            letter-spacing: 0%;
-          }
-          textarea::placeholder {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            letter-spacing: 0%;
-          }
-          .progress-steps-container .absolute.top-5 {
-            top: 12px;
-          }
-        `}</style>
-        <style jsx>{`
-    :global(body),
-    :global(html),
-    :global(#__next),
-    :global(main),
-    :global(.container) {
-      overflow-y: auto !important;
-      height: auto !important;
-    }
-  `}</style>
         <div
           className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
         >

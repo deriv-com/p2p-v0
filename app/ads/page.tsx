@@ -1,12 +1,13 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
+import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
-import type { MyAd } from "./types"
+import type { MyAd, SuccessData } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -42,7 +43,6 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -54,7 +54,10 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
+      console.log(`Fetching adverts for user ID: ${USER.id}`)
       const userAdverts = await getUserAdverts()
+      console.log("User adverts response:", userAdverts)
+
       setAds(userAdverts)
     } catch (err) {
       console.error("Error fetching ads:", err)
@@ -72,6 +75,7 @@ export default function AdsPage() {
   }
 
   const handleAdUpdated = (status?: string) => {
+    console.log("Ad updated (deleted or status changed), refreshing list...")
     fetchAds()
 
     if (status === "deleted") {
@@ -83,25 +87,38 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    fetchAds()
-  }, [])
-
-  useEffect(() => {
-    if (!loading) {
-      const success = searchParams.get("success")
-      const type = searchParams.get("type")
-      const id = searchParams.get("id")
-
-      if (success && type && id) {
-        if (success === "created") {
-          setSuccessModal({ show: true, type, id })
-        } else if (success === "updated") {
-          setUpdateModal({ show: true, type, id })
+    const checkForSuccessData = () => {
+      try {
+        const creationDataStr = localStorage.getItem("adCreationSuccess")
+        if (creationDataStr) {
+          const successData = JSON.parse(creationDataStr) as SuccessData
+          setSuccessModal({
+            show: true,
+            type: successData.type,
+            id: successData.id,
+          })
+          localStorage.removeItem("adCreationSuccess")
         }
-        window.history.replaceState({}, "", "/ads")
+
+        const updateDataStr = localStorage.getItem("adUpdateSuccess")
+        if (updateDataStr) {
+          const updateData = JSON.parse(updateDataStr) as SuccessData
+          setUpdateModal({
+            show: true,
+            type: updateData.type,
+            id: updateData.id,
+          })
+          localStorage.removeItem("adUpdateSuccess")
+        }
+      } catch (err) {
+        console.error("Error checking for success data:", err)
       }
     }
-  }, [loading, searchParams])
+
+    fetchAds().then(() => {
+      checkForSuccessData()
+    })
+  }, [])
 
   const handleCloseSuccessModal = () => {
     setSuccessModal((prev) => ({ ...prev, show: false }))
