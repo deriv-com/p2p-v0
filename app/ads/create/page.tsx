@@ -307,6 +307,7 @@ export default function CreateAdPage() {
           success: "update",
           type: finalData.type || "buy",
           id: adId,
+          showStatusModal: "true",
         })
 
         window.location.href = `/ads?${params.toString()}`
@@ -339,6 +340,7 @@ export default function CreateAdPage() {
           success: "create",
           type: result.data.type,
           id: result.data.id,
+          showStatusModal: "true",
         })
 
         window.location.href = `/ads?${params.toString()}`

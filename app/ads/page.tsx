@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
@@ -15,10 +15,11 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 
-interface StatusFeedback {
+interface StatusData {
   success: "create" | "update"
   type: string
   id: string
+  showStatusModal: boolean
 }
 
 export default function AdsPage() {
@@ -26,7 +27,7 @@ export default function AdsPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
-  const [statusFeedback, setStatusFeedback] = useState<StatusFeedback | null>(null)
+  const [statusData, setStatusData] = useState<StatusData | null>(null)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -37,21 +38,24 @@ export default function AdsPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  // Store pending feedback only once on first render
-  const pendingStatusFeedbackRef = useRef<StatusFeedback | null>(null)
-
-  if (pendingStatusFeedbackRef.current === null) {
+  useEffect(() => {
+    // Read and store params data in local variable
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
+    const showStatusModal = searchParams.get("showStatusModal")
 
-    if (success && type && id && (success === "create" || success === "update")) {
-      pendingStatusFeedbackRef.current = { success, type, id }
+    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
+      setStatusData({
+        success,
+        type,
+        id,
+        showStatusModal: true,
+      })
     }
-  }
 
-  useEffect(() => {
-    const handlePageLoad = async () => {
+    // Fetch ads
+    const fetchAds = async () => {
       try {
         setLoading(true)
         setError(null)
@@ -59,32 +63,22 @@ export default function AdsPage() {
         const userAdverts = await getUserAdverts()
         console.log("User adverts response:", userAdverts)
         setAds(userAdverts)
-        setLoading(false)
-
-        // Show modal if pending and hasn't been shown yet
-        if (pendingStatusFeedbackRef.current && !errorModal.show && statusFeedback === null) {
-          setTimeout(() => {
-            if (statusFeedback === null) {
-              setStatusFeedback(pendingStatusFeedbackRef.current)
-              pendingStatusFeedbackRef.current = null
-            }
-          }, 200)
-        }
       } catch (err) {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
-        setLoading(false)
         setErrorModal({
           show: true,
           title: "Error Loading Ads",
           message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
         })
+      } finally {
+        setLoading(false)
       }
     }
 
-    handlePageLoad()
-  }, [])
+    fetchAds()
+  }, [searchParams])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
@@ -104,8 +98,8 @@ export default function AdsPage() {
     }
   }
 
-  const handleCloseStatusFeedback = () => {
-    setStatusFeedback(null)
+  const handleCloseStatusModal = () => {
+    setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
   }
 
   const handleCloseErrorModal = () => {
@@ -162,37 +156,37 @@ export default function AdsPage() {
         )}
       </div>
 
-      {/* Status modal */}
-      {statusFeedback && !loading && !errorModal.show && !isMobile && (
+      {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
+      {statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
         <StatusModal
           type="success"
-          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
+          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
           message={
-            statusFeedback.success === "create"
+            statusData.success === "create"
               ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
               : "Your changes have been saved and are now live."
           }
-          onClose={handleCloseStatusFeedback}
-          adType={statusFeedback.type}
-          adId={statusFeedback.id}
-          isUpdate={statusFeedback.success === "update"}
+          onClose={handleCloseStatusModal}
+          adType={statusData.type}
+          adId={statusData.id}
+          isUpdate={statusData.success === "update"}
         />
       )}
 
-      {statusFeedback && !loading && !errorModal.show && isMobile && (
+      {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
         <StatusBottomSheet
           isOpen
-          onClose={handleCloseStatusFeedback}
+          onClose={handleCloseStatusModal}
           type="success"
-          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
+          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
           message={
-            statusFeedback.success === "create"
+            statusData.success === "create"
               ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
               : "Your changes have been saved and are now live."
           }
-          adType={statusFeedback.type}
-          adId={statusFeedback.id}
-          isUpdate={statusFeedback.success === "update"}
+          adType={statusData.type}
+          adId={statusData.id}
+          isUpdate={statusData.success === "update"}
         />
       )}
 
