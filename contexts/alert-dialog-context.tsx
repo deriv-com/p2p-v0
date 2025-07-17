@@ -61,7 +61,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader className=" justify-between my-[24px]">
+          <AlertDialogHeader className=" bg-slate-75 justify-between my-[24px]">
             <div>
               {config.type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
