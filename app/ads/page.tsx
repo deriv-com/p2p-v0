@@ -100,11 +100,11 @@ export default function AdsPage() {
 
   const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
-  }
-/*
+    }
+
   const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
-  }*/
+}
 
   return (
     <div className="flex flex-col h-screen bg-white">
