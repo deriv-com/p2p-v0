@@ -48,6 +48,25 @@ export function getPaymentMethodIcon(type: string): string {
   return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
 }
 
+export function getPaymentMethodColour(type: string): string {
+  switch (type) {
+    case "bank":
+      return "bg-paymentMethod-bank"
+    case "ewallet":
+      return "bg-paymentMethod-ewallet"
+    default:
+      return "bg-paymentMethod-ewallet"
+  }
+}
+
+export function getPaymentMethodColourByName(methodName: string): string {
+  const lowerMethod = methodName.toLowerCase()
+  if (lowerMethod.includes("bank") || lowerMethod.includes("transfer")) {
+    return "bg-paymentMethod-bank"
+  }
+  return "bg-paymentMethod-ewallet"
+}
+
 export function getCategoryDisplayName(type: string): string {
   switch (type) {
     case "bank":

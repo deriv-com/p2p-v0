@@ -3,16 +3,16 @@
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
 import { AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
+
 import { useRouter } from "next/navigation"
 
-// Function to fetch the subscriber hash
 async function fetchSubscriberHash() {
   try {
     const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
 
     const response = await fetch(url, {
       method: "POST",
-      headers: AUTH.getAuthHeader(),
+      headers: AUTH.getNotificationHeader(),
     })
 
     if (!response.ok) {

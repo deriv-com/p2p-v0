@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { MoreVertical, Pencil, Copy, Share2, Power, Trash2, Search } from "lucide-react"
+import { MoreVertical, Pencil, Power, Trash2, Search } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,7 +12,7 @@ import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -84,12 +84,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
       <div className="space-y-1">
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
-            <span
-              className={`w-2 h-2 rounded-full mr-2 ${method.toLowerCase().includes("bank") || method.toLowerCase().includes("transfer")
-                  ? "bg-payment-method-bank"
-                  : "bg-payment-method-other"
-                }`}
-            ></span>
+            <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
             <span className="text-xs font-normal leading-5 text-gray-900">{formatPaymentMethodName(method)}</span>
           </div>
         ))}
@@ -116,10 +111,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
 
     window.location.href = editUrl
   }
-
-  const handleCopy = () => { }
-
-  const handleShare = () => { }
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
@@ -303,14 +294,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                         >
                           <Power className="h-4 w-4" />
                           {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleCopy(ad.id)}>
-                          <Copy className="h-4 w-4" />
-                          Copy
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleShare(ad.id)}>
-                          <Share2 className="h-4 w-4" />
-                          Share
                         </DropdownMenuItem>
                         <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleDelete(ad.id)}>
                           <Trash2 className="h-4 w-4" />
