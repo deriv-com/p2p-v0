@@ -39,7 +39,7 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   	const [open, setOpen] = useState(true);
 
-    cons {showAlert } = useAlertDialog()
+    const {showAlert } = useAlertDialog()
 
   useEffect(() => {
     fetchAdverts()
