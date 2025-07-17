@@ -198,13 +198,7 @@ export default function OrderDetailsPage() {
   const orderType = order?.type === "buy" ? "Buy" : "Sell"
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel =
-    order?.type === "buy"
-      ? order?.user.id == USER.id
-        ? "Seller"
-        : "Buyer"
-      : order?.user.id == USER.id
-        ? "Buyer"
-        : "Seller"
+    order?.type === "buy" ? "Seller" : "Buyer"
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == USER.id
