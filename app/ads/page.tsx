@@ -50,6 +50,7 @@ export default function AdsPage() {
       pendingStatusFeedbackRef.current = { success, type, id }
       // Clean the URL immediately
       //router.replace("/ads", { scroll: false })
+      
     }
   }
 
