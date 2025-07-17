@@ -36,7 +36,6 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
   console.log("Inside use effect");
