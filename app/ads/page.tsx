@@ -45,14 +45,14 @@ export default function AdsPage() {
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
+   /* if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
         type,
         id,
         showStatusModal: true,
       })
-    }
+    }*/
 
     // Fetch ads
     const fetchAds = async () => {
@@ -78,7 +78,7 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  },[])
+  }, [])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
