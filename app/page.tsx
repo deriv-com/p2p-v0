@@ -37,7 +37,6 @@ export default function BuySellPage() {
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  	const [open, setOpen] = useState(true);
 
     const {showAlert } = useAlertDialog()
 
@@ -60,7 +59,7 @@ export default function BuySellPage() {
 
     fetchPaymentMethods()
 
-    showAlert({})
+    showAlert()
   }, [])
 
   const fetchAdverts = async () => {
