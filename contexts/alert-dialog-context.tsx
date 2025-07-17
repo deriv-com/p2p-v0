@@ -90,7 +90,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           <AlertDialogFooter className="mx-[32px] my-[24px]">
             <AlertDialogAction
               onClick={handleConfirm}
-        
+                className="w-full"
               >
               {config.confirmText || "Continue"}
             </AlertDialogAction>
