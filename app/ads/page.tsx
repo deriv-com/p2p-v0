@@ -170,7 +170,7 @@ export default function AdsPage() {
           adType={statusData.type}
           adId={statusData.id}
           isUpdate={statusData.success === "update"}
-          showStatusModel=
+          showStatusModel ={statusData.showStatusModal}
         />
       )}
 
