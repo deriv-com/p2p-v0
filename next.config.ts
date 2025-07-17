@@ -1,7 +1,7 @@
 import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  reactStrictMode: false,
   eslint: {
     ignoreDuringBuilds: false,
   },
@@ -11,7 +11,6 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
-  //output: "export",
 }
 
 export default nextConfig
