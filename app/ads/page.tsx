@@ -107,7 +107,7 @@ export default function AdsPage() {
     }*/
 
 return <div></div>
-return (
+/*return (
     <div className="flex flex-col h-screen bg-white">
       {showDeletedBanner && (
         <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
@@ -195,4 +195,4 @@ return (
       
     </div>
   ) 
-}
+*/}
