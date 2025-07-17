@@ -14,7 +14,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function BuySellPage() {
     // TODO: Replace these once the currencies are ready
@@ -38,7 +37,6 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
-    const {showAlert } = useAlertDialog()
 
   useEffect(() => {
     fetchAdverts()
@@ -59,12 +57,6 @@ export default function BuySellPage() {
 
     fetchPaymentMethods()
 
-    showAlert({title: "Ad created",
-      description: "You've successfully created.",
-      confirmText: "Ok",
-      onConfirm: () => {
-        console.log("Custom action confirmed!")
-      },})
   }, [])
 
   const fetchAdverts = async () => {
