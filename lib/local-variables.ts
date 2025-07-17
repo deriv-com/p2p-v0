@@ -46,6 +46,7 @@ export const WALLETS = {
     brand_id: USER_DATA?.brand_name || "",
   },
 }
+
 export const AUTH = {
   getAuthHeader: () => ({
     Authorization: `Bearer ${USER_TOKEN}`,
