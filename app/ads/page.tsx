@@ -152,7 +152,7 @@ export default function AdsPage() {
         ) : isMobile ? (
           <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
         ) : (
-          <MyAdsTable ads={ads} onAdDeleted={() => {console.log("test")}/>//handleAdUpdated}} />
+          <MyAdsTable ads={ads} onAdDeleted={() => {console.log("test")}} />//handleAdUpdated}} />
         )}
       </div>
 
