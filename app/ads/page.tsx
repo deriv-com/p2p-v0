@@ -41,6 +41,7 @@ export default function AdsPage() {
   useEffect(() => {
   console.log("Inside use effect");
     // Read and store params data in local variable
+    const params = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
