@@ -118,7 +118,7 @@ export default function OrdersPage() {
                       </span>
                     </div>
                     <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
-                    <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.advert.user.nickname}</div>
+                    <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.type === "buy" ?order.advert.user.nickname: order.user.nickname} </div>
                   </div>
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top text-base">

@@ -37,6 +37,7 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
+
   useEffect(() => {
     fetchAdverts()
   }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
@@ -55,6 +56,7 @@ export default function BuySellPage() {
     }
 
     fetchPaymentMethods()
+
   }, [])
 
   const fetchAdverts = async () => {
@@ -225,7 +227,6 @@ export default function BuySellPage() {
           </div>
         </div>
       </div>
-
       <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
         <div>
           {isLoading ? (
