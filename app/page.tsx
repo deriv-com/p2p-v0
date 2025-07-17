@@ -60,7 +60,7 @@ export default function BuySellPage() {
 
     fetchPaymentMethods()
 
-    showAlert()
+    showAlert({})
   }, [])
 
   const fetchAdverts = async () => {
