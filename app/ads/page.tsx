@@ -46,7 +46,7 @@ export default function AdsPage() {
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update" &&  showStatusModal !== true)) {
+    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update" )) {
       setStatusData({
         success,
         type,
