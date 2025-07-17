@@ -61,7 +61,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
-          <div className=" flex bg-slate-75 flex-col  my-[24px]">
+          <div className="flex bg-slate-75 flex-col my-[24px]">
           <Button
               onClick={hideAlert}
                 size="sm"
@@ -79,7 +79,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             </div>
           </div>
           <div className="mx-[32px] my-[24px]">
-                  {config.title && <div className="mb-[32px] font-bold text-2xl">{config.title}</div>}
+                  {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
                     {config.description && <AlertDialogDescription>{config.description}
                     </AlertDialogDescription>}
         </div>
