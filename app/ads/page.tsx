@@ -67,11 +67,11 @@ export default function AdsPage() {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
-        setErrorModal({
+        /*setErrorModal({
           show: true,
           title: "Error Loading Ads",
           message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-        })
+        })*/
       } finally {
         setLoading(false)
       }
