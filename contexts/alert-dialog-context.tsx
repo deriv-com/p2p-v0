@@ -62,14 +62,16 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <div className="flex bg-slate-75 flex-col my-[24px]">
-          <Button
+      <div className="self-end">
+      <Button
               onClick={hideAlert}
                 size="sm"
               variant="ghost"
-              className="self-end"
+              
             >
               <X className="h-5 w-5" />
             </Button>
+          </div>
             <div className="self-center">
               {config.type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
