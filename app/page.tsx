@@ -364,7 +364,7 @@ export default function BuySellPage() {
         ad={selectedAd}
         orderType={activeTab}
       />
-      <AlertDialog defaultOpen={true}>
+      <AlertDialog open={true}>
         <AlertDialogContent>test</AlertDialogContent>
       </AlertDialog>
     </div>
