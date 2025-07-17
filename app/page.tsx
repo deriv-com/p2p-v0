@@ -37,7 +37,7 @@ export default function BuySellPage() {
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  	const [open, setOpen] = React.useState(true);
+  	const [open, setOpen] = useState(true);
 
   useEffect(() => {
     fetchAdverts()
