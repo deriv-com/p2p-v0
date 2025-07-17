@@ -80,9 +80,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           
           </AlertDialogHeader>
           <div className="mx-[32px] my-[24px]">
-      <div className="mb-[32px]">
-                  {config.title && <AlertDialogTitle >{config.title}</AlertDialogTitle>}
-            </div>
+                  {config.title && <div className="mb-[32px]">{config.title}</div>}
                     {config.description && <AlertDialogDescription>{config.description}
                     </AlertDialogDescription>}
         </div>
