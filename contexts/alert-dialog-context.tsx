@@ -5,7 +5,7 @@ import { createContext, useContext, useState, useCallback } from "react"
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter } from "@/components/ui/alert-dialog"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { AlertCircle, X } from "lucide-react"
+import { X } from "lucide-react"
 import Image from "next/image"
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
@@ -63,7 +63,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               {config.type === "success" ? (
                 <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
               ) : (
-                <AlertCircle className="h-8 w-8 text-warning-icon" />
+                <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
               )}
             </div>
           </div>
