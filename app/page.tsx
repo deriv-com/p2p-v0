@@ -366,7 +366,7 @@ export default function BuySellPage() {
         orderType={activeTab}
       />
     <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>test</AlertDialogContent>
+        <AlertDialogContent><AlertDialogTitle>hfgjhgsgfg</AlertDialogTitle></AlertDialogContent>
       </AlertDialog>
     </div>
   )
