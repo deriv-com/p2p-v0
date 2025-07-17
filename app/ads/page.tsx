@@ -150,7 +150,7 @@ return (
         ) : isMobile ? (
           <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
         ) : (
-          <MyAdsTable ads={ads} onAdDeleted={() => {console.log("test")}} />//handleAdUpdated}} />
+          <MyAdsTable ads={ads} onAdDeleted={() =>{handleAdUpdated}} />
         )}
       </div>
       {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
