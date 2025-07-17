@@ -57,6 +57,8 @@ export default function BuySellPage() {
     }
 
     fetchPaymentMethods()
+
+    useAlertDialog()
   }, [])
 
   const fetchAdverts = async () => {
@@ -365,9 +367,6 @@ export default function BuySellPage() {
         ad={selectedAd}
         orderType={activeTab}
       />
-    
-        <AlertDialogContent><AlertDialogTitle>hfgjhgsgfg</AlertDialogTitle></AlertDialogContent>
-     
     </div>
   )
 }
