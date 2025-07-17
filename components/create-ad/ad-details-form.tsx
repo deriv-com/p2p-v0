@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
-import { X } from "lucide-react"
+import Image from "next/image"
 import type { AdFormData } from "@/lib/types/ad"
 
 interface AdDetailsFormProps {
@@ -132,7 +132,7 @@ export default function AdDetailsForm({ onNext, onClose, initialData, isEditMode
           onClick={onClose}
           className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
         >
-          <X className="h-5 w-5" />
+          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} />
         </button>
       </div>
 

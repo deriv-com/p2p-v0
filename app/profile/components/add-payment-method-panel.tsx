@@ -1,9 +1,7 @@
 "use client"
 
-import type React from "react"
-
+import * as React from "react"
 import { useState, useEffect } from "react"
-import { X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -19,21 +17,49 @@ interface AddPaymentMethodPanelProps {
 
 interface PanelWrapperProps {
   onClose: () => void
+  onBack?: () => void
+  title: string
   children: React.ReactNode
 }
 
-function PanelWrapper({ onClose, children }: PanelWrapperProps) {
+function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl flex flex-col">
+    <div
+      className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+        isMobile ? "inset-0 w-full" : "w-full max-w-md"
+      }`}
+    >
       <div className="p-6 border-b relative">
-        <h2 className="text-xl font-semibold">Add payment method</h2>
+        {onBack && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onBack}
+            className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
+          >
+            <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
+          </Button>
+        )}
+        <h2 className="text-xl font-semibold text-center">{title}</h2>
         <Button
           variant="ghost"
           size="icon"
           onClick={onClose}
           className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
         >
-          <X className="h-5 w-5" />
+          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
         </Button>
       </div>
       {children}
@@ -43,6 +69,7 @@ function PanelWrapper({ onClose, children }: PanelWrapperProps) {
 
 export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: AddPaymentMethodPanelProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("")
+  const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
   const [instructions, setInstructions] = useState("")
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -55,7 +82,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     const fetchAvailablePaymentMethods = async () => {
       try {
         setIsLoadingMethods(true)
-
         const response = await getPaymentMethods()
 
         if (response && response.data && Array.isArray(response.data)) {
@@ -64,7 +90,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
           setAvailablePaymentMethods(response)
         }
       } catch (error) {
-        console.log(error);
+        console.log(error)
       } finally {
         setIsLoadingMethods(false)
       }
@@ -84,6 +110,20 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
   }, [instructions])
 
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
+
+  const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
+    setSelectedMethod(paymentMethod.method)
+    setShowMethodDetails(true)
+  }
+
+  const handleBackToMethodList = () => {
+    setShowMethodDetails(false)
+    setSelectedMethod("")
+    setDetails({})
+    setErrors({})
+    setTouched({})
+    setInstructions("")
+  }
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -128,7 +168,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
 
     if (validateForm()) {
       const fieldValues = { ...details }
-
       fieldValues.instructions = instructions.trim() || "-"
 
       if (selectedMethod === "bank_transfer") {
@@ -153,7 +192,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
 
   if (isLoadingMethods) {
     return (
-      <PanelWrapper onClose={onClose}>
+      <PanelWrapper onClose={onClose} title="Select a payment method">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-gray-500">Loading payment methods...</div>
         </div>
@@ -163,7 +202,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
 
   if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
     return (
-      <PanelWrapper onClose={onClose}>
+      <PanelWrapper onClose={onClose} title="Select a payment method">
         <div className="flex-1 flex items-center justify-center">
           <div className="text-gray-500">No payment methods available</div>
         </div>
@@ -171,11 +210,11 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     )
   }
 
-  return (
-    <PanelWrapper onClose={onClose}>
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          <div>
+  if (!showMethodDetails) {
+    return (
+      <PanelWrapper onClose={onClose} title="Select a payment method">
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-6">
             <label className="block text-sm font-medium text-gray-500 mb-3">Choose your payment method</label>
             <div className="space-y-3">
               {availablePaymentMethods.map((paymentMethod) => (
@@ -183,11 +222,8 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                   key={paymentMethod.method}
                   type="button"
                   variant="outline"
-                  onClick={() => setSelectedMethod(paymentMethod.method)}
-                  className={`w-full p-4 justify-start gap-3 h-auto rounded-lg border ${selectedMethod === paymentMethod.method
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 hover:border-gray-300"
-                    }`}
+                  onClick={() => handleMethodSelect(paymentMethod)}
+                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg border border-gray-200 hover:border-gray-300"
                 >
                   <Image
                     src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
@@ -200,9 +236,16 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                 </Button>
               ))}
             </div>
-            {errors.method && <p className="mt-2 text-xs text-red-500">{errors.method}</p>}
           </div>
+        </div>
+      </PanelWrapper>
+    )
+  }
 
+  return (
+    <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
+      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+        <div className="p-6 space-y-6">
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
@@ -226,22 +269,20 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
             </div>
           )}
 
-          {selectedMethod && (
-            <div>
-              <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-                Instructions
-              </label>
-              <Textarea
-                id="instructions"
-                value={instructions}
-                onChange={(e) => setInstructions(e.target.value)}
-                placeholder="Enter your instructions"
-                className="min-h-[120px] resize-none"
-                maxLength={300}
-              />
-              <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
-            </div>
-          )}
+          <div>
+            <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
+              Instructions
+            </label>
+            <Textarea
+              id="instructions"
+              value={instructions}
+              onChange={(e) => setInstructions(e.target.value)}
+              placeholder="Enter your instructions"
+              className="min-h-[120px] resize-none"
+              maxLength={300}
+            />
+            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+          </div>
         </div>
       </form>
 
@@ -250,7 +291,8 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
           type="submit"
           onClick={handleSubmit}
           disabled={isLoading || !selectedMethod || !isFormValid()}
-          size="sm"
+          variant="black"
+          className="w-full"
         >
           {isLoading ? "Adding..." : "Add"}
         </Button>

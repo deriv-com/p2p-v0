@@ -10,7 +10,7 @@ import type { AdFormData, StatusModalState } from "../types"
 import { createAd, updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import { X, ArrowLeft } from "lucide-react"
+import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 
 const getPageTitle = (isEditMode: boolean, adType?: string) => {
@@ -34,10 +34,6 @@ const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: 
 
 const getErrorTitle = (isEditMode: boolean) => {
   return isEditMode ? "Failed to update ad" : "Failed to create ad"
-}
-
-const getActionButtonText = (isEditMode: boolean) => {
-  return isEditMode ? "Update ad" : "Create ad"
 }
 
 export default function CreateAdPage() {
@@ -85,11 +81,6 @@ export default function CreateAdPage() {
     { title: "Set payment details", completed: currentStep > 1 },
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
-
-  interface SuccessData {
-    type?: string
-    id?: string
-  }
 
   const convertToSnakeCase = (str: string): string => {
     return str
@@ -219,37 +210,6 @@ export default function CreateAdPage() {
     }
   }, [formData])
 
-  useEffect(() => {
-    const checkForSuccessData = () => {
-      try {
-        const creationDataStr = localStorage.getItem("adCreationSuccess")
-        if (creationDataStr) {
-          const successData = JSON.parse(creationDataStr) as SuccessData
-
-          setStatusModal({
-            show: true,
-            type: "success",
-            title: "Ad created",
-            message: "If your ad doesn't receive an order within 3 days, it will be deactivated.",
-            adType: successData.type?.toUpperCase(),
-            adId: successData.id,
-          })
-
-          localStorage.removeItem("adCreationSuccess")
-        }
-
-        const updateDataStr = localStorage.getItem("adUpdateSuccess")
-        if (updateDataStr) {
-          localStorage.removeItem("adUpdateSuccess")
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    checkForSuccessData()
-  }, [])
-
   const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
@@ -343,14 +303,14 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        setStatusModal({
-          show: true,
-          type: "success",
-          title: "Ad updated",
-          message: "Your ad has been updated successfully.",
+        const params = new URLSearchParams({
+          success: "update",
+          type: finalData.type || "buy",
+          id: adId,
+          showStatusModal: "true",
         })
 
-        router.push("/ads")
+        window.location.href = `/ads?${params.toString()}`
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -376,22 +336,21 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        localStorage.setItem(
-          "adCreationSuccess",
-          JSON.stringify({
-            type: result.data.type,
-            id: result.data.id,
-          }),
-        )
+        const params = new URLSearchParams({
+          success: "create",
+          type: result.data.type,
+          id: result.data.id,
+          showStatusModal: "true",
+        })
 
-        router.push("/ads")
+        window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
         type: "error" as "error" | "warning",
-        actionButtonText: getActionButtonText(isEditMode),
+        actionButtonText: "Update ad",
       }
 
       if (error instanceof Error) {
@@ -401,7 +360,7 @@ export default function CreateAdPage() {
             message:
               "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
             type: "warning",
-            actionButtonText: getActionButtonText(isEditMode),
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           errorInfo = {
@@ -409,7 +368,7 @@ export default function CreateAdPage() {
             message:
               "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
             type: "warning",
-            actionButtonText: getActionButtonText(isEditMode),
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
           errorInfo = {
@@ -417,28 +376,28 @@ export default function CreateAdPage() {
             message:
               "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
             type: "error",
-            actionButtonText: getActionButtonText(isEditMode),
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
             title: "Insufficient balance",
             message: "You don't have enough balance to create this ad.",
             type: "error",
-            actionButtonText: getActionButtonText(isEditMode),
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
           errorInfo = {
             title: "Invalid values",
             message: error.message || "Please check your input values.",
             type: "error",
-            actionButtonText: getActionButtonText(isEditMode),
+            actionButtonText: "Update ad",
           }
         } else if (error.name === "AdvertTotalAmountExceeded") {
           errorInfo = {
             title: "Amount exceeds balance",
             message: "The total amount exceeds your available balance. Please enter a smaller amount.",
             type: "error",
-            actionButtonText: getActionButtonText(isEditMode),
+            actionButtonText: "Update ad",
           }
         } else {
           errorInfo.message = error.message || errorInfo.message
@@ -524,134 +483,116 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-    <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-24 px-4 md:px-0">
-      <style jsx global>{`
-        input::placeholder {
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          letter-spacing: 0%;
-        }
-        textarea::placeholder {
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          letter-spacing: 0%;
-        }
-        .progress-steps-container .absolute.top-5 {
-          top: 12px;
-        }
-      `}</style>
-      <style jsx>{`
-  :global(body),
-  :global(html),
-  :global(#__next),
-  :global(main),
-  :global(.container) {
-    overflow-y: auto !important;
-    height: auto !important;
-  }
-`}</style>
-      <div
-        className={`flex justify-between mb-7 md:mt-8 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-      >
-        {currentStep === 1 && (
-          <button onClick={() => setCurrentStep(0)} className="text-gray-700 hover:text-gray-900 p-2">
-            <ArrowLeft className="h-6 w-6" />
-          </button>
-        )}
-        {currentStep === 0 && <div></div>}
-        <div className="block md:hidden text-xl-bold text-black">{getPageTitle(isEditMode, formData.type)}</div>
-        <button onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
-          <X className="h-6 w-6" />
-        </button>
-      </div>
-
-      <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
-        {getPageTitle(isEditMode, formData.type)}
-      </div>
-
-      <ProgressSteps currentStep={currentStep} steps={steps} />
-
-      {currentStep === 0 && (
-        <div className="block md:hidden mt-4 mb-6 text-left">
-          <div className="text-sm font-normal text-slate-1600">Step 1</div>
-          <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
-        </div>
-      )}
-
-      {currentStep === 1 && (
-        <div className="block md:hidden mt-4 mb-6 text-left">
-          <div className="text-sm font-normal text-slate-1600">Step 2</div>
-          <div className="text-lg font-bold text-slate-1600">Payment details</div>
-        </div>
-      )}
-
-      <div className="relative">
-        {currentStep === 0 ? (
-          <AdDetailsForm
-            onNext={handleAdDetailsNext}
-            onClose={handleClose}
-            initialData={formData}
-            isEditMode={isEditMode}
-          />
-        ) : (
-          <PaymentDetailsForm
-            onBack={() => setCurrentStep(0)}
-            onSubmit={handlePaymentDetailsSubmit}
-            onClose={handleClose}
-            initialData={formData}
-            isSubmitting={isSubmitting}
-            isEditMode={isEditMode}
-            onBottomSheetOpenChange={handleBottomSheetOpenChange}
-          />
-        )}
-      </div>
-
-      {isMobile ? (
-        <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
-          <div className="mx-6">
-            <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-              {getButtonText(isEditMode, isSubmitting, currentStep)}
+    <div className="fixed w-full h-full bg-white top-0 left-0">
+      <div className="max-w-[600px] mx-auto py-6 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
+        <div
+          className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-10 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+        >
+          {currentStep === 1 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentStep(0)}
+              className="text-gray-700 hover:text-gray-900 p-2"
+            >
+              <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
             </Button>
+          )}
+          {currentStep === 0 && <div></div>}
+          <div className="block md:hidden text-xl-bold text-black text-left">
+            {getPageTitle(isEditMode, formData.type)}
           </div>
+          <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
         </div>
-      ) : (
-        <div className="hidden md:block"></div>
-      )}
 
-      <div className="hidden md:flex justify-end mt-8">
-        <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-          {getButtonText(isEditMode, isSubmitting, currentStep)}
-        </Button>
+        <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
+          {getPageTitle(isEditMode, formData.type)}
+        </div>
+
+        <ProgressSteps currentStep={currentStep} steps={steps} />
+
+        {currentStep === 0 && (
+          <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="text-sm font-normal text-slate-1600">Step 1</div>
+            <div className="text-lg font-bold text-slate-1600">Set Type and Price</div>
+          </div>
+        )}
+
+        {currentStep === 1 && (
+          <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="text-sm font-normal text-slate-1600">Step 2</div>
+            <div className="text-lg font-bold text-slate-1600">Payment details</div>
+          </div>
+        )}
+
+        <div className="relative mb-16 md:mb-0">
+          {currentStep === 0 ? (
+            <AdDetailsForm
+              onNext={handleAdDetailsNext}
+              onClose={handleClose}
+              initialData={formData}
+              isEditMode={isEditMode}
+            />
+          ) : (
+            <PaymentDetailsForm
+              onBack={() => setCurrentStep(0)}
+              onSubmit={handlePaymentDetailsSubmit}
+              onClose={handleClose}
+              initialData={formData}
+              isSubmitting={isSubmitting}
+              isEditMode={isEditMode}
+              onBottomSheetOpenChange={handleBottomSheetOpenChange}
+            />
+          )}
+        </div>
+
+        {isMobile ? (
+          <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
+            <div className="mx-6">
+              <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                {getButtonText(isEditMode, isSubmitting, currentStep)}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="hidden md:block"></div>
+        )}
+
+        <div className="hidden md:flex justify-end mt-8">
+          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+            {getButtonText(isEditMode, isSubmitting, currentStep)}
+          </Button>
+        </div>
+
+        {statusModal.show && !isMobile && (
+          <StatusModal
+            type={statusModal.type}
+            title={statusModal.title}
+            message={statusModal.message}
+            subMessage={statusModal.subMessage}
+            adType={statusModal.adType}
+            adId={statusModal.adId}
+            onClose={handleModalClose}
+            actionButtonText={statusModal.actionButtonText}
+          />
+        )}
+
+        {statusModal.show && isMobile && (
+          <StatusBottomSheet
+            isOpen={statusModal.show}
+            onClose={handleModalClose}
+            type={statusModal.type}
+            title={statusModal.title}
+            message={statusModal.message}
+            subMessage={statusModal.subMessage}
+            adType={statusModal.adType}
+            adId={statusModal.adId}
+            actionButtonText={statusModal.actionButtonText}
+          />
+        )}
       </div>
-
-      {statusModal.show && !isMobile && (
-        <StatusModal
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          subMessage={statusModal.subMessage}
-          adType={statusModal.adType}
-          adId={statusModal.adId}
-          onClose={handleModalClose}
-          actionButtonText={statusModal.actionButtonText}
-        />
-      )}
-
-      {statusModal.show && isMobile && (
-        <StatusBottomSheet
-          isOpen={statusModal.show}
-          onClose={handleModalClose}
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          subMessage={statusModal.subMessage}
-          adType={statusModal.adType}
-          adId={statusModal.adId}
-          actionButtonText={statusModal.actionButtonText}
-        />
-      )}
     </div>
   )
 }

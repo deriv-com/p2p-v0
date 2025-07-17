@@ -7,6 +7,7 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet"],
   theme: {
     extend: {
       opacity: {
@@ -143,9 +144,9 @@ const config: Config = {
           bg: "#fee2e2",
         },
         "default-button-text": "#002A33",
-        "payment-method": {
-          bank: "#008832",
-          other: "#377CFC",
+        paymentMethod: {
+          bank: "#74B816",
+          ewallet: "#1A79CB",
         },
       },
       borderRadius: {

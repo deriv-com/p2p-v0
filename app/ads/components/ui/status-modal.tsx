@@ -1,7 +1,7 @@
 "use client"
 import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
-import { CheckCircle, AlertCircle, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 interface StatusModalProps {
   type: "success" | "error" | "warning"
@@ -13,6 +13,7 @@ interface StatusModalProps {
   adType?: string
   actionButtonText?: string
   isUpdate?: boolean
+  showStatusModel: boolean
 }
 
 export default function StatusModal({
@@ -25,6 +26,7 @@ export default function StatusModal({
   adType,
   actionButtonText = "OK",
   isUpdate = false,
+  showStatusModel=false,
 }: StatusModalProps) {
   const modalStyles = {
     width: "512px",
@@ -35,30 +37,29 @@ export default function StatusModal({
   }
 
   return (
-    <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
+    <AlertDialog open={showStatusModel} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <AlertDialogContent className="p-0 overflow-hidden border-none" style={modalStyles}>
-        <div className="relative p-6">
-          <div className="flex justify-center mb-12">
-            <div
-              className={`${type === "success" ? "bg-success-bg" : "bg-warning-bg"
-                } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
-            >
-              {type === "success" ? (
-                <CheckCircle className="h-8 w-8 text-success-icon" />
-              ) : (
-                <AlertCircle className="h-8 w-8 text-warning-icon" />
-              )}
-            </div>
-
-            <button
-              onClick={onClose}
-              className="absolute top-6 right-6 text-black hover:text-gray-700"
-              aria-label="Close"
-            >
-              <X className="h-5 w-5" />
-            </button>
+        <div className="bg-gray-100 relative p-6 pb-12">
+          <div className="flex justify-center">
+            {type === "success" ? (
+              <Image src="/icons/success_icon_round.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+            ) : (
+              <Image src="/icons/error_icon_round.png" alt="Error" width={56} height={56} className="w-14 h-14" />
+            )}
           </div>
 
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="sm"
+            className="absolute top-6 right-6 text-black hover:text-gray-700 p-2"
+            aria-label="Close"
+          >
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} className="w-12 h-12" />
+          </Button>
+        </div>
+
+        <div className="p-6">
           <div className="mb-12">
             <h2
               className="font-bold mb-6"
@@ -131,7 +132,7 @@ export default function StatusModal({
             )}
           </div>
 
-          <Button onClick={onClose} variant="default">
+          <Button onClick={onClose} variant="black" className="w-full">
             {actionButtonText}
           </Button>
         </div>
