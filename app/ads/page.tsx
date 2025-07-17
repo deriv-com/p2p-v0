@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
@@ -28,31 +28,31 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  /*const [errorModal, setErrorModal] = useState({
+  const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
     message: "",
-  })*/
+  })
 
   const isMobile = useIsMobile()
   const router = useRouter()
- // const searchParams = useSearchParams()
+  const searchParams = useSearchParams()
 
   useEffect(() => {
     // Read and store params data in local variable
-    /*const success = searchParams.get("success")
+    const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
-    const showStatusModal = searchParams.get("showStatusModal")*/
+    const showStatusModal = searchParams.get("showStatusModal")
 
-   /* if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
+    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
         type,
         id,
         showStatusModal: true,
       })
-    }*/
+    }
 
     // Fetch ads
     const fetchAds = async () => {
@@ -67,11 +67,11 @@ export default function AdsPage() {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
-        /*setErrorModal({
+        setErrorModal({
           show: true,
           title: "Error Loading Ads",
           message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-        })*/
+        })
       } finally {
         setLoading(false)
       }
@@ -101,9 +101,9 @@ export default function AdsPage() {
   const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
     }
-  /*const handleCloseErrorModal = () => {
+  const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
-    }*/
+    }
 
 
   return (
@@ -157,7 +157,7 @@ export default function AdsPage() {
       </div>
 
       {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-      {/*statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
+      {statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
         <StatusModal
           type="success"
           title={statusData.success === "create" ? "Ad created" : "Ad updated"}
@@ -172,7 +172,7 @@ export default function AdsPage() {
           isUpdate={statusData.success === "update"}
           showStatusModel ={statusData.showStatusModal}
         />
-      )*/}
+      )}
 
       {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
         <StatusBottomSheet
