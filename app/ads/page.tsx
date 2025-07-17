@@ -78,7 +78,7 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  }, [searchParams])
+  },[])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
