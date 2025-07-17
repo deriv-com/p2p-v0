@@ -12,7 +12,7 @@ import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
-import StatusModal from "./components/ui/status-modal"
+//import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 
 interface StatusData {
