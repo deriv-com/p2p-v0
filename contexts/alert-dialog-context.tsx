@@ -62,7 +62,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <div className="flex bg-slate-75 flex-col my-[24px]">
-      <div style={{ align-self: "self-end" }}>
+      <div style={{ align-self: "end" }}>
       <Button
               onClick={hideAlert}
                 size="sm"
