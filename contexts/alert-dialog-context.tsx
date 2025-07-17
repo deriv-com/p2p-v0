@@ -62,7 +62,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <div className="flex bg-slate-75 flex-col my-[24px]">
-      <div style={{ align-self: "end" }}>
+      <div style={{ "align-self" : "end" }}>
       <Button
               onClick={hideAlert}
                 size="sm"
@@ -72,7 +72,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               <X className="h-5 w-5" />
             </Button>
           </div>
-            <div style={{ align-self: "center" }}>
+            <div style={{ "align-self": "center" }}>
               {config.type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
               ) : (
