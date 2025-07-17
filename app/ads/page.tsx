@@ -98,9 +98,9 @@ export default function AdsPage() {
     }
   }
 
-  const handleCloseStatusModal = () => {
+  /*const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
-  }
+  }*/
 
   const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
