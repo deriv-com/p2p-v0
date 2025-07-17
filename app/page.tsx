@@ -14,7 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
-import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
+import { AlertDialog, AlertDialogContent, AlertDialogTitle } from "@/components/ui/alert-dialog"
 
 export default function BuySellPage() {
     // TODO: Replace these once the currencies are ready
