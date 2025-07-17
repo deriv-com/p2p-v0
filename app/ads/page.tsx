@@ -186,8 +186,8 @@ return (
           isUpdate={statusData.success === "update"}
         />
       )}
-    </div>)
-     {errorModal.show && (
+
+        {errorModal.show && (
         <StatusModal
           type="error"
           title={errorModal.title}
@@ -196,6 +196,8 @@ return (
         />
       )}
     </div>
+    </div>)
+   
   )
 
   
