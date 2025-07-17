@@ -82,8 +82,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           </div>
           <div className="mx-[32px] my-[24px]">
                   {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-                    {config.description && <AlertDialogDescription>{config.description}
-                    </AlertDialogDescription>}
+                    {config.description && <div className="mb-4">{config.description}
+                    </div>}
         </div>
           <AlertDialogFooter className="mx-[32px] my-[24px]">
             <AlertDialogAction
