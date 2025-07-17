@@ -64,7 +64,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
                 <h3 className="text-sm text-slate-500 mb-1">Seller</h3>
                 <p className="font-bold">{order.advert?.user?.nickname}</p> :
                 <h3 className="text-sm text-slate-500 mb-1">Buyer</h3>}
-                <p className="font-bold">{order.advert?.nickname}</p>
+                <p className="font-bold">{order.user?.nickname}</p>
             </div>
           </div>
         </div>
