@@ -191,15 +191,7 @@ export default function AdsPage() {
         />
       )}
 
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={handleCloseErrorModal}
-          showStatusModal={errorModal.show}
-        />
-      )}
+      
     </div>
   )
 }
