@@ -3260,10 +3260,6 @@ packages:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
 
-  parse-json@5.2.0:
-    resolution: {integrity: sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==}
-    engines: {node: '>=8'}
-    
   partysocket@1.1.4:
     resolution: {integrity: sha512-jXP7PFj2h5/v4UjDS8P7MZy6NJUQ7sspiFyxL4uc/+oKOL+KdtXzHnTV8INPGxBrLTXgalyG3kd12Qm7WrYc3A==}
 
@@ -4740,7 +4736,6 @@ snapshots:
     dependencies:
       '@novu/react': 3.6.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next: 15.2.4(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
-
       react: 19.0.0
     optionalDependencies:
       react-dom: 19.0.0(react@19.0.0)
