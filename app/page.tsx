@@ -14,7 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
-import {  useAlertDialog } from "@/contexts/alert-dialog-context"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function BuySellPage() {
     // TODO: Replace these once the currencies are ready
@@ -59,7 +59,7 @@ export default function BuySellPage() {
 
     fetchPaymentMethods()
 
-    showAlert()
+    showAlert({})
   }, [])
 
   const fetchAdverts = async () => {
