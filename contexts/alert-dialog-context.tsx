@@ -2,19 +2,11 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useCallback } from "react"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter } from "@/components/ui/alert-dialog"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { CheckCircle, AlertCircle, X } from "lucide-react"
+import { AlertCircle, X } from "lucide-react"
+import Image from "next/image"
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
 
@@ -62,34 +54,25 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <div className="flex bg-slate-75 flex-col my-[24px]">
-      <div style={{ "align-self" : "end" }}>
-      <Button
-              onClick={hideAlert}
-                size="sm"
-              variant="ghost"
-              
-            >
-              <X className="h-5 w-5" />
-            </Button>
-          </div>
-            <div style={{ "align-self": "center" }}>
+            <div style={{ alignSelf: "end" }}>
+              <Button onClick={hideAlert} size="sm" variant="ghost">
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+            <div style={{ alignSelf: "center" }}>
               {config.type === "success" ? (
-                <CheckCircle className="h-8 w-8 text-success-icon" />
+                <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
               ) : (
                 <AlertCircle className="h-8 w-8 text-warning-icon" />
               )}
             </div>
           </div>
           <div className="mx-[32px] my-[24px]">
-                  {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-                    {config.description && <div className="mb-4">{config.description}
-                    </div>}
-        </div>
+            {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
+            {config.description && <div className="mb-4">{config.description}</div>}
+          </div>
           <AlertDialogFooter className="mx-[32px] my-[24px]">
-            <AlertDialogAction
-              onClick={handleConfirm}
-                className="w-full"
-              >
+            <AlertDialogAction onClick={handleConfirm} className="w-full">
               {config.confirmText || "Continue"}
             </AlertDialogAction>
           </AlertDialogFooter>
