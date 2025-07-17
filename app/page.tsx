@@ -37,6 +37,7 @@ export default function BuySellPage() {
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  	const [open, setOpen] = React.useState(true);
 
   useEffect(() => {
     fetchAdverts()
@@ -364,7 +365,7 @@ export default function BuySellPage() {
         ad={selectedAd}
         orderType={activeTab}
       />
-      <AlertDialog open={true}>
+      <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>test</AlertDialogContent>
       </AlertDialog>
     </div>
