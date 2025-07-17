@@ -61,30 +61,31 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader className="mx-[32px] my-[24px]">
-                  <div className="flex justify-center mb-12">
-                    <div
-                      className={`${config.type === "success" ? "bg-success-bg" : "bg-warning-bg"
-                        } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
-                    >
-                      {config.type === "success" ? (
-                        <CheckCircle className="h-8 w-8 text-success-icon" />
-                      ) : (
-                        <AlertCircle className="h-8 w-8 text-warning-icon" />
-                      )}
-                    </div>
+          <AlertDialogHeader className="flex justify-center mb-12 my-[24px]">
+            <div
+              className={`${config.type === "success" ? "bg-success-bg" : "bg-warning-bg"
+                } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
+            >
+              {config.type === "success" ? (
+                <CheckCircle className="h-8 w-8 text-success-icon" />
+              ) : (
+                <AlertCircle className="h-8 w-8 text-warning-icon" />
+              )}
+            </div>
 
-                    <Button
-                      onClick={hideAlert}
-                      className="absolute top-6 right-6 text-black hover:text-gray-700"
-                      aria-label="Close"
-                    >
-                      <X className="h-5 w-5" />
-                    </Button>
-                  </div>
-            {config.title && <AlertDialogTitle>{config.title}</AlertDialogTitle>}
-            {config.description && <AlertDialogDescription>{config.description}</AlertDialogDescription>}
+            <Button
+              onClick={hideAlert}
+              aria-label="Close"
+              variant="ghost"
+            >
+              <X className="h-5 w-5" />
+            </Button>
+          
           </AlertDialogHeader>
+          <div className="mx-[32px] my-[24px]">
+                  {config.title && <AlertDialogTitle>{config.title}</AlertDialogTitle>}
+                    {config.description && <AlertDialogDescription>{config.description}</AlertDialogDescription>}
+        </div>
           <AlertDialogFooter className="mx-[32px] my-[24px]">
             <AlertDialogAction
               onClick={handleConfirm}
