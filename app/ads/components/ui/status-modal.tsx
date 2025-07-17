@@ -13,6 +13,7 @@ interface StatusModalProps {
   adType?: string
   actionButtonText?: string
   isUpdate?: boolean
+  showStatusModel: boolean
 }
 
 export default function StatusModal({
@@ -25,6 +26,7 @@ export default function StatusModal({
   adType,
   actionButtonText = "OK",
   isUpdate = false,
+  showStatusModel=false
 }: StatusModalProps) {
   const modalStyles = {
     width: "512px",
