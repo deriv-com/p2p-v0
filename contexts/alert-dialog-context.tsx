@@ -75,7 +75,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
             <Button
               onClick={hideAlert}
-              aria-label="Close"
+         
               variant="ghost"
             >
               <X className="h-5 w-5" />
@@ -89,6 +89,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         </div>
           <AlertDialogFooter className="mx-[32px] my-[24px]">
             <AlertDialogAction
+            className="w-full"
               onClick={handleConfirm}
               >
               {config.confirmText || "Continue"}
