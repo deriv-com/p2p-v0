@@ -61,7 +61,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader className="flex justify-between my-[24px]">
+          <AlertDialogHeader className=" justify-between my-[24px]">
             <div
               className={`${config.type === "success" ? "bg-success-bg" : "bg-warning-bg"
                 } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
