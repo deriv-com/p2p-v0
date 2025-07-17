@@ -91,6 +91,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             <AlertDialogAction
             className="w-full"
               onClick={handleConfirm}
+              size="sm"
               >
               {config.confirmText || "Continue"}
             </AlertDialogAction>
