@@ -59,10 +59,10 @@ export default function BuySellPage() {
 
     fetchPaymentMethods()
 
-    showAlert({title: "Custom Alert",
+    showAlert({title: "CuAlertstom ",
       description: "This is a custom alert with custom button text.",
       confirmText: "Yes, I agree",
-      cancelText: "No, go back",
+      //cancelText: "No, go back",
       onConfirm: () => {
         console.log("Custom action confirmed!")
       },})
