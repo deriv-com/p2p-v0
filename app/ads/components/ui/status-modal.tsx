@@ -26,7 +26,7 @@ export default function StatusModal({
   adType,
   actionButtonText = "OK",
   isUpdate = false,
-  showStatusModel=false
+  showStatusModel=false,
 }: StatusModalProps) {
   const modalStyles = {
     width: "512px",
@@ -37,7 +37,7 @@ export default function StatusModal({
   }
 
   return (
-    <AlertDialog open={true} onOpenChange={(isOpen) => !isOpen && onClose()}>
+    <AlertDialog open={showStatusModel} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <AlertDialogContent className="p-0 overflow-hidden border-none" style={modalStyles}>
         <div className="bg-gray-100 relative p-6 pb-12">
           <div className="flex justify-center">
