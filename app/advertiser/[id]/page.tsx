@@ -203,7 +203,7 @@ export default function AdvertiserProfilePage() {
 
   if (isLoading) {
     return (
-      <div className="px-4">
+      <div>
         <Navigation title="Back" isVisible={false} />
         <div className="text-center py-8">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
