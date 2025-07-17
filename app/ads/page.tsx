@@ -37,7 +37,7 @@ export default function AdsPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  // ✅ Store pending feedback only once on first render
+  // Store pending feedback only once on first render
   const pendingStatusFeedbackRef = useRef<StatusFeedback | null>(null)
 
   if (pendingStatusFeedbackRef.current === null) {
@@ -45,12 +45,8 @@ export default function AdsPage() {
     const type = searchParams.get("type")
     const id = searchParams.get("id")
 
-
     if (success && type && id && (success === "create" || success === "update")) {
       pendingStatusFeedbackRef.current = { success, type, id }
-      // Clean the URL immediately
-      //router.replace("/ads", { scroll: false })
-      
     }
   }
 
@@ -65,12 +61,8 @@ export default function AdsPage() {
         setAds(userAdverts)
         setLoading(false)
 
-        // ✅ Show modal if pending and hasn’t been shown yet
-        if (
-          pendingStatusFeedbackRef.current &&
-          !errorModal.show &&
-          statusFeedback === null
-        ) {
+        // Show modal if pending and hasn't been shown yet
+        if (pendingStatusFeedbackRef.current && !errorModal.show && statusFeedback === null) {
           setTimeout(() => {
             if (statusFeedback === null) {
               setStatusFeedback(pendingStatusFeedbackRef.current)
@@ -86,16 +78,13 @@ export default function AdsPage() {
         setErrorModal({
           show: true,
           title: "Error Loading Ads",
-          message:
-            err instanceof Error
-              ? err.message
-              : "Failed to load ads. Please try again later.",
+          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
         })
       }
     }
 
     handlePageLoad()
-  }, [router]) // ✅ no need for searchParams here now
+  }, [])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
@@ -126,11 +115,7 @@ export default function AdsPage() {
   return (
     <div className="flex flex-col h-screen bg-white">
       {showDeletedBanner && (
-        <StatusBanner
-          variant="success"
-          message="Ad deleted"
-          onClose={() => setShowDeletedBanner(false)}
-        />
+        <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
       )}
 
       <div className="flex-none container mx-auto pr-4">
@@ -181,9 +166,7 @@ export default function AdsPage() {
       {statusFeedback && !loading && !errorModal.show && !isMobile && (
         <StatusModal
           type="success"
-          title={
-            statusFeedback.success === "create" ? "Ad created" : "Ad updated"
-          }
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
           message={
             statusFeedback.success === "create"
               ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
@@ -201,9 +184,7 @@ export default function AdsPage() {
           isOpen
           onClose={handleCloseStatusFeedback}
           type="success"
-          title={
-            statusFeedback.success === "create" ? "Ad created" : "Ad updated"
-          }
+          title={statusFeedback.success === "create" ? "Ad created" : "Ad updated"}
           message={
             statusFeedback.success === "create"
               ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
