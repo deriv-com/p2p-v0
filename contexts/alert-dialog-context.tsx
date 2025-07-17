@@ -13,6 +13,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
+import { Button } from "@/components/ui/button"
 import { CheckCircle, AlertCircle, X } from "lucide-react"
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
