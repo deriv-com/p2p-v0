@@ -59,16 +59,14 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
                 {formatDateTime(order.created_at)}
               </p>
             </div>
-            <div>
               {order.type === "buy" ?
-               <>
+               <div>
                 <h3 className="text-sm text-slate-500 mb-1">Seller</h3>
-                <p className="font-bold">{order.advert?.user?.nickname}</p> </>:
-                <>
+                <p className="font-bold">{order.advert?.user?.nickname}</p> </div>:
+                <div>
                 <h3 className="text-sm text-slate-500 mb-1">Buyer</h3>
-                <p className="font-bold">{order.user?.nickname}</p></>
+                <p className="font-bold">{order.user?.nickname}</p></div>
                 }
-            </div>
           </div>
         </div>
       </div>
