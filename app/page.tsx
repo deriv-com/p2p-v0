@@ -14,6 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
+import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
 
 export default function BuySellPage() {
     // TODO: Replace these once the currencies are ready
@@ -225,7 +226,6 @@ export default function BuySellPage() {
           </div>
         </div>
       </div>
-
       <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
         <div>
           {isLoading ? (
@@ -364,6 +364,9 @@ export default function BuySellPage() {
         ad={selectedAd}
         orderType={activeTab}
       />
+      <AlertDialog open={true}>
+        <AlertDialogContent>test</AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
