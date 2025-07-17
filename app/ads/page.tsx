@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
