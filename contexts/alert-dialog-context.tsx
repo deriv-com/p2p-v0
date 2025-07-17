@@ -64,10 +64,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             {config.description && <AlertDialogDescription>{config.description}</AlertDialogDescription>}
           </AlertDialogHeader>
           <AlertDialogFooter className="mx-[32px] my-[24px]">
-            <AlertDialogCancel onClick={handleCancel}>{config.cancelText || "Cancel"}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirm}
-              className={config.variant === "destructive" ? "bg-destructive hover:bg-destructive/90" : ""}
+    
             >
               {config.confirmText || "Continue"}
             </AlertDialogAction>
