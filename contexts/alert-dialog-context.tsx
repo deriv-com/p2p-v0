@@ -62,10 +62,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
           <AlertDialogHeader className=" justify-between my-[24px]">
-            <div
-              className={`${config.type === "success" ? "bg-success-bg" : "bg-warning-bg"
-                } rounded-[80px] p-2 flex items-center justify-center w-[56px] h-[56px]`}
-            >
+            <div>
               {config.type === "success" ? (
                 <CheckCircle className="h-8 w-8 text-success-icon" />
               ) : (
@@ -83,7 +80,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           
           </AlertDialogHeader>
           <div className="mx-[32px] my-[24px]">
-                  {config.title && <AlertDialogTitle className="mb-[32px]">{config.title}</AlertDialogTitle>}
+      <div className="mb-[32px]">
+                  {config.title && <AlertDialogTitle >{config.title}</AlertDialogTitle>}
+            </div>
                     {config.description && <AlertDialogDescription>{config.description}
                     </AlertDialogDescription>}
         </div>
