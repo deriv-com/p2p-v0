@@ -59,11 +59,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader>
+          <AlertDialogHeader className="mx-[32px] my-[24px]">
             {config.title && <AlertDialogTitle>{config.title}</AlertDialogTitle>}
             {config.description && <AlertDialogDescription>{config.description}</AlertDialogDescription>}
           </AlertDialogHeader>
-          <AlertDialogFooter>
+          <AlertDialogFooter className="mx-[32px] my-[24px]">
             <AlertDialogCancel onClick={handleCancel}>{config.cancelText || "Cancel"}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleConfirm}
