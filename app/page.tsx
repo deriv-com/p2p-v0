@@ -39,6 +39,8 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   	const [open, setOpen] = useState(true);
 
+    cons {showAlert } = useAlertDialog()
+
   useEffect(() => {
     fetchAdverts()
   }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
@@ -58,7 +60,7 @@ export default function BuySellPage() {
 
     fetchPaymentMethods()
 
-    useAlertDialog()
+    showAlert()
   }, [])
 
   const fetchAdverts = async () => {
