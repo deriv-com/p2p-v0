@@ -101,10 +101,10 @@ export default function AdsPage() {
   const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
     }
-
   const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
-}
+    }
+
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -157,7 +157,7 @@ export default function AdsPage() {
       </div>
 
       {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-   {/*statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
+      {/*statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
         <StatusModal
           type="success"
           title={statusData.success === "create" ? "Ad created" : "Ad updated"}
@@ -172,7 +172,7 @@ export default function AdsPage() {
           isUpdate={statusData.success === "update"}
           showStatusModel ={statusData.showStatusModal}
         />
-      )}*/
+      )*/}
 
       {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
         <StatusBottomSheet
