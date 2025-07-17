@@ -40,10 +40,10 @@ export default function AdsPage() {
 
   useEffect(() => {
     // Read and store params data in local variable
-    const success = searchParams.get("success")
+    /*const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
-    const showStatusModal = searchParams.get("showStatusModal")
+    const showStatusModal = searchParams.get("showStatusModal")*/
 
    /* if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
