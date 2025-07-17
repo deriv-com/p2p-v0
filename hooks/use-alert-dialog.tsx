@@ -1,45 +1,55 @@
 "use client"
 
-import { useAlertDialog as useAlertDialogContext } from "@/contexts/alert-dialog-context"
+import { useAlertDialogContext } from "@/contexts/alert-dialog-context"
 import type { AlertDialogConfig } from "@/types/alert-dialog"
 
 export function useAlertDialog() {
-  const { showAlert, hideAlert, isOpen } = useAlertDialogContext()
+  const { showDialog, hideDialog, isOpen, config } = useAlertDialogContext()
 
-  const showConfirmDialog = (config: AlertDialogConfig) => {
-    showAlert({
-      confirmText: "Confirm",
-      cancelText: "Cancel",
-      ...config,
+  const showConfirmDialog = (dialogConfig: Omit<AlertDialogConfig, "type">) => {
+    showDialog({
+      ...dialogConfig,
+      type: "confirm",
+      confirmText: dialogConfig.confirmText || "Confirm",
+      cancelText: dialogConfig.cancelText || "Cancel",
     })
   }
 
-  const showDeleteDialog = (config: Omit<AlertDialogConfig, "variant">) => {
-    showAlert({
-      title: "Delete Item",
-      description: "Are you sure you want to delete this item? This action cannot be undone.",
-      confirmText: "Delete",
-      cancelText: "Cancel",
-      variant: "destructive",
-      ...config,
+  const showDeleteDialog = (dialogConfig: Omit<AlertDialogConfig, "type">) => {
+    showDialog({
+      ...dialogConfig,
+      type: "delete",
+      confirmText: dialogConfig.confirmText || "Delete",
+      cancelText: dialogConfig.cancelText || "Cancel",
     })
   }
 
-  const showWarningDialog = (config: AlertDialogConfig) => {
-    showAlert({
-      title: "Warning",
-      confirmText: "Continue",
-      cancelText: "Cancel",
-      ...config,
+  const showWarningDialog = (dialogConfig: Omit<AlertDialogConfig, "type">) => {
+    showDialog({
+      ...dialogConfig,
+      type: "warning",
+      confirmText: dialogConfig.confirmText || "Continue",
+      cancelText: dialogConfig.cancelText || "Cancel",
+    })
+  }
+
+  const showSuccessDialog = (dialogConfig: Omit<AlertDialogConfig, "type">) => {
+    showDialog({
+      ...dialogConfig,
+      type: "success",
+      confirmText: dialogConfig.confirmText || "OK",
+      showCancel: dialogConfig.showCancel ?? false,
     })
   }
 
   return {
-    showAlert,
+    showDialog,
+    hideDialog,
     showConfirmDialog,
     showDeleteDialog,
     showWarningDialog,
-    hideAlert,
+    showSuccessDialog,
     isOpen,
+    config,
   }
 }

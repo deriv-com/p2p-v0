@@ -3,13 +3,16 @@ export interface AlertDialogConfig {
   description?: string
   confirmText?: string
   cancelText?: string
-  variant?: "default" | "destructive"
+  type?: "success" | "warning" | "delete" | "confirm"
+  showCancel?: boolean
+  loading?: boolean
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
 }
 
 export interface AlertDialogContextType {
-  showAlert: (config: AlertDialogConfig) => void
-  hideAlert: () => void
+  showDialog: (config: AlertDialogConfig) => void
+  hideDialog: () => void
   isOpen: boolean
+  config: AlertDialogConfig | null
 }
