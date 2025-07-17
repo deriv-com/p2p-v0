@@ -28,15 +28,15 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const [errorModal, setErrorModal] = useState({
+  /*const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
     message: "",
-  })
+  })*/
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const searchParams = useSearchParams()
+ // const searchParams = useSearchParams()
 
   useEffect(() => {
     // Read and store params data in local variable
