@@ -46,7 +46,6 @@ export const WALLETS = {
     brand_id: USER_DATA?.brand_name || "",
   },
 }
-
 export const AUTH = {
   getAuthHeader: () => ({
     Authorization: `Bearer ${USER_TOKEN}`,
@@ -54,7 +53,14 @@ export const AUTH = {
     "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
     "Content-Type": "application/json",
   }),
+
+  getNotificationHeader: () => ({
+    Authorization: `Bearer ${USER_TOKEN}`,
+    "Content-Type": "application/json",
+  }),
 }
+
+
 
 export const APP_SETTINGS = {
   defaultCurrency: "USD",
