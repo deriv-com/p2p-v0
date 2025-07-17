@@ -57,6 +57,7 @@ export default function BuySellPage() {
     }
 
     fetchPaymentMethods()
+    setOpen(false)
   }, [])
 
   const fetchAdverts = async () => {
