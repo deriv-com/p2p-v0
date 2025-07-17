@@ -56,7 +56,7 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/ads"
-          className={`flex flex-col items-center justify-center ${pathname.startsWith("/my-ads") ? "text-[#00D0FF] font-bold" : "text-slate-700"
+          className={`flex flex-col items-center justify-center ${pathname.startsWith("/ads") ? "text-[#00D0FF] font-bold" : "text-slate-700"
             }`}
         >
           <Image
@@ -64,7 +64,7 @@ export default function MobileFooterNav() {
             alt="My ads"
             width={20}
             height={20}
-            className={pathname.startsWith("/my-ads") ? "filter-to-primary" : "brightness-50 opacity-70"}
+            className={pathname.startsWith("/ads") ? "filter-to-primary" : "brightness-50 opacity-70"}
             style={
               pathname.startsWith("/ads")
                 ? {
