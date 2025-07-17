@@ -73,13 +73,13 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
                       )}
                     </div>
 
-                    <button
-                      onClick={onClose}
+                    <Button
+                      onClick={hideAlert}
                       className="absolute top-6 right-6 text-black hover:text-gray-700"
                       aria-label="Close"
                     >
                       <X className="h-5 w-5" />
-                    </button>
+                    </Button>
                   </div>
             {config.title && <AlertDialogTitle>{config.title}</AlertDialogTitle>}
             {config.description && <AlertDialogDescription>{config.description}</AlertDialogDescription>}
