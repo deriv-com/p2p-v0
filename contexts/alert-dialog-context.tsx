@@ -5,7 +5,6 @@ import { createContext, useContext, useState, useCallback } from "react"
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter } from "@/components/ui/alert-dialog"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
 import Image from "next/image"
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
@@ -56,7 +55,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           <div className="flex bg-slate-75 flex-col my-[24px]">
             <div style={{ alignSelf: "end" }}>
               <Button onClick={hideAlert} size="sm" variant="ghost">
-                <X className="h-5 w-5" />
+                <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
               </Button>
             </div>
             <div style={{ alignSelf: "center" }}>
