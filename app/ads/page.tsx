@@ -39,7 +39,7 @@ export default function AdsPage() {
   const searchParams = useSearchParams()
 
   useEffect(() => {
-  console.log("Inside use effect")
+  console.log("Inside use effect");
     // Read and store params data in local variable
     const success = searchParams.get("success")
     const type = searchParams.get("type")
