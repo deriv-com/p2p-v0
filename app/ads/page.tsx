@@ -106,7 +106,7 @@ export default function AdsPage() {
     setErrorModal((prev) => ({ ...prev, show: false }))
     }*/
 
-
+return <div></div>
   return (
     <div className="flex flex-col h-screen bg-white">
       {showDeletedBanner && (
