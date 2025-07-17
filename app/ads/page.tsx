@@ -45,10 +45,11 @@ export default function AdsPage() {
     const type = searchParams.get("type")
     const id = searchParams.get("id")
 
+
     if (success && type && id && (success === "create" || success === "update")) {
       pendingStatusFeedbackRef.current = { success, type, id }
       // Clean the URL immediately
-      router.replace("/ads", { scroll: false })
+      //router.replace("/ads", { scroll: false })
     }
   }
 
