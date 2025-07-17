@@ -215,7 +215,7 @@ export default function OrderDetailsPage() {
         : "You receive"
 
   return (
-    <div className="absolute left-0 right-0 top-[32px] bottom-0 bg-white">
+    <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
       {order?.type && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} ${order?.account_currency}`} redirectUrl={"/orders"} />}
       <div className="container mx-auto">
           {isLoading ? (
