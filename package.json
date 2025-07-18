@@ -11,6 +11,7 @@
   "dependencies": {
     "@eslint/eslintrc": "latest",
     "@hookform/resolvers": "^3.9.1",
+    "@jest/globals": "latest",
     "@novu/nextjs": "latest",
     "@radix-ui/react-accordion": "latest",
     "@radix-ui/react-alert-dialog": "latest",
@@ -41,7 +42,6 @@
     "@radix-ui/react-tooltip": "latest",
     "@testing-library/dom": "latest",
     "@testing-library/react": "latest",
-    "@testing-library/user-event": "latest",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
