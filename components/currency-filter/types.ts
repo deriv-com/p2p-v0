@@ -1,5 +1,4 @@
 import type React from "react"
-
 export interface Currency {
   code: string
   name: string
@@ -7,10 +6,10 @@ export interface Currency {
 
 export interface CurrencyFilterProps {
   currencies: Currency[]
-  selectedCurrency?: string
+  selectedCurrency: string
   onCurrencySelect: (currencyCode: string) => void
   trigger: React.ReactNode
   placeholder?: string
-  emptyMessage?: string
   searchPlaceholder?: string
+  emptyMessage?: string
 }
