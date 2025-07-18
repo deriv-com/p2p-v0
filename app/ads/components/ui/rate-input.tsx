@@ -22,7 +22,7 @@ export function RateInput({
   step,
   min,
   error = false,
-  label = "Fixed price",
+  label ="Enter Value",
 }: RateInputProps) {
   const [isFocused, setIsFocused] = useState(false)
 
