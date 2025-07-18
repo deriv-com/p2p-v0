@@ -12,7 +12,7 @@ interface RateInputProps {
   step?: number
   min?: number
   error?: boolean
-  label?: string
+  label?: string // NEW
 }
 
 export function RateInput({
