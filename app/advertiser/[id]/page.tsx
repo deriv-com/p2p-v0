@@ -234,9 +234,9 @@ export default function AdvertiserProfilePage() {
                     )}
                   </div>
                   <div className="flex items-center text-xs text-slate-500 mt-2">
-                    <span className="mr-3">{profile?.isOnline ? "Online" : "Offline"}</span>
+                    <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
                     <span className="text-slate-400">|</span>
-                    <span className="ml-3">{profile ? getJoinedDate(profile.created_at) : ""}</span>
+                    <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                   </div>
                 </div>
               </div>
