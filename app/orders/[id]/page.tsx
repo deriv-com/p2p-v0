@@ -220,14 +220,14 @@ export default function OrderDetailsPage() {
             (<div className="flex flex-col">
               <div className="flex flex-row gap-6">
                 <div className="w-full lg:w-1/2 rounded-lg">
-                  <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
+                  <div className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]`}>
                     <div className="flex items-center">
-                      <span className="text-blue-100 font-bold">
+                      <span className="font-bold">
                         {formatStatus(order.status, order.type)}
                       </span>
                     </div>
                     {(order.status === "pending_payment" || order.status === "pending_release") &&
-                      <div className="flex items-center text-blue-100">
+                      <div className="flex items-center">
                         <span>Time left:&nbsp;</span><span className="font-bold">{timeLeft}</span>
                       </div>
                     }
