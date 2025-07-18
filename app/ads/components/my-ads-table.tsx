@@ -302,7 +302,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                           className="flex items-center gap-2 text-red-600"
                           onSelect={() => handleDelete(ad.id)}
                         >
-                          <Image src="/icons/trash-red.png" alt="Delete" width={24} height={24} />
+                          <Image src="/icons/trash-red.png" alt="Delete" width={32} height={32}/>
                           <span className="text-red-600">Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
