@@ -37,10 +37,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
 
   return (
     <>
-      {/* Overlay */}
       <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
-
-      {/* Panel */}
       <div
         className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
           isMobile ? "inset-0 w-full" : "w-full max-w-md"
