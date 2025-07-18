@@ -281,6 +281,10 @@ export default function AdvertiserProfilePage() {
           </div>
         </div>
         <div>
+          <div className="flex items-center text-xs text-slate-500">Trade volume (30d)</div>
+          <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
+        </div>
+        <div>
           <div className="text-xs text-slate-500">Avg. pay time (30d)</div>
           <div className="font-bold mt-1">{getDuration(profile?.buy_time_average_30day)}</div>
         </div>
@@ -291,10 +295,6 @@ export default function AdvertiserProfilePage() {
         <div>
           <div className="flex items-center text-xs text-slate-500">Trade partners</div>
           <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
-        </div>
-        <div>
-          <div className="flex items-center text-xs text-slate-500">Trade volume (30d)</div>
-          <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
         </div>
       </div>
       <div className="container mx-auto pb-6 hidden">
