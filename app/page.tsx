@@ -167,7 +167,7 @@ export default function BuySellPage() {
               selectedCurrency={currency}
               onCurrencySelect={handleCurrencySelect}
               trigger={
-                <Button variant="outline" size="sm" className="rounded-md border border-input bg-background">
+                <Button variant="outline" className="rounded-md border border-input bg-background font-normal">
                   <span>{currency}</span>
                   <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>
