@@ -12,7 +12,7 @@ interface RateInputProps {
   step?: number
   min?: number
   error?: boolean
-  label?: stri
+  label?: string
 }
 
 export function RateInput({
@@ -22,7 +22,7 @@ export function RateInput({
   step,
   min,
   error = false,
-  label ="Enter Value",
+  label = "Enter Value",
 }: RateInputProps) {
   const [isFocused, setIsFocused] = useState(false)
 
