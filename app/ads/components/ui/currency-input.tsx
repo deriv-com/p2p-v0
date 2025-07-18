@@ -16,7 +16,7 @@ interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement>
 export function CurrencyInput({
   currency = "USD",
   onValueChange,
-  placeholder = "0.00",
+  placeholder = "Enter Amount",
   value,
   onChange,
   isEditMode = false,
@@ -69,7 +69,7 @@ export function CurrencyInput({
             className={cn(
               "absolute left-4 pointer-events-none transition-all duration-200",
               showFloating ? "text-xs top-0.25 bg-white px-1" : "text-sm top-1/2 -translate-y-1/2",
-              error ? "text-red-500" : "text-gray-500",
+              error ? "text-red-500" : "text-black",
             )}
           >
             {placeholder}
