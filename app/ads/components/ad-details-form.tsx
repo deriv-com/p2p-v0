@@ -283,7 +283,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput
-                label="Minimum order amount"
                 value={minAmount}
                 onValueChange={(value) => {
                   setMinAmount(value)
