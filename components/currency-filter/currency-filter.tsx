@@ -15,7 +15,7 @@ export function CurrencyFilter({
   onCurrencySelect,
   trigger,
   placeholder = "Search",
-  emptyMessage = "No currencies found",
+  emptyMessage = "Currency is unavailable",
 }: CurrencyFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
