@@ -6,10 +6,9 @@ export interface Currency {
 
 export interface CurrencyFilterProps {
   currencies: Currency[]
-  selectedCurrency: string
+  selectedCurrency?: string
   onCurrencySelect: (currencyCode: string) => void
   trigger: React.ReactNode
   placeholder?: string
-  searchPlaceholder?: string
   emptyMessage?: string
 }

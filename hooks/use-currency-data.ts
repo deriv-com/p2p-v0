@@ -1,10 +1,10 @@
 "use client"
 
-import { useMemo } from "react"
+import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
 
-// Extended currency list based on the image and common P2P currencies
-const CURRENCY_DATA: Currency[] = [
+// Mock currency data - in a real app, this would come from an API
+const MOCK_CURRENCIES: Currency[] = [
   { code: "IDR", name: "Indonesian rupiah" },
   { code: "ARS", name: "Argentine peso" },
   { code: "BDT", name: "Bangladeshi taka" },
@@ -12,36 +12,57 @@ const CURRENCY_DATA: Currency[] = [
   { code: "BRL", name: "Brazilian real" },
   { code: "COP", name: "Colombian peso" },
   { code: "CRC", name: "Costa Rican colon" },
-  { code: "USD", name: "US Dollar" },
-  { code: "EUR", name: "Euro" },
-  { code: "GBP", name: "British Pound" },
-  { code: "JPY", name: "Japanese Yen" },
-  { code: "CNY", name: "Chinese Yuan" },
-  { code: "KRW", name: "South Korean Won" },
-  { code: "SGD", name: "Singapore Dollar" },
-  { code: "MYR", name: "Malaysian Ringgit" },
-  { code: "THB", name: "Thai Baht" },
-  { code: "VND", name: "Vietnamese Dong" },
-  { code: "PHP", name: "Philippine Peso" },
-  { code: "INR", name: "Indian Rupee" },
-  { code: "PKR", name: "Pakistani Rupee" },
+  { code: "CUC", name: "Cuban convertible peso" },
+  { code: "DOP", name: "Dominican peso" },
+  { code: "EGP", name: "Egyptian pound" },
+  { code: "GTQ", name: "Guatemalan quetzal" },
+  { code: "HNL", name: "Honduran lempira" },
+  { code: "INR", name: "Indian rupee" },
+  { code: "JMD", name: "Jamaican dollar" },
+  { code: "KES", name: "Kenyan shilling" },
+  { code: "LKR", name: "Sri Lankan rupee" },
+  { code: "MAD", name: "Moroccan dirham" },
+  { code: "MXN", name: "Mexican peso" },
+  { code: "NGN", name: "Nigerian naira" },
+  { code: "PAB", name: "Panamanian balboa" },
+  { code: "PEN", name: "Peruvian sol" },
+  { code: "PHP", name: "Philippine peso" },
+  { code: "PKR", name: "Pakistani rupee" },
+  { code: "THB", name: "Thai baht" },
+  { code: "TND", name: "Tunisian dinar" },
+  { code: "UGX", name: "Ugandan shilling" },
+  { code: "UYU", name: "Uruguayan peso" },
+  { code: "VES", name: "Venezuelan bolívar soberano" },
+  { code: "VND", name: "Vietnamese dong" },
+  { code: "ZAR", name: "South African rand" },
 ]
 
 export function useCurrencyData() {
-  const currencies = useMemo(() => CURRENCY_DATA, [])
+  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("IDR")
+  const [loading, setLoading] = useState(true)
 
-  const getCurrencyByCode = (code: string): Currency | undefined => {
-    return currencies.find((currency) => currency.code === code)
-  }
+  useEffect(() => {
+    // Simulate API call
+    const fetchCurrencies = async () => {
+      setLoading(true)
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      setCurrencies(MOCK_CURRENCIES)
+      setLoading(false)
+    }
 
-  const getCurrencyName = (code: string): string => {
-    const currency = getCurrencyByCode(code)
-    return currency ? `${currency.code} - ${currency.name}` : code
+    fetchCurrencies()
+  }, [])
+
+  const handleCurrencySelect = (currencyCode: string) => {
+    setSelectedCurrency(currencyCode)
   }
 
   return {
     currencies,
-    getCurrencyByCode,
-    getCurrencyName,
+    selectedCurrency,
+    loading,
+    onCurrencySelect: handleCurrencySelect,
   }
 }

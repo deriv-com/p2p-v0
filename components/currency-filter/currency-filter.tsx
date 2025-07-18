@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo } from "react"
-import { Search } from "lucide-react"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -46,7 +46,9 @@ export function CurrencyFilter({
   const CurrencyList = () => (
     <div className="w-full">
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+          <Image src="/icons/search-icon-custom.png" alt="Search" width={16} height={16} className="opacity-60" />
+        </div>
         <Input
           placeholder={placeholder}
           value={searchQuery}

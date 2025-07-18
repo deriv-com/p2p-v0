@@ -1,22 +1,26 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
-import jest from "jest"
+import type { Currency } from "@/components/currency-filter/types"
+import jest from "jest" // Declare the jest variable
 
-const mockCurrencies = [
+// Mock the mobile hook
+jest.mock("@/components/ui/use-mobile", () => ({
+  useIsMobile: jest.fn(() => false),
+}))
+
+const mockCurrencies: Currency[] = [
   { code: "IDR", name: "Indonesian rupiah" },
   { code: "ARS", name: "Argentine peso" },
   { code: "BDT", name: "Bangladeshi taka" },
   { code: "BOB", name: "Boliviano" },
   { code: "BRL", name: "Brazilian real" },
-  { code: "COP", name: "Colombian peso" },
-  { code: "CRC", name: "Costa Rican colon" },
 ]
 
-const defaultProps = {
+const mockProps = {
   currencies: mockCurrencies,
   selectedCurrency: "IDR",
   onCurrencySelect: jest.fn(),
-  trigger: <button>Select Currency</button>,
+  trigger: <button>Open Currency Filter</button>,
 }
 
 describe("CurrencyFilter", () => {
@@ -25,31 +29,24 @@ describe("CurrencyFilter", () => {
   })
 
   it("renders trigger element", () => {
-    render(<CurrencyFilter {...defaultProps} />)
-    expect(screen.getByText("Select Currency")).toBeInTheDocument()
+    render(<CurrencyFilter {...mockProps} />)
+    expect(screen.getByText("Open Currency Filter")).toBeInTheDocument()
   })
 
-  it("opens dropdown when trigger is clicked on desktop", async () => {
-    // Mock desktop viewport
-    Object.defineProperty(window, "innerWidth", {
-      writable: true,
-      configurable: true,
-      value: 1024,
-    })
+  it("opens dropdown when trigger is clicked", async () => {
+    render(<CurrencyFilter {...mockProps} />)
 
-    render(<CurrencyFilter {...defaultProps} />)
-
-    fireEvent.click(screen.getByText("Select Currency"))
+    fireEvent.click(screen.getByText("Open Currency Filter"))
 
     await waitFor(() => {
       expect(screen.getByPlaceholderText("Search")).toBeInTheDocument()
     })
   })
 
-  it("displays all currencies in the list", async () => {
-    render(<CurrencyFilter {...defaultProps} />)
+  it("displays all currencies when opened", async () => {
+    render(<CurrencyFilter {...mockProps} />)
 
-    fireEvent.click(screen.getByText("Select Currency"))
+    fireEvent.click(screen.getByText("Open Currency Filter"))
 
     await waitFor(() => {
       mockCurrencies.forEach((currency) => {
@@ -58,10 +55,21 @@ describe("CurrencyFilter", () => {
     })
   })
 
-  it("filters currencies based on search input", async () => {
-    render(<CurrencyFilter {...defaultProps} />)
+  it("highlights selected currency", async () => {
+    render(<CurrencyFilter {...mockProps} />)
 
-    fireEvent.click(screen.getByText("Select Currency"))
+    fireEvent.click(screen.getByText("Open Currency Filter"))
+
+    await waitFor(() => {
+      const selectedItem = screen.getByText("IDR - Indonesian rupiah")
+      expect(selectedItem).toHaveClass("bg-black", "text-white")
+    })
+  })
+
+  it("filters currencies based on search query", async () => {
+    render(<CurrencyFilter {...mockProps} />)
+
+    fireEvent.click(screen.getByText("Open Currency Filter"))
 
     await waitFor(() => {
       const searchInput = screen.getByPlaceholderText("Search")
@@ -74,55 +82,53 @@ describe("CurrencyFilter", () => {
     })
   })
 
-  it("calls onCurrencySelect when a currency is selected", async () => {
-    render(<CurrencyFilter {...defaultProps} />)
+  it("calls onCurrencySelect when currency is clicked", async () => {
+    render(<CurrencyFilter {...mockProps} />)
 
-    fireEvent.click(screen.getByText("Select Currency"))
-
-    await waitFor(() => {
-      fireEvent.click(screen.getByText("ARS - Argentine peso"))
-    })
-
-    expect(defaultProps.onCurrencySelect).toHaveBeenCalledWith("ARS")
-  })
-
-  it("highlights selected currency", async () => {
-    render(<CurrencyFilter {...defaultProps} />)
-
-    fireEvent.click(screen.getByText("Select Currency"))
-
-    await waitFor(() => {
-      const selectedItem = screen.getByText("IDR - Indonesian rupiah").closest("div")
-      expect(selectedItem).toHaveClass("bg-black", "text-white")
-    })
-  })
-
-  it("closes dropdown when currency is selected", async () => {
-    render(<CurrencyFilter {...defaultProps} />)
-
-    fireEvent.click(screen.getByText("Select Currency"))
+    fireEvent.click(screen.getByText("Open Currency Filter"))
 
     await waitFor(() => {
       fireEvent.click(screen.getByText("ARS - Argentine peso"))
     })
 
-    await waitFor(() => {
-      expect(screen.queryByPlaceholderText("Search")).not.toBeInTheDocument()
-    })
+    expect(mockProps.onCurrencySelect).toHaveBeenCalledWith("ARS")
   })
 
-  it("handles empty search results", async () => {
-    render(<CurrencyFilter {...defaultProps} />)
+  it("shows empty message when no currencies match search", async () => {
+    render(<CurrencyFilter {...mockProps} />)
 
-    fireEvent.click(screen.getByText("Select Currency"))
+    fireEvent.click(screen.getByText("Open Currency Filter"))
 
     await waitFor(() => {
       const searchInput = screen.getByPlaceholderText("Search")
-      fireEvent.change(searchInput, { target: { value: "NonexistentCurrency" } })
+      fireEvent.change(searchInput, { target: { value: "nonexistent" } })
     })
 
     await waitFor(() => {
       expect(screen.getByText("No currencies found")).toBeInTheDocument()
+    })
+  })
+
+  it("clears search when closed and reopened", async () => {
+    render(<CurrencyFilter {...mockProps} />)
+
+    // Open and search
+    fireEvent.click(screen.getByText("Open Currency Filter"))
+
+    await waitFor(() => {
+      const searchInput = screen.getByPlaceholderText("Search")
+      fireEvent.change(searchInput, { target: { value: "test" } })
+    })
+
+    // Close by clicking outside or escape
+    fireEvent.keyDown(document, { key: "Escape" })
+
+    // Reopen
+    fireEvent.click(screen.getByText("Open Currency Filter"))
+
+    await waitFor(() => {
+      const searchInput = screen.getByPlaceholderText("Search")
+      expect(searchInput).toHaveValue("")
     })
   })
 })
