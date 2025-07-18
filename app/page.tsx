@@ -148,7 +148,7 @@ export default function BuySellPage() {
                     variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
                     size="sm"
                     onClick={() => setSelectedAccountCurrency(currencyFilter)}
-                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                    className={`px-4 py-2 rounded-md border border-input bg-background ${
                       selectedAccountCurrency === currencyFilter
                         ? "bg-black text-white hover:bg-gray-800"
                         : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
