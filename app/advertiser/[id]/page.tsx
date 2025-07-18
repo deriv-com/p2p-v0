@@ -214,7 +214,7 @@ export default function AdvertiserProfilePage() {
                           {isFollowLoading ? (
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                           ) : (
-                            <Image src="/icons/follow-icon.png" alt="Follow" width={16} height={16} className="mr-2" />
+                            <Image src="/icons/follow-icon.png" alt="Follow" width={16} height={16} />
                           )}
                           {isFollowing ? "Following" : "Follow"}
                         </Button>
