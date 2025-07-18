@@ -167,7 +167,7 @@ export default function AdvertiserProfilePage() {
 
   const getDuration = (duration) => {
     if (duration > 60) return (duration / 60 / 60).toFixed(2).toString() + " mins"
-    return duration + + " mins"
+    return duration + " mins"
   }
 
   const CURRENT_USER = USER
