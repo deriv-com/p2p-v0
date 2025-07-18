@@ -28,16 +28,12 @@ interface AdvertiserProfile {
   is_favourite: boolean
   temp_ban_until: number | null
   trade_band: string
-
-  // Lifetime stats
   order_count_lifetime: number
   order_amount_lifetime: string
   partner_count_lifetime: number
   rating_average_lifetime: number
   recommend_average_lifetime: number
   recommend_count_lifetime: number
-
-  // 30-day stats
   buy_amount_30day: string
   buy_count_30day: number
   buy_time_average_30day: number
@@ -70,19 +66,16 @@ export default function AdvertiserProfilePage() {
     setError(null)
 
     try {
-      // Fetch advertiser profile
       const advertiserData = await BuySellAPI.getAdvertiserById(id)
       const transformedProfile = transformAdvertiserData(advertiserData.data, id)
       setProfile(transformedProfile)
 
-      // Fetch advertiser's ads
       const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
       setAdverts(advertiserAds)
     } catch (err) {
       console.error("Error fetching advertiser data:", err)
       setError("Failed to load advertiser profile. Please try again.")
 
-      // If the API fails, use mock data as fallback
       setProfile(null)
       setAdverts([])
     } finally {
@@ -94,9 +87,7 @@ export default function AdvertiserProfilePage() {
     fetchAdvertiserData()
   }, [id])
 
-  // Update the transformAdvertiserData function to handle more cases
   const transformAdvertiserData = (data: any, userId: string): AdvertiserProfile => {
-    // Set the initial following state based on the API response
     setIsFollowing(data.is_favourite || false)
     setIsBlocked(data.is_blocked || false)
 
