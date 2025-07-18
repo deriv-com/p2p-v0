@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
 import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface StatusData {
   success: "create" | "update"
@@ -28,23 +29,19 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const [errorModal, setErrorModal] = useState({
-    show: false,
-    title: "Error",
-    message: "",
-  })
+  const { showAlert } = useAlertDialog()
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (  success && type && id && showStatusModal === "true" && (success === "create" || success === "update"  )) {
+    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
         type,
@@ -66,10 +63,10 @@ export default function AdsPage() {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
-        setErrorModal({
-          show: true,
+        showAlert({
           title: "Error Loading Ads",
-          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+          description: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+          confirmText: "OK",
         })
       } finally {
         setLoading(false)
@@ -99,13 +96,9 @@ export default function AdsPage() {
 
   const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
-    }
+  }
 
- const handleCloseErrorModal = () => {
-    setErrorModal((prev) => ({ ...prev, show: false }))
-    }
-
-return (
+  return (
     <div className="flex flex-col h-screen bg-white">
       {showDeletedBanner && (
         <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
@@ -152,7 +145,7 @@ return (
         )}
       </div>
       {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-      {statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
+      {statusData && statusData.showStatusModal && !loading && !isMobile && (
         <StatusModal
           type="success"
           title={statusData.success === "create" ? "Ad created" : "Ad updated"}
@@ -165,10 +158,10 @@ return (
           adType={statusData.type}
           adId={statusData.id}
           isUpdate={statusData.success === "update"}
-          showStatusModel ={statusData.showStatusModal}
+          showStatusModel={statusData.showStatusModal}
         />
       )}
-      {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
+      {statusData && statusData.showStatusModal && !loading && isMobile && (
         <StatusBottomSheet
           isOpen
           onClose={handleCloseStatusModal}
@@ -184,17 +177,6 @@ return (
           isUpdate={statusData.success === "update"}
         />
       )}
-
-        {errorModal.show && (
-        <StatusModal
-          type="error"
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={handleCloseErrorModal}
-        />
-      )}
     </div>
-   
   )
-  
 }
