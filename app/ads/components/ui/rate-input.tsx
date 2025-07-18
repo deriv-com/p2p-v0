@@ -65,7 +65,7 @@ export function RateInput({
     error ? "text-red-500" : "text-black/70",
   )}
 >
-  {l}
+  {label}
 </label>
 
           {error && (
