@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { MoreVertical, Pencil, Power, Trash2, Search } from "lucide-react"
+import { MoreVertical, Pencil, Power } from "lucide-react"
+import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -194,7 +195,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <div className="bg-gray-100 rounded-full p-6 mb-6">
-          <Search className="h-12 w-12 text-gray-400" />
+          <Image src="/icons/search-icon.png" alt="Search" width={48} height={48} className="text-gray-400" />
         </div>
         <h2 className="text-xl font-semibold mb-2">You have no ads</h2>
         <p className="text-gray-600 mb-6 text-center max-w-md">
@@ -297,9 +298,12 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                           <Power className="h-4 w-4" />
                           {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleDelete(ad.id)}>
-                          <Trash2 className="h-4 w-4" />
-                          Delete
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-red-600"
+                          onSelect={() => handleDelete(ad.id)}
+                        >
+                          <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
+                          <span className="text-red-600">Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
