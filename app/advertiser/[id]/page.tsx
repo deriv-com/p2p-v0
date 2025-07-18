@@ -166,6 +166,7 @@ export default function AdvertiserProfilePage() {
   const filteredAdverts = adverts.filter((ad) => (activeTab === "buy" ? ad.type === "buy" : ad.type === "sell"))
 
   const getDuration = (duration) => {
+    if (duration == null || duration <= 0) return ""
     if (duration > 60) return (duration / 60 / 60).toString() + " mins"
     return duration.toString() + " mins"
   }
@@ -347,13 +348,13 @@ export default function AdvertiserProfilePage() {
                         >
                           <TableCell className="py-4 px-4 align-top text-base">
                             <div className="font-bold">
-                            {ad.payment_currency}{" "}
-                            {ad.exchange_rate
-                              ? ad.exchange_rate.toLocaleString(undefined, {
+                              {ad.payment_currency}{" "}
+                              {ad.exchange_rate
+                                ? ad.exchange_rate.toLocaleString(undefined, {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })
-                              : ""}
+                                : ""}
                             </div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
                           </TableCell>
@@ -371,11 +372,10 @@ export default function AdvertiserProfilePage() {
                               {ad.payment_methods?.map((method, index) => (
                                 <div key={index} className="flex items-center">
                                   <div
-                                    className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank")
+                                    className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
                                         ? "bg-paymentMethod-bank"
                                         : "bg-paymentMethod-ewallet"
-                                    }`}
+                                      }`}
                                   ></div>
                                   <span className="text-sm">{formatPaymentMethodName(method)}</span>
                                 </div>
