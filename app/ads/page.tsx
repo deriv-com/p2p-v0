@@ -28,12 +28,19 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
+  const [errorModal, setErrorModal] = useState({
+    show: false,
+    title: "Error",
+    message: "",
+  })
   const { showAlert } = useAlertDialog()
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
   useEffect(() => {
+    console.log("Inside use effect")
+    // Read and store params data in local variable
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
@@ -60,14 +67,7 @@ export default function AdsPage() {
     }
 
     // Store status data for mobile bottom sheet
-    if (
-      success &&
-      type &&
-      id &&
-      showStatusModal === "true" &&
-      (success === "create" || success === "update") &&
-      isMobile
-    ) {
+    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
         type,
@@ -89,10 +89,10 @@ export default function AdsPage() {
         console.error("Error fetching ads:", err)
         setError("Failed to load ads. Please try again later.")
         setAds([])
-        showAlert({
+        setErrorModal({
+          show: true,
           title: "Error Loading Ads",
-          description: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-          confirmText: "OK",
+          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
         })
       } finally {
         setLoading(false)
@@ -123,6 +123,22 @@ export default function AdsPage() {
   const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
   }
+
+  const handleCloseErrorModal = () => {
+    setErrorModal((prev) => ({ ...prev, show: false }))
+  }
+
+  // Show error modal using alert dialog when errorModal.show is true
+  useEffect(() => {
+    if (errorModal.show) {
+      showAlert({
+        title: errorModal.title,
+        description: errorModal.message,
+        confirmText: "OK",
+        onConfirm: handleCloseErrorModal,
+      })
+    }
+  }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -170,7 +186,8 @@ export default function AdsPage() {
           <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
         )}
       </div>
-      {statusData && statusData.showStatusModal && !loading && isMobile && (
+      {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
+      {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
         <StatusBottomSheet
           isOpen
           onClose={handleCloseStatusModal}
