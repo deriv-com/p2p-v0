@@ -38,7 +38,7 @@ export function RateInput({
       <div
         className={cn(
           "flex rounded-lg overflow-hidden border transition-colors duration-200",
-          error ? "border-red-500" : "border-gray-200",
+          error ? "border-red-500" : "border-gray-200"
         )}
       >
         <div className="flex-1 relative">
@@ -58,16 +58,17 @@ export function RateInput({
             aria-invalid={error}
           />
 
-        <label
-  className={cn(
-    "absolute left-2 pointer-events-none transition-all duration-200",
-    showFloating ? "text-xs top-2 bg-white px-1" : "text-sm top-1/2 -translate-y-1/2",
-    error ? "text-red-500" : "text-black",
-  )}
->
-  {placeholder}
-</label>
-
+          <label
+            className={cn(
+              "absolute left-4 text-gray-500 pointer-events-none transition-all duration-200",
+              showFloating
+                ? "text-xs top-0.25 bg-white px-1"
+                : "text-sm top-1/2 -translate-y-1/2",
+                 error ? "text-red-500" : "text-gray-500"
+            )}
+          >
+            {label}
+          </label>
 
           {error && (
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
