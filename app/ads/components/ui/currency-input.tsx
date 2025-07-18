@@ -11,7 +11,6 @@ interface CurrencyInputProps extends React.InputHTMLAttributes<HTMLInputElement>
   placeholder?: string
   isEditMode?: boolean
   error?: boolean
-  label?: string
 }
 
 export function CurrencyInput({
@@ -23,16 +22,13 @@ export function CurrencyInput({
   isEditMode = false,
   disabled,
   error = false,
-  label = "Enter Value",
   ...props
 }: CurrencyInputProps) {
   const [isFocused, setIsFocused] = useState(false)
 
-  // Combine the isEditMode prop with any existing disabled prop
   const isDisabled = isEditMode || disabled
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Only process changes if not in edit mode
     if (!isEditMode) {
       if (onChange) onChange(e)
       if (onValueChange) onValueChange(e.target.value)
@@ -71,12 +67,12 @@ export function CurrencyInput({
 
           <label
             className={cn(
-              "absolute left-4 text-gray-500 pointer-events-none transition-all duration-200",
+              "absolute left-4 pointer-events-none transition-all duration-200",
               showFloating ? "text-xs top-0.5 bg-white px-1" : "text-sm top-1/2 -translate-y-1/2",
               error ? "text-red-500" : "text-gray-500",
             )}
           >
-            {label}
+            {placeholder}
           </label>
 
           {error && (
