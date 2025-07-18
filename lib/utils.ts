@@ -142,7 +142,7 @@ export function formatStatus(status: string, type: string): string {
     completed: "Complete",
     pending_payment: type === "buy" ? "Complete payment" : "Awaiting payment",
     pending_release: type === "buy" ? "Waiting seller's confirmation" : "Confirm payment",
-    under_dispute: "Under dispute",
+    disputed: "Under dispute",
   }
 
   const lowerStatus = status.toLowerCase()
