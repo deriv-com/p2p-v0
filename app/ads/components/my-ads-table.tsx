@@ -222,7 +222,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
                 Payment methods
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal"></TableHead>
+              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
+                Status
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
