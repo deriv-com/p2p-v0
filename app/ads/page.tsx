@@ -12,7 +12,6 @@ import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
-import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
@@ -41,7 +40,34 @@ export default function AdsPage() {
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
+    // Show success alert for desktop
+    if (
+      success &&
+      type &&
+      id &&
+      showStatusModal === "true" &&
+      (success === "create" || success === "update") &&
+      !isMobile
+    ) {
+      showAlert({
+        title: success === "create" ? "Ad created" : "Ad updated",
+        description:
+          success === "create"
+            ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
+            : "Your changes have been saved and are now live.",
+        confirmText: "OK",
+      })
+    }
+
+    // Store status data for mobile bottom sheet
+    if (
+      success &&
+      type &&
+      id &&
+      showStatusModal === "true" &&
+      (success === "create" || success === "update") &&
+      isMobile
+    ) {
       setStatusData({
         success,
         type,
@@ -74,7 +100,7 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  }, [])
+  }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
@@ -144,23 +170,6 @@ export default function AdsPage() {
           <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
         )}
       </div>
-      {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-      {statusData && statusData.showStatusModal && !loading && !isMobile && (
-        <StatusModal
-          type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
-          message={
-            statusData.success === "create"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
-          }
-          onClose={handleCloseStatusModal}
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
-          showStatusModel={statusData.showStatusModal}
-        />
-      )}
       {statusData && statusData.showStatusModal && !loading && isMobile && (
         <StatusBottomSheet
           isOpen
