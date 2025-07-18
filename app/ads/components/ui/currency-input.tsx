@@ -23,7 +23,7 @@ export function CurrencyInput({
   isEditMode = false,
   disabled,
   error = false,
-  label = "Enter ",
+  label = "Enter Value",
   ...props
 }: CurrencyInputProps) {
   const [isFocused, setIsFocused] = useState(false)
