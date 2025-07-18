@@ -346,7 +346,15 @@ export default function AdvertiserProfilePage() {
                           key={ad.id}
                         >
                           <TableCell className="py-4 px-4 align-top">
-                            <div className="font-bold">IDR {ad.exchange_rate.toLocaleString()}</div>
+                            <div className="font-bold">
+                            {ad.payment_currency}{" "}
+                            {ad.exchange_rate
+                              ? ad.exchange_rate.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ""}
+                            </div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
                           </TableCell>
                           <TableCell className="py-4 px-4 align-top">
