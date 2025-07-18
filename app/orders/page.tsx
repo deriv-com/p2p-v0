@@ -9,7 +9,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { formatAmount, formatStatus } from "@/lib/utils"
+import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 
 export default function OrdersPage() {
   const router = useRouter()
