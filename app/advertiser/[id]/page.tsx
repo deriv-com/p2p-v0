@@ -345,11 +345,11 @@ export default function AdvertiserProfilePage() {
                           className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
                           key={ad.id}
                         >
-                          <TableCell className="py-4 px-4">
+                          <TableCell className="py-4 px-4 align-top">
                             <div className="font-bold">IDR {ad.exchange_rate.toLocaleString()}</div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
                           </TableCell>
-                          <TableCell className="py-4 px-4">
+                          <TableCell className="py-4 px-4 align-top">
                             <div>
                               USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                             </div>
@@ -358,7 +358,7 @@ export default function AdvertiserProfilePage() {
                               <span>{ad.order_expiry_period} min</span>
                             </div>
                           </TableCell>
-                          <TableCell className="py-4 px-4">
+                          <TableCell className="py-4 px-4 align-top">
                             <div className="flex flex-wrap gap-2">
                               {ad.payment_methods?.map((method, index) => (
                                 <div key={index} className="flex items-center">
@@ -374,7 +374,7 @@ export default function AdvertiserProfilePage() {
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="py-4 px-4 text-right">
+                          <TableCell className="py-4 px-4 text-right align-top">
                             {CURRENT_USER.id != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
