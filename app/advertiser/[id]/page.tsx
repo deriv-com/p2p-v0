@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import Navigation from "@/components/navigation"
-import { AlertCircle, Clock, Check } from "lucide-react"
+import { AlertCircle, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import { BuySellAPI } from "@/services/api"
@@ -18,41 +18,30 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 interface AdvertiserProfile {
   id: string | number
   nickname: string
-  isOnline: boolean
-  joinedDate: string
-  rating: {
-    score: number
-    count: number
-  }
-  completionRate: number
+  brand: string
+  country_code: string
+  created_at: number
+  adverts_are_listed: boolean
+  blocked_by_user_count: number
+  favourited_by_user_count: number
+  is_blocked: boolean
+  is_favourite: boolean
+  temp_ban_until: number | null
+  trade_band: string
   order_count_lifetime: number
-  isVerified: {
-    id: boolean
-    address: boolean
-    phone: boolean
-  }
+  order_amount_lifetime: string
+  partner_count_lifetime: number
   rating_average_lifetime: number
   recommend_average_lifetime: number
+  recommend_count_lifetime: number
+  buy_amount_30day: string
+  buy_count_30day: number
   buy_time_average_30day: number
-  order_amount_lifetime: number
+  sell_amount_30day: string
+  sell_count_30day: number
   release_time_average_30day: number
-  stats: {
-    buyCompletion: {
-      rate: number
-      count: number
-    }
-    sellCompletion: {
-      rate: number
-      count: number
-    }
-    avgPayTime: string
-    avgReleaseTime: string
-    tradePartners: number
-    tradeVolume: {
-      amount: number
-      currency: string
-    }
-  }
+  rating_average_30day: number
+  completion_average_30day: number
 }
 
 export default function AdvertiserProfilePage() {
@@ -77,19 +66,17 @@ export default function AdvertiserProfilePage() {
     setError(null)
 
     try {
-      // Fetch advertiser profile
       const advertiserData = await BuySellAPI.getAdvertiserById(id)
-      const transformedProfile = transformAdvertiserData(advertiserData.data, id)
-      setProfile(transformedProfile)
+      setProfile(advertiserData.data)
+      setIsFollowing(advertiserData.data.is_favourite || false)
+      setIsBlocked(advertiserData.data.is_blocked || false)
 
-      // Fetch advertiser's ads
       const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
       setAdverts(advertiserAds)
     } catch (err) {
       console.error("Error fetching advertiser data:", err)
       setError("Failed to load advertiser profile. Please try again.")
 
-      // If the API fails, use mock data as fallback
       setProfile(null)
       setAdverts([])
     } finally {
@@ -100,56 +87,6 @@ export default function AdvertiserProfilePage() {
   useEffect(() => {
     fetchAdvertiserData()
   }, [id])
-
-  // Update the transformAdvertiserData function to handle more cases
-  const transformAdvertiserData = (data: any, userId: string): AdvertiserProfile => {
-    // If the API returns data in the expected format, use it
-    // Otherwise, transform it or use default values
-
-    // Set the initial following state based on the API response
-    setIsFollowing(data.is_favourite || false)
-    setIsBlocked(data.is_blocked || false)
-
-    return {
-      id: userId,
-      nickname: data.nickname || "Unknown",
-      isOnline: data.is_online || false,
-      joinedDate: data.joined_date || `Joined ${Math.floor(Math.random() * 365)} days ago`,
-      rating: {
-        score: data.rating?.score || data.rating || 0,
-        count: data.rating?.count || data.rating_count || 0,
-      },
-      completionRate: data.completion_rate || 0,
-      order_count_lifetime: data.order_count_lifetime || 0,
-      rating_average_lifetime: data.rating_average_lifetime || 0,
-      recommend_average_lifetime: data.recommend_average_lifetime || 0,
-      isVerified: {
-        id: data.is_verified?.id || false,
-        address: data.is_verified?.address || false,
-        phone: data.is_verified?.phone || false,
-      },
-      buy_time_average_30day: data.buy_time_average_30day || 0,
-      order_amount_lifetime: data.order_amount_lifetime || 0,
-      release_time_average_30day: data.release_time_average_30day || 0,
-      stats: {
-        buyCompletion: {
-          rate: data.stats?.buy_completion?.rate || 0,
-          count: data.stats?.buy_completion?.count || 0,
-        },
-        sellCompletion: {
-          rate: data.stats?.sell_completion?.rate || 0,
-          count: data.stats?.sell_completion?.count || 0,
-        },
-        avgPayTime: data.stats?.avg_pay_time || "N/A",
-        avgReleaseTime: data.stats?.avg_release_time || "N/A",
-        tradePartners: data.buy_amount_30days + data.sell_amount_30days || 0,
-        tradeVolume: {
-          amount: data.buy_amount_30days + data.sell_amount_30days || 0,
-          currency: data.stats?.trade_volume?.currency || "USD",
-        },
-      },
-    }
-  }
 
   const toggleFollow = async () => {
     if (!profile) return
@@ -229,12 +166,19 @@ export default function AdvertiserProfilePage() {
   const filteredAdverts = adverts.filter((ad) => (activeTab === "buy" ? ad.type === "buy" : ad.type === "sell"))
 
   const getDuration = (duration) => {
-    if (duration == null || duration <= 0) return "-"
-    if (duration > 60) return (duration / 60 / 60).toFixed(2).toString() + " min"
-    return "< 1 min"
+    if (duration > 60) return (duration / 60 / 60).toString() + " mins"
+    return duration.toString() + " mins"
   }
 
   const CURRENT_USER = USER
+
+  const getJoinedDate = (timestamp: number) => {
+    const joinDate = new Date(timestamp)
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - joinDate.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return `Joined ${diffDays} days ago`
+  }
 
   return (
     <div>
@@ -270,7 +214,7 @@ export default function AdvertiserProfilePage() {
                           {isFollowLoading ? (
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                           ) : (
-                            <Image src="/icons/follow-icon.png" alt="Follow" width={16} height={16} className="mr-2" />
+                            <Image src="/icons/follow-icon.png" alt="Follow" width={16} height={16} />
                           )}
                           {isFollowing ? "Following" : "Follow"}
                         </Button>
@@ -290,31 +234,11 @@ export default function AdvertiserProfilePage() {
                     )}
                   </div>
                   <div className="flex items-center text-xs text-slate-500 mt-2">
-                    <span className="mr-3">{profile?.isOnline ? "Online" : "Offline"}</span>
+                    <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
                     <span className="text-slate-400">|</span>
-                    <span className="ml-3">{profile?.joinedDate}</span>
+                    <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-4">
-                {profile?.isVerified.id && (
-                  <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-600" />
-                    ID
-                  </div>
-                )}
-                {profile?.isVerified.address && (
-                  <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-600" />
-                    Address
-                  </div>
-                )}
-                {profile?.isVerified.phone && (
-                  <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-600" />
-                    Phone number
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -347,14 +271,18 @@ export default function AdvertiserProfilePage() {
         <div>
           <div className="text-xs text-slate-500">Buy completion (30d)</div>
           <div className="font-bold mt-1">
-            {profile?.stats.buyCompletion.rate}% ({profile?.stats.buyCompletion.count})
+            {profile?.completion_average_30day}% ({profile?.buy_count_30day})
           </div>
         </div>
         <div>
           <div className="text-xs text-slate-500">Sell completion (30d)</div>
           <div className="font-bold mt-1">
-            {profile?.stats.sellCompletion.rate}% ({profile?.stats.sellCompletion.count})
+            {profile?.completion_average_30day}% ({profile?.sell_count_30day})
           </div>
+        </div>
+        <div>
+          <div className="flex items-center text-xs text-slate-500">Trade volume (30d)</div>
+          <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
         </div>
         <div>
           <div className="text-xs text-slate-500">Avg. pay time (30d)</div>
@@ -366,11 +294,7 @@ export default function AdvertiserProfilePage() {
         </div>
         <div>
           <div className="flex items-center text-xs text-slate-500">Trade partners</div>
-          <div className="font-bold mt-1">{profile?.stats.tradePartners}</div>
-        </div>
-        <div>
-          <div className="flex items-center text-xs text-slate-500">Trade volume (30d)</div>
-          <div className="font-bold mt-1">{`USD ${profile?.stats.tradeVolume.amount}`}</div>
+          <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
         </div>
       </div>
       <div className="container mx-auto pb-6 hidden">
@@ -417,27 +341,40 @@ export default function AdvertiserProfilePage() {
                     </TableHeader>
                     <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                       {filteredAdverts.map((ad) => (
-                        <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
-                          <TableCell className="py-4 px-4">
-                            <div className="font-bold">IDR {ad.exchange_rate.toLocaleString()}</div>
+                        <TableRow
+                          className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                          key={ad.id}
+                        >
+                          <TableCell className="py-4 px-4 align-top text-base">
+                            <div className="font-bold">
+                            {ad.payment_currency}{" "}
+                            {ad.exchange_rate
+                              ? ad.exchange_rate.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ""}
+                            </div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
                           </TableCell>
-                          <TableCell className="py-4 px-4">
+                          <TableCell className="py-4 px-4 align-top">
                             <div>
-                              USD {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
+                              {ad.account_currency} {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                             </div>
                             <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1 w-fit">
                               <Clock className="h-4 w-4 mr-1" />
                               <span>{ad.order_expiry_period} min</span>
                             </div>
                           </TableCell>
-                          <TableCell className="py-4 px-4">
-                            <div className="flex flex-wrap gap-2">
+                          <TableCell className="py-4 px-4 align-top">
+                            <div className="flex flex-wrap gap-2 text-xs">
                               {ad.payment_methods?.map((method, index) => (
                                 <div key={index} className="flex items-center">
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
                                     }`}
                                   ></div>
                                   <span className="text-sm">{formatPaymentMethodName(method)}</span>
@@ -445,7 +382,7 @@ export default function AdvertiserProfilePage() {
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="py-4 px-4 text-right">
+                          <TableCell className="py-4 px-4 text-right align-top">
                             {CURRENT_USER.id != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
