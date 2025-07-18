@@ -166,8 +166,8 @@ export default function AdvertiserProfilePage() {
   const filteredAdverts = adverts.filter((ad) => (activeTab === "buy" ? ad.type === "buy" : ad.type === "sell"))
 
   const getDuration = (duration) => {
-    if (duration > 60) return (duration / 60 / 60).toFixed(2).toString() + " mins"
-    return duration.toFixed(2).toString() + " mins"
+    if (duration > 60) return (duration / 60 / 60).toString() + " mins"
+    return duration.toString() + " mins"
   }
 
   const CURRENT_USER = USER
