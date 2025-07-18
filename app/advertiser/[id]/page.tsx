@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import Navigation from "@/components/navigation"
-import { AlertCircle, Clock, Check } from "lucide-react"
+import { AlertCircle, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import { BuySellAPI } from "@/services/api"
@@ -18,41 +18,34 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 interface AdvertiserProfile {
   id: string | number
   nickname: string
-  isOnline: boolean
-  joinedDate: string
-  rating: {
-    score: number
-    count: number
-  }
-  completionRate: number
+  brand: string
+  country_code: string
+  created_at: number
+  adverts_are_listed: boolean
+  blocked_by_user_count: number
+  favourited_by_user_count: number
+  is_blocked: boolean
+  is_favourite: boolean
+  temp_ban_until: number | null
+  trade_band: string
+
+  // Lifetime stats
   order_count_lifetime: number
-  isVerified: {
-    id: boolean
-    address: boolean
-    phone: boolean
-  }
+  order_amount_lifetime: string
+  partner_count_lifetime: number
   rating_average_lifetime: number
   recommend_average_lifetime: number
+  recommend_count_lifetime: number
+
+  // 30-day stats
+  buy_amount_30day: string
+  buy_count_30day: number
   buy_time_average_30day: number
-  order_amount_lifetime: number
+  sell_amount_30day: string
+  sell_count_30day: number
   release_time_average_30day: number
-  stats: {
-    buyCompletion: {
-      rate: number
-      count: number
-    }
-    sellCompletion: {
-      rate: number
-      count: number
-    }
-    avgPayTime: string
-    avgReleaseTime: string
-    tradePartners: number
-    tradeVolume: {
-      amount: number
-      currency: string
-    }
-  }
+  rating_average_30day: number
+  completion_average_30day: number
 }
 
 export default function AdvertiserProfilePage() {
@@ -103,9 +96,6 @@ export default function AdvertiserProfilePage() {
 
   // Update the transformAdvertiserData function to handle more cases
   const transformAdvertiserData = (data: any, userId: string): AdvertiserProfile => {
-    // If the API returns data in the expected format, use it
-    // Otherwise, transform it or use default values
-
     // Set the initial following state based on the API response
     setIsFollowing(data.is_favourite || false)
     setIsBlocked(data.is_blocked || false)
@@ -113,41 +103,34 @@ export default function AdvertiserProfilePage() {
     return {
       id: userId,
       nickname: data.nickname || "Unknown",
-      isOnline: data.is_online || false,
-      joinedDate: data.joined_date || `Joined ${Math.floor(Math.random() * 365)} days ago`,
-      rating: {
-        score: data.rating?.score || data.rating || 0,
-        count: data.rating?.count || data.rating_count || 0,
-      },
-      completionRate: data.completion_rate || 0,
+      brand: data.brand || "",
+      country_code: data.country_code || "",
+      created_at: data.created_at || Date.now(),
+      adverts_are_listed: data.adverts_are_listed || false,
+      blocked_by_user_count: data.blocked_by_user_count || 0,
+      favourited_by_user_count: data.favourited_by_user_count || 0,
+      is_blocked: data.is_blocked || false,
+      is_favourite: data.is_favourite || false,
+      temp_ban_until: data.temp_ban_until || null,
+      trade_band: data.trade_band || "bronze",
+
+      // Lifetime stats
       order_count_lifetime: data.order_count_lifetime || 0,
+      order_amount_lifetime: data.order_amount_lifetime || "0.00",
+      partner_count_lifetime: data.partner_count_lifetime || 0,
       rating_average_lifetime: data.rating_average_lifetime || 0,
       recommend_average_lifetime: data.recommend_average_lifetime || 0,
-      isVerified: {
-        id: data.is_verified?.id || false,
-        address: data.is_verified?.address || false,
-        phone: data.is_verified?.phone || false,
-      },
+      recommend_count_lifetime: data.recommend_count_lifetime || 0,
+
+      // 30-day stats
+      buy_amount_30day: data.buy_amount_30day || "0.00",
+      buy_count_30day: data.buy_count_30day || 0,
       buy_time_average_30day: data.buy_time_average_30day || 0,
-      order_amount_lifetime: data.order_amount_lifetime || 0,
+      sell_amount_30day: data.sell_amount_30day || "0.00",
+      sell_count_30day: data.sell_count_30day || 0,
       release_time_average_30day: data.release_time_average_30day || 0,
-      stats: {
-        buyCompletion: {
-          rate: data.stats?.buy_completion?.rate || 0,
-          count: data.stats?.buy_completion?.count || 0,
-        },
-        sellCompletion: {
-          rate: data.stats?.sell_completion?.rate || 0,
-          count: data.stats?.sell_completion?.count || 0,
-        },
-        avgPayTime: data.stats?.avg_pay_time || "N/A",
-        avgReleaseTime: data.stats?.avg_release_time || "N/A",
-        tradePartners: data.buy_amount_30days + data.sell_amount_30days || 0,
-        tradeVolume: {
-          amount: data.buy_amount_30days + data.sell_amount_30days || 0,
-          currency: data.stats?.trade_volume?.currency || "USD",
-        },
-      },
+      rating_average_30day: data.rating_average_30day || 0,
+      completion_average_30day: data.completion_average_30day || 0,
     }
   }
 
@@ -236,6 +219,14 @@ export default function AdvertiserProfilePage() {
 
   const CURRENT_USER = USER
 
+  const getJoinedDate = (timestamp: number) => {
+    const joinDate = new Date(timestamp)
+    const now = new Date()
+    const diffTime = Math.abs(now.getTime() - joinDate.getTime())
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    return `Joined ${diffDays} days ago`
+  }
+
   return (
     <div>
       <Navigation title="Back" isVisible={false} />
@@ -292,29 +283,9 @@ export default function AdvertiserProfilePage() {
                   <div className="flex items-center text-xs text-slate-500 mt-2">
                     <span className="mr-3">{profile?.isOnline ? "Online" : "Offline"}</span>
                     <span className="text-slate-400">|</span>
-                    <span className="ml-3">{profile?.joinedDate}</span>
+                    <span className="ml-3">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                   </div>
                 </div>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-4">
-                {profile?.isVerified.id && (
-                  <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-600" />
-                    ID
-                  </div>
-                )}
-                {profile?.isVerified.address && (
-                  <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-600" />
-                    Address
-                  </div>
-                )}
-                {profile?.isVerified.phone && (
-                  <div className="bg-green-50 text-green-800 px-3 py-1 rounded-full text-xs flex items-center">
-                    <Check className="h-3 w-3 mr-1 text-green-600" />
-                    Phone number
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -347,13 +318,13 @@ export default function AdvertiserProfilePage() {
         <div>
           <div className="text-xs text-slate-500">Buy completion (30d)</div>
           <div className="font-bold mt-1">
-            {profile?.stats.buyCompletion.rate}% ({profile?.stats.buyCompletion.count})
+            {profile?.completion_average_30day}% ({profile?.buy_count_30day})
           </div>
         </div>
         <div>
           <div className="text-xs text-slate-500">Sell completion (30d)</div>
           <div className="font-bold mt-1">
-            {profile?.stats.sellCompletion.rate}% ({profile?.stats.sellCompletion.count})
+            {profile?.completion_average_30day}% ({profile?.sell_count_30day})
           </div>
         </div>
         <div>
@@ -366,11 +337,11 @@ export default function AdvertiserProfilePage() {
         </div>
         <div>
           <div className="flex items-center text-xs text-slate-500">Trade partners</div>
-          <div className="font-bold mt-1">{profile?.stats.tradePartners}</div>
+          <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
         </div>
         <div>
           <div className="flex items-center text-xs text-slate-500">Trade volume (30d)</div>
-          <div className="font-bold mt-1">{`USD ${profile?.stats.tradeVolume.amount}`}</div>
+          <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
         </div>
       </div>
       <div className="container mx-auto pb-6 hidden">
@@ -417,7 +388,10 @@ export default function AdvertiserProfilePage() {
                     </TableHeader>
                     <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                       {filteredAdverts.map((ad) => (
-                        <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
+                        <TableRow
+                          className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                          key={ad.id}
+                        >
                           <TableCell className="py-4 px-4">
                             <div className="font-bold">IDR {ad.exchange_rate.toLocaleString()}</div>
                             {ad.exchange_rate_type === "floating" && <div className="text-xs text-slate-500">0.1%</div>}
@@ -437,7 +411,9 @@ export default function AdvertiserProfilePage() {
                                 <div key={index} className="flex items-center">
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
                                     }`}
                                   ></div>
                                   <span className="text-sm">{formatPaymentMethodName(method)}</span>
