@@ -245,7 +245,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput
-                label="Total amount"
                 value={totalAmount}
                 onValueChange={(value) => {
                   setTotalAmount(value)
