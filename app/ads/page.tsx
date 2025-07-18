@@ -63,7 +63,7 @@ export default function AdsPage() {
             ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
             : "Your changes have been saved and are now live.",
         confirmText: "OK",
-        type:"success"
+        type:"success",
     
 
       })
