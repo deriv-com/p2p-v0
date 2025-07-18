@@ -56,16 +56,15 @@ export default function AdsPage() {
       (success === "create" || success === "update") &&
       !isMobile
     ) {
+      const adTypeDisplay = type.toUpperCase()
+      const createDescription = `You've successfully created Ad (${adTypeDisplay} ${id}).\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
+      const updateDescription = `You've successfully updated Ad (${adTypeDisplay} ${id}).\nYour changes have been saved and are now live.`
+
       showAlert({
         title: success === "create" ? "Ad created" : "Ad updated",
-        description:
-          success === "create"
-            ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-            : "Your changes have been saved and are now live.",
+        description: success === "create" ? createDescription : updateDescription,
         confirmText: "OK",
-        type:"success",
-    
-
+        type: "success",
       })
     }
 
@@ -198,8 +197,8 @@ export default function AdsPage() {
           title={statusData.success === "create" ? "Ad created" : "Ad updated"}
           message={
             statusData.success === "create"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
+              ? `You've successfully created Ad (${statusData.type.toUpperCase()} ${statusData.id}).\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
+              : `You've successfully updated Ad (${statusData.type.toUpperCase()} ${statusData.id}).\nYour changes have been saved and are now live.`
           }
           adType={statusData.type}
           adId={statusData.id}
