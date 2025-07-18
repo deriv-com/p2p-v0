@@ -252,7 +252,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder="0.00"
+                placeholder=""
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
               />
