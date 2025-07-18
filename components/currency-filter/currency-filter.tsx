@@ -80,7 +80,7 @@ export function CurrencyFilter({
         />
       </div>
 
-      <div className="h-full overflow-y-auto">
+      <div className="h-90 overflow-y-auto">
         {filteredCurrencies.length === 0 ? (
           <div className="text-center py-8 text-gray-500">{emptyMessage}</div>
         ) : (
