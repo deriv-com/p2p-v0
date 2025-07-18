@@ -298,7 +298,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
             </div>
 
             <div>
-              <CurrencyInpu
+              <CurrencyInput
                 value={maxAmount}
                 onValueChange={(value) => {
                   setMaxAmount(value)
