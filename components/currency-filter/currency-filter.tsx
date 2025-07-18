@@ -15,7 +15,6 @@ export function CurrencyFilter({
   onCurrencySelect,
   trigger,
   placeholder = "Search",
-  searchPlaceholder = "Search",
   emptyMessage = "No currencies found",
 }: CurrencyFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
@@ -49,7 +48,7 @@ export function CurrencyFilter({
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         <Input
-          placeholder={searchPlaceholder}
+          placeholder={placeholder}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="pl-10 border-gray-200 focus:border-black focus:ring-0"
