@@ -82,13 +82,14 @@ const config: Config = {
           50: "#E5F5FC",
           100: "#017AAD",
           200: "#00D0FF",
+          800: "#0777C4",
         },
         grayscale: {
           DEFAULT: "100%",
         },
         yellow: {
+          50: "#A66C00",
           100: "#FFF7E6",
-          1000: "#A66C00",
         },
         slate: {
           50: "#f8fafc",

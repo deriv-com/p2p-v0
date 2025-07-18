@@ -9,7 +9,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
-import { cn, formatAmount, formatStatus } from "@/lib/utils"
+import { cn, formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
@@ -220,15 +220,15 @@ export default function OrderDetailsPage() {
             (<div className="flex flex-col">
               <div className="flex flex-row gap-6">
                 <div className="w-full lg:w-1/2 rounded-lg">
-                  <div className="bg-blue-50 p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]">
+                  <div className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`}>
                     <div className="flex items-center">
-                      <span className="text-blue-100 font-bold">
+                      <span className="font-bold">
                         {formatStatus(order.status, order.type)}
                       </span>
                     </div>
                     {(order.status === "pending_payment" || order.status === "pending_release") &&
-                      <div className="flex items-center text-blue-100">
-                        <span>Time left: </span><span className="font-bold">{timeLeft}</span>
+                      <div className="flex items-center">
+                        <span>Time left:&nbsp;</span><span className="font-bold">{timeLeft}</span>
                       </div>
                     }
                   </div>
@@ -257,7 +257,7 @@ export default function OrderDetailsPage() {
                       {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
                       <div className="bg-orange-50 rounded-[16px] p-[16px]">
                         <div className="flex items-start gap-3">
-                        <Image src="/icons/warning-icon.png" alt="Warning" width={20} height={20} className="h-5 w-5"/> 
+                        <Image src="/icons/warning-icon.png" alt="Warning" className="h-5 w-5"/> 
                           <p className="text-sm text-gray-900">
                             Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
                           </p>

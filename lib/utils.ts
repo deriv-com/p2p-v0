@@ -142,7 +142,7 @@ export function formatStatus(status: string, type: string): string {
     completed: "Complete",
     pending_payment: type === "buy" ? "Complete payment" : "Awaiting payment",
     pending_release: type === "buy" ? "Waiting seller's confirmation" : "Confirm payment",
-    under_dispute: "Under dispute",
+    disputed: "Under dispute",
   }
 
   const lowerStatus = status.toLowerCase()
@@ -152,6 +152,25 @@ export function formatStatus(status: string, type: string): string {
 
   return status
 }
+
+export function getStatusBadgeStyle(status: string, type: string): string {
+    switch (status) {
+      case "pending_payment":
+        return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
+      case "pending_release":
+        return type === "buy" ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
+      case "completed":
+        return "bg-green-100 text-green-800"
+      case "cancelled":
+        return "bg-slate-100 text-slate-800"
+      case "disputed":
+        return "bg-red-100 text-red-700"
+      case "timed_out":
+        return "bg-slate-100 text-slate-800"
+      default:
+        return "bg-blue-50 text-blue-100"
+    }
+  }
 
 export function getChatErrorMessage(tags: string[]): string {
   const messageTypeFormatters = {
