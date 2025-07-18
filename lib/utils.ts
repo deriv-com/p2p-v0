@@ -156,9 +156,9 @@ export function formatStatus(status: string, type: string): string {
 export function getStatusBadgeStyle(status: string, type: string): string {
     switch (status) {
       case "pending_payment":
-        return type === "buy" ? "bg-blue-50 text-blue-800" : "bg-yellow-100 text-yellow-1000"
+        return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-1000"
       case "pending_release":
-        return type === "buy" ? "bg-yellow-100 text-yellow-1000" : "bg-blue-50 text-blue-800"
+        return type === "buy" ? "bg-yellow-100 text-yellow-1000" : "bg-blue-50 text-blue-100"
       case "completed":
         return "bg-green-100 text-green-800"
       case "cancelled":
@@ -168,7 +168,7 @@ export function getStatusBadgeStyle(status: string, type: string): string {
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
-        return "bg-blue-50 text-blue-800"
+        return "bg-blue-50 text-blue-100"
     }
   }
 
