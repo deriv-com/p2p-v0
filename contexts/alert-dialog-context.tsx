@@ -52,13 +52,13 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent>
-          <div className="bg-gray-100 relative p-6 pb-12 flex-col my-[24px]">
+          <div className="bg-gray-100 flex flex-col my-[24px]">
             <div style={{ alignSelf: "end" }}>
               <Button onClick={hideAlert} size="sm" variant="ghost">
                 <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
               </Button>
             </div>
-            <div className="flex justify-center">
+            <div style={{ alignSelf: "center" }}>
               {config.type === "success" ? (
                 <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
               ) : (
