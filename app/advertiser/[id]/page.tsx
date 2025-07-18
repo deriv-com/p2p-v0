@@ -67,8 +67,9 @@ export default function AdvertiserProfilePage() {
 
     try {
       const advertiserData = await BuySellAPI.getAdvertiserById(id)
-      const transformedProfile = transformAdvertiserData(advertiserData.data, id)
-      setProfile(transformedProfile)
+      setProfile(advertiserData.data)
+      setIsFollowing(advertiserData.data.is_favourite || false)
+      setIsBlocked(advertiserData.data.is_blocked || false)
 
       const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
       setAdverts(advertiserAds)
@@ -86,44 +87,6 @@ export default function AdvertiserProfilePage() {
   useEffect(() => {
     fetchAdvertiserData()
   }, [id])
-
-  const transformAdvertiserData = (data: any, userId: string): AdvertiserProfile => {
-    setIsFollowing(data.is_favourite || false)
-    setIsBlocked(data.is_blocked || false)
-
-    return {
-      id: userId,
-      nickname: data.nickname || "Unknown",
-      brand: data.brand || "",
-      country_code: data.country_code || "",
-      created_at: data.created_at || Date.now(),
-      adverts_are_listed: data.adverts_are_listed || false,
-      blocked_by_user_count: data.blocked_by_user_count || 0,
-      favourited_by_user_count: data.favourited_by_user_count || 0,
-      is_blocked: data.is_blocked || false,
-      is_favourite: data.is_favourite || false,
-      temp_ban_until: data.temp_ban_until || null,
-      trade_band: data.trade_band || "bronze",
-
-      // Lifetime stats
-      order_count_lifetime: data.order_count_lifetime || 0,
-      order_amount_lifetime: data.order_amount_lifetime || "0.00",
-      partner_count_lifetime: data.partner_count_lifetime || 0,
-      rating_average_lifetime: data.rating_average_lifetime || 0,
-      recommend_average_lifetime: data.recommend_average_lifetime || 0,
-      recommend_count_lifetime: data.recommend_count_lifetime || 0,
-
-      // 30-day stats
-      buy_amount_30day: data.buy_amount_30day || "0.00",
-      buy_count_30day: data.buy_count_30day || 0,
-      buy_time_average_30day: data.buy_time_average_30day || 0,
-      sell_amount_30day: data.sell_amount_30day || "0.00",
-      sell_count_30day: data.sell_count_30day || 0,
-      release_time_average_30day: data.release_time_average_30day || 0,
-      rating_average_30day: data.rating_average_30day || 0,
-      completion_average_30day: data.completion_average_30day || 0,
-    }
-  }
 
   const toggleFollow = async () => {
     if (!profile) return
