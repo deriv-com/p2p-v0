@@ -16,6 +16,7 @@ import { CurrencyFilter } from "@/components/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -148,10 +149,10 @@ export default function BuySellPage() {
                     size="sm"
                     onClick={() => setSelectedAccountCurrency(currencyFilter)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                      selectedAccountCurrency === currencyFilter
-                        ? "bg-black text-white hover:bg-gray-800"
-                        : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                    }`}
+                        selectedAccountCurrency === currencyFilter
+                          ? "bg-black text-white hover:bg-gray-800"
+                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                      }`}
                   >
                     {currencyFilter}
                   </Button>
@@ -166,12 +167,9 @@ export default function BuySellPage() {
               selectedCurrency={currency}
               onCurrencySelect={handleCurrencySelect}
               trigger={
-                <Button
-                  variant="outline"
-                  className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px]"
-                >
+                <Button variant="outline" className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px]">
                   <span>{currency}</span>
-                  <Image src="/icons/chevron-down-custom.png" alt="Dropdown" width={12} height={12} className="ml-2" />
+                  <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>
               }
             />
