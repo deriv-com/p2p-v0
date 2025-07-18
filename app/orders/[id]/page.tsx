@@ -228,7 +228,7 @@ export default function OrderDetailsPage() {
                     </div>
                     {(order.status === "pending_payment" || order.status === "pending_release") &&
                       <div className="flex items-center text-blue-100">
-                        <span>Time left: </span><span className="font-bold">{timeLeft}</span>
+                        <span>Time left:&nbsp;</span><span className="font-bold">{timeLeft}</span>
                       </div>
                     }
                   </div>
