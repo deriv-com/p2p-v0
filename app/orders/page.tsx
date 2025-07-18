@@ -69,7 +69,7 @@ export default function OrdersPage() {
       case "cancelled":
         return "bg-slate-100 text-slate-800"
       case "disputed":
-        return "bg-yellow-100 text-yellow-1000"
+        return "bg-red-100 text-red-700"
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
