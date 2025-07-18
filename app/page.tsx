@@ -40,7 +40,7 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
-  const { currencies, getCurrencyByCode } = useCurrencyData()
+  const { currencies } = useCurrencyData()
 
   useEffect(() => {
     fetchAdverts()
