@@ -220,7 +220,7 @@ export default function OrderDetailsPage() {
             (<div className="flex flex-col">
               <div className="flex flex-row gap-6">
                 <div className="w-full lg:w-1/2 rounded-lg">
-                  <div className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center border border-blue-50 rounded-lg mb-[24px]`}>
+                  <div className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`}>
                     <div className="flex items-center">
                       <span className="font-bold">
                         {formatStatus(order.status, order.type)}
