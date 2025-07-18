@@ -16,8 +16,8 @@ import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
 
 export default function BuySellPage() {
-    // TODO: Replace these once the currencies are ready
-    const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
+  // TODO: Replace these once the currencies are ready
+  const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
   const [currency, setCurrency] = useState("IDR")
@@ -37,7 +37,6 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
-
   useEffect(() => {
     fetchAdverts()
   }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
@@ -56,7 +55,6 @@ export default function BuySellPage() {
     }
 
     fetchPaymentMethods()
-
   }, [])
 
   const fetchAdverts = async () => {
@@ -65,7 +63,7 @@ export default function BuySellPage() {
     try {
       const params: BuySellAPI.SearchParams = {
         type: activeTab,
-        account_currency: selectedAccountCurrency, 
+        account_currency: selectedAccountCurrency,
         currency: currency,
         paymentMethod: selectedPaymentMethod || undefined,
         sortBy: sortBy,
@@ -257,7 +255,10 @@ export default function BuySellPage() {
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                     {adverts.map((ad) => (
-                      <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={ad.id}>
+                      <TableRow
+                        className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                        key={ad.id}
+                      >
                         <TableCell className="p-2 lg:p-4 align-top">
                           <div className="flex items-center">
                             <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
@@ -327,7 +328,9 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-payment-method-bank" : "bg-payment-method-other"
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-payment-method-bank"
+                                        : "bg-payment-method-other"
                                     }`}
                                   ></div>
                                 )}
