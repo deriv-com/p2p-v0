@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Search } from "lucide-react"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
@@ -184,7 +183,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
     return (
       <div className="flex flex-col items-center justify-center py-16">
         <div className="bg-gray-100 rounded-full p-6 mb-6">
-          <Search className="h-12 w-12 text-gray-400" />
+          <Image src="/icons/search-icon.png" alt="Search" width={48} height={48} className="opacity-40" />
         </div>
         <h2 className="text-xl font-semibold mb-2">You have no ads</h2>
         <p className="text-gray-600 mb-6 text-center">
