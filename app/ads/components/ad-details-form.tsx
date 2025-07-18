@@ -263,7 +263,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <RateInput
-                label="Total amount"
+                label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
                   setFixedRate(value)
