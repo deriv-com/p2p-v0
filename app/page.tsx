@@ -40,7 +40,7 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
-  const { currencies, getCurrencyName } = useCurrencyData()
+  const { currencies, getCurrencyByCode } = useCurrencyData()
 
   useEffect(() => {
     fetchAdverts()
@@ -168,7 +168,7 @@ export default function BuySellPage() {
               onCurrencySelect={handleCurrencySelect}
               trigger={
                 <Button variant="outline" className="rounded-md border border-input bg-background">
-                  <span>{getCurrencyName(currency)}</span>
+                  <span>{currency}</span>
                   <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>
               }
