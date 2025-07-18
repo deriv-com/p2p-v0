@@ -14,14 +14,14 @@ export default function ProgressSteps({ currentStep, steps }: ProgressStepsProps
           {/* Connect lines between steps */}
           {index > 0 && (
             <div
-              className="absolute top-5 right-full w-full h-[1px] bg-gray-300 z-[2]"
+              className="absolute top-5 right-full w-full h-[1px] bg-gray-300"
               style={{ right: "50%", width: "100%" }}
             ></div>
           )}
 
           {/* Step circle */}
           <div
-            className={`w-10 h-10 rounded-full border-2 flex items-center justify-center z-[5] bg-white
+            className={`w-10 h-10 rounded-full border-2 flex items-center justify-center z-10 bg-white
               ${index === currentStep ? "border-black" : "border-gray-300"}`}
           >
             {index === currentStep && <div className="w-2 h-2 bg-black rounded-full"></div>}
