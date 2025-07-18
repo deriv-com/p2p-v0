@@ -202,7 +202,7 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
 
   return (
     <>
-      <div className="flex flex-col px-4">
+      <div className="flex flex-col">
         {ads.map((ad, index) => {
           const availableData = getAvailableAmount(ad)
           const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
