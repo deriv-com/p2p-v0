@@ -345,7 +345,7 @@ export default function AdvertiserProfilePage() {
                           className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
                           key={ad.id}
                         >
-                          <TableCell className="py-4 px-4 align-top">
+                          <TableCell className="py-4 px-4 align-top text-base">
                             <div className="font-bold">
                             {ad.payment_currency}{" "}
                             {ad.exchange_rate
