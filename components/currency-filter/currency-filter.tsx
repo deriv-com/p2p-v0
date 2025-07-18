@@ -22,8 +22,6 @@ export function CurrencyFilter({
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
-
-  // Enhanced continuous search with better matching
   const filteredCurrencies = useMemo(() => {
     if (!searchQuery.trim()) return currencies
 
@@ -31,7 +29,6 @@ export function CurrencyFilter({
     return currencies.filter((currency) => {
       const codeMatch = currency.code.toLowerCase().includes(query)
       const nameMatch = currency.name.toLowerCase().includes(query)
-      // Allow partial matches at the beginning of words for better search experience
       const wordMatch = currency.name
         .toLowerCase()
         .split(" ")
