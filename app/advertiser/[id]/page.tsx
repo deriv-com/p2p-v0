@@ -367,7 +367,7 @@ export default function AdvertiserProfilePage() {
                             </div>
                           </TableCell>
                           <TableCell className="py-4 px-4 align-top">
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-2 text-xs">
                               {ad.payment_methods?.map((method, index) => (
                                 <div key={index} className="flex items-center">
                                   <div
