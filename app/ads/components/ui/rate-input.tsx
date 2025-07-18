@@ -62,7 +62,7 @@ export function RateInput({
             className={cn(
               "absolute left-4 text-gray-500 pointer-events-none transition-all duration-200",
               showFloating
-                ?"text-xs top-0.5 bg-white px-1"
+                ? "text-xs top-0.5 bg-white px-1"
                 : "text-sm top-1/2 -translate-y-1/2"
             )}
           >
