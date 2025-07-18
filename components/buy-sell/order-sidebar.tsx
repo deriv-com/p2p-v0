@@ -237,7 +237,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <div className="flex-1">
                             <div className="flex items-center mb-2">
                               <div
-                                className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-payment-method-bank" : "bg-payment-method-other"
+                                className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                                   }`}
                               />
                               <span className="font-medium text-gray-600">{formatPaymentMethodName(method.display_name)}</span>
