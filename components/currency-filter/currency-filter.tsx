@@ -71,8 +71,8 @@ export function CurrencyFilter({
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
-          width={24}
-          height={24}
+          width={16}
+          height={16}
           className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
@@ -95,7 +95,7 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 py-3 rounded-sm cursor-pointer transition-colors text-sm",
+                  "px-4 py-3 rounded-sm cursor-pointer transition-colors",
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
