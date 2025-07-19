@@ -4,26 +4,26 @@ import { useMemo } from "react"
 import type { Currency } from "@/components/currency-filter/types"
 
 const CURRENCY_DATA: Currency[] = [
-  { code: "IDR", name: "Indonesian rupiah" },
   { code: "ARS", name: "Argentine peso" },
   { code: "BDT", name: "Bangladeshi taka" },
   { code: "BOB", name: "Boliviano" },
   { code: "BRL", name: "Brazilian real" },
+  { code: "CNY", name: "Chinese Yuan" },
   { code: "COP", name: "Colombian peso" },
   { code: "CRC", name: "Costa Rican colon" },
-  { code: "USD", name: "US Dollar" },
   { code: "EUR", name: "Euro" },
   { code: "GBP", name: "British Pound" },
-  { code: "JPY", name: "Japanese Yen" },
-  { code: "CNY", name: "Chinese Yuan" },
-  { code: "KRW", name: "South Korean Won" },
-  { code: "SGD", name: "Singapore Dollar" },
-  { code: "MYR", name: "Malaysian Ringgit" },
-  { code: "THB", name: "Thai Baht" },
-  { code: "VND", name: "Vietnamese Dong" },
-  { code: "PHP", name: "Philippine Peso" },
+  { code: "IDR", name: "Indonesian rupiah" },
   { code: "INR", name: "Indian Rupee" },
+  { code: "JPY", name: "Japanese Yen" },
+  { code: "KRW", name: "South Korean Won" },
+  { code: "MYR", name: "Malaysian Ringgit" },
   { code: "PKR", name: "Pakistani Rupee" },
+  { code: "PHP", name: "Philippine Peso" },
+  { code: "SGD", name: "Singapore Dollar" },
+  { code: "THB", name: "Thai Baht" },
+  { code: "USD", name: "US Dollar" },
+  { code: "VND", name: "Vietnamese Dong" },
 ]
 
 export function useCurrencyData() {
