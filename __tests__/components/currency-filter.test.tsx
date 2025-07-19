@@ -1,173 +1,209 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
-import { CurrencyFilter } from "@/components/currency-filter"
+import userEvent from "@testing-library/user-event"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import type { Currency } from "@/components/currency-filter/types"
-import jest from "jest"
+import jest from "jest" // Import jest to declare the variable
+
+// Mock the mobile hook
+jest.mock("@/components/ui/use-mobile", () => ({
+  useIsMobile: jest.fn(() => false),
+}))
 
 const mockCurrencies: Currency[] = [
   { code: "IDR", name: "Indonesian rupiah" },
+  { code: "ARS", name: "Argentine peso" },
+  { code: "BDT", name: "Bangladeshi taka" },
+  { code: "BOB", name: "Boliviano" },
+  { code: "BRL", name: "Brazilian real" },
   { code: "USD", name: "US Dollar" },
   { code: "EUR", name: "Euro" },
 ]
 
-const mockProps = {
+const mockOnCurrencySelect = jest.fn()
+
+const defaultProps = {
   currencies: mockCurrencies,
   selectedCurrency: "IDR",
-  onCurrencySelect: jest.fn(),
+  onCurrencySelect: mockOnCurrencySelect,
   trigger: <button>Open Currency Filter</button>,
 }
-
-// Mock next/image
-jest.mock("next/image", () => ({
-  __esModule: true,
-  default: ({ src, alt, ...props }: any) => <img src={src || "/placeholder.svg"} alt={alt} {...props} />,
-}))
-
-// Mock useIsMobile hook
-jest.mock("@/components/ui/use-mobile", () => ({
-  useIsMobile: () => false,
-}))
 
 describe("CurrencyFilter", () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it("renders trigger element", () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("renders trigger button", () => {
+    render(<CurrencyFilter {...defaultProps} />)
     expect(screen.getByText("Open Currency Filter")).toBeInTheDocument()
   })
 
-  it("opens popover when trigger is clicked", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("opens popover on trigger click", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      expect(screen.getByPlaceholderText("Search")).toBeInTheDocument()
-    })
+    expect(screen.getByPlaceholderText("Search")).toBeInTheDocument()
+    expect(screen.getByText("IDR - Indonesian rupiah")).toBeInTheDocument()
   })
 
-  it("displays all currencies when no search query", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("filters currencies continuously as user types", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    // Open the filter
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      expect(screen.getByText("IDR - Indonesian rupiah")).toBeInTheDocument()
-      expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
-      expect(screen.getByText("EUR - Euro")).toBeInTheDocument()
-    })
+    const searchInput = screen.getByPlaceholderText("Search")
+
+    // Type 'indo' - should show Indonesian rupiah
+    await userEvent.type(searchInput, "indo")
+
+    expect(screen.getByText("IDR - Indonesian rupiah")).toBeInTheDocument()
+    expect(screen.queryByText("ARS - Argentine peso")).not.toBeInTheDocument()
+
+    // Clear and type 'arg' - should show Argentine peso
+    await userEvent.clear(searchInput)
+    await userEvent.type(searchInput, "arg")
+
+    expect(screen.getByText("ARS - Argentine peso")).toBeInTheDocument()
+    expect(screen.queryByText("IDR - Indonesian rupiah")).not.toBeInTheDocument()
   })
 
-  it("filters currencies based on search query", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("filters by currency code continuously", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText("Search")
-      fireEvent.change(searchInput, { target: { value: "USD" } })
-    })
+    const searchInput = screen.getByPlaceholderText("Search")
 
-    await waitFor(() => {
-      expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
-      expect(screen.queryByText("IDR - Indonesian rupiah")).not.toBeInTheDocument()
-      expect(screen.queryByText("EUR - Euro")).not.toBeInTheDocument()
-    })
+    // Type 'USD' - should show US Dollar
+    await userEvent.type(searchInput, "USD")
+
+    expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
+    expect(screen.queryByText("EUR - Euro")).not.toBeInTheDocument()
   })
 
-  it("calls onCurrencySelect when currency is clicked", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("filters by partial word matches", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      fireEvent.click(screen.getByText("USD - US Dollar"))
-    })
+    const searchInput = screen.getByPlaceholderText("Search")
 
-    expect(mockProps.onCurrencySelect).toHaveBeenCalledWith("USD")
-  })
+    // Type 'real' - should show Brazilian real
+    await userEvent.type(searchInput, "real")
 
-  it("highlights selected currency", async () => {
-    render(<CurrencyFilter {...mockProps} />)
-
-    fireEvent.click(screen.getByText("Open Currency Filter"))
-
-    await waitFor(() => {
-      const selectedCurrency = screen.getByText("IDR - Indonesian rupiah")
-      expect(selectedCurrency).toHaveClass("bg-black", "text-white")
-    })
+    expect(screen.getByText("BRL - Brazilian real")).toBeInTheDocument()
+    expect(screen.queryByText("USD - US Dollar")).not.toBeInTheDocument()
   })
 
   it("shows empty message when no currencies match search", async () => {
-    render(<CurrencyFilter {...mockProps} emptyMessage="No currencies found" />)
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
+    const searchInput = screen.getByPlaceholderText("Search")
+
+    // Type something that won't match any currency
+    await userEvent.type(searchInput, "xyz")
+
+    expect(screen.getByText("Currency is unavailable")).toBeInTheDocument()
+  })
+
+  it("clears search when closing popover", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
+
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
+
+    const searchInput = screen.getByPlaceholderText("Search")
+    await userEvent.type(searchInput, "test")
+
+    // Close popover by pressing Escape
+    fireEvent.keyDown(searchInput, { key: "Escape" })
+
+    // Reopen and check that search is cleared
+    await userEvent.click(trigger)
+    const newSearchInput = screen.getByPlaceholderText("Search")
+    expect(newSearchInput).toHaveValue("")
+  })
+
+  it("selects currency and closes popover", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
+
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
+
+    const currencyOption = screen.getByText("USD - US Dollar")
+    await userEvent.click(currencyOption)
+
+    expect(mockOnCurrencySelect).toHaveBeenCalledWith("USD")
+
+    // Check that popover is closed
     await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText("Search")
-      fireEvent.change(searchInput, { target: { value: "XYZ" } })
-    })
-
-    await waitFor(() => {
-      expect(screen.getByText("No currencies found")).toBeInTheDocument()
+      expect(screen.queryByPlaceholderText("Search")).not.toBeInTheDocument()
     })
   })
 
-  it("closes popover when Escape key is pressed", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("highlights selected currency", async () => {
+    render(<CurrencyFilter {...defaultProps} selectedCurrency="USD" />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText("Search")
-      fireEvent.keyDown(searchInput, { key: "Escape" })
-    })
+    const selectedCurrency = screen.getByText("USD - US Dollar")
+    expect(selectedCurrency).toHaveClass("bg-black text-white")
+  })
+
+  it("handles keyboard navigation", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
+
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
+
+    const searchInput = screen.getByPlaceholderText("Search")
+
+    // Press Escape to close
+    fireEvent.keyDown(searchInput, { key: "Escape" })
 
     await waitFor(() => {
       expect(screen.queryByPlaceholderText("Search")).not.toBeInTheDocument()
     })
   })
 
-  it("uses custom search icon", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("auto-focuses search input when opened", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      const searchIcon = screen.getByAltText("Search")
-      expect(searchIcon).toBeInTheDocument()
-      expect(searchIcon).toHaveAttribute("src", "/icons/search-icon-custom.png")
-    })
+    const searchInput = screen.getByPlaceholderText("Search")
+    expect(searchInput).toHaveFocus()
   })
 
-  it("supports continuous search functionality", async () => {
-    render(<CurrencyFilter {...mockProps} />)
+  it("handles case-insensitive search", async () => {
+    render(<CurrencyFilter {...defaultProps} />)
 
-    fireEvent.click(screen.getByText("Open Currency Filter"))
+    const trigger = screen.getByText("Open Currency Filter")
+    await userEvent.click(trigger)
 
-    await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText("Search")
+    const searchInput = screen.getByPlaceholderText("Search")
 
-      // Type "U" - should show USD
-      fireEvent.change(searchInput, { target: { value: "U" } })
-    })
+    // Type in different cases
+    await userEvent.type(searchInput, "DOLLAR")
+    expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
 
-    await waitFor(() => {
-      expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
-      expect(screen.queryByText("IDR - Indonesian rupiah")).not.toBeInTheDocument()
-    })
+    await userEvent.clear(searchInput)
+    await userEvent.type(searchInput, "dollar")
+    expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
 
-    await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText("Search")
-
-      // Type "US" - should still show USD
-      fireEvent.change(searchInput, { target: { value: "US" } })
-    })
-
-    await waitFor(() => {
-      expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
-      expect(screen.queryByText("EUR - Euro")).not.toBeInTheDocument()
-    })
+    await userEvent.clear(searchInput)
+    await userEvent.type(searchInput, "Dollar")
+    expect(screen.getByText("USD - US Dollar")).toBeInTheDocument()
   })
 })

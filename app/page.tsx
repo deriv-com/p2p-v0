@@ -40,9 +40,7 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
-  const { currencies, selectedCurrency, onCurrencySelect } = useCurrencyData()
-
-  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency)
+  const { currencies } = useCurrencyData()
 
   useEffect(() => {
     fetchAdverts()
@@ -151,10 +149,10 @@ export default function BuySellPage() {
                     size="sm"
                     onClick={() => setSelectedAccountCurrency(currencyFilter)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                      selectedAccountCurrency === currencyFilter
-                        ? "bg-black text-white hover:bg-gray-800"
-                        : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                    }`}
+                        selectedAccountCurrency === currencyFilter
+                          ? "bg-black text-white hover:bg-gray-800"
+                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                      }`}
                   >
                     {currencyFilter}
                   </Button>
@@ -169,10 +167,7 @@ export default function BuySellPage() {
               selectedCurrency={currency}
               onCurrencySelect={handleCurrencySelect}
               trigger={
-                <Button
-                  variant="outline"
-                  className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent"
-                >
+                <Button variant="outline" className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent">
                   <span>{currency}</span>
                   <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>

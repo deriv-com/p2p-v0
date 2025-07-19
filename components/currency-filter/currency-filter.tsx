@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useMemo, useCallback } from "react"
-import Image from "next/image"
+import { Search } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -68,13 +68,7 @@ export function CurrencyFilter({
   const CurrencyList = () => (
     <div className="w-full">
       <div className="relative mb-4">
-        <Image
-          src="/icons/search-icon-custom.png"
-          alt="Search"
-          width={16}
-          height={16}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-40"
-        />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         <Input
           placeholder={placeholder}
           value={searchQuery}
@@ -96,7 +90,7 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 py-3 rounded-lg cursor-pointer transition-colors text-sm",
+                  "px-4 py-3 rounded-sm cursor-pointer transition-colors text-sm",
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
