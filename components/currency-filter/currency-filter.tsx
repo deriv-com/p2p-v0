@@ -76,7 +76,6 @@ export function CurrencyFilter({
           onKeyDown={handleKeyDown}
           className="pl-10 border-gray-200 focus:border-black focus:ring-0"
           autoComplete="off"
-          autoFocus
         />
       </div>
 
