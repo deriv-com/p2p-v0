@@ -71,16 +71,16 @@ export function CurrencyFilter({
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
-          width={24}
-          height={24}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2"
+          width={16}
+          height={16}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-40"
         />
         <Input
           placeholder={placeholder}
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
+          className="pl-10 border-gray-200 focus:border-black focus:ring-0"
           autoComplete="off"
         />
       </div>
@@ -95,7 +95,7 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 py-3 rounded-sm cursor-pointer transition-colors",
+                  "px-4 py-3 rounded-sm cursor-pointer transition-colors text-sm",
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
