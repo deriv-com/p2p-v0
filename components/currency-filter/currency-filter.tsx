@@ -80,7 +80,7 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="pl-10 border-gray-200 focus:border-black focus:ring-0"
+          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
           autoComplete="off"
         />
       </div>
