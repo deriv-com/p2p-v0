@@ -71,9 +71,9 @@ export function CurrencyFilter({
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
-          width={16}
-          height={16}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-40"
+          width={24}
+          height={24}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
           placeholder={placeholder}
