@@ -302,34 +302,14 @@ export default function PaymentMethodsPage() {
   const bankTransfers = filteredMethods.filter((method) => method.category === "bank_transfer")
   const eWallets = filteredMethods.filter((method) => method.category === "e_wallet")
 
-  const getBankIcon = () => (
-    <div className="w-10 h-10 flex items-center justify-center text-green-600 bg-green-50 rounded-lg">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M2 10H22V18C22 18.5304 21.7893 19.0391 21.4142 19.4142C21.0391 19.7893 20.5304 20 20 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V10ZM12 3L22 8H2L12 3Z"
-          fill="currentColor"
-        />
-      </svg>
-    </div>
-  )
-
-  const getEWalletIcon = () => (
-    <div className="w-10 h-10 flex items-center justify-center text-blue-600 bg-blue-50 rounded-lg">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16V8C21 6.89543 20.1046 6 19 6Z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 13C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11C15.4477 11 15 11.4477 15 12C15 12.5523 15.4477 13 16 13Z"
-          fill="currentColor"
-        />
-      </svg>
-    </div>
-  )
+  const getMethodIcon = (category: string) => {
+    if (category === "bank_transfer") {
+      return <Image src="/icons/bank-transfer-icon.png" alt="Bank Transfer" width={40} height={40} />
+    } else if (category === "e_wallet") {
+      return <Image src="/icons/ewallet-icon.png" alt="E-wallet" width={40} height={40} />
+    }
+    return <Image src="/icons/ewallet-icon.png" alt="Payment Method" width={40} height={40} />
+  }
 
   return (
     <div className="fixed inset-0 bg-white flex flex-col">
@@ -418,7 +398,7 @@ export default function PaymentMethodsPage() {
                         className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          {getBankIcon()}
+                          {getMethodIcon(method.category)}
                           <div>
                             <div className="font-medium text-gray-900">Bank Name</div>
                             <div className="text-sm text-gray-500">
@@ -472,7 +452,7 @@ export default function PaymentMethodsPage() {
                         className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          {getEWalletIcon()}
+                          {getMethodIcon(method.category)}
                           <div>
                             <div className="font-medium text-gray-900">{method.name}</div>
                             <div className="text-sm text-gray-500">
