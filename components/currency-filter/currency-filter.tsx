@@ -112,11 +112,11 @@ export function CurrencyFilter({
 
   if (isMobile) {
     return (
-      <Sheet className="rounded-2xl" open={isOpen} onOpenChange={handleOpenChange}>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-[90vh] p-[16px]">
+        <SheetContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-lg font-semibold">Choose currency</h3>
+            <h3 className="text-xl font-bold align-center">Choose currency</h3>
           </div>
           <CurrencyList />
         </SheetContent>
