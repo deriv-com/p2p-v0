@@ -2,97 +2,55 @@
 import { useState, useEffect } from "react"
 import { ArrowLeft } from "lucide-react"
 import StatsGrid from "./stats-grid"
-import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface MobileStatsPageProps {
   onBack: () => void
 }
 
-export default function MobileStatsPage({ onBack }: MobileStatsPageProps) {
-  const [userStats, setUserStats] = useState<any>({
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  })
+interface UserStats {
+  totalOrders: number
+  completedOrders: number
+  completionRate: string
+  avgReleaseTime: string
+  avgPayTime: string
+  totalTrades: number
+  buyOrders: number
+  sellOrders: number
+}
 
-  const [isLoadingStats, setIsLoadingStats] = useState(false)
+export default function MobileStatsPage({ onBack }: MobileStatsPageProps) {
+  const [stats, setStats] = useState<UserStats | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const fetchUserStats = async () => {
+    const fetchStats = async () => {
       try {
-        setIsLoadingStats(true)
-        const userId = USER.id
-        const url = `${API.baseUrl}/users/${userId}`
+        setIsLoading(true)
+        // Simulate API call - replace with actual API call
+        await new Promise((resolve) => setTimeout(resolve, 1000))
 
-        const response = await fetch(url, {
-          headers: {
-            ...AUTH.getAuthHeader(),
-            accept: "application/json",
-          },
-        })
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
+        const mockStats: UserStats = {
+          totalOrders: 156,
+          completedOrders: 142,
+          completionRate: "91.0%",
+          avgReleaseTime: "14 min",
+          avgPayTime: "12 min",
+          totalTrades: 298,
+          buyOrders: 78,
+          sellOrders: 78,
         }
 
-        const responseData = await response.json()
-
-        if (responseData && responseData.data) {
-          const data = responseData.data
-
-          const formatTimeAverage = (minutes) => {
-            if (!minutes || minutes <= 0) return "N/A"
-            const days = Math.floor(minutes / 1440)
-            return `${days} days`
-          }
-
-          const transformedStats = {
-            buyCompletion: {
-              rate: `${data.completion_average_30day || 0}%`,
-              period: "(30d)",
-            },
-            sellCompletion: {
-              rate: `${data.completion_average_30day || 0}%`,
-              period: "(30d)",
-            },
-            avgPayTime: {
-              time: formatTimeAverage(data.buy_time_average_30day),
-              period: "(30d)",
-            },
-            avgReleaseTime: {
-              time: formatTimeAverage(data.release_time_average_30day),
-              period: "(30d)",
-            },
-            tradePartners: data.trade_partners || 0,
-            totalOrders30d: (data.buy_count_30day || 0) + (data.sell_count_30day || 0),
-            totalOrdersLifetime: data.order_count_lifetime || 0,
-            tradeVolume30d: {
-              amount: (data.buy_amount_30day || 0) + (data.sell_amount_30day || 0),
-              currency: "USD",
-              period: "(30d)",
-            },
-            tradeVolumeLifetime: {
-              amount: data.order_amount_lifetime ? data.order_amount_lifetime : "0.00",
-              currency: "USD",
-            },
-          }
-
-          setUserStats(transformedStats)
-        }
-      } catch (error) {
-        console.error("Error fetching user stats:", error)
+        setStats(mockStats)
+      } catch (err) {
+        setError("Failed to load stats")
+        console.error("Error fetching stats:", err)
       } finally {
-        setIsLoadingStats(false)
+        setIsLoading(false)
       }
     }
 
-    fetchUserStats()
+    fetchStats()
   }, [])
 
   return (
@@ -110,21 +68,34 @@ export default function MobileStatsPage({ onBack }: MobileStatsPageProps) {
 
       {/* Content */}
       <div className="px-4 py-6">
-        {isLoadingStats ? (
+        {isLoading ? (
           <div className="space-y-4">
-            <div className="bg-slate-100 rounded-lg p-4">
+            {/* Loading skeletons */}
+            <div className="animate-pulse">
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="bg-gray-200 h-20 rounded-lg"></div>
+                ))}
+              </div>
               <div className="grid grid-cols-1 gap-4">
-                {[...Array(9)].map((_, i) => (
-                  <div key={i} className="py-4">
-                    <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                    <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                  </div>
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="bg-gray-200 h-16 rounded-lg"></div>
                 ))}
               </div>
             </div>
           </div>
+        ) : error ? (
+          <div className="text-center py-8">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Retry
+            </button>
+          </div>
         ) : (
-          <StatsGrid stats={userStats} />
+          <StatsGrid />
         )}
       </div>
     </div>

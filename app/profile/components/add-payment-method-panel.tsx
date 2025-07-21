@@ -1,143 +1,64 @@
 "use client"
+import { useState } from "react"
+import type React from "react"
 
-import type * as React from "react"
-import { useState, useEffect } from "react"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { getPaymentMethods } from "@/services/api/api-buy-sell"
-import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { X } from "lucide-react"
 
 interface AddPaymentMethodPanelProps {
   onClose: () => void
-  onAdd: (method: string, fields: Record<string, string>) => void
+  onAdd: (method: string, fields: Record<string, string>) => Promise<void>
   isLoading: boolean
 }
 
-interface PanelWrapperProps {
-  onClose: () => void
-  onBack?: () => void
-  title: string
-  children: React.ReactNode
-}
+const paymentMethodTypes = [
+  { value: "bank_transfer", label: "Bank Transfer" },
+  { value: "ewallet", label: "E-Wallet" },
+  { value: "crypto", label: "Cryptocurrency" },
+]
 
-function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 640)
-    }
-
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  return (
-    <>
-      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
-      <div
-        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
-          isMobile ? "inset-0 w-full" : "w-full max-w-md"
-        }`}
-      >
-        <div className="p-6 border-b relative">
-          {onBack && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onBack}
-              className="absolute left-6 top-1/2 -translate-y-1/2"
-            >
-              <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
-            </Button>
-          )}
-          <h2 className="text-xl font-semibold text-center">{title}</h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onClose}
-            className="absolute right-6 top-1/2 -translate-y-1/2"
-          >
-            <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
-          </Button>
-        </div>
-        {children}
-      </div>
-    </>
-  )
+const fieldConfigs = {
+  bank_transfer: [
+    { key: "bankName", label: "Bank Name", type: "text", required: true },
+    { key: "accountNumber", label: "Account Number", type: "text", required: true },
+    { key: "accountHolder", label: "Account Holder Name", type: "text", required: true },
+    { key: "routingNumber", label: "Routing Number", type: "text", required: false },
+  ],
+  ewallet: [
+    { key: "email", label: "Email Address", type: "email", required: true },
+    { key: "phoneNumber", label: "Phone Number", type: "tel", required: false },
+  ],
+  crypto: [
+    { key: "walletAddress", label: "Wallet Address", type: "text", required: true },
+    { key: "network", label: "Network", type: "text", required: true },
+  ],
 }
 
 export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: AddPaymentMethodPanelProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("")
-  const [showMethodDetails, setShowMethodDetails] = useState(false)
-  const [details, setDetails] = useState<Record<string, string>>({})
-  const [instructions, setInstructions] = useState("")
+  const [fields, setFields] = useState<Record<string, string>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
-  const [touched, setTouched] = useState<Record<string, boolean>>({})
-  const [charCount, setCharCount] = useState(0)
-  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
-  const [isLoadingMethods, setIsLoadingMethods] = useState(true)
 
-  useEffect(() => {
-    const fetchAvailablePaymentMethods = async () => {
-      try {
-        setIsLoadingMethods(true)
-        const response = await getPaymentMethods()
-
-        if (response && response.data && Array.isArray(response.data)) {
-          setAvailablePaymentMethods(response.data)
-        } else if (Array.isArray(response)) {
-          setAvailablePaymentMethods(response)
-        }
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setIsLoadingMethods(false)
-      }
+  const handleFieldChange = (key: string, value: string) => {
+    setFields((prev) => ({ ...prev, [key]: value }))
+    if (errors[key]) {
+      setErrors((prev) => ({ ...prev, [key]: "" }))
     }
-
-    fetchAvailablePaymentMethods()
-  }, [])
-
-  useEffect(() => {
-    setDetails({})
-    setErrors({})
-    setTouched({})
-  }, [selectedMethod])
-
-  useEffect(() => {
-    setCharCount(instructions.length)
-  }, [instructions])
-
-  const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
-
-  const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
-    setSelectedMethod(paymentMethod.method)
-    setShowMethodDetails(true)
   }
 
-  const handleBackToMethodList = () => {
-    setShowMethodDetails(false)
-    setSelectedMethod("")
-    setDetails({})
-    setErrors({})
-    setTouched({})
-    setInstructions("")
-  }
-
-  const validateForm = () => {
+  const validateFields = () => {
     const newErrors: Record<string, string> = {}
+    const config = fieldConfigs[selectedMethod as keyof typeof fieldConfigs]
 
-    if (!selectedMethod) {
-      newErrors.method = "Please select a payment method"
-    }
+    if (!config) return false
 
-    selectedMethodFields.forEach((field) => {
-      if (!details[field.name]?.trim() && field.required) {
-        newErrors[field.name] = `${field.label} is required`
+    config.forEach((field) => {
+      if (field.required && !fields[field.key]?.trim()) {
+        newErrors[field.key] = `${field.label} is required`
       }
     })
 
@@ -145,161 +66,77 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     return Object.keys(newErrors).length === 0
   }
 
-  const handleInputChange = (name: string, value: string) => {
-    setDetails((prev) => ({ ...prev, [name]: value }))
-    setTouched((prev) => ({ ...prev, [name]: true }))
-
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-  }
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (selectedMethodFields.length > 0) {
-      const allTouched: Record<string, boolean> = {}
-      selectedMethodFields.forEach((field) => {
-        allTouched[field.name] = true
-      })
-      setTouched(allTouched)
+    if (!selectedMethod) {
+      return
     }
 
-    if (validateForm()) {
-      const fieldValues = { ...details }
-      fieldValues.instructions = instructions.trim() || "-"
-
-      if (selectedMethod === "bank_transfer") {
-        fieldValues.bank_code = fieldValues.bank_code || "-"
-        fieldValues.branch = fieldValues.branch || "-"
-      }
-
-      onAdd(selectedMethod, fieldValues)
+    if (!validateFields()) {
+      return
     }
+
+    await onAdd(selectedMethod, fields)
   }
 
-  const isFormValid = () => {
-    if (!selectedMethod) return false
-
-    return selectedMethodFields.every((field) => {
-      if (field.required) {
-        return details[field.name]?.trim()
-      }
-      return true
-    })
-  }
-
-  if (isLoadingMethods) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-gray-500">Loading payment methods...</div>
-        </div>
-      </PanelWrapper>
-    )
-  }
-
-  if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-gray-500">No payment methods available</div>
-        </div>
-      </PanelWrapper>
-    )
-  }
-
-  if (!showMethodDetails) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 overflow-y-auto">
-          <div className="p-6">
-            <label className="block text-sm font-medium text-gray-500 mb-3">Choose your payment method</label>
-            <div className="space-y-3">
-              {availablePaymentMethods.map((paymentMethod) => (
-                <Button
-                  key={paymentMethod.method}
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleMethodSelect(paymentMethod)}
-                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg border border-gray-200 hover:border-gray-300"
-                >
-                  <Image
-                    src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
-                    alt={paymentMethod.display_name}
-                    width={20}
-                    height={20}
-                    className="w-5 h-5"
-                  />
-                  <span className="font-medium">{paymentMethod.display_name}</span>
-                </Button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </PanelWrapper>
-    )
-  }
+  const currentFields = selectedMethod ? fieldConfigs[selectedMethod as keyof typeof fieldConfigs] : []
 
   return (
-    <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          {selectedMethodFields.length > 0 && (
-            <div className="space-y-4">
-              {selectedMethodFields.map((field) => (
-                <div key={field.name}>
-                  <label htmlFor={field.name} className="block text-sm font-medium text-gray-500 mb-2">
-                    {field.label}
-                    {field.required && <span className="text-red-500 ml-1">*</span>}
-                  </label>
-                  <Input
-                    id={field.name}
-                    type={field.type}
-                    value={details[field.name] || ""}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
-                  />
-                  {touched[field.name] && errors[field.name] && (
-                    <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
-                  )}
-                </div>
-              ))}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle>Add Payment Method</CardTitle>
+          <Button variant="ghost" size="sm" onClick={onClose}>
+            <X className="h-4 w-4" />
+          </Button>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="method-type">Payment Method Type</Label>
+              <Select value={selectedMethod} onValueChange={setSelectedMethod}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select payment method type" />
+                </SelectTrigger>
+                <SelectContent>
+                  {paymentMethodTypes.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          )}
 
-          <div>
-            <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-              Instructions
-            </label>
-            <Textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              placeholder="Enter your instructions"
-              className="min-h-[120px] resize-none"
-              maxLength={300}
-            />
-            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
-          </div>
-        </div>
-      </form>
+            {currentFields.map((field) => (
+              <div key={field.key} className="space-y-2">
+                <Label htmlFor={field.key}>
+                  {field.label}
+                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                </Label>
+                <Input
+                  id={field.key}
+                  type={field.type}
+                  value={fields[field.key] || ""}
+                  onChange={(e) => handleFieldChange(field.key, e.target.value)}
+                  className={errors[field.key] ? "border-red-500" : ""}
+                />
+                {errors[field.key] && <p className="text-sm text-red-500">{errors[field.key]}</p>}
+              </div>
+            ))}
 
-      <div className="p-6 border-t">
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={isLoading || !selectedMethod || !isFormValid()}
-          variant="black"
-          className="w-full"
-        >
-          {isLoading ? "Adding..." : "Add"}
-        </Button>
-      </div>
-    </PanelWrapper>
+            <div className="flex space-x-2 pt-4">
+              <Button type="button" variant="outline" onClick={onClose} className="flex-1 bg-transparent">
+                Cancel
+              </Button>
+              <Button type="submit" disabled={!selectedMethod || isLoading} className="flex-1">
+                {isLoading ? "Adding..." : "Add Method"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   )
 }

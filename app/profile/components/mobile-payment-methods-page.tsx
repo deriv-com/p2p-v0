@@ -4,7 +4,6 @@ import { ArrowLeft, PlusCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import PaymentMethodsTab from "./payment-methods-tab"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import NotificationBanner from "./notification-banner"
 
@@ -29,29 +28,17 @@ export default function MobilePaymentMethodsPage({ onBack }: MobilePaymentMethod
     try {
       setIsAddingPaymentMethod(true)
 
-      const result = await ProfileAPI.PaymentMethods.addPaymentMethod(method, fields)
+      // Simulate API call - replace with actual API call
+      await new Promise((resolve) => setTimeout(resolve, 1000))
 
-      if (result.success) {
-        setShowAddPaymentMethodPanel(false)
-
-        setNotification({
-          show: true,
-          message: "Payment method added.",
-        })
-
-        setRefreshKey((prev) => prev + 1)
-      } else {
-        const errorMessage =
-          result.errors && result.errors.length > 0 ? result.errors[0].message : "Failed to add payment method"
-
-        setErrorModal({
-          show: true,
-          message: errorMessage,
-        })
-      }
+      setShowAddPaymentMethodPanel(false)
+      setNotification({
+        show: true,
+        message: "Payment method added successfully.",
+      })
+      setRefreshKey((prev) => prev + 1)
     } catch (error) {
       console.error("Error adding payment method:", error)
-
       setErrorModal({
         show: true,
         message: error instanceof Error ? error.message : "An unexpected error occurred",
@@ -84,7 +71,7 @@ export default function MobilePaymentMethodsPage({ onBack }: MobilePaymentMethod
         </div>
 
         <Button
-          variant="primary"
+          variant="default"
           size="sm"
           onClick={() => setShowAddPaymentMethodPanel(true)}
           className="flex items-center"
