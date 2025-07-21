@@ -34,8 +34,8 @@ export function DeleteConfirmationDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogDescription>{description}</AlertDialogDescription>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
             <Button variant="outline" onClick={onCancel}>
