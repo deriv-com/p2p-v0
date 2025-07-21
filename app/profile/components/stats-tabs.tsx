@@ -49,78 +49,84 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   
   ]
 
-  useEffect(() => {
-    const fetchUserStats = async () => {
-      try {
-        setIsLoadingStats(true)
-        const userId = USER.id
-        const url = `${API.baseUrl}/users/${userId}`
+useEffect(() => {
+  const fetchUserStats = async () => {
+    try {
+      setIsLoadingStats(true);
+      const userId = USER.id;
+      const url = `${API.baseUrl}/users/${userId}`;
 
-        const headers = AUTH.getAuthHeader()
-        const response = await fetch(url, {
-          headers,
-          //credentials: "include",
-        })
-        
+      const headers = AUTH.getAuthHeader();
+      const response = await fetch(url, {
+        headers,
+        // credentials: "include",
+      });
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
-        }
-
-        const responseData = await response.json()
-        console.log("API response for user data in stats tabs"+ response)
-
-        if (responseData && responseData.data) {
-          const data = responseData.data
-
-          const formatTimeAverage = (minutes) => {
-            if (!minutes || minutes <= 0) return "N/A"
-            const days = Math.floor(minutes / 1440)
-            return `${days} days`
-          }
-
-          const transformedStats = {
-            buyCompletion: {
-              rate: `${data.completion_average_30day || 0}%`,
-              period: "(30d)",
-            },
-            sellCompletion: {
-              rate: `${data.completion_average_30day || 0}%`,
-              period: "(30d)",
-            },
-            avgPayTime: {
-              time: formatTimeAverage(data.buy_time_average_30day),
-              period: "(30d)",
-            },
-            avgReleaseTime: {
-              time: formatTimeAverage(data.release_time_average_30day),
-              period: "(30d)",
-            },
-            tradePartners: data.trade_partners || 0,
-            totalOrders30d: (data.buy_count_30day || 0) + (data.sell_count_30day || 0),
-            totalOrdersLifetime: data.order_count_lifetime || 0,
-            tradeVolume30d: {
-              amount: ((data.buy_amount_30day || 0) + (data.sell_amount_30day || 0)).toFixed(2),
-              currency: "USD",
-              period: "(30d)",
-            },
-            tradeVolumeLifetime: {
-              amount: data.order_amount_lifetime ? data.order_amount_lifetime.toFixed(2) : "0.00",
-              currency: "USD",
-            },
-          }
-
-          setUserStats(transformedStats)
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsLoadingStats(false)
+      if (!response.ok) {
+        throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`);
       }
-    }
 
-    fetchUserStats()
-  }, [])
+      const responseData = await response.json();
+      console.log("API response for user data in stats tabs:", responseData);
+
+      if (responseData && responseData.data) {
+        const data = responseData.data;
+
+        const formatTimeAverage = (minutes) => {
+          if (!minutes || minutes <= 0) return "N/A";
+          const days = Math.floor(minutes / 1440);
+          return `${days} days`;
+        };
+
+        const transformedStats = {
+          buyCompletion: {
+            rate: `${Number(data.completion_average_30day) || 0}%`,
+            period: "(30d)",
+          },
+          sellCompletion: {
+            rate: `${Number(data.completion_average_30day) || 0}%`,
+            period: "(30d)",
+          },
+          avgPayTime: {
+            time: formatTimeAverage(Number(data.buy_time_average_30day)),
+            period: "(30d)",
+          },
+          avgReleaseTime: {
+            time: formatTimeAverage(Number(data.release_time_average_30day)),
+            period: "(30d)",
+          },
+          tradePartners: Number(data.trade_partners) || 0,
+          totalOrders30d:
+            (Number(data.buy_count_30day) || 0) + (Number(data.sell_count_30day) || 0),
+          totalOrdersLifetime: Number(data.order_count_lifetime) || 0,
+          tradeVolume30d: {
+            amount: (
+              (Number(data.buy_amount_30day) || 0) +
+              (Number(data.sell_amount_30day) || 0)
+            ).toFixed(2),
+            currency: "USD",
+            period: "(30d)",
+          },
+          tradeVolumeLifetime: {
+            amount: data.order_amount_lifetime
+              ? Number(data.order_amount_lifetime).toFixed(2)
+              : "0.00",
+            currency: "USD",
+          },
+        };
+
+        setUserStats(transformedStats);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoadingStats(false);
+    }
+  };
+
+  fetchUserStats();
+}, []);
+
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
