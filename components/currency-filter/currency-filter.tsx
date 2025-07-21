@@ -114,7 +114,7 @@ export function CurrencyFilter({
     return (
       <Sheet className="rounded-2xl" open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-[80vh] p-6">
+        <SheetContent side="bottom" className="h-[80vh] p-[16px]">
           <div className="mb-4">
             <h3 className="text-lg font-semibold">Choose currency</h3>
           </div>
