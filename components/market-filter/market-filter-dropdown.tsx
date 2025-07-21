@@ -65,7 +65,7 @@ const [isOpen, setIsOpen] = useState(false)
             id="within-balance"
             checked={filters.withinBalance}
             onCheckedChange={(checked) => handleFilterChange("withinBalance", checked as boolean)}
-            className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+            className="data-[state=checked]:bg-black border-black"
           />
           <label htmlFor="within-balance" className="text-sm font-medium text-gray-700 cursor-pointer">
             Ads within your P2P balance and order limits
@@ -77,7 +77,7 @@ const [isOpen, setIsOpen] = useState(false)
             id="from-following"
             checked={filters.fromFollowing}
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
-            className="data-[state=checked]:bg-black data-[state=checked]:border-black"
+            className="data-[state=checked]:bg-black border-black"
           />
           <label htmlFor="from-following" className="text-sm font-medium text-gray-700 cursor-pointer">
             Ads from advertisers you follow
