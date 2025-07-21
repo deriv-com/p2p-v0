@@ -55,7 +55,7 @@ export function CurrencyFilter({
     }
   }, [])
 
-  // Continuous search handler - updates search query immediately
+  // Continuous search handler - updates search query immediately on every keystroke
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
@@ -74,16 +74,16 @@ export function CurrencyFilter({
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
-          width={16}
-          height={16}
-          className="absolute left-3 top-1/2 transform -translate-y-1/2 opacity-40"
+          width={24}
+          height={24}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
           placeholder={placeholder}
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="pl-10 border-gray-200 focus:border-black focus:ring-0"
+          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
           autoComplete="off"
           autoFocus
         />
@@ -99,7 +99,7 @@ export function CurrencyFilter({
                 key={currency.code}
                 onClick={() => handleCurrencySelect(currency.code)}
                 className={cn(
-                  "px-4 py-3 rounded-sm cursor-pointer transition-colors text-sm",
+                  "px-4 py-3 rounded-sm cursor-pointer transition-colors",
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
