@@ -68,7 +68,7 @@ export default function AdsPage() {
       })
     }
 
-    // Store status data for mobile bottom sheet
+
     if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
