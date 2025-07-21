@@ -102,7 +102,7 @@ export default function AdsPage() {
   }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
-    console.log("Ad updated, refreshing list...")
+
     const reload = async () => {
       try {
         const userAdverts = await getUserAdverts()
