@@ -213,19 +213,13 @@ export default function BuySellPage() {
                 onApply={handleFilterApply}
                 initialFilters={filterOptions}
                 trigger={
-                  <button
-                    onClick={handleFilterToggle}
-                    className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50 w-full"
-                  >
-                    <span className="text-sm hidden md:inline">Filter by</span>
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
-                      alt="Dropdown"
-                      width={15}
-                      height={15}
-                      className="h-4 w-4 opacity-70 md:inline"
-                    />
-                  </button>
+                    <Button
+                        variant="outline"
+                        className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black"
+                      >
+                        <span>Filter by</span>
+                        <ChevronDown className="h-4 w-4 ml-2" />
+                      </Button>
                 }
               />
             </div>
