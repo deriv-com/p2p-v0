@@ -205,7 +205,6 @@ export default function BuySellPage() {
             <div className="filter-dropdown-container flex-shrink-0 flex-1">
               <MarketFilterDropdown
                 isOpen={isFilterPopupOpen}
-                onClose={() => setIsFilterPopupOpen(false)}
                 onApply={handleFilterApply}
                 initialFilters={filterOptions}
                 trigger={
