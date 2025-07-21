@@ -130,7 +130,6 @@ export default function AdsPage() {
     setErrorModal((prev) => ({ ...prev, show: false }))
   }
 
-  // Show error modal using alert dialog when errorModal.show is true
   useEffect(() => {
     if (errorModal.show) {
       showAlert({
