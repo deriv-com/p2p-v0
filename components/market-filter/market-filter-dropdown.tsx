@@ -16,7 +16,6 @@ export interface MarketFilterOptions {
 
 interface MarketFilterDropdownProps {
   isOpen: boolean
-  onClose: () => void
   onApply: (filters: MarketFilterOptions) => void
   initialFilters: MarketFilterOptions
   trigger: React.ReactElement
@@ -24,7 +23,6 @@ interface MarketFilterDropdownProps {
 
 export default function MarketFilterDropdown({
   isOpen,
-  onClose,
   onApply,
   initialFilters,
   trigger,
@@ -48,6 +46,13 @@ export default function MarketFilterDropdown({
     onApply(filters)
     onClose()
   }
+
+  const handleOpenChange = useCallback((open: boolean) => {
+    setIsOpen(open)
+    if (!open) {
+      setSearchQuery("")
+    }
+  }, [])
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
     setFilters((prev) => ({
@@ -101,7 +106,7 @@ export default function MarketFilterDropdown({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={onClose}>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
         <SheetContent side="bottom" className="h-[50vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
@@ -114,7 +119,7 @@ export default function MarketFilterDropdown({
   }
 
   return (
-    <Popover open={isOpen} onOpenChange={onClose}>
+    <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent className="w-80 h-80 p-2" align="start">
         <FilterContent />
