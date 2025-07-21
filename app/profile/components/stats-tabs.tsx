@@ -61,6 +61,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           headers,
           //credentials: "include",
         })
+        console.log("API response for user data in stats tabs"+ response)
 
         if (!response.ok) {
           throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
