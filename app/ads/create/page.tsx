@@ -221,7 +221,6 @@ export default function CreateAdPage() {
   }
 
   const formatErrorMessage = (errors: any[]): string => {
-  console.log("Formatting errors")
     if (!errors || errors.length === 0) {
       return "An unknown error occurred"
     }
