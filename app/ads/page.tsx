@@ -39,15 +39,14 @@ export default function AdsPage() {
   const router = useRouter()
 
   useEffect(() => {
-    console.log("Inside use effect")
-    // Read and store params data in local variable
+
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    // Show success alert for desktop
+
     if (
       success &&
       type &&
@@ -83,7 +82,7 @@ export default function AdsPage() {
       try {
         setLoading(true)
         setError(null)
-        console.log(`Fetching adverts for user ID: ${USER.id}`)
+   
         const userAdverts = await getUserAdverts()
        
         setAds(userAdverts)
