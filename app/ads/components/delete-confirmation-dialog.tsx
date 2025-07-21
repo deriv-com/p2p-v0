@@ -32,9 +32,11 @@ export function DeleteConfirmationDialog({
   return (
     <AlertDialog open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
       <AlertDialogContent>
-        <AlertDialogHeader className="flex flex-col">
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
+        <AlertDialogHeader>
+          <div className="flex flex-col gap-2">
+            <AlertDialogTitle>{title}</AlertDialogTitle>
+            <AlertDialogDescription>{description}</AlertDialogDescription>
+          </div>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel asChild>
