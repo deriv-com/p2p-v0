@@ -328,67 +328,8 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
     </div>
   )
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-lg font-semibold">Payment methods</h1>
-        </div>
-
-        {/* Loading Content */}
-        <div className="p-4 space-y-6">
-          <div className="flex gap-2">
-            <CustomShimmer className="h-10 w-16 rounded-full" />
-            <CustomShimmer className="h-10 w-24 rounded-full" />
-            <CustomShimmer className="h-10 w-20 rounded-full" />
-          </div>
-
-          <div className="space-y-4">
-            <CustomShimmer className="h-6 w-32" />
-            <div className="space-y-3">
-              <CustomShimmer className="h-16 w-full rounded-lg" />
-              <CustomShimmer className="h-16 w-full rounded-lg" />
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <CustomShimmer className="h-6 w-24" />
-            <div className="space-y-3">
-              <CustomShimmer className="h-16 w-full rounded-lg" />
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        {/* Header */}
-        <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <h1 className="text-lg font-semibold">Payment methods</h1>
-        </div>
-
-        <div className="flex flex-col items-center justify-center py-8 px-4">
-          <p className="text-red-500 mb-4 text-center">{error}</p>
-          <Button onClick={fetchPaymentMethods} variant="outline" className="px-6 bg-transparent">
-            Try again
-          </Button>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="fixed inset-0 bg-gray-50 flex flex-col">
       {notification.show && (
         <CustomNotificationBanner
           message={notification.message}
@@ -396,8 +337,8 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
         />
       )}
 
-      {/* Header */}
-      <div className="sticky top-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3">
+      {/* Fixed Header */}
+      <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3 z-10">
         <Button variant="ghost" size="sm" onClick={onBack} className="p-2">
           <ArrowLeft className="h-5 w-5" />
         </Button>
@@ -405,7 +346,7 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
       </div>
 
       {/* Filter Tabs */}
-      <div className="bg-white px-4 py-4 border-b border-gray-100">
+      <div className="flex-shrink-0 bg-white px-4 py-4 border-b border-gray-100">
         <div className="flex gap-2">
           <button
             onClick={() => setActiveFilter("all")}
@@ -434,117 +375,148 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-4 space-y-6">
-        {/* Bank Transfer Section */}
-        {(activeFilter === "all" || activeFilter === "bank_transfer") && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">Bank transfer</h2>
-            {bankTransfers.length > 0 ? (
+      {/* Scrollable Content */}
+      <div className="flex-1 overflow-y-auto">
+        {isLoading ? (
+          <div className="p-4 space-y-6">
+            <div className="space-y-4">
+              <CustomShimmer className="h-6 w-32" />
               <div className="space-y-3">
-                {bankTransfers.map((method) => (
-                  <div
-                    key={method.id}
-                    className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-3">
-                      {getBankIcon()}
-                      <div>
-                        <div className="font-medium text-gray-900">Bank Name</div>
-                        <div className="text-sm text-gray-500">
-                          {method.details?.account?.value
-                            ? maskAccountNumber(method.details.account.value)
-                            : `***********${method.id.slice(-4)}`}
-                        </div>
-                      </div>
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-2">
-                          <MoreVertical className="h-5 w-5 text-gray-500" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
-                          onSelect={() => handleEditPaymentMethod(method)}
-                        >
-                          <Edit className="h-4 w-4" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
-                          onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
-                        >
-                          <Trash className="h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                ))}
+                <CustomShimmer className="h-16 w-full rounded-lg" />
+                <CustomShimmer className="h-16 w-full rounded-lg" />
               </div>
-            ) : (
-              <p className="text-gray-500 text-center py-8">No bank transfers added yet</p>
-            )}
-          </div>
-        )}
+            </div>
 
-        {/* E-wallets Section */}
-        {(activeFilter === "all" || activeFilter === "e_wallet") && (
-          <div className="space-y-4">
-            <h2 className="text-lg font-semibold text-gray-900">E-wallets</h2>
-            {eWallets.length > 0 ? (
+            <div className="space-y-4">
+              <CustomShimmer className="h-6 w-24" />
               <div className="space-y-3">
-                {eWallets.map((method) => (
-                  <div
-                    key={method.id}
-                    className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
-                  >
-                    <div className="flex items-center gap-3">
-                      {getEWalletIcon()}
-                      <div>
-                        <div className="font-medium text-gray-900">{method.name}</div>
-                        <div className="text-sm text-gray-500">
-                          {method.details?.account?.value || `[${method.name}'s ID]`}
-                        </div>
-                      </div>
-                    </div>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-2">
-                          <MoreVertical className="h-5 w-5 text-gray-500" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
-                          onSelect={() => handleEditPaymentMethod(method)}
-                        >
-                          <Edit className="h-4 w-4" />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
-                          onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
-                        >
-                          <Trash className="h-4 w-4" />
-                          Delete
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                ))}
+                <CustomShimmer className="h-16 w-full rounded-lg" />
               </div>
-            ) : (
-              <p className="text-gray-500 text-center py-8">No e-wallets added yet</p>
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-8 px-4">
+            <p className="text-red-500 mb-4 text-center">{error}</p>
+            <Button onClick={fetchPaymentMethods} variant="outline" className="px-6 bg-transparent">
+              Try again
+            </Button>
+          </div>
+        ) : (
+          <div className="p-4 space-y-6">
+            {/* Bank Transfer Section */}
+            {(activeFilter === "all" || activeFilter === "bank_transfer") && (
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-gray-900">Bank transfer</h2>
+                {bankTransfers.length > 0 ? (
+                  <div className="space-y-3">
+                    {bankTransfers.map((method) => (
+                      <div
+                        key={method.id}
+                        className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3">
+                          {getBankIcon()}
+                          <div>
+                            <div className="font-medium text-gray-900">Bank Name</div>
+                            <div className="text-sm text-gray-500">
+                              {method.details?.account?.value
+                                ? maskAccountNumber(method.details.account.value)
+                                : `***********${method.id.slice(-4)}`}
+                            </div>
+                          </div>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="p-2">
+                              <MoreVertical className="h-5 w-5 text-gray-500" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-[160px]">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                              onSelect={() => handleEditPaymentMethod(method)}
+                            >
+                              <Edit className="h-4 w-4" />
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-destructive focus:text-destructive"
+                              onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
+                            >
+                              <Trash className="h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center py-8">No bank transfers added yet</p>
+                )}
+              </div>
             )}
+
+            {/* E-wallets Section */}
+            {(activeFilter === "all" || activeFilter === "e_wallet") && (
+              <div className="space-y-4">
+                <h2 className="text-lg font-semibold text-gray-900">E-wallets</h2>
+                {eWallets.length > 0 ? (
+                  <div className="space-y-3">
+                    {eWallets.map((method) => (
+                      <div
+                        key={method.id}
+                        className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
+                      >
+                        <div className="flex items-center gap-3">
+                          {getEWalletIcon()}
+                          <div>
+                            <div className="font-medium text-gray-900">{method.name}</div>
+                            <div className="text-sm text-gray-500">
+                              {method.details?.account?.value || `[${method.name}'s ID]`}
+                            </div>
+                          </div>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm" className="p-2">
+                              <MoreVertical className="h-5 w-5 text-gray-500" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-[160px]">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                              onSelect={() => handleEditPaymentMethod(method)}
+                            >
+                              <Edit className="h-4 w-4" />
+                              Edit
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-destructive focus:text-destructive"
+                              onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
+                            >
+                              <Trash className="h-4 w-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-center py-8">No e-wallets added yet</p>
+                )}
+              </div>
+            )}
+
+            {/* Add some bottom padding to ensure content doesn't get hidden behind the fixed button */}
+            <div className="h-20" />
           </div>
         )}
       </div>
 
-      {/* Bottom Add Payment Button */}
-      <div className="sticky bottom-0 bg-white border-t border-gray-200 p-4">
+      {/* Fixed Bottom Button */}
+      <div className="flex-shrink-0 bg-white border-t border-gray-200 p-4">
         <Button
           variant="outline"
           size="lg"
