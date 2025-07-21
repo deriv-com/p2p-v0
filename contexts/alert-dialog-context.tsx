@@ -53,7 +53,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
         <AlertDialogContent className="p-0">
           <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
-            <div style={{ alignSelf: "end" }} className="px-6">
+            <div style={{ alignSelf: "end" }} className="px-6 mt-6">
               <Button onClick={hideAlert} size="sm" variant="ghost">
                 <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
               </Button>
