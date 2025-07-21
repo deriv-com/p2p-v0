@@ -328,9 +328,8 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank")
-                                        ? "bg-payment-method-bank"
-                                        : "bg-payment-method-other"
+                                      method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+
                                     }`}
                                   ></div>
                                 )}
