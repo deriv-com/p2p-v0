@@ -118,7 +118,7 @@ const [isOpen, setIsOpen] = useState(false)
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-fit p-2" align="start">
+      <PopoverContent className="w-fit h-fit p-2" align="start">
         <FilterContent />
       </PopoverContent>
     </Popover>
