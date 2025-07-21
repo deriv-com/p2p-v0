@@ -304,7 +304,7 @@ export default function PaymentMethodsPage() {
 
   const getBankIcon = () => <Image src="/icons/bank-transfer-icon.png" alt="Bank Transfer" width={24} height={24} />
 
-  const getEWalletIcon = () => <Image src="/icons/ewallet-icon.png" alt="E-wallet" width={24} height={40} />
+  const getEWalletIcon = () => <Image src="/icons/ewallet-icon.png" alt="E-wallet" width={24} height={24} />
 
   return (
     <div className="fixed inset-0 bg-white flex flex-col">
