@@ -302,14 +302,9 @@ export default function PaymentMethodsPage() {
   const bankTransfers = filteredMethods.filter((method) => method.category === "bank_transfer")
   const eWallets = filteredMethods.filter((method) => method.category === "e_wallet")
 
-  const getMethodIcon = (category: string) => {
-    if (category === "bank_transfer") {
-      return <Image src="/icons/bank-transfer-icon.png" alt="Bank Transfer" width={40} height={40} />
-    } else if (category === "e_wallet") {
-      return <Image src="/icons/ewallet-icon.png" alt="E-wallet" width={40} height={40} />
-    }
-    return <Image src="/icons/ewallet-icon.png" alt="Payment Method" width={40} height={40} />
-  }
+  const getBankIcon = () => <Image src="/icons/bank-transfer-icon.png" alt="Bank Transfer" width={40} height={40} />
+
+  const getEWalletIcon = () => <Image src="/icons/ewallet-icon.png" alt="E-wallet" width={40} height={40} />
 
   return (
     <div className="fixed inset-0 bg-white flex flex-col">
@@ -398,7 +393,7 @@ export default function PaymentMethodsPage() {
                         className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          {getMethodIcon(method.category)}
+                          {getBankIcon()}
                           <div>
                             <div className="font-medium text-gray-900">Bank Name</div>
                             <div className="text-sm text-gray-500">
@@ -452,7 +447,7 @@ export default function PaymentMethodsPage() {
                         className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between"
                       >
                         <div className="flex items-center gap-3">
-                          {getMethodIcon(method.category)}
+                          {getEWalletIcon()}
                           <div>
                             <div className="font-medium text-gray-900">{method.name}</div>
                             <div className="text-sm text-gray-500">
