@@ -91,11 +91,11 @@ const [isOpen, setIsOpen] = useState(false)
           variant="outline"
           onClick={handleReset}
           className="rounded-full flex-1"
-          size={isMobile ? "lg": "sm"}
+          size={isMobile ? "default": "sm"}
         >
           Reset
         </Button>
-        <Button onClick={handleApply} className="flex-1 rounded-full bg-black text-white hover:bg-gray-800" size={isMobile ? "lg": "sm"}>
+        <Button onClick={handleApply} className="flex-1 rounded-full bg-black text-white hover:bg-gray-800" size={isMobile ? "default": "sm"}>
           Apply
         </Button>
       </div>
