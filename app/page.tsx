@@ -149,10 +149,10 @@ export default function BuySellPage() {
                     size="sm"
                     onClick={() => setSelectedAccountCurrency(currencyFilter)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        selectedAccountCurrency === currencyFilter
-                          ? "bg-black text-white hover:bg-gray-800"
-                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                      }`}
+                      selectedAccountCurrency === currencyFilter
+                        ? "bg-black text-white hover:bg-gray-800"
+                        : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                    }`}
                   >
                     {currencyFilter}
                   </Button>
@@ -167,7 +167,10 @@ export default function BuySellPage() {
               selectedCurrency={currency}
               onCurrencySelect={handleCurrencySelect}
               trigger={
-                <Button variant="outline" className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black">
+                <Button
+                  variant="outline"
+                  className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black"
+                >
                   <span>{currency}</span>
                   <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>
@@ -224,8 +227,18 @@ export default function BuySellPage() {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="exchange_rate">Sort by: Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating_average_lifetime">Sort by: User rating (high-low)</SelectItem>
+                  <SelectItem
+                    value="exchange_rate"
+                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-black focus:text-white"
+                  >
+                    Sort by: Exchange rate (high-low)
+                  </SelectItem>
+                  <SelectItem
+                    value="user_rating_average_lifetime"
+                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-black focus:text-white"
+                  >
+                    Sort by: User rating (high-low)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
