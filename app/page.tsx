@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import FilterPopup, { type FilterOptions } from "@/components/buy-sell/filter-popup"
+import { MarketFilterDropdown, type MarketFilterOptions } from "@/components/market-filter"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -29,7 +29,8 @@ export default function BuySellPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+  const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
+    withinBalance: false,
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -109,6 +110,10 @@ export default function BuySellPage() {
     setCurrency(currencyCode)
   }
 
+  const handleFilterApply = (newFilters: MarketFilterOptions) => {
+    setFilterOptions(newFilters)
+  }
+
   useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
@@ -149,10 +154,10 @@ export default function BuySellPage() {
                     size="sm"
                     onClick={() => setSelectedAccountCurrency(currencyFilter)}
                     className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        selectedAccountCurrency === currencyFilter
-                          ? "bg-black text-white hover:bg-gray-800"
-                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                      }`}
+                      selectedAccountCurrency === currencyFilter
+                        ? "bg-black text-white hover:bg-gray-800"
+                        : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                    }`}
                   >
                     {currencyFilter}
                   </Button>
@@ -167,7 +172,10 @@ export default function BuySellPage() {
               selectedCurrency={currency}
               onCurrencySelect={handleCurrencySelect}
               trigger={
-                <Button variant="outline" className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black">
+                <Button
+                  variant="outline"
+                  className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black"
+                >
                   <span>{currency}</span>
                   <ChevronDown className="h-4 w-4 ml-2" />
                 </Button>
@@ -194,28 +202,20 @@ export default function BuySellPage() {
               </Select>
             </div>
 
-            <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
-              <button
-                onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
-                className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <span className="text-sm hidden md:inline">Filter by</span>
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
-                  alt="Dropdown"
-                  width={15}
-                  height={15}
-                  className="h-4 w-4 opacity-70 md:inline"
-                />
-              </button>
-              {isFilterPopupOpen && (
-                <FilterPopup
-                  isOpen={isFilterPopupOpen}
-                  onClose={() => setIsFilterPopupOpen(false)}
-                  onApply={setFilterOptions}
-                  initialFilters={filterOptions}
-                />
-              )}
+            <div className="filter-dropdown-container flex-shrink-0 flex-1">
+              <MarketFilterDropdown
+                onApply={handleFilterApply}
+                initialFilters={filterOptions}
+                trigger={
+                    <Button
+                        variant="outline"
+                        className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black"
+                      >
+                        <span>Filter by</span>
+                        <ChevronDown className="h-4 w-4 ml-2" />
+                      </Button>
+                }
+              />
             </div>
 
             <div className="hidden md:block">
@@ -224,8 +224,18 @@ export default function BuySellPage() {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="exchange_rate">Sort by: Exchange rate (high-low)</SelectItem>
-                  <SelectItem value="user_rating_average_lifetime">Sort by: User rating (high-low)</SelectItem>
+                  <SelectItem
+                    value="exchange_rate"
+                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
+                  >
+                    Sort by: Exchange rate (high-low)
+                  </SelectItem>
+                  <SelectItem
+                    value="user_rating_average_lifetime"
+                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
+                  >
+                    Sort by: User rating (high-low)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
