@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import type * as React from "react"
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -36,34 +36,37 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
   }, [])
 
   return (
-    <div
-      className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
-        isMobile ? "inset-0 w-full" : "w-full max-w-md"
-      }`}
-    >
-      <div className="p-6 border-b relative">
-        {onBack && (
+    <>
+      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
+      <div
+        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+          isMobile ? "inset-0 w-full" : "w-full max-w-md"
+        }`}
+      >
+        <div className="p-6 border-b relative">
+          {onBack && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onBack}
+              className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
+            >
+              <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
+            </Button>
+          )}
+          <h2 className="text-xl font-semibold text-center">{title}</h2>
           <Button
             variant="ghost"
             size="icon"
-            onClick={onBack}
-            className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
+            onClick={onClose}
+            className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
           >
-            <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
+            <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
           </Button>
-        )}
-        <h2 className="text-xl font-semibold text-center">{title}</h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
-        >
-          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
-        </Button>
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </>
   )
 }
 

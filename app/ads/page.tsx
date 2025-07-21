@@ -12,8 +12,8 @@ import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
-import StatusModal from "./components/ui/status-modal"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface StatusData {
   success: "create" | "update"
@@ -33,20 +33,43 @@ export default function AdsPage() {
     title: "Error",
     message: "",
   })
+  const { showAlert } = useAlertDialog()
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
   useEffect(() => {
-  console.log("Inside use effect");
+    console.log("Inside use effect")
     // Read and store params data in local variable
-    const searchParams = new URLSearchParams(window.location.search);
+    const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (  success && type && id && showStatusModal === "true" && (success === "create" || success === "update"  )) {
+    // Show success alert for desktop
+    if (
+      success &&
+      type &&
+      id &&
+      showStatusModal === "true" &&
+      (success === "create" || success === "update") &&
+      !isMobile
+    ) {
+      const adTypeDisplay = type.toUpperCase()
+      const createDescription = `You've successfully created Ad (${adTypeDisplay} ${id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
+      const updateDescription = `You've successfully updated Ad (${adTypeDisplay} ${id}).\n\nYour changes have been saved and are now live.`
+
+      showAlert({
+        title: success === "create" ? "Ad created" : "Ad updated",
+        description: success === "create" ? createDescription : updateDescription,
+        confirmText: "OK",
+        type: "success",
+      })
+    }
+
+    // Store status data for mobile bottom sheet
+    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
         type,
@@ -79,7 +102,7 @@ export default function AdsPage() {
     }
 
     fetchAds()
-  }, [])
+  }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
     console.log("Ad updated, refreshing list...")
@@ -101,13 +124,25 @@ export default function AdsPage() {
 
   const handleCloseStatusModal = () => {
     setStatusData((prev) => (prev ? { ...prev, showStatusModal: false } : null))
-    }
+  }
 
- const handleCloseErrorModal = () => {
+  const handleCloseErrorModal = () => {
     setErrorModal((prev) => ({ ...prev, show: false }))
-    }
+  }
 
-return (
+  // Show error modal using alert dialog when errorModal.show is true
+  useEffect(() => {
+    if (errorModal.show) {
+      showAlert({
+        title: errorModal.title,
+        description: errorModal.message,
+        confirmText: "OK",
+        onConfirm: handleCloseErrorModal,
+      })
+    }
+  }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
+
+  return (
     <div className="flex flex-col h-screen bg-white">
       {showDeletedBanner && (
         <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
@@ -154,22 +189,6 @@ return (
         )}
       </div>
       {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-      {statusData && statusData.showStatusModal && !loading && !errorModal.show && !isMobile && (
-        <StatusModal
-          type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
-          message={
-            statusData.success === "create"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
-          }
-          onClose={handleCloseStatusModal}
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
-          showStatusModel ={statusData.showStatusModal}
-        />
-      )}
       {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
         <StatusBottomSheet
           isOpen
@@ -178,25 +197,14 @@ return (
           title={statusData.success === "create" ? "Ad created" : "Ad updated"}
           message={
             statusData.success === "create"
-              ? "If your ad doesn't receive an order within 3 days, it will be deactivated."
-              : "Your changes have been saved and are now live."
+              ? `You've successfully created Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
+              : `You've successfully updated Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nYour changes have been saved and are now live.`
           }
           adType={statusData.type}
           adId={statusData.id}
           isUpdate={statusData.success === "update"}
         />
       )}
-
-        {errorModal.show && (
-        <StatusModal
-          type="error"
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={handleCloseErrorModal}
-        />
-      )}
     </div>
-   
   )
-  
 }
