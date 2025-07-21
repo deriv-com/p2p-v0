@@ -49,7 +49,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
               variant="ghost"
               size="icon"
               onClick={onBack}
-              className="absolute left-6 top-1/2 -translate-y-1/2 "
+              className="absolute left-6 top-1/2 -translate-y-1/2"
             >
               <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
             </Button>
