@@ -49,7 +49,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
               variant="ghost"
               size="icon"
               onClick={onBack}
-             / className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"*/
+             /* className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"*/
             >
               <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
             </Button>
@@ -59,7 +59,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
+          /*  className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"*/
           >
             <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
           </Button>
