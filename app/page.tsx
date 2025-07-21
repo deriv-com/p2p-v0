@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import FilterPopup, { type FilterOptions } from "@/components/buy-sell/filter-popup"
+import { MarketFilterDropdown, type MarketFilterOptions } from "@/components/market-filter"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -29,7 +29,8 @@ export default function BuySellPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+  const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
+    withinBalance: false,
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -78,6 +79,12 @@ export default function BuySellPage() {
         params.favourites_only = 1
       }
 
+      // Add logic for withinBalance filter if needed
+      if (filterOptions.withinBalance) {
+        // This would need to be implemented based on your API requirements
+        // params.within_balance = 1
+      }
+
       const data = await BuySellAPI.getAdvertisements(params)
       if (Array.isArray(data)) {
         setAdverts(data)
@@ -107,6 +114,10 @@ export default function BuySellPage() {
 
   const handleCurrencySelect = (currencyCode: string) => {
     setCurrency(currencyCode)
+  }
+
+  const handleFilterApply = (newFilters: MarketFilterOptions) => {
+    setFilterOptions(newFilters)
   }
 
   useEffect(() => {
@@ -211,14 +222,12 @@ export default function BuySellPage() {
                   className="h-4 w-4 opacity-70 md:inline"
                 />
               </button>
-              {isFilterPopupOpen && (
-                <FilterPopup
-                  isOpen={isFilterPopupOpen}
-                  onClose={() => setIsFilterPopupOpen(false)}
-                  onApply={setFilterOptions}
-                  initialFilters={filterOptions}
-                />
-              )}
+              <MarketFilterDropdown
+                isOpen={isFilterPopupOpen}
+                onClose={() => setIsFilterPopupOpen(false)}
+                onApply={handleFilterApply}
+                initialFilters={filterOptions}
+              />
             </div>
 
             <div className="hidden md:block">
