@@ -302,7 +302,7 @@ export default function PaymentMethodsPage() {
   const bankTransfers = filteredMethods.filter((method) => method.category === "bank_transfer")
   const eWallets = filteredMethods.filter((method) => method.category === "e_wallet")
 
-  const getBankIcon = () => <Image src="/icons/bank-transfer-icon.png" alt="Bank Transfer" width={40} height={40} />
+  const getBankIcon = () => <Image src="/icons/bank-transfer-icon.png" alt="Bank Transfer" width={24} height={24} />
 
   const getEWalletIcon = () => <Image src="/icons/ewallet-icon.png" alt="E-wallet" width={40} height={40} />
 
