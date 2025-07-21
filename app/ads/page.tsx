@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
-import { USER } from "@/lib/local-variables"
 import { Plus } from "lucide-react"
 import type { MyAd } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
@@ -103,7 +102,7 @@ export default function AdsPage() {
   }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
-
+    console.log("Ad updated, refreshing list...")
     const reload = async () => {
       try {
         const userAdverts = await getUserAdverts()
