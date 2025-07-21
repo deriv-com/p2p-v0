@@ -14,9 +14,13 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import StatsMobileView from "./stats-mobile-view"
 import PaymentMethodsMobileView from "./payment-methods-mobile-view"
 
-type MobileView = "list" | "stats" | "payment-methods"
+interface StatsTabsProps {
+  stats?: any
+}
 
-export default function StatsTabs() {
+type MobileView = "list" | "stats" | "payment"
+
+export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const [mobileView, setMobileView] = useState<MobileView>("list")
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
@@ -30,25 +34,25 @@ export default function StatsTabs() {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<any>({
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  })
+  const [userStats, setUserStats] = useState<any>(
+    initialStats || {
+      buyCompletion: { rate: "N/A", period: "(30d)" },
+      sellCompletion: { rate: "N/A", period: "(30d)" },
+      avgPayTime: { time: "N/A", period: "(30d)" },
+      avgReleaseTime: { time: "N/A", period: "(30d)" },
+      tradePartners: 0,
+      totalOrders30d: 0,
+      totalOrdersLifetime: 0,
+      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
+      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
+    },
+  )
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
 
   const tabs = [
     { id: "stats", label: "Stats" },
-    { id: "payment-methods", label: "Payment methods" },
-    { id: "advertisers-instruction", label: "Advertisers' instruction" },
-    { id: "counterparties", label: "Counterparties" },
+    { id: "payment", label: "Payment methods" },
   ]
 
   useEffect(() => {
@@ -160,31 +164,54 @@ export default function StatsTabs() {
   // Mobile view rendering
   if (isMobile) {
     if (mobileView === "stats") {
-      return <StatsMobileView onBack={() => setMobileView("list")} />
+      return <StatsMobileView />
     }
 
-    if (mobileView === "payment-methods") {
-      return <PaymentMethodsMobileView onBack={() => setMobileView("list")} />
+    if (mobileView === "payment") {
+      return <PaymentMethodsMobileView />
     }
 
     // Mobile list view
     return (
-      <div className="relative space-y-1">
-        {tabs.map((tab) => (
+      <div className="relative">
+        {notification.show && (
+          <CustomNotificationBanner
+            message={notification.message}
+            onClose={() => setNotification({ show: false, message: "" })}
+          />
+        )}
+
+        <div className="space-y-1">
           <button
-            key={tab.id}
-            onClick={() => setMobileView(tab.id as MobileView)}
+            onClick={() => setMobileView("stats")}
             className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            <span className="text-base font-medium text-gray-900">{tab.label}</span>
+            <span className="text-base font-medium text-gray-900">Stats</span>
             <ChevronRight className="h-5 w-5 text-gray-400" />
           </button>
-        ))}
+
+          <button
+            onClick={() => setMobileView("payment")}
+            className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-base font-medium text-gray-900">Payment methods</span>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </button>
+        </div>
+
+        {errorModal.show && (
+          <StatusModal
+            type="error"
+            title="Error"
+            message={errorModal.message}
+            onClose={() => setErrorModal({ show: false, message: "" })}
+          />
+        )}
       </div>
     )
   }
 
-  // Desktop view
+  // Desktop view (restored to original)
   return (
     <div className="relative">
       {notification.show && (
@@ -195,15 +222,20 @@ export default function StatsTabs() {
       )}
 
       <div className="mb-6">
-        <Tabs defaultValue="stats" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="stats">Stats</TabsTrigger>
-            <TabsTrigger value="payment-methods">Payment methods</TabsTrigger>
-            <TabsTrigger value="advertisers-instruction">Advertisers' instruction</TabsTrigger>
-            <TabsTrigger value="counterparties">Counterparties</TabsTrigger>
+        <Tabs defaultValue="stats">
+          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="stats" className="space-y-4">
+          <TabsContent value="stats">
             {isLoadingStats ? (
               <div className="space-y-4">
                 <div className="bg-[#F5F5F5] rounded-lg p-4">
@@ -238,7 +270,7 @@ export default function StatsTabs() {
             )}
           </TabsContent>
 
-          <TabsContent value="payment-methods" className="space-y-4">
+          <TabsContent value="payment">
             <div className="relative">
               <div className="flex justify-end mb-4">
                 <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
@@ -250,12 +282,18 @@ export default function StatsTabs() {
             </div>
           </TabsContent>
 
-          <TabsContent value="advertisers-instruction" className="space-y-4">
-            <div className="text-center py-8 text-gray-500">Advertisers' instruction content coming soon...</div>
+          <TabsContent value="ads">
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
+              <p className="text-slate-500">Your ad details will appear here.</p>
+            </div>
           </TabsContent>
 
-          <TabsContent value="counterparties" className="space-y-4">
-            <div className="text-center py-8 text-gray-500">Counterparties content coming soon...</div>
+          <TabsContent value="counterparties">
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-medium mb-4">Counterparties</h3>
+              <p className="text-slate-500">Your counterparties will appear here.</p>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

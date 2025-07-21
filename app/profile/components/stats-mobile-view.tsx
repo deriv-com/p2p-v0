@@ -1,5 +1,5 @@
 "use client"
 
 export default function StatsMobileView() {
-  return <div>{/* Empty for now */}</div>
+  return <div>{/* Empty component - ready for implementation */}</div>
 }
