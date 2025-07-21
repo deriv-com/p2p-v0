@@ -75,7 +75,7 @@ export default function AdsPage() {
       })
     }
 
-    // Fetch ads
+
     const fetchAds = async () => {
       try {
         setLoading(true)
@@ -127,7 +127,7 @@ export default function AdsPage() {
     setErrorModal((prev) => ({ ...prev, show: false }))
   }
 
-  // Show error modal using alert dialog when errorModal.show is true
+
   useEffect(() => {
     if (errorModal.show) {
       showAlert({
