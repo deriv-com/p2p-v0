@@ -67,7 +67,7 @@ export function CurrencyFilter({
   }, [])
 
   const CurrencyList = () => (
-    <div className="w-full">
+    <div className="w-full h-full">
       <div className="relative mb-4">
         <Image
           src="/icons/search-icon-custom.png"
@@ -87,7 +87,7 @@ export function CurrencyFilter({
         />
       </div>
 
-      <div className="max-h-80 overflow-y-auto">
+      <div className="max-h-[85%] overflow-y-auto">
         {filteredCurrencies.length === 0 ? (
           <div className="text-center py-8 text-gray-500">{emptyMessage}</div>
         ) : (
