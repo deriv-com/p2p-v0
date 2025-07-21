@@ -89,7 +89,7 @@ const [isOpen, setIsOpen] = useState(false)
         <Button
           variant="outline"
           onClick={handleReset}
-          className="flex-1 rounded-full border-gray-300 text-gray-700 hover:bg-gray-50 bg-transparent"
+          className="flex-1 rounded-full"
           size="sm"
         >
           Reset
