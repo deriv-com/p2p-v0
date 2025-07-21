@@ -8,12 +8,16 @@ import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
-import { PlusCircle } from "lucide-react"
+import { PlusCircle, ChevronRight } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useRouter } from "next/navigation"
 
-export default function StatsTabs() {
+interface StatsTabsProps {
+  stats?: any
+}
+
+export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const router = useRouter()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
@@ -27,17 +31,19 @@ export default function StatsTabs() {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<any>({
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  })
+  const [userStats, setUserStats] = useState<any>(
+    initialStats || {
+      buyCompletion: { rate: "N/A", period: "(30d)" },
+      sellCompletion: { rate: "N/A", period: "(30d)" },
+      avgPayTime: { time: "N/A", period: "(30d)" },
+      avgReleaseTime: { time: "N/A", period: "(30d)" },
+      tradePartners: 0,
+      totalOrders30d: 0,
+      totalOrdersLifetime: 0,
+      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
+      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
+    },
+  )
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
 
@@ -155,37 +161,40 @@ export default function StatsTabs() {
   // Mobile view rendering - navigate to separate routes
   if (isMobile) {
     return (
-      <div className="space-y-4">
-        <div
-          onClick={() => router.push("/profile/stats")}
-          className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors"
-        >
-          <span className="text-base font-medium text-gray-900">Stats</span>
-          <svg
-            className="w-5 h-5 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+      <div className="relative">
+        {notification.show && (
+          <CustomNotificationBanner
+            message={notification.message}
+            onClose={() => setNotification({ show: false, message: "" })}
+          />
+        )}
+
+        <div className="space-y-1">
+          <button
+            onClick={() => router.push("/profile/stats")}
+            className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
-        <div
-          onClick={() => router.push("/profile/payment-methods")}
-          className="flex items-center justify-between p-4 bg-white rounded-lg border border-gray-200 cursor-pointer hover:bg-gray-50 transition-colors"
-        >
-          <span className="text-base font-medium text-gray-900">Payment methods</span>
-          <svg
-            className="w-5 h-5 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+            <span className="text-base font-medium text-gray-900">Stats</span>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </button>
+
+          <button
+            onClick={() => router.push("/profile/payment-methods")}
+            className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
+            <span className="text-base font-medium text-gray-900">Payment methods</span>
+            <ChevronRight className="h-5 w-5 text-gray-400" />
+          </button>
         </div>
+
+        {errorModal.show && (
+          <StatusModal
+            type="error"
+            title="Error"
+            message={errorModal.message}
+            onClose={() => setErrorModal({ show: false, message: "" })}
+          />
+        )}
       </div>
     )
   }
@@ -201,13 +210,20 @@ export default function StatsTabs() {
       )}
 
       <div className="mb-6">
-        <Tabs defaultValue="stats" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="stats">Stats</TabsTrigger>
-            <TabsTrigger value="payment-methods">Payment methods</TabsTrigger>
+        <Tabs defaultValue="stats">
+          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
 
-          <TabsContent value="stats" className="space-y-4">
+          <TabsContent value="stats">
             {isLoadingStats ? (
               <div className="space-y-4">
                 <div className="bg-[#F5F5F5] rounded-lg p-4">
@@ -242,7 +258,7 @@ export default function StatsTabs() {
             )}
           </TabsContent>
 
-          <TabsContent value="payment-methods" className="space-y-4">
+          <TabsContent value="payment">
             <div className="relative">
               <div className="flex justify-end mb-4">
                 <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
@@ -251,6 +267,20 @@ export default function StatsTabs() {
                 </Button>
               </div>
               <PaymentMethodsTab key={refreshKey} />
+            </div>
+          </TabsContent>
+
+          <TabsContent value="ads">
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
+              <p className="text-slate-500">Your ad details will appear here.</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="counterparties">
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-medium mb-4">Counterparties</h3>
+              <p className="text-slate-500">Your counterparties will appear here.</p>
             </div>
           </TabsContent>
         </Tabs>
