@@ -11,8 +11,9 @@ import NotificationBanner from "./notification-banner"
 import { PlusCircle } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { useRouter } from "next/navigation"
 import { ChevronRight } from "lucide-react"
+import MobileStatsPage from "./mobile-stats-page"
+import MobilePaymentMethodsPage from "./mobile-payment-methods-page"
 
 interface StatsTabsProps {
   stats?: any
@@ -30,6 +31,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
+  const [mobileView, setMobileView] = useState<"list" | "stats" | "payment">("list")
   const [userStats, setUserStats] = useState<any>(
     initialStats || {
       buyCompletion: { rate: "N/A", period: "(30d)" },
@@ -47,14 +49,17 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [isLoadingStats, setIsLoadingStats] = useState(false)
 
   const isMobile = useIsMobile()
-  const router = useRouter()
 
   const handleMobileNavigation = (option: string) => {
     if (option === "stats") {
-      router.push("/profile/stats")
+      setMobileView("stats")
     } else if (option === "payment") {
-      router.push("/profile/payment-methods")
+      setMobileView("payment")
     }
+  }
+
+  const handleMobileBack = () => {
+    setMobileView("list")
   }
 
   const tabs = [
@@ -173,17 +178,26 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
-  return (
-    <div className="relative">
-      {notification.show && (
-        <NotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
+  // Mobile view rendering
+  if (isMobile) {
+    if (mobileView === "stats") {
+      return <MobileStatsPage onBack={handleMobileBack} />
+    }
 
-      {isMobile ? (
-        // Mobile View - Vertical List
+    if (mobileView === "payment") {
+      return <MobilePaymentMethodsPage onBack={handleMobileBack} />
+    }
+
+    // Mobile list view
+    return (
+      <div className="relative">
+        {notification.show && (
+          <NotificationBanner
+            message={notification.message}
+            onClose={() => setNotification({ show: false, message: "" })}
+          />
+        )}
+
         <div className="space-y-4">
           <div
             className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
@@ -201,85 +215,105 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <ChevronRight className="h-5 w-5 text-gray-400" />
           </div>
         </div>
-      ) : (
-        // Desktop View - Keep existing tabs
-        <div className="mb-6">
-          <Tabs defaultValue="stats">
-            <TabsList className="bg-slate-1500 rounded-2xl p-1 h-auto">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
 
-            <TabsContent value="stats">
-              {isLoadingStats ? (
-                <div className="space-y-4">
-                  <div className="bg-slate-1500 rounded-lg p-4">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {[...Array(3)].map((_, i) => (
-                        <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                        </div>
-                      ))}
-                    </div>
+        {errorModal.show && (
+          <StatusModal
+            type="error"
+            title="Error"
+            message={errorModal.message}
+            onClose={() => setErrorModal({ show: false, message: "" })}
+          />
+        )}
+      </div>
+    )
+  }
+
+  // Desktop view - unchanged
+  return (
+    <div className="relative">
+      {notification.show && (
+        <NotificationBanner
+          message={notification.message}
+          onClose={() => setNotification({ show: false, message: "" })}
+        />
+      )}
+
+      <div className="mb-6">
+        <Tabs defaultValue="stats">
+          <TabsList className="bg-slate-1500 rounded-2xl p-1 h-auto">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.id}
+                value={tab.id}
+                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          <TabsContent value="stats">
+            {isLoadingStats ? (
+              <div className="space-y-4">
+                <div className="bg-slate-1500 rounded-lg p-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[...Array(3)].map((_, i) => (
+                      <div key={i} className="py-4">
+                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ) : (
-                <StatsGrid stats={userStats} />
-              )}
-            </TabsContent>
-
-            <TabsContent value="payment">
-              <div className="relative">
-                <div className="flex justify-end mb-4">
-                  <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    Add payment method
-                  </Button>
-                </div>
-                <PaymentMethodsTab key={refreshKey} />
               </div>
-            </TabsContent>
+            ) : (
+              <StatsGrid stats={userStats} />
+            )}
+          </TabsContent>
 
-            <TabsContent value="ads">
-              <div className="p-4 border rounded-lg">
-                <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
-                <p className="text-slate-500">Your ad details will appear here.</p>
+          <TabsContent value="payment">
+            <div className="relative">
+              <div className="flex justify-end mb-4">
+                <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Add payment method
+                </Button>
               </div>
-            </TabsContent>
+              <PaymentMethodsTab key={refreshKey} />
+            </div>
+          </TabsContent>
 
-            <TabsContent value="counterparties">
-              <div className="p-4 border rounded-lg">
-                <h3 className="text-lg font-medium mb-4">Counterparties</h3>
-                <p className="text-slate-500">Your counterparties will appear here.</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      )}
+          <TabsContent value="ads">
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
+              <p className="text-slate-500">Your ad details will appear here.</p>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="counterparties">
+            <div className="p-4 border rounded-lg">
+              <h3 className="text-lg font-medium mb-4">Counterparties</h3>
+              <p className="text-slate-500">Your counterparties will appear here.</p>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
       {showAddPaymentMethodPanel && (
         <AddPaymentMethodPanel
