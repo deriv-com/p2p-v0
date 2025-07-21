@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import { X } from "lucide-react"
+import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -33,21 +33,35 @@ interface PanelWrapperProps {
 }
 
 function PanelWrapper({ onClose, children }: PanelWrapperProps) {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640)
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
+
   return (
-    <div className="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-white shadow-xl flex flex-col">
-      <div className="p-6 border-b relative">
-        <h2 className="text-xl font-semibold">Edit payment method</h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          className="absolute right-6 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 h-10 w-10 rounded-full"
-        >
-          <X className="h-5 w-5" />
-        </Button>
+    <>
+      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
+      <div
+        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+          isMobile ? "inset-0 w-full" : "w-full max-w-md"
+        }`}
+      >
+        <div className="p-6 border-b relative">
+          <h2 className="text-xl font-semibold text-center">Edit payment method</h2>
+          <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
+            <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+          </Button>
+        </div>
+        {children}
       </div>
-      {children}
-    </div>
+    </>
   )
 }
 
