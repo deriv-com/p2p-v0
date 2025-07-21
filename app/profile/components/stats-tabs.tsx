@@ -14,13 +14,9 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import StatsMobileView from "./stats-mobile-view"
 import PaymentMethodsMobileView from "./payment-methods-mobile-view"
 
-interface StatsTabsProps {
-  stats?: any
-}
-
 type MobileView = "list" | "stats" | "payment-methods"
 
-export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
+export default function StatsTabs() {
   const isMobile = useIsMobile()
   const [mobileView, setMobileView] = useState<MobileView>("list")
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
@@ -34,19 +30,17 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<any>(
-    initialStats || {
-      buyCompletion: { rate: "N/A", period: "(30d)" },
-      sellCompletion: { rate: "N/A", period: "(30d)" },
-      avgPayTime: { time: "N/A", period: "(30d)" },
-      avgReleaseTime: { time: "N/A", period: "(30d)" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-    },
-  )
+  const [userStats, setUserStats] = useState<any>({
+    buyCompletion: { rate: "N/A", period: "(30d)" },
+    sellCompletion: { rate: "N/A", period: "(30d)" },
+    avgPayTime: { time: "N/A", period: "(30d)" },
+    avgReleaseTime: { time: "N/A", period: "(30d)" },
+    tradePartners: 0,
+    totalOrders30d: 0,
+    totalOrdersLifetime: 0,
+    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
+    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
+  })
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
 
@@ -201,17 +195,12 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       )}
 
       <div className="mb-6">
-        <Tabs defaultValue="stats">
-          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
+        <Tabs defaultValue="stats" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="stats">Stats</TabsTrigger>
+            <TabsTrigger value="payment-methods">Payment methods</TabsTrigger>
+            <TabsTrigger value="advertisers-instruction">Advertisers' instruction</TabsTrigger>
+            <TabsTrigger value="counterparties">Counterparties</TabsTrigger>
           </TabsList>
 
           <TabsContent value="stats" className="space-y-4">

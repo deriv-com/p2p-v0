@@ -1,9 +1,5 @@
 "use client"
 
-interface PaymentMethodsMobileViewProps {
-  onBack: () => void
-}
-
-export default function PaymentMethodsMobileView({ onBack: _onBack }: PaymentMethodsMobileViewProps) {
+export default function PaymentMethodsMobileView() {
   return <div>{/* Empty for now */}</div>
 }
