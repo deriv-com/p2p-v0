@@ -4,6 +4,6 @@ interface PaymentMethodsMobileViewProps {
   onBack: () => void
 }
 
-export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobileViewProps) {
+export default function PaymentMethodsMobileView({ onBack: _onBack }: PaymentMethodsMobileViewProps) {
   return <div>{/* Empty for now */}</div>
 }
