@@ -46,8 +46,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const tabs = [
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
-    { id: "ads", label: "Advertisers' instruction" },
-    { id: "counterparties", label: "Counterparties" },
+  
   ]
 
   useEffect(() => {
