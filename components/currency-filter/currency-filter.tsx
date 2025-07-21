@@ -112,7 +112,7 @@ export function CurrencyFilter({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <Sheet className="rounded-2xl" open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
         <SheetContent side="bottom" className="h-[80vh] p-6">
           <div className="mb-4">
