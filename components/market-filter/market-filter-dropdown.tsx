@@ -105,7 +105,7 @@ const [isOpen, setIsOpen] = useState(false)
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-[50vh] p-[16px] rounded-t-2xl">
+        <SheetContent side="bottom" className="h-fit p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Filter by</h3>
           </div>
@@ -118,7 +118,7 @@ const [isOpen, setIsOpen] = useState(false)
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-2" align="start">
+      <PopoverContent className="w-80 h-fit p-2" align="start">
         <FilterContent />
       </PopoverContent>
     </Popover>
