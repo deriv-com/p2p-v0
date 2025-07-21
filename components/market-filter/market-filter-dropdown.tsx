@@ -94,7 +94,7 @@ const [isOpen, setIsOpen] = useState(false)
         >
           Reset
         </Button>
-        <Button onClick={handleApply} className="rounded-full bg-black text-white hover:bg-gray-800" size="sm">
+        <Button onClick={handleApply} className="unded-full bg-black text-white hover:bg-gray-800" size="sm">
           Apply
         </Button>
       </div>
