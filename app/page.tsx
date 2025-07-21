@@ -229,13 +229,13 @@ export default function BuySellPage() {
                 <SelectContent>
                   <SelectItem
                     value="exchange_rate"
-                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50 focus:text-white"
+                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                   >
                     Sort by: Exchange rate (high-low)
                   </SelectItem>
                   <SelectItem
                     value="user_rating_average_lifetime"
-                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50 focus:text-white"
+                    className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                   >
                     Sort by: User rating (high-low)
                   </SelectItem>
