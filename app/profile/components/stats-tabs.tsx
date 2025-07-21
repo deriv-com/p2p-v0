@@ -11,18 +11,15 @@ import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { PlusCircle, ChevronRight } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import StatsMobileView from "./stats-mobile-view"
-import PaymentMethodsMobileView from "./payment-methods-mobile-view"
+import { useRouter } from "next/navigation"
 
 interface StatsTabsProps {
   stats?: any
 }
 
-type MobileView = "list" | "stats" | "payment"
-
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const [mobileView, setMobileView] = useState<MobileView>("list")
+  const router = useRouter()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -161,17 +158,8 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
-  // Mobile view rendering
+  // Mobile view rendering - navigate to separate routes
   if (isMobile) {
-    if (mobileView === "stats") {
-      return <StatsMobileView />
-    }
-
-    if (mobileView === "payment") {
-      return <PaymentMethodsMobileView />
-    }
-
-    // Mobile list view
     return (
       <div className="relative">
         {notification.show && (
@@ -183,7 +171,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
         <div className="space-y-1">
           <button
-            onClick={() => setMobileView("stats")}
+            onClick={() => router.push("/profile/stats")}
             className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <span className="text-base font-medium text-gray-900">Stats</span>
@@ -191,7 +179,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           </button>
 
           <button
-            onClick={() => setMobileView("payment")}
+            onClick={() => router.push("/profile/payment-methods")}
             className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <span className="text-base font-medium text-gray-900">Payment methods</span>
