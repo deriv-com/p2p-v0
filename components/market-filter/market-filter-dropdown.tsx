@@ -48,9 +48,6 @@ const [isOpen, setIsOpen] = useState(false)
 
   const handleOpenChange = useCallback((open: boolean) => {
     setIsOpen(open)
-    if (!open) {
-      setSearchQuery("")
-    }
   }, [])
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
