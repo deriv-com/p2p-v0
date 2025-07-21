@@ -85,7 +85,7 @@ const [isOpen, setIsOpen] = useState(false)
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex flex-row md:flex-col gap-3">
         <Button
           variant="outline"
           onClick={handleReset}
