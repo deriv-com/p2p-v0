@@ -32,7 +32,7 @@ export function DeleteConfirmationDialog({
   return (
     <AlertDialog open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
       <AlertDialogContent>
-        <AlertDialogHeader>
+        <AlertDialogHeader className="flex flex-col">
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
