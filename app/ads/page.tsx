@@ -80,7 +80,7 @@ export default function AdsPage() {
     const fetchAds = async () => {
       try {
         setLoading(true)
-        setError(null
+        setError(null)
         const userAdverts = await getUserAdverts()
 
         setAds(userAdverts)
