@@ -245,14 +245,13 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput
-                label="Total amount"
                 value={totalAmount}
                 onValueChange={(value) => {
                   setTotalAmount(value)
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder="0.00"
+                placeholder="Total amount"
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
               />
@@ -263,6 +262,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <RateInput
+                label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
                   setFixedRate(value)
@@ -283,14 +283,13 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput
-                label="Minimum order amount"
                 value={minAmount}
                 onValueChange={(value) => {
                   setMinAmount(value)
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, minAmount: true }))}
-                placeholder="0.00"
+                placeholder="Minimum order amount"
                 error={touched.minAmount && !!formErrors.minAmount}
               />
               {touched.minAmount && formErrors.minAmount && (
@@ -300,14 +299,13 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <CurrencyInput
-                label="Maximum order amount"
                 value={maxAmount}
                 onValueChange={(value) => {
                   setMaxAmount(value)
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, maxAmount: true }))}
-                placeholder="0.00"
+                placeholder="Maximum order amount"
                 error={touched.maxAmount && !!formErrors.maxAmount}
               />
               {touched.maxAmount && formErrors.maxAmount && (
