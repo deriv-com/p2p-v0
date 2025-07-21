@@ -12,8 +12,11 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { CurrencyFilter } from "@/components/currency-filter"
+import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
+import { ChevronDown } from "lucide-react"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -37,11 +40,11 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
 
+  const { currencies } = useCurrencyData()
+
   useEffect(() => {
     fetchAdverts()
   }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
-
-  const { currencies } = useCurrencyData()
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -102,6 +105,10 @@ export default function BuySellPage() {
     setError(null)
   }
 
+  const handleCurrencySelect = (currencyCode: string) => {
+    setCurrency(currencyCode)
+  }
+
   useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
@@ -121,54 +128,52 @@ export default function BuySellPage() {
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex-shrink-0">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
-          {
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-[24px]">
-                <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                  <TabsList className="w-full md:min-w-[230px]">
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
-                      Buy
-                    </TabsTrigger>
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
-                      Sell
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-[24px]">
+              <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+                <TabsList className="w-full md:min-w-[230px]">
+                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+                    Buy
+                  </TabsTrigger>
+                  <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+                    Sell
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
 
-                <div className="flex gap-[8px] flex-wrap">
-                  {CURRENCY_FILTERS.map((currencyFilter) => (
-                    <Button
-                      key={currencyFilter}
-                      variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedAccountCurrency(currencyFilter)}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+              <div className="flex gap-[8px] flex-wrap">
+                {CURRENCY_FILTERS.map((currencyFilter) => (
+                  <Button
+                    key={currencyFilter}
+                    variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedAccountCurrency(currencyFilter)}
+                    className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
                         selectedAccountCurrency === currencyFilter
                           ? "bg-black text-white hover:bg-gray-800"
                           : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
                       }`}
-                    >
-                      {currencyFilter}
-                    </Button>
-                  ))}
-                </div>
+                  >
+                    {currencyFilter}
+                  </Button>
+                ))}
               </div>
             </div>
-          }
+          </div>
+
           <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
-            {
-              <Select value={currency} onValueChange={setCurrency}>
-                <SelectTrigger className="flex-1 md:flex-none w-auto">
-                  <SelectValue placeholder="Currency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="IDR">IDR</SelectItem>
-                  <SelectItem value="USD">USD</SelectItem>
-                  <SelectItem value="EUR">EUR</SelectItem>
-                  <SelectItem value="GBP">GBP</SelectItem>
-                </SelectContent>
-              </Select>
-            }
+            <CurrencyFilter
+              currencies={currencies}
+              selectedCurrency={currency}
+              onCurrencySelect={handleCurrencySelect}
+              trigger={
+                <Button variant="outline" className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black">
+                  <span>{currency}</span>
+                  <ChevronDown className="h-4 w-4 ml-2" />
+                </Button>
+              }
+            />
+
             <div className="md:block">
               <Select
                 value={selectedPaymentMethod}
@@ -188,22 +193,21 @@ export default function BuySellPage() {
                 </SelectContent>
               </Select>
             </div>
+
             <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
-              {
-                <button
-                  onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
-                  className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <span className="text-sm hidden md:inline">Filter by</span>
-                  <Image
-                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
-                    alt="Dropdown"
-                    width={15}
-                    height={15}
-                    className="h-4 w-4 opacity-70 md:inline"
-                  />
-                </button>
-              }
+              <button
+                onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
+                className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                <span className="text-sm hidden md:inline">Filter by</span>
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
+                  alt="Dropdown"
+                  width={15}
+                  height={15}
+                  className="h-4 w-4 opacity-70 md:inline"
+                />
+              </button>
               {isFilterPopupOpen && (
                 <FilterPopup
                   isOpen={isFilterPopupOpen}
@@ -213,6 +217,7 @@ export default function BuySellPage() {
                 />
               )}
             </div>
+
             <div className="hidden md:block">
               <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
                 <SelectTrigger className="w-full">
@@ -227,6 +232,7 @@ export default function BuySellPage() {
           </div>
         </div>
       </div>
+
       <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
         <div>
           {isLoading ? (
@@ -330,7 +336,9 @@ export default function BuySellPage() {
                                 {method && (
                                   <div
                                     className={`h-2 w-2 rounded-full mr-2 ${
-                                      method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
                                     }`}
                                   ></div>
                                 )}
@@ -359,9 +367,11 @@ export default function BuySellPage() {
           )}
         </div>
       </div>
+
       <div className="flex-shrink-0">
         <MobileFooterNav />
       </div>
+
       <OrderSidebar
         isOpen={isOrderSidebarOpen}
         onClose={() => setIsOrderSidebarOpen(false)}
