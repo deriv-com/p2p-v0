@@ -39,6 +39,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   useEffect(() => {
+
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
