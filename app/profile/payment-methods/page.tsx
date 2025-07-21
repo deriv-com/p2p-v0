@@ -519,7 +519,7 @@ export default function PaymentMethodsPage() {
       </div>
 
       {/* Fixed Bottom Button */}
-      <div className="flex-shrink-0 bg-white border-t border-gray-200 p-4  mb-16">
+      <div className="flex-shrink-0 bg-white border-t border-gray-200 p-4 ">
         <Button
           variant="outline"
           size="lg"
