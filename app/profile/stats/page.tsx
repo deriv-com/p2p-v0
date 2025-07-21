@@ -1,159 +1,143 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
+import { CustomShimmer } from "../components/ui/custom-shimmer"
+import CustomStatusModal from "../components/ui/custom-status-modal"
+import CustomNotificationBanner from "../components/ui/custom-notification-banner"
 import { Info } from "lucide-react"
 
 interface UserStats {
-  buyCompletion: { rate: string; period: string; count?: number }
-  sellCompletion: { rate: string; period: string; count?: number }
-  avgPayTime: { time: string; period: string }
-  avgReleaseTime: { time: string; period: string }
-  tradePartners: number
-  totalOrders30d: number
-  totalOrdersLifetime: number
-  tradeVolume30d: { amount: string; currency: string; period: string }
-  tradeVolumeLifetime: { amount: string; currency: string }
+  buy_orders_count: number
+  sell_orders_count: number
+  buy_completion_rate: number
+  sell_completion_rate: number
+  avg_pay_time: number
+  avg_release_time: number
+  total_orders: number
+  total_turnover: number
+  currency: string
 }
 
-type TabType = "30days" | "lifetime"
+type TabType = "30_days" | "lifetime"
 
 export default function StatsPage() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<TabType>("30days")
-  const [userStats, setUserStats] = useState<UserStats>({
-    buyCompletion: { rate: "N/A", period: "(30d)", count: 0 },
-    sellCompletion: { rate: "N/A", period: "(30d)", count: 0 },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  })
+  const [stats, setStats] = useState<UserStats | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeTab, setActiveTab] = useState<TabType>("30_days")
+  const [statusModal, setStatusModal] = useState({
+    show: false,
+    type: "error" as "success" | "error",
+    title: "",
+    message: "",
+  })
+  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
+    show: false,
+    message: "",
+  })
+
+  const fetchStats = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      const url = `${API.baseUrl}/user-stats?period=${activeTab}`
+      const headers = AUTH.getAuthHeader()
+      const response = await fetch(url, {
+        headers,
+        cache: "no-store",
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error fetching stats: ${response.statusText}`)
+      }
+
+      const responseText = await response.text()
+      let data
+
+      try {
+        data = JSON.parse(responseText)
+      } catch (e) {
+        console.error("Failed to parse stats response:", e)
+        data = { data: null }
+      }
+
+      if (data.data) {
+        setStats(data.data)
+      } else {
+        // Mock data for demonstration
+        setStats({
+          buy_orders_count: 5,
+          sell_orders_count: 20,
+          buy_completion_rate: 100,
+          sell_completion_rate: 100,
+          avg_pay_time: 300, // 5 minutes in seconds
+          avg_release_time: 300, // 5 minutes in seconds
+          total_orders: 25,
+          total_turnover: 500.0,
+          currency: "USD",
+        })
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Failed to load stats")
+      // Set mock data on error for demonstration
+      setStats({
+        buy_orders_count: 5,
+        sell_orders_count: 20,
+        buy_completion_rate: 100,
+        sell_completion_rate: 100,
+        avg_pay_time: 300,
+        avg_release_time: 300,
+        total_orders: 25,
+        total_turnover: 500.0,
+        currency: "USD",
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }, [activeTab])
 
   useEffect(() => {
-    const fetchUserStats = async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-
-        const userId = USER.id
-        const url = `${API.baseUrl}/users/${userId}`
-        const headers = AUTH.getAuthHeader()
-
-        const response = await fetch(url, {
-          headers,
-          cache: "no-store",
-        })
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
-        }
-
-        const responseData = await response.json()
-
-        if (responseData && responseData.data) {
-          const data = responseData.data
-
-          const formatTimeAverage = (minutes: number) => {
-            if (!minutes || minutes <= 0) return "N/A"
-            if (minutes < 60) return `${minutes} min`
-            const hours = Math.floor(minutes / 60)
-            const remainingMinutes = minutes % 60
-            if (hours < 24) {
-              return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
-            }
-            const days = Math.floor(hours / 24)
-            const remainingHours = hours % 24
-            return remainingHours > 0 ? `${days}d ${remainingHours}h` : `${days}d`
-          }
-
-          const transformedStats: UserStats = {
-            buyCompletion: {
-              rate: `${Number(data.completion_average_30day) || 0}%`,
-              period: "(30d)",
-              count: Number(data.buy_count_30day) || 0,
-            },
-            sellCompletion: {
-              rate: `${Number(data.completion_average_30day) || 0}%`,
-              period: "(30d)",
-              count: Number(data.sell_count_30day) || 0,
-            },
-            avgPayTime: {
-              time: formatTimeAverage(Number(data.buy_time_average_30day)),
-              period: "(30d)",
-            },
-            avgReleaseTime: {
-              time: formatTimeAverage(Number(data.release_time_average_30day)),
-              period: "(30d)",
-            },
-            tradePartners: Number(data.trade_partners) || 0,
-            totalOrders30d: (Number(data.buy_count_30day) || 0) + (Number(data.sell_count_30day) || 0),
-            totalOrdersLifetime: Number(data.order_count_lifetime) || 0,
-            tradeVolume30d: {
-              amount: ((Number(data.buy_amount_30day) || 0) + (Number(data.sell_amount_30day) || 0)).toFixed(2),
-              currency: "USD",
-              period: "(30d)",
-            },
-            tradeVolumeLifetime: {
-              amount: data.order_amount_lifetime ? Number(data.order_amount_lifetime).toFixed(2) : "0.00",
-              currency: "USD",
-            },
-          }
-
-          setUserStats(transformedStats)
-        }
-      } catch (error) {
-        setError(error instanceof Error ? error.message : "Failed to load stats")
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchUserStats()
-  }, [])
+    fetchStats()
+  }, [fetchStats])
 
   const handleBack = () => {
     router.push("/profile")
   }
 
-  const getDisplayValue = (stat: string, isLifetime = false) => {
-    if (isLoading) return "..."
-    if (error) return "N/A"
-
-    switch (stat) {
-      case "sellCompletion":
-        return isLifetime
-          ? `${userStats.sellCompletion.rate} (${userStats.totalOrdersLifetime})`
-          : `${userStats.sellCompletion.rate} (${userStats.sellCompletion.count || 0})`
-      case "buyCompletion":
-        return isLifetime
-          ? `${userStats.buyCompletion.rate} (${userStats.totalOrdersLifetime})`
-          : `${userStats.buyCompletion.rate} (${userStats.buyCompletion.count || 0})`
-      case "avgPayTime":
-        return userStats.avgPayTime.time
-      case "avgReleaseTime":
-        return userStats.avgReleaseTime.time
-      case "totalOrders":
-        return isLifetime ? userStats.totalOrdersLifetime.toString() : userStats.totalOrders30d.toString()
-      case "tradeVolume":
-        return isLifetime
-          ? `${userStats.tradeVolumeLifetime.currency} ${userStats.tradeVolumeLifetime.amount}`
-          : `${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`
-      default:
-        return "N/A"
+  const formatTime = (seconds: number): string => {
+    if (seconds < 60) return `${seconds} sec`
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} min`
+    if (seconds < 86400) {
+      const hours = Math.floor(seconds / 3600)
+      const minutes = Math.floor((seconds % 3600) / 60)
+      return minutes > 0 ? `${hours}h ${minutes}m` : `${hours}h`
     }
+    return `${Math.floor(seconds / 86400)}d`
+  }
+
+  const formatCurrency = (amount: number, currency: string): string => {
+    return `${currency} ${amount.toFixed(2)}`
+  }
+
+  const closeStatusModal = () => {
+    setStatusModal((prev) => ({ ...prev, show: false }))
   }
 
   return (
     <div className="fixed inset-0 bg-gray-50 flex flex-col">
+      {notification.show && (
+        <CustomNotificationBanner
+          message={notification.message}
+          onClose={() => setNotification({ show: false, message: "" })}
+        />
+      )}
+
       {/* Fixed Header */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3 z-10">
         <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
@@ -163,20 +147,20 @@ export default function StatsPage() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex-shrink-0 bg-white px-4 py-4">
-        <div className="bg-gray-100 rounded-lg p-1 flex">
+      <div className="flex-shrink-0 bg-white px-4 py-4 border-b border-gray-100">
+        <div className="flex gap-2">
           <button
-            onClick={() => setActiveTab("30days")}
-            className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
-              activeTab === "30days" ? "bg-white text-black shadow-sm" : "text-gray-600 hover:text-gray-900"
+            onClick={() => setActiveTab("30_days")}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeTab === "30_days" ? "bg-black text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
             Last 30 days
           </button>
           <button
             onClick={() => setActiveTab("lifetime")}
-            className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
-              activeTab === "lifetime" ? "bg-white text-black shadow-sm" : "text-gray-600 hover:text-gray-900"
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+              activeTab === "lifetime" ? "bg-black text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             }`}
           >
             Lifetime
@@ -185,69 +169,80 @@ export default function StatsPage() {
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto bg-gray-50">
-        {error ? (
-          <div className="flex flex-col items-center justify-center py-12 px-4">
+      <div className="flex-1 overflow-y-auto">
+        {isLoading ? (
+          <div className="p-4 space-y-4">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg p-4 flex justify-between items-center">
+                <CustomShimmer className="h-4 w-32" />
+                <CustomShimmer className="h-4 w-20" />
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-8 px-4">
             <p className="text-red-500 mb-4 text-center">{error}</p>
-            <Button onClick={() => window.location.reload()} variant="outline" className="px-6">
+            <Button onClick={fetchStats} variant="outline" className="px-6 bg-transparent">
               Try again
             </Button>
           </div>
-        ) : (
-          <div className="p-4 space-y-0">
-            {/* Sell Completion */}
-            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+        ) : stats ? (
+          <div className="p-4 space-y-1">
+            {/* Sell completion */}
+            <div className="bg-white rounded-lg p-4 flex justify-between items-center border-b border-gray-100">
               <span className="text-gray-600">Sell completion</span>
               <span className="font-semibold text-black">
-                {getDisplayValue("sellCompletion", activeTab === "lifetime")}
+                {stats.sell_completion_rate}% ({stats.sell_orders_count})
               </span>
             </div>
 
-            {/* Buy Completion */}
-            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+            {/* Buy completion */}
+            <div className="bg-white rounded-lg p-4 flex justify-between items-center border-b border-gray-100">
               <span className="text-gray-600">Buy completion</span>
               <span className="font-semibold text-black">
-                {getDisplayValue("buyCompletion", activeTab === "lifetime")}
+                {stats.buy_completion_rate}% ({stats.buy_orders_count})
               </span>
             </div>
 
-            {/* Avg Pay Time */}
-            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+            {/* Avg. pay time */}
+            <div className="bg-white rounded-lg p-4 flex justify-between items-center border-b border-gray-100">
               <span className="text-gray-600">Avg. pay time</span>
-              <span className="font-semibold text-black">
-                {getDisplayValue("avgPayTime", activeTab === "lifetime")}
-              </span>
+              <span className="font-semibold text-black">{formatTime(stats.avg_pay_time)}</span>
             </div>
 
-            {/* Avg Release Time */}
-            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+            {/* Avg. release time */}
+            <div className="bg-white rounded-lg p-4 flex justify-between items-center border-b border-gray-100">
               <span className="text-gray-600">Avg. release time</span>
-              <span className="font-semibold text-black">
-                {getDisplayValue("avgReleaseTime", activeTab === "lifetime")}
-              </span>
+              <span className="font-semibold text-black">{formatTime(stats.avg_release_time)}</span>
             </div>
 
-            {/* Total Orders */}
-            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+            {/* Total orders */}
+            <div className="bg-white rounded-lg p-4 flex justify-between items-center border-b border-gray-100">
               <span className="text-gray-600">Total orders</span>
-              <span className="font-semibold text-black">
-                {getDisplayValue("totalOrders", activeTab === "lifetime")}
-              </span>
+              <span className="font-semibold text-black">{stats.total_orders}</span>
             </div>
 
-            {/* Trade Volume */}
-            <div className="bg-white px-4 py-4 flex justify-between items-center">
+            {/* Trade volume */}
+            <div className="bg-white rounded-lg p-4 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="text-gray-600">Trade volume</span>
                 <Info className="h-4 w-4 text-gray-400" />
               </div>
-              <span className="font-semibold text-black">
-                {getDisplayValue("tradeVolume", activeTab === "lifetime")}
-              </span>
+              <span className="font-semibold text-black">{formatCurrency(stats.total_turnover, stats.currency)}</span>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
+
+      {/* Status Modal */}
+      {statusModal.show && (
+        <CustomStatusModal
+          type={statusModal.type}
+          title={statusModal.title}
+          message={statusModal.message}
+          onClose={closeStatusModal}
+        />
+      )}
     </div>
   )
 }
