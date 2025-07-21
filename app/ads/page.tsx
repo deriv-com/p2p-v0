@@ -47,7 +47,7 @@ export default function AdsPage() {
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    // Show success alert for desktop
+
     if (
       success &&
       type &&
