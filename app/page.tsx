@@ -30,6 +30,7 @@ export default function BuySellPage() {
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
+    withinBalance: false,
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -111,6 +112,10 @@ export default function BuySellPage() {
 
   const handleFilterApply = (newFilters: MarketFilterOptions) => {
     setFilterOptions(newFilters)
+  }
+
+  const handleFilterToggle = () => {
+    setIsFilterPopupOpen(!isFilterPopupOpen)
   }
 
   useEffect(() => {
@@ -201,25 +206,27 @@ export default function BuySellPage() {
               </Select>
             </div>
 
-            <div className="relative filter-dropdown-container flex-shrink-0 flex-1">
-              <button
-                onClick={() => setIsFilterPopupOpen(!isFilterPopupOpen)}
-                className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                <span className="text-sm hidden md:inline">Filter by</span>
-                <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
-                  alt="Dropdown"
-                  width={15}
-                  height={15}
-                  className="h-4 w-4 opacity-70 md:inline"
-                />
-              </button>
+            <div className="filter-dropdown-container flex-shrink-0 flex-1">
               <MarketFilterDropdown
                 isOpen={isFilterPopupOpen}
                 onClose={() => setIsFilterPopupOpen(false)}
                 onApply={handleFilterApply}
                 initialFilters={filterOptions}
+                trigger={
+                  <button
+                    onClick={handleFilterToggle}
+                    className="h-10 px-3 py-2 md:w-[150px] flex items-center justify-between rounded-md border border-input bg-background text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-0 focus:border-[#000000] active:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50 w-full"
+                  >
+                    <span className="text-sm hidden md:inline">Filter by</span>
+                    <Image
+                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-MaTVHgyEEk1geuXl77pbxjPzcQzTkb.png"
+                      alt="Dropdown"
+                      width={15}
+                      height={15}
+                      className="h-4 w-4 opacity-70 md:inline"
+                    />
+                  </button>
+                }
               />
             </div>
 

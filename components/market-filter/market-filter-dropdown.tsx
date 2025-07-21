@@ -1,8 +1,12 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useIsMobile } from "@/components/ui/use-mobile"
 
 export interface MarketFilterOptions {
   withinBalance: boolean
@@ -14,10 +18,18 @@ interface MarketFilterDropdownProps {
   onClose: () => void
   onApply: (filters: MarketFilterOptions) => void
   initialFilters: MarketFilterOptions
+  trigger: React.ReactElement
 }
 
-export default function MarketFilterDropdown({ isOpen, onClose, onApply, initialFilters }: MarketFilterDropdownProps) {
+export default function MarketFilterDropdown({
+  isOpen,
+  onClose,
+  onApply,
+  initialFilters,
+  trigger,
+}: MarketFilterDropdownProps) {
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     setFilters(initialFilters)
@@ -43,11 +55,9 @@ export default function MarketFilterDropdown({ isOpen, onClose, onApply, initial
     }))
   }
 
-  if (!isOpen) return null
-
-  return (
-    <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
-      <div className="space-y-4">
+  const FilterContent = () => (
+    <div className="w-full h-full">
+      <div className="space-y-4 mb-6">
         <div className="flex items-center space-x-3">
           <Checkbox
             id="within-balance"
@@ -73,7 +83,7 @@ export default function MarketFilterDropdown({ isOpen, onClose, onApply, initial
         </div>
       </div>
 
-      <div className="flex gap-3 mt-6">
+      <div className="flex gap-3">
         <Button
           variant="outline"
           onClick={handleReset}
@@ -85,6 +95,31 @@ export default function MarketFilterDropdown({ isOpen, onClose, onApply, initial
           Apply
         </Button>
       </div>
+    </div>
+  )
+
+  if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetTrigger asChild>{trigger}</SheetTrigger>
+        <SheetContent side="bottom" className="h-[50vh] p-[16px] rounded-t-2xl">
+          <div className="mb-4">
+            <h3 className="text-xl font-bold text-center">Filter by</h3>
+          </div>
+          <FilterContent />
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  return (
+    <div className="relative">
+      {trigger}
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 w-80 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-4">
+          <FilterContent />
+        </div>
+      )}
     </div>
   )
 }
