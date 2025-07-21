@@ -1,25 +1,30 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Trash2, Edit } from "lucide-react"
+import { maskAccountNumber } from "@/lib/utils"
 
 import { useState, useEffect, useCallback } from "react"
+import { MoreVertical, Edit, Trash } from "lucide-react"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "../api"
+import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import BankTransferEditPanel from "./bank-transfer-edit-panel"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
+import { Card, CardContent } from "@/components/ui/card"
+import { StatusIndicator } from "@/components/ui/status-indicator"
 
 interface PaymentMethod {
   id: string
-  type: string
   name: string
-  details: Record<string, string>
-  isActive: boolean
+  type: string
+  category: "bank_transfer" | "e_wallet" | "other"
+  details: Record<string, any>
+  instructions?: string
+  isDefault?: boolean
 }
 
 export default function PaymentMethodsTab() {
@@ -73,7 +78,7 @@ export default function PaymentMethodsTab() {
       try {
         data = JSON.parse(responseText)
       } catch (e) {
-        console.error("Failed to parse payment methods response:", e)
+        console.error("Failed to parse payment methods response:", e);
         data = { data: [] }
       }
 
@@ -104,7 +109,7 @@ export default function PaymentMethodsTab() {
           category: category,
           details: method.fields || {},
           instructions: instructions,
-          isActive: method.isActive || true,
+          isDefault: false,
         }
       })
 
@@ -242,8 +247,8 @@ export default function PaymentMethodsTab() {
     setStatusModal((prev) => ({ ...prev, show: false }))
   }
 
-  const bankTransfers = paymentMethods.filter((method) => method.type === "bank_transfer")
-  const eWallets = paymentMethods.filter((method) => method.type === "ewallet")
+  const bankTransfers = paymentMethods.filter((method) => method.category === "bank_transfer")
+  const eWallets = paymentMethods.filter((method) => method.category === "e_wallet")
 
   const getBankIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center text-success">
@@ -312,45 +317,117 @@ export default function PaymentMethodsTab() {
     )
   }
 
-  if (paymentMethods.length === 0) {
-    return (
-      <div className="text-center py-8">
-        <p className="text-gray-500 mb-4">No payment methods added yet.</p>
-        <Button variant="default">Add Payment Method</Button>
-      </div>
-    )
-  }
-
   return (
-    <div className="space-y-4">
-      {paymentMethods.map((method) => (
-        <Card key={method.id}>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">{method.name}</CardTitle>
-            <div className="flex items-center space-x-2">
-              <Badge variant={method.isActive ? "default" : "secondary"}>
-                {method.isActive ? "Active" : "Inactive"}
-              </Badge>
-              <Button variant="ghost" size="sm" onClick={() => handleEditPaymentMethod(method)}>
-                <Edit className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => handleDeletePaymentMethod(method.id, method.name)}>
-                <Trash2 className="h-4 w-4 text-red-500" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-1">
-              {Object.entries(method.details).map(([key, value]) => (
-                <div key={key} className="flex justify-between text-sm">
-                  <span className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, " $1").trim()}:</span>
-                  <span className="text-gray-900">{value}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+    <div>
+      {notification.show && (
+        <CustomNotificationBanner
+          message={notification.message}
+          onClose={() => setNotification({ show: false, message: "" })}
+        />
+      )}
+
+      <div className="mb-8 mt-6">
+        <h3 className="text-xl font-bold mb-4">Bank transfer</h3>
+        {bankTransfers.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {bankTransfers.map((method) => (
+              <Card key={method.id} variant="default" className="overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      {getBankIcon()}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-lg">Bank Transfer</div>
+                        <StatusIndicator variant="neutral" size="sm" className="truncate">
+                          {method.details?.account?.value
+                            ? maskAccountNumber(method.details.account.value)
+                            : `ID: ${method.id}`}
+                        </StatusIndicator>
+                      </div>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-[160px]">
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                          onSelect={() => handleEditPaymentMethod(method)}
+                        >
+                          <Edit className="h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-destructive focus:text-destructive"
+                          onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
+                        >
+                          <Trash className="h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 italic">No bank transfers are added at the moment</p>
+        )}
+      </div>
+
+      <div className="mb-8">
+        <h3 className="text-xl font-bold mb-4">E-wallets</h3>
+        {eWallets.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {eWallets.map((method) => (
+              <Card key={method.id} variant="default" className="overflow-hidden">
+                <CardContent className="p-4">
+                  <div className="flex justify-between items-start">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      {getEWalletIcon()}
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-lg">{method.name}</div>
+                        <StatusIndicator variant="neutral" size="sm" className="truncate">
+                          {method.details?.account?.value || `ID: ${method.id}`}
+                        </StatusIndicator>
+                      </div>
+                    </div>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-[160px]">
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                          onSelect={() => handleEditPaymentMethod(method)}
+                        >
+                          <Edit className="h-4 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-destructive focus:text-destructive"
+                          onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
+                        >
+                          <Trash className="h-4 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500 italic">No e-wallets are added at the moment</p>
+        )}
+      </div>
+
       <DeleteConfirmationDialog
         open={deleteConfirmModal.show}
         title="Delete payment method?"

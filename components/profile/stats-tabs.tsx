@@ -10,10 +10,6 @@ import StatusModal from "./ui/status-modal"
 import NotificationBanner from "./notification-banner"
 import { PlusCircle } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
-import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { ChevronRight } from "lucide-react"
-import MobileStatsPage from "./mobile-stats-page"
-import MobilePaymentMethodsPage from "./mobile-payment-methods-page"
 
 interface StatsTabsProps {
   stats?: any
@@ -31,7 +27,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [mobileView, setMobileView] = useState<"list" | "stats" | "payment">("list")
   const [userStats, setUserStats] = useState<any>(
     initialStats || {
       buyCompletion: { rate: "N/A", period: "(30d)" },
@@ -47,20 +42,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   )
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
-
-  const isMobile = useIsMobile()
-
-  const handleMobileNavigation = (option: string) => {
-    if (option === "stats") {
-      setMobileView("stats")
-    } else if (option === "payment") {
-      setMobileView("payment")
-    }
-  }
-
-  const handleMobileBack = () => {
-    setMobileView("list")
-  }
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -178,57 +159,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
-  // Mobile view rendering
-  if (isMobile) {
-    if (mobileView === "stats") {
-      return <MobileStatsPage onBack={handleMobileBack} />
-    }
-
-    if (mobileView === "payment") {
-      return <MobilePaymentMethodsPage onBack={handleMobileBack} />
-    }
-
-    // Mobile list view
-    return (
-      <div className="relative">
-        {notification.show && (
-          <NotificationBanner
-            message={notification.message}
-            onClose={() => setNotification({ show: false, message: "" })}
-          />
-        )}
-
-        <div className="space-y-4">
-          <div
-            className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => handleMobileNavigation("stats")}
-          >
-            <span className="text-base font-medium text-gray-900">Stats</span>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </div>
-
-          <div
-            className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
-            onClick={() => handleMobileNavigation("payment")}
-          >
-            <span className="text-base font-medium text-gray-900">Payment methods</span>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </div>
-        </div>
-
-        {errorModal.show && (
-          <StatusModal
-            type="error"
-            title="Error"
-            message={errorModal.message}
-            onClose={() => setErrorModal({ show: false, message: "" })}
-          />
-        )}
-      </div>
-    )
-  }
-
-  // Desktop view - unchanged
   return (
     <div className="relative">
       {notification.show && (
