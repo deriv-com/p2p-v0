@@ -116,7 +116,7 @@ export function CurrencyFilter({
         <SheetTrigger asChild>{trigger}</SheetTrigger>
         <SheetContent side="bottom" className="h-[80vh] p-6">
           <div className="mb-4">
-            <h3 className="text-lg font-semibold">Select Currency</h3>
+            <h3 className="text-lg font-semibold">Choose currency</h3>
           </div>
           <CurrencyList />
         </SheetContent>
