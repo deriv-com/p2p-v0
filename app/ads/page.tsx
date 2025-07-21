@@ -81,10 +81,8 @@ export default function AdsPage() {
     const fetchAds = async () => {
       try {
         setLoading(true)
-        setError(null)
-        console.log(`Fetching adverts for user ID: ${USER.id}`)
-        const userAdverts = await getUserAdverts()
-        console.log("User adverts response:", userAdverts)
+        setError(null
+        const userAdverts = await getUserAdverts(
         setAds(userAdverts)
       } catch (err) {
         console.error("Error fetching ads:", err)
