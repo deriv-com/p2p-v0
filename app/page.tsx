@@ -41,6 +41,8 @@ export default function BuySellPage() {
     fetchAdverts()
   }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
 
+  const { currencies } = useCurrencyData()
+
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       setIsLoadingPaymentMethods(true)
