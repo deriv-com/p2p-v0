@@ -82,7 +82,8 @@ export default function AdsPage() {
       try {
         setLoading(true)
         setError(null
-        const userAdverts = await getUserAdverts(
+        const userAdverts = await getUserAdverts()
+
         setAds(userAdverts)
       } catch (err) {
         console.error("Error fetching ads:", err)
