@@ -15,18 +15,17 @@ export interface MarketFilterOptions {
 }
 
 interface MarketFilterDropdownProps {
-  isOpen: boolean
   onApply: (filters: MarketFilterOptions) => void
   initialFilters: MarketFilterOptions
   trigger: React.ReactElement
 }
 
 export default function MarketFilterDropdown({
-  isOpen,
   onApply,
   initialFilters,
   trigger,
 }: MarketFilterDropdownProps) {
+const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
   const isMobile = useIsMobile()
 
