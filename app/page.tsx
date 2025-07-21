@@ -114,10 +114,6 @@ export default function BuySellPage() {
     setFilterOptions(newFilters)
   }
 
-  const handleFilterToggle = () => {
-    setIsFilterPopupOpen(!isFilterPopupOpen)
-  }
-
   useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
