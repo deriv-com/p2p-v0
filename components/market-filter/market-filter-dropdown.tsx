@@ -43,7 +43,7 @@ const [isOpen, setIsOpen] = useState(false)
 
   const handleApply = () => {
     onApply(filters)
-    onClose()
+    setIsOpen(false)
   }
 
   const handleOpenChange = useCallback((open: boolean) => {
