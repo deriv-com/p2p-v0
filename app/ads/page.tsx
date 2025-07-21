@@ -78,7 +78,7 @@ export default function AdsPage() {
       })
     }
 
-    // Fetch ads
+
     const fetchAds = async () => {
       try {
         setLoading(true)
