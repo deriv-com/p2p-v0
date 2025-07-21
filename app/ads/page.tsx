@@ -39,7 +39,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   useEffect(() => {
-    console.log("Inside use effect")
+  
 
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
