@@ -30,7 +30,6 @@ export default function BuySellPage() {
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
-    withinBalance: false,
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -77,12 +76,6 @@ export default function BuySellPage() {
 
       if (filterOptions.fromFollowing) {
         params.favourites_only = 1
-      }
-
-      // Add logic for withinBalance filter if needed
-      if (filterOptions.withinBalance) {
-        // This would need to be implemented based on your API requirements
-        // params.within_balance = 1
       }
 
       const data = await BuySellAPI.getAdvertisements(params)
