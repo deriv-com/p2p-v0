@@ -130,12 +130,6 @@ export default function StatsPage({ stats: initialStats }: StatsPageProps) {
     return match ? Number.parseInt(match[1], 10) : 0
   }
 
-  const getCompletionColor = (rate: number): string => {
-    if (rate >= 90) return "bg-green-500"
-    if (rate >= 70) return "bg-yellow-500"
-    return "bg-red-500"
-  }
-
   const formatNumber = (num: number): string => {
     if (num >= 1000000) {
       return `${(num / 1000000).toFixed(1)}M`
