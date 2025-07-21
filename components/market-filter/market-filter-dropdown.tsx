@@ -39,6 +39,7 @@ const [isOpen, setIsOpen] = useState(false)
       fromFollowing: false,
     }
     setFilters(resetFilters)
+    handleApply()
   }
 
   const handleApply = () => {
