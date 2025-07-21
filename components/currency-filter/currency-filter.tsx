@@ -22,6 +22,8 @@ export function CurrencyFilter({
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
+
+  // Continuous search filtering - updates immediately as user types
   const filteredCurrencies = useMemo(() => {
     if (!searchQuery.trim()) return currencies
 
@@ -53,6 +55,7 @@ export function CurrencyFilter({
     }
   }, [])
 
+  // Continuous search handler - updates search query immediately
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
@@ -82,6 +85,7 @@ export function CurrencyFilter({
           onKeyDown={handleKeyDown}
           className="pl-10 border-gray-200 focus:border-black focus:ring-0"
           autoComplete="off"
+          autoFocus
         />
       </div>
 

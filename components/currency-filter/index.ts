@@ -1,2 +1,2 @@
 export { CurrencyFilter } from "./currency-filter"
-export type { CurrencyFilterProps, Currency } from "./types"
+export type { Currency, CurrencyFilterProps } from "./types"
