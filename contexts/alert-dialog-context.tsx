@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useCallback } from "react"
-import { AlertDialog, AlertDialogAction, AlertDialogContent } from "@/components/ui/alert-dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogFooter } from "@/components/ui/alert-dialog"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -51,14 +51,14 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     <AlertDialogContext.Provider value={contextValue}>
       {children}
       <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-        <AlertDialogContent className="p-0">
-          <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
-            <div style={{ alignSelf: "end" }} className="px-6 mt-6">
+        <AlertDialogContent>
+          <div className="flex bg-slate-75 flex-col my-[24px]">
+            <div style={{ alignSelf: "end" }}>
               <Button onClick={hideAlert} size="sm" variant="ghost">
                 <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
               </Button>
             </div>
-            <div style={{ alignSelf: "center" }} className="mb-4">
+            <div style={{ alignSelf: "center" }}>
               {config.type === "success" ? (
                 <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
               ) : (
@@ -66,15 +66,15 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               )}
             </div>
           </div>
-          <div className="px-8 py-6">
+          <div className="mx-[32px] my-[24px]">
             {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
             {config.description && <div className="mb-4">{config.description}</div>}
-            <div className="mt-6">
-              <AlertDialogAction onClick={handleConfirm} className="w-full">
-                {config.confirmText || "Continue"}
-              </AlertDialogAction>
-            </div>
           </div>
+          <AlertDialogFooter className="mx-[32px] my-[24px]">
+            <AlertDialogAction onClick={handleConfirm} className="w-full">
+              {config.confirmText || "Continue"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </AlertDialogContext.Provider>
