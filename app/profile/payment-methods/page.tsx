@@ -524,7 +524,7 @@ export default function PaymentMethodsPage() {
           variant="outline"
           size="lg"
           onClick={() => setShowAddPaymentMethodPanel(true)}
-          className="w-full py-4 text-base font-medium z-50"
+          className="w-full py-4 text-base font-medium"
         >
           Add payment
         </Button>
