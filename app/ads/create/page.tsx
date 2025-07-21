@@ -348,7 +348,7 @@ export default function CreateAdPage() {
       }
     } catch (error) {
 
-    console.log("In catch error")
+
       let errorInfo = {
         title: getErrorTitle(isEditMode),
         message: "Please try again.",
