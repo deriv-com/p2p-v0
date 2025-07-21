@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { Info } from "lucide-react"
 
 interface UserStats {
-  buyCompletion: { rate: string; period: string }
-  sellCompletion: { rate: string; period: string }
+  buyCompletion: { rate: string; period: string; count?: number }
+  sellCompletion: { rate: string; period: string; count?: number }
   avgPayTime: { time: string; period: string }
   avgReleaseTime: { time: string; period: string }
   tradePartners: number
@@ -20,11 +19,14 @@ interface UserStats {
   tradeVolumeLifetime: { amount: string; currency: string }
 }
 
+type TabType = "30days" | "lifetime"
+
 export default function StatsPage() {
   const router = useRouter()
+  const [activeTab, setActiveTab] = useState<TabType>("30days")
   const [userStats, setUserStats] = useState<UserStats>({
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
+    buyCompletion: { rate: "N/A", period: "(30d)", count: 0 },
+    sellCompletion: { rate: "N/A", period: "(30d)", count: 0 },
     avgPayTime: { time: "N/A", period: "(30d)" },
     avgReleaseTime: { time: "N/A", period: "(30d)" },
     tradePartners: 0,
@@ -62,18 +64,27 @@ export default function StatsPage() {
 
           const formatTimeAverage = (minutes: number) => {
             if (!minutes || minutes <= 0) return "N/A"
-            const days = Math.floor(minutes / 1440)
-            return `${days} days`
+            if (minutes < 60) return `${minutes} min`
+            const hours = Math.floor(minutes / 60)
+            const remainingMinutes = minutes % 60
+            if (hours < 24) {
+              return remainingMinutes > 0 ? `${hours}h ${remainingMinutes}m` : `${hours}h`
+            }
+            const days = Math.floor(hours / 24)
+            const remainingHours = hours % 24
+            return remainingHours > 0 ? `${days}d ${remainingHours}h` : `${days}d`
           }
 
           const transformedStats: UserStats = {
             buyCompletion: {
               rate: `${Number(data.completion_average_30day) || 0}%`,
               period: "(30d)",
+              count: Number(data.buy_count_30day) || 0,
             },
             sellCompletion: {
               rate: `${Number(data.completion_average_30day) || 0}%`,
               period: "(30d)",
+              count: Number(data.sell_count_30day) || 0,
             },
             avgPayTime: {
               time: formatTimeAverage(Number(data.buy_time_average_30day)),
@@ -113,23 +124,36 @@ export default function StatsPage() {
     router.push("/profile")
   }
 
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
-      return `${(num / 1000000).toFixed(1)}M`
-    }
-    if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}K`
-    }
-    return num.toString()
-  }
+  const getDisplayValue = (stat: string, isLifetime = false) => {
+    if (isLoading) return "..."
+    if (error) return "N/A"
 
-  const getProgressValue = (rateString: string): number => {
-    const match = rateString.match(/(\d+)%/)
-    return match ? Number.parseInt(match[1]) : 0
+    switch (stat) {
+      case "sellCompletion":
+        return isLifetime
+          ? `${userStats.sellCompletion.rate} (${userStats.totalOrdersLifetime})`
+          : `${userStats.sellCompletion.rate} (${userStats.sellCompletion.count || 0})`
+      case "buyCompletion":
+        return isLifetime
+          ? `${userStats.buyCompletion.rate} (${userStats.totalOrdersLifetime})`
+          : `${userStats.buyCompletion.rate} (${userStats.buyCompletion.count || 0})`
+      case "avgPayTime":
+        return userStats.avgPayTime.time
+      case "avgReleaseTime":
+        return userStats.avgReleaseTime.time
+      case "totalOrders":
+        return isLifetime ? userStats.totalOrdersLifetime.toString() : userStats.totalOrders30d.toString()
+      case "tradeVolume":
+        return isLifetime
+          ? `${userStats.tradeVolumeLifetime.currency} ${userStats.tradeVolumeLifetime.amount}`
+          : `${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`
+      default:
+        return "N/A"
+    }
   }
 
   return (
-    <div className="fixed inset-0 bg-white flex flex-col">
+    <div className="fixed inset-0 bg-gray-50 flex flex-col">
       {/* Fixed Header */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3 z-10">
         <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
@@ -138,150 +162,89 @@ export default function StatsPage() {
         <h1 className="text-lg font-semibold">Stats</h1>
       </div>
 
+      {/* Tab Navigation */}
+      <div className="flex-shrink-0 bg-white px-4 py-4">
+        <div className="bg-gray-100 rounded-lg p-1 flex">
+          <button
+            onClick={() => setActiveTab("30days")}
+            className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
+              activeTab === "30days" ? "bg-white text-black shadow-sm" : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Last 30 days
+          </button>
+          <button
+            onClick={() => setActiveTab("lifetime")}
+            className={`flex-1 py-2 px-4 text-sm font-medium rounded-md transition-colors ${
+              activeTab === "lifetime" ? "bg-white text-black shadow-sm" : "text-gray-600 hover:text-gray-900"
+            }`}
+          >
+            Lifetime
+          </button>
+        </div>
+      </div>
+
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto">
-        {isLoading ? (
-          <div className="p-4 space-y-4">
-            <div className="animate-pulse">
-              <div className="grid grid-cols-1 gap-4">
-                {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="border border-gray-200">
-                    <CardContent className="p-4">
-                      <div className="space-y-3">
-                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-                        <div className="h-2 bg-gray-200 rounded w-full"></div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : error ? (
+      <div className="flex-1 overflow-y-auto bg-gray-50">
+        {error ? (
           <div className="flex flex-col items-center justify-center py-12 px-4">
             <p className="text-red-500 mb-4 text-center">{error}</p>
-            <Button onClick={() => window.location.reload()} variant="outline" className="px-6 bg-transparent">
+            <Button onClick={() => window.location.reload()} variant="outline" className="px-6">
               Try again
             </Button>
           </div>
         ) : (
-          <div className="p-4 space-y-4 pb-8">
-            {/* Buy Completion Rate */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Buy completion rate</span>
-                    <span className="text-xs text-gray-500">{userStats.buyCompletion.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.buyCompletion.rate}</div>
-                  <Progress value={getProgressValue(userStats.buyCompletion.rate)} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
+          <div className="p-4 space-y-0">
+            {/* Sell Completion */}
+            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+              <span className="text-gray-600">Sell completion</span>
+              <span className="font-semibold text-black">
+                {getDisplayValue("sellCompletion", activeTab === "lifetime")}
+              </span>
+            </div>
 
-            {/* Sell Completion Rate */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Sell completion rate</span>
-                    <span className="text-xs text-gray-500">{userStats.sellCompletion.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.sellCompletion.rate}</div>
-                  <Progress value={getProgressValue(userStats.sellCompletion.rate)} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
+            {/* Buy Completion */}
+            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+              <span className="text-gray-600">Buy completion</span>
+              <span className="font-semibold text-black">
+                {getDisplayValue("buyCompletion", activeTab === "lifetime")}
+              </span>
+            </div>
 
-            {/* Average Pay Time */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Avg pay time</span>
-                    <span className="text-xs text-gray-500">{userStats.avgPayTime.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.avgPayTime.time}</div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Avg Pay Time */}
+            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+              <span className="text-gray-600">Avg. pay time</span>
+              <span className="font-semibold text-black">
+                {getDisplayValue("avgPayTime", activeTab === "lifetime")}
+              </span>
+            </div>
 
-            {/* Average Release Time */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Avg release time</span>
-                    <span className="text-xs text-gray-500">{userStats.avgReleaseTime.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.avgReleaseTime.time}</div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Avg Release Time */}
+            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+              <span className="text-gray-600">Avg. release time</span>
+              <span className="font-semibold text-black">
+                {getDisplayValue("avgReleaseTime", activeTab === "lifetime")}
+              </span>
+            </div>
 
-            {/* Trade Partners */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600">Trade partners</span>
-                  <div className="text-2xl font-semibold text-gray-900">{formatNumber(userStats.tradePartners)}</div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Total Orders */}
+            <div className="bg-white border-b border-gray-100 px-4 py-4 flex justify-between items-center">
+              <span className="text-gray-600">Total orders</span>
+              <span className="font-semibold text-black">
+                {getDisplayValue("totalOrders", activeTab === "lifetime")}
+              </span>
+            </div>
 
-            {/* Total Orders (30d) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Total orders</span>
-                    <span className="text-xs text-gray-500">(30d)</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{formatNumber(userStats.totalOrders30d)}</div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Total Orders (Lifetime) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600">Total orders (lifetime)</span>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {formatNumber(userStats.totalOrdersLifetime)}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Trade Volume (30d) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Trade volume</span>
-                    <span className="text-xs text-gray-500">{userStats.tradeVolume30d.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {userStats.tradeVolume30d.currency} {userStats.tradeVolume30d.amount}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Trade Volume (Lifetime) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600">Trade volume (lifetime)</span>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {userStats.tradeVolumeLifetime.currency} {userStats.tradeVolumeLifetime.amount}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Trade Volume */}
+            <div className="bg-white px-4 py-4 flex justify-between items-center">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Trade volume</span>
+                <Info className="h-4 w-4 text-gray-400" />
+              </div>
+              <span className="font-semibold text-black">
+                {getDisplayValue("tradeVolume", activeTab === "lifetime")}
+              </span>
+            </div>
           </div>
         )}
       </div>
