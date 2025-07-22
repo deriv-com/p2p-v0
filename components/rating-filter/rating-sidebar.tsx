@@ -80,7 +80,7 @@ export function RatingSidebar({
                     key={star}
                     onClick={() => setRating(star)}
                     onMouseEnter={() => setHoverRating(star)}
-                    onMouseLeave={() => setHoverRating(0)
+                    onMouseLeave={() => setHoverRating(0)}
                     disabled={isSubmitting}
                   >
                     <Star
