@@ -34,9 +34,14 @@ export default function OrderDetailsPage() {
   const [hoverRating, setHoverRating] = useState(0)
   const [recommend, setRecommend] = useState<boolean | null>(null)
   const [isSubmittingReview, setIsSubmittingReview] = useState(false)
+   const { isConnected, joinChannel, leaveChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
+    if (isConnected) {
+      joinChannel("orders")
+    }
+
   }, [orderId])
 
   const fetchOrderDetails = async () => {
