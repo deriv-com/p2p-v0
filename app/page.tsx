@@ -228,7 +228,7 @@ export default function BuySellPage() {
                     value="exchange_rate"
                     className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                   >
-                    {activeTab === "buy" ? (<>Sort by: Exchange rate (low-high)</>) : (<>Sort by: Exchange rate (high-low)</>) }
+                    {activeTab === "sell" ? (<>Sort by: Exchange rate (low-high)</>) : (<>Sort by: Exchange rate (high-low)</>) }
                   </SelectItem>
                   <SelectItem
                     value="user_rating_average_lifetime"
