@@ -85,16 +85,13 @@ export function RatingSidebar({
                     disabled={isSubmitting}
                     className="hover:bg-transparent"
                   >
+                  
                     <Image
-                      src="/icons/star-custom.png"
+                      src={(hoverRating || rating) >= star ? "/icons/star-active.png" : "/icons/star-custom.png"}
                       alt="Star rating"
                       width={32}
                       height={32}
-                      className={cn(
-                        "transition-opacity",
-                        (hoverRating || rating) >= star ? "opacity-100" : "opacity-30",
-                      )}
-                    />
+                    /> 
                   </Button>
                 ))}
               </div>
