@@ -11,8 +11,8 @@ import NotificationBanner from "./notification-banner"
 import { PlusCircle } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import Image from "next/image"
 
 interface StatsTabsProps {
   stats?: any
@@ -179,7 +179,13 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <span className="text-base font-medium text-gray-900">Stats</span>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
+            <Image
+              src="/icons/chevron-right-sm.png"
+              alt="Chevron right"
+              width={20}
+              height={20}
+              className="text-gray-400"
+            />
           </div>
           <div className="border-t border-gray-200 w-full"></div>
           <div
@@ -187,7 +193,13 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <span className="text-base font-medium text-gray-900">Payment methods</span>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
+            <Image
+              src="/icons/chevron-right-sm.png"
+              alt="Chevron right"
+              width={20}
+              height={20}
+              className="text-gray-400"
+            />
           </div>
         </div>
         {errorModal.show && (
