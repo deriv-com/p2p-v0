@@ -1,7 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { X, Star, ThumbsUp, ThumbsDown } from "lucide-react"
+import { X, Star, ThumbsDown } from "lucide-react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
@@ -60,7 +61,7 @@ export function RatingSidebar({
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
-       <div className="flex justify-between items-center px-4 py-1 border-b">
+        <div className="flex justify-between items-center px-4 py-1 border-b">
           <h2 className="text-xl font-bold">{title}</h2>
           <Button onClick={handleClose} variant="ghost" size="icon" className="p-1">
             <X className="h-6 w-6" />
@@ -75,8 +76,8 @@ export function RatingSidebar({
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Button
-                  variant="ghost"
-                  size="sm"
+                    variant="ghost"
+                    size="sm"
                     key={star}
                     onClick={() => setRating(star)}
                     onMouseEnter={() => setHoverRating(star)}
@@ -104,16 +105,16 @@ export function RatingSidebar({
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
                 >
-                  <ThumbsUp />
+                  <Image src="/icons/thumbs-up-custom.png" alt="Thumbs up" width={20} height={20} className="w-5 h-5" />
                   <span className="text-sm text-grayscale-100">Yes</span>
                 </Button>
                 <Button
-                  variant={recommend === true ? "black" : "outline"}
+                  variant={recommend === false ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
                 >
-                  <ThumbsDown />
+                  <ThumbsDown className="w-5 h-5" />
                   <span className="text-sm text-grayscale-100">No</span>
                 </Button>
               </div>
