@@ -137,52 +137,38 @@ export default function PaymentMethodsTab() {
     })
   }
 
-  const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
+const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
   try {
-    setIsEditing(true)
+    setIsEditing(true);
 
-    const paymentMethod = paymentMethods.find((m) => m.id === id)
-    if (!paymentMethod) {
-      throw new Error("Payment method not found")
-    }
+    const paymentMethod = paymentMethods.find((m) => m.id === id);
 
-    // Optional: clean fields of null/undefined
-    const cleanedFields = Object.fromEntries(
-      Object.entries(fields).filter(([_, v]) => v != null)
-    )
-
-    // ✅ CORRECT payload structure
     const payload = {
       data: {
-        method: paymentMethod.type,
-        fields: cleanedFields,
+        method: paymentMethod?.type || "",
+        fields,
       },
-    }
+    };
 
-    console.log("---- handleSavePaymentMethod called ----")
-    console.log("ID:", id)
-    console.log("Cleaned fields:", cleanedFields)
-    console.log("Matched paymentMethod:", paymentMethod)
-    console.log("Final payload to send:", JSON.stringify(payload, null, 2))
-
-    const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
+    const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload);
 
     if (result.success) {
       setNotification({
         show: true,
         message: "Payment method details updated successfully.",
-      })
-      fetchPaymentMethods()
+      });
+
+      fetchPaymentMethods();
     } else {
-      let errorMessage = "Failed to update payment method. Please try again."
+      let errorMessage = "Failed to update payment method. Please try again.";
 
       if (result.errors && result.errors.length > 0) {
-        const errorCode = result.errors[0].code
+        const errorCode = result.errors[0].code;
 
         if (errorCode === "PaymentMethodUsedByOpenOrder") {
-          errorMessage = "This payment method is currently being used by an open order and cannot be modified."
+          errorMessage = "This payment method is currently being used by an open order and cannot be modified.";
         } else if (result.errors[0].message) {
-          errorMessage = result.errors[0].message
+          errorMessage = result.errors[0].message;
         }
       }
 
@@ -191,25 +177,26 @@ export default function PaymentMethodsTab() {
         type: "error",
         title: "Failed to update payment method",
         message: errorMessage,
-      })
+      });
     }
   } catch (error) {
-    setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
+    setError(error instanceof Error ? error.message : "An error occurred. Please try again.");
 
     setStatusModal({
       show: true,
       type: "error",
       title: "Failed to update payment method",
       message: error instanceof Error ? error.message : "An error occurred. Please try again.",
-    })
+    });
   } finally {
     setEditPanel({
       show: false,
       paymentMethod: null,
-    })
-    setIsEditing(false)
+    });
+    setIsEditing(false);
   }
-}
+};
+
 
 
 
