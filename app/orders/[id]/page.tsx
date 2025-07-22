@@ -11,6 +11,7 @@ import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
 import { cn, formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 
@@ -34,7 +35,7 @@ export default function OrderDetailsPage() {
   const [hoverRating, setHoverRating] = useState(0)
   const [recommend, setRecommend] = useState<boolean | null>(null)
   const [isSubmittingReview, setIsSubmittingReview] = useState(false)
-   const { isConnected, joinChannel, leaveChannel } = useWebSocketContext()
+   const { isConnected, joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
