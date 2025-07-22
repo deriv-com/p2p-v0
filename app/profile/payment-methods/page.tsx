@@ -489,11 +489,7 @@ export default function PaymentMethodsPage() {
           <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
           <SheetHeader className="pb-4">
             <div className="flex items-center justify-between">
-              <SheetTitle className="text-lg font-semibold">
-                {bottomSheet.paymentMethod?.category === "bank_transfer"
-                  ? "Bank name"
-                  : bottomSheet.paymentMethod?.name || "Payment method"}
-              </SheetTitle>
+            
               <Button
                 variant="ghost"
                 size="sm"
