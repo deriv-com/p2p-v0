@@ -487,22 +487,13 @@ export default function PaymentMethodsPage() {
         <SheetContent side="bottom" className="h-auto">
           <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
 
-          <div className="flex items-center justify-between pb-4">
-            <h3 className="text-lg font-semibold text-gray-900">
-              {bottomSheet.paymentMethod?.category === "bank_transfer" ? "Bank name" : bottomSheet.paymentMethod?.name}
-            </h3>
-            <button onClick={() => setBottomSheet({ show: false, paymentMethod: null })} className="p-1">
-              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} />
-            </button>
-          </div>
-
           <div className="space-y-4 pb-6">
             <div
               onClick={() => bottomSheet.paymentMethod && handleEditPaymentMethod(bottomSheet.paymentMethod)}
               className="w-full flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 rounded-lg transition-colors"
             >
               <Image src="/icons/pencil.png" alt="Edit" width={20} height={20} />
-              <span className="text-base font-normal text-red-500">Edit</span>
+              <span className="text-base font-normal text-gray-900">Edit</span>
             </div>
 
             <div
