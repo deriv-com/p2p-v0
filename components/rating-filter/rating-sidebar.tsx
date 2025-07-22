@@ -12,7 +12,6 @@ export function RatingSidebar({
   isOpen,
   onClose,
   onSubmit,
-  isSubmitting = false,
   title = "Rate and recommend",
   ratingLabel = "How would you rate this transaction?",
   recommendLabel = "Would you recommend this seller?",
@@ -82,7 +81,6 @@ export function RatingSidebar({
                     onClick={() => setRating(star)}
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
-                    disabled={isSubmitting}
                     className="hover:bg-transparent p-0 mr-[4px]"
                   >
                   
@@ -105,7 +103,6 @@ export function RatingSidebar({
                   variant={recommend === true ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(true)}
-                  disabled={isSubmitting}
                 >
                   <Image src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"} alt="Thumbs up" width={14} height={14} />
                   <span className={cn(
@@ -117,7 +114,6 @@ export function RatingSidebar({
                   variant={recommend === false ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(false)}
-                  disabled={isSubmitting}
                 >
                   <Image
                     src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png" }
@@ -136,15 +132,8 @@ export function RatingSidebar({
         </div>
 
         <div className="p-4 border-t">
-          <Button variant="black" onClick={handleSubmit} disabled={isSubmitting || rating === 0} className="w-full">
-            {isSubmitting ? (
-              <>
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                Submitting...
-              </>
-            ) : (
-              "Submit"
-            )}
+          <Button variant="black" onClick={handleSubmit} disabled={rating === 0} className="w-full">
+            Submit
           </Button>
         </div>
       </div>
