@@ -35,7 +35,7 @@ export default function OrdersPage() {
         //leaveChannel("orders")
       }
     }
-  }, [isConnected, joinChannel, leaveChannel])
+  }, [isConnected, joinChannel])
 
   const fetchOrders = async () => {
     setIsLoading(true)
