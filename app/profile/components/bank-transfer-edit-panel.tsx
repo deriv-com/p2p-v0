@@ -283,7 +283,7 @@ export default function BankTransferEditPanel({
           type="button"
           onClick={handleSubmit}
           disabled={isLoading || !isFormValid()}
-          variant="default"
+          variant="black"
           className="w-full"
         >
           {isLoading ? "Saving..." : "Save details"}
