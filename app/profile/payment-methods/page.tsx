@@ -3,8 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical, Edit, Trash } from "lucide-react"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { MoreVertical, Edit, Trash, X } from "lucide-react"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "../components/ui/custom-shimmer"
 import CustomStatusModal from "../components/ui/custom-status-modal"
@@ -16,6 +15,7 @@ import { DeleteConfirmationDialog } from "../components/delete-confirmation-dial
 import AddPaymentMethodPanel from "../components/add-payment-method-panel"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 
 interface PaymentMethod {
   id: string
@@ -60,6 +60,12 @@ export default function PaymentMethodsPage() {
     paymentMethod: null as PaymentMethod | null,
   })
   const [isEditing, setIsEditing] = useState(false)
+
+  // Bottom sheet state
+  const [bottomSheet, setBottomSheet] = useState({
+    show: false,
+    paymentMethod: null as PaymentMethod | null,
+  })
 
   const fetchPaymentMethods = useCallback(async () => {
     try {
@@ -136,6 +142,7 @@ export default function PaymentMethodsPage() {
       details: { ...method.details },
     }
 
+    setBottomSheet({ show: false, paymentMethod: null })
     setEditPanel({
       show: true,
       paymentMethod: cleanedMethod,
@@ -143,64 +150,65 @@ export default function PaymentMethodsPage() {
   }
 
   const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
-  try {
-    setIsEditing(true);
+    try {
+      setIsEditing(true)
 
-    const paymentMethod = paymentMethods.find((m) => m.id === id);
- 
- const payload = {
-  method: paymentMethod.type,
-  fields: { ...fields }
-};
+      const paymentMethod = paymentMethods.find((m) => m.id === id)
 
-    const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload);
-
-    if (result.success) {
-      setNotification({
-        show: true,
-        message: "Payment method details updated successfully.",
-      });
-
-      fetchPaymentMethods();
-    } else {
-      let errorMessage = "Failed to update payment method. Please try again.";
-
-      if (result.errors && result.errors.length > 0) {
-        const errorCode = result.errors[0].code;
-
-        if (errorCode === "PaymentMethodUsedByOpenOrder") {
-          errorMessage = "This payment method is currently being used by an open order and cannot be modified.";
-        } else if (result.errors[0].message) {
-          errorMessage = result.errors[0].message;
-        }
+      const payload = {
+        method: paymentMethod.type,
+        fields: { ...fields },
       }
+
+      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
+
+      if (result.success) {
+        setNotification({
+          show: true,
+          message: "Payment method details updated successfully.",
+        })
+
+        fetchPaymentMethods()
+      } else {
+        let errorMessage = "Failed to update payment method. Please try again."
+
+        if (result.errors && result.errors.length > 0) {
+          const errorCode = result.errors[0].code
+
+          if (errorCode === "PaymentMethodUsedByOpenOrder") {
+            errorMessage = "This payment method is currently being used by an open order and cannot be modified."
+          } else if (result.errors[0].message) {
+            errorMessage = result.errors[0].message
+          }
+        }
+
+        setStatusModal({
+          show: true,
+          type: "error",
+          title: "Failed to update payment method",
+          message: errorMessage,
+        })
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       setStatusModal({
         show: true,
         type: "error",
         title: "Failed to update payment method",
-        message: errorMessage,
-      });
+        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+      })
+    } finally {
+      setEditPanel({
+        show: false,
+        paymentMethod: null,
+      })
+      setIsEditing(false)
     }
-  } catch (error) {
-    setError(error instanceof Error ? error.message : "An error occurred. Please try again.");
-
-    setStatusModal({
-      show: true,
-      type: "error",
-      title: "Failed to update payment method",
-      message: error instanceof Error ? error.message : "An error occurred. Please try again.",
-    });
-  } finally {
-    setEditPanel({
-      show: false,
-      paymentMethod: null,
-    });
-    setIsEditing(false);
   }
-};
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
+    setBottomSheet({ show: false, paymentMethod: null })
     setDeleteConfirmModal({
       show: true,
       methodId: id,
@@ -292,6 +300,13 @@ export default function PaymentMethodsPage() {
 
   const handleBack = () => {
     router.push("/profile")
+  }
+
+  const handleMoreOptions = (method: PaymentMethod) => {
+    setBottomSheet({
+      show: true,
+      paymentMethod: method,
+    })
   }
 
   const filteredMethods = paymentMethods.filter((method) => {
@@ -403,29 +418,9 @@ export default function PaymentMethodsPage() {
                             </div>
                           </div>
                         </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="p-2">
-                              <MoreVertical className="h-5 w-5 text-gray-500" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
-                              onSelect={() => handleEditPaymentMethod(method)}
-                            >
-                              <Edit className="h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-destructive focus:text-destructive"
-                              onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
-                            >
-                              <Trash className="h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button variant="ghost" size="sm" className="p-2" onClick={() => handleMoreOptions(method)}>
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -455,29 +450,9 @@ export default function PaymentMethodsPage() {
                             </div>
                           </div>
                         </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="p-2">
-                              <MoreVertical className="h-5 w-5 text-gray-500" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
-                              onSelect={() => handleEditPaymentMethod(method)}
-                            >
-                              <Edit className="h-4 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-destructive focus:text-destructive"
-                              onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
-                            >
-                              <Trash className="h-4 w-4" />
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <Button variant="ghost" size="sm" className="p-2" onClick={() => handleMoreOptions(method)}>
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                        </Button>
                       </div>
                     ))}
                   </div>
@@ -504,6 +479,54 @@ export default function PaymentMethodsPage() {
           Add payment
         </Button>
       </div>
+
+      {/* Bottom Sheet for Payment Method Actions */}
+      <Sheet
+        open={bottomSheet.show}
+        onOpenChange={(open) => !open && setBottomSheet({ show: false, paymentMethod: null })}
+      >
+        <SheetContent side="bottom" className="h-auto">
+          <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
+          <SheetHeader className="pb-4">
+            <div className="flex items-center justify-between">
+              <SheetTitle className="text-lg font-semibold">
+                {bottomSheet.paymentMethod?.category === "bank_transfer"
+                  ? "Bank name"
+                  : bottomSheet.paymentMethod?.name || "Payment method"}
+              </SheetTitle>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setBottomSheet({ show: false, paymentMethod: null })}
+                className="p-1"
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+          </SheetHeader>
+
+          <div className="space-y-4 pb-6">
+            <button
+              onClick={() => bottomSheet.paymentMethod && handleEditPaymentMethod(bottomSheet.paymentMethod)}
+              className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <Edit className="h-5 w-5 text-gray-700" />
+              <span className="text-base font-medium text-gray-900">Edit</span>
+            </button>
+
+            <button
+              onClick={() =>
+                bottomSheet.paymentMethod &&
+                handleDeletePaymentMethod(bottomSheet.paymentMethod.id, bottomSheet.paymentMethod.name)
+              }
+              className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <Trash className="h-5 w-5 text-red-500" />
+              <span className="text-base font-medium text-red-500">Delete</span>
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
 
       {/* Modals and Panels */}
       <DeleteConfirmationDialog
