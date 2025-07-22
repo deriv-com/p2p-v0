@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 
+
 export default function OrdersPage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<"active" | "past">("active")
@@ -79,7 +80,11 @@ export default function OrdersPage() {
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
-              <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={order.id} onClick={() => navigateToOrderDetails(order.id)}>
+              <TableRow
+                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                key={order.id}
+                onClick={() => navigateToOrderDetails(order.id)}
+              >
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
                     {order.created_at ? formatDate(order.created_at) : ""}
@@ -99,7 +104,9 @@ export default function OrdersPage() {
                       </span>
                     </div>
                     <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
-                    <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.type === "buy" ?order.advert.user.nickname: order.user.nickname} </div>
+                    <div className="mt-[4px] text-slate-600 text-xs">
+                      Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top text-base">
@@ -191,9 +198,9 @@ export default function OrdersPage() {
             </Button>
           </div>
         ) : (
-            <div>
-              <DesktopOrderTable />
-            </div>
+          <div>
+            <DesktopOrderTable />
+          </div>
         )}
       </div>
     </div>

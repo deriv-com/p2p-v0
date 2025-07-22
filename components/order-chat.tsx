@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
-import { useWebSocket } from "@/hooks/use-websocket"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
 
 type Message = {
@@ -38,28 +38,36 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
 
-  const { isConnected, joinChannel, getChatHistory } = useWebSocket({
-    onMessage: (data) => {
+  const { isConnected, getChatHistory, subscribe } = useWebSocketContext()
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data) => {
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
           setMessages(data.payload.data.chat_history)
-          setIsLoading(false)
         }
 
         if (data.payload.data.message) {
-          const newMessage = data.payload.data
+          const newMessage = data.payload.data.message
           setMessages((prev) => [...prev, newMessage])
         }
-      }
-    },
-    onOpen: () => {
-      joinChannel("orders")
 
+        setIsLoading(false)
+      } else {
+            setIsLoading(false)
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
+
+  useEffect(() => {
+    if (isConnected) {
       setTimeout(() => {
         getChatHistory("orders", orderId)
       }, 100)
-    },
-  })
+    }
+  }, [isConnected, getChatHistory, orderId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -177,7 +185,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       <div
                         className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
                       >
-                        <a href={msg.attachment.url} target="_blank" download>
+                        <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                           {msg.attachment.name}
                         </a>
                       </div>
@@ -212,46 +220,47 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         </div>
       </div>
 
-          {isClosed ? <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
-              This conversation is closed.
-          </div> :
-          <div className="p-4 border-t">
-            <div className="space-y-2">
-              <div className="relative">
-                <Input
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Enter message"
-                  disabled={isSending}
-                  className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
-                />
-                <Button
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
-                  onClick={() => fileInputRef.current?.click()}
-                  variant="ghost"
-                  size="sm"
-                >
-                  <Image
-                    src="/icons/paperclip-icon.png"
-                    alt="Attach file"
-                    width={20}
-                    height={20}
-                    className="h-5 w-5"
-                  />
-                </Button>
-                <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*,application/pdf" />
-              </div>
-              <div className="flex justify-between items-center">
-                <div></div>
-                <div className="text-xs text-[#0000003D] mr-16px">
-                  {message.length}/{maxLength}
-                </div>
+      {isClosed ? (
+        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
+          This conversation is closed.
+        </div>
+      ) : (
+        <div className="p-4 border-t">
+          <div className="space-y-2">
+            <div className="relative">
+              <Input
+                value={message}
+                onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
+                onKeyDown={handleKeyDown}
+                placeholder="Enter message"
+                disabled={isSending}
+                className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+              />
+              <Button
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                onClick={() => fileInputRef.current?.click()}
+                variant="ghost"
+                size="sm"
+              >
+                <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
+              </Button>
+              <Input
+                type="file"
+                ref={fileInputRef}
+                onChange={handleFileSelect}
+                className="hidden"
+                accept="image/*,application/pdf"
+              />
+            </div>
+            <div className="flex justify-between items-center">
+              <div></div>
+              <div className="text-xs text-[#0000003D] mr-16px">
+                {message.length}/{maxLength}
               </div>
             </div>
           </div>
-        }
-    
+        </div>
+      )}
     </div>
   )
 }
