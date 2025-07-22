@@ -103,9 +103,6 @@ export function RatingSidebar({
                   size="sm"
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
-                  className={cn(
-                    recommend === true ? "border-green-500 bg-green-50" : "border-gray-300",
-                  )}
                 >
                   <ThumbsUp className={cn("h-5 w-5", recommend === true ? "text-green-500" : "text-gray-400")} />
                   <span className="text-sm text-grayscale-100">Yes</span>
@@ -115,9 +112,6 @@ export function RatingSidebar({
                   size="sm"
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
-                  className={cn(
-                      recommend === false ? "border-red-500 bg-red-50" : "border-gray-300",
-                  )}
                 >
                   <ThumbsDown className={cn("h-5 w-5", recommend === false ? "text-red-500" : "text-gray-400")} />
                   <span className="text-sm text-grayscale-100">No</span>
