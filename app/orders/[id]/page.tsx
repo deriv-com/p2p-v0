@@ -317,7 +317,7 @@ export default function OrderDetailsPage() {
                       </div>
                       <p className="text-sm text-gray-700">
                         You have until{" "}
-                        {order.completed_at ? formatRatingDeadline(order.completed_at) : "[date], [time] GMT"} to rate
+                        {formatRatingDeadline(order.order_review_expires_at)} to rate
                         this transaction.
                       </p>
                     </div>
