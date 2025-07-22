@@ -69,6 +69,15 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
               </div>
             </div>
           )}
+
+          {(config.type !== "success" && config.type !== "warning") && (
+            <div className="flex justify-end px-6 pt-6">
+              <Button onClick={hideAlert} size="sm" variant="ghost">
+                <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+              </Button>
+            </div>
+          )}
+
           <div className="px-8 py-6">
             {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
             {config.description && <div className="mb-4">{config.description}</div>}
