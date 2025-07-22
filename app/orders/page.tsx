@@ -131,7 +131,7 @@ export default function OrdersPage() {
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
-                        <Button variant="black" size="sm">Rate</Button>
+                        <Button variant="black" size="xs">Rate</Button>
                     )}
                   </TableCell>
                 )}
