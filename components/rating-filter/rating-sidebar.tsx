@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
+import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
 
 export function RatingSidebar({
