@@ -132,7 +132,7 @@ export function RatingSidebar({
         </div>
 
         <div className="p-4 border-t">
-          <Button variant="black" onClick={handleSubmit} disabled={rating === 0} className="w-full">
+          <Button variant="black" onClick={handleSubmit} disabled={rating === 0} className="disabled:opacity-[0.24]">
             Submit
           </Button>
         </div>
