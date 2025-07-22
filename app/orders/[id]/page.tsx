@@ -119,8 +119,8 @@ export default function OrderDetailsPage() {
 
   const formatRatingDeadline = (ratingDeadline: string) => {
     const ratingDeadline = new Date(ratingDeadline)
-
-    const options: Intl.DateTimeFormatOptions = {
+    
+    return ratingDeadline.toLocaleDateString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
@@ -128,9 +128,7 @@ export default function OrderDetailsPage() {
       minute: "2-digit",
       timeZone: "GMT",
       timeZoneName: "short",
-    }
-
-    return ratingDeadline.toLocaleDateString("en-GB", options)
+    })
   }
 
   useEffect(() => {
