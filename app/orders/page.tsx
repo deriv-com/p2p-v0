@@ -75,6 +75,11 @@ export default function OrdersPage() {
     setIsRatingSidebarOpen(false)
   }
 
+  const handleRatingSubmit = () => {
+          setIsRatingSidebarOpen(false)
+          fetchOrders()
+  }
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -223,7 +228,7 @@ export default function OrdersPage() {
       <RatingSidebar
         isOpen={isRatingSidebarOpen}
         onClose={handleRatingSidebarClose}
-        onSubmit={fetchOrders}
+        onSubmit={handleRatingSubmit}
       />
     </div>
   )
