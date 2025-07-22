@@ -342,25 +342,28 @@ export default function PaymentMethodsPage() {
         <div className="flex gap-2">
           <button
             onClick={() => setActiveFilter("all")}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === "all" ? "bg-black text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            className={`px-4 py-2 text-sm font-medium transition-colors bg-white border border-black/8 ${
+              activeFilter === "all" ? "text-white bg-black" : "text-gray-600 hover:bg-gray-50"
             }`}
+            style={{ borderRadius: "96px" }}
           >
             All
           </button>
           <button
             onClick={() => setActiveFilter("bank_transfer")}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === "bank_transfer" ? "bg-black text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            className={`px-4 py-2 text-sm font-medium transition-colors bg-white border border-black/8 ${
+              activeFilter === "bank_transfer" ? "text-white bg-black" : "text-gray-600 hover:bg-gray-50"
             }`}
+            style={{ borderRadius: "96px" }}
           >
             Bank Transfer
           </button>
           <button
             onClick={() => setActiveFilter("e_wallet")}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              activeFilter === "e_wallet" ? "bg-black text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            className={`px-4 py-2 text-sm font-medium transition-colors bg-white border border-black/8 ${
+              activeFilter === "e_wallet" ? "text-white bg-black" : "text-gray-600 hover:bg-gray-50"
             }`}
+            style={{ borderRadius: "96px" }}
           >
             E-wallets
           </button>
