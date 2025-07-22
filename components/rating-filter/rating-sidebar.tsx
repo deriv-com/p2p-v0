@@ -106,7 +106,7 @@ export function RatingSidebar({
                   disabled={isSubmitting}
                 >
                   <Image src="/icons/thumbs-up-custom.png" alt="Thumbs up" width={14} height={14} />
-                  <span className="text-sm text-grayscale-100">Yes</span>
+                  <span className="text-sm text-grayscale-100 ml-[8px] font-normal">Yes</span>
                 </Button>
                 <Button
                   variant={recommend === false ? "black" : "outline"}
@@ -121,7 +121,7 @@ export function RatingSidebar({
                     height={14}
                     className="w-5 h-5"
                   />
-                  <span className="text-sm text-grayscale-100">No</span>
+                  <span className="text-sm text-grayscale-100 ml-[8px] font-normal">No</span>
                 </Button>
               </div>
             </div>
