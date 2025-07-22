@@ -108,7 +108,7 @@ export function RatingSidebar({
                   <span className="text-sm text-grayscale-100">Yes</span>
                 </Button>
                 <Button
-                  variant={recommend ? "black" : "outline"}
+                  variant={recommend ? "outline" : "black"}
                   size="sm"
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
