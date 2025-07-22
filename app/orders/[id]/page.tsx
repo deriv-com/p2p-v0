@@ -15,7 +15,6 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
-import type { RatingData } from "@/components/rating-filter"
 
 export default function OrderDetailsPage() {
   const params = useParams()
