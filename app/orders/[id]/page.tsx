@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight } from "lucide-react"
+import { X, ChevronRight, Info } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -126,6 +126,23 @@ export default function OrderDetailsPage() {
       })
       throw err // Re-throw to let the component handle the error state
     }
+  }
+
+  const formatRatingDeadline = (completedAt: string) => {
+    const completedDate = new Date(completedAt)
+    const deadlineDate = new Date(completedDate.getTime() + 24 * 60 * 60 * 1000) // Add 24 hours
+
+    const options: Intl.DateTimeFormatOptions = {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "GMT",
+      timeZoneName: "short",
+    }
+
+    return deadlineDate.toLocaleDateString("en-GB", options)
   }
 
   useEffect(() => {
@@ -301,10 +318,27 @@ export default function OrderDetailsPage() {
                   </div>
                 )}
                 {order.status === "completed" && order.is_reviewable && (
-                  <div className="p-4 flex justify-end">
-                    <Button variant="outline" onClick={() => setShowRatingSidebar(true)}>
-                      Rate transaction
-                    </Button>
+                  <div className="space-y-4">
+                    {/* Rating deadline notification */}
+                    <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                      <div className="flex-shrink-0">
+                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                          <Info className="w-4 h-4 text-white" />
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-700">
+                        You have until{" "}
+                        {order.completed_at ? formatRatingDeadline(order.completed_at) : "[date], [time] GMT"} to rate
+                        this transaction.
+                      </p>
+                    </div>
+
+                    {/* Rate transaction button */}
+                    <div className="p-4 flex justify-end">
+                      <Button variant="outline" onClick={() => setShowRatingSidebar(true)}>
+                        Rate transaction
+                      </Button>
+                    </div>
                   </div>
                 )}
               </div>
