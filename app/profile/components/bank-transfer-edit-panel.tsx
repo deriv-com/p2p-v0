@@ -286,7 +286,7 @@ export default function BankTransferEditPanel({
           variant="black"
           className="w-full"
         >
-          {isLoading ? "Saving..." : "Sav"}
+          {isLoading ? "Saving..." : "Save changes"}
         </Button>
       </div>
     </PanelWrapper>
