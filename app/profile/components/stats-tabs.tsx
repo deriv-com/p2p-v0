@@ -8,10 +8,11 @@ import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
-import { PlusCircle, ChevronRight } from "lucide-react"
+import { PlusCircle } from "lucide-react"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 interface StatsTabsProps {
   stats?: any
@@ -169,22 +170,24 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           />
         )}
 
-        <div className="space-y-1">
-          <button
+        <div>
+          <div
             onClick={() => router.push("/profile/stats")}
-            className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <span className="text-base font-medium text-gray-900">Stats</span>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </button>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
 
-          <button
+          <div className="h-px bg-gray-200"></div>
+
+          <div
             onClick={() => router.push("/profile/payment-methods")}
-            className="w-full flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           >
             <span className="text-base font-medium text-gray-900">Payment methods</span>
-            <ChevronRight className="h-5 w-5 text-gray-400" />
-          </button>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
         </div>
 
         {errorModal.show && (
