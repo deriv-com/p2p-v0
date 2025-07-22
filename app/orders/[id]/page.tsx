@@ -311,8 +311,8 @@ export default function OrderDetailsPage() {
                     )}
                   {order.status === "completed" && order.is_reviewable && (
                     <div className="p-4">
-                      <Button variant="destructive" size="sm" className="w-full" onClick={() => setShowRatingSidebar(true)}>
-                        Rate order
+                      <Button variant="outline" onClick={() => setShowRatingSidebar(true)}>
+                        Rate transaction
                       </Button>
                     </div>
                   )}
