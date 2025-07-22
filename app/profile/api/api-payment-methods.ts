@@ -19,7 +19,7 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      headers,
+      headers
       //credentials: "include",
     })
 
@@ -67,7 +67,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
     try {
       responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
     } catch (e) {
-      console.log("Failed to parse response:", e)
+      console.log("Failed to parse response:", e);
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
@@ -93,7 +93,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 
     return { success: true, data: responseData.data }
   } catch (error) {
-    console.log("Error adding payment method:", error)
+    console.log("Error adding payment method:", error);
     return {
       success: false,
       errors: [
@@ -106,36 +106,39 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
   }
 }
 
-export async function updatePaymentMethod(id: string, payload: any): Promise<PaymentMethodResponse> {
+export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
-    const headers = AUTH.getAuthHeader()
+    const requestBody = {
+      data: fields,  // Send fields directly as data, no cleaning/filtering
+    };
+
+    const headers = AUTH.getAuthHeader();
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
       headers,
-      // credentials: "include",
-      body: JSON.stringify(payload),
-    })
+      body: JSON.stringify(requestBody),
+    });
 
-    const responseText = await response.text()
+    const responseText = await response.text();
 
-    let responseData: any
+    let responseData: any;
     try {
-      responseData = responseText ? JSON.parse(responseText) : { success: response.ok }
+      responseData = responseText ? JSON.parse(responseText) : { success: response.ok };
     } catch (e) {
-      console.log("Failed to parse response:", e)
+      console.log("Failed to parse response:", e);
       return {
         success: false,
         errors: [{ code: "parse_error", message: "Failed to parse server response" }],
-      }
+      };
     }
 
     if (!response.ok) {
-      const errors = responseData.errors || []
+      const errors = responseData.errors || [];
 
       const formattedErrors = errors.map((err: any) => ({
         code: err.code || "unknown_error",
         message: err.message || getErrorMessageFromCode(err.code),
-      }))
+      }));
 
       return {
         success: false,
@@ -143,12 +146,12 @@ export async function updatePaymentMethod(id: string, payload: any): Promise<Pay
           formattedErrors.length > 0
             ? formattedErrors
             : [{ code: "api_error", message: `API Error: ${response.status} ${response.statusText}` }],
-      }
+      };
     }
 
-    return { success: true, data: responseData.data }
+    return { success: true, data: responseData.data };
   } catch (error) {
-    console.log("Error updating payment method:", error)
+    console.log("Error updating payment method:", error);
     return {
       success: false,
       errors: [
@@ -157,9 +160,10 @@ export async function updatePaymentMethod(id: string, payload: any): Promise<Pay
           message: error instanceof Error ? error.message : "An unexpected error occurred",
         },
       ],
-    }
+    };
   }
 }
+
 
 function getErrorMessageFromCode(code: string): string {
   const errorMessages: Record<string, string> = {
@@ -188,14 +192,14 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
         const errorData = JSON.parse(errorText)
         return { success: false, errors: errorData.errors }
       } catch (error) {
-        console.log("Error at delete payment method:", error)
+        console.log("Error at delete payment method:", error);
         return { success: false, errors: [{ code: "api_error", message: response.statusText }] }
       }
     }
 
     return { success: true }
   } catch (error) {
-    console.log("Error deleting payment method:", error)
+    console.log("Error deleting payment method:", error);
     return {
       success: false,
       errors: [{ code: "exception", message: error instanceof Error ? error.message : "An unexpected error occurred" }],

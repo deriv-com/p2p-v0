@@ -143,62 +143,62 @@ export default function PaymentMethodsPage() {
   }
 
   const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
-    try {
-      setIsEditing(true)
+  try {
+    setIsEditing(true);
 
-      const paymentMethod = paymentMethods.find((m) => m.id === id)
-      const formattedFields: Record<string, any> = { ...fields }
+    const paymentMethod = paymentMethods.find((m) => m.id === id);
+ 
+ const payload = {
+  method: paymentMethod.type,
+  fields: { ...fields }
+};
 
-      if (paymentMethod) {
-        formattedFields.method_type = paymentMethod.type
-      }
+    const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload);
 
-      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, formattedFields)
+    if (result.success) {
+      setNotification({
+        show: true,
+        message: "Payment method details updated successfully.",
+      });
 
-      if (result.success) {
-        setNotification({
-          show: true,
-          message: "Payment method details updated successfully.",
-        })
+      fetchPaymentMethods();
+    } else {
+      let errorMessage = "Failed to update payment method. Please try again.";
 
-        fetchPaymentMethods()
-      } else {
-        let errorMessage = "Failed to update payment method. Please try again."
+      if (result.errors && result.errors.length > 0) {
+        const errorCode = result.errors[0].code;
 
-        if (result.errors && result.errors.length > 0) {
-          const errorCode = result.errors[0].code
-
-          if (errorCode === "PaymentMethodUsedByOpenOrder") {
-            errorMessage = "This payment method is currently being used by an open order and cannot be modified."
-          } else if (result.errors[0].message) {
-            errorMessage = result.errors[0].message
-          }
+        if (errorCode === "PaymentMethodUsedByOpenOrder") {
+          errorMessage = "This payment method is currently being used by an open order and cannot be modified.";
+        } else if (result.errors[0].message) {
+          errorMessage = result.errors[0].message;
         }
-
-        setStatusModal({
-          show: true,
-          type: "error",
-          title: "Failed to update payment method",
-          message: errorMessage,
-        })
       }
-    } catch (error) {
-      setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       setStatusModal({
         show: true,
         type: "error",
         title: "Failed to update payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
-      })
-    } finally {
-      setEditPanel({
-        show: false,
-        paymentMethod: null,
-      })
-      setIsEditing(false)
+        message: errorMessage,
+      });
     }
+  } catch (error) {
+    setError(error instanceof Error ? error.message : "An error occurred. Please try again.");
+
+    setStatusModal({
+      show: true,
+      type: "error",
+      title: "Failed to update payment method",
+      message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+    });
+  } finally {
+    setEditPanel({
+      show: false,
+      paymentMethod: null,
+    });
+    setIsEditing(false);
   }
+};
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     setDeleteConfirmModal({
