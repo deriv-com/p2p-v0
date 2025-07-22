@@ -99,28 +99,22 @@ export function RatingSidebar({
               <h3 className="text-sm">{recommendLabel}</h3>
               <div className="flex gap-4">
                 <Button
-                  variant="outline"
+                  variant={recommend === true ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
-                  className={cn(
-                    recommend === true ? "border-green-500 bg-green-50" : "border-gray-300",
-                  )}
                 >
                   <ThumbsUp className={cn("h-5 w-5", recommend === true ? "text-green-500" : "text-gray-400")} />
-                  <span className={cn(recommend === true ? "text-green-700" : "text-gray-600")}>Yes</span>
+                  <span className="text-sm text-grayscale-100">Yes</span>
                 </Button>
                 <Button
-                  variant="outline"
+                  variant={recommend === true ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
-                  className={cn(
-                      recommend === false ? "border-red-500 bg-red-50" : "border-gray-300",
-                  )}
                 >
                   <ThumbsDown className={cn("h-5 w-5", recommend === false ? "text-red-500" : "text-gray-400")} />
-                  <span className={cn(recommend === false ? "text-red-700" : "text-gray-600")}>No</span>
+                  <span className="text-sm text-grayscale-100">No</span>
                 </Button>
               </div>
             </div>
@@ -128,7 +122,7 @@ export function RatingSidebar({
         </div>
 
         <div className="p-4 border-t">
-          <Button onClick={handleSubmit} disabled={isSubmitting || rating === 0} className="w-full">
+          <Button variant="black" onClick={handleSubmit} disabled={isSubmitting || rating === 0} className="w-full">
             {isSubmitting ? (
               <>
                 <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
