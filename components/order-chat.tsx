@@ -65,7 +65,6 @@ export default function OrderChat({
     onOpen: !parentGetChatHistory
       ? () => {
           // Only join channel if we don't have a parent connection
-          // joinChannel("orders")
           setTimeout(() => {
             fallbackGetChatHistory("orders", orderId)
           }, 100)
