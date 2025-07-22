@@ -96,6 +96,14 @@ export default function ProfilePage() {
                 max: data.daily_limits?.sell || 0,
               },
             },
+            stats: {
+              ...prevData.stats,
+              tradePartners: data.partner_count_lifetime || 0,
+              avgPayTime: {
+                time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "N/A",
+                period: "30d",
+              },
+            },
           }))
         }
       } catch (error) {
@@ -119,8 +127,8 @@ export default function ProfilePage() {
             isVerified={userData.isVerified}
           />
           <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
-          <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
-        </div>
+            <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
+          </div>
           <StatsTabs stats={userData.stats} />
         </div>
       </div>
