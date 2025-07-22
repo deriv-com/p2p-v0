@@ -205,8 +205,8 @@ export default function PaymentMethodsPage() {
     setBottomSheet({ show: false, paymentMethod: null })
 
     showDeleteDialog({
-      title: "Delete ${name}?",
-      description: `Are you sure you want to delete this payment method?`,
+      title: 'Delete payment ${name}??',
+      description: `Are you sure you want to delete ${name}? You will not be able to restore it.`,
       onConfirm: () => confirmDeletePaymentMethod(id),
     })
   }
