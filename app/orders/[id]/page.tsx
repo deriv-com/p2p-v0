@@ -262,7 +262,7 @@ export default function OrderDetailsPage() {
                       {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
                       {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
                       <div className="bg-orange-50 rounded-[16px] p-[16px]">
-                        <div className="flex items-start gap-3">
+                        <div className="flex items-start gap-2">
                         <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} /> 
                           <p className="text-sm text-gray-900">
                             Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
