@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight, Info } from "lucide-react"
+import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -109,7 +109,7 @@ export default function OrderDetailsPage() {
       const result = await OrdersAPI.reviewOrder(orderId, ratingData)
       if (result.errors.length === 0) {
         setShowRatingSidebar(false)
-        fetchOrderDetails() 
+        fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error submitting review:", err)
@@ -311,14 +311,10 @@ export default function OrderDetailsPage() {
                     {/* Rating deadline notification */}
                     <div className="flex items-center gap-3 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
                       <div className="flex-shrink-0">
-                        <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                          <Info className="w-4 h-4 text-white" />
-                        </div>
+                        <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
                       </div>
                       <p className="text-sm text-grayscale-100">
-                        You have until{" "}
-                        {formatRatingDeadline(order.order_review_expires_at)} to rate
-                        this transaction.
+                        You have until {formatRatingDeadline(order.order_review_expires_at)} to rate this transaction.
                       </p>
                     </div>
                     <div className="pt-2 flex justify-end">
