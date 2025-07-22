@@ -83,7 +83,7 @@ export function RatingSidebar({
                     onMouseEnter={() => setHoverRating(star)}
                     onMouseLeave={() => setHoverRating(0)}
                     disabled={isSubmitting}
-                    className="hover:bg-transparent p-0"
+                    className="hover:bg-transparent p-0 mr-[4px]"
                   >
                   
                     <Image
