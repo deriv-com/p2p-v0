@@ -73,7 +73,7 @@ export function RatingSidebar({
             {/* Star Rating */}
             <div className="space-y-4">
               <h3 className="text-sm">{ratingLabel}</h3>
-              <div className="flex gap-2">
+              <div className="flex">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Button
                     variant="ghost"
