@@ -155,7 +155,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">
               <div className="flex-shrink-0 mt-0.5">
-                <Image src="/icons/warning-icon-new.png" alt="Warning" width={20} height={20} className="w-5 h-5" />
+                <Image src="/icons/warning-icon-new.png" alt="Warning" width={24} height={24} />
               </div>
               <div className="text-sm">
                 <span className="font-semibold text-gray-900">Important:</span>
