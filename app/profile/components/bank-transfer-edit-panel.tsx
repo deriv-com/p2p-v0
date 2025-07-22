@@ -2,293 +2,93 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface BankTransferEditPanelProps {
-  onClose: () => void
-  onSave: (id: string, fields: Record<string, string>) => void
-  isLoading: boolean
   paymentMethod: {
     id: string
-    name: string
     type: string
-    details: Record<string, any>
-    instructions?: string
+    bank_name: string
+    account_number: string
+    account_holder_name: string
   }
+  onSave: (data: any) => void
+  onCancel: () => void
 }
 
-interface PanelWrapperProps {
-  onClose: () => void
-  title: string
-  children: React.ReactNode
-}
-
-function PanelWrapper({ onClose, title, children }: PanelWrapperProps) {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 640)
-    }
-
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
-
-  return (
-    <>
-      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
-      <div
-        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
-          isMobile ? "inset-0 w-full" : "w-full max-w-md"
-        }`}
-      >
-        <div className="p-6 border-b relative">
-          <h2 className="text-xl font-semibold text-center">{title}</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
-            <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
-          </Button>
-        </div>
-        {children}
-      </div>
-    </>
-  )
-}
-
-export default function BankTransferEditPanel({
-  onClose,
-  onSave,
-  isLoading,
-  paymentMethod,
-}: BankTransferEditPanelProps) {
-  const [account, setAccount] = useState("")
-  const [bankName, setBankName] = useState("")
-  const [bankCode, setBankCode] = useState("")
-  const [branch, setBranch] = useState("")
-  const [instructions, setInstructions] = useState("")
-  const [errors, setErrors] = useState<Record<string, string>>({})
-  const [touched, setTouched] = useState<Record<string, boolean>>({})
-  const [charCount, setCharCount] = useState(0)
-
-  useEffect(() => {
-    if (paymentMethod && paymentMethod.details) {
-      if (paymentMethod.details.account) {
-        const accountField = paymentMethod.details.account
-        if (typeof accountField === "object") {
-          if (accountField.value && typeof accountField.value === "object" && "value" in accountField.value) {
-            setAccount(accountField.value.value || "")
-          } else if ("value" in accountField) {
-            setAccount(accountField.value || "")
-          }
-        } else {
-          setAccount(accountField || "")
-        }
-      }
-
-      if (paymentMethod.details.bank_name) {
-        const bankNameField = paymentMethod.details.bank_name
-        if (typeof bankNameField === "object") {
-          if (bankNameField.value && typeof bankNameField.value === "object" && "value" in bankNameField.value) {
-            setBankName(bankNameField.value.value || "")
-          } else if ("value" in bankNameField) {
-            setBankName(bankNameField.value || "")
-          }
-        } else {
-          setBankName(bankNameField || "")
-        }
-      }
-
-      if (paymentMethod.details.bank_code) {
-        const bankCodeField = paymentMethod.details.bank_code
-        if (typeof bankCodeField === "object") {
-          if (bankCodeField.value && typeof bankCodeField.value === "object" && "value" in bankCodeField.value) {
-            setBankCode(bankCodeField.value.value || "")
-          } else if ("value" in bankCodeField) {
-            setBankCode(bankCodeField.value || "")
-          }
-        } else {
-          setBankCode(bankCodeField || "")
-        }
-      }
-
-      if (paymentMethod.details.branch) {
-        const branchField = paymentMethod.details.branch
-        if (typeof branchField === "object") {
-          if (branchField.value && typeof branchField.value === "object" && "value" in branchField.value) {
-            setBranch(branchField.value.value || "")
-          } else if ("value" in branchField) {
-            setBranch(branchField.value || "")
-          }
-        } else {
-          setBranch(branchField || "")
-        }
-      }
-
-      let instructionsValue = ""
-      if (paymentMethod.details.instructions) {
-        const instructionsField = paymentMethod.details.instructions
-        if (typeof instructionsField === "object") {
-          if (
-            instructionsField.value &&
-            typeof instructionsField.value === "object" &&
-            "value" in instructionsField.value
-          ) {
-            instructionsValue = instructionsField.value.value || ""
-          } else if ("value" in instructionsField) {
-            instructionsValue = instructionsField.value || ""
-          }
-        } else {
-          instructionsValue = instructionsField || ""
-        }
-      } else if (paymentMethod.instructions) {
-        instructionsValue = typeof paymentMethod.instructions === "string" ? paymentMethod.instructions : ""
-      }
-
-      setInstructions(instructionsValue)
-
-      setErrors({})
-      setTouched({})
-    }
-  }, [paymentMethod])
-
-  useEffect(() => {
-    setCharCount(instructions.length)
-  }, [instructions])
-
-  const isFormValid = (): boolean => {
-    return !!(account && account.trim() && bankName && bankName.trim())
-  }
-
-  const handleInputChange = (name: string, value: string, setter: React.Dispatch<React.SetStateAction<string>>) => {
-    setter(value)
-    setTouched((prev) => ({ ...prev, [name]: true }))
-
-    if (errors[name]) {
-      setErrors((prev) => {
-        const newErrors = { ...prev }
-        delete newErrors[name]
-        return newErrors
-      })
-    }
-  }
+export default function BankTransferEditPanel({ paymentMethod, onSave, onCancel }: BankTransferEditPanelProps) {
+  const [formData, setFormData] = useState({
+    bank_name: paymentMethod.bank_name || "",
+    account_number: paymentMethod.account_number || "",
+    account_holder_name: paymentMethod.account_holder_name || "",
+  })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    onSave(formData)
+  }
 
-    setTouched({
-      account: true,
-      bank_name: true,
-      ...touched,
-    })
-
-    if (isFormValid()) {
-      const fieldValues = {
-        account,
-        bank_name: bankName,
-        bank_code: bankCode || "-",
-        branch: branch || "-",
-        instructions: instructions.trim() || "-",
-      }
-
-      onSave(paymentMethod.id, fieldValues)
-    }
+  const handleInputChange = (field: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }))
   }
 
   return (
-    <PanelWrapper onClose={onClose} title="Edit bank transfer">
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          <div className="text-lg font-medium">Bank Transfer</div>
-
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="account" className="block text-sm font-medium text-gray-500 mb-2">
-                Account Number <span className="text-red-500 ml-1">*</span>
-              </label>
-              <Input
-                id="account"
-                type="text"
-                value={account}
-                onChange={(e) => handleInputChange("account", e.target.value, setAccount)}
-                placeholder="Enter account number"
-              />
-              {touched.account && errors.account && <p className="mt-1 text-xs text-red-500">{errors.account}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="bank_name" className="block text-sm font-medium text-gray-500 mb-2">
-                Bank Name <span className="text-red-500 ml-1">*</span>
-              </label>
-              <Input
-                id="bank_name"
-                type="text"
-                value={bankName}
-                onChange={(e) => handleInputChange("bank_name", e.target.value, setBankName)}
-                placeholder="Enter bank name"
-              />
-              {touched.bank_name && errors.bank_name && <p className="mt-1 text-xs text-red-500">{errors.bank_name}</p>}
-            </div>
-
-            <div>
-              <label htmlFor="bank_code" className="block text-sm font-medium text-gray-500 mb-2">
-                SWIFT or IFSC code
-              </label>
-              <Input
-                id="bank_code"
-                type="text"
-                value={bankCode}
-                onChange={(e) => handleInputChange("bank_code", e.target.value, setBankCode)}
-                placeholder="Enter SWIFT or IFSC code"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="branch" className="block text-sm font-medium text-gray-500 mb-2">
-                Branch
-              </label>
-              <Input
-                id="branch"
-                type="text"
-                value={branch}
-                onChange={(e) => handleInputChange("branch", e.target.value, setBranch)}
-                placeholder="Enter branch name"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-              Instructions
-            </label>
-            <Textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
-              placeholder="Enter your instructions"
-              className="min-h-[120px] resize-none"
-              maxLength={300}
+    <Card className="w-full max-w-md mx-auto">
+      <CardHeader>
+        <CardTitle>Edit Bank Transfer Details</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="bank_name">Bank Name</Label>
+            <Input
+              id="bank_name"
+              value={formData.bank_name}
+              onChange={(e) => handleInputChange("bank_name", e.target.value)}
+              placeholder="Enter bank name"
+              required
             />
-            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
           </div>
-        </div>
-      </form>
 
-      <div className="p-6 border-t">
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isLoading || !isFormValid()}
-          variant="default"
-          className="w-full bg-black hover:bg-black/90 text-white"
-        >
-          {isLoading ? "Saving..." : "Save details"}
-        </Button>
-      </div>
-    </PanelWrapper>
+          <div className="space-y-2">
+            <Label htmlFor="account_number">Account Number</Label>
+            <Input
+              id="account_number"
+              value={formData.account_number}
+              onChange={(e) => handleInputChange("account_number", e.target.value)}
+              placeholder="Enter account number"
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="account_holder_name">Account Holder Name</Label>
+            <Input
+              id="account_holder_name"
+              value={formData.account_holder_name}
+              onChange={(e) => handleInputChange("account_holder_name", e.target.value)}
+              placeholder="Enter account holder name"
+              required
+            />
+          </div>
+
+          <div className="flex gap-2 pt-4">
+            <Button type="submit" className="flex-1" variant="default">
+              Save Details
+            </Button>
+            <Button type="button" variant="outline" onClick={onCancel} className="flex-1 bg-transparent">
+              Cancel
+            </Button>
+          </div>
+        </form>
+      </CardContent>
+    </Card>
   )
 }
