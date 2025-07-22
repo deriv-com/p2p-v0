@@ -10,6 +10,7 @@ import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -17,10 +18,25 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const { isConnected, joinChannel, leaveChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
   }, [activeTab])
+
+  // Join orders channel when component mounts and websocket is connected
+  useEffect(() => {
+    if (isConnected) {
+      joinChannel("orders")
+    }
+
+    // Leave orders channel when component unmounts or navigating away
+    return () => {
+      if (isConnected) {
+        leaveChannel("orders")
+      }
+    }
+  }, [isConnected, joinChannel, leaveChannel])
 
   const fetchOrders = async () => {
     setIsLoading(true)
@@ -79,7 +95,11 @@ export default function OrdersPage() {
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
-              <TableRow className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]" key={order.id} onClick={() => navigateToOrderDetails(order.id)}>
+              <TableRow
+                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                key={order.id}
+                onClick={() => navigateToOrderDetails(order.id)}
+              >
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
                     {order.created_at ? formatDate(order.created_at) : ""}
@@ -99,7 +119,9 @@ export default function OrdersPage() {
                       </span>
                     </div>
                     <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
-                    <div className="mt-[4px] text-slate-600 text-xs">Counterparty: {order.type === "buy" ?order.advert.user.nickname: order.user.nickname} </div>
+                    <div className="mt-[4px] text-slate-600 text-xs">
+                      Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
+                    </div>
                   </div>
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top text-base">
@@ -191,9 +213,9 @@ export default function OrdersPage() {
             </Button>
           </div>
         ) : (
-            <div>
-              <DesktopOrderTable />
-            </div>
+          <div>
+            <DesktopOrderTable />
+          </div>
         )}
       </div>
     </div>

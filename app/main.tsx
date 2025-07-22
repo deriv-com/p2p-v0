@@ -8,6 +8,7 @@ import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Navigation from "@/components/navigation"
 import Sidebar from "@/components/sidebar"
+import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 import "./globals.css"
 
@@ -31,15 +32,15 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
-           AuthPrevAPI.getSocketToken(response.access_token) 
+          AuthPrevAPI.getSocketToken(response.access_token)
           router.push(pathname)
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error)
       }
-    };
+    }
 
-    fetchSessionData();
+    fetchSessionData()
   }, [pathname, router])
 
   if (pathname === "/login") {
@@ -47,10 +48,11 @@ export default function Main({
   }
 
   return (
-    <>
+    <WebSocketProvider>
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto max-w-[1232px] relative">
         {isHeaderVisible && <Sidebar />}
-        <div className="flex-1">{isHeaderVisible && <Header />}
+        <div className="flex-1">
+          {isHeaderVisible && <Header />}
           <div className="container mx-auto p-[24px] pt-[8px]">{children}</div>
         </div>
       </div>
@@ -60,6 +62,6 @@ export default function Main({
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
-    </>
+    </WebSocketProvider>
   )
 }
