@@ -5,7 +5,6 @@ import { maskAccountNumber } from "@/lib/utils"
 import { useState, useEffect, useCallback } from "react"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "../components/ui/custom-shimmer"
-import CustomStatusModal from "../components/ui/custom-status-modal"
 import { ProfileAPI } from "../api"
 import CustomNotificationBanner from "../components/ui/custom-notification-banner"
 import EditPaymentMethodPanel from "../components/edit-payment-method-panel"
@@ -30,7 +29,7 @@ type FilterType = "all" | "bank_transfer" | "e_wallet"
 
 export default function PaymentMethodsPage() {
   const router = useRouter()
-  const { showDeleteDialog } = useAlertDialog()
+  const { showDeleteDialog, showAlert } = useAlertDialog()
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -38,12 +37,6 @@ export default function PaymentMethodsPage() {
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
 
-  const [statusModal, setStatusModal] = useState({
-    show: false,
-    type: "error" as "success" | "error",
-    title: "",
-    message: "",
-  })
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
     show: false,
     message: "",
@@ -176,21 +169,21 @@ export default function PaymentMethodsPage() {
           }
         }
 
-        setStatusModal({
-          show: true,
-          type: "error",
+        showAlert({
+          type: "warning",
           title: "Failed to update payment method",
-          message: errorMessage,
+          description: errorMessage,
+          confirmText: "OK",
         })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
-      setStatusModal({
-        show: true,
-        type: "error",
+      showAlert({
+        type: "warning",
         title: "Failed to update payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        confirmText: "OK",
       })
     } finally {
       setEditPanel({
@@ -201,15 +194,15 @@ export default function PaymentMethodsPage() {
     }
   }
 
- const handleDeletePaymentMethod = (id: string, name: string) => {
-  setBottomSheet({ show: false, paymentMethod: null })
+  const handleDeletePaymentMethod = (id: string, name: string) => {
+    setBottomSheet({ show: false, paymentMethod: null })
 
-  showDeleteDialog({
-    title: `Delete ${name}?`,
-    description: `Are you sure you want to delete this payment method?`,
-    onConfirm: () => confirmDeletePaymentMethod(id),
-  })
-}
+    showDeleteDialog({
+      title: `Delete ${name}?`,
+      description: `Are you sure you want to delete this payment method?`,
+      onConfirm: () => confirmDeletePaymentMethod(id),
+    })
+  }
 
   const confirmDeletePaymentMethod = async (methodId: string) => {
     try {
@@ -223,27 +216,23 @@ export default function PaymentMethodsPage() {
 
         fetchPaymentMethods()
       } else {
-        setStatusModal({
-          show: true,
-          type: "error",
+        showAlert({
+          type: "warning",
           title: "Failed to delete payment method",
-          message: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
+          description: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
+          confirmText: "OK",
         })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
-      setStatusModal({
-        show: true,
-        type: "error",
+      showAlert({
+        type: "warning",
         title: "Failed to delete payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        confirmText: "OK",
       })
     }
-  }
-
-  const closeStatusModal = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -265,19 +254,19 @@ export default function PaymentMethodsPage() {
         const errorMessage =
           result.errors && result.errors.length > 0 ? result.errors[0].message : "Failed to add payment method"
 
-        setStatusModal({
-          show: true,
-          type: "error",
+        showAlert({
+          type: "warning",
           title: "Failed to add payment method",
-          message: errorMessage,
+          description: errorMessage,
+          confirmText: "OK",
         })
       }
     } catch (error) {
-      setStatusModal({
-        show: true,
-        type: "error",
+      showAlert({
+        type: "warning",
         title: "Failed to add payment method",
-        message: error instanceof Error ? error.message : "An unexpected error occurred",
+        description: error instanceof Error ? error.message : "An unexpected error occurred",
+        confirmText: "OK",
       })
     } finally {
       setIsAddingPaymentMethod(false)
@@ -524,15 +513,6 @@ export default function PaymentMethodsPage() {
             isLoading={isEditing}
           />
         ))}
-
-      {statusModal.show && (
-        <CustomStatusModal
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          onClose={closeStatusModal}
-        />
-      )}
 
       {showAddPaymentMethodPanel && (
         <AddPaymentMethodPanel
