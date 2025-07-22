@@ -134,6 +134,7 @@ export default function AdsPage() {
         description: errorModal.message,
         confirmText: "OK",
         onConfirm: handleCloseErrorModal,
+        type:"warning"
       })
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
