@@ -169,8 +169,8 @@ export default function EditPaymentMethodPanel({
           type="button"
           onClick={handleSubmit}
           disabled={isLoading || !isFormValid()}
-          size="sm"
-          className="w-full"
+          variant="default"
+          className="w-full bg-black hover:bg-black/90 text-white"
         >
           {isLoading ? "Saving..." : "Save details"}
         </Button>
