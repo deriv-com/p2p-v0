@@ -136,7 +136,7 @@ export default function PaymentMethodsTab() {
       paymentMethod: cleanedMethod,
     })
   }
-  
+
 const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
   try {
     setIsEditing(true)
@@ -144,7 +144,7 @@ const handleSavePaymentMethod = async (id: string, fields: Record<string, string
     const paymentMethod = paymentMethods.find((m) => m.id === id)
     const formattedFields: Record<string, any> = { ...fields }
 
-    let payload: Record<string, any> = {
+ payload: Record<string, any> = {
       data: {
         fields: formattedFields,
       },
