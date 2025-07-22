@@ -90,7 +90,6 @@ export default function OrderDetailsPage() {
           description: "The order has been successfully completed.",
           variant: "default",
         })
-        // Refresh order details to show updated status
         fetchOrderDetails()
       }
     } catch (err) {
@@ -109,22 +108,12 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.reviewOrder(orderId, ratingData)
       if (result.errors.length === 0) {
-        toast({
-          title: "Review submitted",
-          description: "Thank you for your feedback!",
-          variant: "default",
-        })
         setShowRatingSidebar(false)
-        fetchOrderDetails() // Refresh order details
+        fetchOrderDetails() 
       }
     } catch (err) {
       console.error("Error submitting review:", err)
-      toast({
-        title: "Review submission failed",
-        description: "Could not submit your review. Please try again.",
-        variant: "destructive",
-      })
-      throw err // Re-throw to let the component handle the error state
+      throw err
     }
   }
 
