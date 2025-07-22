@@ -110,7 +110,10 @@ export function RatingSidebar({
                   disabled={isSubmitting}
                 >
                   <Image src="/icons/thumbs-up-custom.png" alt="Thumbs up" width={14} height={14} />
-                  <span className="text-sm text-grayscale-100 ml-[8px] font-normal">Yes</span>
+                  <span className={cn(
+                        "text-sm ml-[8px] font-normal ",
+                        recommend === true ? "text-white" : "text-grayscale-100",
+                      )} >Yes</span>
                 </Button>
                 <Button
                   variant={recommend === false ? "black" : "outline"}
@@ -124,7 +127,10 @@ export function RatingSidebar({
                     width={14}
                     height={14}
                   />
-                  <span className="text-sm text-grayscale-100 ml-[8px] font-normal">No</span>
+                  <span className={cn(
+                        "text-sm ml-[8px] font-normal ",
+                        recommend === false ? "text-white" : "text-grayscale-100",
+                      )} >No</span>
                 </Button>
               </div>
             </div>
