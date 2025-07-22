@@ -244,14 +244,10 @@ export default function OrdersPage() {
           </div>
         )}
       </div>
-      {/* Rating Sidebar */}
       <RatingSidebar
         isOpen={isRatingSidebarOpen}
         onClose={handleRatingSidebarClose}
         onSubmit={handleRatingSubmit}
-        title="Rate and recommend"
-        ratingLabel="How would you rate this transaction?"
-        recommendLabel={`Would you recommend this ${selectedOrderForRating?.type === "buy" ? "seller" : "buyer"}?`}
       />
     </div>
   )
