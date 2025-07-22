@@ -307,8 +307,8 @@ export default function OrderDetailsPage() {
                 )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
-                    {/* Rating deadline notification */}
-                    <div className="flex items-center gap-3 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
+          
+                    <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
                       <div className="flex-shrink-0">
                         <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
                       </div>
