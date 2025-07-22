@@ -107,7 +107,7 @@ export function RatingSidebar({
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
                 >
-                  <Image src="/icons/thumbs-up-custom.png" alt="Thumbs up" width={14} height={14} />
+                  <Image src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"} alt="Thumbs up" width={14} height={14} />
                   <span className={cn(
                         "text-sm ml-[8px] font-normal ",
                         recommend === true ? "text-white" : "text-grayscale-100",
@@ -120,7 +120,7 @@ export function RatingSidebar({
                   disabled={isSubmitting}
                 >
                   <Image
-                    src="/icons/thumbs-down-custom.png"
+                    src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png" }
                     alt="Thumbs down"
                     width={14}
                     height={14}
