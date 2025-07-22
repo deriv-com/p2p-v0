@@ -1,8 +1,9 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useState, useCallback } from "react"
+import { createContext, useContext, useState, useCallback, useEffect } from "react"
 import { AlertDialog, AlertDialogAction, AlertDialogContent } from "@/components/ui/alert-dialog"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -16,6 +17,18 @@ interface AlertDialogProviderProps {
 export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [config, setConfig] = useState<AlertDialogConfig>({})
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
     setConfig(alertConfig)
@@ -47,48 +60,61 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     isOpen,
   }
 
+  const renderContent = () => (
+    <>
+      {(config.type === "success" || config.type === "warning") && (
+        <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
+          <div style={{ alignSelf: "end" }} className="px-6 mt-6">
+            <Button onClick={hideAlert} size="sm" variant="ghost">
+              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+            </Button>
+          </div>
+          <div style={{ alignSelf: "center" }} className="mb-4">
+            {config.type === "success" && (
+              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+            )}
+            {config.type === "warning" && (
+              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
+            )}
+          </div>
+        </div>
+      )}
+
+      {config.type !== "success" && config.type !== "warning" && (
+        <div className="flex justify-end px-6 pt-6">
+          <Button onClick={hideAlert} size="sm" variant="ghost">
+            <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
+
+      <div className="px-8 py-6">
+        {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
+        {config.description && <div className="mb-4">{config.description}</div>}
+        <div className="mt-6">
+          <AlertDialogAction onClick={handleConfirm} className="w-full">
+            {config.confirmText || "Continue"}
+          </AlertDialogAction>
+        </div>
+      </div>
+    </>
+  )
+
   return (
     <AlertDialogContext.Provider value={contextValue}>
       {children}
-      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-        <AlertDialogContent className="p-0">
-          {(config.type === "success" || config.type === "warning") && (
-            <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
-              <div style={{ alignSelf: "end" }} className="px-6 mt-6">
-                <Button onClick={hideAlert} size="sm" variant="ghost">
-                  <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
-                </Button>
-              </div>
-              <div style={{ alignSelf: "center" }} className="mb-4">
-                {config.type === "success" && (
-                  <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
-                )}
-                {config.type === "warning" && (
-                  <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
-                )}
-              </div>
-            </div>
-          )}
 
-          {(config.type !== "success" && config.type !== "warning") && (
-            <div className="flex justify-end px-6 pt-6">
-              <Button onClick={hideAlert} size="sm" variant="ghost">
-                <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
-              </Button>
-            </div>
-          )}
-
-          <div className="px-8 py-6">
-            {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-            {config.description && <div className="mb-4">{config.description}</div>}
-            <div className="mt-6">
-              <AlertDialogAction onClick={handleConfirm} className="w-full">
-                {config.confirmText || "Continue"}
-              </AlertDialogAction>
-            </div>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
+      {isMobile ? (
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetContent side="bottom" className="p-0 rounded-t-[32px]">
+            {renderContent()}
+          </SheetContent>
+        </Sheet>
+      ) : (
+        <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+          <AlertDialogContent className="p-0">{renderContent()}</AlertDialogContent>
+        </AlertDialog>
+      )}
     </AlertDialogContext.Provider>
   )
 }
