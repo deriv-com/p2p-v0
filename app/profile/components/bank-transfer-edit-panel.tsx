@@ -188,7 +188,7 @@ export default function BankTransferEditPanel({
 
     if (isFormValid()) {
       const fieldValues = {
-        method_type: "bank_transfer",
+  
         account,
         bank_name: bankName,
         bank_code: bankCode || "-",
