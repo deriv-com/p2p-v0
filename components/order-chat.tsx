@@ -54,7 +54,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
         setIsLoading(false)
       } else {
-      setIsLoading(false)
+            setIsLoading(false)
       }
     })
 
@@ -65,7 +65,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     if (isConnected) {
       setTimeout(() => {
         getChatHistory("orders", orderId)
-      }, 500)
+      }, 100)
     }
   }, [isConnected, getChatHistory, orderId])
 
