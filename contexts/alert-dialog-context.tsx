@@ -97,31 +97,36 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     </>
   )
 
-  const renderMobileContent = () => (
-    <>
-      {config.type === "success" || config.type === "warning" ? (
-        <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px] mt-6">
-          <div style={{ alignSelf: "center" }} className="mb-4">
-            {config.type === "success" && (
-              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
-            )}
-            {config.type === "warning" && (
-              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
-            )}
-          </div>
-        </div>
-      ) : null}
-      <div className="px-8 py-6">
-        {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-        {config.description && <div className="mb-4">{config.description}</div>}
-        <div className="mt-6">
-          <Button onClick={handleConfirm} className="w-full">
-            {config.confirmText || "Continue"}
-          </Button>
+const renderMobileContent = () => (
+  <>
+    {config.type === "success" || config.type === "warning" ? (
+      <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px] pt-10">
+        {/* Added extra top padding with pt-10 */}
+        <div style={{ alignSelf: "center" }} className="mb-4">
+          {config.type === "success" && (
+            <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+          )}
+          {config.type === "warning" && (
+            <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
+          )}
         </div>
       </div>
-    </>
-  )
+    ) : null}
+    <div className="px-8 py-6 min-h-[300px] flex flex-col justify-between">
+      {/* Added min-h-[300px] for more height and spacing */}
+      <div>
+        {config.title && <div className="mb-8 font-bold text-2xl text-center">{config.title}</div>}
+        {config.description && <div className="mb-4 text-center">{config.description}</div>}
+      </div>
+      <div className="mt-6">
+        <Button onClick={handleConfirm} className="w-full">
+          {config.confirmText || "Continue"}
+        </Button>
+      </div>
+    </div>
+  </>
+)
+
 
   return (
     <AlertDialogContext.Provider value={contextValue}>
