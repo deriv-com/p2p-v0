@@ -21,6 +21,7 @@ export default function OrdersPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
+  const [selectedOrderId, setSelectedOrderId] = useState(null)
 
   useEffect(() => {
     fetchOrders()
@@ -69,14 +70,17 @@ export default function OrdersPage() {
   const handleRateClick = (e: React.MouseEvent, order: Order) => {
     e.stopPropagation()
     setIsRatingSidebarOpen(true)
+    setSelectedOrderId(order.id)
   }
 
   const handleRatingSidebarClose = () => {
     setIsRatingSidebarOpen(false)
+    setSelectedOrderId(null)
   }
 
   const handleRatingSubmit = () => {
           setIsRatingSidebarOpen(false)
+          setSelectedOrderId(null)
           fetchOrders()
   }
 
@@ -228,6 +232,7 @@ export default function OrdersPage() {
       <RatingSidebar
         isOpen={isRatingSidebarOpen}
         onClose={handleRatingSidebarClose}
+        orderId={selectedOrderId}
         onSubmit={handleRatingSubmit}
       />
     </div>
