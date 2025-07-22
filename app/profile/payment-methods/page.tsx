@@ -201,15 +201,15 @@ export default function PaymentMethodsPage() {
     }
   }
 
-  const handleDeletePaymentMethod = (id: string, name: string) => {
-    setBottomSheet({ show: false, paymentMethod: null })
+ const handleDeletePaymentMethod = (id: string, name: string) => {
+  setBottomSheet({ show: false, paymentMethod: null })
 
-    showDeleteDialog({
-      title: 'Delete payment ${name}?',
-      description: `Are you sure you want to delete this payment method?`,
-      onConfirm: () => confirmDeletePaymentMethod(id),
-    })
-  }
+  showDeleteDialog({
+    title: `Delete payment ${name}?`,
+    description: `Are you sure you want to delete this payment method?`,
+    onConfirm: () => confirmDeletePaymentMethod(id),
+  })
+}
 
   const confirmDeletePaymentMethod = async (methodId: string) => {
     try {
