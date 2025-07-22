@@ -310,7 +310,7 @@ export default function OrderDetailsPage() {
                       </div>
                     )}
                   {order.status === "completed" && order.is_reviewable && (
-                    <div className="p-4">
+                    <div className="p-4 flex justify-end">
                       <Button variant="outline" onClick={() => setShowRatingSidebar(true)}>
                         Rate transaction
                       </Button>
