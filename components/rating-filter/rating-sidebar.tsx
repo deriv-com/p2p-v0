@@ -74,13 +74,13 @@ export function RatingSidebar({
               <h3 className="text-sm font-medium">{ratingLabel}</h3>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
-                  <button
+                  <Button
+                  variant="outline"
+                  size="sm"
                     key={star}
-                    type="button"
                     onClick={() => setRating(star)}
                     onMouseEnter={() => setHoverRating(star)}
-                    onMouseLeave={() => setHoverRating(0)}
-                    className="text-2xl focus:outline-none disabled:opacity-50"
+                    onMouseLeave={() => setHoverRating(0)
                     disabled={isSubmitting}
                   >
                     <Star
@@ -89,7 +89,7 @@ export function RatingSidebar({
                         (hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-gray-300",
                       )}
                     />
-                  </button>
+                  </Button>
                 ))}
               </div>
             </div>
@@ -98,30 +98,30 @@ export function RatingSidebar({
             <div className="space-y-4">
               <h3 className="text-sm font-medium">{recommendLabel}</h3>
               <div className="flex gap-4">
-                <button
-                  type="button"
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
                   className={cn(
-                    "flex items-center gap-2 px-6 py-2 border rounded-md disabled:opacity-50",
                     recommend === true ? "border-green-500 bg-green-50" : "border-gray-300",
                   )}
                 >
                   <ThumbsUp className={cn("h-5 w-5", recommend === true ? "text-green-500" : "text-gray-400")} />
                   <span className={cn(recommend === true ? "text-green-700" : "text-gray-600")}>Yes</span>
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
                   className={cn(
-                    "flex items-center gap-2 px-6 py-2 border rounded-md disabled:opacity-50",
-                    recommend === false ? "border-red-500 bg-red-50" : "border-gray-300",
+                      recommend === false ? "border-red-500 bg-red-50" : "border-gray-300",
                   )}
                 >
                   <ThumbsDown className={cn("h-5 w-5", recommend === false ? "text-red-500" : "text-gray-400")} />
                   <span className={cn(recommend === false ? "text-red-700" : "text-gray-600")}>No</span>
-                </button>
+                </Button>
               </div>
             </div>
           </div>
