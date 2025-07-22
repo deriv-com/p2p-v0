@@ -157,13 +157,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
               <div className="flex-shrink-0">
                 <Image src="/icons/warning-icon-new.png" className="-mt-[2px]" alt="Warning" width={24} height={24} />
               </div>
-              <div className="text-sm">
-                <span className="font-semibold text-gray-900">Important:</span>
-                <span className="text-gray-700 ml-1">
+              <div className="text-sm text-grayscale-100">
+                <span className="font-semibold">Important:</span>
+                <span className="ml-1">
                   Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
                   messages from numbers claiming to be from Deriv.
                 </span>
-                <div className="text-gray-700 mt-[16px]">
+                <div className="mt-[16px]">
                   <span className="font-semibold">Note:</span>
                   <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
                 </div>
