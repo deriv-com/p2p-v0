@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical, Edit, Trash, X } from "lucide-react"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "../components/ui/custom-shimmer"
 import CustomStatusModal from "../components/ui/custom-status-modal"
@@ -15,7 +14,7 @@ import { DeleteConfirmationDialog } from "../components/delete-confirmation-dial
 import AddPaymentMethodPanel from "../components/add-payment-method-panel"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 
 interface PaymentMethod {
   id: string
@@ -419,7 +418,7 @@ export default function PaymentMethodsPage() {
                           </div>
                         </div>
                         <Button variant="ghost" size="sm" className="p-2" onClick={() => handleMoreOptions(method)}>
-                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                          <Image src="/icons/ellipsis-vertical-md.png" alt="More options" width={20} height={20} />
                         </Button>
                       </div>
                     ))}
@@ -451,7 +450,7 @@ export default function PaymentMethodsPage() {
                           </div>
                         </div>
                         <Button variant="ghost" size="sm" className="p-2" onClick={() => handleMoreOptions(method)}>
-                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                          <Image src="/icons/ellipsis-vertical-md.png" alt="More options" width={20} height={20} />
                         </Button>
                       </div>
                     ))}
@@ -487,39 +486,35 @@ export default function PaymentMethodsPage() {
       >
         <SheetContent side="bottom" className="h-auto">
           <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mb-4" />
-          <SheetHeader className="pb-4">
-            <div className="flex items-center justify-between">
-            
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setBottomSheet({ show: false, paymentMethod: null })}
-                className="p-1"
-              >
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-          </SheetHeader>
+
+          <div className="flex items-center justify-between pb-4">
+            <h3 className="text-lg font-semibold text-gray-900">
+              {bottomSheet.paymentMethod?.category === "bank_transfer" ? "Bank name" : bottomSheet.paymentMethod?.name}
+            </h3>
+            <button onClick={() => setBottomSheet({ show: false, paymentMethod: null })} className="p-1">
+              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} />
+            </button>
+          </div>
 
           <div className="space-y-4 pb-6">
-            <button
+            <div
               onClick={() => bottomSheet.paymentMethod && handleEditPaymentMethod(bottomSheet.paymentMethod)}
-              className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 rounded-lg transition-colors"
+              className="w-full flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 rounded-lg transition-colors"
             >
-              <Edit className="h-5 w-5 text-gray-700" />
-              <span className="text-base font-medium text-gray-900">Edit</span>
-            </button>
+              <Image src="/icons/pencil.png" alt="Edit" width={20} height={20} />
+              <span className="text-base font-normal text-red-500">Edit</span>
+            </div>
 
-            <button
+            <div
               onClick={() =>
                 bottomSheet.paymentMethod &&
                 handleDeletePaymentMethod(bottomSheet.paymentMethod.id, bottomSheet.paymentMethod.name)
               }
-              className="w-full flex items-center gap-3 p-4 text-left hover:bg-gray-50 rounded-lg transition-colors"
+              className="w-full flex items-center gap-3 p-4 cursor-pointer hover:bg-gray-50 rounded-lg transition-colors"
             >
-              <Trash className="h-5 w-5 text-red-500" />
-              <span className="text-base font-medium text-red-500">Delete</span>
-            </button>
+              <Image src="/icons/trash-red.png" alt="Delete" width={20} height={20} />
+              <span className="text-base font-normal text-red-500">Delete</span>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
