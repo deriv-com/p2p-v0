@@ -53,7 +53,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       }
     },
     onOpen: () => {
-      joinChannel("orders")
+     // joinChannel("orders")
 
       setTimeout(() => {
         getChatHistory("orders", orderId)
