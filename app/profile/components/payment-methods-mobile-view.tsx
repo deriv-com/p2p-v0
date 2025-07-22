@@ -150,8 +150,10 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
       const paymentMethod = paymentMethods.find((m) => m.id === id)
 
       const payload = {
-        method: paymentMethod.type,
-        fields: { ...fields },
+        data: {
+          method: paymentMethod.type,
+          fields: { ...fields },
+        },
       }
 
       const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
