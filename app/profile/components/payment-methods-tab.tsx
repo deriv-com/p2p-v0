@@ -143,11 +143,9 @@ const handleSavePaymentMethod = async (id: string, fields: Record<string, string
 
     const paymentMethod = paymentMethods.find((m) => m.id === id);
 
-    const payload = {
-      data: {
-        method: paymentMethod?.type || "",
-        fields,
-      },
+  const payload = {
+      method: paymentMethod?.type || "",
+      fields,
     };
 
     const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload);
