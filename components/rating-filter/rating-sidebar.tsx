@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Star } from "lucide-react"
+import { X } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
@@ -84,10 +84,14 @@ export function RatingSidebar({
                     onMouseLeave={() => setHoverRating(0)}
                     disabled={isSubmitting}
                   >
-                    <Star
+                    <Image
+                      src="/icons/star-custom.png"
+                      alt="Star rating"
+                      width={20}
+                      height={20}
                       className={cn(
-                        "h-5 w-5",
-                        (hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-gray-300",
+                        "w-5 h-5 transition-opacity",
+                        (hoverRating || rating) >= star ? "opacity-100" : "opacity-30",
                       )}
                     />
                   </Button>
