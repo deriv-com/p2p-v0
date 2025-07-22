@@ -1,16 +1,7 @@
 "use client"
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import { Button } from "@/components/ui/button"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useEffect } from "react"
 
 interface DeleteConfirmationDialogProps {
   open: boolean
@@ -29,26 +20,29 @@ export function DeleteConfirmationDialog({
   onConfirm,
   onCancel,
 }: DeleteConfirmationDialogProps) {
-  return (
-    <AlertDialog open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel asChild>
-            <Button variant="outline" onClick={onCancel}>
-              Cancel
-            </Button>
-          </AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button variant="destructive" onClick={onConfirm} disabled={isDeleting}>
-              {isDeleting ? "Deleting..." : "Delete"}
-            </Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  )
+  const { showDeleteDialog, hideAlert } = useAlertDialog()
+
+  useEffect(() => {
+    if (open) {
+      showDeleteDialog({
+        title,
+        description,
+        confirmText: isDeleting ? "Deleting..." : "Delete",
+        onConfirm: () => {
+          onConfirm()
+          hideAlert()
+        },
+        onCancel: () => {
+          onCancel()
+          hideAlert()
+        },
+      })
+    } else {
+      hideAlert()
+    }
+  }, [open, title, description, isDeleting, onConfirm, onCancel, showDeleteDialog, hideAlert])
+
+  // This component now uses the global alert dialog context
+  // The actual dialog is rendered by the AlertDialogProvider
+  return null
 }
