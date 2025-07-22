@@ -117,7 +117,7 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const formatRatingDeadline = (ratingDeadline: string) => {
+  const formatRatingDeadline = (ratingDeadline) => {
     const ratingDeadline = new Date(ratingDeadline)
 
     const options: Intl.DateTimeFormatOptions = {
