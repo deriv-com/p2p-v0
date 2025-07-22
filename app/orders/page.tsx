@@ -13,8 +13,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
-import type { RatingData } from "@/components/rating-filter/types"
-import { month } from "@/lib/month" // Declare the month variable
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -23,7 +21,6 @@ export default function OrdersPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
-  const [selectedOrderForRating, setSelectedOrderForRating] = useState<Order | null>(null)
 
   useEffect(() => {
     fetchOrders()
@@ -60,7 +57,7 @@ export default function OrdersPage() {
     const date = new Date(dateString)
     return date.toLocaleDateString("en-GB", {
       day: "2-digit",
-      month: month, // Use the declared month variable
+      month: "short",
       year: "numeric",
     })
   }
@@ -71,32 +68,11 @@ export default function OrdersPage() {
 
   const handleRateClick = (e: React.MouseEvent, order: Order) => {
     e.stopPropagation()
-    setSelectedOrderForRating(order)
     setIsRatingSidebarOpen(true)
-  }
-
-  const handleRatingSubmit = async (ratingData: RatingData) => {
-    if (!selectedOrderForRating) return
-
-    try {
-      // TODO: Implement API call to submit rating
-      console.log("Submitting rating for order:", selectedOrderForRating.id, ratingData)
-
-      // Close the sidebar and reset state
-      setIsRatingSidebarOpen(false)
-      setSelectedOrderForRating(null)
-
-      // Refresh orders to update the UI
-      await fetchOrders()
-    } catch (error) {
-      console.error("Error submitting rating:", error)
-      throw error // Let the RatingSidebar handle the error display
-    }
   }
 
   const handleRatingSidebarClose = () => {
     setIsRatingSidebarOpen(false)
-    setSelectedOrderForRating(null)
   }
 
   const DesktopOrderTable = () => (
