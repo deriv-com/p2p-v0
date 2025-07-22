@@ -206,7 +206,7 @@ export default function PaymentMethodsPage() {
 
     showDeleteDialog({
       title: "Delete ${name}?",
-      description: `Are you sure you want to delete ${name}? You will not be able to restore it.`,
+      description: `Are you sure you want to delete this payment method?`,
       onConfirm: () => confirmDeletePaymentMethod(id),
     })
   }
