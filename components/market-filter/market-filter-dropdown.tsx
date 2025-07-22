@@ -39,7 +39,7 @@ const [isOpen, setIsOpen] = useState(false)
       fromFollowing: false,
     }
     setFilters(resetFilters)
-    handleApply()
+    handleApply(resetFilters)
   }
 
   const handleApply = () => {
@@ -61,7 +61,7 @@ const [isOpen, setIsOpen] = useState(false)
   const FilterContent = () => (
     <div className="w-full h-full">
       <div className="space-y-4 mb-6">
-        <div className="flex items-center space-x-3">
+         <div className="flex items-center space-x-3">
           <Checkbox
             id="within-balance"
             checked={filters.withinBalance}
@@ -72,7 +72,6 @@ const [isOpen, setIsOpen] = useState(false)
             Ads within your P2P balance and order limits
           </label>
         </div>
-
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"

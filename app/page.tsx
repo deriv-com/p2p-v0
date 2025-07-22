@@ -135,7 +135,7 @@ export default function BuySellPage() {
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-[24px]">
-              <Tabs className="w-full md:min-w-[230px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+              <Tabs className="w-full md:w-[230px] md:min-w-[230px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                 <TabsList className="w-full md:min-w-[230px]">
                   <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
                     Buy
@@ -228,7 +228,7 @@ export default function BuySellPage() {
                     value="exchange_rate"
                     className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                   >
-                    Sort by: Exchange rate (high-low)
+                    {activeTab === "sell" ? (<>Sort by: Exchange rate (low-high)</>) : (<>Sort by: Exchange rate (high-low)</>) }
                   </SelectItem>
                   <SelectItem
                     value="user_rating_average_lifetime"

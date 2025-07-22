@@ -24,19 +24,27 @@ export function CurrencyFilter({
   const isMobile = useIsMobile()
 
   const filteredCurrencies = useMemo(() => {
-    if (!searchQuery.trim()) return currencies
+    let filtered = currencies
 
-    const query = searchQuery.toLowerCase().trim()
-    return currencies.filter((currency) => {
-      const codeMatch = currency.code.toLowerCase().includes(query)
-      const nameMatch = currency.name.toLowerCase().includes(query)
-      const wordMatch = currency.name
-        .toLowerCase()
-        .split(" ")
-        .some((word) => word.startsWith(query))
-      return codeMatch || nameMatch || wordMatch
-    })
-  }, [currencies, searchQuery])
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim()
+      filtered = filtered.filter((currency) => {
+        const codeMatch = currency.code.toLowerCase().includes(query)
+        const nameMatch = currency.name.toLowerCase().includes(query)
+        const wordMatch = currency.name
+          .toLowerCase()
+          .split(" ")
+          .some((word) => word.startsWith(query))
+        return codeMatch || nameMatch || wordMatch
+      })
+    }
+    const selectedCurrencyItem = filtered.find((currency) => currency.code === selectedCurrency)
+    const unselectedCurrencies = filtered.filter((currency) => currency.code !== selectedCurrency)
+    
+    unselectedCurrencies.sort((a, b) => a.code.localeCompare(b.code))
+
+    return selectedCurrencyItem ? [selectedCurrencyItem, ...unselectedCurrencies] : unselectedCurrencies
+  }, [currencies, searchQuery, selectedCurrency])
 
   const handleCurrencySelect = useCallback(
     (currencyCode: string) => {
