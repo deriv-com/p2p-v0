@@ -52,6 +52,8 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           const newMessage = data.payload.data
           setMessages((prev) => [...prev, newMessage])
         }
+      } else {
+      setIsLoading(false)
       }
     })
 
