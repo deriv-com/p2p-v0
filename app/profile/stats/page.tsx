@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { USER, API, AUTH } from "@/lib/local-variables"
@@ -113,24 +112,24 @@ export default function StatsPage() {
     router.push("/profile")
   }
 
-  const StatCard = ({
-    title,
+  const StatItem = ({
+    label,
     value,
     hasInfo = false,
-  }: { title: string; value: string | number; hasInfo?: boolean }) => (
-    <Card className="border border-gray-200">
-      <CardContent className="p-4">
-        <div className="space-y-2">
-          <div className="text-slate-500 text-sm font-normal leading-5 tracking-normal flex items-center">
-            {title}
-            {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
-          </div>
-          <div className="font-bold text-black text-base leading-6 tracking-normal">
-            {value !== undefined && value !== null ? value : "N/A"}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    showBorder = true,
+  }: {
+    label: string
+    value: string | number
+    hasInfo?: boolean
+    showBorder?: boolean
+  }) => (
+    <div className={`flex justify-between items-center w-full py-3 ${showBorder ? "border-b border-gray-200" : ""}`}>
+      <div className="flex items-center gap-1">
+        <span className="text-gray-600 text-sm">{label}</span>
+        {hasInfo && <Info className="h-4 w-4 text-gray-400" />}
+      </div>
+      <span className="text-black font-semibold text-sm">{value !== undefined && value !== null ? value : "N/A"}</span>
+    </div>
   )
 
   return (
@@ -146,20 +145,26 @@ export default function StatsPage() {
       {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
-          <div className="p-4 space-y-4">
-            <div className="animate-pulse">
-              <div className="grid grid-cols-1 gap-4">
-                {[...Array(9)].map((_, i) => (
-                  <Card key={i} className="border border-gray-200">
-                    <CardContent className="p-4">
-                      <div className="space-y-3">
-                        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-6 bg-gray-200 rounded w-1/2"></div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+          <div className="p-4">
+            <div
+              className="animate-pulse"
+              style={{
+                display: "flex",
+                padding: "16px",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: "8px",
+                alignSelf: "stretch",
+                borderRadius: "8px",
+                background: "#F8F9FA",
+              }}
+            >
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex justify-between items-center w-full py-3">
+                  <div className="h-4 bg-gray-200 rounded w-24"></div>
+                  <div className="h-4 bg-gray-200 rounded w-16"></div>
+                </div>
+              ))}
             </div>
           </div>
         ) : error ? (
@@ -170,41 +175,36 @@ export default function StatsPage() {
             </Button>
           </div>
         ) : (
-          <div className="p-4 space-y-4 pb-8">
-            {/* Row 1 Stats */}
-            <StatCard title={`Buy completion ${userStats.buyCompletion.period}`} value={userStats.buyCompletion.rate} />
+          <div className="p-4">
+            <div
+              style={{
+                display: "flex",
+                padding: "16px",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: "8px",
+                alignSelf: "stretch",
+                borderRadius: "8px",
+                background: "#F8F9FA",
+              }}
+            >
+              <StatItem label="Sell completion" value={userStats.sellCompletion.rate} />
 
-            <StatCard
-              title={`Sell completion ${userStats.sellCompletion.period}`}
-              value={userStats.sellCompletion.rate}
-            />
+              <StatItem label="Buy completion" value={userStats.buyCompletion.rate} />
 
-            <StatCard title="Trade partners" value={userStats.tradePartners} hasInfo={true} />
+              <StatItem label="Avg. pay time" value={userStats.avgPayTime.time} />
 
-            {/* Row 2 Stats */}
-            <StatCard
-              title={`Trade volume ${userStats.tradeVolume30d.period}`}
-              value={`${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`}
-              hasInfo={true}
-            />
+              <StatItem label="Avg. release time" value={userStats.avgReleaseTime.time} />
 
-            <StatCard
-              title="Trade volume (Lifetime)"
-              value={`${userStats.tradeVolumeLifetime.currency} ${userStats.tradeVolumeLifetime.amount}`}
-              hasInfo={true}
-            />
+              <StatItem label="Total orders" value={userStats.totalOrders30d} />
 
-            <StatCard title={`Avg. pay time ${userStats.avgPayTime.period}`} value={userStats.avgPayTime.time} />
-
-            {/* Row 3 Stats */}
-            <StatCard title={`Total orders ${userStats.buyCompletion.period}`} value={userStats.totalOrders30d} />
-
-            <StatCard title="Total orders (Lifetime)" value={userStats.totalOrdersLifetime} />
-
-            <StatCard
-              title={`Avg. release time ${userStats.avgReleaseTime.period}`}
-              value={userStats.avgReleaseTime.time}
-            />
+              <StatItem
+                label="Trade volume"
+                value={`${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`}
+                hasInfo={true}
+                showBorder={false}
+              />
+            </div>
           </div>
         )}
       </div>
