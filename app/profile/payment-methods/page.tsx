@@ -10,11 +10,11 @@ import { ProfileAPI } from "../api"
 import CustomNotificationBanner from "../components/ui/custom-notification-banner"
 import EditPaymentMethodPanel from "../components/edit-payment-method-panel"
 import BankTransferEditPanel from "../components/bank-transfer-edit-panel"
-import { DeleteConfirmationDialog } from "../components/delete-confirmation-dialog"
 import AddPaymentMethodPanel from "../components/add-payment-method-panel"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: string
@@ -30,6 +30,7 @@ type FilterType = "all" | "bank_transfer" | "e_wallet"
 
 export default function PaymentMethodsPage() {
   const router = useRouter()
+  const { showDeleteDialog } = useAlertDialog()
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -37,11 +38,6 @@ export default function PaymentMethodsPage() {
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
 
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    methodId: "",
-    methodName: "",
-  })
   const [isDeleting, setIsDeleting] = useState(false)
   const [statusModal, setStatusModal] = useState({
     show: false,
@@ -208,21 +204,20 @@ export default function PaymentMethodsPage() {
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     setBottomSheet({ show: false, paymentMethod: null })
-    setDeleteConfirmModal({
-      show: true,
-      methodId: id,
-      methodName: name,
+
+    showDeleteDialog({
+      title: "Delete payment method?",
+      description: `Are you sure you want to delete ${name}? You will not be able to restore it.`,
+      onConfirm: () => confirmDeletePaymentMethod(id),
     })
   }
 
-  const confirmDeletePaymentMethod = async () => {
+  const confirmDeletePaymentMethod = async (methodId: string) => {
     try {
       setIsDeleting(true)
-      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(deleteConfirmModal.methodId)
+      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(methodId)
 
       if (result.success) {
-        setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
-
         setNotification({
           show: true,
           message: "Payment method deleted.",
@@ -249,10 +244,6 @@ export default function PaymentMethodsPage() {
     } finally {
       setIsDeleting(false)
     }
-  }
-
-  const cancelDeletePaymentMethod = () => {
-    setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
   }
 
   const closeStatusModal = () => {
@@ -520,15 +511,6 @@ export default function PaymentMethodsPage() {
       </Sheet>
 
       {/* Modals and Panels */}
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete payment method?"
-        description={`Are you sure you want to delete ${deleteConfirmModal.methodName}? You will not be able to restore it.`}
-        isDeleting={isDeleting}
-        onConfirm={confirmDeletePaymentMethod}
-        onCancel={cancelDeletePaymentMethod}
-      />
-
       {editPanel.show &&
         editPanel.paymentMethod &&
         (editPanel.paymentMethod.type === "bank_transfer" ? (
