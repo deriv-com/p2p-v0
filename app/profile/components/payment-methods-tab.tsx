@@ -144,7 +144,7 @@ const handleSavePaymentMethod = async (id: string, fields: Record<string, string
     const paymentMethod = paymentMethods.find((m) => m.id === id)
     const formattedFields: Record<string, any> = { ...fields }
 
- payload: Record<string, any> = {
+const payload: Record<string, any> = {
       data: {
         fields: formattedFields,
       },
