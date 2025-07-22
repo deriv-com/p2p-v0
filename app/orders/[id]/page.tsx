@@ -29,8 +29,6 @@ export default function OrderDetailsPage() {
   const [isConfirmLoading, setIsConfirmLoading] = useState(false)
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-
-  // Rating states
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const { isConnected, joinChannel } = useWebSocketContext()
 
