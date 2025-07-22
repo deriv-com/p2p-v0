@@ -99,7 +99,7 @@ export function RatingSidebar({
               <h3 className="text-sm text-grayscale-100">{recommendLabel}</h3>
               <div className="flex gap-4">
                 <Button
-                  variant="outline"
+                  variant={recommend ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
@@ -108,7 +108,7 @@ export function RatingSidebar({
                   <span className="text-sm text-grayscale-100">Yes</span>
                 </Button>
                 <Button
-                  variant="outline"
+                  variant={recommend ? "black" : "outline"}
                   size="sm"
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
