@@ -27,16 +27,9 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
-  isWebSocketConnected?: boolean
 }
 
-export default function OrderChat({
-  orderId,
-  counterpartyName,
-  counterpartyInitial,
-  isClosed,
-  isWebSocketConnected = false,
-}: OrderChatProps) {
+export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed }: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -45,8 +38,7 @@ export default function OrderChat({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
 
-  // Use the shared websocket connection from parent
-  const { getChatHistory } = useWebSocket({
+  const { isConnected, joinChannel, getChatHistory } = useWebSocket({
     onMessage: (data) => {
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
@@ -60,16 +52,14 @@ export default function OrderChat({
         }
       }
     },
-  })
+    onOpen: () => {
+      joinChannel("orders")
 
-  // Load chat history when websocket is connected
-  useEffect(() => {
-    if (isWebSocketConnected) {
       setTimeout(() => {
         getChatHistory("orders", orderId)
       }, 100)
-    }
-  }, [isWebSocketConnected, orderId, getChatHistory])
+    },
+  })
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -87,7 +77,7 @@ export default function OrderChat({
       const result = await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
 
       if (result.success) {
-        if (isWebSocketConnected) {
+        if (isConnected) {
           getChatHistory("orders", orderId)
         }
       }
@@ -117,7 +107,7 @@ export default function OrderChat({
         const result = await OrdersAPI.sendChatMessage(orderId, "", base64)
 
         if (result.success) {
-          if (isWebSocketConnected) {
+          if (isConnected) {
             getChatHistory("orders", orderId)
           }
         }
@@ -187,7 +177,7 @@ export default function OrderChat({
                       <div
                         className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
                       >
-                        <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
+                        <a href={msg.attachment.url} target="_blank" download>
                           {msg.attachment.name}
                         </a>
                       </div>
@@ -222,47 +212,46 @@ export default function OrderChat({
         </div>
       </div>
 
-      {isClosed ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
-          This conversation is closed.
-        </div>
-      ) : (
-        <div className="p-4 border-t">
-          <div className="space-y-2">
-            <div className="relative">
-              <Input
-                value={message}
-                onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
-                onKeyDown={handleKeyDown}
-                placeholder="Enter message"
-                disabled={isSending}
-                className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
-              />
-              <Button
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
-                onClick={() => fileInputRef.current?.click()}
-                variant="ghost"
-                size="sm"
-              >
-                <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
-              </Button>
-              <Input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileSelect}
-                className="hidden"
-                accept="image/*,application/pdf"
-              />
-            </div>
-            <div className="flex justify-between items-center">
-              <div></div>
-              <div className="text-xs text-[#0000003D] mr-16px">
-                {message.length}/{maxLength}
+          {isClosed ? <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
+              This conversation is closed.
+          </div> :
+          <div className="p-4 border-t">
+            <div className="space-y-2">
+              <div className="relative">
+                <Input
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Enter message"
+                  disabled={isSending}
+                  className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                />
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="ghost"
+                  size="sm"
+                >
+                  <Image
+                    src="/icons/paperclip-icon.png"
+                    alt="Attach file"
+                    width={20}
+                    height={20}
+                    className="h-5 w-5"
+                  />
+                </Button>
+                <Input type="file" ref={fileInputRef} onChange={handleFileSelect} className="hidden" accept="image/*,application/pdf" />
+              </div>
+              <div className="flex justify-between items-center">
+                <div></div>
+                <div className="text-xs text-[#0000003D] mr-16px">
+                  {message.length}/{maxLength}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        }
+    
     </div>
   )
 }

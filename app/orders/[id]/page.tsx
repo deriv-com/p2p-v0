@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight, Star, ThumbsUp, ThumbsDown } from "lucide-react"
+import {X, ChevronRight, Star, ThumbsUp, ThumbsDown } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -13,7 +13,7 @@ import { cn, formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
-import { useWebSocket } from "@/hooks/use-websocket"
+
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -26,14 +26,7 @@ export default function OrderDetailsPage() {
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
   const [isConfirmLoading, setIsConfirmLoading] = useState(false)
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-
-  // WebSocket connection for orders channel
-  const { isConnected, joinChannel, leaveChannel } = useWebSocket({
-    onOpen: () => {
-      joinChannel("orders")
-    },
-  })
+   const [isLoading, setIsLoading] = useState(true)
 
   // Rating states
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
@@ -47,7 +40,7 @@ export default function OrderDetailsPage() {
   }, [orderId])
 
   const fetchOrderDetails = async () => {
-    setIsLoading(true)
+      setIsLoading(true)
     setError(null)
     try {
       // Use the mock data for now since we're having issues with the API
@@ -56,19 +49,11 @@ export default function OrderDetailsPage() {
     } catch (err) {
       console.error("Error fetching order details:", err)
       setError("Failed to load order details. Please try again.")
-    } finally {
+    }
+    finally {
       setIsLoading(false)
     }
   }
-
-  // Cleanup websocket connection on unmount
-  useEffect(() => {
-    return () => {
-      if (isConnected) {
-        leaveChannel("orders")
-      }
-    }
-  }, [isConnected, leaveChannel])
 
   const handlePayOrder = async () => {
     setIsPaymentLoading(true)
@@ -174,6 +159,7 @@ export default function OrderDetailsPage() {
       const minutes = Math.floor(diff / 60000)
       const seconds = Math.floor((diff % 60000) / 1000)
 
+
       setTimeLeft(`${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`)
       return true
     }
@@ -211,7 +197,8 @@ export default function OrderDetailsPage() {
 
   const orderType = order?.type === "buy" ? "Buy" : "Sell"
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
-  const counterpartyLabel = order?.type === "buy" ? "Seller" : "Buyer"
+  const counterpartyLabel =
+    order?.type === "buy" ? "Seller" : "Buyer"
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == USER.id
@@ -223,132 +210,118 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
-      {order?.type && (
-        <Navigation
-          isBackBtnVisible={false}
-          isVisible={false}
-          title={`${orderType} ${order?.account_currency}`}
-          redirectUrl={"/orders"}
-        />
-      )}
+      {order?.type && <Navigation isBackBtnVisible={false} isVisible={false} title={`${orderType} ${order?.account_currency}`} redirectUrl={"/orders"} />}
       <div className="container mx-auto">
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading order details...</p>
-          </div>
-        ) : (
-          <div className="flex flex-col">
-            <div className="flex flex-row gap-6">
-              <div className="w-full lg:w-1/2 rounded-lg">
-                <div
-                  className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`}
-                >
-                  <div className="flex items-center">
-                    <span className="font-bold">{formatStatus(order.status, order.type)}</span>
-                  </div>
-                  {(order.status === "pending_payment" || order.status === "pending_release") && (
+          {isLoading ? (
+              <div className="text-center py-12">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                <p className="mt-2 text-slate-600">Loading order details...</p>
+              </div>) :
+            (<div className="flex flex-col">
+              <div className="flex flex-row gap-6">
+                <div className="w-full lg:w-1/2 rounded-lg">
+                  <div className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`}>
                     <div className="flex items-center">
-                      <span>Time left:&nbsp;</span>
-                      <span className="font-bold">{timeLeft}</span>
+                      <span className="font-bold">
+                        {formatStatus(order.status, order.type)}
+                      </span>
                     </div>
-                  )}
-                </div>
-                <div className="p-4 border rounded-lg mb-[24px]">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-                      <p className="font-bold">
-                        {order?.advert?.account_currency} {formatAmount(order.amount)}
-                      </p>
-                    </div>
-                    <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
-                      View order details
-                      <ChevronRight className="h-4 w-4 ml-1" />
-                    </button>
+                    {(order.status === "pending_payment" || order.status === "pending_release") &&
+                      <div className="flex items-center">
+                        <span>Time left:&nbsp;</span><span className="font-bold">{timeLeft}</span>
+                      </div>
+                    }
                   </div>
-                  <div>
-                    <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                    <p className="font-bold">{counterpartyNickname}</p>
-                  </div>
-                </div>
-                <div className="space-y-6 mt-4">
-                  <div className="space-y-4">
-                    {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
-                    {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
-                    <div className="bg-orange-50 rounded-[16px] p-[16px]">
-                      <div className="flex items-start gap-3">
-                        <Image src="/icons/warning-icon.png" alt="Warning" className="h-5 w-5" />
-                        <p className="text-sm text-gray-900">
-                          Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
+                  <div className="p-4 border rounded-lg mb-[24px]">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
+                        <p className="font-bold">
+                          {order?.advert?.account_currency}{" "}
+                          {formatAmount(order.amount)}
                         </p>
+                      </div>
+                      <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
+                        View order details
+                        <ChevronRight className="h-4 w-4 ml-1" />
+                      </button>
+                    </div>
+                    <div>
+                      <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                      <p className="font-bold">{counterpartyNickname}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-6 mt-4">
+                    <div className="space-y-4">
+                      {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
+                      {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
+                      <div className="bg-orange-50 rounded-[16px] p-[16px]">
+                        <div className="flex items-start gap-3">
+                        <Image src="/icons/warning-icon.png" alt="Warning" className="h-5 w-5"/> 
+                          <p className="text-sm text-gray-900">
+                            Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
-                  (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                  <div className="py-4 flex gap-4">
-                    <Button
-                      variant="outline"
-                      className="flex-1 bg-transparent"
-                      onClick={() => setShowCancelConfirmation(true)}
-                    >
-                      Cancel order
-                    </Button>
-                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                      {isPaymentLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "I've paid"
-                      )}
-                    </Button>
-                  </div>
-                )}
-                {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
-                  (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
-                  <div className="p-4 flex gap-4">
-                    <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                      {isConfirmLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "Confirm"
-                      )}
-                    </Button>
-                  </div>
-                )}
-                {order.status === "completed" && order.is_reviewable && (
-                  <div className="p-4">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="w-full"
-                      onClick={() => setShowRatingSidebar(true)}
-                    >
-                      Rate order
-                    </Button>
-                  </div>
-                )}
+                  {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
+                    (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
+                      <div className="py-4 flex gap-4">
+                        <Button
+                          variant="outline"
+                          className="flex-1"
+                          onClick={() => setShowCancelConfirmation(true)}
+                        >
+                          Cancel order
+                        </Button>
+                        <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                          {isPaymentLoading ? (
+                            <>
+                              <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                              Processing...
+                            </>
+                          ) : (
+                            "I've paid"
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
+                    (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
+                      <div className="p-4 flex gap-4">
+                        <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                          {isConfirmLoading ? (
+                            <>
+                              <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                              Processing...
+                            </>
+                          ) : (
+                            "Confirm"
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                  {order.status === "completed" && order.is_reviewable && (
+                    <div className="p-4">
+                      <Button variant="destructive" size="sm" className="w-full" onClick={() => setShowRatingSidebar(true)}>
+                        Rate order
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
+                  <OrderChat
+                    orderId={orderId}
+                    counterpartyName={counterpartyNickname || "User"}
+                    counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                    isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
+                  />
+                </div>
               </div>
-              <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
-                <OrderChat
-                  orderId={orderId}
-                  counterpartyName={counterpartyNickname || "User"}
-                  counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-                  isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
-                  isWebSocketConnected={isConnected}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+            </div>)
+        }
       </div>
 
       {showCancelConfirmation && (
@@ -379,7 +352,7 @@ export default function OrderDetailsPage() {
                         description: "Your order has been successfully cancelled.",
                         variant: "default",
                       })
-                      fetchOrderDetails()
+                      fetchOrderDetails();
                     }
                   } catch (error) {
                     console.error("Failed to cancel order:", error)
