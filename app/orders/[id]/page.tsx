@@ -117,9 +117,8 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const formatRatingDeadline = (completedAt: string) => {
-    const completedDate = new Date(completedAt)
-    const deadlineDate = new Date(completedDate.getTime() + 24 * 60 * 60 * 1000) // Add 24 hours
+  const formatRatingDeadline = (ratingDeadline: string) => {
+    const ratingDeadline = new Date(ratingDeadline)
 
     const options: Intl.DateTimeFormatOptions = {
       day: "2-digit",
@@ -131,7 +130,7 @@ export default function OrderDetailsPage() {
       timeZoneName: "short",
     }
 
-    return deadlineDate.toLocaleDateString("en-GB", options)
+    return ratingDeadline.toLocaleDateString("en-GB", options)
   }
 
   useEffect(() => {
