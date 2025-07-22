@@ -137,21 +137,17 @@ export default function PaymentMethodsTab() {
     })
   }
 
-const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
+  const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
   try {
     setIsEditing(true)
 
     const paymentMethod = paymentMethods.find((m) => m.id === id)
-    const formattedFields: Record<string, any> = { ...fields }
 
-const payload: Record<string, any> = {
+    const payload = {
       data: {
-        fields: formattedFields,
+        method: paymentMethod?.type || "", // 👈 outside fields, named `method`
+        fields: { ...fields },             // 👈 plain fields object
       },
-    }
-
-    if (paymentMethod) {
-      payload.data.method = paymentMethod.type
     }
 
     const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
@@ -201,6 +197,7 @@ const payload: Record<string, any> = {
     setIsEditing(false)
   }
 }
+
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     setDeleteConfirmModal({
