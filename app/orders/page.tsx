@@ -10,7 +10,7 @@ import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
-import { useWebSocketContext } from "@/contexts/websocket-context"
+
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -18,24 +18,10 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const { isConnected, joinChannel, leaveChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
   }, [activeTab])
-
-  // Join orders channel when component mounts and websocket is connected
-  useEffect(() => {
-    if (isConnected) {
-      joinChannel("orders")
-    }
-
-    return () => {
-      if (isConnected) {
-        //leaveChannel("orders")
-      }
-    }
-  }, [isConnected, joinChannel])
 
   const fetchOrders = async () => {
     setIsLoading(true)
