@@ -66,8 +66,7 @@ export function CurrencyFilter({
         return codeMatch || nameMatch || wordMatch
       })
     }
-
-    // Sort currencies to show selected currency at the top
+    
     return filtered.sort((a, b) => {
       if (a.code === selectedCurrency) return -1
       if (b.code === selectedCurrency) return 1
