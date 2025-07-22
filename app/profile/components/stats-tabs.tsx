@@ -71,7 +71,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         }
 
         const responseData = await response.json()
-        console.log("API response for user data in stats tabs:", responseData)
 
         if (responseData && responseData.data) {
           const data = responseData.data
