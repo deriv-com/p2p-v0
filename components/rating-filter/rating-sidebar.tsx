@@ -87,10 +87,10 @@ export function RatingSidebar({
                     <Image
                       src="/icons/star-custom.png"
                       alt="Star rating"
-                      width={20}
-                      height={20}
+                      width={32}
+                      height={32}
                       className={cn(
-                        "w-5 h-5 transition-opacity",
+                        "transition-opacity",
                         (hoverRating || rating) >= star ? "opacity-100" : "opacity-30",
                       )}
                     />
