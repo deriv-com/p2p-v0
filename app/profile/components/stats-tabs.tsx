@@ -78,8 +78,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
           const formatTimeAverage = (minutes) => {
             if (!minutes || minutes <= 0) return "N/A"
-            const days = Math.floor(minutes / 1440)
-            return `${days} days`
+            return `${minutes} min`
           }
 
           const transformedStats = {
@@ -92,14 +91,14 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               period: "(30d)",
             },
             avgPayTime: {
-              time: formatTimeAverage(Number(data.buy_time_average_30day)),
+              time: formatTimeAverage(Number(data.release_time_average_30day)),
               period: "(30d)",
             },
             avgReleaseTime: {
               time: formatTimeAverage(Number(data.release_time_average_30day)),
               period: "(30d)",
             },
-            tradePartners: Number(data.trade_partners) || 0,
+            tradePartners: Number(data.partner_count_lifetime) || 0,
             totalOrders30d: (Number(data.buy_count_30day) || 0) + (Number(data.sell_count_30day) || 0),
             totalOrdersLifetime: Number(data.order_count_lifetime) || 0,
             tradeVolume30d: {
