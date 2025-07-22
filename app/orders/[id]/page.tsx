@@ -378,6 +378,7 @@ export default function OrderDetailsPage() {
       <RatingSidebar
         isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
+        orderId={orderId}
         onSubmit={handleSubmitReview}
       />
       <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
