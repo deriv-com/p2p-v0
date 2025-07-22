@@ -45,13 +45,14 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
           setMessages(data.payload.data.chat_history)
-          setIsLoading(false)
         }
 
         if (data.payload.data.message) {
-          const newMessage = data.payload.data
+          const newMessage = data.payload.data.message
           setMessages((prev) => [...prev, newMessage])
         }
+
+        setIsLoading(false)
       } else {
       setIsLoading(false)
       }
