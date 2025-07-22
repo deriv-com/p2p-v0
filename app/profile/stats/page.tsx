@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { Info } from "lucide-react"
 
 interface UserStats {
   buyCompletion: { rate: string; period: string }
@@ -56,14 +56,14 @@ export default function StatsPage() {
         }
 
         const responseData = await response.json()
+        console.log("API response for user data in mobile stats:", responseData)
 
         if (responseData && responseData.data) {
           const data = responseData.data
 
           const formatTimeAverage = (minutes: number) => {
             if (!minutes || minutes <= 0) return "N/A"
-            const days = Math.floor(minutes / 1440)
-            return `${days} days`
+            return `${minutes} min`
           }
 
           const transformedStats: UserStats = {
@@ -76,14 +76,14 @@ export default function StatsPage() {
               period: "(30d)",
             },
             avgPayTime: {
-              time: formatTimeAverage(Number(data.buy_time_average_30day)),
+              time: formatTimeAverage(Number(data.release_time_average_30day)),
               period: "(30d)",
             },
             avgReleaseTime: {
               time: formatTimeAverage(Number(data.release_time_average_30day)),
               period: "(30d)",
             },
-            tradePartners: Number(data.trade_partners) || 0,
+            tradePartners: Number(data.partner_count_lifetime) || 0,
             totalOrders30d: (Number(data.buy_count_30day) || 0) + (Number(data.sell_count_30day) || 0),
             totalOrdersLifetime: Number(data.order_count_lifetime) || 0,
             tradeVolume30d: {
@@ -113,20 +113,25 @@ export default function StatsPage() {
     router.push("/profile")
   }
 
-  const formatNumber = (num: number): string => {
-    if (num >= 1000000) {
-      return `${(num / 1000000).toFixed(1)}M`
-    }
-    if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}K`
-    }
-    return num.toString()
-  }
-
-  const getProgressValue = (rateString: string): number => {
-    const match = rateString.match(/(\d+)%/)
-    return match ? Number.parseInt(match[1]) : 0
-  }
+  const StatCard = ({
+    title,
+    value,
+    hasInfo = false,
+  }: { title: string; value: string | number; hasInfo?: boolean }) => (
+    <Card className="border border-gray-200">
+      <CardContent className="p-4">
+        <div className="space-y-2">
+          <div className="text-slate-500 text-sm font-normal leading-5 tracking-normal flex items-center">
+            {title}
+            {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
+          </div>
+          <div className="font-bold text-black text-base leading-6 tracking-normal">
+            {value !== undefined && value !== null ? value : "N/A"}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
 
   return (
     <div className="fixed inset-0 bg-white flex flex-col">
@@ -144,13 +149,12 @@ export default function StatsPage() {
           <div className="p-4 space-y-4">
             <div className="animate-pulse">
               <div className="grid grid-cols-1 gap-4">
-                {[...Array(6)].map((_, i) => (
+                {[...Array(9)].map((_, i) => (
                   <Card key={i} className="border border-gray-200">
                     <CardContent className="p-4">
                       <div className="space-y-3">
                         <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                        <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-                        <div className="h-2 bg-gray-200 rounded w-full"></div>
+                        <div className="h-6 bg-gray-200 rounded w-1/2"></div>
                       </div>
                     </CardContent>
                   </Card>
@@ -167,121 +171,40 @@ export default function StatsPage() {
           </div>
         ) : (
           <div className="p-4 space-y-4 pb-8">
-            {/* Buy Completion Rate */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Buy completion rate</span>
-                    <span className="text-xs text-gray-500">{userStats.buyCompletion.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.buyCompletion.rate}</div>
-                  <Progress value={getProgressValue(userStats.buyCompletion.rate)} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
+            {/* Row 1 Stats */}
+            <StatCard title={`Buy completion ${userStats.buyCompletion.period}`} value={userStats.buyCompletion.rate} />
 
-            {/* Sell Completion Rate */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Sell completion rate</span>
-                    <span className="text-xs text-gray-500">{userStats.sellCompletion.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.sellCompletion.rate}</div>
-                  <Progress value={getProgressValue(userStats.sellCompletion.rate)} className="h-2" />
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard
+              title={`Sell completion ${userStats.sellCompletion.period}`}
+              value={userStats.sellCompletion.rate}
+            />
 
-            {/* Average Pay Time */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Avg pay time</span>
-                    <span className="text-xs text-gray-500">{userStats.avgPayTime.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.avgPayTime.time}</div>
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard title="Trade partners" value={userStats.tradePartners} hasInfo={true} />
 
-            {/* Average Release Time */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Avg release time</span>
-                    <span className="text-xs text-gray-500">{userStats.avgReleaseTime.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{userStats.avgReleaseTime.time}</div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Row 2 Stats */}
+            <StatCard
+              title={`Trade volume ${userStats.tradeVolume30d.period}`}
+              value={`${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`}
+              hasInfo={true}
+            />
 
-            {/* Trade Partners */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600">Trade partners</span>
-                  <div className="text-2xl font-semibold text-gray-900">{formatNumber(userStats.tradePartners)}</div>
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard
+              title="Trade volume (Lifetime)"
+              value={`${userStats.tradeVolumeLifetime.currency} ${userStats.tradeVolumeLifetime.amount}`}
+              hasInfo={true}
+            />
 
-            {/* Total Orders (30d) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Total orders</span>
-                    <span className="text-xs text-gray-500">(30d)</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">{formatNumber(userStats.totalOrders30d)}</div>
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard title={`Avg. pay time ${userStats.avgPayTime.period}`} value={userStats.avgPayTime.time} />
 
-            {/* Total Orders (Lifetime) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600">Total orders (lifetime)</span>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {formatNumber(userStats.totalOrdersLifetime)}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            {/* Row 3 Stats */}
+            <StatCard title={`Total orders ${userStats.buyCompletion.period}`} value={userStats.totalOrders30d} />
 
-            {/* Trade Volume (30d) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Trade volume</span>
-                    <span className="text-xs text-gray-500">{userStats.tradeVolume30d.period}</span>
-                  </div>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {userStats.tradeVolume30d.currency} {userStats.tradeVolume30d.amount}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard title="Total orders (Lifetime)" value={userStats.totalOrdersLifetime} />
 
-            {/* Trade Volume (Lifetime) */}
-            <Card className="border border-gray-200">
-              <CardContent className="p-4">
-                <div className="space-y-2">
-                  <span className="text-sm text-gray-600">Trade volume (lifetime)</span>
-                  <div className="text-2xl font-semibold text-gray-900">
-                    {userStats.tradeVolumeLifetime.currency} {userStats.tradeVolumeLifetime.amount}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <StatCard
+              title={`Avg. release time ${userStats.avgReleaseTime.period}`}
+              value={userStats.avgReleaseTime.time}
+            />
           </div>
         )}
       </div>
