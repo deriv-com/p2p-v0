@@ -139,27 +139,25 @@ export default function PaymentMethodsTab() {
 
   const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
   try {
-    console.log("---- handleSavePaymentMethod called ----")
-    console.log("ID:", id)
-    console.log("Received fields:", fields)
-
     setIsEditing(true)
 
     const paymentMethod = paymentMethods.find((m) => m.id === id)
-    console.log("Matched paymentMethod:", paymentMethod)
 
+    if (!paymentMethod) {
+      throw new Error("Payment method not found.")
+    }
+
+    // ✅ Build the correct payload: { data: { method: ..., fields: { ... } } }
     const payload = {
       data: {
-        method: paymentMethod?.type || "",
+        method: paymentMethod.type,
         fields: { ...fields },
       },
     }
 
-    console.log("Final payload to send:", JSON.stringify(payload, null, 2))
+    console.log("🚀 Final payload to send:", JSON.stringify(payload, null, 2))
 
     const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
-
-    console.log("API result:", result)
 
     if (result.success) {
       setNotification({
@@ -175,8 +173,7 @@ export default function PaymentMethodsTab() {
         const errorCode = result.errors[0].code
 
         if (errorCode === "PaymentMethodUsedByOpenOrder") {
-          errorMessage =
-            "This payment method is currently being used by an open order and cannot be modified."
+          errorMessage = "This payment method is currently being used by an open order and cannot be modified."
         } else if (result.errors[0].message) {
           errorMessage = result.errors[0].message
         }
@@ -190,7 +187,6 @@ export default function PaymentMethodsTab() {
       })
     }
   } catch (error) {
-    console.error("API error:", error)
     setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
     setStatusModal({
@@ -207,6 +203,7 @@ export default function PaymentMethodsTab() {
     setIsEditing(false)
   }
 }
+
 
 
 
