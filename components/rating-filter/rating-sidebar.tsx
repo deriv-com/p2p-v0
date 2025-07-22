@@ -60,11 +60,11 @@ export function RatingSidebar({
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
-        <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="text-lg font-bold">{title}</h2>
-          <button onClick={handleClose} className="text-slate-500 hover:text-slate-700" disabled={isSubmitting}>
-            <X className="h-5 w-5" />
-          </button>
+       <div className="flex justify-between items-center px-4 py-1 border-b">
+          <h2 className="text-xl font-bold">{title}</h2>
+          <Button onClick={onClose} variant="ghost" size="icon" className="p-1">
+            <X className="h-6 w-6" />
+          </Button>
         </div>
 
         <div className="flex-1 overflow-auto p-4">
