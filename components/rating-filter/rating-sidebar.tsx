@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Star, ThumbsDown } from "lucide-react"
+import { X, Star } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
@@ -114,7 +114,13 @@ export function RatingSidebar({
                   onClick={() => setRecommend(false)}
                   disabled={isSubmitting}
                 >
-                  <ThumbsDown className="w-5 h-5" />
+                  <Image
+                    src="/icons/thumbs-down-custom.png"
+                    alt="Thumbs down"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                  />
                   <span className="text-sm text-grayscale-100">No</span>
                 </Button>
               </div>
