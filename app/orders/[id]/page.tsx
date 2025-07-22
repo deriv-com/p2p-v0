@@ -130,7 +130,7 @@ export default function OrderDetailsPage() {
       timeZoneName: "short",
     }
 
-    return deadlineDate.toLocaleDateString("en-GB", options)
+    return ratingDeadline.toLocaleDateString("en-GB", options)
   }
 
   useEffect(() => {
