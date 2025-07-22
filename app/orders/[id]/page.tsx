@@ -264,7 +264,7 @@ export default function OrderDetailsPage() {
                       <div className="bg-orange-50 rounded-[16px] p-[16px]">
                         <div className="flex items-start gap-2">
                         <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} className="-mt-[2px]" /> 
-                          <p className="text-sm text-gray-900">
+                          <p className="text-sm text-grayscale-100">
                             Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
                           </p>
                         </div>
