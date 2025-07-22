@@ -130,6 +130,9 @@ export default function OrdersPage() {
                         {order.rating}
                       </div>
                     )}
+                    {order.is_reviewable > 0 && (
+                        <Button variant="black" size="sm">Rate</Button>
+                    )}
                   </TableCell>
                 )}
                 <TableCell className="py-4 px-4 align-top">
