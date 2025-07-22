@@ -23,21 +23,6 @@ export function CurrencyFilter({
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
 
-  const filteredCurrencies = useMemo(() => {
-    if (!searchQuery.trim()) return currencies
-
-    const query = searchQuery.toLowerCase().trim()
-    return currencies.filter((currency) => {
-      const codeMatch = currency.code.toLowerCase().includes(query)
-      const nameMatch = currency.name.toLowerCase().includes(query)
-      const wordMatch = currency.name
-        .toLowerCase()
-        .split(" ")
-        .some((word) => word.startsWith(query))
-      return codeMatch || nameMatch || wordMatch
-    })
-  }, [currencies, searchQuery])
-
   const handleCurrencySelect = useCallback(
     (currencyCode: string) => {
       onCurrencySelect(currencyCode)
@@ -65,6 +50,30 @@ export function CurrencyFilter({
       setSearchQuery("")
     }
   }, [])
+
+  const filteredCurrencies = useMemo(() => {
+    let filtered = currencies
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim()
+      filtered = filtered.filter((currency) => {
+        const codeMatch = currency.code.toLowerCase().includes(query)
+        const nameMatch = currency.name.toLowerCase().includes(query)
+        const wordMatch = currency.name
+          .toLowerCase()
+          .split(" ")
+          .some((word) => word.startsWith(query))
+        return codeMatch || nameMatch || wordMatch
+      })
+    }
+
+    // Sort currencies to show selected currency at the top
+    return filtered.sort((a, b) => {
+      if (a.code === selectedCurrency) return -1
+      if (b.code === selectedCurrency) return 1
+      return 0
+    })
+  }, [currencies, searchQuery, selectedCurrency])
 
   const CurrencyList = () => (
     <div className="w-full h-full">
