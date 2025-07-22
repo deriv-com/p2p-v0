@@ -102,17 +102,9 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const handleSubmitReview = async (ratingData: RatingData) => {
-    try {
-      const result = await OrdersAPI.reviewOrder(orderId, ratingData)
-      if (result.errors.length === 0) {
-        setShowRatingSidebar(false)
-        fetchOrderDetails()
-      }
-    } catch (err) {
-      console.error("Error submitting review:", err)
-      throw err
-    }
+  const handleSubmitReview = () => {
+    setShowRatingSidebar(false)
+    fetchOrderDetails()
   }
 
   const formatRatingDeadline = (ratingDeadline) => {
