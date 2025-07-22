@@ -62,7 +62,7 @@ export function RatingSidebar({
       <div className="bg-white w-full max-w-md h-full flex flex-col">
        <div className="flex justify-between items-center px-4 py-1 border-b">
           <h2 className="text-xl font-bold">{title}</h2>
-          <Button onClick={onClose} variant="ghost" size="icon" className="p-1">
+          <Button onClick={handleClose} variant="ghost" size="icon" className="p-1">
             <X className="h-6 w-6" />
           </Button>
         </div>
