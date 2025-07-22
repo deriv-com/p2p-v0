@@ -61,6 +61,17 @@ const [isOpen, setIsOpen] = useState(false)
   const FilterContent = () => (
     <div className="w-full h-full">
       <div className="space-y-4 mb-6">
+         <div className="flex items-center space-x-3">
+          <Checkbox
+            id="within-balance"
+            checked={filters.withinBalance}
+            onCheckedChange={(checked) => handleFilterChange("withinBalance", checked as boolean)}
+            className="data-[state=checked]:bg-black border-black"
+          />
+          <label htmlFor="within-balance" className="text-sm font-medium text-gray-700 cursor-pointer">
+            Ads within your P2P balance and order limits
+          </label>
+        </div>
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"
