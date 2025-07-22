@@ -68,7 +68,7 @@ export function RatingSidebar({
         </div>
 
         <div className="flex-1 overflow-auto p-4">
-          <div className="space-y-8">
+          <div className="space-y-6">
             {/* Star Rating */}
             <div className="space-y-4">
               <h3 className="text-sm">{ratingLabel}</h3>
