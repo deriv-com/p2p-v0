@@ -30,10 +30,9 @@ export default function OrdersPage() {
       joinChannel("orders")
     }
 
-    // Leave orders channel when component unmounts or navigating away
     return () => {
       if (isConnected) {
-        leaveChannel("orders")
+        //leaveChannel("orders")
       }
     }
   }, [isConnected, joinChannel, leaveChannel])
