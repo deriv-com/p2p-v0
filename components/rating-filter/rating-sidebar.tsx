@@ -75,7 +75,7 @@ export function RatingSidebar({
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                     key={star}
                     onClick={() => setRating(star)}
