@@ -23,6 +23,33 @@ export function CurrencyFilter({
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
 
+  const filteredCurrencies = useMemo(() => {
+    let filtered = currencies
+
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim()
+      filtered = filtered.filter((currency) => {
+        const codeMatch = currency.code.toLowerCase().includes(query)
+        const nameMatch = currency.name.toLowerCase().includes(query)
+        const wordMatch = currency.name
+          .toLowerCase()
+          .split(" ")
+          .some((word) => word.startsWith(query))
+        return codeMatch || nameMatch || wordMatch
+      })
+    }
+
+    // Separate selected and unselected currencies
+    const selectedCurrencyItem = filtered.find((currency) => currency.code === selectedCurrency)
+    const unselectedCurrencies = filtered.filter((currency) => currency.code !== selectedCurrency)
+
+    // Sort unselected currencies alphabetically by code
+    unselectedCurrencies.sort((a, b) => a.code.localeCompare(b.code))
+
+    // Return selected currency first, then alphabetically sorted unselected currencies
+    return selectedCurrencyItem ? [selectedCurrencyItem, ...unselectedCurrencies] : unselectedCurrencies
+  }, [currencies, searchQuery, selectedCurrency])
+
   const handleCurrencySelect = useCallback(
     (currencyCode: string) => {
       onCurrencySelect(currencyCode)
@@ -50,29 +77,6 @@ export function CurrencyFilter({
       setSearchQuery("")
     }
   }, [])
-
-  const filteredCurrencies = useMemo(() => {
-    let filtered = currencies
-
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim()
-      filtered = filtered.filter((currency) => {
-        const codeMatch = currency.code.toLowerCase().includes(query)
-        const nameMatch = currency.name.toLowerCase().includes(query)
-        const wordMatch = currency.name
-          .toLowerCase()
-          .split(" ")
-          .some((word) => word.startsWith(query))
-        return codeMatch || nameMatch || wordMatch
-      })
-    }
-    
-    return filtered.sort((a, b) => {
-      if (a.code === selectedCurrency) return -1
-      if (b.code === selectedCurrency) return 1
-      return 0
-    })
-  }, [currencies, searchQuery, selectedCurrency])
 
   const CurrencyList = () => (
     <div className="w-full h-full">
