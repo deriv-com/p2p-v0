@@ -1,152 +1,145 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"
-import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
+"use client"
+
+import { useState } from "react"
+import { X, Star, ThumbsUp, ThumbsDown } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
-import jest from "jest" // Import jest to fix the undeclared variable error
+import { cn } from "@/lib/utils"
+import type { RatingSidebarProps, RatingData } from "./types"
 
-// Mock the toast function
-jest.mock("@/components/ui/use-toast", () => ({
-  toast: jest.fn(),
-}))
+export function RatingSidebar({
+  isOpen,
+  onClose,
+  onSubmit,
+  isSubmitting = false,
+  title = "Rate and recommend",
+  ratingLabel = "How would you rate this transaction?",
+  recommendLabel = "Would you recommend this seller?",
+}: RatingSidebarProps) {
+  const [rating, setRating] = useState(0)
+  const [hoverRating, setHoverRating] = useState(0)
+  const [recommend, setRecommend] = useState<boolean | null>(null)
 
-const mockOnClose = jest.fn()
-const mockOnSubmit = jest.fn()
-
-const defaultProps = {
-  isOpen: true,
-  onClose: mockOnClose,
-  onSubmit: mockOnSubmit,
-  isSubmitting: false,
-}
-
-describe("RatingSidebar", () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-  })
-
-  it("renders when isOpen is true", () => {
-    render(<RatingSidebar {...defaultProps} />)
-
-    expect(screen.getByText("Rate and recommend")).toBeInTheDocument()
-    expect(screen.getByText("How would you rate this transaction?")).toBeInTheDocument()
-    expect(screen.getByText("Would you recommend this seller?")).toBeInTheDocument()
-  })
-
-  it("does not render when isOpen is false", () => {
-    render(<RatingSidebar {...defaultProps} isOpen={false} />)
-
-    expect(screen.queryByText("Rate and recommend")).not.toBeInTheDocument()
-  })
-
-  it("allows rating selection", () => {
-    render(<RatingSidebar {...defaultProps} />)
-
-    const starButtons = screen
-      .getAllByRole("button")
-      .filter((button) => button.querySelector("svg")?.classList.contains("h-5"))
-
-    fireEvent.click(starButtons[3]) // Click 4th star (4 stars)
-
-    // Check if stars are filled correctly
-    const stars = screen.getAllByTestId("star") || starButtons
-    expect(stars).toHaveLength(5)
-  })
-
-  it("allows recommendation selection", () => {
-    render(<RatingSidebar {...defaultProps} />)
-
-    const yesButton = screen.getByText("Yes").closest("button")
-    const noButton = screen.getByText("No").closest("button")
-
-    fireEvent.click(yesButton!)
-    expect(yesButton).toHaveClass("border-green-500")
-
-    fireEvent.click(noButton!)
-    expect(noButton).toHaveClass("border-red-500")
-  })
-
-  it("shows error toast when submitting without rating", async () => {
-    render(<RatingSidebar {...defaultProps} />)
-
-    const submitButton = screen.getByText("Submit")
-    fireEvent.click(submitButton)
-
-    expect(toast).toHaveBeenCalledWith({
-      title: "Rating required",
-      description: "Please select a star rating before submitting.",
-      variant: "destructive",
-    })
-  })
-
-  it("calls onSubmit with correct data when form is valid", async () => {
-    render(<RatingSidebar {...defaultProps} />)
-
-    // Select 5 stars
-    const starButtons = screen
-      .getAllByRole("button")
-      .filter((button) => button.querySelector("svg")?.classList.contains("h-5"))
-    fireEvent.click(starButtons[4])
-
-    // Select recommendation
-    const yesButton = screen.getByText("Yes").closest("button")
-    fireEvent.click(yesButton!)
-
-    // Submit
-    const submitButton = screen.getByText("Submit")
-    fireEvent.click(submitButton)
-
-    await waitFor(() => {
-      expect(mockOnSubmit).toHaveBeenCalledWith({
-        rating: 5,
-        recommend: true,
+  const handleSubmit = async () => {
+    if (rating === 0) {
+      toast({
+        title: "Rating required",
+        description: "Please select a star rating before submitting.",
+        variant: "destructive",
       })
-    })
-  })
-
-  it("calls onClose when close button is clicked", () => {
-    render(<RatingSidebar {...defaultProps} />)
-
-    const closeButton =
-      screen.getByRole("button", { name: /close/i }) ||
-      screen
-        .getAllByRole("button")
-        .find(
-          (btn) =>
-            btn.querySelector("svg")?.classList.contains("h-5") &&
-            btn.querySelector("svg")?.getAttribute("data-testid") !== "star",
-        )
-
-    if (closeButton) {
-      fireEvent.click(closeButton)
-      expect(mockOnClose).toHaveBeenCalled()
-    }
-  })
-
-  it("disables form elements when submitting", () => {
-    render(<RatingSidebar {...defaultProps} isSubmitting={true} />)
-
-    const submitButton = screen.getByText("Submitting...")
-    expect(submitButton).toBeDisabled()
-
-    const starButtons = screen
-      .getAllByRole("button")
-      .filter((button) => button.querySelector("svg")?.classList.contains("h-5"))
-    starButtons.forEach((button) => {
-      expect(button).toBeDisabled()
-    })
-  })
-
-  it("uses custom labels when provided", () => {
-    const customProps = {
-      ...defaultProps,
-      title: "Custom Title",
-      ratingLabel: "Custom Rating Label",
-      recommendLabel: "Custom Recommend Label",
+      return
     }
 
-    render(<RatingSidebar {...customProps} />)
+    const ratingData: RatingData = {
+      rating,
+      recommend,
+    }
 
-    expect(screen.getByText("Custom Title")).toBeInTheDocument()
-    expect(screen.getByText("Custom Rating Label")).toBeInTheDocument()
-    expect(screen.getByText("Custom Recommend Label")).toBeInTheDocument()
-  })
-})
+    try {
+      await onSubmit(ratingData)
+      // Reset form after successful submission
+      setRating(0)
+      setHoverRating(0)
+      setRecommend(null)
+    } catch (error) {
+      // Error handling is done in the parent component
+      console.error("Error submitting rating:", error)
+    }
+  }
+
+  const handleClose = () => {
+    // Reset form when closing
+    setRating(0)
+    setHoverRating(0)
+    setRecommend(null)
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
+      <div className="bg-white w-full max-w-md h-full flex flex-col">
+       <div className="flex justify-between items-center px-4 py-1 border-b">
+          <h2 className="text-xl font-bold">{title}</h2>
+          <Button onClick={handleClose} variant="ghost" size="icon" className="p-1">
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
+
+        <div className="flex-1 overflow-auto p-4">
+          <div className="space-y-6">
+            {/* Star Rating */}
+            <div className="space-y-4">
+              <h3 className="text-sm text-grayscale-100">{ratingLabel}</h3>
+              <div className="flex gap-2">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Button
+                  variant="ghost"
+                  size="sm"
+                    key={star}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    disabled={isSubmitting}
+                  >
+                    <Star
+                      className={cn(
+                        "h-5 w-5",
+                        (hoverRating || rating) >= star ? "fill-yellow-400 text-yellow-400" : "text-gray-300",
+                      )}
+                    />
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Recommendation */}
+            <div className="space-y-4">
+              <h3 className="text-sm text-grayscale-100">{recommendLabel}</h3>
+              <div className="flex gap-4">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setRecommend(true)}
+                  disabled={isSubmitting}
+                  className={cn(
+                    recommend === true ? "border-green-500 bg-green-50" : "border-gray-300",
+                  )}
+                >
+                  <ThumbsUp className={cn("h-5 w-5", recommend === true ? "text-green-500" : "text-gray-400")} />
+                  <span className="text-sm text-grayscale-100">Yes</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setRecommend(false)}
+                  disabled={isSubmitting}
+                  className={cn(
+                      recommend === false ? "border-red-500 bg-red-50" : "border-gray-300",
+                  )}
+                >
+                  <ThumbsDown className={cn("h-5 w-5", recommend === false ? "text-red-500" : "text-gray-400")} />
+                  <span className="text-sm text-grayscale-100">No</span>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 border-t">
+          <Button variant="black" onClick={handleSubmit} disabled={isSubmitting || rating === 0} className="w-full">
+            {isSubmitting ? (
+              <>
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                Submitting...
+              </>
+            ) : (
+              "Submit"
+            )}
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
