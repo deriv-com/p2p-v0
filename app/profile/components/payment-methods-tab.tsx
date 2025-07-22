@@ -136,6 +136,7 @@ export default function PaymentMethodsTab() {
       paymentMethod: cleanedMethod,
     })
   }
+  
 const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
   try {
     setIsEditing(true)
