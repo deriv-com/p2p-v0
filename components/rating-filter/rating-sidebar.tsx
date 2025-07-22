@@ -105,7 +105,7 @@ export function RatingSidebar({
                   onClick={() => setRecommend(true)}
                   disabled={isSubmitting}
                 >
-                  <Image src="/icons/thumbs-up-custom.png" alt="Thumbs up" width={20} height={20} className="w-5 h-5" />
+                  <Image src="/icons/thumbs-up-custom.png" alt="Thumbs up" width={14} height={14} />
                   <span className="text-sm text-grayscale-100">Yes</span>
                 </Button>
                 <Button
@@ -117,8 +117,8 @@ export function RatingSidebar({
                   <Image
                     src="/icons/thumbs-down-custom.png"
                     alt="Thumbs down"
-                    width={20}
-                    height={20}
+                    width={14}
+                    height={14}
                     className="w-5 h-5"
                   />
                   <span className="text-sm text-grayscale-100">No</span>
