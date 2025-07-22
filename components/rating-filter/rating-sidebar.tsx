@@ -123,7 +123,6 @@ export function RatingSidebar({
                     alt="Thumbs down"
                     width={14}
                     height={14}
-                    className="w-5 h-5"
                   />
                   <span className="text-sm text-grayscale-100 ml-[8px] font-normal">No</span>
                 </Button>
