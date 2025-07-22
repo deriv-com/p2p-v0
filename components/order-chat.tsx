@@ -38,7 +38,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
 
-  const { isConnected, joinChannel, getChatHistory } = useWebSocket({
+  const { isConnected, getChatHistory } = useWebSocket({
     onMessage: (data) => {
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
