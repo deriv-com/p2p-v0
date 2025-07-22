@@ -102,7 +102,6 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {config.type === "success" || config.type === "warning" ? (
         <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
           <div style={{ alignSelf: "center" }} className="mb-4 mt-6">
-            {/* ✅ Added mt-6 for top margin above the icons */}
             {config.type === "success" && (
               <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
             )}
@@ -116,7 +115,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4">{config.description}</div>}
         <div className="mt-6">
-          <Button onClick={handleConfirm} variant="default" className="w-full bg-black hover:bg-gray-800 text-white">
+          <Button onClick={handleConfirm} variant="black" className="w-full">
             {config.confirmText || "Continue"}
           </Button>
         </div>
