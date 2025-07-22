@@ -6,8 +6,6 @@ import Image from "next/image"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
-
-  // ✅ Hide footer on these paths
   const hideOnPaths = ["/profile/payment-methods", "/profile/stats"]
 
   if (hideOnPaths.includes(pathname)) {
