@@ -321,8 +321,6 @@ export default function OrderDetailsPage() {
                         this transaction.
                       </p>
                     </div>
-
-                    {/* Rate transaction button */}
                     <div className="p-4 flex justify-end">
                       <Button variant="outline" onClick={() => setShowRatingSidebar(true)}>
                         Rate transaction
