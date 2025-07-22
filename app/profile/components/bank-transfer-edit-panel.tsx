@@ -188,6 +188,7 @@ export default function BankTransferEditPanel({
 
     if (isFormValid()) {
       const fieldValues = {
+  
         account,
         bank_name: bankName,
         bank_code: bankCode || "-",
@@ -283,10 +284,10 @@ export default function BankTransferEditPanel({
           type="button"
           onClick={handleSubmit}
           disabled={isLoading || !isFormValid()}
-          variant="black"
+          size="sm"
           className="w-full"
         >
-          {isLoading ? "Saving..." : "Save changes"}
+          {isLoading ? "Saving..." : "Save details"}
         </Button>
       </div>
     </PanelWrapper>
