@@ -382,14 +382,13 @@ export default function OrderDetailsPage() {
         <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
           <div className="bg-white w-full max-w-md h-full flex flex-col">
             <div className="flex justify-between items-center p-4 border-b">
-              <h2 className="text-lg font-bold">Rate this transaction</h2>
+              <h2 className="text-lg font-bold">Rate and recommend</h2>
               <button onClick={() => setShowRatingSidebar(false)} className="text-slate-500 hover:text-slate-700">
                 <X className="h-5 w-5" />
               </button>
             </div>
             <div className="flex-1 overflow-auto p-4">
               <div className="space-y-8">
-                {/* Star Rating */}
                 <div className="space-y-4">
                   <h3 className="text-sm font-medium">How would you rate this transaction?</h3>
                   <div className="flex gap-2">
@@ -413,7 +412,7 @@ export default function OrderDetailsPage() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  <h3 className="text-sm font-medium">Would you recommend this Seller?</h3>
+                  <h3 className="text-sm font-medium">Would you recommend this seller?</h3>
                   <div className="flex gap-4">
                     <button
                       type="button"
