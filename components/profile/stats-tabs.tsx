@@ -173,7 +173,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             onClose={() => setNotification({ show: false, message: "" })}
           />
         )}
-        <div className="bg-white">
+        <div>
           <div
             onClick={() => router.push("/profile/stats")}
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -187,7 +187,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               className="text-gray-400"
             />
           </div>
-          <div className="border-t border-gray-200 w-full"></div>
+          <div className="border-t border-gray-200"></div>
           <div
             onClick={() => router.push("/profile/payment-methods")}
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
