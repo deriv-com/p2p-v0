@@ -101,7 +101,7 @@ export default function ProfilePage() {
               tradePartners: data.partner_count_lifetime || 0,
               avgPayTime: {
                 time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "N/A",
-                period: "30d",
+                period: "(30d)",
               },
             },
           }))
