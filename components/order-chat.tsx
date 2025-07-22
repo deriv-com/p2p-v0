@@ -65,7 +65,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     if (isConnected) {
       setTimeout(() => {
         getChatHistory("orders", orderId)
-      }, 100)
+      }, 500)
     }
   }, [isConnected, getChatHistory, orderId])
 
