@@ -315,7 +315,7 @@ export default function OrderDetailsPage() {
                           <Info className="w-4 h-4 text-white" />
                         </div>
                       </div>
-                      <p className="text-sm text-gray-700">
+                      <p className="text-sm text-grayscale-100">
                         You have until{" "}
                         {formatRatingDeadline(order.order_review_expires_at)} to rate
                         this transaction.
