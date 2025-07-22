@@ -1,15 +1,14 @@
-import type React from "react"
-export interface RatingOption {
-  value: number
-  label: string
-  count?: number
+export interface RatingData {
+  rating: number
+  recommend: boolean | null
 }
 
-export interface RatingFilterProps {
-  ratings: RatingOption[]
-  selectedRating: number | null
-  onRatingSelect: (rating: number | null) => void
-  trigger: React.ReactNode
-  placeholder?: string
-  emptyMessage?: string
+export interface RatingSidebarProps {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (data: RatingData) => Promise<void>
+  isSubmitting?: boolean
+  title?: string
+  ratingLabel?: string
+  recommendLabel?: string
 }

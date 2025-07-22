@@ -1,2 +1,2 @@
-export { RatingFilter } from "./rating-filter"
-export type { RatingFilterProps, RatingOption } from "./types"
+export { RatingSidebar } from "./rating-sidebar"
+export type { RatingSidebarProps, RatingData } from "./types"
