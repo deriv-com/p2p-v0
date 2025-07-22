@@ -223,7 +223,7 @@ export default function OrdersPage() {
       <RatingSidebar
         isOpen={isRatingSidebarOpen}
         onClose={handleRatingSidebarClose}
-        onSubmit={handleRatingSubmit}
+        onSubmit={fetchOrders}
       />
     </div>
   )
