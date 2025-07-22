@@ -38,15 +38,11 @@ export function CurrencyFilter({
         return codeMatch || nameMatch || wordMatch
       })
     }
-
-    // Separate selected and unselected currencies
     const selectedCurrencyItem = filtered.find((currency) => currency.code === selectedCurrency)
     const unselectedCurrencies = filtered.filter((currency) => currency.code !== selectedCurrency)
-
-    // Sort unselected currencies alphabetically by code
+    
     unselectedCurrencies.sort((a, b) => a.code.localeCompare(b.code))
 
-    // Return selected currency first, then alphabetically sorted unselected currencies
     return selectedCurrencyItem ? [selectedCurrencyItem, ...unselectedCurrencies] : unselectedCurrencies
   }, [currencies, searchQuery, selectedCurrency])
 
