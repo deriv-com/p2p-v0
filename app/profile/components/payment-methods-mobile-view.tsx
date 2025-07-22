@@ -149,14 +149,13 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
 
       const paymentMethod = paymentMethods.find((m) => m.id === id)
 
-      const payload = {
-        data: {
-          method: paymentMethod.type,
-          fields: { ...fields },
-        },
+      // Add method_type to fields for the API call
+      const fieldsWithMethod = {
+        ...fields,
+        method_type: paymentMethod.type,
       }
 
-      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
+      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, fieldsWithMethod)
 
       if (result.success) {
         setNotification({
