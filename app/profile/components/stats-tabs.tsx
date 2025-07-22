@@ -171,6 +171,8 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         )}
 
         <div>
+          <div className="h-px bg-gray-200"></div>
+
           <div
             onClick={() => router.push("/profile/stats")}
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -188,6 +190,8 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <span className="text-base font-medium text-gray-900">Payment methods</span>
             <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
           </div>
+
+          <div className="h-px bg-gray-200"></div>
         </div>
 
         {errorModal.show && (
