@@ -71,7 +71,7 @@ export function RatingSidebar({
           <div className="space-y-8">
             {/* Star Rating */}
             <div className="space-y-4">
-              <h3 className="text-sm font-medium">{ratingLabel}</h3>
+              <h3 className="text-sm">{ratingLabel}</h3>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Button
@@ -96,7 +96,7 @@ export function RatingSidebar({
 
             {/* Recommendation */}
             <div className="space-y-4">
-              <h3 className="text-sm font-medium">{recommendLabel}</h3>
+              <h3 className="text-sm">{recommendLabel}</h3>
               <div className="flex gap-4">
                 <Button
                   variant="outline"
