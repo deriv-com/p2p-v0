@@ -148,13 +148,18 @@ export default function PaymentMethodsMobileView({ onBack }: PaymentMethodsMobil
       setIsEditing(true)
 
       const paymentMethod = paymentMethods.find((m) => m.id === id)
+      if (!paymentMethod) {
+        throw new Error("Payment method not found")
+      }
 
       const payload = {
         data: {
           method: paymentMethod.type,
-          fields: { ...fields },
+          fields: fields,
         },
       }
+
+      console.log("Sending payload:", JSON.stringify(payload, null, 2))
 
       const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
 
