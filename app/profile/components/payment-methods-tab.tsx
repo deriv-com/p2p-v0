@@ -142,20 +142,28 @@ export default function PaymentMethodsTab() {
     setIsEditing(true)
 
     const paymentMethod = paymentMethods.find((m) => m.id === id)
-
     if (!paymentMethod) {
-      throw new Error("Payment method not found.")
+      throw new Error("Payment method not found")
     }
 
-    // ✅ Build the correct payload: { data: { method: ..., fields: { ... } } }
+    // Optional: clean fields of null/undefined
+    const cleanedFields = Object.fromEntries(
+      Object.entries(fields).filter(([_, v]) => v != null)
+    )
+
+    // ✅ CORRECT payload structure
     const payload = {
       data: {
         method: paymentMethod.type,
-        fields: { ...fields },
+        fields: cleanedFields,
       },
     }
 
-    console.log("🚀 Final payload to send:", JSON.stringify(payload, null, 2))
+    console.log("---- handleSavePaymentMethod called ----")
+    console.log("ID:", id)
+    console.log("Cleaned fields:", cleanedFields)
+    console.log("Matched paymentMethod:", paymentMethod)
+    console.log("Final payload to send:", JSON.stringify(payload, null, 2))
 
     const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
 
@@ -164,7 +172,6 @@ export default function PaymentMethodsTab() {
         show: true,
         message: "Payment method details updated successfully.",
       })
-
       fetchPaymentMethods()
     } else {
       let errorMessage = "Failed to update payment method. Please try again."
@@ -203,6 +210,7 @@ export default function PaymentMethodsTab() {
     setIsEditing(false)
   }
 }
+
 
 
 
