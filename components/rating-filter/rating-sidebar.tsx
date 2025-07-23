@@ -62,7 +62,7 @@ export function RatingSidebar({
   }
 
   const RatingContent = () => (
-  <div className="flex-1 overflow-auto p-4">
+ <> <div className="flex-1 overflow-auto p-4">
           <div className="space-y-6">
             <div className="space-y-4">
               <h3 className="text-sm">{ratingLabel}</h3>
@@ -139,7 +139,7 @@ export function RatingSidebar({
           >
             Submit
           </Button>
-        </div>
+        </div></>
   )
 
   if (!isOpen) return null
