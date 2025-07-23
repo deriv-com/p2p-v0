@@ -59,7 +59,7 @@ export default function StatsPage() {
     <div className={`flex justify-between items-center w-full py-3 ${showBorder ? "border-b border-gray-200" : ""}`}>
       <div className="flex items-center gap-1">
         <span className="text-gray-600 text-sm">{label}</span>
-        {hasInfo && <Info className="h-4 w-4 text-gray-400" />}
+        {hasInfo && <Info className="size-4 text-gray-400" />}
       </div>
       <span className="text-black font-semibold text-sm">{value !== undefined && value !== null ? value : "-"}</span>
     </div>
