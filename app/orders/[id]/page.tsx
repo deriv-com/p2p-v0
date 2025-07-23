@@ -32,7 +32,6 @@ export default function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const { isConnected, joinChannel } = useWebSocketContext()
-  const { isComplaintOpen, openComplaint, closeComplaint, submitComplaint } = useComplaint(orderId)
 
   useEffect(() => {
     fetchOrderDetails()
