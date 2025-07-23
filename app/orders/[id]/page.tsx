@@ -108,7 +108,7 @@ export default function OrderDetailsPage() {
     fetchOrderDetails()
   }
 
-  const handleSubmitComplain = () => {
+  const handleSubmitComplaint = () => {
     setShowComplaintForm(false)
     fetchOrderDetails()
   }
