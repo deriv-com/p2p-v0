@@ -5,7 +5,7 @@ import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { ProfileAPI } from "../api"
+import * as ProfileAPI from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { PlusCircle } from "lucide-react"
@@ -32,37 +32,28 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<UserStats>(
-    initialStats || {
-      buyCompletion: { rate: "N/A", period: "(30d)" },
-      sellCompletion: { rate: "N/A", period: "(30d)" },
-      avgPayTime: { time: "N/A", period: "(30d)" },
-      avgReleaseTime: { time: "N/A", period: "(30d)" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-    },
-  )
-
-  const [isLoadingStats, setIsLoadingStats] = useState(false)
+  const [userStats, setUserStats] = useState<UserStats | null>(initialStats || null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   const tabs = [
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
+    { id: "counterparties", label: "Counterparties" },
   ]
 
   useEffect(() => {
     const loadUserStats = async () => {
       try {
-        setIsLoadingStats(true)
+        setLoading(true)
+        setError(null)
         const stats = await ProfileAPI.UserStats.fetchUserStats()
         setUserStats(stats)
       } catch (error) {
-        console.log(error)
+        console.error("Failed to fetch user stats:", error)
+        setError("Failed to load statistics")
       } finally {
-        setIsLoadingStats(false)
+        setLoading(false)
       }
     }
 
@@ -136,6 +127,16 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           </div>
 
           <div className="h-px bg-gray-200"></div>
+
+          <div
+            onClick={() => router.push("/profile/counterparties")}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-sm font-normal text-gray-900">Counterparties</span>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
+
+          <div className="h-px bg-gray-200"></div>
         </div>
 
         {errorModal.show && (
@@ -160,82 +161,80 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         />
       )}
 
-      <div className="mb-6">
-        <Tabs defaultValue="stats">
-          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+      {error && (
+        <div className="flex items-center justify-center py-8">
+          <div className="text-red-500">{error}</div>
+        </div>
+      )}
 
-          <TabsContent value="stats">
-            {isLoadingStats ? (
-              <div className="space-y-4">
-                <div className="bg-[#F5F5F5] rounded-lg p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
+      {!loading && (
+        <div className="mb-6">
+          <Tabs defaultValue="stats">
+            <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            <TabsContent value="stats">
+              {loading ? (
+                <div className="space-y-4">
+                  <div className="bg-[#F5F5F5] rounded-lg p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="py-4">
+                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="py-4">
+                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="py-4">
+                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
+              ) : (
+                <StatsGrid stats={userStats} />
+              )}
+            </TabsContent>
+
+            <TabsContent value="payment">
+              <div className="relative">
+                <div className="flex justify-end mb-4">
+                  <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    Add payment method
+                  </Button>
+                </div>
+                <PaymentMethodsTab key={refreshKey} />
               </div>
-            ) : (
-              <StatsGrid stats={userStats} />
-            )}
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="payment">
-            <div className="relative">
-              <div className="flex justify-end mb-4">
-                <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add payment method
-                </Button>
-              </div>
-              <PaymentMethodsTab key={refreshKey} />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="ads">
-            <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
-              <p className="text-slate-500">Your ad details will appear here.</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="counterparties">
-            <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Counterparties</h3>
-              <p className="text-slate-500">Your counterparties will appear here.</p>
-            </div>
-          </TabsContent>
-        </Tabs>
-      </div>
+            <TabsContent value="counterparties" className="mt-6">
+              <div className="text-center py-8 text-slate-500">Counterparties data coming soon...</div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      )}
 
       {showAddPaymentMethodPanel && (
         <AddPaymentMethodPanel

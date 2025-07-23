@@ -31,8 +31,9 @@ export const fetchUserStats = async (): Promise<UserStats> => {
   if (responseData && responseData.data) {
     const data = responseData.data
 
-    const formatTimeAverage = (minutes: number) => {
-      if (!minutes || minutes <= 0) return "N/A"
+    const formatTimeAverage = (seconds: number) => {
+      if (!seconds || seconds <= 0) return "N/A"
+      const minutes = Math.round(seconds / 60)
       return `${minutes} min`
     }
 
@@ -46,7 +47,7 @@ export const fetchUserStats = async (): Promise<UserStats> => {
         period: "(30d)",
       },
       avgPayTime: {
-        time: formatTimeAverage(Number(data.release_time_average_30day)),
+        time: formatTimeAverage(Number(data.pay_time_average_30day)),
         period: "(30d)",
       },
       avgReleaseTime: {

@@ -7,3 +7,6 @@ export const ProfileAPI = {
     fetchUserStats,
   },
 }
+
+export * as PaymentMethods from "./api-payment-methods"
+export * as UserStats from "./api-user-stats"
