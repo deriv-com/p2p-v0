@@ -90,7 +90,7 @@ export function RatingSidebar({
             <div className="space-y-4">
               <h3 className="text-sm">{recommendLabel}</h3>
               <div className="flex gap-4">
-                <Button variant={recommend === true ? "black" : "outline"} size="sm" onClick={() => setRecommend(true)}>
+                <Button variant={recommend === true ? "black" : "outline"} className="border border-black border-opacity-10" size="sm" onClick={() => setRecommend(true)}>
                   <Image
                     src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"}
                     alt="Thumbs up"
@@ -108,6 +108,7 @@ export function RatingSidebar({
                 </Button>
                 <Button
                   variant={recommend === false ? "black" : "outline"}
+                  className="border border-black border-opacity-10"
                   size="sm"
                   onClick={() => setRecommend(false)}
                 >
