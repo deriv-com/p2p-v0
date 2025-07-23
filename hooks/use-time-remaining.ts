@@ -8,7 +8,7 @@ export function useTimeRemaining(expiresAt: string) {
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    /*const updateTimeRemaining = () => {
+      const updateTimeRemaining = () => {
       const newTimeRemaining = calculateTimeRemaining(expiresAt)
       setTimeRemaining(newTimeRemaining)
       
@@ -18,10 +18,10 @@ export function useTimeRemaining(expiresAt: string) {
       }
     }
 
-    updateTimeRemaining()*/
+    updateTimeRemaining()
 
     if (!timeRemaining.isExpired) {
-      intervalRef.current = setInterval(updateTimeRemaining, 1000)
+          intervalRef.current = setInterval(updateTimeRemaining, 1000)
     }
 
     return () => {
