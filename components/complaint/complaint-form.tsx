@@ -62,15 +62,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
       </div>
 
       <div className="p-4 border-t md:border-t-0">
-        <Button onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full" size="lg">
-          {isSubmitting ? (
-            <>
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-              Submitting...
-            </>
-          ) : (
-            "Submit"
-          )}
+        <Button vaiant="black" onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]" size="lg">Submit
         </Button>
       </div>
     </div>
