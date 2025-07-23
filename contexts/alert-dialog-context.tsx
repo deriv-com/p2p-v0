@@ -1,12 +1,13 @@
 "use client"
 
 import type React from "react"
-import { createContext, useContext, useState, useCallback, useEffect } from "react"
+import { createContext, useContext, useState, useCallback } from "react"
 import { AlertDialog, AlertDialogAction, AlertDialogContent } from "@/components/ui/alert-dialog"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
 
@@ -17,18 +18,7 @@ interface AlertDialogProviderProps {
 export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [config, setConfig] = useState<AlertDialogConfig>({})
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
+  const isMobile = useIsMobile()
 
   const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
     setConfig(alertConfig)
