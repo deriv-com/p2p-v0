@@ -47,7 +47,7 @@ export const fetchUserStats = async (): Promise<UserStats> => {
         period: "(30d)",
       },
       avgPayTime: {
-        time: formatTimeAverage(Number(data.pay_time_average_30day)),
+        time: formatTimeAverage(Number(data.buy_time_average_30day)),
         period: "(30d)",
       },
       avgReleaseTime: {
