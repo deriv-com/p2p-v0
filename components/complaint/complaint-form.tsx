@@ -47,23 +47,8 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
           ))}
         </RadioGroup>
 
-        <div className="text-sm text-slate-600">
-          If your issue isn't listed, contact us via{" "}
-          <button
-            className="underline text-slate-900 hover:text-slate-700"
-            onClick={() => {
-              // Handle live chat navigation
-              console.log("Navigate to live chat")
-            }}
-          >
-            live chat
-          </button>{" "}
-          for help.
-        </div>
-      </div>
-
       <div className="p-4 border-t md:border-t-0">
-        <Button onClick={handleSubmit} disabled={!selectedOption} className="w-full h-12 text-white" size="lg">
+        <Button onClick={handleSubmit} disabled={!selectedOption} className="w-full" size="lg">
           Submit
         </Button>
       </div>
