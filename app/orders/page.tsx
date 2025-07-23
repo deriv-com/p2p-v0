@@ -105,7 +105,7 @@ export default function OrdersPage() {
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer hover:bg-slate-50"
+                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
@@ -165,7 +165,7 @@ export default function OrdersPage() {
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top">
                     {order.rating > 0 && (
-                      <div className="flex items-center">
+                      <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
                         <span className="text-sm">{order.rating}</span>
                       </div>
@@ -185,7 +185,6 @@ export default function OrdersPage() {
                     }}
                     className="text-slate-500 hover:text-slate-700"
                     variant="ghost"
-                    size="sm"
                   >
                     <Image
                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
