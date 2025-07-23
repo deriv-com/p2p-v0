@@ -16,6 +16,17 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
   const handleSubmit = () => {
     if (selectedOption) {
       onSubmit(selectedOption)
+      try {
+        const result = await OrdersAPI.disputeOrder(orderId)
+        if (result.errors.length === 0) {
+          onSubmit?.()
+        }
+        setRating(0)
+        setHoverRating(0)
+        setRecommend(null)
+      } catch (error) {
+        console.error("Error submitting rating:", error)
+      }
       setSelectedOption("")
       onClose()
     }
