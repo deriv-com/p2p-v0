@@ -109,7 +109,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
 export async function updatePaymentMethod(id: string, fields: Record<string, any>): Promise<PaymentMethodResponse> {
   try {
     const requestBody = {
-      data: fields,  // Send fields directly as data, no cleaning/filtering
+      data: fields,  
     };
 
     const headers = AUTH.getAuthHeader();
