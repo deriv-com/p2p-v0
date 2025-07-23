@@ -155,7 +155,7 @@ export default function OrdersPage() {
                 </TableCell>
                 {activeTab === "active" && (
                   <TableCell className="py-4 px-4 align-top">
-                    {order.expires_at && (
+                    {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
                   </TableCell>
