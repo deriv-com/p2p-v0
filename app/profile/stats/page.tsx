@@ -7,6 +7,7 @@ import Image from "next/image"
 import { Info } from "lucide-react"
 import { ProfileAPI } from "../api"
 import type { UserStats } from "../api/api-user-stats"
+import { cn } from "@/lib/utils"
 
 export default function StatsPage() {
   const router = useRouter()
@@ -56,7 +57,11 @@ export default function StatsPage() {
     hasInfo?: boolean
     showBorder?: boolean
   }) => (
-    <div className={`flex justify-between items-center w-full py-3 ${showBorder ? "border-b border-gray-200" : ""}`}>
+    <div
+      className={cn("flex justify-between items-center w-full py-3", {
+        "border-b border-gray-200": showBorder,
+      })}
+    >
       <div className="flex items-center gap-1">
         <span className="text-gray-600 text-sm">{label}</span>
         {hasInfo && <Info className="size-4 text-gray-400" />}
