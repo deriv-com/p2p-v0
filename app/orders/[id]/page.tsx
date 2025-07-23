@@ -30,6 +30,7 @@ export default function OrderDetailsPage() {
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
+  const [showComplaintForm, setShowComplaintForm] = useState(false)
   const { isConnected, joinChannel } = useWebSocketContext()
 
   useEffect(() => {
@@ -381,7 +382,7 @@ export default function OrderDetailsPage() {
         </div>
       )}
 
-      <ComplaintForm isOpen={isComplaintOpen} onClose={closeComplaint} onSubmit={submitComplaint} orderId={orderId} />
+      <ComplaintForm isOpen={showComplaintForm} onClose={() => setShowComplaintForm(false)} onSubmit={handledSubmitComplaint} orderId={orderId} />
       <RatingSidebar
         isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
