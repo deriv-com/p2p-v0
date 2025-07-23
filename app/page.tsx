@@ -302,7 +302,7 @@ export default function BuySellPage() {
                             {ad.user.rating_average_lifetime && (
                               <span className="flex items-center">
                                 <Image
-                                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
+                                  src="/icons/star-active.png"
                                   alt="Rating"
                                   width={16}
                                   height={16}
