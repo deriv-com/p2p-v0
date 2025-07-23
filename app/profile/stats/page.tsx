@@ -45,8 +45,7 @@ export default function StatsPage() {
   const handleBack = () => {
     router.push("/profile")
   }
-
-  // Configuration for all stats to display
+  
   const statsConfig = [
     {
       label: "Sell completion",
