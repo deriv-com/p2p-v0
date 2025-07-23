@@ -90,6 +90,9 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
     return (
       <Sheet open={isOpen} onOpenChange={handleClose}>
         <SheetContent side="bottom" className="h-auto max-h-[80vh] p-0">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-xl font-bold text-center">Submit a complaint</SheetTitle>
+          </SheetHeader>
           <ComplaintContent />
         </SheetContent>
       </Sheet>
@@ -101,7 +104,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
       <div className="bg-white w-full max-w-md h-full flex flex-col">
         <div className="flex justify-between items-center px-4 py-1 border-b">
           <h2 className="text-xl font-bold">Submit a complaint</h2>
-          <Button onClick={onClose} variant="ghost" size="icon" className="p-1">
+          <Button onClick={handleClose} variant="ghost" size="icon" className="p-1">
             <X className="h-6 w-6" />
           </Button>
         </div>
