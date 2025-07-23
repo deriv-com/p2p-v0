@@ -1,35 +1,16 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { fetchUserStats, type UserStats } from "@/app/profile/api/api-user-stats"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
+import { Info } from "lucide-react"
+import { ProfileAPI } from "../api"
+import type { UserStats } from "../api/api-user-stats"
 import { cn } from "@/lib/utils"
 
-interface StatItemProps {
-  label: string
-  value: string | number | undefined
-  period?: string
-  showBorder?: boolean
-}
-
-function StatItem({ label, value, period, showBorder = true }: StatItemProps) {
-  return (
-    <div
-      className={cn("flex justify-between items-center w-full py-3", {
-        "border-b border-gray-200": showBorder,
-      })}
-    >
-      <div className="flex flex-col items-start gap-1">
-        <span className="text-sm font-medium text-gray-900">{label}</span>
-        {period && <span className="text-xs text-gray-500">{period}</span>}
-      </div>
-      <span className="text-sm font-semibold text-gray-900">{value || "-"}</span>
-    </div>
-  )
-}
-
 export default function StatsPage() {
-  const { showAlert } = useAlertDialog()
+  const router = useRouter()
   const [userStats, setUserStats] = useState<UserStats>({
     buyCompletion: { rate: "-", period: "(30d)" },
     sellCompletion: { rate: "-", period: "(30d)" },
@@ -42,74 +23,104 @@ export default function StatsPage() {
     tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
   })
   const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    const loadStats = async () => {
+    const loadUserStats = async () => {
       try {
         setIsLoading(true)
-        const stats = await fetchUserStats(showAlert)
+        setError(null)
+        const stats = await ProfileAPI.UserStats.fetchUserStats()
         setUserStats(stats)
       } catch (error) {
-        // Error is already handled by showAlert in fetchUserStats
+        setError(error instanceof Error ? error.message : "Failed to load stats")
       } finally {
         setIsLoading(false)
       }
     }
 
-    loadStats()
-  }, [showAlert])
+    loadUserStats()
+  }, [])
 
-  if (isLoading) {
-    return (
-      <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
-        <div className="animate-pulse space-y-4 w-full">
-          <div className="h-4 bg-gray-300 rounded w-1/3"></div>
-          <div className="space-y-3">
-            <div className="h-3 bg-gray-300 rounded w-full"></div>
-            <div className="h-3 bg-gray-300 rounded w-5/6"></div>
-            <div className="h-3 bg-gray-300 rounded w-4/6"></div>
-          </div>
-        </div>
-      </div>
-    )
+  const handleBack = () => {
+    router.push("/profile")
   }
 
+  const StatItem = ({
+    label,
+    value,
+    hasInfo = false,
+    showBorder = true,
+  }: {
+    label: string
+    value: string | number
+    hasInfo?: boolean
+    showBorder?: boolean
+  }) => (
+    <div
+      className={cn("flex justify-between items-center w-full py-3", {
+        "border-b border-gray-200": showBorder,
+      })}
+    >
+      <div className="flex items-center gap-1">
+        <span className="text-gray-600 text-sm">{label}</span>
+        {hasInfo && <Info className="size-4 text-gray-400" />}
+      </div>
+      <span className="text-black font-semibold text-sm">{value !== undefined && value !== null ? value : "-"}</span>
+    </div>
+  )
+
   return (
-    <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
-      <StatItem label="Buy completion" value={userStats.buyCompletion.rate} period={userStats.buyCompletion.period} />
+    <div className="fixed inset-0 bg-white flex flex-col">
+      <div className="flex-shrink-0 bg-white border-b border-gray-200 p-4 flex items-center gap-3 z-10">
+        <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
+          <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+        </Button>
+        <h1 className="text-lg font-semibold">Stats</h1>
+      </div>
 
-      <StatItem
-        label="Sell completion"
-        value={userStats.sellCompletion.rate}
-        period={userStats.sellCompletion.period}
-      />
+      <div className="flex-1 overflow-y-auto">
+        {isLoading ? (
+          <div className="p-4">
+            <div className="animate-pulse flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex justify-between items-center w-full py-3">
+                  <div className="h-4 bg-gray-200 rounded w-24"></div>
+                  <div className="h-4 bg-gray-200 rounded w-16"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : error ? (
+          <div className="flex flex-col items-center justify-center py-12 px-4">
+            <p className="text-red-500 mb-4 text-center">{error}</p>
+            <Button onClick={() => window.location.reload()} variant="outline" className="px-6 bg-transparent">
+              Try again
+            </Button>
+          </div>
+        ) : (
+          <div className="p-4">
+            <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
+              <StatItem label="Sell completion" value={userStats.sellCompletion.rate} />
 
-      <StatItem label="Avg pay time" value={userStats.avgPayTime.time} period={userStats.avgPayTime.period} />
+              <StatItem label="Buy completion" value={userStats.buyCompletion.rate} />
 
-      <StatItem
-        label="Avg release time"
-        value={userStats.avgReleaseTime.time}
-        period={userStats.avgReleaseTime.period}
-      />
+              <StatItem label="Avg. pay time" value={userStats.avgPayTime.time} />
 
-      <StatItem label="Trade partners" value={userStats.tradePartners} period="(lifetime)" />
+              <StatItem label="Avg. release time" value={userStats.avgReleaseTime.time} />
 
-      <StatItem label="Total orders" value={userStats.totalOrders30d} period="(30d)" />
+              <StatItem label="Total orders" value={userStats.totalOrders30d} />
 
-      <StatItem label="Total orders" value={userStats.totalOrdersLifetime} period="(lifetime)" />
-
-      <StatItem
-        label="Trade volume"
-        value={`${userStats.tradeVolume30d.amount} ${userStats.tradeVolume30d.currency}`}
-        period={userStats.tradeVolume30d.period}
-      />
-
-      <StatItem
-        label="Trade volume"
-        value={`${userStats.tradeVolumeLifetime.amount} ${userStats.tradeVolumeLifetime.currency}`}
-        period="(lifetime)"
-        showBorder={false}
-      />
+              <StatItem
+                label="Trade volume"
+                value={`${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`}
+                hasInfo={true}
+                showBorder={false}
+              />
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
