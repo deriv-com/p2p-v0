@@ -34,10 +34,10 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [refreshKey, setRefreshKey] = useState(0)
   const [userStats, setUserStats] = useState<UserStats>(
     initialStats || {
-      buyCompletion: { rate: "N/A", period: "(30d)" },
-      sellCompletion: { rate: "N/A", period: "(30d)" },
-      avgPayTime: { time: "N/A", period: "(30d)" },
-      avgReleaseTime: { time: "N/A", period: "(30d)" },
+      buyCompletion: { rate: "-", period: "(30d)" },
+      sellCompletion: { rate: "-", period: "(30d)" },
+      avgPayTime: { time: "-", period: "(30d)" },
+      avgReleaseTime: { time: "-", period: "(30d)" },
       tradePartners: 0,
       totalOrders30d: 0,
       totalOrdersLifetime: 0,
