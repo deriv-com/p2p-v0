@@ -12,9 +12,7 @@ export interface UserStats {
   tradeVolumeLifetime: { amount: string; currency: string }
 }
 
-export const fetchUserStats = async (
-  showAlert: (config: { type?: "warning"; title: string; description: string }) => void,
-): Promise<UserStats> => {
+export const fetchUserStats = async (): Promise<UserStats> => {
   const userId = USER.id
   const url = `${API.baseUrl}/users/${userId}`
   const headers = AUTH.getAuthHeader()
@@ -25,13 +23,7 @@ export const fetchUserStats = async (
   })
 
   if (!response.ok) {
-    const errorMessage = `Failed to fetch user stats: ${response.status} ${response.statusText}`
-
-    showAlert({
-      type: "warning",
-      title: "Error",
-      description: errorMessage,
-    })
+    console.error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
 
     return {
       buyCompletion: { rate: "-", period: "(30d)" },
