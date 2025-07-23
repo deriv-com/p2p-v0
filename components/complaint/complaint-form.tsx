@@ -61,6 +61,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
         </Button>
       </div>
     </div>
+    </div>
   )
 
   if (!isOpen) return null
