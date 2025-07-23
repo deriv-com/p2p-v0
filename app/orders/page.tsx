@@ -113,18 +113,20 @@ export default function OrdersPage() {
                 )}
                 <TableCell className="py-4 px-4 align-top">
                   <div>
-                    <div className="font-bold">
-                      {order.type === "buy" ? (
-                        <span className="text-secondary text-base">Buy</span>
-                      ) : (
-                        <span className="text-destructive text-base">Sell</span>
-                      )}
-                      <span className="text-base">
-                        {" "}
-                        {order.advert.account_currency} {formatAmount(order.amount)}
-                      </span>
+                    <div className="flex flex-row lg:flex-col justify-between">
+                      <div className="font-bold">
+                        {order.type === "buy" ? (
+                          <span className="text-secondary text-base">Buy</span>
+                        ) : (
+                          <span className="text-destructive text-base">Sell</span>
+                        )}
+                        <span className="text-base">
+                          {" "}
+                          {order.advert.account_currency} {formatAmount(order.amount)}
+                        </span>
+                      </div>
+                      <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
-                    <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     <div className="mt-[4px] text-slate-600 text-xs">
                       Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
                     </div>
