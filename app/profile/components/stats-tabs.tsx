@@ -1,263 +1,149 @@
 "use client"
+
 import { useState, useEffect } from "react"
-import StatsGrid from "./stats-grid"
-import PaymentMethodsTab from "./payment-methods-tab"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { Divider } from "@/components/ui/divider"
-import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { ProfileAPI } from "../api"
-import StatusModal from "./ui/status-modal"
-import CustomNotificationBanner from "./ui/custom-notification-banner"
-import { PlusCircle } from "lucide-react"
-import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { useRouter } from "next/navigation"
-import Image from "next/image"
+import { fetchUserStats, type UserStats } from "@/app/profile/api/api-user-stats"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import type { UserStats } from "../api/api-user-stats"
+import { Divider } from "@/components/ui/divider"
 
-interface StatsTabsProps {
-  stats?: any
-}
-
-export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
-  const isMobile = useIsMobile()
-  const router = useRouter()
+export default function StatsTabs() {
   const { showAlert } = useAlertDialog()
-  const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
-  const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
-  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
+  const [userStats, setUserStats] = useState<UserStats>({
+    buyCompletion: { rate: "-", period: "(30d)" },
+    sellCompletion: { rate: "-", period: "(30d)" },
+    avgPayTime: { time: "-", period: "(30d)" },
+    avgReleaseTime: { time: "-", period: "(30d)" },
+    tradePartners: 0,
+    totalOrders30d: 0,
+    totalOrdersLifetime: 0,
+    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
+    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
   })
-  const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
-  const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<UserStats>(
-    initialStats || {
-      buyCompletion: { rate: "-", period: "(30d)" },
-      sellCompletion: { rate: "-", period: "(30d)" },
-      avgPayTime: { time: "-", period: "(30d)" },
-      avgReleaseTime: { time: "-", period: "(30d)" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-    },
-  )
-
-  const [isLoadingStats, setIsLoadingStats] = useState(false)
-
-  const tabs = [
-    { id: "stats", label: "Stats" },
-    { id: "payment", label: "Payment methods" },
-  ]
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const loadUserStats = async () => {
+    const loadStats = async () => {
       try {
-        setIsLoadingStats(true)
-        const stats = await ProfileAPI.UserStats.fetchUserStats()
+        setIsLoading(true)
+        const stats = await fetchUserStats(showAlert)
         setUserStats(stats)
       } catch (error) {
-        showAlert({
-          type: "warning",
-          title: "Error",
-          description: error instanceof Error ? error.message : "Failed to load user stats",
-        })
+        // Error is already handled by showAlert in fetchUserStats
       } finally {
-        setIsLoadingStats(false)
+        setIsLoading(false)
       }
     }
 
-    loadUserStats()
+    loadStats()
   }, [showAlert])
 
-  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
-    try {
-      setIsAddingPaymentMethod(true)
-
-      const result = await ProfileAPI.PaymentMethods.addPaymentMethod(method, fields)
-
-      if (result.success) {
-        setShowAddPaymentMethodPanel(false)
-
-        setNotification({
-          show: true,
-          message: "Payment method added.",
-        })
-
-        setRefreshKey((prev) => prev + 1)
-      } else {
-        const errorMessage =
-          result.errors && result.errors.length > 0 ? result.errors[0].message : "Failed to add payment method"
-
-        setErrorModal({
-          show: true,
-          message: errorMessage,
-        })
-      }
-    } catch (error) {
-      setErrorModal({
-        show: true,
-        message: error instanceof Error ? error.message : "An unexpected error occurred",
-      })
-    } finally {
-      setIsAddingPaymentMethod(false)
-    }
-  }
-
-  if (isMobile) {
+  if (isLoading) {
     return (
-      <div className="relative">
-        {notification.show && (
-          <CustomNotificationBanner
-            message={notification.message}
-            onClose={() => setNotification({ show: false, message: "" })}
-          />
-        )}
-
-        <div>
-          <Divider />
-
-          <div
-            onClick={() => router.push("/profile/stats")}
-            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-sm font-normal text-gray-900">Stats</span>
-            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+      <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
+        <div className="animate-pulse space-y-4 w-full">
+          <div className="h-4 bg-gray-300 rounded w-1/3"></div>
+          <div className="space-y-3">
+            <div className="h-3 bg-gray-300 rounded w-full"></div>
+            <div className="h-3 bg-gray-300 rounded w-5/6"></div>
+            <div className="h-3 bg-gray-300 rounded w-4/6"></div>
           </div>
-
-          <Divider />
-
-          <div
-            onClick={() => router.push("/profile/payment-methods")}
-            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-sm font-normal text-gray-900">Payment methods</span>
-            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
-          </div>
-
-          <Divider />
         </div>
-
-        {errorModal.show && (
-          <StatusModal
-            type="error"
-            title="Error"
-            message={errorModal.message}
-            onClose={() => setErrorModal({ show: false, message: "" })}
-          />
-        )}
       </div>
     )
   }
 
   return (
-    <div className="relative">
-      {notification.show && (
-        <CustomNotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
-
-      <div className="mb-6">
-        <Tabs defaultValue="stats">
-          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
-
-          <TabsContent value="stats">
-            {isLoadingStats ? (
-              <div className="space-y-4">
-                <div className="bg-[#F5F5F5] rounded-lg p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <StatsGrid stats={userStats} />
-            )}
-          </TabsContent>
-
-          <TabsContent value="payment">
-            <div className="relative">
-              <div className="flex justify-end mb-4">
-                <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  Add payment method
-                </Button>
-              </div>
-              <PaymentMethodsTab key={refreshKey} />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="ads">
-            <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
-              <p className="text-slate-500">Your ad details will appear here.</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="counterparties">
-            <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Counterparties</h3>
-              <p className="text-slate-500">Your counterparties will appear here.</p>
-            </div>
-          </TabsContent>
-        </Tabs>
+    <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Buy completion</span>
+          <span className="text-xs text-gray-500">{userStats.buyCompletion.period}</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.buyCompletion.rate}</span>
       </div>
 
-      {showAddPaymentMethodPanel && (
-        <AddPaymentMethodPanel
-          onClose={() => setShowAddPaymentMethodPanel(false)}
-          onAdd={handleAddPaymentMethod}
-          isLoading={isAddingPaymentMethod}
-        />
-      )}
+      <Divider />
 
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title="Error"
-          message={errorModal.message}
-          onClose={() => setErrorModal({ show: false, message: "" })}
-        />
-      )}
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Sell completion</span>
+          <span className="text-xs text-gray-500">{userStats.sellCompletion.period}</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.sellCompletion.rate}</span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Avg pay time</span>
+          <span className="text-xs text-gray-500">{userStats.avgPayTime.period}</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.avgPayTime.time}</span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Avg release time</span>
+          <span className="text-xs text-gray-500">{userStats.avgReleaseTime.period}</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.avgReleaseTime.time}</span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Trade partners</span>
+          <span className="text-xs text-gray-500">(lifetime)</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.tradePartners}</span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Total orders</span>
+          <span className="text-xs text-gray-500">(30d)</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.totalOrders30d}</span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Total orders</span>
+          <span className="text-xs text-gray-500">(lifetime)</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">{userStats.totalOrdersLifetime}</span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Trade volume</span>
+          <span className="text-xs text-gray-500">{userStats.tradeVolume30d.period}</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">
+          {userStats.tradeVolume30d.amount} {userStats.tradeVolume30d.currency}
+        </span>
+      </div>
+
+      <Divider />
+
+      <div className="flex justify-between items-center w-full">
+        <div className="flex flex-col items-start gap-1">
+          <span className="text-sm font-medium text-gray-900">Trade volume</span>
+          <span className="text-xs text-gray-500">(lifetime)</span>
+        </div>
+        <span className="text-sm font-semibold text-gray-900">
+          {userStats.tradeVolumeLifetime.amount} {userStats.tradeVolumeLifetime.currency}
+        </span>
+      </div>
     </div>
   )
 }
