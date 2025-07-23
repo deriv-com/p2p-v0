@@ -113,7 +113,7 @@ export default function OrdersPage() {
                 )}
                 <TableCell className="py-4 px-4 align-top">
                   <div>
-                    <div className="flex flex-row md:flex-col justify-between">
+                    <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
                         {order.type === "buy" ? (
                           <span className="text-secondary text-base">Buy</span>
