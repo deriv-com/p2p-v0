@@ -297,7 +297,7 @@ export default function BuySellPage() {
                                 )}
                               </div>
                               <div className="flex items-center text-xs sm:text-sm text-slate-500">
-                                {ad.user_rating_average && (
+                                {ad.user.rating_average_lifetime && (
                                   <span className="flex items-center">
                                     <Image
                                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
@@ -306,7 +306,7 @@ export default function BuySellPage() {
                                       height={16}
                                       className="mr-1"
                                     />
-                                    <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
+                                    <span className="text-[#FFAD3A]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
                                   </span>
                                 )}
                               </div>
