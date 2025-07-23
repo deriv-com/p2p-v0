@@ -8,7 +8,6 @@ import { CustomShimmer } from "../components/ui/custom-shimmer"
 import { ProfileAPI } from "../api"
 import CustomNotificationBanner from "../components/ui/custom-notification-banner"
 import EditPaymentMethodPanel from "../components/edit-payment-method-panel"
-import BankTransferEditPanel from "../components/bank-transfer-edit-panel"
 import AddPaymentMethodPanel from "../components/add-payment-method-panel"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
@@ -100,12 +99,26 @@ export default function PaymentMethodsPage() {
 
         const name = method.display_name || methodType.charAt(0).toUpperCase() + methodType.slice(1)
 
+        // Transform fields to match EditPaymentMethodPanel expected format
+        const transformedDetails: Record<string, { display_name: string; required: boolean; value: string }> = {}
+
+        if (method.fields) {
+          Object.entries(method.fields).forEach(([fieldName, fieldData]: [string, any]) => {
+            transformedDetails[fieldName] = {
+              display_name:
+                fieldData.display_name || fieldName.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+              required: fieldData.required || false,
+              value: fieldData.value || "",
+            }
+          })
+        }
+
         return {
           id: String(method.id || ""),
           name: name,
           type: methodType,
           category: category,
-          details: method.fields || {},
+          details: transformedDetails,
           instructions: instructions,
           isDefault: false,
         }
@@ -495,24 +508,15 @@ export default function PaymentMethodsPage() {
         </SheetContent>
       </Sheet>
 
-      {/* Modals and Panels */}
-      {editPanel.show &&
-        editPanel.paymentMethod &&
-        (editPanel.paymentMethod.type === "bank_transfer" ? (
-          <BankTransferEditPanel
-            paymentMethod={editPanel.paymentMethod}
-            onClose={() => setEditPanel({ show: false, paymentMethod: null })}
-            onSave={handleSavePaymentMethod}
-            isLoading={isEditing}
-          />
-        ) : (
-          <EditPaymentMethodPanel
-            paymentMethod={editPanel.paymentMethod}
-            onClose={() => setEditPanel({ show: false, paymentMethod: null })}
-            onSave={handleSavePaymentMethod}
-            isLoading={isEditing}
-          />
-        ))}
+      {/* Edit Panel - Now uses only EditPaymentMethodPanel for all payment methods */}
+      {editPanel.show && editPanel.paymentMethod && (
+        <EditPaymentMethodPanel
+          paymentMethod={editPanel.paymentMethod}
+          onClose={() => setEditPanel({ show: false, paymentMethod: null })}
+          onSave={handleSavePaymentMethod}
+          isLoading={isEditing}
+        />
+      )}
 
       {showAddPaymentMethodPanel && (
         <AddPaymentMethodPanel
