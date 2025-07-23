@@ -27,7 +27,6 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
         onClose()
       } catch (error) {
         console.error("Error submitting complaint:", error)
-        // Still close the form even on error
         onClose()
       } finally {
         setIsSubmitting(false)
