@@ -12,7 +12,6 @@ import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "../api"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
-import BankTransferEditPanel from "./bank-transfer-edit-panel"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
 import { StatusIndicator } from "@/components/ui/status-indicator"
@@ -78,7 +77,7 @@ export default function PaymentMethodsTab() {
       try {
         data = JSON.parse(responseText)
       } catch (e) {
-        console.error("Failed to parse payment methods response:", e);
+        console.error("Failed to parse payment methods response:", e)
         data = { data: [] }
       }
 
@@ -126,9 +125,24 @@ export default function PaymentMethodsTab() {
   }, [fetchPaymentMethods])
 
   const handleEditPaymentMethod = (method: PaymentMethod) => {
+    // Transform the details to match the expected format for EditPaymentMethodPanel
+    const transformedDetails: Record<string, { display_name: string; required: boolean; value: string }> = {}
+
+    if (method.details) {
+      Object.entries(method.details).forEach(([key, value]: [string, any]) => {
+        if (value && typeof value === "object" && "value" in value) {
+          transformedDetails[key] = {
+            display_name: value.display_name || key.charAt(0).toUpperCase() + key.slice(1),
+            required: value.required || false,
+            value: value.value || "",
+          }
+        }
+      })
+    }
+
     const cleanedMethod = {
       ...method,
-      details: { ...method.details },
+      details: transformedDetails,
     }
 
     setEditPanel({
@@ -137,68 +151,63 @@ export default function PaymentMethodsTab() {
     })
   }
 
+  const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
+    try {
+      setIsEditing(true)
 
-const handleSavePaymentMethod = async (id: string, fields: Record<string, string>) => {
-  try {
-    setIsEditing(true);
+      const paymentMethod = paymentMethods.find((m) => m.id === id)
 
-    const paymentMethod = paymentMethods.find((m) => m.id === id);
- 
- const payload = {
-  method: paymentMethod.type,
-  fields: { ...fields }
-};
-
-    const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload);
-
-    if (result.success) {
-      setNotification({
-        show: true,
-        message: "Payment method details updated successfully.",
-      });
-
-      fetchPaymentMethods();
-    } else {
-      let errorMessage = "Failed to update payment method. Please try again.";
-
-      if (result.errors && result.errors.length > 0) {
-        const errorCode = result.errors[0].code;
-
-        if (errorCode === "PaymentMethodUsedByOpenOrder") {
-          errorMessage = "This payment method is currently being used by an open order and cannot be modified.";
-        } else if (result.errors[0].message) {
-          errorMessage = result.errors[0].message;
-        }
+      const payload = {
+        method: paymentMethod.type,
+        fields: { ...fields },
       }
+
+      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
+
+      if (result.success) {
+        setNotification({
+          show: true,
+          message: "Payment method details updated successfully.",
+        })
+
+        fetchPaymentMethods()
+      } else {
+        let errorMessage = "Failed to update payment method. Please try again."
+
+        if (result.errors && result.errors.length > 0) {
+          const errorCode = result.errors[0].code
+
+          if (errorCode === "PaymentMethodUsedByOpenOrder") {
+            errorMessage = "This payment method is currently being used by an open order and cannot be modified."
+          } else if (result.errors[0].message) {
+            errorMessage = result.errors[0].message
+          }
+        }
+
+        setStatusModal({
+          show: true,
+          type: "error",
+          title: "Failed to update payment method",
+          message: errorMessage,
+        })
+      }
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       setStatusModal({
         show: true,
         type: "error",
         title: "Failed to update payment method",
-        message: errorMessage,
-      });
+        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+      })
+    } finally {
+      setEditPanel({
+        show: false,
+        paymentMethod: null,
+      })
+      setIsEditing(false)
     }
-  } catch (error) {
-    setError(error instanceof Error ? error.message : "An error occurred. Please try again.");
-
-    setStatusModal({
-      show: true,
-      type: "error",
-      title: "Failed to update payment method",
-      message: error instanceof Error ? error.message : "An error occurred. Please try again.",
-    });
-  } finally {
-    setEditPanel({
-      show: false,
-      paymentMethod: null,
-    });
-    setIsEditing(false);
   }
-};
-
-
-
-
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     setDeleteConfirmModal({
@@ -442,23 +451,14 @@ const handleSavePaymentMethod = async (id: string, fields: Record<string, string
         onCancel={cancelDeletePaymentMethod}
       />
 
-      {editPanel.show &&
-        editPanel.paymentMethod &&
-        (editPanel.paymentMethod.type === "bank_transfer" ? (
-          <BankTransferEditPanel
-            paymentMethod={editPanel.paymentMethod}
-            onClose={() => setEditPanel({ show: false, paymentMethod: null })}
-            onSave={handleSavePaymentMethod}
-            isLoading={isEditing}
-          />
-        ) : (
-          <EditPaymentMethodPanel
-            paymentMethod={editPanel.paymentMethod}
-            onClose={() => setEditPanel({ show: false, paymentMethod: null })}
-            onSave={handleSavePaymentMethod}
-            isLoading={isEditing}
-          />
-        ))}
+      {editPanel.show && editPanel.paymentMethod && (
+        <EditPaymentMethodPanel
+          paymentMethod={editPanel.paymentMethod}
+          onClose={() => setEditPanel({ show: false, paymentMethod: null })}
+          onSave={handleSavePaymentMethod}
+          isLoading={isEditing}
+        />
+      )}
 
       {statusModal.show && (
         <CustomStatusModal
