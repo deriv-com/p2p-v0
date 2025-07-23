@@ -5,93 +5,8 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Info } from "lucide-react"
-
-interface UserStats {
-  buyCompletion: { rate: string; period: string }
-  sellCompletion: { rate: string; period: string }
-  avgPayTime: { time: string; period: string }
-  avgReleaseTime: { time: string; period: string }
-  tradePartners: number
-  totalOrders30d: number
-  totalOrdersLifetime: number
-  tradeVolume30d: { amount: string; currency: string; period: string }
-  tradeVolumeLifetime: { amount: string; currency: string }
-}
-
-// Import the fetchUserStats function from stats-tabs
-const fetchUserStatsFromStatsTabs = async (): Promise<UserStats> => {
-  const { USER, API, AUTH } = await import("@/lib/local-variables")
-
-  const userId = USER.id
-  const url = `${API.baseUrl}/users/${userId}`
-  const headers = AUTH.getAuthHeader()
-
-  const response = await fetch(url, {
-    headers,
-    cache: "no-store",
-  })
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
-  }
-
-  const responseData = await response.json()
-
-  if (responseData && responseData.data) {
-    const data = responseData.data
-
-    const formatTimeAverage = (minutes: number) => {
-      if (!minutes || minutes <= 0) return "N/A"
-      return `${minutes} min`
-    }
-
-    const transformedStats: UserStats = {
-      buyCompletion: {
-        rate: `${Number(data.completion_average_30day) || 0}%`,
-        period: "(30d)",
-      },
-      sellCompletion: {
-        rate: `${Number(data.completion_average_30day) || 0}%`,
-        period: "(30d)",
-      },
-      avgPayTime: {
-        time: formatTimeAverage(Number(data.release_time_average_30day)),
-        period: "(30d)",
-      },
-      avgReleaseTime: {
-        time: formatTimeAverage(Number(data.release_time_average_30day)),
-        period: "(30d)",
-      },
-      tradePartners: Number(data.partner_count_lifetime) || 0,
-      totalOrders30d: (Number(data.buy_count_30day) || 0) + (Number(data.sell_count_30day) || 0),
-      totalOrdersLifetime: Number(data.order_count_lifetime) || 0,
-      tradeVolume30d: {
-        amount: ((Number(data.buy_amount_30day) || 0) + (Number(data.sell_amount_30day) || 0)).toFixed(2),
-        currency: "USD",
-        period: "(30d)",
-      },
-      tradeVolumeLifetime: {
-        amount: data.order_amount_lifetime ? Number(data.order_amount_lifetime).toFixed(2) : "0.00",
-        currency: "USD",
-      },
-    }
-
-    return transformedStats
-  }
-
-  // Return default stats if no data
-  return {
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  }
-}
+import { ProfileAPI } from "../api"
+import type { UserStats } from "../api/api-user-stats"
 
 export default function StatsPage() {
   const router = useRouter()
@@ -114,7 +29,7 @@ export default function StatsPage() {
       try {
         setIsLoading(true)
         setError(null)
-        const stats = await fetchUserStatsFromStatsTabs()
+        const stats = await ProfileAPI.UserStats.fetchUserStats()
         setUserStats(stats)
       } catch (error) {
         setError(error instanceof Error ? error.message : "Failed to load stats")
