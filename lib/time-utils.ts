@@ -33,22 +33,3 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
     totalSeconds,
     isExpired: false,
   }
-}
-
-export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
-  if (timeRemaining.isExpired) {
-    return "Expired"
-  }
-
-  const { hours, minutes, seconds } = timeRemaining
-
-  if (hours > 0) {
-    return `${hours}h ${minutes}m left`
-  } else if (minutes > 0) {
-    return `${minutes}m left`
-  } else if (seconds > 0) {
-    return "< 1m left"
-  }
-
-  return "Expired"
-}
