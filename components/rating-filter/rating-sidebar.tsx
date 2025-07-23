@@ -130,7 +130,7 @@ export function RatingSidebar({
             </div>
           </div>
         </div>
-        <div className="p-4 border-t">
+        <div className="p-4">
           <Button
             variant="black"
             onClick={handleSubmit}
