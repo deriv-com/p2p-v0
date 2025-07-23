@@ -82,7 +82,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={handleClose}>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] p-0">
+        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-center">Submit a complaint</SheetTitle>
           </SheetHeader>
