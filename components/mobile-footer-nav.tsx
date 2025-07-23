@@ -28,9 +28,10 @@ export default function MobileFooterNav() {
             alt="Buy/Sell"
             width={20}
             height={20}
-            className={
-              pathname === "/" || pathname.startsWith("/advertiser") ? "filter-to-primary" : "brightness-50 opacity-70"
-            }
+            className={cn({
+              "filter-to-primary": pathname === "/" || pathname.startsWith("/advertiser"),
+              "brightness-50 opacity-70": !(pathname === "/" || pathname.startsWith("/advertiser")),
+            })}
           />
           <span className="text-xs mt-1">Market</span>
         </Link>
@@ -46,7 +47,10 @@ export default function MobileFooterNav() {
             alt="Orders"
             width={20}
             height={20}
-            className={pathname.startsWith("/orders") ? "filter-to-primary" : "brightness-50 opacity-70"}
+            className={cn({
+              "filter-to-primary": pathname.startsWith("/orders"),
+              "brightness-50 opacity-70": !pathname.startsWith("/orders"),
+            })}
           />
           <span className="text-xs mt-1">Orders</span>
         </Link>
@@ -62,7 +66,10 @@ export default function MobileFooterNav() {
             alt="My ads"
             width={20}
             height={20}
-            className={pathname.startsWith("/ads") ? "filter-to-primary" : "brightness-50 opacity-70"}
+            className={cn({
+              "filter-to-primary": pathname.startsWith("/ads"),
+              "brightness-50 opacity-70": !pathname.startsWith("/ads"),
+            })}
           />
           <span className="text-xs mt-1">My ads</span>
         </Link>
@@ -78,7 +85,10 @@ export default function MobileFooterNav() {
             alt="Wallet"
             width={20}
             height={20}
-            className={pathname.startsWith("/wallet") ? "filter-to-primary" : "brightness-50 opacity-70"}
+            className={cn({
+              "filter-to-primary": pathname.startsWith("/wallet"),
+              "brightness-50 opacity-70": !pathname.startsWith("/wallet"),
+            })}
           />
           <span className="text-xs mt-1">Wallet</span>
         </Link>
@@ -94,7 +104,10 @@ export default function MobileFooterNav() {
             alt="Profile"
             width={20}
             height={20}
-            className={pathname.startsWith("/profile") ? "filter-to-primary" : "brightness-50 opacity-70"}
+            className={cn({
+              "filter-to-primary": pathname.startsWith("/profile"),
+              "brightness-50 opacity-70": !pathname.startsWith("/profile"),
+            })}
           />
           <span className="text-xs mt-1">Profile</span>
         </Link>
