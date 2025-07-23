@@ -11,10 +11,10 @@ import type { UserStats } from "../api/api-user-stats"
 export default function StatsPage() {
   const router = useRouter()
   const [userStats, setUserStats] = useState<UserStats>({
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
+    buyCompletion: { rate: "-", period: "(30d)" },
+    sellCompletion: { rate: "-", period: "(30d)" },
+    avgPayTime: { time: "-", period: "(30d)" },
+    avgReleaseTime: { time: "-", period: "(30d)" },
     tradePartners: 0,
     totalOrders30d: 0,
     totalOrdersLifetime: 0,
@@ -61,7 +61,7 @@ export default function StatsPage() {
         <span className="text-gray-600 text-sm">{label}</span>
         {hasInfo && <Info className="h-4 w-4 text-gray-400" />}
       </div>
-      <span className="text-black font-semibold text-sm">{value !== undefined && value !== null ? value : "N/A"}</span>
+      <span className="text-black font-semibold text-sm">{value !== undefined && value !== null ? value : "-"}</span>
     </div>
   )
 
