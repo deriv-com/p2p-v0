@@ -13,6 +13,18 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
+import { useTimeRemaining } from "@/hooks/use-time-remaining"
+
+function TimeRemainingDisplay({ expiresAt }) {
+  const timeRemaining = useTimeRemaining(expiresAt)
+  const pad = (n: number) => String(n).padStart(2, '0')
+  
+  return (
+        <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
+              {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
+        </div>
+  )
+}
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -79,9 +91,9 @@ export default function OrdersPage() {
   }
 
   const handleRatingSubmit = () => {
-          setIsRatingSidebarOpen(false)
-          setSelectedOrderId(null)
-          fetchOrders()
+    setIsRatingSidebarOpen(false)
+    setSelectedOrderId(null)
+    fetchOrders()
   }
 
   const DesktopOrderTable = () => (
@@ -94,7 +106,9 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
+              {activeTab === "active" && (
+                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
+              )}
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
@@ -102,7 +116,7 @@ export default function OrdersPage() {
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
@@ -144,13 +158,19 @@ export default function OrdersPage() {
                     {formatStatus(order.status, order.type)}
                   </div>
                 </TableCell>
-                {activeTab === "active" && <TableCell className="py-4 px-4 align-top"></TableCell>}
+                {activeTab === "active" && (
+                  <TableCell className="py-4 px-4 align-top">
+                    {(order.status === "pending_payment" || order.status === "pending_release")  && (
+                      <TimeRemainingDisplay expiresAt={order.expires_at} />
+                  )}
+                  </TableCell>
+                )}
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top">
                     {order.rating > 0 && (
                       <div className="flex">
-                        <Image src="/icons/star-icon.png" alt="Chat" width={20} height={20} className="mr-1" />
-                        {order.rating}
+                        <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                          {Number(order.rating).toFixed(1)}
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
@@ -171,7 +191,7 @@ export default function OrdersPage() {
                   >
                     <Image
                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                      alt="Chat"
+                      alt="View Details"
                       width={20}
                       height={20}
                     />
@@ -209,7 +229,7 @@ export default function OrdersPage() {
           </div>
         ) : error ? (
           <div className="text-center py-12">
-            <p>{error}</p>
+            <p className="text-red-600">{error}</p>
             <Button onClick={fetchOrders} className="mt-4 text-white">
               Try Again
             </Button>
