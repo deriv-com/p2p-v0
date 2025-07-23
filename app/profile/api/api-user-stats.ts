@@ -42,11 +42,11 @@ export const fetchUserStats = async (): Promise<UserStats> => {
 
     const transformedStats: UserStats = {
       buyCompletion: {
-        rate: `${Number(data.completion_average_30day) || 0}%`,
+        rate: `${Number(data.completion_average_30day) || 0}% (${Number(data.buy_count_30day) || 0})`,
         period: "(30d)",
       },
       sellCompletion: {
-        rate: `${Number(data.completion_average_30day) || 0}%`,
+        rate: `${Number(data.completion_average_30day) || 0}% (${Number(data.sell_count_30day) || 0})`,
         period: "(30d)",
       },
       avgPayTime: {
