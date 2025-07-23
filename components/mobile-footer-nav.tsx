@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
@@ -17,11 +18,10 @@ export default function MobileFooterNav() {
       <div className="grid grid-cols-5 h-16">
         <Link
           href="/"
-          className={`flex flex-col items-center justify-center ${
-            pathname === "/" || pathname.startsWith("/advertiser")
-              ? "text-[#00D0FF] font-bold"
-              : "text-slate-700"
-          }`}
+          className={cn("flex flex-col items-center justify-center", {
+            "text-[#00D0FF] font-bold": pathname === "/" || pathname.startsWith("/advertiser"),
+            "text-slate-700": !(pathname === "/" || pathname.startsWith("/advertiser")),
+          })}
         >
           <Image
             src="/icons/buy-sell-icon.png"
@@ -29,15 +29,12 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={
-              pathname === "/" || pathname.startsWith("/advertiser")
-                ? "filter-to-primary"
-                : "brightness-50 opacity-70"
+              pathname === "/" || pathname.startsWith("/advertiser") ? "filter-to-primary" : "brightness-50 opacity-70"
             }
             style={
               pathname === "/"
                 ? {
-                    filter:
-                      "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
                   }
                 : {}
             }
@@ -46,27 +43,21 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/orders"
-          className={`flex flex-col items-center justify-center ${
-            pathname.startsWith("/orders")
-              ? "text-[#00D0FF] font-bold"
-              : "text-slate-700"
-          }`}
+          className={cn("flex flex-col items-center justify-center", {
+            "text-[#00D0FF] font-bold": pathname.startsWith("/orders"),
+            "text-slate-700": !pathname.startsWith("/orders"),
+          })}
         >
           <Image
             src="/icons/orders-icon.png"
             alt="Orders"
             width={20}
             height={20}
-            className={
-              pathname.startsWith("/orders")
-                ? "filter-to-primary"
-                : "brightness-50 opacity-70"
-            }
+            className={pathname.startsWith("/orders") ? "filter-to-primary" : "brightness-50 opacity-70"}
             style={
               pathname.startsWith("/orders")
                 ? {
-                    filter:
-                      "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
                   }
                 : {}
             }
@@ -75,27 +66,21 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/ads"
-          className={`flex flex-col items-center justify-center ${
-            pathname.startsWith("/ads")
-              ? "text-[#00D0FF] font-bold"
-              : "text-slate-700"
-          }`}
+          className={cn("flex flex-col items-center justify-center", {
+            "text-[#00D0FF] font-bold": pathname.startsWith("/ads"),
+            "text-slate-700": !pathname.startsWith("/ads"),
+          })}
         >
           <Image
             src="/icons/my-ads-icon.png"
             alt="My ads"
             width={20}
             height={20}
-            className={
-              pathname.startsWith("/ads")
-                ? "filter-to-primary"
-                : "brightness-50 opacity-70"
-            }
+            className={pathname.startsWith("/ads") ? "filter-to-primary" : "brightness-50 opacity-70"}
             style={
               pathname.startsWith("/ads")
                 ? {
-                    filter:
-                      "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
                   }
                 : {}
             }
@@ -104,27 +89,21 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/wallet"
-          className={`flex flex-col items-center justify-center ${
-            pathname.startsWith("/wallet")
-              ? "text-[#00D0FF] font-bold"
-              : "text-slate-700"
-          }`}
+          className={cn("flex flex-col items-center justify-center", {
+            "text-[#00D0FF] font-bold": pathname.startsWith("/wallet"),
+            "text-slate-700": !pathname.startsWith("/wallet"),
+          })}
         >
           <Image
             src="/icons/wallet-icon.svg"
             alt="Wallet"
             width={20}
             height={20}
-            className={
-              pathname.startsWith("/wallet")
-                ? "filter-to-primary"
-                : "brightness-50 opacity-70"
-            }
+            className={pathname.startsWith("/wallet") ? "filter-to-primary" : "brightness-50 opacity-70"}
             style={
               pathname.startsWith("/wallet")
                 ? {
-                    filter:
-                      "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
                   }
                 : {}
             }
@@ -133,27 +112,21 @@ export default function MobileFooterNav() {
         </Link>
         <Link
           href="/profile"
-          className={`flex flex-col items-center justify-center ${
-            pathname.startsWith("/profile")
-              ? "text-[#00D0FF] font-bold"
-              : "text-slate-700"
-          }`}
+          className={cn("flex flex-col items-center justify-center", {
+            "text-[#00D0FF] font-bold": pathname.startsWith("/profile"),
+            "text-slate-700": !pathname.startsWith("/profile"),
+          })}
         >
           <Image
             src="/icons/profile-icon.png"
             alt="Profile"
             width={20}
             height={20}
-            className={
-              pathname.startsWith("/profile")
-                ? "filter-to-primary"
-                : "brightness-50 opacity-70"
-            }
+            className={pathname.startsWith("/profile") ? "filter-to-primary" : "brightness-50 opacity-70"}
             style={
               pathname.startsWith("/profile")
                 ? {
-                    filter:
-                      "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
+                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
                   }
                 : {}
             }
