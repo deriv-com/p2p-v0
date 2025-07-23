@@ -8,6 +8,8 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { useIsMobile } from "@/components/ui/use-mobile"
 
 export function RatingSidebar({
   isOpen,
@@ -21,6 +23,8 @@ export function RatingSidebar({
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [recommend, setRecommend] = useState<boolean | null>(null)
+
+  const isMobile = useIsMobile()
 
   const handleSubmit = async () => {
     if (rating === 0) {
@@ -59,6 +63,95 @@ export function RatingSidebar({
 
   if (!isOpen) return null
 
+  if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-lg">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-xl font-bold text-left">{title}</SheetTitle>
+          </SheetHeader>
+          <div className="space-y-6 pb-4">
+            <div className="space-y-4">
+              <h3 className="text-sm">{ratingLabel}</h3>
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    key={star}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    className="hover:bg-transparent p-0 mr-[4px]"
+                  >
+                    <Image
+                      src={(hoverRating || rating) >= star ? "/icons/star-active.png" : "/icons/star-custom.png"}
+                      alt="Star rating"
+                      width={32}
+                      height={32}
+                    />
+                  </Button>
+                ))}
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-sm">{recommendLabel}</h3>
+              <div className="flex gap-4">
+                <Button variant={recommend === true ? "black" : "outline"} size="sm" onClick={() => setRecommend(true)}>
+                  <Image
+                    src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"}
+                    alt="Thumbs up"
+                    width={14}
+                    height={14}
+                  />
+                  <span
+                    className={cn(
+                      "text-sm ml-[8px] font-normal ",
+                      recommend === true ? "text-white" : "text-grayscale-100",
+                    )}
+                  >
+                    Yes
+                  </span>
+                </Button>
+                <Button
+                  variant={recommend === false ? "black" : "outline"}
+                  size="sm"
+                  onClick={() => setRecommend(false)}
+                >
+                  <Image
+                    src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png"}
+                    alt="Thumbs down"
+                    width={14}
+                    height={14}
+                  />
+                  <span
+                    className={cn(
+                      "text-sm ml-[8px] font-normal ",
+                      recommend === false ? "text-white" : "text-grayscale-100",
+                    )}
+                  >
+                    No
+                  </span>
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="pt-4 border-t">
+            <Button
+              variant="black"
+              onClick={handleSubmit}
+              disabled={rating === 0}
+              className="w-full disabled:opacity-[0.24]"
+            >
+              Submit
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
+  // Desktop sidebar (existing design)
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
@@ -83,13 +176,12 @@ export function RatingSidebar({
                     onMouseLeave={() => setHoverRating(0)}
                     className="hover:bg-transparent p-0 mr-[4px]"
                   >
-                  
                     <Image
                       src={(hoverRating || rating) >= star ? "/icons/star-active.png" : "/icons/star-custom.png"}
                       alt="Star rating"
                       width={32}
                       height={32}
-                    /> 
+                    />
                   </Button>
                 ))}
               </div>
@@ -97,16 +189,21 @@ export function RatingSidebar({
             <div className="space-y-4">
               <h3 className="text-sm">{recommendLabel}</h3>
               <div className="flex gap-4">
-                <Button
-                  variant={recommend === true ? "black" : "outline"}
-                  size="sm"
-                  onClick={() => setRecommend(true)}
-                >
-                  <Image src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"} alt="Thumbs up" width={14} height={14} />
-                  <span className={cn(
-                        "text-sm ml-[8px] font-normal ",
-                        recommend === true ? "text-white" : "text-grayscale-100",
-                      )} >Yes</span>
+                <Button variant={recommend === true ? "black" : "outline"} size="sm" onClick={() => setRecommend(true)}>
+                  <Image
+                    src={recommend === true ? "/icons/thumbs-up-white.png" : "/icons/thumbs-up-custom.png"}
+                    alt="Thumbs up"
+                    width={14}
+                    height={14}
+                  />
+                  <span
+                    className={cn(
+                      "text-sm ml-[8px] font-normal ",
+                      recommend === true ? "text-white" : "text-grayscale-100",
+                    )}
+                  >
+                    Yes
+                  </span>
                 </Button>
                 <Button
                   variant={recommend === false ? "black" : "outline"}
@@ -114,15 +211,19 @@ export function RatingSidebar({
                   onClick={() => setRecommend(false)}
                 >
                   <Image
-                    src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png" }
+                    src={recommend === false ? "/icons/thumbs-down-white.png" : "/icons/thumbs-down-custom.png"}
                     alt="Thumbs down"
                     width={14}
                     height={14}
                   />
-                  <span className={cn(
-                        "text-sm ml-[8px] font-normal ",
-                        recommend === false ? "text-white" : "text-grayscale-100",
-                      )} >No</span>
+                  <span
+                    className={cn(
+                      "text-sm ml-[8px] font-normal ",
+                      recommend === false ? "text-white" : "text-grayscale-100",
+                    )}
+                  >
+                    No
+                  </span>
                 </Button>
               </div>
             </div>
@@ -130,7 +231,12 @@ export function RatingSidebar({
         </div>
 
         <div className="p-4 border-t">
-          <Button variant="black" onClick={handleSubmit} disabled={rating === 0} className="w-full disabled:opacity-[0.24]">
+          <Button
+            variant="black"
+            onClick={handleSubmit}
+            disabled={rating === 0}
+            className="w-full disabled:opacity-[0.24]"
+          >
             Submit
           </Button>
         </div>
