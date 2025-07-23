@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { calculateTimeRemaining, type TimeRemaining } from "@/lib/time-utils"
 
 export function useTimeRemaining(expiresAt: string) {
-  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(() => calculateTimeRemaining(expiresAt))
+const time = calculateTimeRemaining(expiresAt)
+  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(time)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
