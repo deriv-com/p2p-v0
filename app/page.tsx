@@ -313,13 +313,13 @@ export default function BuySellPage() {
                             )}
                             {ad.user.order_count_lifetime && (
                                 <div>
-                                  <span className="h-2 w-2 rounded-full bg-slate-500"></span>
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                   <span>{ad.user.order_count_lifetime} orders</span>
                                 </div>
                             )}
                             {ad.user.completion_average_30day && (
                                 <div>
-                                  <span className="h-2 w-2 rounded-full bg-slate-500"></span>
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                   <span>{ad.user.completion_average_30day}% completion</span>
                                 </div>
                             )}
