@@ -1,12 +1,15 @@
 "use client"
 
+import { useEffect } from "react"
+
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-is-mobile"
 
 interface EditPaymentMethodPanelProps {
   onClose: () => void
@@ -33,17 +36,7 @@ interface PanelWrapperProps {
 }
 
 function PanelWrapper({ onClose, children }: PanelWrapperProps) {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 640)
-    }
-
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  const isMobile = useIsMobile()
 
   return (
     <>
