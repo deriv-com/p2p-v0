@@ -147,7 +147,7 @@ export function RatingSidebar({
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-lg">
+        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-center">{title}</SheetTitle>
           </SheetHeader>
