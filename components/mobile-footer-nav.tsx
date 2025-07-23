@@ -31,13 +31,6 @@ export default function MobileFooterNav() {
             className={
               pathname === "/" || pathname.startsWith("/advertiser") ? "filter-to-primary" : "brightness-50 opacity-70"
             }
-            style={
-              pathname === "/"
-                ? {
-                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                  }
-                : {}
-            }
           />
           <span className="text-xs mt-1">Market</span>
         </Link>
@@ -54,13 +47,6 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={pathname.startsWith("/orders") ? "filter-to-primary" : "brightness-50 opacity-70"}
-            style={
-              pathname.startsWith("/orders")
-                ? {
-                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                  }
-                : {}
-            }
           />
           <span className="text-xs mt-1">Orders</span>
         </Link>
@@ -77,13 +63,6 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={pathname.startsWith("/ads") ? "filter-to-primary" : "brightness-50 opacity-70"}
-            style={
-              pathname.startsWith("/ads")
-                ? {
-                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                  }
-                : {}
-            }
           />
           <span className="text-xs mt-1">My ads</span>
         </Link>
@@ -100,13 +79,6 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={pathname.startsWith("/wallet") ? "filter-to-primary" : "brightness-50 opacity-70"}
-            style={
-              pathname.startsWith("/wallet")
-                ? {
-                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                  }
-                : {}
-            }
           />
           <span className="text-xs mt-1">Wallet</span>
         </Link>
@@ -123,13 +95,6 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={pathname.startsWith("/profile") ? "filter-to-primary" : "brightness-50 opacity-70"}
-            style={
-              pathname.startsWith("/profile")
-                ? {
-                    filter: "invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%)",
-                  }
-                : {}
-            }
           />
           <span className="text-xs mt-1">Profile</span>
         </Link>
