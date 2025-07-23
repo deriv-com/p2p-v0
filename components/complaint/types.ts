@@ -1,40 +1,35 @@
 export interface ComplaintOption {
   id: string
-  label: string
   value: string
+  label: string
 }
 
 export interface ComplaintProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (selectedOption: string) => void
-  orderId?: string
+  onSubmit?: () => void
+  orderId: string
 }
 
 export const COMPLAINT_OPTIONS: ComplaintOption[] = [
   {
-    id: "buyer_not_paid",
+    id: "no-payment",
+    value: "no_payment",
     label: "I didn't receive any payment.",
-    value: "buyer_not_paid",
   },
   {
-    id: "seller_not_released",
-    label: "I've made the payment, but the seller hasn't released the funds.",
-    value: "seller_not_released",
-  },
-  {
-    id: "buyer_underpaid",
+    id: "less-amount",
+    value: "less_amount",
     label: "I received less than the agreed amount.",
-    value: "buyer_underpaid",
   },
   {
-    id: "buyer_overpaid",
+    id: "more-amount",
+    value: "more_amount",
     label: "I received more than the agreed amount.",
-    value: "buyer_overpaid",
   },
   {
-    id: "buyer_third_party_payment_method",
+    id: "third-party",
+    value: "third_party",
     label: "I've received payment from 3rd party",
-    value: "buyer_third_party_payment_method",
   },
 ]

@@ -12,19 +12,25 @@ import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 
 export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintProps) {
   const [selectedOption, setSelectedOption] = useState<string>("")
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
 
-  const handleSubmit = () => {
-    if (selectedOption) {
+  const handleSubmit = async () => {
+    if (selectedOption && !isSubmitting) {
+      setIsSubmitting(true)
       try {
         const result = await OrdersAPI.disputeOrder(orderId, selectedOption)
-        if (result.errors.length === 0) {
+        if (result.errors?.length === 0 || result.success) {
           onSubmit?.()
         }
         setSelectedOption("")
         onClose()
       } catch (error) {
-        console.error("Error submitting rating:", error)
+        console.error("Error submitting complaint:", error)
+        // Still close the form even on error
+        onClose()
+      } finally {
+        setIsSubmitting(false)
       }
     }
   }
@@ -55,12 +61,26 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
           ))}
         </RadioGroup>
 
+        <div className="text-sm text-gray-600">
+          <p>
+            If your issue isn't listed, contact us via{" "}
+            <button className="underline text-blue-600 hover:text-blue-800">live chat</button> for help.
+          </p>
+        </div>
+      </div>
+
       <div className="p-4 border-t md:border-t-0">
-        <Button onClick={handleSubmit} disabled={!selectedOption} className="w-full" size="lg">
-          Submit
+        <Button onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full" size="lg">
+          {isSubmitting ? (
+            <>
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+              Submitting...
+            </>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </div>
-    </div>
     </div>
   )
 

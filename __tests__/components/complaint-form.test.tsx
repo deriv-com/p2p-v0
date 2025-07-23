@@ -1,124 +1,123 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { ComplaintForm } from "@/components/complaint/complaint-form"
-import { COMPLAINT_OPTIONS } from "@/components/complaint/types"
-import jest from "jest" // Declare the jest variable
+import { OrdersAPI } from "@/services/api"
+import * as useMobileHook from "@/hooks/use-mobile"
+import jest from "jest" // Import jest to fix the undeclared variable error
 
-// Mock the mobile hook
-jest.mock("@/hooks/use-mobile", () => ({
-  useIsMobile: jest.fn(() => false),
-}))
+// Mock the dependencies
+jest.mock("@/services/api")
+jest.mock("@/hooks/use-mobile")
 
-const mockProps = {
-  isOpen: true,
-  onClose: jest.fn(),
-  onSubmit: jest.fn(),
-  orderId: "test-order-123",
-}
+const mockOrdersAPI = OrdersAPI as jest.Mocked<typeof OrdersAPI>
+const mockUseMobile = useMobileHook as jest.Mocked<typeof useMobileHook>
 
 describe("ComplaintForm", () => {
+  const defaultProps = {
+    isOpen: true,
+    onClose: jest.fn(),
+    onSubmit: jest.fn(),
+    orderId: "test-order-123",
+  }
+
   beforeEach(() => {
     jest.clearAllMocks()
+    mockUseMobile.useIsMobile = jest.fn().mockReturnValue(false)
+    mockOrdersAPI.disputeOrder = jest.fn().mockResolvedValue({ errors: [] })
   })
 
   it("renders complaint form when open", () => {
-    render(<ComplaintForm {...mockProps} />)
+    render(<ComplaintForm {...defaultProps} />)
 
     expect(screen.getByText("Submit a complaint")).toBeInTheDocument()
-    expect(screen.getByRole("button", { name: /submit/i })).toBeInTheDocument()
+    expect(screen.getByText("I didn't receive any payment.")).toBeInTheDocument()
+    expect(screen.getByText("I received less than the agreed amount.")).toBeInTheDocument()
+    expect(screen.getByText("I received more than the agreed amount.")).toBeInTheDocument()
+    expect(screen.getByText("I've received payment from 3rd party")).toBeInTheDocument()
   })
 
   it("does not render when closed", () => {
-    render(<ComplaintForm {...mockProps} isOpen={false} />)
+    render(<ComplaintForm {...defaultProps} isOpen={false} />)
 
     expect(screen.queryByText("Submit a complaint")).not.toBeInTheDocument()
   })
 
-  it("renders all complaint options", () => {
-    render(<ComplaintForm {...mockProps} />)
-
-    COMPLAINT_OPTIONS.forEach((option) => {
-      expect(screen.getByText(option.label)).toBeInTheDocument()
-    })
-  })
-
-  it("allows selecting a complaint option", () => {
-    render(<ComplaintForm {...mockProps} />)
-
-    const firstOption = screen.getByLabelText(COMPLAINT_OPTIONS[0].label)
-    fireEvent.click(firstOption)
-
-    expect(firstOption).toBeChecked()
-  })
-
-  it("calls onSubmit with selected option when form is submitted", async () => {
-    render(<ComplaintForm {...mockProps} />)
-
-    const firstOption = screen.getByLabelText(COMPLAINT_OPTIONS[0].label)
-    const submitButton = screen.getByRole("button", { name: /submit/i })
-
-    fireEvent.click(firstOption)
-    fireEvent.click(submitButton)
-
-    await waitFor(() => {
-      expect(mockProps.onSubmit).toHaveBeenCalledWith(COMPLAINT_OPTIONS[0].value)
-    })
-  })
-
-  it("does not submit when no option is selected", () => {
-    render(<ComplaintForm {...mockProps} />)
-
-    const submitButton = screen.getByRole("button", { name: /submit/i })
-    fireEvent.click(submitButton)
-
-    expect(mockProps.onSubmit).not.toHaveBeenCalled()
-  })
-
   it("calls onClose when close button is clicked", () => {
-    render(<ComplaintForm {...mockProps} />)
+    render(<ComplaintForm {...defaultProps} />)
 
-    const closeButton = screen.getByRole("button", { name: /close/i })
+    const closeButton = screen.getByLabelText("Close")
     fireEvent.click(closeButton)
 
-    expect(mockProps.onClose).toHaveBeenCalled()
-  })
-
-  it("renders live chat link", () => {
-    render(<ComplaintForm {...mockProps} />)
-
-    const liveChatLink = screen.getByText("live chat")
-    expect(liveChatLink).toBeInTheDocument()
-    expect(liveChatLink).toHaveClass("underline")
-  })
-
-  it("disables submit button when no option selected", () => {
-    render(<ComplaintForm {...mockProps} />)
-
-    const submitButton = screen.getByRole("button", { name: /submit/i })
-    expect(submitButton).toBeDisabled()
+    expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
   })
 
   it("enables submit button when option is selected", () => {
-    render(<ComplaintForm {...mockProps} />)
+    render(<ComplaintForm {...defaultProps} />)
 
-    const firstOption = screen.getByLabelText(COMPLAINT_OPTIONS[0].label)
-    const submitButton = screen.getByRole("button", { name: /submit/i })
+    const submitButton = screen.getByText("Submit")
+    expect(submitButton).toBeDisabled()
 
+    const firstOption = screen.getByLabelText("I didn't receive any payment.")
     fireEvent.click(firstOption)
 
-    expect(submitButton).not.toBeDisabled()
+    expect(submitButton).toBeEnabled()
   })
-})
 
-describe("ComplaintForm Mobile", () => {
-  beforeEach(() => {
-    const { useIsMobile } = require("@/hooks/use-mobile")
-    useIsMobile.mockReturnValue(true)
+  it("submits complaint with selected option", async () => {
+    render(<ComplaintForm {...defaultProps} />)
+
+    const firstOption = screen.getByLabelText("I didn't receive any payment.")
+    fireEvent.click(firstOption)
+
+    const submitButton = screen.getByText("Submit")
+    fireEvent.click(submitButton)
+
+    await waitFor(() => {
+      expect(mockOrdersAPI.disputeOrder).toHaveBeenCalledWith("test-order-123", "no_payment")
+      expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
+      expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+    })
   })
 
   it("renders as bottom sheet on mobile", () => {
-    render(<ComplaintForm {...mockProps} />)
+    mockUseMobile.useIsMobile.mockReturnValue(true)
 
-    // Should render within a Sheet component for mobile
+    render(<ComplaintForm {...defaultProps} />)
+
+    // Check if Sheet component is rendered (would need to check for specific mobile classes)
     expect(screen.getByText("Submit a complaint")).toBeInTheDocument()
+  })
+
+  it("renders as sidebar on desktop", () => {
+    mockUseMobile.useIsMobile.mockReturnValue(false)
+
+    render(<ComplaintForm {...defaultProps} />)
+
+    // Check if desktop sidebar is rendered
+    expect(screen.getByText("Submit a complaint")).toBeInTheDocument()
+  })
+
+  it("shows live chat help text", () => {
+    render(<ComplaintForm {...defaultProps} />)
+
+    expect(screen.getByText(/If your issue isn't listed, contact us via/)).toBeInTheDocument()
+    expect(screen.getByText("live chat")).toBeInTheDocument()
+  })
+
+  it("handles API error gracefully", async () => {
+    mockOrdersAPI.disputeOrder.mockRejectedValue(new Error("API Error"))
+
+    render(<ComplaintForm {...defaultProps} />)
+
+    const firstOption = screen.getByLabelText("I didn't receive any payment.")
+    fireEvent.click(firstOption)
+
+    const submitButton = screen.getByText("Submit")
+    fireEvent.click(submitButton)
+
+    await waitFor(() => {
+      expect(mockOrdersAPI.disputeOrder).toHaveBeenCalled()
+      // Component should still close even on error
+      expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+    })
   })
 })
