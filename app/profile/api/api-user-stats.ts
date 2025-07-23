@@ -34,10 +34,12 @@ export const fetchUserStats = async (): Promise<UserStats> => {
 const formatTimeAverage = (seconds: number) => {
   if (!seconds || seconds <= 0) return "N/A"
   const mins = seconds / 60
+
   if (mins < 1) return "< 1 min"
-  const rounded = Math.ceil(mins)
-  return `${rounded} min${rounded > 1 ? "s" : ""}`
+
+  return `${Math.floor(mins)} min${Math.floor(mins) > 1 ? "s" : ""}`
 }
+
 
 
     const transformedStats: UserStats = {
