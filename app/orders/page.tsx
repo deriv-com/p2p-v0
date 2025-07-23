@@ -13,7 +13,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
-import {TimeRemainingDisplay} from "@/components/orders/time-remaining-display"
+import { useTimeRemaining } from "@/hooks/use-time-remaining"
+
+function TimeRemainingDisplay({ expiresAt }) {
+  const timeRemaining = useTimeRemaining(expiresAt)
+
+  return <span>{timeRemaining}</span>
+}
 
 export default function OrdersPage() {
   const router = useRouter()

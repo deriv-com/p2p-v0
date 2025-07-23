@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils"
 
 interface TimeRemainingDisplayProps {
   expiresAt: string
-  className?: string
 }
 
 export function TimeRemainingDisplay({ expiresAt }: TimeRemainingDisplayProps) {
