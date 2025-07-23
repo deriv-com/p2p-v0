@@ -18,7 +18,7 @@ import { useTimeRemaining } from "@/hooks/use-time-remaining"
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
 
-  return <span>{timeRemaining}</span>
+  return <span>{`${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s`}</span>
 }
 
 export default function OrdersPage() {
