@@ -52,7 +52,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
             </div>
           ))}
         </RadioGroup>
-        <div className="text-sm text-gray-600">
+        <div className="text-sm">
             If your issue isn't listed, contact us via live chat for help.
         </div>
       </div>
