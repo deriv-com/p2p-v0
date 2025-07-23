@@ -19,7 +19,7 @@ interface UserStats {
 }
 
 // Import the fetchUserStats function from stats-tabs
-const fetchUserStats = async (): Promise<UserStats> => {
+const fetchUserStatsFromStatsTabs = async (): Promise<UserStats> => {
   const { USER, API, AUTH } = await import("@/lib/local-variables")
 
   const userId = USER.id
@@ -36,7 +36,6 @@ const fetchUserStats = async (): Promise<UserStats> => {
   }
 
   const responseData = await response.json()
-  console.log("API response for user data in mobile stats:", responseData)
 
   if (responseData && responseData.data) {
     const data = responseData.data
@@ -115,7 +114,7 @@ export default function StatsPage() {
       try {
         setIsLoading(true)
         setError(null)
-        const stats = await fetchUserStats()
+        const stats = await fetchUserStatsFromStatsTabs()
         setUserStats(stats)
       } catch (error) {
         setError(error instanceof Error ? error.message : "Failed to load stats")
