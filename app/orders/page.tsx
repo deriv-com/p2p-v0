@@ -13,13 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
-import { useTimeRemaining } from "@/hooks/use-time-remaining"
-
-function TimeRemainingDisplay({ expiresAt }) {
-  const timeRemaining = useTimeRemaining(expiresAt)
-
-  return <span>{timeRemaining}</span>
-}
+import { TimeRemainingDisplay } from "@/components/orders/time-remaining-display"
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -102,7 +96,7 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
               {activeTab === "active" && (
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
+                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time Left</TableHead>
               )}
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
@@ -111,7 +105,7 @@ export default function OrdersPage() {
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
+                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer hover:bg-slate-50"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
@@ -139,6 +133,12 @@ export default function OrdersPage() {
                     <div className="mt-[4px] text-slate-600 text-xs">
                       Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
                     </div>
+                    {activeTab === "active" && order.expires_at && (
+                      <div className="mt-[4px] lg:hidden">
+                        <span className="text-slate-600 text-xs">Time left: </span>
+                        <TimeRemainingDisplay expiresAt={order.expires_at} className="text-xs" />
+                      </div>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="py-4 px-4 align-top text-base">
@@ -155,17 +155,19 @@ export default function OrdersPage() {
                 </TableCell>
                 {activeTab === "active" && (
                   <TableCell className="py-4 px-4 align-top">
-                    {order.expires_at && (
-                      <TimeRemainingDisplay expiresAt={order.expires_at} />
-                  )}
+                    {order.expires_at ? (
+                      <TimeRemainingDisplay expiresAt={order.expires_at} className="text-sm" />
+                    ) : (
+                      <span className="text-slate-400 text-sm">-</span>
+                    )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
                   <TableCell className="py-4 px-4 align-top">
                     {order.rating > 0 && (
-                      <div className="flex">
+                      <div className="flex items-center">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                          {order.rating}
+                        <span className="text-sm">{order.rating}</span>
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
@@ -183,6 +185,7 @@ export default function OrdersPage() {
                     }}
                     className="text-slate-500 hover:text-slate-700"
                     variant="ghost"
+                    size="sm"
                   >
                     <Image
                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
