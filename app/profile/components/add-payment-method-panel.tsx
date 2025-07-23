@@ -153,6 +153,11 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     }
   }
 
+  const handleInstructionsChange = (value: string) => {
+    const sanitizedValue = sanitizeInput(value)
+    setInstructions(sanitizedValue)
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -273,7 +278,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
             <Textarea
               id="instructions"
               value={instructions}
-              onChange={(e) => setInstructions(e.target.value)}
+              onChange={(e) => handleInstructionsChange(e.target.value)}
               placeholder="Enter your instructions"
               className="min-h-[120px] resize-none"
               maxLength={300}
