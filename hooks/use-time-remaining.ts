@@ -1,32 +1,52 @@
-"use client"
+export interface TimeRemaining {
+  hours: number
+  minutes: number
+  seconds: number
+  totalSeconds: number
+  isExpired: boolean
+}
 
-import { useState, useEffect } from "react"
-import { calculateTimeRemaining, formatTimeRemaining } from "@/lib/time-utils"
+export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
+  const now = new Date().getTime()
+  const expiry = new Date(expiresAt).getTime()
+  const difference = expiry - now
 
-export function useTimeRemaining(expiresAt: string): string {
-  const [timeString, setTimeString] = useState<string>("")
-
-  useEffect(() => {
-    if (!expiresAt) {
-      setTimeString("-")
-      return
+  if (difference <= 0) {
+    return {
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      totalSeconds: 0,
+      isExpired: true,
     }
+  }
 
-    const updateTime = () => {
-      const timeRemaining = calculateTimeRemaining(expiresAt)
-      const formattedTime = formatTimeRemaining(timeRemaining)
-      setTimeString(formattedTime)
-    }
+  const totalSeconds = Math.floor(difference / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
 
-    // Update immediately
-    updateTime()
+  return {
+    hours,
+    minutes,
+    seconds,
+    totalSeconds,
+    isExpired: false,
+  }
+}
 
-    // Set up interval to update every second
-    const interval = setInterval(updateTime, 1000)
+export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
+  if (timeRemaining.isExpired) {
+    return "Expired"
+  }
 
-    // Cleanup interval on unmount
-    return () => clearInterval(interval)
-  }, [expiresAt])
+  const { hours, minutes } = timeRemaining
 
-  return timeString
+  if (hours > 0) {
+    return `${hours}h ${minutes}m left`
+  } else if (minutes > 0) {
+    return `${minutes}m left`
+  } else {
+    return "< 1m left"
+  }
 }
