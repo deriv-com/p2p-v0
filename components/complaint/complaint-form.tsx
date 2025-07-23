@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { OrdersAPI } from "@/services/api"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 
 export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintProps) {
@@ -15,20 +16,16 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
 
   const handleSubmit = () => {
     if (selectedOption) {
-      onSubmit(selectedOption)
       try {
-        const result = await OrdersAPI.disputeOrder(orderId)
+        const result = await OrdersAPI.disputeOrder(orderId, selectedOption)
         if (result.errors.length === 0) {
           onSubmit?.()
         }
-        setRating(0)
-        setHoverRating(0)
-        setRecommend(null)
+        setSelectedOption("")
+        onClose()
       } catch (error) {
         console.error("Error submitting rating:", error)
       }
-      setSelectedOption("")
-      onClose()
     }
   }
 
