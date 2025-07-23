@@ -8,8 +8,8 @@ interface TimeRemainingDisplayProps {
   className?: string
 }
 
-export function TimeRemainingDisplay({ expiresAt, className }: TimeRemainingDisplayProps) {
+export function TimeRemainingDisplay({ expiresAt }: TimeRemainingDisplayProps) {
   const timeRemaining = useTimeRemaining(expiresAt)
 
-  return <span className={cn("font-medium", colorClass, className)}>{timeRemaining}</span>
+  return <span>{timeRemaining}</span>
 }
