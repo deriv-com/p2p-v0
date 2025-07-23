@@ -310,7 +310,7 @@ export default function BuySellPage() {
                                   </span>
                                 )}
                                 {ad.user.order_count_lifetime && (
-                                    <span className="text-[#FFAD3A]">{ad.user.order_count_lifetime} orders</span>
+                                    <span>{ad.user.order_count_lifetime} orders</span>
                                 )}
                               </div>
                             </div>
