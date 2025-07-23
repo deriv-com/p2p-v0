@@ -16,7 +16,6 @@ import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
 import { ComplaintForm } from "@/components/complaint"
-import { useComplaint } from "@/hooks/use-complaint"
 
 export default function OrderDetailsPage() {
   const params = useParams()
