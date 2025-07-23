@@ -312,6 +312,9 @@ export default function BuySellPage() {
                                 {ad.user.order_count_lifetime && (
                                     <span>{ad.user.order_count_lifetime} orders</span>
                                 )}
+                                {ad.user.completion_average_30day && (
+                                    <span>{ad.user.completion_average_30day}% completion</span>
+                                )}
                               </div>
                             </div>
                           </div>
