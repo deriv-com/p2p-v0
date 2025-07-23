@@ -12,6 +12,7 @@ import { PlusCircle } from "lucide-react"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { UserStats } from "../api/api-user-stats"
 
 interface StatsTabsProps {
@@ -21,6 +22,7 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const router = useRouter()
+  const { showAlert } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -60,14 +62,18 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         const stats = await ProfileAPI.UserStats.fetchUserStats()
         setUserStats(stats)
       } catch (error) {
-        console.log(error)
+        showAlert({
+          type: "warning",
+          title: "Error",
+          description: error instanceof Error ? error.message : "Failed to load user stats",
+        })
       } finally {
         setIsLoadingStats(false)
       }
     }
 
     loadUserStats()
-  }, [])
+  }, [showAlert])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
