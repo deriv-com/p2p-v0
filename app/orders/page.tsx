@@ -20,9 +20,9 @@ function TimeRemainingDisplay({ expiresAt }) {
   const pad = (n: number) => String(n).padStart(2, '0')
   
   return (
-        <span className="text-xs">
+        <div className="text-xs bg-[rgba(0,0,0,0.04)]">
               {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
-        </span>
+        </div>
   )
 }
 
