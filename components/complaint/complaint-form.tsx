@@ -42,13 +42,6 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
 
   const ComplaintContent = () => (
     <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center p-4 border-b md:border-b-0">
-        <h2 className="text-xl font-bold">Submit a complaint</h2>
-        <Button onClick={handleClose} variant="ghost" size="icon" className="p-1" aria-label="Close">
-          <X className="h-6 w-6" />
-        </Button>
-      </div>
-
       <div className="flex-1 p-4 space-y-6">
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           {COMPLAINT_OPTIONS.map((option) => (
