@@ -19,8 +19,7 @@ function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
 
   return <span>{expiresAt}</span>
-  
-  }
+}
 
 export default function OrdersPage() {
   const router = useRouter()
