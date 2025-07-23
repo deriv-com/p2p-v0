@@ -33,7 +33,7 @@ export const fetchUserStats = async (): Promise<UserStats> => {
 
     const formatTimeAverage = (seconds: number) => {
       if (!seconds || seconds <= 0) return "N/A"
-      const minutes = Math.round(seconds / 60)
+      const minutes = Math.ceil(seconds / 60)
       return `${minutes} min`
     }
 
