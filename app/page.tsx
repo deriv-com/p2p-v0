@@ -296,7 +296,7 @@ export default function BuySellPage() {
                                   </span>
                                 )}
                               </div>
-                              <div className="flex items-center text-xs sm:text-sm text-slate-500">
+                              <div className="flex items-center text-xs text-slate-500">
                                 {ad.user.rating_average_lifetime && (
                                   <span className="flex items-center">
                                     <Image
