@@ -49,7 +49,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
               <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
             </Button>
           )}
-          <h2 className={`text-xl font-semibold ${onBack ? "text-left pl-12" : "text-center"}`}>{title}</h2>
+          <h2 className="text-xl font-semibold text-center">{title}</h2>
           <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
             <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
           </Button>
@@ -135,8 +135,13 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     return Object.keys(newErrors).length === 0
   }
 
+  const sanitizeInput = (value: string) => {
+    return value.replace(/[^a-zA-Z0-9\s]/g, "")
+  }
+
   const handleInputChange = (name: string, value: string) => {
-    setDetails((prev) => ({ ...prev, [name]: value }))
+    const sanitizedValue = sanitizeInput(value)
+    setDetails((prev) => ({ ...prev, [name]: sanitizedValue }))
     setTouched((prev) => ({ ...prev, [name]: true }))
 
     if (errors[name]) {
