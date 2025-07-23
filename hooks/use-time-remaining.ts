@@ -1,52 +1,45 @@
-export interface TimeRemaining {
-  hours: number
-  minutes: number
-  seconds: number
-  totalSeconds: number
-  isExpired: boolean
-}
+"use client"
 
-export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
-  const now = new Date().getTime()
-  const expiry = new Date(expiresAt).getTime()
-  const difference = expiry - now
+import { useState, useEffect, useRef } from "react"
+import { calculateTimeRemaining, type TimeRemaining } from "@/lib/time-utils"
 
-  if (difference <= 0) {
-    return {
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      totalSeconds: 0,
-      isExpired: true,
+export function useTimeRemaining(expiresAt: string) {
+const {totalSeconds} = calculateTimeRemaining(expiresAt)
+  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(totalSeconds)
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+      const updateTimeRemaining = () => {
+      const newTimeRemaining = calculateTimeRemaining(expiresAt)
+      setTimeRemaining(newTimeRemaining)
+      
+      if (newTimeRemaining.isExpired && intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
     }
-  }
 
-  const totalSeconds = Math.floor(difference / 1000)
-  const hours = Math.floor(totalSeconds / 3600)
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
-  const seconds = totalSeconds % 60
+    updateTimeRemaining()
 
-  return {
-    hours,
-    minutes,
-    seconds,
-    totalSeconds,
-    isExpired: false,
-  }
-}
+    if (!timeRemaining.isExpired) {
+          intervalRef.current = setInterval(updateTimeRemaining, 1000)
+    }
 
-export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
-  if (timeRemaining.isExpired) {
-    return "Expired"
-  }
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
+  }, [expiresAt])
 
-  const { hours, minutes } = timeRemaining
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [])
 
-  if (hours > 0) {
-    return `${hours}h ${minutes}m left`
-  } else if (minutes > 0) {
-    return `${minutes}m left`
-  } else {
-    return "< 1m left"
-  }
+  return timeRemaining
 }

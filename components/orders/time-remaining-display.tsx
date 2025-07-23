@@ -6,7 +6,7 @@ interface TimeRemainingDisplayProps {
   expiresAt: string
 }
 
-export function TimeRemainingDisplay({ expiresAt, className }: TimeRemainingDisplayProps) {
+export function TimeRemainingDisplay({ expiresAt }: TimeRemainingDisplayProps) {
   const timeRemaining = useTimeRemaining(expiresAt)
 
   return <span>{timeRemaining}</span>
