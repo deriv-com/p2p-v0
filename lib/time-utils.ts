@@ -13,7 +13,7 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
 
   if (difference <= 0) {
     return {
-      hours: 0,
+      hours: 00,
       minutes: 0,
       seconds: 0,
       totalSeconds: 0,
@@ -22,7 +22,7 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
   }
 
   const totalSeconds = Math.floor(difference / 1000)
-  const hours = Math.floor(totalSeconds / 3600)
+  const hours = "0" + Math.floor(totalSeconds / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
 
