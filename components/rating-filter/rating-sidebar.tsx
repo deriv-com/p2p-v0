@@ -149,7 +149,7 @@ export function RatingSidebar({
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-lg">
           <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-left">{title}</SheetTitle>
+            <SheetTitle className="text-xl font-bold text-center">{title}</SheetTitle>
           </SheetHeader>
           <RatingContent />
         </SheetContent>
