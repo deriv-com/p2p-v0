@@ -1,15 +1,13 @@
 "use client"
 
-import { useEffect } from "react"
-
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { useIsMobile } from "@/hooks/use-is-mobile"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 interface EditPaymentMethodPanelProps {
   onClose: () => void
