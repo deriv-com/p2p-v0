@@ -2,8 +2,8 @@ export interface TimeRemaining {
   hours: number
   minutes: number
   seconds: number
-  isExpired: boolean
   totalSeconds: number
+  isExpired: boolean
 }
 
 export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
@@ -16,8 +16,8 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
       hours: 0,
       minutes: 0,
       seconds: 0,
-      isExpired: true,
       totalSeconds: 0,
+      isExpired: true,
     }
   }
 
@@ -30,8 +30,8 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
     hours,
     minutes,
     seconds,
-    isExpired: false,
     totalSeconds,
+    isExpired: false,
   }
 }
 
@@ -40,15 +40,17 @@ export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
     return "Expired"
   }
 
-  const { hours, minutes } = timeRemaining
+  const { hours, minutes, seconds } = timeRemaining
 
   if (hours > 0) {
     return `${hours}h ${minutes}m left`
   } else if (minutes > 0) {
     return `${minutes}m left`
-  } else {
+  } else if (seconds > 0) {
     return "< 1m left"
   }
+
+  return "Expired"
 }
 
 export function getTimeRemainingColor(timeRemaining: TimeRemaining): string {
@@ -56,13 +58,18 @@ export function getTimeRemainingColor(timeRemaining: TimeRemaining): string {
     return "text-red-600"
   }
 
-  if (timeRemaining.totalSeconds < 300) {
-    // Less than 5 minutes
-    return "text-red-500"
-  } else if (timeRemaining.totalSeconds < 1800) {
-    // Less than 30 minutes
-    return "text-orange-500"
-  } else {
+  const { totalSeconds } = timeRemaining
+
+  // Less than 5 minutes (300 seconds) - red
+  if (totalSeconds < 300) {
+    return "text-red-600"
+  }
+  // Less than 30 minutes (1800 seconds) - orange
+  else if (totalSeconds < 1800) {
+    return "text-orange-600"
+  }
+  // More than 30 minutes - green
+  else {
     return "text-green-600"
   }
 }

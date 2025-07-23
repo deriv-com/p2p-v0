@@ -1,30 +1,48 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { calculateTimeRemaining, type TimeRemaining } from "@/lib/time-utils"
 
-export function useTimeRemaining(expiresAt: string | null): TimeRemaining | null {
-  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(null)
+export function useTimeRemaining(expiresAt: string) {
+  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(() => calculateTimeRemaining(expiresAt))
+  const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    if (!expiresAt) {
-      setTimeRemaining(null)
-      return
-    }
-
     const updateTimeRemaining = () => {
-      const remaining = calculateTimeRemaining(expiresAt)
-      setTimeRemaining(remaining)
+      const newTimeRemaining = calculateTimeRemaining(expiresAt)
+      setTimeRemaining(newTimeRemaining)
+
+      // Stop updating if expired
+      if (newTimeRemaining.isExpired && intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
     }
 
     // Update immediately
     updateTimeRemaining()
 
-    // Update every second
-    const interval = setInterval(updateTimeRemaining, 1000)
+    // Only set up interval if not expired
+    if (!timeRemaining.isExpired) {
+      intervalRef.current = setInterval(updateTimeRemaining, 1000)
+    }
 
-    return () => clearInterval(interval)
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+        intervalRef.current = null
+      }
+    }
   }, [expiresAt])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current)
+      }
+    }
+  }, [])
 
   return timeRemaining
 }

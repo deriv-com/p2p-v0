@@ -2,21 +2,17 @@
 
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
 import { formatTimeRemaining, getTimeRemainingColor } from "@/lib/time-utils"
+import { cn } from "@/lib/utils"
 
 interface TimeRemainingDisplayProps {
-  expiresAt: string | null
+  expiresAt: string
   className?: string
 }
 
-export function TimeRemainingDisplay({ expiresAt, className = "" }: TimeRemainingDisplayProps) {
+export function TimeRemainingDisplay({ expiresAt, className }: TimeRemainingDisplayProps) {
   const timeRemaining = useTimeRemaining(expiresAt)
-
-  if (!timeRemaining) {
-    return <span className={className}>-</span>
-  }
-
-  const colorClass = getTimeRemainingColor(timeRemaining)
   const formattedTime = formatTimeRemaining(timeRemaining)
+  const colorClass = getTimeRemainingColor(timeRemaining)
 
-  return <span className={`${colorClass} ${className} font-medium`}>{formattedTime}</span>
+  return <span className={cn("font-medium", colorClass, className)}>{formattedTime}</span>
 }

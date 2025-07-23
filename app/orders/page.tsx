@@ -133,7 +133,7 @@ export default function OrdersPage() {
                     <div className="mt-[4px] text-slate-600 text-xs">
                       Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
                     </div>
-                    {activeTab === "active" && (
+                    {activeTab === "active" && order.expires_at && (
                       <div className="mt-[4px] lg:hidden">
                         <span className="text-slate-600 text-xs">Time left: </span>
                         <TimeRemainingDisplay expiresAt={order.expires_at} className="text-xs" />
@@ -155,7 +155,11 @@ export default function OrdersPage() {
                 </TableCell>
                 {activeTab === "active" && (
                   <TableCell className="py-4 px-4 align-top">
-                    <TimeRemainingDisplay expiresAt={order.expires_at} className="text-sm" />
+                    {order.expires_at ? (
+                      <TimeRemainingDisplay expiresAt={order.expires_at} className="text-sm" />
+                    ) : (
+                      <span className="text-slate-400 text-sm">-</span>
+                    )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
