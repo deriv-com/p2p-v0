@@ -5,7 +5,7 @@ import { calculateTimeRemaining, type TimeRemaining } from "@/lib/time-utils"
 
 export function useTimeRemaining(expiresAt: string) {
 const {totalSeconds} = calculateTimeRemaining(expiresAt)
-  const [timeRemaining, setTimeRemaining] = useState<TimeRemaining>(totalSeconds)
+  const [timeRemaining, setTimeRemaining] = useState(totalSeconds)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
