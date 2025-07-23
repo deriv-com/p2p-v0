@@ -61,10 +61,10 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           </div>
           <div style={{ alignSelf: "center" }} className="mb-4">
             {config.type === "success" && (
-              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="size-14" />
             )}
             {config.type === "warning" && (
-              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
+              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="size-14" />
             )}
           </div>
         </div>
