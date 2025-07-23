@@ -67,7 +67,6 @@ export default function StatsPage() {
 
   return (
     <div className="fixed inset-0 bg-white flex flex-col">
-      {/* Fixed Header */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3 z-10">
         <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
           <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
@@ -75,7 +74,6 @@ export default function StatsPage() {
         <h1 className="text-lg font-semibold">Stats</h1>
       </div>
 
-      {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="p-4">

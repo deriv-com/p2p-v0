@@ -47,7 +47,6 @@ export default function PaymentMethodsPage() {
   })
   const [isEditing, setIsEditing] = useState(false)
 
-  // Bottom sheet state
   const [bottomSheet, setBottomSheet] = useState({
     show: false,
     paymentMethod: null as PaymentMethod | null,
@@ -99,7 +98,6 @@ export default function PaymentMethodsPage() {
 
         const name = method.display_name || methodType.charAt(0).toUpperCase() + methodType.slice(1)
 
-        // Transform fields to match EditPaymentMethodPanel expected format
         const transformedDetails: Record<string, { display_name: string; required: boolean; value: string }> = {}
 
         if (method.fields) {
@@ -318,7 +316,6 @@ export default function PaymentMethodsPage() {
         />
       )}
 
-      {/* Fixed Header */}
       <div className="flex-shrink-0 bg-white border-b border-gray-200 px-4 py-4 flex items-center gap-3 z-10">
         <Button variant="ghost" size="sm" onClick={handleBack} className="p-2">
           <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
@@ -326,7 +323,6 @@ export default function PaymentMethodsPage() {
         <h1 className="text-lg font-semibold">Payment methods</h1>
       </div>
 
-      {/* Filter Tabs */}
       <div className="flex-shrink-0 bg-white px-4 py-4 border-b border-gray-100">
         <div className="flex gap-2">
           <button
@@ -365,7 +361,6 @@ export default function PaymentMethodsPage() {
         </div>
       </div>
 
-      {/* Scrollable Content */}
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="p-4 space-y-6">
@@ -393,7 +388,6 @@ export default function PaymentMethodsPage() {
           </div>
         ) : (
           <div className="p-4 space-y-6">
-            {/* Bank Transfer Section */}
             {(activeFilter === "all" || activeFilter === "bank_transfer") && (
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold text-gray-900">Bank transfer</h2>
@@ -427,7 +421,6 @@ export default function PaymentMethodsPage() {
               </div>
             )}
 
-            {/* E-wallets Section */}
             {(activeFilter === "all" || activeFilter === "e_wallet") && (
               <div className="space-y-4">
                 <h2 className="text-lg font-semibold text-gray-900">E-wallets</h2>
@@ -459,13 +452,11 @@ export default function PaymentMethodsPage() {
               </div>
             )}
 
-            {/* Add some bottom padding to ensure content doesn't get hidden behind the fixed button */}
             <div className="h-20" />
           </div>
         )}
       </div>
 
-      {/* Fixed Bottom Button */}
       <div className="flex-shrink-0 bg-white border-t border-gray-200 p-4 ">
         <Button
           variant="outline"
@@ -477,7 +468,6 @@ export default function PaymentMethodsPage() {
         </Button>
       </div>
 
-      {/* Bottom Sheet for Payment Method Actions */}
       <Sheet
         open={bottomSheet.show}
         onOpenChange={(open) => !open && setBottomSheet({ show: false, paymentMethod: null })}
@@ -508,7 +498,6 @@ export default function PaymentMethodsPage() {
         </SheetContent>
       </Sheet>
 
-      {/* Edit Panel - Now uses only EditPaymentMethodPanel for all payment methods */}
       {editPanel.show && editPanel.paymentMethod && (
         <EditPaymentMethodPanel
           paymentMethod={editPanel.paymentMethod}

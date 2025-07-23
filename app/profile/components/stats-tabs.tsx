@@ -103,7 +103,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
-  // Mobile view rendering - navigate to separate routes
   if (isMobile) {
     return (
       <div className="relative">
@@ -150,7 +149,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     )
   }
 
-  // Desktop view (restored to original)
   return (
     <div className="relative">
       {notification.show && (

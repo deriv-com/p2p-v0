@@ -63,7 +63,6 @@ export default function PaymentMethodsTab() {
       const headers = AUTH.getAuthHeader()
       const response = await fetch(url, {
         headers,
-        //credentials: "include",
         cache: "no-store",
       })
 
@@ -125,7 +124,6 @@ export default function PaymentMethodsTab() {
   }, [fetchPaymentMethods])
 
   const handleEditPaymentMethod = (method: PaymentMethod) => {
-    // Transform the details to match the expected format for EditPaymentMethodPanel
     const transformedDetails: Record<string, { display_name: string; required: boolean; value: string }> = {}
 
     if (method.details) {

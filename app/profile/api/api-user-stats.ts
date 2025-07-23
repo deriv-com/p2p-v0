@@ -71,7 +71,6 @@ export const fetchUserStats = async (): Promise<UserStats> => {
     return transformedStats
   }
 
-  // Return default stats if no data
   return {
     buyCompletion: { rate: "N/A", period: "(30d)" },
     sellCompletion: { rate: "N/A", period: "(30d)" },
