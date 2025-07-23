@@ -161,7 +161,7 @@ export default function OrdersPage() {
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                        <span className="text-sm">{order.rating}</span>
+                            {order.rating}
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
