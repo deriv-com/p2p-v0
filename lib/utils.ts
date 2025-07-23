@@ -164,7 +164,7 @@ export function getStatusBadgeStyle(status: string, type: string): string {
       case "cancelled":
         return "bg-slate-100 text-slate-800"
       case "disputed":
-        return "bg-red-100 text-red-700"
+        return "bg-red-100 text-red-[#E6190E]"
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
