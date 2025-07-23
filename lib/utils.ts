@@ -156,15 +156,15 @@ export function formatStatus(status: string, type: string): string {
 export function getStatusBadgeStyle(status: string, type: string): string {
     switch (status) {
       case "pending_payment":
-        return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-[#A66C00]"
+        return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-[#A66C00]"
       case "pending_release":
-        return type === "buy" ? "bg-yellow-100 text-yellow-[#A66C00]" : "bg-blue-50 text-blue-100"
+        return type === "buy" ? "bg-yellow-100 text-[#A66C00]" : "bg-blue-50 text-blue-100"
       case "completed":
         return "bg-green-100 text-green-800"
       case "cancelled":
         return "bg-slate-100 text-slate-800"
       case "disputed":
-        return "bg-red-100 text-red-[#E6190E]"
+        return "bg-red-100 text-[#E6190E]"
       case "timed_out":
         return "bg-slate-100 text-slate-800"
       default:
