@@ -82,19 +82,7 @@ export default function StatsPage() {
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="p-4">
-            <div
-              className="animate-pulse"
-              style={{
-                display: "flex",
-                padding: "16px",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "8px",
-                alignSelf: "stretch",
-                borderRadius: "8px",
-                background: "#F8F9FA",
-              }}
-            >
+            <div className="animate-pulse flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
               {[...Array(6)].map((_, i) => (
                 <div key={i} className="flex justify-between items-center w-full py-3">
                   <div className="h-4 bg-gray-200 rounded w-24"></div>
@@ -112,18 +100,7 @@ export default function StatsPage() {
           </div>
         ) : (
           <div className="p-4">
-            <div
-              style={{
-                display: "flex",
-                padding: "16px",
-                flexDirection: "column",
-                alignItems: "flex-start",
-                gap: "8px",
-                alignSelf: "stretch",
-                borderRadius: "8px",
-                background: "#F8F9FA",
-              }}
-            >
+            <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
               <StatItem label="Sell completion" value={userStats.sellCompletion.rate} />
 
               <StatItem label="Buy completion" value={userStats.buyCompletion.rate} />
