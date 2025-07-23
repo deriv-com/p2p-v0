@@ -310,10 +310,16 @@ export default function BuySellPage() {
                                   </span>
                                 )}
                                 {ad.user.order_count_lifetime && (
-                                    <span>{ad.user.order_count_lifetime} orders</span>
+                                    <div>
+                                      <span className="h-2 w-2 rounded-full bg-slate-500"></span>
+                                      <span>{ad.user.order_count_lifetime} orders</span>
+                                    </div>
                                 )}
                                 {ad.user.completion_average_30day && (
-                                    <span>{ad.user.completion_average_30day}% completion</span>
+                                    <div>
+                                      <span className="h-2 w-2 rounded-full bg-slate-500"></span>
+                                      <span>{ad.user.completion_average_30day}% completion</span>
+                                    </div>
                                 )}
                               </div>
                             </div>
