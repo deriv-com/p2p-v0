@@ -46,6 +46,55 @@ export default function StatsPage() {
     router.push("/profile")
   }
 
+  // Configuration for all stats to display
+  const statsConfig = [
+    {
+      label: "Sell completion",
+      getValue: (stats: UserStats) => stats.sellCompletion.rate,
+      hasInfo: false,
+    },
+    {
+      label: "Buy completion",
+      getValue: (stats: UserStats) => stats.buyCompletion.rate,
+      hasInfo: false,
+    },
+    {
+      label: "Avg. pay time",
+      getValue: (stats: UserStats) => stats.avgPayTime.time,
+      hasInfo: false,
+    },
+    {
+      label: "Avg. release time",
+      getValue: (stats: UserStats) => stats.avgReleaseTime.time,
+      hasInfo: false,
+    },
+    {
+      label: "Trade partners",
+      getValue: (stats: UserStats) => stats.tradePartners,
+      hasInfo: false,
+    },
+    {
+      label: "Total orders (30d)",
+      getValue: (stats: UserStats) => stats.totalOrders30d,
+      hasInfo: false,
+    },
+    {
+      label: "Total orders (lifetime)",
+      getValue: (stats: UserStats) => stats.totalOrdersLifetime,
+      hasInfo: false,
+    },
+    {
+      label: "Trade volume (30d)",
+      getValue: (stats: UserStats) => `${stats.tradeVolume30d.currency} ${stats.tradeVolume30d.amount}`,
+      hasInfo: true,
+    },
+    {
+      label: "Trade volume (lifetime)",
+      getValue: (stats: UserStats) => `${stats.tradeVolumeLifetime.currency} ${stats.tradeVolumeLifetime.amount}`,
+      hasInfo: true,
+    },
+  ]
+
   const StatItem = ({
     label,
     value,
@@ -83,7 +132,7 @@ export default function StatsPage() {
         {isLoading ? (
           <div className="p-4">
             <div className="animate-pulse flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
-              {[...Array(6)].map((_, i) => (
+              {[...Array(9)].map((_, i) => (
                 <div key={i} className="flex justify-between items-center w-full py-3">
                   <div className="h-4 bg-gray-200 rounded w-24"></div>
                   <div className="h-4 bg-gray-200 rounded w-16"></div>
@@ -101,22 +150,15 @@ export default function StatsPage() {
         ) : (
           <div className="p-4">
             <div className="flex flex-col items-start gap-2 self-stretch rounded-lg bg-gray-50 p-4">
-              <StatItem label="Sell completion" value={userStats.sellCompletion.rate} />
-
-              <StatItem label="Buy completion" value={userStats.buyCompletion.rate} />
-
-              <StatItem label="Avg. pay time" value={userStats.avgPayTime.time} />
-
-              <StatItem label="Avg. release time" value={userStats.avgReleaseTime.time} />
-
-              <StatItem label="Total orders" value={userStats.totalOrders30d} />
-
-              <StatItem
-                label="Trade volume"
-                value={`${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`}
-                hasInfo={true}
-                showBorder={false}
-              />
+              {statsConfig.map((stat, index) => (
+                <StatItem
+                  key={stat.label}
+                  label={stat.label}
+                  value={stat.getValue(userStats)}
+                  hasInfo={stat.hasInfo}
+                  showBorder={index < statsConfig.length - 1}
+                />
+              ))}
             </div>
           </div>
         )}
