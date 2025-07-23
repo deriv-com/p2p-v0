@@ -319,7 +319,7 @@ export default function OrderDetailsPage() {
                   </div>
                 )}
                 {order.status === "timed_out" && (
-                  <div className="py-4">
+                  <div className="py-4 flex justify-end">
                     <Button variant="outline" onClick={() => setShowComplaintForm(true)}>
                       Complain
                     </Button>
