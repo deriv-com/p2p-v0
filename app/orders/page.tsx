@@ -149,11 +149,9 @@ export default function OrdersPage() {
                 </TableCell>
                 {activeTab === "active" && (
                   <TableCell className="py-4 px-4 align-top">
-                    {order.expires_at ? (
+                    {order.expires_at && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} className="text-sm" />
-                    ) : (
-                      <span className="text-slate-400 text-sm">-</span>
-                    )}
+                  )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
