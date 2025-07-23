@@ -17,10 +17,11 @@ import { useTimeRemaining } from "@/hooks/use-time-remaining"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
-
+  const pad = (n: number) => String(n).padStart(2, '0')
+  
   return (
         <span className="text-xs">
-              {`${timeRemaining.hours}:${timeRemaining.minutes}:${timeRemaining.seconds}`}
+              {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
         </span>
   )
 }
