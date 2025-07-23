@@ -102,7 +102,7 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
               {activeTab === "active" && (
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time Left</TableHead>
+                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
               )}
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
