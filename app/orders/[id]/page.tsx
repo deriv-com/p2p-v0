@@ -108,6 +108,11 @@ export default function OrderDetailsPage() {
     fetchOrderDetails()
   }
 
+  const handleSubmitComplain = () => {
+    setShowComplaintForm(false)
+    fetchOrderDetails()
+  }
+
   const formatRatingDeadline = (ratingDeadline) => {
     const deadline = new Date(ratingDeadline)
 
@@ -382,7 +387,7 @@ export default function OrderDetailsPage() {
         </div>
       )}
 
-      <ComplaintForm isOpen={showComplaintForm} onClose={() => setShowComplaintForm(false)} onSubmit={handledSubmitComplaint} orderId={orderId} />
+      <ComplaintForm isOpen={showComplaintForm} onClose={() => setShowComplaintForm(false)} onSubmit={handleSubmitComplaint} orderId={orderId} />
       <RatingSidebar
         isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
