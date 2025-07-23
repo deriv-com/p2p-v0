@@ -52,11 +52,8 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
             </div>
           ))}
         </RadioGroup>
-
         <div className="text-sm text-gray-600">
-          <p>
             If your issue isn't listed, contact us via live chat for help.
-          </p>
         </div>
       </div>
 
