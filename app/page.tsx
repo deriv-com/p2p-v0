@@ -318,7 +318,7 @@ export default function BuySellPage() {
                                 </div>
                             )}
                             {ad.user.completion_average_30day && (
-                                <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                <div className="flex flex-row items-center justify-center gap-[8px]">
                                   <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                   <span>{ad.user.completion_average_30day}% completion</span>
                                 </div>
