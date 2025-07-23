@@ -20,7 +20,7 @@ function TimeRemainingDisplay({ expiresAt }) {
   const pad = (n: number) => String(n).padStart(2, '0')
   
   return (
-        <div className="text-xs bg-black/4">
+        <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
               {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
         </div>
   )
