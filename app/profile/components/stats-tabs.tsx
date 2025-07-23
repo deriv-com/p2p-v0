@@ -4,6 +4,7 @@ import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Divider } from "@/components/ui/divider"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
@@ -120,7 +121,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         )}
 
         <div>
-          <div className="h-px bg-gray-200"></div>
+          <Divider />
 
           <div
             onClick={() => router.push("/profile/stats")}
@@ -130,7 +131,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
           </div>
 
-          <div className="h-px bg-gray-200"></div>
+          <Divider />
 
           <div
             onClick={() => router.push("/profile/payment-methods")}
@@ -140,7 +141,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
           </div>
 
-          <div className="h-px bg-gray-200"></div>
+          <Divider />
         </div>
 
         {errorModal.show && (
