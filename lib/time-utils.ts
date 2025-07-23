@@ -13,9 +13,9 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
 
   if (difference <= 0) {
     return {
-      hours: 00,
-      minutes: 00,
-      seconds: 00,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
       totalSeconds: 0,
       isExpired: true,
     }
