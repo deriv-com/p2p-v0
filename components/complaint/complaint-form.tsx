@@ -99,6 +99,12 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
+            <div className="flex justify-between items-center px-4 py-1 border-b">
+          <h2 className="text-xl font-bold">{title}</h2>
+          <Button onClick={handleClose} variant="ghost" size="icon" className="p-1">
+            <X className="h-6 w-6" />
+          </Button>
+        </div>
         <ComplaintContent />
       </div>
     </div>
