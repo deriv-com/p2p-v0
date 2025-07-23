@@ -320,7 +320,7 @@ export default function OrderDetailsPage() {
                 )}
                 {order.status === "timed_out" && (
                   <div className="py-4">
-                    <Button variant="outline" onClick={openComplaint} className="w-full bg-transparent">
+                    <Button variant="outline" onClick={() => setShowComplaintForm(true)}>
                       Submit a complaint
                     </Button>
                   </div>
