@@ -18,6 +18,11 @@ export const COMPLAINT_OPTIONS: ComplaintOption[] = [
     value: "buyer_not_paid",
   },
   {
+    id: "seller_not_released",
+    label: "I've made the payment, but the seller hasn't released the funds.",
+    value: "seller_not_released",
+  },
+  {
     id: "buyer_underpaid",
     label: "I received less than the agreed amount.",
     value: "buyer_underpaid",
