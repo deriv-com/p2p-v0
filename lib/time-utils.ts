@@ -52,24 +52,3 @@ export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
 
   return "Expired"
 }
-
-export function getTimeRemainingColor(timeRemaining: TimeRemaining): string {
-  if (timeRemaining.isExpired) {
-    return "text-red-600"
-  }
-
-  const { totalSeconds } = timeRemaining
-
-  // Less than 5 minutes (300 seconds) - red
-  if (totalSeconds < 300) {
-    return "text-red-600"
-  }
-  // Less than 30 minutes (1800 seconds) - orange
-  else if (totalSeconds < 1800) {
-    return "text-orange-600"
-  }
-  // More than 30 minutes - green
-  else {
-    return "text-green-600"
-  }
-}
