@@ -31,7 +31,7 @@ export const fetchUserStats = async (): Promise<UserStats> => {
   if (responseData && responseData.data) {
     const data = responseData.data
 
-  const formatTimeAverage = (seconds: number) => {
+   const formatTimeAverage = (seconds: number) => {
   if (!seconds || seconds <= 0) return "N/A"
   const mins = seconds / 60
 
