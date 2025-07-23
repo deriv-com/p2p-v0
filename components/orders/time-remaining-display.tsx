@@ -10,8 +10,6 @@ interface TimeRemainingDisplayProps {
 
 export function TimeRemainingDisplay({ expiresAt, className }: TimeRemainingDisplayProps) {
   const timeRemaining = useTimeRemaining(expiresAt)
-  const formattedTime = formatTimeRemaining(timeRemaining)
-  const colorClass = getTimeRemainingColor(timeRemaining)
 
-  return <span className={cn("font-medium", colorClass, className)}>{formattedTime}</span>
+  return <span className={cn("font-medium", colorClass, className)}>{timeRemaining}</span>
 }
