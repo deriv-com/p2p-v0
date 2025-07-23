@@ -321,7 +321,7 @@ export default function OrderDetailsPage() {
                 {order.status === "timed_out" && (
                   <div className="py-4">
                     <Button variant="outline" onClick={() => setShowComplaintForm(true)}>
-                      Submit a complaint
+                      Complain
                     </Button>
                   </div>
                 )}
