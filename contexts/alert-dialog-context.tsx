@@ -56,7 +56,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
           <div style={{ alignSelf: "end" }} className="px-6 mt-6">
             <Button onClick={hideAlert} size="sm" variant="ghost">
-              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="size-5" />
             </Button>
           </div>
           <div style={{ alignSelf: "center" }} className="mb-4">
@@ -71,7 +71,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       ) : (
         <div className="flex justify-end px-6 pt-6">
           <Button onClick={hideAlert} size="sm" variant="ghost">
-            <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+            <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="size-5" />
           </Button>
         </div>
       )}
@@ -93,10 +93,10 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
           <div style={{ alignSelf: "center" }} className="mb-4 mt-6">
             {config.type === "success" && (
-              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="size-14" />
             )}
             {config.type === "warning" && (
-              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
+              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="size-14" />
             )}
           </div>
         </div>
