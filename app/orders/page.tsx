@@ -13,10 +13,10 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
-//import { useTimeRemaining } from "@/hooks/use-time-remaining"
+import { useTimeRemaining } from "@/hooks/use-time-remaining"
 
 function TimeRemainingDisplay({ expiresAt }) {
- // const timeRemaining = useTimeRemaining(expiresAt)
+ const timeRemaining = useTimeRemaining(expiresAt)
 
   return <span>{timeRemaining}</span>
 }
@@ -155,11 +155,7 @@ export default function OrdersPage() {
                 </TableCell>
                 {activeTab === "active" && (
                   <TableCell className="py-4 px-4 align-top">
-                    {order.expires_at ? (
-                      <TimeRemainingDisplay expiresAt={order.expires_at} className="text-sm" />
-                    ) : (
-                      <span className="text-slate-400 text-sm">-</span>
-                    )}
+                    
                   </TableCell>
                 )}
                 {activeTab === "past" && (
