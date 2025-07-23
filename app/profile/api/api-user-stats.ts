@@ -31,15 +31,14 @@ export const fetchUserStats = async (): Promise<UserStats> => {
   if (responseData && responseData.data) {
     const data = responseData.data
 
-   const formatTimeAverage = (seconds: number) => {
-  if (!seconds || seconds <= 0) return "N/A"
-  const mins = seconds / 60
+    const formatTimeAverage = (seconds: number) => {
+      if (!seconds || seconds <= 0) return "-"
+      const mins = seconds / 60
 
-  if (mins < 1) return "< 1 min"
+      if (mins < 1) return "< 1 min"
 
-  return `${Math.floor(mins)} min${Math.floor(mins) > 1 ? "s" : ""}`
-}
-
+      return `${Math.floor(mins)} min${Math.floor(mins) > 1 ? "s" : ""}`
+    }
 
     const transformedStats: UserStats = {
       buyCompletion: {
@@ -76,10 +75,10 @@ export const fetchUserStats = async (): Promise<UserStats> => {
   }
 
   return {
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
+    buyCompletion: { rate: "-", period: "(30d)" },
+    sellCompletion: { rate: "-", period: "(30d)" },
+    avgPayTime: { time: "-", period: "(30d)" },
+    avgReleaseTime: { time: "-", period: "(30d)" },
     tradePartners: 0,
     totalOrders30d: 0,
     totalOrdersLifetime: 0,
