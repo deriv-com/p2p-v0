@@ -6,12 +6,14 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
+import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
 
 export function RatingSidebar({
   isOpen,
   onClose,
   onSubmit,
+  orderId,
   title = "Rate and recommend",
   ratingLabel = "How would you rate this transaction?",
   recommendLabel = "Would you recommend this seller?",
@@ -36,19 +38,19 @@ export function RatingSidebar({
     }
 
     try {
-      await onSubmit(ratingData)
-      // Reset form after successful submission
+      const result = await OrdersAPI.reviewOrder(orderId, ratingData)
+      if (result.errors.length === 0) {
+        onSubmit?.()
+      }
       setRating(0)
       setHoverRating(0)
       setRecommend(null)
     } catch (error) {
-      // Error handling is done in the parent component
       console.error("Error submitting rating:", error)
     }
   }
 
   const handleClose = () => {
-    // Reset form when closing
     setRating(0)
     setHoverRating(0)
     setRecommend(null)
@@ -66,10 +68,8 @@ export function RatingSidebar({
             <X className="h-6 w-6" />
           </Button>
         </div>
-
         <div className="flex-1 overflow-auto p-4">
           <div className="space-y-6">
-            {/* Star Rating */}
             <div className="space-y-4">
               <h3 className="text-sm">{ratingLabel}</h3>
               <div className="flex">
@@ -94,8 +94,6 @@ export function RatingSidebar({
                 ))}
               </div>
             </div>
-
-            {/* Recommendation */}
             <div className="space-y-4">
               <h3 className="text-sm">{recommendLabel}</h3>
               <div className="flex gap-4">

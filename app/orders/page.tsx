@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
@@ -10,7 +12,7 @@ import type { Order } from "@/services/api/api-orders"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
-
+import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 
 export default function OrdersPage() {
   const router = useRouter()
@@ -18,6 +20,8 @@ export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
+  const [selectedOrderId, setSelectedOrderId] = useState(null)
 
   useEffect(() => {
     fetchOrders()
@@ -61,6 +65,23 @@ export default function OrdersPage() {
 
   const navigateToOrderDetails = (orderId: string) => {
     router.push(`/orders/${orderId}`)
+  }
+
+  const handleRateClick = (e: React.MouseEvent, order: Order) => {
+    e.stopPropagation()
+    setIsRatingSidebarOpen(true)
+    setSelectedOrderId(order.id)
+  }
+
+  const handleRatingSidebarClose = () => {
+    setIsRatingSidebarOpen(false)
+    setSelectedOrderId(null)
+  }
+
+  const handleRatingSubmit = () => {
+          setIsRatingSidebarOpen(false)
+          setSelectedOrderId(null)
+          fetchOrders()
   }
 
   const DesktopOrderTable = () => (
@@ -131,7 +152,9 @@ export default function OrdersPage() {
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
-                        <Button variant="black" size="xs">Rate</Button>
+                      <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
+                        Rate
+                      </Button>
                     )}
                   </TableCell>
                 )}
@@ -206,6 +229,12 @@ export default function OrdersPage() {
           </div>
         )}
       </div>
+      <RatingSidebar
+        isOpen={isRatingSidebarOpen}
+        onClose={handleRatingSidebarClose}
+        orderId={selectedOrderId}
+        onSubmit={handleRatingSubmit}
+      />
     </div>
   )
 }

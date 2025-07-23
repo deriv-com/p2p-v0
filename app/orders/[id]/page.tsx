@@ -15,7 +15,6 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
-import type { RatingData } from "@/components/rating-filter"
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -29,8 +28,6 @@ export default function OrderDetailsPage() {
   const [isConfirmLoading, setIsConfirmLoading] = useState(false)
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-
-  // Rating states
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const { isConnected, joinChannel } = useWebSocketContext()
 
@@ -104,17 +101,9 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const handleSubmitReview = async (ratingData: RatingData) => {
-    try {
-      const result = await OrdersAPI.reviewOrder(orderId, ratingData)
-      if (result.errors.length === 0) {
-        setShowRatingSidebar(false)
-        fetchOrderDetails()
-      }
-    } catch (err) {
-      console.error("Error submitting review:", err)
-      throw err
-    }
+  const handleSubmitReview = () => {
+    setShowRatingSidebar(false)
+    fetchOrderDetails()
   }
 
   const formatRatingDeadline = (ratingDeadline) => {
@@ -388,6 +377,7 @@ export default function OrderDetailsPage() {
       <RatingSidebar
         isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
+        orderId={orderId}
         onSubmit={handleSubmitReview}
       />
       <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />

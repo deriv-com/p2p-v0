@@ -296,21 +296,33 @@ export default function BuySellPage() {
                                   </span>
                                 )}
                               </div>
-                              <div className="flex items-center text-xs sm:text-sm text-slate-500">
-                                {ad.user_rating_average && (
-                                  <span className="flex items-center">
-                                    <Image
-                                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-6OumZ18zNMtAEyxgeIh25pHnlCud1B.png"
-                                      alt="Rating"
-                                      width={16}
-                                      height={16}
-                                      className="mr-1"
-                                    />
-                                    <span className="text-[#FFAD3A]">{ad.user_rating_average.toFixed(2)}</span>
-                                  </span>
-                                )}
-                              </div>
                             </div>
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                            {ad.user.rating_average_lifetime && (
+                              <span className="flex items-center">
+                                <Image
+                                  src="/icons/star-active.png"
+                                  alt="Rating"
+                                  width={16}
+                                  height={16}
+                                  className="mr-1"
+                                />
+                                <span className="text-[#FFAD3A]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                              </span>
+                            )}
+                            {ad.user.order_count_lifetime && (
+                                <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                  <span>{ad.user.order_count_lifetime} orders</span>
+                                </div>
+                            )}
+                            {ad.user.completion_average_30day && (
+                                <div className="flex flex-row items-center justify-center gap-[8px]">
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                  <span>{ad.user.completion_average_30day}% completion</span>
+                                </div>
+                            )}
                           </div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top">
