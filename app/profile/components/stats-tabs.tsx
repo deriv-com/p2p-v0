@@ -9,25 +9,13 @@ import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { PlusCircle } from "lucide-react"
+import { USER, API, AUTH } from "@/lib/local-variables"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { fetchUserStats, type UserStats } from "../api/api-user-stats"
 
 interface StatsTabsProps {
   stats?: any
-}
-
-const defaultStats: UserStats = {
-  buyCompletion: { rate: "N/A", period: "(30d)" },
-  sellCompletion: { rate: "N/A", period: "(30d)" },
-  avgPayTime: { time: "N/A", period: "(30d)" },
-  avgReleaseTime: { time: "N/A", period: "(30d)" },
-  tradePartners: 0,
-  totalOrders30d: 0,
-  totalOrdersLifetime: 0,
-  tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-  tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
 }
 
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
@@ -44,7 +32,20 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<UserStats>(initialStats || defaultStats)
+  const [userStats, setUserStats] = useState<any>(
+    initialStats || {
+      buyCompletion: { rate: "N/A", period: "(30d)" },
+      sellCompletion: { rate: "N/A", period: "(30d)" },
+      avgPayTime: { time: "N/A", period: "(30d)" },
+      avgReleaseTime: { time: "N/A", period: "(30d)" },
+      tradePartners: 0,
+      totalOrders30d: 0,
+      totalOrdersLifetime: 0,
+      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
+      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
+    },
+  )
+
   const [isLoadingStats, setIsLoadingStats] = useState(false)
 
   const tabs = [
@@ -53,11 +54,65 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   ]
 
   useEffect(() => {
-    const loadUserStats = async () => {
+    const fetchUserStats = async () => {
       try {
         setIsLoadingStats(true)
-        const stats = await fetchUserStats()
-        setUserStats(stats)
+        const userId = USER.id
+        const url = `${API.baseUrl}/users/${userId}`
+
+        const headers = AUTH.getAuthHeader()
+        const response = await fetch(url, {
+          headers,
+          // credentials: "include",
+        })
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
+        }
+
+        const responseData = await response.json()
+
+        if (responseData && responseData.data) {
+          const data = responseData.data
+
+          const formatTimeAverage = (minutes) => {
+            if (!minutes || minutes <= 0) return "N/A"
+            return `${minutes} min`
+          }
+
+          const transformedStats = {
+            buyCompletion: {
+              rate: `${Number(data.completion_average_30day) || 0}%`,
+              period: "(30d)",
+            },
+            sellCompletion: {
+              rate: `${Number(data.completion_average_30day) || 0}%`,
+              period: "(30d)",
+            },
+            avgPayTime: {
+              time: formatTimeAverage(Number(data.release_time_average_30day)),
+              period: "(30d)",
+            },
+            avgReleaseTime: {
+              time: formatTimeAverage(Number(data.release_time_average_30day)),
+              period: "(30d)",
+            },
+            tradePartners: Number(data.partner_count_lifetime) || 0,
+            totalOrders30d: (Number(data.buy_count_30day) || 0) + (Number(data.sell_count_30day) || 0),
+            totalOrdersLifetime: Number(data.order_count_lifetime) || 0,
+            tradeVolume30d: {
+              amount: ((Number(data.buy_amount_30day) || 0) + (Number(data.sell_amount_30day) || 0)).toFixed(2),
+              currency: "USD",
+              period: "(30d)",
+            },
+            tradeVolumeLifetime: {
+              amount: data.order_amount_lifetime ? Number(data.order_amount_lifetime).toFixed(2) : "0.00",
+              currency: "USD",
+            },
+          }
+
+          setUserStats(transformedStats)
+        }
       } catch (error) {
         console.log(error)
       } finally {
@@ -65,7 +120,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       }
     }
 
-    loadUserStats()
+    fetchUserStats()
   }, [])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {

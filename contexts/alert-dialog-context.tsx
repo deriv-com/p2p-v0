@@ -1,100 +1,138 @@
 "use client"
 
-import { createContext, useContext, useState, type ReactNode } from "react"
-import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
+import type React from "react"
+import { createContext, useContext, useState, useCallback } from "react"
+import { AlertDialog, AlertDialogAction, AlertDialogContent } from "@/components/ui/alert-dialog"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
+import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { X, AlertTriangle, CheckCircle, Info } from "lucide-react"
+import Image from "next/image"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-
-interface AlertConfig {
-  title: string
-  description: string
-  confirmText?: string
-  onConfirm?: () => void
-  type?: "success" | "warning" | "info"
-}
-
-interface AlertDialogContextType {
-  showAlert: (config: AlertConfig) => void
-  hideAlert: () => void
-}
 
 const AlertDialogContext = createContext<AlertDialogContextType | undefined>(undefined)
 
-export function AlertDialogProvider({ children }: { children: ReactNode }) {
+interface AlertDialogProviderProps {
+  children: React.ReactNode
+}
+
+export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [config, setConfig] = useState<AlertConfig | null>(null)
+  const [config, setConfig] = useState<AlertDialogConfig>({})
   const isMobile = useIsMobile()
 
-  const showAlert = (alertConfig: AlertConfig) => {
+  const showAlert = useCallback((alertConfig: AlertDialogConfig) => {
     setConfig(alertConfig)
     setIsOpen(true)
-  }
+  }, [])
 
-  const hideAlert = () => {
+  const hideAlert = useCallback(() => {
     setIsOpen(false)
-    setConfig(null)
-  }
+    setConfig({})
+  }, [])
 
-  const handleConfirm = () => {
-    config?.onConfirm?.()
-    hideAlert()
-  }
-
-  const getIcon = () => {
-    switch (config?.type) {
-      case "success":
-        return <CheckCircle className="h-6 w-6 text-green-500" />
-      case "warning":
-        return <AlertTriangle className="h-6 w-6 text-red-500" />
-      case "info":
-        return <Info className="h-6 w-6 text-blue-500" />
-      default:
-        return <AlertTriangle className="h-6 w-6 text-red-500" />
+  const handleConfirm = useCallback(async () => {
+    if (config.onConfirm) {
+      await config.onConfirm()
     }
+    hideAlert()
+  }, [config.onConfirm, hideAlert])
+
+  const handleCancel = useCallback(() => {
+    if (config.onCancel) {
+      config.onCancel()
+    }
+    hideAlert()
+  }, [config.onCancel, hideAlert])
+
+  const contextValue: AlertDialogContextType = {
+    showAlert,
+    hideAlert,
+    isOpen,
   }
 
-  const content = config ? (
+  const renderDesktopContent = () => (
     <>
-      <div className="flex items-start gap-4">
-        {getIcon()}
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold mb-2">{config.title}</h3>
-          <p className="text-gray-600 mb-6">{config.description}</p>
+      {config.type === "success" || config.type === "warning" ? (
+        <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
+          <div style={{ alignSelf: "end" }} className="px-6 mt-6">
+            <Button onClick={hideAlert} size="sm" variant="ghost">
+              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+            </Button>
+          </div>
+          <div style={{ alignSelf: "center" }} className="mb-4">
+            {config.type === "success" && (
+              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+            )}
+            {config.type === "warning" && (
+              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
+            )}
+          </div>
         </div>
-        <Button variant="ghost" size="sm" onClick={hideAlert} className="p-1 h-auto">
-          <X className="h-4 w-4" />
-        </Button>
-      </div>
-      <div className="flex justify-end">
-        <Button onClick={handleConfirm} variant="black" className="px-6">
-          {config.confirmText || "OK"}
-        </Button>
+      ) : (
+        <div className="flex justify-end px-6 pt-6">
+          <Button onClick={hideAlert} size="sm" variant="ghost">
+            <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
+      <div className="px-8 py-6">
+        {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
+        {config.description && <div className="mb-4">{config.description}</div>}
+        <div className="mt-6">
+          <AlertDialogAction onClick={handleConfirm} className="w-full">
+            {config.confirmText || "Continue"}
+          </AlertDialogAction>
+        </div>
       </div>
     </>
-  ) : null
+  )
+
+  const renderMobileContent = () => (
+    <>
+      {config.type === "success" || config.type === "warning" ? (
+        <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
+          <div style={{ alignSelf: "center" }} className="mb-4 mt-6">
+            {config.type === "success" && (
+              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="w-14 h-14" />
+            )}
+            {config.type === "warning" && (
+              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="w-14 h-14" />
+            )}
+          </div>
+        </div>
+      ) : null}
+      <div className="px-8 py-6">
+        {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
+        {config.description && <div className="mb-4">{config.description}</div>}
+        <div className="mt-6">
+          <Button onClick={handleConfirm} variant="black" className="w-full">
+            {config.confirmText || "Continue"}
+          </Button>
+        </div>
+      </div>
+    </>
+  )
 
   return (
-    <AlertDialogContext.Provider value={{ showAlert, hideAlert }}>
+    <AlertDialogContext.Provider value={contextValue}>
       {children}
 
       {isMobile ? (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetContent side="bottom" className="p-6">
-            {content}
+          <SheetContent side="bottom" className="p-0 rounded-t-[32px]">
+            {renderMobileContent()}
           </SheetContent>
         </Sheet>
       ) : (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-          <AlertDialogContent className="max-w-md">{content}</AlertDialogContent>
+          <AlertDialogContent className="p-0">{renderDesktopContent()}</AlertDialogContent>
         </AlertDialog>
       )}
     </AlertDialogContext.Provider>
   )
 }
 
-export function useAlertDialog() {
+export function useAlertDialog(): AlertDialogContextType {
   const context = useContext(AlertDialogContext)
   if (context === undefined) {
     throw new Error("useAlertDialog must be used within an AlertDialogProvider")
