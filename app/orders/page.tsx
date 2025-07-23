@@ -167,7 +167,7 @@ export default function OrdersPage() {
                     {order.rating > 0 && (
                       <div className="flex items-center">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                        <span className="text-sm">{order.rating}</span>
+                          {order.rating}
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
@@ -185,7 +185,6 @@ export default function OrdersPage() {
                     }}
                     className="text-slate-500 hover:text-slate-700"
                     variant="ghost"
-                    size="sm"
                   >
                     <Image
                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
