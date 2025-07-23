@@ -55,14 +55,13 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
 
         <div className="text-sm text-gray-600">
           <p>
-            If your issue isn't listed, contact us via{" "}
-            <button className="underline text-blue-600 hover:text-blue-800">live chat</button> for help.
+            If your issue isn't listed, contact us via live chat for help.
           </p>
         </div>
       </div>
 
       <div className="p-4 border-t md:border-t-0">
-        <Button vaiant="black" onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]" size="lg">Submit
+        <Button vaiant="black" onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className=className="w-full disabled:opacity-[0.24]" size="lg">Submit
         </Button>
       </div>
     </div>
