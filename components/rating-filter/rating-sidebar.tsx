@@ -156,8 +156,7 @@ export function RatingSidebar({
       </Sheet>
     )
   }
-
-  // Desktop sidebar (existing design)
+  
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
