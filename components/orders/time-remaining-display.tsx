@@ -7,6 +7,7 @@ interface TimeRemainingDisplayProps {
 }
 
 export function TimeRemainingDisplay({ expiresAt }: TimeRemainingDisplayProps) {
-  const timeRemaining = useTimeRemaining(expiresAt
+  const timeRemaining = useTimeRemaining(expiresAt)
+  
   return <span>{`${timeRemaining.hours}h ${timeRemaining.minutes}m ${timeRemaining.seconds}s`}</span>
 }
