@@ -31,11 +31,12 @@ export const fetchUserStats = async (): Promise<UserStats> => {
   if (responseData && responseData.data) {
     const data = responseData.data
 
-    const formatTimeAverage = (seconds: number) => {
-      if (!seconds || seconds <= 0) return "N/A"
-      const sec = Math.ceil(seconds / 60)
-      return `${sec} seconds`
-    }
+  const formatTimeAverage = (seconds: number) => {
+  if (!seconds || seconds <= 0) return "N/A"
+  const mins = Math.ceil(seconds / 60)
+  return `${mins} min${mins > 1 ? "s" : ""}`
+}
+
 
     const transformedStats: UserStats = {
       buyCompletion: {
