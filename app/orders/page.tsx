@@ -105,7 +105,7 @@ export default function OrdersPage() {
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer hover:bg-slate-50"
+                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
