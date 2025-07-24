@@ -9,7 +9,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
-import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
+import { formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
@@ -140,21 +140,6 @@ export default function OrderDetailsPage() {
       })
     } catch (err) {
       console.error("Failed to copy text: ", err)
-    }
-  }
-
-  const getPaymentMethodColor = (method: string) => {
-    switch (method.toLowerCase()) {
-      case "bank transfer":
-      case "bank_transfer":
-        return "bg-green-500"
-      case "neteller":
-        return "bg-blue-500"
-      case "grabpay":
-      case "grab_pay":
-        return "bg-blue-500"
-      default:
-        return "bg-gray-500"
     }
   }
 
