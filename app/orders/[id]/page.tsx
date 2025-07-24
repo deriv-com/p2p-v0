@@ -138,7 +138,7 @@ export default function OrderDetailsPage() {
       const diff = expiryTime.getTime() - now.getTime()
 
       if (diff <= 0) {
-        setTimeLeft("")
+        setTimeLeft("00:00")
         return false
       }
 
