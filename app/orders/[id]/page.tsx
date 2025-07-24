@@ -323,7 +323,7 @@ export default function OrderDetailsPage() {
                                 </div>
                               </AccordionTrigger>
                               <AccordionContent className="px-4 pb-4">
-                                <div className="space-y-4">{renderPaymentMethodFields(method)}</div>
+                                <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
                               </AccordionContent>
                             </AccordionItem>
                           ))}
