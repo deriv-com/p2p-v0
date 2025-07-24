@@ -162,7 +162,7 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="lg:py-4 px-4 align-top row-start-1">
+                  <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
@@ -183,7 +183,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="lg:py-4 px-4 align-top row-start-4">
+                <TableCell className="lg:py-4 px-4 align-top row-start-4 col-start-2 justify-self-end">
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
