@@ -21,6 +21,8 @@ function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
   const pad = (n: number) => String(n).padStart(2, '0')
   
+  if(timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
+
   return (
         <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
               {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
@@ -109,9 +111,9 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" && (
+              {activeTab === "active" && 
                 <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
-              )}
+              }
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
@@ -119,16 +121,16 @@ export default function OrdersPage() {
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
                 {activeTab === "past" && (
-                  <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
+                  <TableCell className="py-0 lg:py-4 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2 col-span-full">
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
@@ -144,17 +146,17 @@ export default function OrdersPage() {
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
-                    <div className="mt-[4px] text-slate-600 text-xs">
+                    {!isMobile && <div className="mt-[4px] text-slate-600 text-xs">
                       Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
-                    </div>
+                    </div>}
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top text-base">
-                  <div className="font-bold">
+                <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
+                  <div className="lg:font-bold">
                     {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="lg:py-4 px-4 align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
@@ -162,14 +164,14 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="py-4 px-4 align-top">
+                  <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
-                  <TableCell className="py-4 px-4 align-top">
+                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 flex justify-end items-center lg:justify-start">
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
@@ -183,22 +185,28 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top">
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigateToOrderDetails(order.id)
-                    }}
-                    className="text-slate-500 hover:text-slate-700"
-                    variant="ghost"
-                  >
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                      alt="View Details"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
+                <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
+                  <div className="flex flex-row items-center justify-between">
+                    {isMobile && <div className="text-xs">
+                        {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                      </div>}
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigateToOrderDetails(order.id)
+                      }}
+                      className="text-slate-500 hover:text-slate-700"
+                      variant="ghost"
+                      size="sm"
+                    >
+                      <Image
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
+                        alt="View Details"
+                        width={20}
+                        height={20}
+                      />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -214,8 +222,8 @@ export default function OrdersPage() {
     <div className="flex flex-col h-full px-[24px]">
       <div className="flex-shrink-0">
         <div className="mb-6">
-          <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
-            <TabsList className="md:min-w-[330px]">
+          <Tabs className="w-full md:w-[330px] md:min-w-[330px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
+            <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
               <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
                 Active orders
               </TabsTrigger>
