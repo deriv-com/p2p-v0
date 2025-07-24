@@ -65,47 +65,57 @@ export default function StatsPage() {
   const statsConfig = [
     {
       label: "Sell completion",
-      getValue: (stats: UserStats) => stats.sellCompletion.rate,
+      getValue: (stats: UserStats) => stats?.sellCompletion?.rate || "-",
       hasInfo: false,
     },
     {
       label: "Buy completion",
-      getValue: (stats: UserStats) => stats.buyCompletion.rate,
+      getValue: (stats: UserStats) => stats?.buyCompletion?.rate || "-",
       hasInfo: false,
     },
     {
       label: "Avg. pay time",
-      getValue: (stats: UserStats) => stats.avgPayTime.time,
+      getValue: (stats: UserStats) => stats?.avgPayTime?.time || "-",
       hasInfo: false,
     },
     {
       label: "Avg. release time",
-      getValue: (stats: UserStats) => stats.avgReleaseTime.time,
+      getValue: (stats: UserStats) => stats?.avgReleaseTime?.time || "-",
       hasInfo: false,
     },
     {
       label: "Trade partners",
-      getValue: (stats: UserStats) => stats.tradePartners,
+      getValue: (stats: UserStats) => stats?.tradePartners ?? 0,
       hasInfo: false,
     },
     {
       label: "Total orders (30d)",
-      getValue: (stats: UserStats) => stats.totalOrders30d,
+      getValue: (stats: UserStats) => stats?.totalOrders30d ?? 0,
       hasInfo: false,
     },
     {
       label: "Total orders (lifetime)",
-      getValue: (stats: UserStats) => stats.totalOrdersLifetime,
+      getValue: (stats: UserStats) => stats?.totalOrdersLifetime ?? 0,
       hasInfo: false,
     },
     {
       label: "Trade volume (30d)",
-      getValue: (stats: UserStats) => `${stats.tradeVolume30d.currency} ${stats.tradeVolume30d.amount}`,
+      getValue: (stats: UserStats) => {
+        if (!stats?.tradeVolume30d?.currency || !stats?.tradeVolume30d?.amount) {
+          return "USD 0.00"
+        }
+        return `${stats.tradeVolume30d.currency} ${stats.tradeVolume30d.amount}`
+      },
       hasInfo: true,
     },
     {
       label: "Trade volume (lifetime)",
-      getValue: (stats: UserStats) => `${stats.tradeVolumeLifetime.currency} ${stats.tradeVolumeLifetime.amount}`,
+      getValue: (stats: UserStats) => {
+        if (!stats?.tradeVolumeLifetime?.currency || !stats?.tradeVolumeLifetime?.amount) {
+          return "USD 0.00"
+        }
+        return `${stats.tradeVolumeLifetime.currency} ${stats.tradeVolumeLifetime.amount}`
+      },
       hasInfo: true,
     },
   ]
