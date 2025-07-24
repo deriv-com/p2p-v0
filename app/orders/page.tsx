@@ -184,7 +184,7 @@ export default function OrdersPage() {
                   </TableCell>
                 )}
                 <TableCell className="py-0 lg:py-4 px-4 align-top row-start-4">
-                  {isMobile && <div className="mt-[4px] text-xs">
+                  {isMobile && <div className="text-xs">
                       {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
                     </div>}
                   <Button
