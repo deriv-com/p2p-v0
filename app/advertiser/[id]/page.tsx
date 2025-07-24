@@ -168,6 +168,7 @@ export default function AdvertiserProfilePage() {
   const getDuration = (duration) => {
     if (duration == null || duration <= 0) return ""
     if (duration > 60) return (duration / 60 / 60).toString() + " mins"
+    if (duration < 1) return "< 1 min"
     return duration.toString() + " mins"
   }
 
