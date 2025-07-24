@@ -169,9 +169,9 @@ export default function AdvertiserProfilePage() {
     if (duration == null || duration <= 0) return ""
 
     const newDuration = duration / 60 / 60;
-    if (newDuration > 60) return duration.toString() + " mins"
     if (newDuration < 1) return "< 1 min"
-    return duration.toString() + " mins"
+    
+    return newDuration.toString() + " mins"
   }
 
   const CURRENT_USER = USER
