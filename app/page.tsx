@@ -18,6 +18,7 @@ import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
 import { useIsMobile } from "@/hooks/use-mobile"
+import Navigation from "@/components/navigation"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
