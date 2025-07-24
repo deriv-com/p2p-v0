@@ -299,7 +299,13 @@ export default function CreateAdPage() {
           description: "Your ad has been updated and is now active.",
           confirmText: "Ok",
           onConfirm: () => {
-            router.push("/ads")
+            const params = new URLSearchParams({
+              success: "update",
+              type: finalData.type || "buy",
+              id: adId,
+              showStatusModal: "true",
+            })
+            window.location.href = `/ads?${params.toString()}`
           },
         })
       } else {
@@ -331,9 +337,15 @@ export default function CreateAdPage() {
           type: "success",
           title: "Ad created successfully",
           description: "Your ad has been created and is now active.",
-          confirmText: ",
+          confirmText: "Ok",
           onConfirm: () => {
-            router.push("/ads")
+            const params = new URLSearchParams({
+              success: "create",
+              type: result.data.type,
+              id: result.data.id,
+              showStatusModal: "true",
+            })
+            window.location.href = `/ads?${params.toString()}`
           },
         })
       }
