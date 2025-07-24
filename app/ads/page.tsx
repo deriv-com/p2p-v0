@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import Navigation from "@/components/navigation"
 
 interface StatusData {
   success: "create" | "update"
@@ -140,7 +141,9 @@ export default function AdsPage() {
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
   return (
-    <div className="flex flex-col h-screen bg-white">
+    <>
+    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+    <div className="flex flex-col h-screen bg-white px-[24px]">
       {showDeletedBanner && (
         <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
       )}
@@ -203,5 +206,6 @@ export default function AdsPage() {
         />
       )}
     </div>
+    </>
   )
 }

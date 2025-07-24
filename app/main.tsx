@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
-import Navigation from "@/components/navigation"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
@@ -53,12 +52,11 @@ export default function Main({
         {isHeaderVisible && <Sidebar />}
         <div className="flex-1">
           {isHeaderVisible && <Header />}
-          <div className="container mx-auto p-[24px] pt-[8px]">{children}</div>
+          <div className="container mx-auto">{children}</div>
         </div>
       </div>
-      <div className="md:hidden container mx-auto p-[24px] pt-[8px] h-[calc(100%-2rem)] relative">
+      <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>

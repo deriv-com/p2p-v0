@@ -17,6 +17,8 @@ import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
 import { ChevronDown } from "lucide-react"
+import { useIsMobile } from "@/hooks/use-mobile"
+import Navigation from "@/components/navigation"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -40,6 +42,7 @@ export default function BuySellPage() {
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const isMobile = useIsMobile()
 
   const { currencies } = useCurrencyData()
 
@@ -130,7 +133,9 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
+    <>
+    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+    <div className="flex flex-col h-screen overflow-hidden px-[24px]">
       <div className="flex-shrink-0">
         <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -401,5 +406,6 @@ export default function BuySellPage() {
         orderType={activeTab}
       />
     </div>
+    </>
   )
 }

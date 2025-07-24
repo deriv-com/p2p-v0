@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
+import Navigation from "@/components/navigation"
 
 const getPageTitle = (isEditMode: boolean, adType?: string) => {
   if (isEditMode && adType) {
@@ -483,7 +484,9 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0">
+    <>
+    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+    <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
       <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
         <div
           className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
@@ -594,5 +597,6 @@ export default function CreateAdPage() {
         )}
       </div>
     </div>
+    </>
   )
 }

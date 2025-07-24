@@ -167,8 +167,11 @@ export default function AdvertiserProfilePage() {
 
   const getDuration = (duration) => {
     if (duration == null || duration <= 0) return ""
-    if (duration > 60) return (duration / 60 / 60).toString() + " mins"
-    return duration.toString() + " mins"
+
+    const newDuration = duration / 60 / 60;
+    if (newDuration < 1) return "< 1 min"
+    
+    return newDuration.toString() + " mins"
   }
 
   const CURRENT_USER = USER
@@ -184,6 +187,7 @@ export default function AdvertiserProfilePage() {
   return (
     <div>
       <Navigation title="Back" isVisible={false} />
+      <div className="px-[24px]">
       <div className="flex flex-col md:flex-row justify-between">
         <div className="container mx-auto pb-6">
           <div className="flex flex-col md:flex-row md:items-start gap-4">
@@ -416,6 +420,7 @@ export default function AdvertiserProfilePage() {
         ad={selectedAd}
         orderType={orderType}
       />
+      </div>
     </div>
   )
 }
