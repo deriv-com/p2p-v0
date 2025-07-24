@@ -382,7 +382,7 @@ export default function CreateAdPage() {
           alertConfig = {
             title: "Insufficient balance",
             description: "You don't have enough balance to create this ad.",
-            confirmText: "Check Balance",
+            confirmText: "Update",
           }
         } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
           alertConfig = {
