@@ -188,23 +188,7 @@ export default function AdsPage() {
           <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
         )}
       </div>
-      {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-      {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
-        <StatusBottomSheet
-          isOpen
-          onClose={handleCloseStatusModal}
-          type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
-          message={
-            statusData.success === "create"
-              ? `You've successfully created Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
-              : `You've successfully updated Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nYour changes have been saved and are now live.`
-          }
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
-        />
-      )}
+
     </div>
     </>
   )
