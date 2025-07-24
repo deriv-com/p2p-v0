@@ -1,93 +1,106 @@
-import { Info } from "lucide-react"
+"use client"
 
-interface StatCardProps {
-  title: string
-  value: string | number
-  hasInfo?: boolean
-}
+import { useState, useEffect } from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { ProfileAPI } from "../api"
+import type { UserStats } from "../api/api-user-stats"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
-function StatCard({ title, value, hasInfo = false }: StatCardProps) {
-  return (
-    <div className="py-6">
-      <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
-        {title}
-        {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
-      </div>
-      <div className="font-bold text-black text-base leading-6 tracking-normal">
-        {value !== undefined && value !== null ? value : "N/A"}
-      </div>
-    </div>
-  )
-}
-
-interface StatsGridProps {
-  stats:
-    | {
-        buyCompletion: { rate: string; period: string }
-        sellCompletion: { rate: string; period: string }
-        avgPayTime: { time: string; period: string }
-        avgReleaseTime: { time: string; period: string }
-        tradePartners: number
-        totalOrders30d: number
-        totalOrdersLifetime: number
-        tradeVolume30d: { amount: string; currency: string; period: string }
-        tradeVolumeLifetime: { amount: string; currency: string }
-      }
-    | null
-    | undefined
-}
-
-export default function StatsGrid({ stats }: StatsGridProps) {
-  const defaultStats = {
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
+export default function StatsGrid() {
+  const { showWarningDialog } = useAlertDialog()
+  const [userStats, setUserStats] = useState<UserStats>({
+    buyCompletion: { rate: "-", period: "(30d)" },
+    sellCompletion: { rate: "-", period: "(30d)" },
+    avgPayTime: { time: "-", period: "(30d)" },
+    avgReleaseTime: { time: "-", period: "(30d)" },
     tradePartners: 0,
     totalOrders30d: 0,
     totalOrdersLifetime: 0,
     tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
     tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
+  })
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const loadUserStats = async () => {
+      try {
+        setIsLoading(true)
+        const response = await ProfileAPI.UserStats.fetchUserStats()
+
+        if (response.error) {
+          showWarningDialog({
+            title: "Error",
+            description: response.error,
+          })
+        }
+
+        setUserStats(response.data)
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Failed to load stats"
+        showWarningDialog({
+          title: "Error",
+          description: errorMessage,
+        })
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    loadUserStats()
+  }, [showWarningDialog])
+
+  const stats = [
+    {
+      title: `Buy completion ${userStats.buyCompletion.period}`,
+      value: userStats.buyCompletion.rate,
+    },
+    {
+      title: `Sell completion ${userStats.sellCompletion.period}`,
+      value: userStats.sellCompletion.rate,
+    },
+    {
+      title: `Avg. pay time ${userStats.avgPayTime.period}`,
+      value: userStats.avgPayTime.time,
+    },
+    {
+      title: `Avg. release time ${userStats.avgReleaseTime.period}`,
+      value: userStats.avgReleaseTime.time,
+    },
+    {
+      title: "Trade partners",
+      value: userStats.tradePartners.toString(),
+    },
+    {
+      title: `Trade volume ${userStats.tradeVolume30d.period}`,
+      value: `${userStats.tradeVolume30d.currency} ${userStats.tradeVolume30d.amount}`,
+    },
+  ]
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-2 gap-4">
+        {[...Array(6)].map((_, i) => (
+          <Card key={i} className="animate-pulse">
+            <CardContent className="p-4">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+              <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
   }
 
-  const displayStats = stats || defaultStats
-
   return (
-    <div className="bg-slate-1500 rounded-lg px-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
-        <StatCard
-          title={`Buy completion ${displayStats.buyCompletion.period}`}
-          value={displayStats.buyCompletion.rate}
-        />
-        <StatCard
-          title={`Sell completion ${displayStats.sellCompletion.period}`}
-          value={displayStats.sellCompletion.rate}
-        />
-        <StatCard title="Trade partners" value={displayStats.tradePartners} hasInfo={true} />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
-        <StatCard
-          title={`Trade volume ${displayStats.tradeVolume30d.period}`}
-          value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
-          hasInfo={true}
-        />
-        <StatCard
-          title="Trade volume (Lifetime)"
-          value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
-          hasInfo={true}
-        />
-        <StatCard title={`Avg. pay time ${displayStats.avgPayTime.period}`} value={displayStats.avgPayTime.time} />
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3">
-        <StatCard title={`Total orders ${displayStats.buyCompletion.period}`} value={displayStats.totalOrders30d} />
-        <StatCard title="Total orders (Lifetime)" value={displayStats.totalOrdersLifetime} />
-        <StatCard
-          title={`Avg. release time ${displayStats.avgReleaseTime.period}`}
-          value={displayStats.avgReleaseTime.time}
-        />
-      </div>
+    <div className="grid grid-cols-2 gap-4">
+      {stats.map((stat, index) => (
+        <Card key={index}>
+          <CardContent className="p-4">
+            <p className="text-sm text-gray-600 mb-1">{stat.title}</p>
+            <p className="text-lg font-semibold">{stat.value}</p>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   )
 }
