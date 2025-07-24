@@ -53,21 +53,20 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       maxAmount: !!maxAmount,
     })
   }
-
-  // Function to format value to maximum 2 decimal places
+  
   const formatToTwoDecimals = (value: string): string => {
     if (!value) return value
 
-    // Remove any non-numeric characters except decimal point
+
     const cleanValue = value.replace(/[^0-9.]/g, "")
 
-    // Handle multiple decimal points - keep only the first one
+    
     const parts = cleanValue.split(".")
     if (parts.length > 2) {
       return parts[0] + "." + parts.slice(1).join("")
     }
 
-    // If there's a decimal point, limit to 2 decimal places
+
     if (parts.length === 2) {
       return parts[0] + "." + parts[1].slice(0, 2)
     }
