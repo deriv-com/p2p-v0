@@ -15,6 +15,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
+import { ComplaintForm } from "@/components/complaint"
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -29,6 +30,7 @@ export default function OrderDetailsPage() {
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
+  const [showComplaintForm, setShowComplaintForm] = useState(false)
   const { isConnected, joinChannel } = useWebSocketContext()
 
   useEffect(() => {
@@ -103,6 +105,11 @@ export default function OrderDetailsPage() {
 
   const handleSubmitReview = () => {
     setShowRatingSidebar(false)
+    fetchOrderDetails()
+  }
+
+  const handleSubmitComplaint = () => {
+    setShowComplaintForm(false)
     fetchOrderDetails()
   }
 
@@ -296,7 +303,6 @@ export default function OrderDetailsPage() {
                 )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
-          
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
                       <div className="flex-shrink-0">
                         <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
@@ -310,6 +316,13 @@ export default function OrderDetailsPage() {
                         Rate transaction
                       </Button>
                     </div>
+                  </div>
+                )}
+                {order.status === "timed_out" && (
+                  <div className="py-4 flex justify-end">
+                    <Button variant="outline" onClick={() => setShowComplaintForm(true)}>
+                      Complain
+                    </Button>
                   </div>
                 )}
               </div>
@@ -374,6 +387,7 @@ export default function OrderDetailsPage() {
         </div>
       )}
 
+      <ComplaintForm isOpen={showComplaintForm} onClose={() => setShowComplaintForm(false)} onSubmit={handleSubmitComplaint} orderId={orderId} />
       <RatingSidebar
         isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
