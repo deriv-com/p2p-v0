@@ -235,7 +235,7 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    const body = JSON.stringify({ reason })
+    const body = JSON.stringify({ dispute_reason: reason })
 
     const response = await fetch(url, {
       method: "POST",
