@@ -109,7 +109,7 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" && (
+              {activeTab === "active" && !isMobile (
                 <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
               )}
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
@@ -161,9 +161,9 @@ export default function OrdersPage() {
                     {formatStatus(order.status, order.type)}
                   </div>
                 </TableCell>
-                {activeTab === "active" && (
+                {(activeTab === "active" && !isMobile) && (
                   <TableCell className="py-4 px-4 align-top">
-                    {((order.status === "pending_payment" || order.status === "pending_release") && !isMobile)  && (
+                    {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
                   </TableCell>
