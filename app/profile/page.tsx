@@ -60,6 +60,18 @@ export default function ProfilePage() {
           headers,
         })
 
+        const responseData = await response.json()
+
+        // Check for API errors first (similar to api-user-stats.ts)
+        if (responseData.errors && responseData.errors.length > 0) {
+          const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
+          showWarningDialog({
+            title: "Error",
+            description: errorMessage,
+          })
+          return
+        }
+
         if (!response.ok) {
           const errorMessage = `Failed to fetch user data: ${response.status} ${response.statusText}`
           showWarningDialog({
@@ -68,8 +80,6 @@ export default function ProfilePage() {
           })
           throw new Error(errorMessage)
         }
-
-        const responseData = await response.json()
 
         if (responseData && responseData.data) {
           const data = responseData.data
@@ -113,6 +123,11 @@ export default function ProfilePage() {
               },
             },
           }))
+        } else {
+          showWarningDialog({
+            title: "Error",
+            description: "No user data found",
+          })
         }
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "Failed to load user data"
@@ -125,7 +140,7 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  }, [])
+  }, [showWarningDialog])
 
   return (
     <div className=" md:px-4">
