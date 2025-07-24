@@ -124,7 +124,7 @@ export default function OrdersPage() {
                 onClick={() => navigateToOrderDetails(order.id)}
               >
                 {activeTab === "past" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top text-slate-600 text-xs">
+                  <TableCell className="py-0 lg:py-4 px-4 align-top text-slate-600 text-xs row-start-4">
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
