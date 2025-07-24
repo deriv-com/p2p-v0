@@ -1,7 +1,6 @@
 "use client"
 
-//import { usePathname } from "next/navigation"
-import { useRouter } from 'next/navigation'
+import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
@@ -9,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 export default function Header() {
-  //const pathname = usePathname()
+  const pathname = usePathname()
   const navItems = [
     { name: "Market", href: "/" },
     { name: "Orders", href: "/orders" },
@@ -17,10 +16,6 @@ export default function Header() {
     { name: "Wallet", href: "/wallet" },
     { name: "Profile", href: "/profile" },
 ]
-
-  const router = useRouter()
-  if (!router.isReady) return null;
-  const pathname = router.pathname;
 
   return (
     <header className="hidden md:flex justify-between items-center px-[24px] py-[16px] z-10">
