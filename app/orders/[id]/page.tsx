@@ -317,7 +317,7 @@ export default function OrderDetailsPage() {
                                   <div
                                     className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
                                   ></div>
-                                  <span className="font-medium">
+                                  <span className="text-sm">
                                     {method.display_name}
                                   </span>
                                 </div>
