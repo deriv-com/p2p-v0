@@ -125,7 +125,7 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  }, ])
+  }, [])
 
   return (
     <div className=" md:px-4">
