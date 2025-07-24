@@ -145,10 +145,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const handleDelete = (adId: string) => {
     showAlert({
       title: "Delete ad?",
-      message: "You will not be able to restore it.",
-      primaryButtonText: "Delete",
-      secondaryButtonText: "Cancel",
-      onPrimaryButtonClick: () => confirmDelete(adId),
+      description: "You will not be able to restore it.",
+      confirmText: "Delete",
+      onConfirm: () => confirmDelete(adId),
     })
   }
 

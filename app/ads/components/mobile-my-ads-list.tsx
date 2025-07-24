@@ -133,10 +133,9 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
   const handleDelete = (adId: string) => {
     showAlert({
       title: "Delete ad?",
-      message: "You will not be able to restore it.",
-      primaryButtonText: "Delete",
-      secondaryButtonText: "Cancel",
-      onPrimaryButtonClick: () => confirmDelete(adId),
+      description: "You will not be able to restore it.",
+      confirmText: "Delete",
+      onConfirm: () => confirmDelete(adId),
     })
   }
 
