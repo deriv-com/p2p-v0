@@ -209,6 +209,7 @@ export default function OrdersPage() {
   )
 
   return (
+    <>
     {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
     <div className="flex flex-col h-full">
       <div className="flex-shrink-0">
@@ -262,5 +263,6 @@ export default function OrdersPage() {
         onSubmit={handleRatingSubmit}
       />
     </div>
+    </>
   )
 }
