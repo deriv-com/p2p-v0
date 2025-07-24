@@ -159,13 +159,13 @@ export default function OrderDetailsPage() {
           {val.value && <p className="text-xs text-slate-500 mb-1">{displayKey}</p>}
           {isCopyable ? (
             <div className="flex items-center justify-between">
-              <p className="font-medium">{val.value}</p>
+              <p className="text-sm">{val.value}</p>
               <button onClick={() => copyToClipboard(String(val.value))} className="p-1 hover:bg-gray-100 rounded">
                 <Copy className="h-4 w-4 text-slate-500" />
               </button>
             </div>
           ) : (
-            <p className="font-medium">{val.value}</p>
+            <p className="text-sm">{val.value}</p>
           )}
         </div>,
       )
