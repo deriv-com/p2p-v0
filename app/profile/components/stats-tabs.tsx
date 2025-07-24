@@ -23,7 +23,7 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const router = useRouter()
-  const { showAlert } = useAlertDialog()
+  const { showAlert, showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -60,13 +60,22 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     const loadUserStats = async () => {
       try {
         setIsLoadingStats(true)
-        const stats = await ProfileAPI.UserStats.fetchUserStats()
-        setUserStats(stats)
+        const result = await ProfileAPI.UserStats.fetchUserStats()
+
+        if ("error" in result) {
+          const errorMessage = Array.isArray(result.error) ? result.error.join(", ") : result.error
+          showWarningDialog({
+            title: "Error",
+            description: errorMessage,
+          })
+        } else {
+          setUserStats(result)
+        }
       } catch (error) {
-        showAlert({
-          type: "warning",
+        const errorMessage = error instanceof Error ? error.message : "Failed to load user stats"
+        showWarningDialog({
           title: "Error",
-          description: error instanceof Error ? error.message : "Failed to load user stats",
+          description: errorMessage,
         })
       } finally {
         setIsLoadingStats(false)
@@ -74,7 +83,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
 
     loadUserStats()
-  }, [showAlert])
+  }, [showWarningDialog])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
