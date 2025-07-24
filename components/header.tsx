@@ -1,7 +1,7 @@
 "use client"
 
 //import { usePathname } from "next/navigation"
-import { useRouter } from 'next/router';;
+import { useRouter } from 'next/navigation'
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
