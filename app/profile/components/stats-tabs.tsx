@@ -23,7 +23,7 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const router = useRouter()
-  const { showAlert, showWarningDialog } = useAlertDialog()
+  const {showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
