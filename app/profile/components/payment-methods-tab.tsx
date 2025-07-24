@@ -12,7 +12,6 @@ import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "../api"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
-import BankTransferEditPanel from "./bank-transfer-edit-panel"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
 import { StatusIndicator } from "@/components/ui/status-indicator"
@@ -64,7 +63,6 @@ export default function PaymentMethodsTab() {
       const headers = AUTH.getAuthHeader()
       const response = await fetch(url, {
         headers,
-        //credentials: "include",
         cache: "no-store",
       })
 
@@ -78,7 +76,7 @@ export default function PaymentMethodsTab() {
       try {
         data = JSON.parse(responseText)
       } catch (e) {
-        console.error("Failed to parse payment methods response:", e);
+        console.error("Failed to parse payment methods response:", e)
         data = { data: [] }
       }
 
@@ -126,9 +124,23 @@ export default function PaymentMethodsTab() {
   }, [fetchPaymentMethods])
 
   const handleEditPaymentMethod = (method: PaymentMethod) => {
+    const transformedDetails: Record<string, { display_name: string; required: boolean; value: string }> = {}
+
+    if (method.details) {
+      Object.entries(method.details).forEach(([key, value]: [string, any]) => {
+        if (value && typeof value === "object" && "value" in value) {
+          transformedDetails[key] = {
+            display_name: value.display_name || key.charAt(0).toUpperCase() + key.slice(1),
+            required: value.required || false,
+            value: value.value || "",
+          }
+        }
+      })
+    }
+
     const cleanedMethod = {
       ...method,
-      details: { ...method.details },
+      details: transformedDetails,
     }
 
     setEditPanel({
@@ -142,13 +154,13 @@ export default function PaymentMethodsTab() {
       setIsEditing(true)
 
       const paymentMethod = paymentMethods.find((m) => m.id === id)
-      const formattedFields: Record<string, any> = { ...fields }
 
-      if (paymentMethod) {
-        formattedFields.method_type = paymentMethod.type
+      const payload = {
+        method: paymentMethod.type,
+        fields: { ...fields },
       }
 
-      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, formattedFields)
+      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
 
       if (result.success) {
         setNotification({
@@ -437,23 +449,14 @@ export default function PaymentMethodsTab() {
         onCancel={cancelDeletePaymentMethod}
       />
 
-      {editPanel.show &&
-        editPanel.paymentMethod &&
-        (editPanel.paymentMethod.type === "bank_transfer" ? (
-          <BankTransferEditPanel
-            paymentMethod={editPanel.paymentMethod}
-            onClose={() => setEditPanel({ show: false, paymentMethod: null })}
-            onSave={handleSavePaymentMethod}
-            isLoading={isEditing}
-          />
-        ) : (
-          <EditPaymentMethodPanel
-            paymentMethod={editPanel.paymentMethod}
-            onClose={() => setEditPanel({ show: false, paymentMethod: null })}
-            onSave={handleSavePaymentMethod}
-            isLoading={isEditing}
-          />
-        ))}
+      {editPanel.show && editPanel.paymentMethod && (
+        <EditPaymentMethodPanel
+          paymentMethod={editPanel.paymentMethod}
+          onClose={() => setEditPanel({ show: false, paymentMethod: null })}
+          onSave={handleSavePaymentMethod}
+          isLoading={isEditing}
+        />
+      )}
 
       {statusModal.show && (
         <CustomStatusModal

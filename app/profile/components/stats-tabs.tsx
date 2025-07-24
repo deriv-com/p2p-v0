@@ -4,18 +4,26 @@ import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { Divider } from "@/components/ui/divider"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { PlusCircle } from "lucide-react"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import type { UserStats } from "../api/api-user-stats"
 
 interface StatsTabsProps {
   stats?: any
 }
 
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
+  const isMobile = useIsMobile()
+  const router = useRouter()
+  const {showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -27,12 +35,12 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     message: "",
   })
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<any>(
+  const [userStats, setUserStats] = useState<UserStats>(
     initialStats || {
-      buyCompletion: { rate: "N/A", period: "(30d)" },
-      sellCompletion: { rate: "N/A", period: "(30d)" },
-      avgPayTime: { time: "N/A", period: "(30d)" },
-      avgReleaseTime: { time: "N/A", period: "(30d)" },
+      buyCompletion: { rate: "-", period: "(30d)" },
+      sellCompletion: { rate: "-", period: "(30d)" },
+      avgPayTime: { time: "-", period: "(30d)" },
+      avgReleaseTime: { time: "-", period: "(30d)" },
       tradePartners: 0,
       totalOrders30d: 0,
       totalOrdersLifetime: 0,
@@ -46,80 +54,36 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const tabs = [
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
-    { id: "ads", label: "Advertisers' instruction" },
-    { id: "counterparties", label: "Counterparties" },
   ]
 
   useEffect(() => {
-    const fetchUserStats = async () => {
+    const loadUserStats = async () => {
       try {
         setIsLoadingStats(true)
-        const userId = USER.id
-        const url = `${API.baseUrl}/users/${userId}`
+        const result = await ProfileAPI.UserStats.fetchUserStats()
 
-        const headers = AUTH.getAuthHeader()
-        const response = await fetch(url, {
-          headers,
-          //credentials: "include",
-        })
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user stats: ${response.status} ${response.statusText}`)
-        }
-
-        const responseData = await response.json()
-
-        if (responseData && responseData.data) {
-          const data = responseData.data
-
-          const formatTimeAverage = (minutes) => {
-            if (!minutes || minutes <= 0) return "N/A"
-            const days = Math.floor(minutes / 1440)
-            return `${days} days`
-          }
-
-          const transformedStats = {
-            buyCompletion: {
-              rate: `${data.completion_average_30day || 0}%`,
-              period: "(30d)",
-            },
-            sellCompletion: {
-              rate: `${data.completion_average_30day || 0}%`,
-              period: "(30d)",
-            },
-            avgPayTime: {
-              time: formatTimeAverage(data.buy_time_average_30day),
-              period: "(30d)",
-            },
-            avgReleaseTime: {
-              time: formatTimeAverage(data.release_time_average_30day),
-              period: "(30d)",
-            },
-            tradePartners: data.trade_partners || 0,
-            totalOrders30d: (data.buy_count_30day || 0) + (data.sell_count_30day || 0),
-            totalOrdersLifetime: data.order_count_lifetime || 0,
-            tradeVolume30d: {
-              amount: ((data.buy_amount_30day || 0) + (data.sell_amount_30day || 0)).toFixed(2),
-              currency: "USD",
-              period: "(30d)",
-            },
-            tradeVolumeLifetime: {
-              amount: data.order_amount_lifetime ? data.order_amount_lifetime.toFixed(2) : "0.00",
-              currency: "USD",
-            },
-          }
-
-          setUserStats(transformedStats)
+        if ("error" in result) {
+          const errorMessage = Array.isArray(result.error) ? result.error.join(", ") : result.error
+          showWarningDialog({
+            title: "Error",
+            description: errorMessage,
+          })
+        } else {
+          setUserStats(result)
         }
       } catch (error) {
-        console.log(error);
+        const errorMessage = error instanceof Error ? error.message : "Failed to load user stats"
+        showWarningDialog({
+          title: "Error",
+          description: errorMessage,
+        })
       } finally {
         setIsLoadingStats(false)
       }
     }
 
-    fetchUserStats()
-  }, [])
+    loadUserStats()
+  },[])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
@@ -153,6 +117,52 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     } finally {
       setIsAddingPaymentMethod(false)
     }
+  }
+
+  if (isMobile) {
+    return (
+      <div className="relative">
+        {notification.show && (
+          <CustomNotificationBanner
+            message={notification.message}
+            onClose={() => setNotification({ show: false, message: "" })}
+          />
+        )}
+
+        <div>
+          <Divider />
+
+          <div
+            onClick={() => router.push("/profile/stats")}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-sm font-normal text-gray-900">Stats</span>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
+
+          <Divider />
+
+          <div
+            onClick={() => router.push("/profile/payment-methods")}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-sm font-normal text-gray-900">Payment methods</span>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
+
+          <Divider />
+        </div>
+
+        {errorModal.show && (
+          <StatusModal
+            type="error"
+            title="Error"
+            message={errorModal.message}
+            onClose={() => setErrorModal({ show: false, message: "" })}
+          />
+        )}
+      </div>
+    )
   }
 
   return (

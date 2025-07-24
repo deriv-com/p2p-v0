@@ -5,6 +5,7 @@ import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({
@@ -45,6 +46,8 @@ export default function ProfilePage() {
     },
   })
 
+  const { showWarningDialog } = useAlertDialog()
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -57,11 +60,17 @@ export default function ProfilePage() {
           headers,
         })
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`)
-        }
-
         const responseData = await response.json()
+
+
+        if (responseData.errors && responseData.errors.length > 0) {
+          const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
+          showWarningDialog({
+            title: "Error",
+            description: errorMessage,
+          })
+          return
+        }
 
         if (responseData && responseData.data) {
           const data = responseData.data
@@ -96,18 +105,36 @@ export default function ProfilePage() {
                 max: data.daily_limits?.sell || 0,
               },
             },
+            stats: {
+              ...prevData.stats,
+              tradePartners: data.partner_count_lifetime || 0,
+              avgPayTime: {
+                time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
+                period: "(30d)",
+              },
+            },
           }))
+        } else {
+          showWarningDialog({
+            title: "Error",
+            description: "No user data found",
+          })
         }
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Failed to load user data"
+        showWarningDialog({
+          title: "Error",
+          description: errorMessage,
+        })
         console.error("Error fetching user data:", error)
       }
     }
 
     fetchUserData()
-  }, [])
+  },[])
 
   return (
-    <div className="px-4 md:px-4">
+    <div className=" md:px-4">
       <div className="flex flex-col md:flex-row gap-6 h-full">
         <div className="flex-1 order-1">
           <UserInfo
@@ -119,8 +146,8 @@ export default function ProfilePage() {
             isVerified={userData.isVerified}
           />
           <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
-          <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
-        </div>
+            <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
+          </div>
           <StatsTabs stats={userData.stats} />
         </div>
       </div>
