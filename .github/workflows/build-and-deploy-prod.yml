@@ -9,6 +9,10 @@ concurrency:
     group: cloudflare-pages-build-production
     cancel-in-progress: true
 
+permissions:
+    contents: read
+    pages: write
+
 jobs:
     build_to_cloudflare_pages:
         timeout-minutes: 30
