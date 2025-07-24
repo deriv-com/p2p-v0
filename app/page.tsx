@@ -133,6 +133,7 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   return (
+    <>
     {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex-shrink-0">
@@ -405,5 +406,6 @@ export default function BuySellPage() {
         orderType={activeTab}
       />
     </div>
+    </>
   )
 }
