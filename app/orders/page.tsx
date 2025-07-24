@@ -128,7 +128,7 @@ export default function OrdersPage() {
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2">
+                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2 col-span-full">
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
@@ -183,7 +183,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="lg:py-4 px-4 align-top row-start-4">
+                <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     {isMobile && <div className="text-xs">
                         {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
