@@ -1,15 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useIsMobile } from "@/hooks/use-mobile"
+import Navigation from "@/components/navigation"
 import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { USER, API, AUTH } from "@/lib/local-variables"
-import { useIsMobile } from "@/hooks/use-mobile"
-import Navigation from "@/components/navigation"
 
 export default function ProfilePage() {
-  const isMobile = useIsMobile()
   const [userData, setUserData] = useState({
     username: "",
     rating: "Not rated yet",
@@ -110,9 +109,7 @@ export default function ProfilePage() {
   }, [])
 
   return (
-    <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="px-[24px]">
+     <div className=" md:px-4">
       <div className="flex flex-col md:flex-row gap-6 h-full">
         <div className="flex-1 order-1">
           <UserInfo
@@ -130,6 +127,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
-    </>
   )
 }
