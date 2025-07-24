@@ -45,6 +45,16 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     return hasValues && hasNoErrors
   }
 
+  // Function to set touched state based on field values
+  const updateTouchedBasedOnValues = () => {
+    setTouched({
+      totalAmount: !!totalAmount,
+      fixedRate: !!fixedRate,
+      minAmount: !!minAmount,
+      maxAmount: !!maxAmount,
+    })
+  }
+
   useEffect(() => {
     const loadCurrencies = async () => {
       const currencyList = await getCurrencies()
@@ -62,6 +72,11 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
     }
   }, [initialData])
+
+  // Update touched state after initial data is set
+  useEffect(() => {
+    updateTouchedBasedOnValues()
+  }, [totalAmount, fixedRate, minAmount, maxAmount])
 
   useEffect(() => {
     const errors: ValidationErrors = {}
