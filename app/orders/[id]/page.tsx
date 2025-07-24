@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight, Copy } from "lucide-react"
+import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -161,7 +161,13 @@ export default function OrderDetailsPage() {
             <div className="flex items-center justify-between">
               <p className="text-sm">{val.value}</p>
               <button onClick={() => copyToClipboard(String(val.value))} className="p-1 hover:bg-gray-100 rounded">
-                <Copy className="h-4 w-4 text-slate-500" />
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-wqbbhXkXEjyyXuIUqifiyCx4jNouZ1.png"
+                  alt="Copy"
+                  width={16}
+                  height={16}
+                  className="text-slate-500"
+                />
               </button>
             </div>
           ) : (
@@ -314,12 +320,8 @@ export default function OrderDetailsPage() {
                             <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
                               <AccordionTrigger className="px-4 py-3 hover:no-underline">
                                 <div className="flex items-center gap-3">
-                                  <div
-                                    className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
-                                  ></div>
-                                  <span className="text-sm">
-                                    {method.display_name}
-                                  </span>
+                                  <div className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}></div>
+                                  <span className="text-sm">{method.display_name}</span>
                                 </div>
                               </AccordionTrigger>
                               <AccordionContent className="px-4 pb-4">
