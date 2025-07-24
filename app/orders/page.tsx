@@ -128,7 +128,7 @@ export default function OrdersPage() {
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top row-start-2">
+                <TableCell className="lg:py-4 px-4 align-top row-start-2">
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
@@ -149,12 +149,12 @@ export default function OrdersPage() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top text-base row-start-3">
+                <TableCell className="lg:py-4 px-4 align-top text-base row-start-3">
                   <div className="font-bold">
                     {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top row-start-1">
+                <TableCell className="lg:py-4 px-4 align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
@@ -162,14 +162,14 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="py-4 px-4 align-top row-start-1">
+                  <TableCell className="lg:py-4 px-4 align-top row-start-1">
                     {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
-                  <TableCell className="py-4 px-4 align-top row-start-1">
+                  <TableCell className="lg:py-4 px-4 align-top row-start-1">
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
@@ -183,7 +183,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top row-start-4">
+                <TableCell className="lg:py-4 px-4 align-top row-start-4">
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
