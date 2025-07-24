@@ -52,13 +52,13 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
             </div>
           ))}
         </RadioGroup>
-        <div className="text-sm">
+        <div className="text-base">
             If your issue isn't listed, contact us via live chat for help.
         </div>
       </div>
 
       <div className="p-4 border-t md:border-t-0">
-        <Button vaiant="black" onClick={handleSubmit} disabled={!selectedOption || isSubmitting}className="w-full disabled:opacity-[0.24]" size="lg">Submit
+        <Button variant="black" onClick={handleSubmit} disabled={!selectedOption || isSubmitting}className="w-full disabled:opacity-[0.24]" size="lg">Submit
         </Button>
       </div>
     </div>
