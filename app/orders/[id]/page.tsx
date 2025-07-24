@@ -156,7 +156,7 @@ export default function OrderDetailsPage() {
 
       fields.push(
         <div key={key}>
-          {val.value && <p className="text-sm text-slate-500 mb-1">{displayKey}</p>}
+          {val.value && <p className="text-xs text-slate-500 mb-1">{displayKey}</p>}
           {isCopyable ? (
             <div className="flex items-center justify-between">
               <p className="font-medium">{val.value}</p>
