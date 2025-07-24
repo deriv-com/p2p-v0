@@ -31,7 +31,7 @@ export default function StatsPage() {
     const loadUserStats = async () => {
       try {
         setIsLoading(true)
-        setError(null)
+
         const result = await ProfileAPI.UserStats.fetchUserStats()
 
         if ("error" in result) {
