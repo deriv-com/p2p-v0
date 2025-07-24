@@ -128,7 +128,7 @@ export default function OrdersPage() {
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="py-4 px-4 align-top row-start-2">
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
@@ -149,7 +149,7 @@ export default function OrdersPage() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top text-base">
+                <TableCell className="py-4 px-4 align-top text-base row-start-3">
                   <div className="font-bold">
                     {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
@@ -183,7 +183,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="py-4 px-4 align-top row-start-4">
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
