@@ -12,42 +12,19 @@ export interface UserStats {
   tradeVolumeLifetime: { amount: string; currency: string }
 }
 
-export interface UserStatsResponse {
-  data: UserStats
-  error: string | null
-}
-
-export const fetchUserStats = async (): Promise<UserStatsResponse> => {
-  const userId = USER.id
-  const url = `${API.baseUrl}/users/${userId}`
-  const headers = AUTH.getAuthHeader()
-
-  let error: string | null = null
-
-  const defaultStats: UserStats = {
-    buyCompletion: { rate: "-", period: "(30d)" },
-    sellCompletion: { rate: "-", period: "(30d)" },
-    avgPayTime: { time: "-", period: "(30d)" },
-    avgReleaseTime: { time: "-", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  }
-
+export const fetchUserStats = async (): Promise<UserStats | { error: string }> => {
   try {
+    const userId = USER.id
+    const url = `${API.baseUrl}/users/${userId}`
+    const headers = AUTH.getAuthHeader()
+
     const response = await fetch(url, {
       headers,
       cache: "no-store",
     })
 
     if (!response.ok) {
-      error = `Failed to fetch user stats: ${response.status} ${response.statusText}`
-      return {
-        data: defaultStats,
-        error,
-      }
+      return { error: `Failed to fetch user stats: ${response.status} ${response.statusText}` }
     }
 
     const responseData = await response.json()
@@ -58,9 +35,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
       const formatTimeAverage = (seconds: number) => {
         if (!seconds || seconds <= 0) return "-"
         const mins = seconds / 60
-
         if (mins < 1) return "< 1 min"
-
         return `${Math.floor(mins)} min${Math.floor(mins) > 1 ? "s" : ""}`
       }
 
@@ -95,21 +70,11 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
         },
       }
 
-      return {
-        data: transformedStats,
-        error,
-      }
+      return transformedStats
     }
 
-    return {
-      data: defaultStats,
-      error,
-    }
-  } catch (catchError) {
-    error = catchError instanceof Error ? catchError.message : "An unexpected error occurred"
-    return {
-      data: defaultStats,
-      error,
-    }
+    return { error: "No user data found" }
+  } catch (err) {
+    return { error: `Unexpected error: ${(err as Error).message}` }
   }
 }

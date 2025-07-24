@@ -14,7 +14,7 @@ function StatCard({ title, value, hasInfo = false }: StatCardProps) {
         {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
       </div>
       <div className="font-bold text-black text-base leading-6 tracking-normal">
-        {value !== undefined && value !== null ? value : "-"}
+        {value !== undefined && value !== null ? value : "N/A"}
       </div>
     </div>
   )
@@ -39,10 +39,10 @@ interface StatsGridProps {
 
 export default function StatsGrid({ stats }: StatsGridProps) {
   const defaultStats = {
-    buyCompletion: { rate: "-", period: "(30d)" },
-    sellCompletion: { rate: "-", period: "(30d)" },
-    avgPayTime: { time: "-", period: "(30d)" },
-    avgReleaseTime: { time: "-", period: "(30d)" },
+    buyCompletion: { rate: "N/A", period: "(30d)" },
+    sellCompletion: { rate: "N/A", period: "(30d)" },
+    avgPayTime: { time: "N/A", period: "(30d)" },
+    avgReleaseTime: { time: "N/A", period: "(30d)" },
     tradePartners: 0,
     totalOrders30d: 0,
     totalOrdersLifetime: 0,
@@ -56,42 +56,36 @@ export default function StatsGrid({ stats }: StatsGridProps) {
     <div className="bg-slate-1500 rounded-lg px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
-          title={`Buy completion ${displayStats.buyCompletion?.period || "(30d)"}`}
-          value={displayStats.buyCompletion?.rate || "-"}
+          title={`Buy completion ${displayStats.buyCompletion.period}`}
+          value={displayStats.buyCompletion.rate}
         />
         <StatCard
-          title={`Sell completion ${displayStats.sellCompletion?.period || "(30d)"}`}
-          value={displayStats.sellCompletion?.rate || "-"}
+          title={`Sell completion ${displayStats.sellCompletion.period}`}
+          value={displayStats.sellCompletion.rate}
         />
         <StatCard title="Trade partners" value={displayStats.tradePartners} hasInfo={true} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
-          title={`Trade volume ${displayStats.tradeVolume30d?.period || "(30d)"}`}
-          value={`${displayStats.tradeVolume30d?.currency || "USD"} ${displayStats.tradeVolume30d?.amount || "0.00"}`}
+          title={`Trade volume ${displayStats.tradeVolume30d.period}`}
+          value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
           hasInfo={true}
         />
         <StatCard
           title="Trade volume (Lifetime)"
-          value={`${displayStats.tradeVolumeLifetime?.currency || "USD"} ${displayStats.tradeVolumeLifetime?.amount || "0.00"}`}
+          value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
           hasInfo={true}
         />
-        <StatCard
-          title={`Avg. pay time ${displayStats.avgPayTime?.period || "(30d)"}`}
-          value={displayStats.avgPayTime?.time || "-"}
-        />
+        <StatCard title={`Avg. pay time ${displayStats.avgPayTime.period}`} value={displayStats.avgPayTime.time} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3">
-        <StatCard
-          title={`Total orders ${displayStats.buyCompletion?.period || "(30d)"}`}
-          value={displayStats.totalOrders30d}
-        />
+        <StatCard title={`Total orders ${displayStats.buyCompletion.period}`} value={displayStats.totalOrders30d} />
         <StatCard title="Total orders (Lifetime)" value={displayStats.totalOrdersLifetime} />
         <StatCard
-          title={`Avg. release time ${displayStats.avgReleaseTime?.period || "(30d)"}`}
-          value={displayStats.avgReleaseTime?.time || "-"}
+          title={`Avg. release time ${displayStats.avgReleaseTime.period}`}
+          value={displayStats.avgReleaseTime.time}
         />
       </div>
     </div>
