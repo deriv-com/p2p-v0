@@ -32,7 +32,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
       return { error: responseData.errors }
     }
 
-    // ✅ If response is not OK and no errors key, fallback:
+    
     if (!response.ok) {
       return { error: [`Failed to fetch user stats: ${response.status} ${response.statusText}`] }
     }
