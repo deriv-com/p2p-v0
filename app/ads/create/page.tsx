@@ -376,7 +376,7 @@ export default function CreateAdPage() {
             title: "Ad limit reached",
             description:
               "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
-            confirmText: "Go to My Ads",
+            confirmText: "Ok",
           }
         } else if (error.name === "InsufficientBalance") {
           alertConfig = {
