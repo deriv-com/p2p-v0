@@ -44,7 +44,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     const hasNoErrors = Object.keys(formErrors).length === 0
     return hasValues && hasNoErrors
   }
-  
+
   const updateTouchedBasedOnValues = () => {
     setTouched({
       totalAmount: !!totalAmount,
@@ -72,7 +72,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     }
   }, [initialData])
 
-  // Update touched state after initial data is set
+  
   useEffect(() => {
     updateTouchedBasedOnValues()
   }, [totalAmount, fixedRate, minAmount, maxAmount])
