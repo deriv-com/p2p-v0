@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname } from "next/navigation"
+import { useRouter } from 'next/router';
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
@@ -16,6 +17,10 @@ export default function Header() {
     { name: "Wallet", href: "/wallet" },
     { name: "Profile", href: "/profile" },
   ]
+  const router = useRouter();
+
+        if (!router.isReady) return null;
+  
 
   return (
     <header className="hidden md:flex justify-between items-center px-[24px] py-[16px] z-10">
