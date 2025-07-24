@@ -148,8 +148,8 @@ export default function OrderDetailsPage() {
 
     const copyableFields = ["account", "bank_code"]
 
-    Object.entries(method).forEach(([key, value]) => {
-      if (key === "method" || key === "type" || !value) return
+    Object.entries(method).forEach(([key, val]) => {
+      if (key === "method" || key === "type" || !val) return
 
       const displayKey = key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
       const isCopyable = copyableFields.includes(key.toLowerCase())
@@ -159,13 +159,13 @@ export default function OrderDetailsPage() {
           <p className="text-sm text-slate-500 mb-1">{displayKey}</p>
           {isCopyable ? (
             <div className="flex items-center justify-between">
-              <p className="font-medium">{value}</p>
-              <button onClick={() => copyToClipboard(String(value))} className="p-1 hover:bg-gray-100 rounded">
+              <p className="font-medium">{val.display_name}</p>
+              <button onClick={() => copyToClipboard(String(val.value))} className="p-1 hover:bg-gray-100 rounded">
                 <Copy className="h-4 w-4 text-slate-500" />
               </button>
             </div>
           ) : (
-            <p className="font-medium">{value}</p>
+            <p className="font-medium">{val.value}</p>
           )}
         </div>,
       )
