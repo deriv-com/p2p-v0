@@ -169,7 +169,7 @@ export default function OrdersPage() {
                   </TableCell>
                 )}
                 {activeTab === "past" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 flex justify-end lg:justify-start">
+                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 flex justify-end items-center lg:justify-start">
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
