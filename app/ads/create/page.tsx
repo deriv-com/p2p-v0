@@ -293,21 +293,13 @@ export default function CreateAdPage() {
 
         localStorage.removeItem("editAdData")
 
-        showAlert({
-          type: "success",
-          title: "Ad updated successfully",
-          description: "Your ad has been updated and is now active.",
-          confirmText: "Ok",
-          onConfirm: () => {
-            const params = new URLSearchParams({
-              success: "update",
-              type: finalData.type || "buy",
-              id: adId,
-              showStatusModal: "true",
-            })
-            window.location.href = `/ads?${params.toString()}`
-          },
+        const params = new URLSearchParams({
+          success: "update",
+          type: finalData.type || "buy",
+          id: adId,
+          showStatusModal: "true",
         })
+        window.location.href = `/ads?${params.toString()}`
       } else {
         const payload = {
           type: finalData.type || "buy",
@@ -333,21 +325,13 @@ export default function CreateAdPage() {
           throw new Error(errorMessage)
         }
 
-        showAlert({
-          type: "success",
-          title: "Ad created successfully",
-          description: "Your ad has been created and is now active.",
-          confirmText: "Ok",
-          onConfirm: () => {
-            const params = new URLSearchParams({
-              success: "create",
-              type: result.data.type,
-              id: result.data.id,
-              showStatusModal: "true",
-            })
-            window.location.href = `/ads?${params.toString()}`
-          },
+        const params = new URLSearchParams({
+          success: "create",
+          type: result.data.type,
+          id: result.data.id,
+          showStatusModal: "true",
         })
+        window.location.href = `/ads?${params.toString()}`
       }
     } catch (error) {
       let alertConfig = {
