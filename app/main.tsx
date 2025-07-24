@@ -52,10 +52,10 @@ export default function Main({
         {isHeaderVisible && <Sidebar />}
         <div className="flex-1">
           {isHeaderVisible && <Header />}
-          <div className="container mx-auto px-[24px]">{children}</div>
+          <div className="container mx-auto px-[24px] pt-[8px]">{children}</div>
         </div>
       </div>
-      <div className="md:hidden container mx-auto p-[24px] pt-[8px] h-[calc(100%-2rem)] relative">
+      <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
