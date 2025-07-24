@@ -160,7 +160,7 @@ export default function OrderDetailsPage() {
           {isCopyable ? (
             <div className="flex items-center justify-between">
               <p className="text-sm">{val.value}</p>
-              <Button onClick={() => copyToClipboard(String(val.value))} variant="ghost" size="sm">
+              <Button onClick={() => copyToClipboard(String(val.value))} variant="ghost" size="sm" className="p-0">
                 <Image src="/icons/copy-icon.png" alt="Copy" width={16} height={16} className="text-slate-500" />
               </Button>
             </div>
