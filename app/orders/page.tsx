@@ -154,7 +154,7 @@ export default function OrdersPage() {
                     {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="py-4 px-4 align-top row-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
