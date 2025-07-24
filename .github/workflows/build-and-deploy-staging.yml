@@ -5,6 +5,9 @@ on:
         branches:
             - 'main'
 
+permissions:
+    contents: read
+
 concurrency:
     group: cloudflare-pages-build-staging
     cancel-in-progress: true
