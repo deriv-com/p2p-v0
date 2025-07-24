@@ -9,13 +9,14 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
-import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
+import { formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
 import { ComplaintForm } from "@/components/complaint"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -127,6 +128,50 @@ export default function OrderDetailsPage() {
     }
 
     return deadline.toLocaleDateString("en-GB", options)
+  }
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      toast({
+        title: "Copied to clipboard",
+        description: "The text has been copied to your clipboard.",
+        variant: "default",
+      })
+    } catch (err) {
+      console.error("Failed to copy text: ", err)
+    }
+  }
+
+  const renderPaymentMethodFields = (method: any) => {
+    const fields = []
+
+    const copyableFields = ["account", "bank_code"]
+
+    Object.entries(method).forEach(([key, val]) => {
+      if (key === "method" || key === "type" || !val) return
+
+      const displayKey = key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+      const isCopyable = copyableFields.includes(key.toLowerCase())
+
+      fields.push(
+        <div key={key}>
+          {val.value && <p className="text-xs text-slate-500 mb-1">{displayKey}</p>}
+          {isCopyable ? (
+            <div className="flex items-center justify-between">
+              <p className="text-sm">{val.value}</p>
+              <Button onClick={() => copyToClipboard(String(val.value))} variant="ghost" size="sm" className="p-0 h-auto">
+                <Image src="/icons/copy-icon.png" alt="Copy" width={16} height={16} className="text-slate-500" />
+              </Button>
+            </div>
+          ) : (
+            <p className="text-sm">{val.value}</p>
+          )}
+        </div>,
+      )
+    })
+
+    return fields
   }
 
   useEffect(() => {
@@ -261,12 +306,32 @@ export default function OrderDetailsPage() {
                         </p>
                       </div>
                     </div>
+
+                    {order?.payment_method_details && order.payment_method_details.length > 0 && (
+                      <div className="bg-white border rounded-lg mt-6">
+                        <Accordion type="single" collapsible className="w-full">
+                          {order.payment_method_details.map((method, index) => (
+                            <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
+                              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                                <div className="flex items-center gap-3">
+                                  <div className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}></div>
+                                  <span className="text-sm">{method.display_name}</span>
+                                </div>
+                              </AccordionTrigger>
+                              <AccordionContent className="px-4 pb-4">
+                                <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </Accordion>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                  <div className="py-4 flex gap-4">
+                  <div className="py-8 flex gap-4">
                     <Button
                       variant="outline"
                       className="flex-1 bg-transparent"
@@ -387,7 +452,12 @@ export default function OrderDetailsPage() {
         </div>
       )}
 
-      <ComplaintForm isOpen={showComplaintForm} onClose={() => setShowComplaintForm(false)} onSubmit={handleSubmitComplaint} orderId={orderId} />
+      <ComplaintForm
+        isOpen={showComplaintForm}
+        onClose={() => setShowComplaintForm(false)}
+        onSubmit={handleSubmitComplaint}
+        orderId={orderId}
+      />
       <RatingSidebar
         isOpen={showRatingSidebar}
         onClose={() => setShowRatingSidebar(false)}
