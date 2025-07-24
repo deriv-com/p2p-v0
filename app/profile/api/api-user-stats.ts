@@ -12,7 +12,9 @@ export interface UserStats {
   tradeVolumeLifetime: { amount: string; currency: string }
 }
 
-export const fetchUserStats = async (): Promise<UserStats | { error: string }> => {
+export type UserStatsResponse = UserStats | { error: any }
+
+export const fetchUserStats = async (): Promise<UserStatsResponse> => {
   try {
     const userId = USER.id
     const url = `${API.baseUrl}/users/${userId}`
@@ -23,11 +25,17 @@ export const fetchUserStats = async (): Promise<UserStats | { error: string }> =
       cache: "no-store",
     })
 
-    if (!response.ok) {
-      return { error: `Failed to fetch user stats: ${response.status} ${response.statusText}` }
+    const responseData = await response.json()
+
+    // ✅ If the response has an `errors` key, always return it:
+    if (responseData.errors && responseData.errors.length > 0) {
+      return { error: responseData.errors }
     }
 
-    const responseData = await response.json()
+    // ✅ If response is not OK and no errors key, fallback:
+    if (!response.ok) {
+      return { error: [`Failed to fetch user stats: ${response.status} ${response.statusText}`] }
+    }
 
     if (responseData && responseData.data) {
       const data = responseData.data
@@ -73,8 +81,8 @@ export const fetchUserStats = async (): Promise<UserStats | { error: string }> =
       return transformedStats
     }
 
-    return { error: "No user data found" }
+    return { error: ["No user data found"] }
   } catch (err) {
-    return { error: `Unexpected error: ${(err as Error).message}` }
+    return { error: [`Unexpected error: ${(err as Error).message}`] }
   }
 }
