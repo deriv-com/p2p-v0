@@ -362,14 +362,14 @@ export default function CreateAdPage() {
             title: "You already have an ad with this rate.",
             description:
               "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
-            confirmText: "Update Rate",
+            confirmText: "Update ad",
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           alertConfig = {
             title: "You already have an ad with this range.",
             description:
               "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
-            confirmText: "Update Range",
+            confirmText: "Update ad",
           }
         } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
           alertConfig = {
