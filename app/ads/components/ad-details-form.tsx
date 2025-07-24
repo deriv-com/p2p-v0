@@ -44,6 +44,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     const hasNoErrors = Object.keys(formErrors).length === 0
     return hasValues && hasNoErrors
   }
+  
   const updateTouchedBasedOnValues = () => {
     setTouched({
       totalAmount: !!totalAmount,
