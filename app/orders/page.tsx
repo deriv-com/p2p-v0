@@ -154,7 +154,7 @@ export default function OrdersPage() {
                     {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
-                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1">
+                <TableCell className="lg:py-4 px-4 align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
@@ -162,7 +162,7 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                  <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
