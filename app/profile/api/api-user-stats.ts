@@ -27,7 +27,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
 
     const responseData = await response.json()
 
-    // ✅ If the response has an `errors` key, always return it:
+    
     if (responseData.errors && responseData.errors.length > 0) {
       return { error: responseData.errors }
     }
