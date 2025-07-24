@@ -162,7 +162,7 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="py-4 px-4 align-top">
+                  <TableCell className="py-4 px-4 align-top row-start-1">
                     {(order.status === "pending_payment" || order.status === "pending_release")  && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                   )}
