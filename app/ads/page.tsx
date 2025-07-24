@@ -108,7 +108,7 @@ export default function AdsPage() {
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-      <div className="flex flex-col h-screen bg-white px-[24px]">
+      <div className="flex flex-col h-screen bg-white px-[16px]">
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
