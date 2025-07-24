@@ -62,7 +62,6 @@ export default function ProfilePage() {
 
         const responseData = await response.json()
 
-
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
           showWarningDialog({
@@ -131,10 +130,10 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  },[])
+  }, [])
 
   return (
-    <div className=" md:px-4">
+    <div className="px-4 md:px-4">
       <div className="flex flex-col md:flex-row gap-6 h-full">
         <div className="flex-1 order-1">
           <UserInfo
