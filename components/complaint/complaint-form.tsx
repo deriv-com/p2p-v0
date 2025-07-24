@@ -45,7 +45,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintP
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           {COMPLAINT_OPTIONS.map((option) => (
             <div key={option.id} className="flex items-start space-x-3">
-              <RadioGroupItem value={option.value} id={option.id} className="mt-1 border-grayscale-100" />
+              <RadioGroupItem value={option.value} id={option.id} className="mt-1 border-grayscale-100 text-black" />
               <Label htmlFor={option.id} className="font-normal text-base leading-relaxed cursor-pointer flex-1 text-grayscale-100">
                 {option.label}
               </Label>
