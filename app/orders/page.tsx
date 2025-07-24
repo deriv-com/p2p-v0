@@ -184,25 +184,27 @@ export default function OrdersPage() {
                   </TableCell>
                 )}
                 <TableCell className="lg:py-4 px-4 align-top row-start-4">
-                  {isMobile && <div className="text-xs">
-                      {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
-                    </div>}
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigateToOrderDetails(order.id)
-                    }}
-                    className="text-slate-500 hover:text-slate-700"
-                    variant="ghost"
-                    size="sm"
-                  >
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                      alt="View Details"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
+                  <div className="flex flex-row align-center justify-between">
+                    {isMobile && <div className="text-xs">
+                        {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                      </div>}
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        navigateToOrderDetails(order.id)
+                      }}
+                      className="text-slate-500 hover:text-slate-700"
+                      variant="ghost"
+                      size="sm"
+                    >
+                      <Image
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
+                        alt="View Details"
+                        width={20}
+                        height={20}
+                      />
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
