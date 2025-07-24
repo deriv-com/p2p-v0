@@ -15,12 +15,12 @@ export default function Header() {
     { name: "My Ads", href: "/ads" },
     { name: "Wallet", href: "/wallet" },
     { name: "Profile", href: "/profile" },
-]
+  ]
 
   return (
     <header className="hidden md:flex justify-between items-center px-[24px] py-[16px] z-10">
       <div>
-        <nav className="flex h-12 border-b border-slate-200" key={pathname}>
+        <nav className="flex h-12 border-b border-slate-200">
           {navItems.map((item) => {
             const isActive = item.href === "/" ? pathname === "/" || pathname.startsWith("/advertiser")  : pathname.startsWith(item.href)
 
