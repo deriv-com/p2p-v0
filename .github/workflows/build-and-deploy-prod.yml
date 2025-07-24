@@ -1,5 +1,8 @@
 name: Build Production and Deploy to Cloudflare Pages
 
+permissions:
+  contents: read
+
 on:
     push:
       tags:
@@ -11,6 +14,9 @@ concurrency:
 
 jobs:
     build_to_cloudflare_pages:
+        permissions:
+          contents: read
+          pages: write
         timeout-minutes: 30
         runs-on: ubuntu-latest
         environment: Production
@@ -67,6 +73,7 @@ jobs:
                 cname_url: p2p.champion.trade
 
     send_slack_notification:
+        permissions: {}
         name: Send Release Slack notification
         environment: Production
         runs-on: ubuntu-latest
