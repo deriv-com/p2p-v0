@@ -1,3 +1,5 @@
+"use client"
+
 import WalletBalance from "./components/wallet-balance"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
