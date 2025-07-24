@@ -83,7 +83,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
 
     loadUserStats()
-  }, [showWarningDialog])
+  },[])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
