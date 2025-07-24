@@ -11,7 +11,7 @@ import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn, formatPaymentMethodName } from "@/lib/utils"
 import StatusModal from "./ui/status-modal"
-import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface MobileMyAdsListProps {
   ads: Ad[]
@@ -37,16 +37,12 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
   const [isTogglingStatus, setIsTogglingStatus] = useState(false)
+  const { showAlert } = useAlertDialog()
 
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "",
     message: "",
-  })
-
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    adId: "",
   })
 
   const formatLimits = (ad: Ad) => {
@@ -135,16 +131,19 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
   }
 
   const handleDelete = (adId: string) => {
-    setDeleteConfirmModal({
-      show: true,
-      adId: adId,
+    showAlert({
+      title: "Delete ad?",
+      message: "You will not be able to restore it.",
+      primaryButtonText: "Delete",
+      secondaryButtonText: "Cancel",
+      onPrimaryButtonClick: () => confirmDelete(adId),
     })
   }
 
-  const confirmDelete = async () => {
+  const confirmDelete = async (adId: string) => {
     try {
       setIsDeleting(true)
-      const result = await deleteAd(deleteConfirmModal.adId)
+      const result = await deleteAd(adId)
 
       if (result.errors && result.errors.length > 0) {
         const errorMessage = result.errors[0].message || "Failed to delete ad. Please try again."
@@ -154,8 +153,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
       if (onAdDeleted) {
         onAdDeleted("deleted")
       }
-
-      setDeleteConfirmModal({ show: false, adId: "" })
     } catch (error) {
       setErrorModal({
         show: true,
@@ -165,10 +162,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
     } finally {
       setIsDeleting(false)
     }
-  }
-
-  const cancelDeletePaymentMethod = () => {
-    setDeleteConfirmModal({ show: false, adId: "" })
   }
 
   const handleCloseErrorModal = () => {
@@ -239,9 +232,10 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                     <DropdownMenuItem
                       className="flex items-center gap-2 text-red-600"
                       onSelect={() => handleDelete(ad.id)}
+                      disabled={isDeleting}
                     >
                       <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
-                      Delete
+                      {isDeleting ? "Deleting..." : "Delete"}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -305,15 +299,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
           )
         })}
       </div>
-
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete ad?"
-        description="You will not be able to restore it."
-        isDeleting={isDeleting}
-        onConfirm={confirmDelete}
-        onCancel={cancelDeletePaymentMethod}
-      />
 
       {errorModal.show && (
         <StatusModal

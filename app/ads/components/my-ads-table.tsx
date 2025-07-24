@@ -10,9 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
-import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -23,14 +23,11 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
   const [isTogglingStatus, setIsTogglingStatus] = useState(false)
+  const { showAlert } = useAlertDialog()
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "",
     message: "",
-  })
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    adId: "",
   })
 
   const formatLimits = (ad: Ad) => {
@@ -146,16 +143,19 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   }
 
   const handleDelete = (adId: string) => {
-    setDeleteConfirmModal({
-      show: true,
-      adId: adId,
+    showAlert({
+      title: "Delete ad?",
+      message: "You will not be able to restore it.",
+      primaryButtonText: "Delete",
+      secondaryButtonText: "Cancel",
+      onPrimaryButtonClick: () => confirmDelete(adId),
     })
   }
 
-  const confirmDelete = async () => {
+  const confirmDelete = async (adId: string) => {
     try {
       setIsDeleting(true)
-      const result = await deleteAd(deleteConfirmModal.adId)
+      const result = await deleteAd(adId)
 
       if (result.errors && result.errors.length > 0) {
         const errorMessage = result.errors[0].message || "Failed to delete ad. Please try again."
@@ -165,8 +165,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
       if (onAdDeleted) {
         onAdDeleted("deleted")
       }
-
-      setDeleteConfirmModal({ show: false, adId: "" })
     } catch (error) {
       setErrorModal({
         show: true,
@@ -176,10 +174,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     } finally {
       setIsDeleting(false)
     }
-  }
-
-  const cancelDelete = () => {
-    setDeleteConfirmModal({ show: false, adId: "" })
   }
 
   const handleCloseErrorModal = () => {
@@ -306,9 +300,10 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-red-600"
                           onSelect={() => handleDelete(ad.id)}
+                          disabled={isDeleting}
                         >
                           <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
-                          <span className="text-red-600">Delete</span>
+                          <span className="text-red-600">{isDeleting ? "Deleting..." : "Delete"}</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -319,15 +314,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
           </TableBody>
         </Table>
       </div>
-
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete ad?"
-        description="You will not be able to restore it."
-        isDeleting={isDeleting}
-        onConfirm={confirmDelete}
-        onCancel={cancelDelete}
-      />
 
       {errorModal.show && (
         <StatusModal
