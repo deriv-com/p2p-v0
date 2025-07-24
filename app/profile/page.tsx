@@ -5,6 +5,7 @@ import UserInfo from "@/components/profile/user-info"
 import TradeLimits from "@/components/profile/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({
@@ -45,6 +46,8 @@ export default function ProfilePage() {
     },
   })
 
+  const { showWarningDialog } = useAlertDialog()
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -58,7 +61,12 @@ export default function ProfilePage() {
         })
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`)
+          const errorMessage = `Failed to fetch user data: ${response.status} ${response.statusText}`
+          showWarningDialog({
+            title: "Error",
+            description: errorMessage,
+          })
+          throw new Error(errorMessage)
         }
 
         const responseData = await response.json()
@@ -107,12 +115,17 @@ export default function ProfilePage() {
           }))
         }
       } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : "Failed to load user data"
+        showWarningDialog({
+          title: "Error",
+          description: errorMessage,
+        })
         console.error("Error fetching user data:", error)
       }
     }
 
     fetchUserData()
-  }, [])
+  }, [showWarningDialog])
 
   return (
     <div className=" md:px-4">
