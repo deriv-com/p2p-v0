@@ -35,11 +35,12 @@ export default function StatsPage() {
         const result = await ProfileAPI.UserStats.fetchUserStats()
 
         if ("error" in result) {
+          const errorMessage = Array.isArray(result.error) ? result.error.join(", ") : result.error
           showWarningDialog({
             title: "Error",
-            description: result.error,
+            description: errorMessage,
           })
-          setError(result.error)
+          setError(errorMessage)
         } else {
           setUserStats(result)
         }
@@ -56,7 +57,7 @@ export default function StatsPage() {
     }
 
     loadUserStats()
-  }, [])
+  }, [showWarningDialog])
 
   const handleBack = () => {
     router.push("/profile")
