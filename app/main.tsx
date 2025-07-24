@@ -52,7 +52,7 @@ export default function Main({
         {isHeaderVisible && <Sidebar />}
         <div className="flex-1">
           {isHeaderVisible && <Header />}
-          <div className="container mx-auto">{children}</div>
+          <div className="container mx-auto px-[24px]">{children}</div>
         </div>
       </div>
       <div className="md:hidden container mx-auto p-[24px] pt-[8px] h-[calc(100%-2rem)] relative">
