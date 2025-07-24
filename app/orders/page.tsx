@@ -191,6 +191,7 @@ export default function OrdersPage() {
                     }}
                     className="text-slate-500 hover:text-slate-700"
                     variant="ghost"
+                    size="sm"
                   >
                     <Image
                       src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
