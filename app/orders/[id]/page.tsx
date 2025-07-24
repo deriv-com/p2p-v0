@@ -143,6 +143,53 @@ export default function OrderDetailsPage() {
     }
   }
 
+  const getPaymentMethodColor = (method: string) => {
+    switch (method.toLowerCase()) {
+      case "bank transfer":
+      case "bank_transfer":
+        return "bg-green-500"
+      case "neteller":
+        return "bg-blue-500"
+      case "grabpay":
+      case "grab_pay":
+        return "bg-blue-500"
+      default:
+        return "bg-gray-500"
+    }
+  }
+
+  const renderPaymentMethodFields = (method: any) => {
+    const fields = []
+
+    // Common fields that should have copy functionality
+    const copyableFields = ["account_number", "swift_code", "ifsc_code", "email", "account_id", "phone_number"]
+
+    Object.entries(method).forEach(([key, value]) => {
+      if (key === "method" || key === "type" || !value) return
+
+      const displayKey = key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+      const isCopyable = copyableFields.includes(key.toLowerCase())
+
+      fields.push(
+        <div key={key}>
+          <p className="text-sm text-slate-500 mb-1">{displayKey}</p>
+          {isCopyable ? (
+            <div className="flex items-center justify-between">
+              <p className="font-medium">{value}</p>
+              <button onClick={() => copyToClipboard(String(value))} className="p-1 hover:bg-gray-100 rounded">
+                <Copy className="h-4 w-4 text-slate-500" />
+              </button>
+            </div>
+          ) : (
+            <p className="font-medium">{value}</p>
+          )}
+        </div>,
+      )
+    })
+
+    return fields
+  }
+
   useEffect(() => {
     if (!order || !order.expires_at) return
 
@@ -275,116 +322,30 @@ export default function OrderDetailsPage() {
                         </p>
                       </div>
                     </div>
-                    <div className="bg-white border rounded-lg mt-6">
-                      <Accordion type="single" collapsible className="w-full">
-                        <AccordionItem value="bank-transfer" className="border-b-0">
-                          <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                            <div className="flex items-center gap-3">
-                              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                              <span className="font-medium">Bank transfer</span>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="px-4 pb-4">
-                            <div className="space-y-4">
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Account number</p>
-                                <div className="flex items-center justify-between">
-                                  <p className="font-medium">1234 5678 9012 3456</p>
-                                  <button
-                                    onClick={() => copyToClipboard("1234567890123456")}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    <Copy className="h-4 w-4 text-slate-500" />
-                                  </button>
-                                </div>
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Swift or IFSC code</p>
-                                <div className="flex items-center justify-between">
-                                  <p className="font-medium">SW123456</p>
-                                  <button
-                                    onClick={() => copyToClipboard("SW123456")}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    <Copy className="h-4 w-4 text-slate-500" />
-                                  </button>
-                                </div>
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Bank name</p>
-                                <p className="font-medium">Banky</p>
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Branch</p>
-                                <p className="font-medium">Westside branch</p>
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Instructions</p>
-                                <p className="font-medium">Pay first then confirm</p>
-                              </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
 
-                        <AccordionItem value="neteller" className="border-b-0">
-                          <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                            <div className="flex items-center gap-3">
-                              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                              <span className="font-medium">Neteller</span>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="px-4 pb-4">
-                            <div className="space-y-4">
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Email address</p>
-                                <div className="flex items-center justify-between">
-                                  <p className="font-medium">user@derivp2p.com</p>
-                                  <button
-                                    onClick={() => copyToClipboard("user@derivp2p.com")}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    <Copy className="h-4 w-4 text-slate-500" />
-                                  </button>
+                    {order?.payment_method_details && order.payment_method_details.length > 0 && (
+                      <div className="bg-white border rounded-lg mt-6">
+                        <Accordion type="single" collapsible className="w-full">
+                          {order.payment_method_details.map((method, index) => (
+                            <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
+                              <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                                <div className="flex items-center gap-3">
+                                  <div
+                                    className={`w-3 h-3 ${getPaymentMethodColor(method.method || method.type)} rounded-full`}
+                                  ></div>
+                                  <span className="font-medium">
+                                    {method.method || method.type || `Payment Method ${index + 1}`}
+                                  </span>
                                 </div>
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Instructions</p>
-                                <p className="font-medium">Pay first then confirm</p>
-                              </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-
-                        <AccordionItem value="grabpay" className="border-b-0">
-                          <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                            <div className="flex items-center gap-3">
-                              <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-                              <span className="font-medium">GrabPay</span>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="px-4 pb-4">
-                            <div className="space-y-4">
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Account ID</p>
-                                <div className="flex items-center justify-between">
-                                  <p className="font-medium">80106930</p>
-                                  <button
-                                    onClick={() => copyToClipboard("80106930")}
-                                    className="p-1 hover:bg-gray-100 rounded"
-                                  >
-                                    <Copy className="h-4 w-4 text-slate-500" />
-                                  </button>
-                                </div>
-                              </div>
-                              <div>
-                                <p className="text-sm text-slate-500 mb-1">Instructions</p>
-                                <p className="font-medium">Pay first then confirm</p>
-                              </div>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                    </div>
+                              </AccordionTrigger>
+                              <AccordionContent className="px-4 pb-4">
+                                <div className="space-y-4">{renderPaymentMethodFields(method)}</div>
+                              </AccordionContent>
+                            </AccordionItem>
+                          ))}
+                        </Accordion>
+                      </div>
+                    )}
                   </div>
                 </div>
 
