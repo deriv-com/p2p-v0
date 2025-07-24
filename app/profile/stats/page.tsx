@@ -8,9 +8,11 @@ import { Info } from "lucide-react"
 import { ProfileAPI } from "../api"
 import type { UserStats } from "../api/api-user-stats"
 import { cn } from "@/lib/utils"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function StatsPage() {
   const router = useRouter()
+  const { showWarningDialog } = useAlertDialog()
   const [userStats, setUserStats] = useState<UserStats>({
     buyCompletion: { rate: "-", period: "(30d)" },
     sellCompletion: { rate: "-", period: "(30d)" },
@@ -30,22 +32,36 @@ export default function StatsPage() {
       try {
         setIsLoading(true)
         setError(null)
-        const stats = await ProfileAPI.UserStats.fetchUserStats()
-        setUserStats(stats)
+        const result = await ProfileAPI.UserStats.fetchUserStats()
+
+        if ("error" in result) {
+          showWarningDialog({
+            title: "Error",
+            description: result.error,
+          })
+          setError(result.error)
+        } else {
+          setUserStats(result)
+        }
       } catch (error) {
-        setError(error instanceof Error ? error.message : "Failed to load stats")
+        const errorMessage = error instanceof Error ? error.message : "Failed to load stats"
+        setError(errorMessage)
+        showWarningDialog({
+          title: "Error",
+          description: errorMessage,
+        })
       } finally {
         setIsLoading(false)
       }
     }
 
     loadUserStats()
-  }, [])
+  }, [showWarningDialog])
 
   const handleBack = () => {
     router.push("/profile")
   }
-  
+
   const statsConfig = [
     {
       label: "Sell completion",
