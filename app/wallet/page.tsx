@@ -7,7 +7,7 @@ export default function WalletPage() {
   return (
     <>
     {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="min-h-screen bg-background p-[24px]">
+    <div className="min-h-screen bg-background px-[24px]">
       <div className="container mx-auto px-4 py-6">
         <WalletBalance />
       </div>
