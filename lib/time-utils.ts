@@ -35,6 +35,7 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
   }
 }
 
+
 export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
   if (timeRemaining.isExpired) {
     return "Expired"
