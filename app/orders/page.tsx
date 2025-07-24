@@ -21,6 +21,8 @@ function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
   const pad = (n: number) => String(n).padStart(2, '0')
   
+  if(timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
+
   return (
         <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
               {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
