@@ -54,6 +54,27 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     })
   }
 
+  // Function to format value to maximum 2 decimal places
+  const formatToTwoDecimals = (value: string): string => {
+    if (!value) return value
+
+    // Remove any non-numeric characters except decimal point
+    const cleanValue = value.replace(/[^0-9.]/g, "")
+
+    // Handle multiple decimal points - keep only the first one
+    const parts = cleanValue.split(".")
+    if (parts.length > 2) {
+      return parts[0] + "." + parts.slice(1).join("")
+    }
+
+    // If there's a decimal point, limit to 2 decimal places
+    if (parts.length === 2) {
+      return parts[0] + "." + parts[1].slice(0, 2)
+    }
+
+    return cleanValue
+  }
+
   useEffect(() => {
     const loadCurrencies = async () => {
       const currencyList = await getCurrencies()
@@ -72,7 +93,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     }
   }, [initialData])
 
-  
   useEffect(() => {
     updateTouchedBasedOnValues()
   }, [totalAmount, fixedRate, minAmount, maxAmount])
@@ -261,7 +281,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
               <CurrencyInput
                 value={totalAmount}
                 onValueChange={(value) => {
-                  setTotalAmount(value)
+                  const formattedValue = formatToTwoDecimals(value)
+                  setTotalAmount(formattedValue)
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
@@ -279,7 +300,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
-                  setFixedRate(value)
+                  const formattedValue = formatToTwoDecimals(value)
+                  setFixedRate(formattedValue)
                   setTouched((prev) => ({ ...prev, fixedRate: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
@@ -299,7 +321,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
               <CurrencyInput
                 value={minAmount}
                 onValueChange={(value) => {
-                  setMinAmount(value)
+                  const formattedValue = formatToTwoDecimals(value)
+                  setMinAmount(formattedValue)
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, minAmount: true }))}
@@ -315,7 +338,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
               <CurrencyInput
                 value={maxAmount}
                 onValueChange={(value) => {
-                  setMaxAmount(value)
+                  const formattedValue = formatToTwoDecimals(value)
+                  setMaxAmount(formattedValue)
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, maxAmount: true }))}
