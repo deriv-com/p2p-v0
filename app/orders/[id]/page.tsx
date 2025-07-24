@@ -316,7 +316,7 @@ export default function OrderDetailsPage() {
                               <AccordionTrigger className="px-4 py-3 hover:no-underline">
                                 <div className="flex items-center gap-3">
                                   <div
-                                    className={`w-3 h-3 ${getPaymentMethodColour(method.type)} rounded-full`}
+                                    className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
                                   ></div>
                                   <span className="font-medium">
                                     {method.method || method.type || `Payment Method ${index + 1}`}
