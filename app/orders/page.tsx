@@ -184,7 +184,7 @@ export default function OrdersPage() {
                   </TableCell>
                 )}
                 <TableCell className="lg:py-4 px-4 align-top row-start-4">
-                  <div className="flex flex-row align-center justify-between">
+                  <div className="flex flex-row items-center justify-between">
                     {isMobile && <div className="text-xs">
                         {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
                       </div>}
