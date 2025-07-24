@@ -144,9 +144,9 @@ export default function OrdersPage() {
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
-                    <div className="mt-[4px] text-slate-600 text-xs">
+                    {!isMobile && <div className="mt-[4px] text-slate-600 text-xs">
                       Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
-                    </div>
+                    </div>}
                   </div>
                 </TableCell>
                 <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
@@ -183,7 +183,10 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-4 col-start-2 justify-self-end">
+                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-4">
+                  {isMobile && <div className="mt-[4px] text-slate-600 text-xs">
+                      {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                    </div>}
                   <Button
                     onClick={(e) => {
                       e.stopPropagation()
