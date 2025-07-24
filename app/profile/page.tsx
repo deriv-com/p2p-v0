@@ -140,7 +140,7 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  }, [showWarningDialog])
+  },[])
 
   return (
     <div className=" md:px-4">
