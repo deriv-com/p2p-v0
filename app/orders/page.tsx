@@ -211,7 +211,7 @@ export default function OrdersPage() {
   return (
     <>
     {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full px-[24px]">
       <div className="flex-shrink-0">
         <div className="mb-6">
           <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
