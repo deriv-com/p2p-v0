@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { Button } from "@/components/ui/button"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
-import { useEffect, useState } from 'react';
 
 export default function Header() {
   const pathname = usePathname()
@@ -17,15 +16,6 @@ export default function Header() {
     { name: "Wallet", href: "/wallet" },
     { name: "Profile", href: "/profile" },
   ]
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Prevent hydration mismatch by rendering only after mount
-  if (!mounted) return null;
 
   return (
     <header className="hidden md:flex justify-between items-center px-[24px] py-[16px] z-10">
