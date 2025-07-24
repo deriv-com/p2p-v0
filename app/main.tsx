@@ -20,8 +20,6 @@ export default function Main({
   const pathname = usePathname()
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
-  const NAVIGATION_ROUTES = ["/advertiser"]
-  const hasNavigation = !NAVIGATION_ROUTES.includes(pathname)
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
@@ -60,7 +58,6 @@ export default function Main({
       </div>
       <div className="md:hidden container mx-auto p-[24px] pt-[8px] h-[calc(100%-2rem)] relative">
         {isHeaderVisible && <Header className="flex-shrink-0" />}
-        {hasNavigation && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
