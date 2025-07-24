@@ -297,7 +297,7 @@ export default function CreateAdPage() {
           type: "success",
           title: "Ad updated successfully",
           description: "Your ad has been updated and is now active.",
-          confirmText: "View My Ads",
+          confirmText: "Ok",
           onConfirm: () => {
             router.push("/ads")
           },
