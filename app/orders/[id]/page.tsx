@@ -146,8 +146,7 @@ export default function OrderDetailsPage() {
   const renderPaymentMethodFields = (method: any) => {
     const fields = []
 
-    // Common fields that should have copy functionality
-    const copyableFields = ["account_number", "swift_code", "ifsc_code", "email", "account_id", "phone_number"]
+    const copyableFields = ["account", "bank_code"]
 
     Object.entries(method).forEach(([key, value]) => {
       if (key === "method" || key === "type" || !value) return
@@ -319,7 +318,7 @@ export default function OrderDetailsPage() {
                                     className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
                                   ></div>
                                   <span className="font-medium">
-                                    {method.method || method.type || `Payment Method ${index + 1}`}
+                                    {method.display_name}
                                   </span>
                                 </div>
                               </AccordionTrigger>
