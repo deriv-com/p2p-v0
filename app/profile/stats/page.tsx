@@ -57,7 +57,7 @@ export default function StatsPage() {
     }
 
     loadUserStats()
-  }, [showWarningDialog])
+  }, [])
 
   const handleBack = () => {
     router.push("/profile")
