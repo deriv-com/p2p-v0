@@ -138,7 +138,7 @@ export default function OrderDetailsPage() {
       const diff = expiryTime.getTime() - now.getTime()
 
       if (diff <= 0) {
-        setTimeLeft("00:00")
+        setTimeLeft("")
         return false
       }
 
@@ -219,9 +219,11 @@ export default function OrderDetailsPage() {
                     <span className="font-bold">{formatStatus(order.status, order.type)}</span>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
+                    
                     <div className="flex items-center">
-                      <span>Time left:&nbsp;</span>
+                      {timeLeft && <span>Time left:&nbsp;</span>
                       <span className="font-bold">{timeLeft}</span>
+                      }
                     </div>
                   )}
                 </div>
