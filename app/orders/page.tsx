@@ -14,6 +14,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
+import { useIsMobile } from "@/hooks/use-mobile"
+import Navigation from "@/components/navigation"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -34,6 +36,7 @@ export default function OrdersPage() {
   const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     fetchOrders()
@@ -206,6 +209,7 @@ export default function OrdersPage() {
   )
 
   return (
+    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
     <div className="flex flex-col h-full">
       <div className="flex-shrink-0">
         <div className="mb-6">
