@@ -202,7 +202,7 @@ export default function OrderDetailsPage() {
           redirectUrl={"/orders"}
         />
       )}
-      <div className="container mx-auto">
+      <div className="container mx-auto px-[24px]">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
