@@ -237,7 +237,7 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
     }
     const body = JSON.stringify({
       data: {
-        dispute_reason: reason,
+          reason,
       },
     })
 
