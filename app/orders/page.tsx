@@ -20,13 +20,13 @@ import Navigation from "@/components/navigation"
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
   const pad = (n: number) => String(n).padStart(2, '0')
-  
-  if(timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
+
+  if (timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
 
   return (
-        <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
-              {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
-        </div>
+    <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
+      {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
+    </div>
   )
 }
 
@@ -111,7 +111,7 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" && 
+              {activeTab === "active" &&
                 <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
               }
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
@@ -160,14 +160,14 @@ export default function OrdersPage() {
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
-                    {formatStatus(order.status, order.type)}
+                    {formatStatus(false, order.status, order.type)}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
                   <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
-                    {(order.status === "pending_payment" || order.status === "pending_release")  && (
+                    {(order.status === "pending_payment" || order.status === "pending_release") && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
-                  )}
+                    )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
@@ -175,7 +175,7 @@ export default function OrdersPage() {
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                          {Number(order.rating).toFixed(1)}
+                        {Number(order.rating).toFixed(1)}
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
@@ -188,8 +188,8 @@ export default function OrdersPage() {
                 <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     {isMobile && <div className="text-xs">
-                        {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
-                      </div>}
+                      {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                    </div>}
                     <Button
                       onClick={(e) => {
                         e.stopPropagation()
@@ -218,59 +218,59 @@ export default function OrdersPage() {
 
   return (
     <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="flex flex-col h-full px-[24px]">
-      <div className="flex-shrink-0">
-        <div className="mb-6">
-          <Tabs className="w-full md:w-[330px] md:min-w-[330px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
-            <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
-              <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
-                Active orders
-              </TabsTrigger>
-              <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
-                Past orders
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      <div className="flex flex-col h-full px-[24px]">
+        <div className="flex-shrink-0">
+          <div className="mb-6">
+            <Tabs className="w-full md:w-[330px] md:min-w-[330px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
+              <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
+                  Active orders
+                </TabsTrigger>
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
+                  Past orders
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
         </div>
-      </div>
-      <div className="flex-1 pb-4">
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading orders...</p>
-          </div>
-        ) : error ? (
-          <div className="text-center py-12">
-            <p className="text-red-600">{error}</p>
-            <Button onClick={fetchOrders} className="mt-4 text-white">
-              Try Again
-            </Button>
-          </div>
-        ) : orders.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-              <AlertCircle className="h-6 w-6 text-slate-400" />
+        <div className="flex-1 pb-4">
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+              <p className="mt-2 text-slate-600">Loading orders...</p>
             </div>
-            <h2 className="text-xl font-medium text-slate-900 mb-2">No orders found</h2>
-            <p className="text-slate-500">Start by placing your first order.</p>
-            <Button size="sm" onClick={() => router.push("/")} className="mt-8">
-              Browse Ads
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <DesktopOrderTable />
-          </div>
-        )}
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{error}</p>
+              <Button onClick={fetchOrders} className="mt-4 text-white">
+                Try Again
+              </Button>
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                <AlertCircle className="h-6 w-6 text-slate-400" />
+              </div>
+              <h2 className="text-xl font-medium text-slate-900 mb-2">No orders found</h2>
+              <p className="text-slate-500">Start by placing your first order.</p>
+              <Button size="sm" onClick={() => router.push("/")} className="mt-8">
+                Browse Ads
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <DesktopOrderTable />
+            </div>
+          )}
+        </div>
+        <RatingSidebar
+          isOpen={isRatingSidebarOpen}
+          onClose={handleRatingSidebarClose}
+          orderId={selectedOrderId}
+          onSubmit={handleRatingSubmit}
+        />
       </div>
-      <RatingSidebar
-        isOpen={isRatingSidebarOpen}
-        onClose={handleRatingSidebarClose}
-        orderId={selectedOrderId}
-        onSubmit={handleRatingSubmit}
-      />
-    </div>
     </>
   )
 }
