@@ -140,7 +140,7 @@ export default function BuySellPage() {
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-full flex flex-col md:flex-row items-start md:items-center gap-[24px]">
+              <div className="w-full flex flex-col-reverse md:flex-row items-start md:items-center gap-[16px] md:gap-[24px]">
                 <Tabs className="w-full md:w-[230px] md:min-w-[230px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                   <TabsList className="w-full md:min-w-[230px]">
                     <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
@@ -179,7 +179,7 @@ export default function BuySellPage() {
                 trigger={
                   <Button
                     variant="outline"
-                    className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black"
+                    className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                   >
                     <span>{currency}</span>
                     <ChevronDown className="h-4 w-4 ml-2" />
@@ -214,7 +214,7 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input bg-background font-normal min-h-[40px] h-[40px] px-3 hover:bg-transparent focus:border-black"
+                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                     >
                       <span>Filter by</span>
                       <ChevronDown className="h-4 w-4 ml-2" />
@@ -276,7 +276,7 @@ export default function BuySellPage() {
                       <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                         {adverts.map((ad) => (
                           <TableRow
-                            className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                            className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
                             key={ad.id}
                           >
                             <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full">
@@ -353,7 +353,7 @@ export default function BuySellPage() {
                               </div>
                             </TableCell>
                             <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                              <div className="flex flex-row lg:flex-col flex-wrap gap-2">
+                              <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
                                 {ad.payment_methods?.map((method, index) => (
                                   <div key={index} className="flex items-center">
                                     {method && (
