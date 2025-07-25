@@ -405,7 +405,7 @@ export default function AdvertiserProfilePage() {
                   </div>
                 </>
               ) : (
-                <EmptyState title="No ads for this currency" description="Looking to buy or sell USD? You can post your own ad for others to respond" />
+                <EmptyState title="No ads available." redirectToAds={false} />
               )}
             </div>
           </>
