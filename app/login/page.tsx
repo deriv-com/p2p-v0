@@ -155,7 +155,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-white px-4 py-6">
       <div className="max-w-md mx-auto mt-12">
-        <h1 className="text-4xl font-bold text-black mb-8">Welcome back!</h1>
+        <h1 className="text-4xl font-bold text-black mb-8">Welcome!</h1>
         <div className="mb-6">
           <label className="block text-gray-600 mb-3">Email</label>
           <Input
