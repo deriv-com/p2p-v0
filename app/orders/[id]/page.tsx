@@ -259,7 +259,7 @@ export default function OrderDetailsPage() {
               <div className="w-full lg:w-1/2 rounded-lg">
                 <div
                   className={cn(
-                    `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`,
+                    `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
                     order.status === "pending_payment" || order.status === "pending_release" ? "justify-between" : "justify-center",
                   )}
                 >
@@ -334,7 +334,7 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                    <div className="py-8 flex gap-4">
+                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
                       <Button
                         variant="outline"
                         className="flex-1 bg-transparent"
@@ -380,16 +380,16 @@ export default function OrderDetailsPage() {
                       </p>
                     </div>
                     <div className="pt-2 flex justify-end">
-                      <Button variant="outline" onClick={() => setShowRatingSidebar(true)}>
+                      <Button variant="outline" onClick={() => setShowRatingSidebar(true)} className="flex-auto md:flex-none">
                         Rate transaction
                       </Button>
                     </div>
                   </div>
                 )}
                 {order.status === "timed_out" && (
-                  <div className="py-4 flex justify-end">
-                    <Button variant="outline" onClick={() => setShowComplaintForm(true)}>
-                      Complain
+                  <div className="py-4 flex justify-end flex-auto md:flex-none">
+                    <Button variant="outline" onClick={() => setShowComplaintForm(true)} className="flex-auto md:flex-none">
+                      Make a complaint
                     </Button>
                   </div>
                 )}
@@ -417,10 +417,10 @@ export default function OrderDetailsPage() {
               </button>
             </div>
 
-            <p className="text-slate-700 mb-6">Don't cancel if you've already paid.</p>
+            <p className="text-grayscale-100 mb-6">Don't cancel if you've already paid.</p>
 
             <div className="space-y-3">
-              <Button onClick={() => setShowCancelConfirmation(false)} className="w-full">
+              <Button variant="black" onClick={() => setShowCancelConfirmation(false)} className="w-full">
                 Keep order
               </Button>
               <Button
