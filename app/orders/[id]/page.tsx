@@ -9,7 +9,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { toast } from "@/components/ui/use-toast"
-import { formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
+import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
@@ -258,10 +258,13 @@ export default function OrderDetailsPage() {
             <div className="flex flex-row gap-6">
               <div className="w-full lg:w-1/2 rounded-lg">
                 <div
-                  className={`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`}
+                  className={cn(
+                    `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-lg mb-[24px]`,
+                    order.status === "pending_payment" || order.status === "pending_release" ? "justify-between" : "justify-center",
+                  )}
                 >
                   <div className="flex items-center">
-                    <span className="font-bold">{formatStatus(order.status, order.type)}</span>
+                    <span className="font-bold">{formatStatus(true, order.status, order.type)}</span>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
                     <div className="flex items-center">
@@ -331,41 +334,41 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                  <div className="py-8 flex gap-4">
-                    <Button
-                      variant="outline"
-                      className="flex-1 bg-transparent"
-                      onClick={() => setShowCancelConfirmation(true)}
-                    >
-                      Cancel order
-                    </Button>
-                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                      {isPaymentLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "I've paid"
-                      )}
-                    </Button>
-                  </div>
-                )}
+                    <div className="py-8 flex gap-4">
+                      <Button
+                        variant="outline"
+                        className="flex-1 bg-transparent"
+                        onClick={() => setShowCancelConfirmation(true)}
+                      >
+                        Cancel order
+                      </Button>
+                      <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                        {isPaymentLoading ? (
+                          <>
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          "I've paid"
+                        )}
+                      </Button>
+                    </div>
+                  )}
                 {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
-                  <div className="p-4 flex gap-4">
-                    <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                      {isConfirmLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "Confirm"
-                      )}
-                    </Button>
-                  </div>
-                )}
+                    <div className="p-4 flex gap-4">
+                      <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                        {isConfirmLoading ? (
+                          <>
+                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                            Processing...
+                          </>
+                        ) : (
+                          "Confirm"
+                        )}
+                      </Button>
+                    </div>
+                  )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
