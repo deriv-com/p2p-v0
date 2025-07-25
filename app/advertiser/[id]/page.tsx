@@ -15,6 +15,11 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 interface AdvertiserProfile {
   id: string | number
@@ -299,7 +304,12 @@ export default function AdvertiserProfilePage() {
             <div className="font-bold mt-1">{getDuration(profile?.release_time_average_30day)}</div>
           </div>
           <div>
-            <div className="flex items-center text-xs text-slate-500">Trade partners</div>
+            <Tooltip>
+              <TooltipTrigger asChild><div className="flex items-center text-xs text-slate-500">Trade partners</div></TooltipTrigger>
+              <TooltipContent className="TooltipContent" sideOffset={5}>
+                Total number of users successfully traded with.
+              </TooltipContent>
+            </Tooltip>
             <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
           </div>
         </div>
@@ -405,7 +415,7 @@ export default function AdvertiserProfilePage() {
                   </div>
                 </>
               ) : (
-                <EmptyState title="No ads for this currency" description="Looking to buy or sell USD? You can post your own ad for others to respond" />
+                <EmptyState title="No ads available" />
               )}
             </div>
           </>
