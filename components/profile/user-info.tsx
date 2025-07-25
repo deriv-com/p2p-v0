@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Star, Check, Info } from "lucide-react"
+import { Check, Info } from "lucide-react"
+import Image from "next/image"
 import { USER } from "@/lib/local-variables"
 
 interface UserInfoProps {
@@ -49,15 +50,15 @@ export default function UserInfo({
           <div className="flex items-center mt-1 text-sm">
             {rating && (
               <div className="flex items-center">
-                <Star className="h-4 w-4 text-warning-icon mr-1" />
-                <span className="text-slate-600">{rating}</span>
+                <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />
+                <span className="text-neutral-10">{rating}</span>
               </div>
             )}
 
             {rating && completionRate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
             {completionRate && (
-              <div className="flex items-center text-slate-600">
+              <div className="flex items-center text-neutral-10">
                 <Check className="h-4 w-4 text-primary mr-1" />
                 <span>{completionRate}</span>
                 <Info className="h-4 w-4 ml-1 text-slate-400" />
@@ -66,7 +67,7 @@ export default function UserInfo({
 
             {completionRate && joinDate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
-            {joinDate && <div className="text-slate-600">{joinDate}</div>}
+            {joinDate && <div className="text-neutral-10">{joinDate}</div>}
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {isVerified.id && (

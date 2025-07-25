@@ -23,7 +23,7 @@ interface StatsTabsProps {
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const router = useRouter()
-  const {showWarningDialog } = useAlertDialog()
+  const { showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [notification, setNotification] = useState<{ show: boolean; message: string }>({
@@ -83,7 +83,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
 
     loadUserStats()
-  },[])
+  }, [])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
@@ -226,9 +226,9 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           <TabsContent value="payment">
             <div className="relative">
               <div className="flex justify-end mb-4">
-                <Button variant="primary" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
+                <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
                   <PlusCircle className="mr-2 h-4 w-4" />
-                  Add payment method
+                  Add payment
                 </Button>
               </div>
               <PaymentMethodsTab key={refreshKey} />

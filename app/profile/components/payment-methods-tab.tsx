@@ -339,7 +339,7 @@ export default function PaymentMethodsTab() {
       )}
 
       <div className="mb-8 mt-6">
-        <h3 className="text-xl font-bold mb-4">Bank transfer</h3>
+        <h3 className="text-base font-bold mb-4">Bank transfer</h3>
         {bankTransfers.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
@@ -349,11 +349,9 @@ export default function PaymentMethodsTab() {
                     <div className="flex items-start gap-3 flex-1 min-w-0">
                       {getBankIcon()}
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-lg">Bank Transfer</div>
+                        <div className="font-medium text-sm">{method.details.bank_name.value}</div>
                         <StatusIndicator variant="neutral" size="sm" className="truncate">
-                          {method.details?.account?.value
-                            ? maskAccountNumber(method.details.account.value)
-                            : `ID: ${method.id}`}
+                          {maskAccountNumber(method.details.account.value)}
                         </StatusIndicator>
                       </div>
                     </div>
@@ -391,7 +389,7 @@ export default function PaymentMethodsTab() {
       </div>
 
       <div className="mb-8">
-        <h3 className="text-xl font-bold mb-4">E-wallets</h3>
+        <h3 className="text-base font-bold mb-4">E-wallets</h3>
         {eWallets.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
@@ -401,7 +399,7 @@ export default function PaymentMethodsTab() {
                     <div className="flex items-start gap-3 flex-1 min-w-0">
                       {getEWalletIcon()}
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-lg">{method.name}</div>
+                        <div className="font-medium text-sm">{method.name}</div>
                         <StatusIndicator variant="neutral" size="sm" className="truncate">
                           {method.details?.account?.value || `ID: ${method.id}`}
                         </StatusIndicator>
