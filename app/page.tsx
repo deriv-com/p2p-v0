@@ -258,7 +258,7 @@ export default function BuySellPage() {
             ) : error ? (
               <div className="text-center py-8">{error}</div>
             ) : adverts.length === 0 ?
-              <EmptyState title="No ads for this currency" description="Looking to buy or sell USD? You can post your own ad for others to respond" />
+              <EmptyState title="No ads for this currency" description="Looking to buy or sell USD? You can post your own ad for others to respond" redirectToAds={true} />
               : (
                 <>
                   <div className="md:block">
