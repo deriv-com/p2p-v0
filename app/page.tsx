@@ -16,7 +16,6 @@ import { CurrencyFilter } from "@/components/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
-import { ChevronDown } from "lucide-react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
@@ -182,7 +181,13 @@ export default function BuySellPage() {
                     className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                   >
                     <span>{currency}</span>
-                    <ChevronDown className="h-4 w-4 ml-2" />
+                    <Image
+                      src="/icons/chevron-down.png"
+                      alt="Arrow"
+                      width={24}
+                      height={24}
+                      className="ml-2"
+                    />
                   </Button>
                 }
               />
@@ -217,7 +222,13 @@ export default function BuySellPage() {
                       className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                     >
                       <span>Filter by</span>
-                      <ChevronDown className="h-4 w-4 ml-2" />
+                      <Image
+                        src="/icons/chevron-down.png"
+                        alt="Arrow"
+                        width={24}
+                        height={24}
+                        className="ml-2"
+                      />
                     </Button>
                   }
                 />
@@ -341,13 +352,7 @@ export default function BuySellPage() {
                                 }`}</div>
                               <div className="flex items-center text-xs text-slate-500 mt-1">
                                 <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
-                                  <Image
-                                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-yvSdAuwjE496WbipvfAqwVr5jalzr4.png"
-                                    alt="Clock"
-                                    width={12}
-                                    height={12}
-                                    className="mr-1"
-                                  />
+                                  <Image src="/icons/clock-icon.png" alt="Time" width={12} height={12} className="mr-1" />
                                   <span>{ad.order_expiry_period} min</span>
                                 </div>
                               </div>
