@@ -367,7 +367,7 @@ export default function AdvertiserProfilePage() {
                                 {ad.account_currency} {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                               </div>
                               <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                <Image src="/icons/clock-icon.png" alt="Time" width={12} height={12} className="mr-1" />
+                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
                                 <span>{ad.order_expiry_period} min</span>
                               </div>
                             </TableCell>
