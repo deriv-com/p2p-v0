@@ -21,7 +21,7 @@ export default function ProfilePage() {
     },
     businessHours: {
       isOpen: true,
-      availability: "",
+      availability: " ",
     },
     tradeLimits: {
       buy: {
