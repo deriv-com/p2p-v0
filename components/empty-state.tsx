@@ -18,11 +18,11 @@ export default function EmptyState({
     const router = useRouter()
 
     return (
-        <div className={cn("flex flex-col items-center justify-center py-8", className)}>
+        <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
             <Image src="/icons/search-icon.png" alt="No ads found" width={56} height={56} className="opacity-60" />
-            {title && <p className="text-lg text-neutral-10 mt-[24px]">{title}</p>}
+            {title && <p className="text-lg text-neutral-10 mt-[24px] font-bold">{title}</p>}
             {description && <p className="text-base text-neutral-7 mb-[10px]">{description}</p>}
-            <Button onClick={() => router.push("/ads/create")} size="lg" className="mt-[24px]">
+            <Button onClick={() => router.push("/ads/create")} className="mt-[24px]">
                 + Create ad
             </Button>
         </div>
