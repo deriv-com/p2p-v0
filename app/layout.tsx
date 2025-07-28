@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ToastContainer } from "@/components/toast-container"
 import Main from "./main"
 import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
@@ -25,6 +26,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
             <Main>{children}</Main>
+            <ToastContainer />
           </AlertDialogProvider>
         </ThemeProvider>
       </body>
