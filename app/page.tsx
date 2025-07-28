@@ -113,8 +113,9 @@ export default function BuySellPage() {
     setCurrency(currencyCode)
   }
 
-  const handleFilterApply = (newFilters: MarketFilterOptions) => {
+  const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue: string) => {
     setFilterOptions(newFilters)
+    setSortBy(sortByValue)
   }
 
   useEffect(() => {
