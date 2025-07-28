@@ -24,7 +24,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isTogglingStatus, setIsTogglingStatus] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "",
@@ -116,7 +115,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
-      setIsTogglingStatus(true)
 
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
@@ -142,8 +140,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
             ? error.message
             : `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`,
       })
-    } finally {
-      setIsTogglingStatus(false)
     }
   }
 

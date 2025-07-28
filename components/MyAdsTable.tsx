@@ -38,7 +38,6 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isTogglingStatus, setIsTogglingStatus] = useState(false)
 
   // Format limits to display as a string
   const formatLimits = (limits: Ad["limits"]) => {
@@ -83,7 +82,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
-      setIsTogglingStatus(true)
       console.log(
         `Toggling status for ad ${ad.id} from ${ad.status} to ${ad.status === "Active" ? "Inactive" : "Active"}`,
       )
@@ -185,8 +183,6 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     } catch (error) {
       console.error("Failed to toggle status:", error)
       alert(`Failed to ${ad.status === "Active" ? "deactivate" : "activate"} ad. Please try again.`)
-    } finally {
-      setIsTogglingStatus(false)
     }
   }
 

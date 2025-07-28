@@ -18,7 +18,6 @@ interface MyAdsMobileViewProps {
 export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isTogglingStatus, setIsTogglingStatus] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "",
@@ -42,7 +41,6 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
 
   const handleToggleStatus = async (ad: MyAd) => {
     try {
-      setIsTogglingStatus(true)
 
       let exchangeRate = 0
       if (ad.rate && ad.rate.value) {
@@ -93,8 +91,6 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
         title: `Failed to ${ad.status === "Active" ? "Deactivate" : "Activate"} Ad`,
         message: error instanceof Error ? error.message : "An error occurred",
       })
-    } finally {
-      setIsTogglingStatus(false)
     }
   }
 
