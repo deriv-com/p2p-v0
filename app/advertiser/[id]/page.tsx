@@ -129,12 +129,7 @@ export default function AdvertiserProfilePage() {
       // if (result.success) {
       setIsBlocked(!isBlocked)
       setIsBlockConfirmationOpen(false)
-
-      // Redirect to Market page first
-      router.push("/")
-
-      // Show toast after redirect
-      setTimeout(() => {
+    
         toast({
           description: (
             <div className="flex items-center gap-2">
@@ -144,7 +139,7 @@ export default function AdvertiserProfilePage() {
           ),
           className: "bg-gray-900 text-white border-gray-900",
         })
-      }, 100)
+
 
       /*} else {
         console.error("Failed to toggle block status:", result.message)
