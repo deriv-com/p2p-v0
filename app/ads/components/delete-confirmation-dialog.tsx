@@ -39,7 +39,7 @@ export function DeleteConfirmationDialog({
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-left">{title}</SheetTitle>
-            <SheetDescription className="text-left">{description}</SheetDescription>
+            <SheetDescription className="text-grayscale-100 text-base>{description}</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-3 mt-6">
             <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
@@ -59,7 +59,7 @@ export function DeleteConfirmationDialog({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          <DialogDescription className="text-grayscale-100 text-base">{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
           <Button onClick={onClose} variant="outline" className="w-full rounded-full">
