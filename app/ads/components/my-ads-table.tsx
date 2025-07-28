@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -21,6 +22,7 @@ interface MyAdsTableProps {
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
   const [isTogglingStatus, setIsTogglingStatus] = useState(false)
   const [errorModal, setErrorModal] = useState({
