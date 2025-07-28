@@ -56,7 +56,7 @@ export default function BlockConfirmation({
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent side="bottom" className="rounded-t-lg">
           <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold">Block {nickname}?</SheetTitle>
+            <SheetTitle className="text-xl font-bold text-left">Block {nickname}?</SheetTitle>
           </SheetHeader>
             {content}
         </SheetContent>
