@@ -43,7 +43,7 @@ export default function Main({
   }, [pathname, router])
 
   if (pathname === "/login") {
-    return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
+   // return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
   }
 
   return (
