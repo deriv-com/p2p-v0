@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label"
 export interface MarketFilterOptions {
   withinBalance: boolean
   fromFollowing: boolean
-  sortBy: "exchange-rate" | "user-rating"
+  sortBy: "exchange-rate" | "user_rating_average_lifetime"
 }
 
 interface MarketFilterDropdownProps {
