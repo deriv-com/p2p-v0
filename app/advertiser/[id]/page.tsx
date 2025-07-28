@@ -80,7 +80,7 @@ export default function AdvertiserProfilePage() {
       setAdverts(advertiserAds)
     } catch (err) {
       console.error("Error fetching advertiser data:", err)
-       setError("Failed to load advertiser profile. Please try again.")
+      // setError("Failed to load advertiser profile. Please try again.")
 
       // setProfile(null)
       setAdverts([])
