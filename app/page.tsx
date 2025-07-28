@@ -113,8 +113,9 @@ export default function BuySellPage() {
     setCurrency(currencyCode)
   }
 
-  const handleFilterApply = (newFilters: MarketFilterOptions) => {
+  const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue: string) => {
     setFilterOptions(newFilters)
+    if(sortByValue) setSortBy(sortByValue)
   }
 
   useEffect(() => {
@@ -214,8 +215,10 @@ export default function BuySellPage() {
 
               <div className="filter-dropdown-container flex-shrink-0 flex-1">
                 <MarketFilterDropdown
+                  activeTab={activeTab}
                   onApply={handleFilterApply}
                   initialFilters={filterOptions}
+                  initialSortBy={sortBy}
                   trigger={
                     <Button
                       variant="outline"
