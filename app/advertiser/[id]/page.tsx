@@ -82,7 +82,7 @@ export default function AdvertiserProfilePage() {
       console.error("Error fetching advertiser data:", err)
        setError("Failed to load advertiser profile. Please try again.")
 
-       setProfile(null)
+      // setProfile(null)
       setAdverts([])
     } finally {
       setIsLoading(false)
@@ -120,13 +120,13 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockConfirm = async () => {
-    if (!profile) return
+    //if (!profile) return
 
     setIsBlockLoading(true)
     try {
-      const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
+      //const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      if (result.success) {
+     // if (result.success) {
         setIsBlocked(!isBlocked)
         setIsBlockConfirmationOpen(false)
 
@@ -140,9 +140,9 @@ export default function AdvertiserProfilePage() {
           className: "bg-gray-900 text-white border-gray-900",
         })
 
-      } else {
+      /*} else {
         console.error("Failed to toggle block status:", result.message)
-      }
+      }*/
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
