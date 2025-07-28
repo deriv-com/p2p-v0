@@ -268,7 +268,7 @@ export default function AdvertiserProfilePage() {
                     </div>
                   </div>
                   <div>
-                    <div className="flex items-center text-xs text-slate-500">
+                    <div className="flex text-xs text-slate-500">
                       Recommended
                       <Tooltip>
                         <TooltipTrigger asChild>
