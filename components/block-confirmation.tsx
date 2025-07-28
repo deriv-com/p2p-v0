@@ -1,9 +1,8 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTitle} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
-import { X } from "lucide-react"
 
 interface BlockConfirmationProps {
   isOpen: boolean
@@ -58,7 +57,7 @@ export default function BlockConfirmation({
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-left">Block {nickname}?</SheetTitle>
           </SheetHeader>
-            {content}
+          {content}
         </SheetContent>
       </Sheet>
     )
