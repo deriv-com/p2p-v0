@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/toaster"
 import Main from "./main"
 import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
+            <Toaster />
             <Main>{children}</Main>
           </AlertDialogProvider>
         </ThemeProvider>

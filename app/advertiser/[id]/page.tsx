@@ -15,6 +15,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import BlockConfirmation from "@/components/block-confirmation"
+import { useToast } from "@/hooks/use-toast"
 
 interface AdvertiserProfile {
   id: string | number
@@ -48,6 +50,7 @@ interface AdvertiserProfile {
 export default function AdvertiserProfilePage() {
   const router = useRouter()
   const { id } = useParams() as { id: string }
+  const { toast } = useToast()
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
@@ -61,6 +64,7 @@ export default function AdvertiserProfilePage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
+  const [isBlockConfirmationOpen, setIsBlockConfirmationOpen] = useState(false)
 
   const fetchAdvertiserData = async () => {
     setIsLoading(true)
@@ -111,21 +115,36 @@ export default function AdvertiserProfilePage() {
     }
   }
 
-  const toggleBlock = async () => {
-    if (!profile) return
+  const handleBlockClick = () => {
+    setIsBlockConfirmationOpen(true)
+  }
 
+  const handleBlockConfirm = async () => {
+    if (!profile) return
+    
     setIsBlockLoading(true)
     try {
-      // Call the API to toggle the block status
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
       if (result.success) {
-        // Update the UI state
         setIsBlocked(!isBlocked)
-        console.log(result.message)
+        setIsBlockConfirmationOpen(false)
+
+        router.push("/")
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>{profile?.nickname} blocked.</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
       } else {
         console.error("Failed to toggle block status:", result.message)
       }
+
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
@@ -229,7 +248,7 @@ export default function AdvertiserProfilePage() {
                               variant="ghost"
                               size="sm"
                               className={cn("text-xs", isBlocked && "text-red-500")}
-                              onClick={toggleBlock}
+                              onClick={handleBlockClick}
                               disabled={isBlockLoading}
                             >
                               {isBlockLoading ? (
@@ -261,7 +280,8 @@ export default function AdvertiserProfilePage() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-slate-500">Recommended
+                    <div className="flex items-center text-xs text-slate-500">
+                      Recommended
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Image
@@ -274,7 +294,7 @@ export default function AdvertiserProfilePage() {
                         </TooltipTrigger>
                         <TooltipContent>
                           <p className="opacity-[0.72]">Recommended by {profile?.recommend_count_lifetime} traders</p>
-                          <TooltipArrow className="fill-black"/>
+                          <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
                     </div>
@@ -304,7 +324,8 @@ export default function AdvertiserProfilePage() {
               </div>
             </div>
             <div>
-              <div className="flex items-center text-xs text-slate-500">Trade volume (30d)
+              <div className="flex items-center text-xs text-slate-500">
+                Trade volume (30d)
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <Image
@@ -317,7 +338,7 @@ export default function AdvertiserProfilePage() {
                   </TooltipTrigger>
                   <TooltipContent>
                     <p className="opacity-[0.72]">Total value of trades completed in the last 30 days.</p>
-                    <TooltipArrow className="fill-black"/>
+                    <TooltipArrow className="fill-black" />
                   </TooltipContent>
                 </Tooltip>
               </div>
@@ -347,7 +368,7 @@ export default function AdvertiserProfilePage() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p className="opacity-[0.72]">Total number of users successfully traded with.</p>
-                      <TooltipArrow className="fill-black"/>
+                      <TooltipArrow className="fill-black" />
                     </TooltipContent>
                   </Tooltip>
                 </div>
@@ -476,6 +497,13 @@ export default function AdvertiserProfilePage() {
             onClose={() => setIsOrderSidebarOpen(false)}
             ad={selectedAd}
             orderType={orderType}
+          />
+          <BlockConfirmation
+            isOpen={isBlockConfirmationOpen}
+            onClose={() => setIsBlockConfirmationOpen(false)}
+            onConfirm={handleBlockConfirm}
+            nickname={profile?.nickname || ""}
+            isLoading={isBlockLoading}
           />
         </div>
       </div>
