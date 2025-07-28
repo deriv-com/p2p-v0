@@ -134,7 +134,7 @@ export default function AdvertiserProfilePage() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/success-checkmark.png" alt="Success" width={16} height={16} className="text-white" />
-              <span>{profile.nickname} blocked.</span>
+              <span>{profile?.nickname} blocked.</span>
             </div>
           ),
           className: "bg-gray-900 text-white border-gray-900",
