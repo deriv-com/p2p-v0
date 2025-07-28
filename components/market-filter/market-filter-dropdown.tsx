@@ -77,7 +77,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
             onCheckedChange={(checked) => handleFilterChange("withinBalance", checked as boolean)}
             className="data-[state=checked]:bg-black border-black"
           />
-          <label htmlFor="within-balance" className="text-sm font-medium text-gray-700 cursor-pointer">
+          <label htmlFor="within-balance" className="text-sm text-gray-700 cursor-pointer">
             Ads within your P2P balance and order limits
           </label>
         </div>
@@ -88,7 +88,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
             className="data-[state=checked]:bg-black border-black"
           />
-          <label htmlFor="from-following" className="text-sm font-medium text-gray-700 cursor-pointer">
+          <label htmlFor="from-following" className="text-sm text-gray-700 cursor-pointer">
             Ads from advertisers you follow
           </label>
         </div>
@@ -105,7 +105,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
                   id="exchange_rate"
                   className="border-grayscale-100 text-black"
                 />
-                <Label htmlFor="exchange_rate" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="exchange_rate" className="text-sm text-gray-700 cursor-pointer">
                   {activeTab === "sell" ? (<>Exchange rate (low-high)</>) : (<>Exchange rate (high-low)</>)}
                 </Label>
               </div>
@@ -115,7 +115,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
                   id="user_rating_average_lifetime"
                   className="border-grayscale-100 text-black"
                 />
-                <Label htmlFor="user_rating_average_lifetime" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="user_rating_average_lifetime" className="text-sm text-gray-700 cursor-pointer">
                   User rating (high-low)
                 </Label>
               </div>
