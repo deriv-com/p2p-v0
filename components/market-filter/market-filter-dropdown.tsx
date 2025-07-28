@@ -106,7 +106,7 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
                 <RadioGroupItem
                   value="exchange_rate"
                   id="exchange_rate"
-                  className="border-gray-300 text-black data-[state=checked]:border-black data-[state=checked]:bg-black"
+                  className="border-grayscale-100 text-black"
                 />
                 <Label htmlFor="exchange_rate" className="text-sm font-medium text-gray-700 cursor-pointer">
                   Exchange rate (high-low)
@@ -116,7 +116,7 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
                 <RadioGroupItem
                   value="user_rating_average_lifetime"
                   id="user_rating_average_lifetime"
-                  className="border-gray-300 text-black data-[state=checked]:border-black data-[state=checked]:bg-black"
+                  className="border-grayscale-100 text-black"
                 />
                 <Label htmlFor="user_rating_average_lifetime" className="text-sm font-medium text-gray-700 cursor-pointer">
                   User rating (high-low)
