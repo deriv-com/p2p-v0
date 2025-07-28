@@ -120,7 +120,7 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockConfirm = async () => {
-    if (!profile) return
+   // if (!profile) return
 
     setIsBlockLoading(true)
     try {
