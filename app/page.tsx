@@ -223,13 +223,14 @@ export default function BuySellPage() {
                       variant="outline"
                       className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                     >
-                      <Image
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-iXBmF7I206rGBTIy7p22u432Bwjel3.png"
-                        alt="Filter"
-                        width={20}
-                        height={20}
-                      />
-                      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                      {isMobile ? (
+                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                      ) : (
+                        <>
+                          <span>Filter by</span>
+                          <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                        </>
+                      )}
                     </Button>
                   }
                 />
