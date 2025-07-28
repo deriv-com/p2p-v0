@@ -58,7 +58,7 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
     }))
   }
 
-  const handleSortByChange = (value: "exchange-rate" | "user-rating") => {
+  const handleSortByChange = (value: "exchange-rate" | "user_rating_average_lifetime") => {
     setFilters((prev) => ({
       ...prev,
       sortBy: value,
@@ -114,11 +114,11 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
               </div>
               <div className="flex items-center space-x-3">
                 <RadioGroupItem
-                  value="user-rating"
-                  id="user-rating"
+                  value="user_rating_average_lifetime"
+                  id="user_rating_average_lifetime"
                   className="border-gray-300 text-black data-[state=checked]:border-black data-[state=checked]:bg-black"
                 />
-                <Label htmlFor="user-rating" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="user_rating_average_lifetime" className="text-sm font-medium text-gray-700 cursor-pointer">
                   User rating (high-low)
                 </Label>
               </div>
