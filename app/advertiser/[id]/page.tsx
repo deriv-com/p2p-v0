@@ -306,7 +306,7 @@ export default function AdvertiserProfilePage() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Image
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-tO7OXxvECG5DExviJwAQ8HWn8P6reO.png"
+                        src="/icons/info-circle.png"
                         alt="Info"
                         width={12}
                         height={12}
