@@ -301,7 +301,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                           disabled={isTogglingStatus}
                         >
                           <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
-                          {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+                          {isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-red-600"
