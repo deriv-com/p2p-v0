@@ -42,10 +42,10 @@ export function DeleteConfirmationDialog({
             <SheetDescription className="text-left">{description}</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-3 mt-6">
-            <Button onClick={onConfirm} variant="black" className="w-full">
+            <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
               {confirmText}
             </Button>
-            <Button onClick={onClose} variant="outline" className="w-full bg-transparent">
+            <Button onClick={onClose} variant="outline" className="w-full rounded-full">
               {cancelText}
             </Button>
           </div>
@@ -62,10 +62,10 @@ export function DeleteConfirmationDialog({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onClose} variant="outline">
+          <Button onClick={onClose} variant="outline" className="w-full rounded-full">
             {cancelText}
           </Button>
-          <Button onClick={onConfirm} variant="black">
+          <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
             {confirmText}
           </Button>
         </DialogFooter>
