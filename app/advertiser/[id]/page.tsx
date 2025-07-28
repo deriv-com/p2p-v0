@@ -315,7 +315,7 @@ export default function AdvertiserProfilePage() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Total number of users successfully traded with.</p>
-                      <TooltipPrimitive.Arrow className="fill-black"/>
+                      <TooltipArrow className="fill-black"/>
                     </TooltipContent>
                   </Tooltip>
                 </div>
