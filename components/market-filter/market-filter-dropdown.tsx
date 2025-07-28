@@ -107,7 +107,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
                   className="border-grayscale-100 text-black"
                 />
                 <Label htmlFor="exchange_rate" className="text-sm font-medium text-gray-700 cursor-pointer">
-                  {activeTab === "sell" ? (<>Sort by: Exchange rate (low-high)</>) : (<>Sort by: Exchange rate (high-low)</>)}
+                  {activeTab === "sell" ? (<>Exchange rate (low-high)</>) : (<>Exchange rate (high-low)</>)}
                 </Label>
               </div>
               <div className="flex items-center space-x-3">
