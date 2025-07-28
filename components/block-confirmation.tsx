@@ -25,7 +25,7 @@ export default function BlockConfirmation({
   const content = (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-gray-900">Block {nickname}?</h2>
+        <h2 className="text-2xl font-bold text-slate-1200">Block {nickname}?</h2>
         <p className="text-gray-600 text-base leading-relaxed">
           You won't see {nickname}'s ads, and they can't place orders on yours.
         </p>
