@@ -25,8 +25,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
-            <Main>{children}</Main>
             <Toaster />
+            <Main>{children}</Main>
           </AlertDialogProvider>
         </ThemeProvider>
       </body>
