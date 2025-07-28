@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -21,6 +22,7 @@ interface MyAdsTableProps {
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
   const [isTogglingStatus, setIsTogglingStatus] = useState(false)
   const [errorModal, setErrorModal] = useState({
@@ -163,7 +165,17 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
       }
 
       if (onAdDeleted) {
-        onAdDeleted("deleted")
+        onAdDeleted()
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Ad deleted</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
       }
 
       setDeleteConfirmModal({ show: false, adId: "" })
@@ -301,7 +313,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                           disabled={isTogglingStatus}
                         >
                           <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
-                          {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+                          {isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-red-600"
