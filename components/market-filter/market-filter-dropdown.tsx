@@ -67,7 +67,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
       <div className="space-y-4 mb-6">
         {isMobile && (
           <div className="mb-6">
-            <h4 className="text-lg font-semibold mb-4">Ad types</h4>
+            <h4 className="text-sm font-bold mb-4">Ad types</h4>
           </div>
         )}
         <div className="flex items-center space-x-3">
@@ -97,7 +97,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
       {isMobile && (
         <div className="mb-6">
           <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-lg font-semibold mb-4">Sort by</h4>
+            <h4 className="text-sm font-bold mb-4">Sort by</h4>
             <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
               <div className="flex items-center space-x-3">
                 <RadioGroupItem
