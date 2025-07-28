@@ -13,29 +13,25 @@ import {
 } from "@/components/ui/dialog"
 
 interface DeleteConfirmationDialogProps {
-  isOpen: boolean
-  onClose: () => void
+  open: boolean
+  onCancel: () => void
   onConfirm: () => void
-  title?: string
-  description?: string
-  confirmText?: string
-  cancelText?: string
 }
 
 export function DeleteConfirmationDialog({
-  isOpen,
-  onClose,
-  onConfirm,
-  title = "Delete Ad",
-  description = "Are you sure you want to delete this ad? This action cannot be undone.",
-  confirmText = "Delete",
-  cancelText = "Cancel",
+  open,
+  onCancel,
+  onConfirm
 }: DeleteConfirmationDialogProps) {
   const isMobile = useIsMobile()
+  const title = "Delete Ad"
+  const description = "You will not be able to restore it."
+  const confirmText = "Delete"
+  const cancelText = "Cancel"
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={onClose}>
+      <Sheet open={open} onOpenChange={onCancel}>
         <SheetContent side="bottom" className="rounded-t-2xl">
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-left">{title}</SheetTitle>
@@ -45,7 +41,7 @@ export function DeleteConfirmationDialog({
             <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
               {confirmText}
             </Button>
-            <Button onClick={onClose} variant="outline" className="w-full rounded-full">
+            <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
               {cancelText}
             </Button>
           </div>
@@ -55,14 +51,14 @@ export function DeleteConfirmationDialog({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription className="text-grayscale-100 text-base">{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onClose} variant="outline" className="w-full rounded-full">
+          <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
             {cancelText}
           </Button>
           <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
