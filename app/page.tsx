@@ -215,6 +215,7 @@ export default function BuySellPage() {
 
               <div className="filter-dropdown-container flex-shrink-0 flex-1">
                 <MarketFilterDropdown
+                  activeTab={activeTab}
                   onApply={handleFilterApply}
                   initialFilters={filterOptions}
                   initialSortBy={sortBy}
