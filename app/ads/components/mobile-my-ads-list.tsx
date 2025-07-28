@@ -12,6 +12,7 @@ import type { Ad } from "../types"
 import { cn, formatPaymentMethodName } from "@/lib/utils"
 import StatusModal from "./ui/status-modal"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
+import { useToast } from "@/hooks/use-toast"
 
 interface MobileMyAdsListProps {
   ads: Ad[]
@@ -35,6 +36,7 @@ const getStatusBadge = (isActive: boolean) => {
 
 export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
 
   const [errorModal, setErrorModal] = useState({
@@ -147,7 +149,17 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
       }
 
       if (onAdDeleted) {
-        onAdDeleted("deleted")
+        onAdDeleted()
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Ad deleted</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
       }
 
       setDeleteConfirmModal({ show: false, adId: "" })
