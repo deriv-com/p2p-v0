@@ -24,7 +24,7 @@ export function DeleteConfirmationDialog({
   onConfirm
 }: DeleteConfirmationDialogProps) {
   const isMobile = useIsMobile()
-  const title = "Delete Ad"
+  const title = "Delete ad?"
   const description = "You will not be able to restore it."
   const confirmText = "Delete"
   const cancelText = "Cancel"
@@ -52,17 +52,15 @@ export function DeleteConfirmationDialog({
 
   return (
     <Dialog open={open} onOpenChange={onCancel}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription className="text-grayscale-100 text-base">{description}</DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
-            {cancelText}
-          </Button>
+      <DialogContent className="sm:max-w-md rounded-4xl">
+        <DialogTitle className="font-bold">{title}</DialogTitle>
+        <DialogDescription className="text-grayscale-100 text-base">{description}</DialogDescription>
+        <DialogFooter className="sm:space-x-0 gap-2 sm:flex-col">
           <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
             {confirmText}
+          </Button>
+          <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
+            {cancelText}
           </Button>
         </DialogFooter>
       </DialogContent>
