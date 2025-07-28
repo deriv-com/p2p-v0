@@ -36,7 +36,7 @@ export default function LoginPage() {
           })
         }, 1000)
       } else {
-        setError(response.message || "Login failed. Please try again.")
+        setError(response.message || "Failed to login. Please try again.")
       }
     } catch (error: any) {
       console.error("Login failed:", error)
