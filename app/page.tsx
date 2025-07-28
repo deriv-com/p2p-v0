@@ -156,7 +156,7 @@ export default function BuySellPage() {
                   </TabsList>
                 </Tabs>
 
-                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap">
+                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full">
                   {CURRENCY_FILTERS.map((currencyFilter) => (
                     <Button
                       key={currencyFilter}
