@@ -12,6 +12,7 @@ import { useIsMobile } from "@/components/ui/use-mobile"
 export interface MarketFilterOptions {
   withinBalance: boolean
   fromFollowing: boolean
+  sortBy: "exchange-rate" | "user-rating"
 }
 
 interface MarketFilterDropdownProps {
@@ -20,12 +21,8 @@ interface MarketFilterDropdownProps {
   trigger: React.ReactElement
 }
 
-export default function MarketFilterDropdown({
-  onApply,
-  initialFilters,
-  trigger,
-}: MarketFilterDropdownProps) {
-const [isOpen, setIsOpen] = useState(false)
+export default function MarketFilterDropdown({ onApply, initialFilters, trigger }: MarketFilterDropdownProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
   const isMobile = useIsMobile()
 
@@ -37,6 +34,7 @@ const [isOpen, setIsOpen] = useState(false)
     const resetFilters: MarketFilterOptions = {
       withinBalance: false,
       fromFollowing: false,
+      sortBy: "exchange-rate",
     }
     setFilters(resetFilters)
     handleApply(resetFilters)
@@ -58,10 +56,22 @@ const [isOpen, setIsOpen] = useState(false)
     }))
   }
 
+  const handleSortByChange = (value: "exchange-rate" | "user-rating") => {
+    setFilters((prev) => ({
+      ...prev,
+      sortBy: value,
+    }))
+  }
+
   const FilterContent = () => (
     <div className="w-full h-full">
       <div className="space-y-4 mb-6">
-         <div className="flex items-center space-x-3">
+        {isMobile && (
+          <div className="mb-6">
+            <h4 className="text-lg font-semibold mb-4">Ad types</h4>
+          </div>
+        )}
+        <div className="flex items-center space-x-3">
           <Checkbox
             id="within-balance"
             checked={filters.withinBalance}
@@ -85,17 +95,57 @@ const [isOpen, setIsOpen] = useState(false)
         </div>
       </div>
 
+      {isMobile && (
+        <div className="mb-6">
+          <div className="border-t border-gray-200 pt-6">
+            <h4 className="text-lg font-semibold mb-4">Sort by</h4>
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3">
+                <input
+                  type="radio"
+                  id="exchange-rate"
+                  name="sortBy"
+                  checked={filters.sortBy === "exchange-rate"}
+                  onChange={() => handleSortByChange("exchange-rate")}
+                  className="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                />
+                <label htmlFor="exchange-rate" className="text-sm font-medium text-gray-700 cursor-pointer">
+                  Exchange rate (high-low)
+                </label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="radio"
+                  id="user-rating"
+                  name="sortBy"
+                  checked={filters.sortBy === "user-rating"}
+                  onChange={() => handleSortByChange("user-rating")}
+                  className="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                />
+                <label htmlFor="user-rating" className="text-sm font-medium text-gray-700 cursor-pointer">
+                  User rating (high-low)
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex flex-col md:flex-row gap-3">
         <Button
           variant="outline"
           onClick={handleReset}
-          className="rounded-full flex-1"
-          size={isMobile ? "default": "sm"}
+          className="rounded-full flex-1 bg-transparent"
+          size={isMobile ? "default" : "sm"}
         >
           Reset
         </Button>
-        <Button onClick={handleApply} className="flex-1 rounded-full bg-black text-white hover:bg-gray-800" size={isMobile ? "default": "sm"}>
-          Apply
+        <Button
+          onClick={handleApply}
+          className={`flex-1 rounded-full bg-black text-white hover:bg-gray-800 ${isMobile ? "order-first" : ""}`}
+          size={isMobile ? "default" : "sm"}
+        >
+          {isMobile ? "Apply filters" : "Apply"}
         </Button>
       </div>
     </div>
