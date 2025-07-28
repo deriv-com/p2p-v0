@@ -35,7 +35,7 @@ export default function BlockConfirmation({
         <Button
           onClick={onConfirm}
           disabled={isLoading}
-          className="w-full"
+          className="w-full rounded-full"
           variant="black"
         >
           Block
@@ -44,7 +44,7 @@ export default function BlockConfirmation({
           onClick={onClose}
           variant="outline"
           disabled={isLoading}
-          className="w-full border-gray-300 text-gray-700 font-semibold py-3 rounded-full hover:bg-gray-50 bg-transparent"
+          className="w-full rounded-full"
         >
           Cancel
         </Button>
