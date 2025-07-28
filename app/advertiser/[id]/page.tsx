@@ -310,7 +310,7 @@ export default function AdvertiserProfilePage() {
                         alt="Info"
                         width={12}
                         height={12}
-                        className="ml-1 cursor-help"
+                        className="ml-1 cursor-pointer"
                       />
                     </TooltipTrigger>
                     <TooltipContent>
