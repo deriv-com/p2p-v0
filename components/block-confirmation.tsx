@@ -71,7 +71,7 @@ export default function BlockConfirmation({
         <div className="relative">
           <Button
             onClick={onClose}
-            className="absolute right-0 top-0 p-2 hover:bg-gray-100 rounded-full"
+            className="absolute right-0 top-2 rounded-full"
             disabled={isLoading}
             variant="ghost"
           >
