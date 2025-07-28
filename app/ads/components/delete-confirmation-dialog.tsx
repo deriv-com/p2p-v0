@@ -36,13 +36,13 @@ export function DeleteConfirmationDialog({
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="bottom" className="rounded-t-lg">
-          <SheetHeader className="text-left">
-            <SheetTitle>{title}</SheetTitle>
+        <SheetContent side="bottom" className="rounded-t-2xl">
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-xl font-bold text-left">{title}</SheetTitle>
             <SheetDescription className="text-left">{description}</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-3 mt-6">
-            <Button onClick={onConfirm} variant="destructive" className="w-full">
+            <Button onClick={onConfirm} variant="black" className="w-full">
               {confirmText}
             </Button>
             <Button onClick={onClose} variant="outline" className="w-full bg-transparent">
@@ -65,7 +65,7 @@ export function DeleteConfirmationDialog({
           <Button onClick={onClose} variant="outline">
             {cancelText}
           </Button>
-          <Button onClick={onConfirm} variant="destructive">
+          <Button onClick={onConfirm} variant="black">
             {confirmText}
           </Button>
         </DialogFooter>
