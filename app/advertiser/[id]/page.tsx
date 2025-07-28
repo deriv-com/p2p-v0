@@ -261,7 +261,23 @@ export default function AdvertiserProfilePage() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-slate-500">Recommended</div>
+                    <div className="text-xs text-slate-500">Recommended
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.png"
+                            alt="Info"
+                            width={12}
+                            height={12}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="opacity-[0.72]">Recommended by {profile?.recommend_count_lifetime} traders</p>
+                          <TooltipArrow className="fill-black"/>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <div className="flex items-center mt-1">
                       <span className="font-bold text-lg">{profile?.recommend_average_lifetime}%</span>
                     </div>
@@ -288,7 +304,23 @@ export default function AdvertiserProfilePage() {
               </div>
             </div>
             <div>
-              <div className="flex items-center text-xs text-slate-500">Trade volume (30d)</div>
+              <div className="flex items-center text-xs text-slate-500">Trade volume (30d)
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image
+                      src="/icons/info-circle.png"
+                      alt="Info"
+                      width={12}
+                      height={12}
+                      className="ml-1 cursor-pointer"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="opacity-[0.72]">Total value of trades completed in the last 30 days.</p>
+                    <TooltipArrow className="fill-black"/>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
               <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
             </div>
             <div>
