@@ -25,7 +25,6 @@ export default function BlockConfirmation({
   const content = (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h2 className="text-2xl font-bold text-slate-1200">Block {nickname}?</h2>
         <p className="text-grayscale-100 text-base">
           You won't see {nickname}'s ads, and they can't place orders on yours.
         </p>
@@ -56,14 +55,9 @@ export default function BlockConfirmation({
     return (
       <Sheet open={isOpen} onOpenChange={onClose}>
         <SheetContent side="bottom" className="rounded-t-lg">
-          <div className="relative">
-            <button
-              onClick={onClose}
-              className="absolute right-0 top-0 p-2 hover:bg-gray-100 rounded-full"
-              disabled={isLoading}
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
+          <SheetHeader className="pb-4">
+            <SheetTitle className="text-xl font-bold text-center">Block {nickname}?</SheetTitle>
+          </SheetHeade>
             {content}
           </div>
         </SheetContent>
