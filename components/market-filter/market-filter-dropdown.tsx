@@ -104,11 +104,11 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
             <RadioGroup value={filters.sortBy} onValueChange={handleSortByChange} className="space-y-4">
               <div className="flex items-center space-x-3">
                 <RadioGroupItem
-                  value="exchange-rate"
-                  id="exchange-rate"
+                  value="exchange_rate"
+                  id="exchange_rate"
                   className="border-gray-300 text-black data-[state=checked]:border-black data-[state=checked]:bg-black"
                 />
-                <Label htmlFor="exchange-rate" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="exchange_rate" className="text-sm font-medium text-gray-700 cursor-pointer">
                   Exchange rate (high-low)
                 </Label>
               </div>
