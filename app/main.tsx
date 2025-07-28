@@ -33,7 +33,7 @@ export default function Main({
         } else {*/
           AuthPrevAPI.getSocketToken(response.access_token)
           router.push(pathname)
-        }
+        //}
       } catch (error) {
         console.error("Error fetching data:", error)
       }
