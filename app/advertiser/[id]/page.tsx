@@ -16,6 +16,8 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import BlockConfirmation from "@/components/block-confirmation"
+import { useToast } from "@/components/ui/use-toast"
+import { CheckCircle } from "lucide-react"
 
 interface AdvertiserProfile {
   id: string | number
@@ -49,6 +51,7 @@ interface AdvertiserProfile {
 export default function AdvertiserProfilePage() {
   const router = useRouter()
   const { id } = useParams() as { id: string }
+  const { toast } = useToast()
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
@@ -78,9 +81,9 @@ export default function AdvertiserProfilePage() {
       setAdverts(advertiserAds)
     } catch (err) {
       console.error("Error fetching advertiser data:", err)
-     // setError("Failed to load advertiser profile. Please try again.")
+      // setError("Failed to load advertiser profile. Please try again.")
 
-     // setProfile(null)
+      // setProfile(null)
       setAdverts([])
     } finally {
       setIsLoading(false)
@@ -124,13 +127,26 @@ export default function AdvertiserProfilePage() {
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      /*if (result.success) {
+      if (result.success) {
+        // Update the UI state
         setIsBlocked(!isBlocked)
         setIsBlockConfirmationOpen(false)
+
+        // Show success toast
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-white" />
+              <span>{profile.nickname} blocked.</span>
+            </div>
+          ),
+          className: "bg-gray-900 text-white border-gray-900",
+        })
+
         console.log(result.message)
       } else {
         console.error("Failed to toggle block status:", result.message)
-      }*/
+      }
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
