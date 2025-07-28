@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
-import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
+import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import { cn, formatPaymentMethodName } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -124,32 +124,26 @@ export default function AdvertiserProfilePage() {
 
     setIsBlockLoading(true)
     try {
-      //const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
+      const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      // if (result.success) {
-      setIsBlocked(!isBlocked)
-      setIsBlockConfirmationOpen(false)
+      if (result.success) {
+        setIsBlocked(!isBlocked)
+        setIsBlockConfirmationOpen(false)
 
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-w6oW8Hpmhp7PHklkyVzjdkRh85vmdl.png"
-              alt="Success"
-              width={16}
-              height={16}
-              className="text-white"
-            />
-            <span>{profile.nickname} blocked.</span>
-          </div>
-        ),
-        className: "bg-gray-900 text-white border-gray-900",
-      })
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={16} height={16} className="text-white" />
+              <span>{profile.nickname} blocked.</span>
+            </div>
+          ),
+          className: "bg-gray-900 text-white border-gray-900",
+        })
 
-      //console.log(result.message)
-      /* } else {
+        console.log(result.message)
+      } else {
         console.error("Failed to toggle block status:", result.message)
-      }*/
+      }
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
