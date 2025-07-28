@@ -1,6 +1,6 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle} from "@/components/ui/dialog"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { X } from "lucide-react"
@@ -67,6 +67,7 @@ export default function BlockConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
+        <DialogTitle>Block {nickname}?</DialogTitle>
         <div className="relative">
           {content}
         </div>
