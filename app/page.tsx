@@ -115,7 +115,7 @@ export default function BuySellPage() {
 
   const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue: string) => {
     setFilterOptions(newFilters)
-    if(sortByValue) setSortBy(sortByValue)
+    if (sortByValue) setSortBy(sortByValue)
   }
 
   useEffect(() => {
@@ -141,7 +141,11 @@ export default function BuySellPage() {
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-full flex flex-col-reverse md:flex-row items-start md:items-center gap-[16px] md:gap-[24px]">
-                <Tabs className="w-full md:w-[230px] md:min-w-[230px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
+                <Tabs
+                  className="w-full md:w-[230px] md:min-w-[230px]"
+                  defaultValue={activeTab}
+                  onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
+                >
                   <TabsList className="w-full md:min-w-[230px]">
                     <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
                       Buy
@@ -159,10 +163,11 @@ export default function BuySellPage() {
                       variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
                       size="sm"
                       onClick={() => setSelectedAccountCurrency(currencyFilter)}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${selectedAccountCurrency === currencyFilter
-                        ? "bg-black text-white hover:bg-gray-800"
-                        : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                        }`}
+                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                        selectedAccountCurrency === currencyFilter
+                          ? "bg-black text-white hover:bg-gray-800"
+                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
+                      }`}
                     >
                       {currencyFilter}
                     </Button>
@@ -182,13 +187,7 @@ export default function BuySellPage() {
                     className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                   >
                     <span>{currency}</span>
-                    <Image
-                      src="/icons/chevron-down.png"
-                      alt="Arrow"
-                      width={24}
-                      height={24}
-                      className="ml-2"
-                    />
+                    <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
                   </Button>
                 }
               />
@@ -224,14 +223,13 @@ export default function BuySellPage() {
                       variant="outline"
                       className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
                     >
-                      <span>Filter by</span>
                       <Image
-                        src="/icons/chevron-down.png"
-                        alt="Arrow"
-                        width={24}
-                        height={24}
-                        className="ml-2"
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-iXBmF7I206rGBTIy7p22u432Bwjel3.png"
+                        alt="Filter"
+                        width={20}
+                        height={20}
                       />
+                      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
                     </Button>
                   }
                 />
@@ -247,7 +245,11 @@ export default function BuySellPage() {
                       value="exchange_rate"
                       className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                     >
-                      {activeTab === "sell" ? (<>Sort by: Exchange rate (low-high)</>) : (<>Sort by: Exchange rate (high-low)</>)}
+                      {activeTab === "sell" ? (
+                        <>Sort by: Exchange rate (low-high)</>
+                      ) : (
+                        <>Sort by: Exchange rate (high-low)</>
+                      )}
                     </SelectItem>
                     <SelectItem
                       value="user_rating_average_lifetime"
@@ -271,130 +273,136 @@ export default function BuySellPage() {
               </div>
             ) : error ? (
               <div className="text-center py-8">{error}</div>
-            ) : adverts.length === 0 ?
-              <EmptyState title="No ads for this currency" description="Looking to buy or sell USD? You can post your own ad for others to respond." redirectToAds={true} />
-              : (
-                <>
-                  <div className="md:block">
-                    <Table>
-                      <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
-                        <TableRow className="text-sm">
-                          <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
-                          <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
-                          <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                            Payment methods
-                          </TableHead>
-                          <TableHead className="text-right py-4 px-4"></TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                        {adverts.map((ad) => (
-                          <TableRow
-                            className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
-                            key={ad.id}
-                          >
-                            <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full">
-                              <div className="flex items-center">
-                                <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                                  {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                                </div>
-                                <div>
-                                  <div className="flex items-center">
-                                    <button
-                                      onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                      className="hover:underline cursor-pointer"
-                                    >
-                                      {ad.user?.nickname || "Unknown"}
-                                    </button>
-                                    {ad.user?.is_favourite && (
-                                      <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                        Following
-                                      </span>
-                                    )}
-                                  </div>
+            ) : adverts.length === 0 ? (
+              <EmptyState
+                title="No ads for this currency"
+                description="Looking to buy or sell USD? You can post your own ad for others to respond."
+                redirectToAds={true}
+              />
+            ) : (
+              <>
+                <div className="md:block">
+                  <Table>
+                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+                      <TableRow className="text-sm">
+                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
+                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
+                        <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                          Payment methods
+                        </TableHead>
+                        <TableHead className="text-right py-4 px-4"></TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                      {adverts.map((ad) => (
+                        <TableRow
+                          className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                          key={ad.id}
+                        >
+                          <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full">
+                            <div className="flex items-center">
+                              <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                                {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                              </div>
+                              <div>
+                                <div className="flex items-center">
+                                  <button
+                                    onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                    className="hover:underline cursor-pointer"
+                                  >
+                                    {ad.user?.nickname || "Unknown"}
+                                  </button>
+                                  {ad.user?.is_favourite && (
+                                    <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                      Following
+                                    </span>
+                                  )}
                                 </div>
                               </div>
-                              <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                                {ad.user.rating_average_lifetime && (
-                                  <span className="flex items-center">
-                                    <Image
-                                      src="/icons/star-active.png"
-                                      alt="Rating"
-                                      width={16}
-                                      height={16}
-                                      className="mr-1"
-                                    />
-                                    <span className="text-[#FFAD3A]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
-                                  </span>
-                                )}
-                                {ad.user.order_count_lifetime > 0 && (
-                                  <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                    <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                    <span>{ad.user.order_count_lifetime} orders</span>
-                                  </div>
-                                )}
-                                {ad.user.completion_average_30day && (
-                                  <div className="flex flex-row items-center justify-center gap-[8px]">
-                                    <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                    <span>{ad.user.completion_average_30day}% completion</span>
-                                  </div>
-                                )}
-                              </div>
-                            </TableCell>
-                            <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                              <div className="font-bold text-base">
-                                {ad.payment_currency}{" "}
-                                {ad.exchange_rate
-                                  ? ad.exchange_rate.toLocaleString(undefined, {
+                            </div>
+                            <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                              {ad.user.rating_average_lifetime && (
+                                <span className="flex items-center">
+                                  <Image
+                                    src="/icons/star-active.png"
+                                    alt="Rating"
+                                    width={16}
+                                    height={16}
+                                    className="mr-1"
+                                  />
+                                  <span className="text-[#FFAD3A]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                                </span>
+                              )}
+                              {ad.user.order_count_lifetime > 0 && (
+                                <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                  <span>{ad.user.order_count_lifetime} orders</span>
+                                </div>
+                              )}
+                              {ad.user.completion_average_30day && (
+                                <div className="flex flex-row items-center justify-center gap-[8px]">
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                  <span>{ad.user.completion_average_30day}% completion</span>
+                                </div>
+                              )}
+                            </div>
+                          </TableCell>
+                          <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                            <div className="font-bold text-base">
+                              {ad.payment_currency}{" "}
+                              {ad.exchange_rate
+                                ? ad.exchange_rate.toLocaleString(undefined, {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,
                                   })
-                                  : "N/A"}
+                                : "N/A"}
+                            </div>
+                            <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                              ad.actual_maximum_order_amount || "N/A"
+                            }`}</div>
+                            <div className="flex items-center text-xs text-slate-500 mt-1">
+                              <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
+                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                <span>{ad.order_expiry_period} min</span>
                               </div>
-                              <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${ad.actual_maximum_order_amount || "N/A"
-                                }`}</div>
-                              <div className="flex items-center text-xs text-slate-500 mt-1">
-                                <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
-                                  <span>{ad.order_expiry_period} min</span>
-                                </div>
-                              </div>
-                            </TableCell>
-                            <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                              <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
-                                {ad.payment_methods?.map((method, index) => (
-                                  <div key={index} className="flex items-center">
-                                    {method && (
-                                      <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                            </div>
+                          </TableCell>
+                          <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                            <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
+                              {ad.payment_methods?.map((method, index) => (
+                                <div key={index} className="flex items-center">
+                                  {method && (
+                                    <div
+                                      className={`h-2 w-2 rounded-full mr-2 ${
+                                        method.toLowerCase().includes("bank")
                                           ? "bg-paymentMethod-bank"
                                           : "bg-paymentMethod-ewallet"
-                                          }`}
-                                      ></div>
-                                    )}
-                                    <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                                  </div>
-                                ))}
-                              </div>
-                            </TableCell>
-                            <TableCell className="p-2 lg:p-4 text-right align-top row-start-3">
-                              {USER.id != ad.user.id && (
-                                <Button
-                                  variant={ad.type === "buy" ? "destructive" : "secondary"}
-                                  size="sm"
-                                  onClick={() => handleOrderClick(ad)}
-                                >
-                                  {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                                </Button>
-                              )}
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </>
-              )}
+                                      }`}
+                                    ></div>
+                                  )}
+                                  <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </TableCell>
+                          <TableCell className="p-2 lg:p-4 text-right align-top row-start-3">
+                            {USER.id != ad.user.id && (
+                              <Button
+                                variant={ad.type === "buy" ? "destructive" : "secondary"}
+                                size="sm"
+                                onClick={() => handleOrderClick(ad)}
+                              >
+                                {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                              </Button>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
