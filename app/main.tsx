@@ -27,10 +27,10 @@ export default function Main({
     const fetchSessionData = async () => {
       try {
         const response = await AuthPrevAPI.getSession()
-        if (response?.errors && !isPublic) {
+       /* if (response?.errors && !isPublic) {
           setIsHeaderVisible(false)
           router.push("/login")
-        } else {
+        } else {*/
           AuthPrevAPI.getSocketToken(response.access_token)
           router.push(pathname)
         }
@@ -43,7 +43,7 @@ export default function Main({
   }, [pathname, router])
 
   if (pathname === "/login") {
-    return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
+   // return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
   }
 
   return (
