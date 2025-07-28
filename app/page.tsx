@@ -115,7 +115,7 @@ export default function BuySellPage() {
 
   const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue: string) => {
     setFilterOptions(newFilters)
-    setSortBy(sortByValue)
+    if(sortByValue) setSortBy(sortByValue)
   }
 
   useEffect(() => {
