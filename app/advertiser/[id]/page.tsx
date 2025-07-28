@@ -126,7 +126,7 @@ export default function AdvertiserProfilePage() {
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      if (result.success) {
+      //if (result.success) {
         setIsBlocked(!isBlocked)
         setIsBlockConfirmationOpen(false)
 
@@ -140,10 +140,9 @@ export default function AdvertiserProfilePage() {
           className: "bg-gray-900 text-white border-gray-900",
         })
 
-        console.log(result.message)
-      } else {
+      /*} else {
         console.error("Failed to toggle block status:", result.message)
-      }
+      }*/
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
