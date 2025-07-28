@@ -217,6 +217,7 @@ export default function BuySellPage() {
                 <MarketFilterDropdown
                   onApply={handleFilterApply}
                   initialFilters={filterOptions}
+                  initialSortBy={sortBy}
                   trigger={
                     <Button
                       variant="outline"

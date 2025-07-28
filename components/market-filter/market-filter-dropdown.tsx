@@ -23,7 +23,7 @@ interface MarketFilterDropdownProps {
   trigger: React.ReactElement
 }
 
-export default function MarketFilterDropdown({ onApply, initialFilters, initialSortBytrigger }: MarketFilterDropdownProps) {
+export default function MarketFilterDropdown({ onApply, initialFilters, initialSortBy, trigger }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
   const [sortBy, setSortBy] = useState(initialSortBy)
