@@ -313,7 +313,7 @@ export default function AdvertiserProfilePage() {
                         className="ml-1 cursor-pointer"
                       />
                     </TooltipTrigger>
-                    <TooltipContent>
+                    <TooltipContent className="bg-black text-white border-black rounded-lg px-3 py-2 text-sm max-w-xs">
                       <p>Total number of users successfully traded with.</p>
                     </TooltipContent>
                   </Tooltip>
