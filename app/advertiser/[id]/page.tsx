@@ -134,7 +134,7 @@ export default function AdvertiserProfilePage() {
           </div>
         ),
         className: "bg-gray-900 text-white border-gray-900",
-        duration: 3000,
+        duration: 300000,
       })
 
     } catch (error) {
