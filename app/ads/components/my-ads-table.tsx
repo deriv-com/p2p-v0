@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
-import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
+import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
