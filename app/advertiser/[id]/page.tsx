@@ -78,7 +78,7 @@ export default function AdvertiserProfilePage() {
       console.error("Error fetching advertiser data:", err)
       //setError("Failed to load advertiser profile. Please try again.")
 
-     // setProfile(null)
+      // setProfile(null)
       setAdverts([])
     } finally {
       setIsLoading(false)
@@ -300,17 +300,26 @@ export default function AdvertiserProfilePage() {
               <div className="font-bold mt-1">{getDuration(profile?.release_time_average_30day)}</div>
             </div>
             <div>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="cursor-help">
-                    <div className="flex items-center text-xs text-slate-500">Trade partners</div>
-                    <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Total number of users successfully traded with.</p>
-                </TooltipContent>
-              </Tooltip>
+              <div>
+                <div className="flex items-center text-xs text-slate-500">
+                  Trade partners
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Image
+                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-tO7OXxvECG5DExviJwAQ8HWn8P6reO.png"
+                        alt="Info"
+                        width={12}
+                        height={12}
+                        className="ml-1 cursor-help"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Total number of users successfully traded with.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
+              </div>
             </div>
           </div>
           <div className="container mx-auto pb-6 hidden">
