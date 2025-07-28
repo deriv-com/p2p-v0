@@ -35,7 +35,8 @@ export default function BlockConfirmation({
         <Button
           onClick={onConfirm}
           disabled={isLoading}
-          className="w-full bg-gray-900 hover:bg-gray-800 text-white font-semibold py-3 rounded-full"
+          className="w-full"
+          variant="black"
         >
           {isLoading ? (
             <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
