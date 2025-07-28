@@ -78,9 +78,9 @@ export default function AdvertiserProfilePage() {
       setAdverts(advertiserAds)
     } catch (err) {
       console.error("Error fetching advertiser data:", err)
-      setError("Failed to load advertiser profile. Please try again.")
+     // setError("Failed to load advertiser profile. Please try again.")
 
-      setProfile(null)
+     // setProfile(null)
       setAdverts([])
     } finally {
       setIsLoading(false)
@@ -268,7 +268,7 @@ export default function AdvertiserProfilePage() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-xs text-slate-500">
+                    <div className="flex items-center text-xs text-slate-500">
                       Recommended
                       <Tooltip>
                         <TooltipTrigger asChild>
