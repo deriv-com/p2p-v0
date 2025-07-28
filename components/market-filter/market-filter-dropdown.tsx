@@ -153,7 +153,7 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
         <SheetTrigger asChild>{trigger}</SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-[16px] rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-center">Filter by</h3>
+            <h3 className="text-xl font-bold text-center">Filter</h3>
           </div>
           <FilterContent />
         </SheetContent>
