@@ -122,17 +122,15 @@ export default function AdvertiserProfilePage() {
 
     setIsBlockLoading(true)
     try {
-      // Call the API to toggle the block status
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      if (result.success) {
-        // Update the UI state
+      /*if (result.success) {
         setIsBlocked(!isBlocked)
         setIsBlockConfirmationOpen(false)
         console.log(result.message)
       } else {
         console.error("Failed to toggle block status:", result.message)
-      }
+      }*/
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
