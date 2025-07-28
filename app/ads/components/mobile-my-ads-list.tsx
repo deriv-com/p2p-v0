@@ -36,7 +36,6 @@ const getStatusBadge = (isActive: boolean) => {
 export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
-  const [isTogglingStatus, setIsTogglingStatus] = useState(false)
 
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -109,8 +108,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
-      setIsTogglingStatus(true)
-
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
@@ -129,8 +126,6 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
             ? error.message
             : `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`,
       })
-    } finally {
-      setIsTogglingStatus(false)
     }
   }
 
