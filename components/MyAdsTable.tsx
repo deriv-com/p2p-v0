@@ -2,10 +2,12 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { MoreVertical, Pencil, Copy, Share2, Power, Trash2, Search } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { deleteAd, activateAd, updateAd } from "@/services/api/api-my-ads"
+import { useToast } from "@/hooks/use-toast"
 
 interface Ad {
   id: string
@@ -37,6 +39,7 @@ interface MyAdsTableProps {
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
 
   // Format limits to display as a string
@@ -193,7 +196,17 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
 
       // Call the onAdDeleted callback to refresh the list and show success message
       if (onAdDeleted) {
-        onAdDeleted("deleted")
+        onAdDeleted()
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Ad deleted</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
       }
     } catch (error) {
       console.error("Failed to delete ad:", error)

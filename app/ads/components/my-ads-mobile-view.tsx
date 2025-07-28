@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { MoreVertical, Pencil, Power, Trash2, Search, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { deleteAd, updateAd } from "../api/api-ads"
@@ -9,6 +10,7 @@ import type { MyAd } from "../types"
 import StatusModal from "@/components/ui/status-modal"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useToast } from "@/hooks/use-toast"
 
 interface MyAdsMobileViewProps {
   ads: MyAd[]
@@ -17,6 +19,7 @@ interface MyAdsMobileViewProps {
 
 export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewProps) {
   const router = useRouter()
+  const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -111,7 +114,17 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
       }
 
       if (onAdDeleted) {
-        onAdDeleted("deleted")
+        onAdDeleted()
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Ad deleted</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
       }
 
       setDeleteConfirmModal({ show: false, adId: "" })
