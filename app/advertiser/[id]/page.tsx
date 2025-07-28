@@ -125,14 +125,12 @@ export default function AdvertiserProfilePage() {
 
     setIsBlockLoading(true)
     try {
-      const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
+      //const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      if (result.success) {
-        // Update the UI state
+     // if (result.success) {
         setIsBlocked(!isBlocked)
         setIsBlockConfirmationOpen(false)
 
-        // Show success toast
         toast({
           description: (
             <div className="flex items-center gap-2">
@@ -143,10 +141,10 @@ export default function AdvertiserProfilePage() {
           className: "bg-gray-900 text-white border-gray-900",
         })
 
-        console.log(result.message)
-      } else {
+        //console.log(result.message)
+    /* } else {
         console.error("Failed to toggle block status:", result.message)
-      }
+      }*/
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
