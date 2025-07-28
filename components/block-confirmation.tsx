@@ -57,9 +57,8 @@ export default function BlockConfirmation({
         <SheetContent side="bottom" className="rounded-t-lg">
           <SheetHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-center">Block {nickname}?</SheetTitle>
-          </SheetHeade>
+          </SheetHeader>
             {content}
-          </div>
         </SheetContent>
       </Sheet>
     )
