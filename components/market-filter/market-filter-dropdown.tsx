@@ -17,13 +17,14 @@ export interface MarketFilterOptions {
 }
 
 interface MarketFilterDropdownProps {
+  activeTab?: string
   onApply: (filters: MarketFilterOptions) => void
   initialFilters: MarketFilterOptions
   initialSortBy: string
   trigger: React.ReactElement
 }
 
-export default function MarketFilterDropdown({ onApply, initialFilters, initialSortBy, trigger }: MarketFilterDropdownProps) {
+export default function MarketFilterDropdown({ activeTab, onApply, initialFilters, initialSortBy, trigger }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
   const [sortBy, setSortBy] = useState(initialSortBy)
@@ -106,7 +107,7 @@ export default function MarketFilterDropdown({ onApply, initialFilters, initialS
                   className="border-grayscale-100 text-black"
                 />
                 <Label htmlFor="exchange_rate" className="text-sm font-medium text-gray-700 cursor-pointer">
-                  Exchange rate (high-low)
+                  {activeTab === "sell" ? (<>Sort by: Exchange rate (low-high)</>) : (<>Sort by: Exchange rate (high-low)</>)}
                 </Label>
               </div>
               <div className="flex items-center space-x-3">
