@@ -19,13 +19,14 @@ export interface MarketFilterOptions {
 interface MarketFilterDropdownProps {
   onApply: (filters: MarketFilterOptions) => void
   initialFilters: MarketFilterOptions
+  initialSortBy: string
   trigger: React.ReactElement
 }
 
-export default function MarketFilterDropdown({ onApply, initialFilters, trigger }: MarketFilterDropdownProps) {
+export default function MarketFilterDropdown({ onApply, initialFilters, initialSortBytrigger }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
-  const [sortBy, setSortBy] = useState("exchange_rate")
+  const [sortBy, setSortBy] = useState(initialSortBy)
   const isMobile = useIsMobile()
 
   useEffect(() => {
