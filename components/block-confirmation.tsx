@@ -68,14 +68,6 @@ export default function BlockConfirmation({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <div className="relative">
-          <Button
-            onClick={onClose}
-            className="absolute right-0 top-2 rounded-full"
-            disabled={isLoading}
-            variant="ghost"
-          >
-            <X className="h-5 w-5 text-gray-500" />
-          </Button>
           {content}
         </div>
       </DialogContent>
