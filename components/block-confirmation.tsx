@@ -38,9 +38,6 @@ export default function BlockConfirmation({
           className="w-full"
           variant="black"
         >
-          {isLoading ? (
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-          ) : null}
           Block
         </Button>
         <Button
