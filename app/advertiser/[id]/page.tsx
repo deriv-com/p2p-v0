@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
-import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
+import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import { cn, formatPaymentMethodName } from "@/lib/utils"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -126,12 +126,15 @@ export default function AdvertiserProfilePage() {
     try {
       //const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-     // if (result.success) {
-        setIsBlocked(!isBlocked)
-        setIsBlockConfirmationOpen(false)
+      // if (result.success) {
+      setIsBlocked(!isBlocked)
+      setIsBlockConfirmationOpen(false)
 
-        router.push("/")
+      // Redirect to Market page first
+      router.push("/")
 
+      // Show toast after redirect
+      setTimeout(() => {
         toast({
           description: (
             <div className="flex items-center gap-2">
@@ -141,6 +144,7 @@ export default function AdvertiserProfilePage() {
           ),
           className: "bg-gray-900 text-white border-gray-900",
         })
+      }, 100)
 
       /*} else {
         console.error("Failed to toggle block status:", result.message)
