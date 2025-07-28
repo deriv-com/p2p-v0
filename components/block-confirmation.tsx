@@ -65,7 +65,7 @@ export default function BlockConfirmation({
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose} className="rounded-t-4xl">
+    <Dialog open={isOpen} onOpenChange={onClose} className="rounded-4xl">
       <DialogContent className="sm:max-w-md">
         <DialogTitle className="font-bold">Block {nickname}?</DialogTitle>
         <div className="relative">
