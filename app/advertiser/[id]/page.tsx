@@ -125,7 +125,7 @@ export default function AdvertiserProfilePage() {
       setIsBlocked(!isBlocked)
       setIsBlockConfirmationOpen(false)
 
-      // Show toast immediately
+      router.push("/")
       toast({
         description: (
           <div className="flex items-center gap-2">
@@ -134,13 +134,9 @@ export default function AdvertiserProfilePage() {
           </div>
         ),
         className: "bg-gray-900 text-white border-gray-900",
-        duration: 5000,
+        duration: 3000,
       })
 
-      // Redirect after showing toast
-      setTimeout(() => {
-        router.push("/")
-      }, 1000)
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
