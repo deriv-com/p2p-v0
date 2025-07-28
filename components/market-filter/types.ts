@@ -2,7 +2,7 @@ import type React from "react"
 export interface MarketFilterOptions {
   withinBalance: boolean
   fromFollowing: boolean
-  sortBy: "exchange-rate" | "user_rating_average_lifetime"
+  sortBy: "exchange_rate" | "user_rating_average_lifetime"
 }
 
 export interface MarketFilterDropdownProps {
