@@ -129,11 +129,11 @@ export default function AdvertiserProfilePage() {
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <Image src="/icons/success-checkmark.png" alt="Success" width={16} height={16} className="text-white" />
+            <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
             <span>{profile?.nickname} blocked.</span>
           </div>
         ),
-        className: "bg-gray-900 text-white border-gray-900",
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
         duration: 300000,
       })
 
