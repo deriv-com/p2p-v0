@@ -6,8 +6,10 @@ import { useCallback, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
+import { Label } from "@/components/ui/label"
 
 export interface MarketFilterOptions {
   withinBalance: boolean
@@ -99,34 +101,28 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
         <div className="mb-6">
           <div className="border-t border-gray-200 pt-6">
             <h4 className="text-lg font-semibold mb-4">Sort by</h4>
-            <div className="space-y-4">
+            <RadioGroup value={filters.sortBy} onValueChange={handleSortByChange} className="space-y-4">
               <div className="flex items-center space-x-3">
-                <input
-                  type="radio"
+                <RadioGroupItem
+                  value="exchange-rate"
                   id="exchange-rate"
-                  name="sortBy"
-                  checked={filters.sortBy === "exchange-rate"}
-                  onChange={() => handleSortByChange("exchange-rate")}
-                  className="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                  className="border-gray-300 text-black data-[state=checked]:border-black data-[state=checked]:bg-black"
                 />
-                <label htmlFor="exchange-rate" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="exchange-rate" className="text-sm font-medium text-gray-700 cursor-pointer">
                   Exchange rate (high-low)
-                </label>
+                </Label>
               </div>
               <div className="flex items-center space-x-3">
-                <input
-                  type="radio"
+                <RadioGroupItem
+                  value="user-rating"
                   id="user-rating"
-                  name="sortBy"
-                  checked={filters.sortBy === "user-rating"}
-                  onChange={() => handleSortByChange("user-rating")}
-                  className="w-4 h-4 text-black border-gray-300 focus:ring-black"
+                  className="border-gray-300 text-black data-[state=checked]:border-black data-[state=checked]:bg-black"
                 />
-                <label htmlFor="user-rating" className="text-sm font-medium text-gray-700 cursor-pointer">
+                <Label htmlFor="user-rating" className="text-sm font-medium text-gray-700 cursor-pointer">
                   User rating (high-low)
-                </label>
+                </Label>
               </div>
-            </div>
+            </RadioGroup>
           </div>
         </div>
       )}
