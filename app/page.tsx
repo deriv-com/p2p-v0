@@ -221,7 +221,7 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-auto"
+                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
                     >
                       {isMobile ? (
                         <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
