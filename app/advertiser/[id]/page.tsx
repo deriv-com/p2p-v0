@@ -80,9 +80,9 @@ export default function AdvertiserProfilePage() {
       setAdverts(advertiserAds)
     } catch (err) {
       console.error("Error fetching advertiser data:", err)
-      // setError("Failed to load advertiser profile. Please try again.")
+      setError("Failed to load advertiser profile. Please try again.")
 
-      // setProfile(null)
+      setProfile(null)
       setAdverts([])
     } finally {
       setIsLoading(false)
@@ -120,8 +120,9 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockConfirm = async () => {
-    setIsBlockLoading(true)
+    if (!profile) return
     
+    setIsBlockLoading(true
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
