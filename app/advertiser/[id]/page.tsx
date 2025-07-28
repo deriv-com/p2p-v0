@@ -303,7 +303,7 @@ export default function AdvertiserProfilePage() {
               <div>
                 <div className="flex items-center text-xs text-slate-500">
                   Trade partners
-                  <Tooltip>
+                  <Tooltip open={true}>
                     <TooltipTrigger asChild>
                       <Image
                         src="/icons/info-circle.png"
