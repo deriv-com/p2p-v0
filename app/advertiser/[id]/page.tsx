@@ -14,7 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface AdvertiserProfile {
   id: string | number
@@ -315,6 +315,7 @@ export default function AdvertiserProfilePage() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>Total number of users successfully traded with.</p>
+                      <TooltipPrimitive.Arrow className="fill-black"/>
                     </TooltipContent>
                   </Tooltip>
                 </div>
