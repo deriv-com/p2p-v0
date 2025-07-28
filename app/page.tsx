@@ -192,7 +192,7 @@ export default function BuySellPage() {
                 }
               />
 
-              <div className="md:block">
+              <div className="flex-1 md:block md:flex-none">
                 <Select
                   value={selectedPaymentMethod}
                   onValueChange={setSelectedPaymentMethod}
@@ -212,7 +212,7 @@ export default function BuySellPage() {
                 </Select>
               </div>
 
-              <div className="filter-dropdown-container flex-shrink-0 flex-1">
+              <div className="filter-dropdown-container flex-shrink-0 md:flex-1">
                 <MarketFilterDropdown
                   activeTab={activeTab}
                   onApply={handleFilterApply}
