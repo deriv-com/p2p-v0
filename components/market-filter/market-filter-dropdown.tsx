@@ -14,7 +14,6 @@ import { Label } from "@/components/ui/label"
 export interface MarketFilterOptions {
   withinBalance: boolean
   fromFollowing: boolean
-  sortBy: "exchange_rate" | "user_rating_average_lifetime"
 }
 
 interface MarketFilterDropdownProps {
@@ -26,6 +25,7 @@ interface MarketFilterDropdownProps {
 export default function MarketFilterDropdown({ onApply, initialFilters, trigger }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
+  const [sortBy, setSortBy] = useState("exchange_rate")
   const isMobile = useIsMobile()
 
   useEffect(() => {
@@ -36,14 +36,13 @@ export default function MarketFilterDropdown({ onApply, initialFilters, trigger 
     const resetFilters: MarketFilterOptions = {
       withinBalance: false,
       fromFollowing: false,
-      sortBy: "exchange_rate",
     }
     setFilters(resetFilters)
     handleApply(resetFilters)
   }
 
   const handleApply = () => {
-    onApply(filters)
+    onApply(filters, sortBy)
     setIsOpen(false)
   }
 
