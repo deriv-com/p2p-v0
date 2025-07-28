@@ -67,7 +67,7 @@ export default function BlockConfirmation({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
-        <DialogTitle>Block {nickname}?</DialogTitle>
+        <DialogTitle className="font-bold">Block {nickname}?</DialogTitle>
         <div className="relative">
           {content}
         </div>
