@@ -128,7 +128,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
         <Button
           variant="outline"
           onClick={handleReset}
-          className="rounded-full flex-1 bg-transparent"
+          className="rounded-full flex-1"
           size={isMobile ? "default" : "sm"}
         >
           Reset
