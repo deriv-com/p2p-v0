@@ -1,54 +1,75 @@
 "use client"
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { useIsMobile } from "@/components/ui/use-mobile"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog"
 
 interface DeleteConfirmationDialogProps {
-  open: boolean
-  title: string
-  description: string
-  isDeleting?: boolean
+  isOpen: boolean
+  onClose: () => void
   onConfirm: () => void
-  onCancel: () => void
+  title?: string
+  description?: string
+  confirmText?: string
+  cancelText?: string
 }
 
 export function DeleteConfirmationDialog({
-  open,
-  title,
-  description,
-  isDeleting = false,
+  isOpen,
+  onClose,
   onConfirm,
-  onCancel,
+  title = "Delete Ad",
+  description = "Are you sure you want to delete this ad? This action cannot be undone.",
+  confirmText = "Delete",
+  cancelText = "Cancel",
 }: DeleteConfirmationDialogProps) {
+  const isMobile = useIsMobile()
+
+  if (isMobile) {
+    return (
+      <Sheet open={isOpen} onOpenChange={onClose}>
+        <SheetContent side="bottom" className="rounded-t-lg">
+          <SheetHeader className="text-left">
+            <SheetTitle>{title}</SheetTitle>
+            <SheetDescription className="text-left">{description}</SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col gap-3 mt-6">
+            <Button onClick={onConfirm} variant="destructive" className="w-full">
+              {confirmText}
+            </Button>
+            <Button onClick={onClose} variant="outline" className="w-full bg-transparent">
+              {cancelText}
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    )
+  }
+
   return (
-    <AlertDialog open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>{title}</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel asChild>
-            <Button variant="outline" onClick={onCancel}>
-              Cancel
-            </Button>
-          </AlertDialogCancel>
-          <AlertDialogAction asChild>
-            <Button variant="destructive" onClick={onConfirm} disabled={isDeleting}>
-              {isDeleting ? "Deleting..." : "Delete"}
-            </Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button onClick={onClose} variant="outline">
+            {cancelText}
+          </Button>
+          <Button onClick={onConfirm} variant="destructive">
+            {confirmText}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   )
 }
