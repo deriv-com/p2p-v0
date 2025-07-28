@@ -291,10 +291,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                     <DropdownMenuItem
                       className="flex items-center gap-2"
                       onSelect={() => handleToggleStatus(ad)}
-                      disabled={isTogglingStatus}
                     >
                       <Power className="h-4 w-4" />
-                      {isTogglingStatus ? "Updating..." : ad.status === "Active" ? "Deactivate" : "Activate"}
+                      {ad.status === "Active" ? "Deactivate" : "Activate"}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="flex items-center gap-2 text-red-500 focus:text-red-500"

@@ -11,7 +11,7 @@ import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn, formatPaymentMethodName } from "@/lib/utils"
 import StatusModal from "./ui/status-modal"
-import { DeleteConfirmationDialog } from "./ui/delete-confirmation-dialog"
+import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 
 interface MobileMyAdsListProps {
   ads: Ad[]
@@ -231,10 +231,9 @@ export default function MobileMyAdsList({ ads, onAdDeleted }: MobileMyAdsListPro
                     <DropdownMenuItem
                       className="flex items-center gap-2"
                       onSelect={() => handleToggleStatus(ad)}
-                      disabled={isTogglingStatus}
                     >
                       <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
-                      {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+                      {isActive ? "Deactivate" : "Activate"}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="flex items-center gap-2 text-red-600"

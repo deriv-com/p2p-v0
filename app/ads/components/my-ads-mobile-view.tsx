@@ -215,10 +215,9 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
                     <DropdownMenuItem
                       className="flex items-center gap-2"
                       onSelect={() => handleToggleStatus(ad)}
-                      disabled={isTogglingStatus}
                     >
                       <Power className="h-4 w-4" />
-                      {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+                      {isActive ? "Deactivate" : "Activate"}
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="flex items-center gap-2 text-red-500 focus:text-red-500"
@@ -274,9 +273,8 @@ export default function MyAdsMobileView({ ads, onAdDeleted }: MyAdsMobileViewPro
                   {ad.paymentMethods.map((method, index) => (
                     <div key={index} className="flex items-center">
                       <span
-                        className={`w-3 h-3 rounded-full mr-2 ${
-                          method.toLowerCase() === "bank transfer" ? "bg-green-600" : "bg-blue-500"
-                        }`}
+                        className={`w-3 h-3 rounded-full mr-2 ${method.toLowerCase() === "bank transfer" ? "bg-green-600" : "bg-blue-500"
+                          }`}
                       ></span>
                       <span>{method}</span>
                     </div>
