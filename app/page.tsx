@@ -56,7 +56,8 @@ export default function BuySellPage() {
       setIsLoadingPaymentMethods(true)
       try {
         const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods)
+        //setPaymentMethods(methods)
+        setPaymentMethods(["bank_transfer","alipay"])
       } catch (error) {
         console.error("Error fetching payment methods:", error)
       } finally {
