@@ -4,7 +4,6 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 interface StatCardProps {
   title: string
   value: string | number
-  hasInfo?: boolean
 }
 
 function StatCard({ title, value }: StatCardProps) {
