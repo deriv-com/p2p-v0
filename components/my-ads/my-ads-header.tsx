@@ -1,31 +1,30 @@
 "use client"
 
-import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
+import Link from "next/link"
+import Image from "next/image"
 
 interface MyAdsHeaderProps {
-  hasAds: boolean
+  totalAds: number
+  activeAds: number
 }
 
-export default function MyAdsHeader({ hasAds }: MyAdsHeaderProps) {
-  const router = useRouter()
-
-  if (!hasAds) {
-    return null
-  }
-
+export default function MyAdsHeader({ totalAds, activeAds }: MyAdsHeaderProps) {
   return (
-    <div className="mt-4 mb-6">
-      <div className="container mx-auto">
-        <Button
-          onClick={() => router.push("/create-ad")}
-          className="bg-[#00D2FF] hover:bg-[#00BFEA] text-black w-[155px] h-[48px] min-w-[96px] min-h-[48px] max-h-[48px] rounded-[24px] flex items-center justify-center gap-2 font-extrabold text-base leading-4 tracking-[0%] text-center"
-        >
-          <Plus className="h-5 w-5" />
-          Create ad
-        </Button>
+    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">My Advertisements</h1>
+        <p className="text-gray-600 mt-1">
+          {totalAds} total ads • {activeAds} active
+        </p>
       </div>
+      
+      <Link href="/ads/create">
+        <Button className="flex items-center gap-2 bg-black hover:bg-gray-800 text-white">
+          <Image src="/icons/plus_icon.png" alt="Create" width={16} height={16} />
+          Create Ad
+        </Button>
+      </Link>
     </div>
   )
 }
