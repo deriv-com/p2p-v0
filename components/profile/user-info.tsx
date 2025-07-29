@@ -39,7 +39,7 @@ export default function UserInfo({ username, rating, completionRate, joinDate, r
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold">{nickname}</h2>
-          <div className="flex flex-wrap ml-[-24px] md:ml-[0] items-center mt-1 text-sm">
+          <div className="flex flex-wrap ml-[-56px] md:ml-[0] items-center mt-1 text-sm">
             {rating && (
               <div className="flex items-center">
                 <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />
@@ -61,7 +61,7 @@ export default function UserInfo({ username, rating, completionRate, joinDate, r
 
             {joinDate && <div className="text-neutral-10">{joinDate}</div>}
           </div>
-          <div className="flex flex-wrap gap-2 mt-3">
+          <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-2 mt-3">
             {isVerified.id && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
