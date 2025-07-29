@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { X, ChevronRight, ArrowLeft, Plus } from "lucide-react"
+import { X, ChevronRight, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -11,6 +11,7 @@ import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
 import { formatPaymentMethodName } from "@/lib/utils"
+import Image from "next/image"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -93,7 +94,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         response?.filter((method: PaymentMethod) => {
           // Check if the user's payment method matches any of the buyer's accepted methods
           return buyerAcceptedMethods.some(
-            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase()
+            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
           )
         }) || []
 
@@ -175,13 +176,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div
-        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${isOpen && isAnimating ? "opacity-100" : "opacity-0"
-          }`}
+        className={`fixed inset-0 bg-black/30 transition-opacity duration-300 ${
+          isOpen && isAnimating ? "opacity-100" : "opacity-0"
+        }`}
         onClick={handleClose}
       />
       <div
-        className={`relative w-full max-w-md bg-white h-full overflow-y-auto transform transition-transform duration-300 ease-in-out ${isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`relative w-full max-w-md bg-white h-full overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+          isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
+        }`}
       >
         {ad && (
           <div className="flex flex-col h-full">
@@ -189,7 +192,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               {showPaymentSelection ? (
                 <>
                   <div className="flex items-center">
-                    <Button onClick={() => setShowPaymentSelection(false)} variant="ghost" size="icon" className="p-1 mr-3">
+                    <Button
+                      onClick={() => setShowPaymentSelection(false)}
+                      variant="ghost"
+                      size="icon"
+                      className="p-1 mr-3"
+                    >
                       <ArrowLeft className="h-6 w-6" />
                     </Button>
                     <h2 className="text-xl font-bold">Payment method</h2>
@@ -237,10 +245,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <div className="flex-1">
                             <div className="flex items-center mb-2">
                               <div
-                                className={`h-2 w-2 rounded-full mr-2 ${method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                                  }`}
+                                className={`h-2 w-2 rounded-full mr-2 ${
+                                  method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                                }`}
                               />
-                              <span className="font-medium text-gray-600">{formatPaymentMethodName(method.display_name)}</span>
+                              <span className="font-medium text-gray-600">
+                                {formatPaymentMethodName(method.display_name)}
+                              </span>
                             </div>
                           </div>
                           <Checkbox
@@ -254,7 +265,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
                   <div className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors hidden">
                     <div className="flex items-center justify-center">
-                      <Plus className="h-5 w-5 mr-2 text-gray-600" />
+                      <Image src="/icons/plus_icon.png" alt="Plus" width={20} height={20} className="mr-2" />
                       <span className="text-gray-900 font-medium">Add payment method</span>
                     </div>
                   </div>
@@ -276,13 +287,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                 <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
                     <div className="flex items-center justify-between">
-                      <Input value={amount} onChange={handleAmountChange} type="number" placeholder="Enter amount" className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" step="any"
-                          inputMode="decimal"
-                          onKeyDown={(e) => {
-                            if (['e', 'E', '+', '-'].includes(e.key)) {
-                              e.preventDefault();
-                            }
-                          }} />
+                      <Input
+                        value={amount}
+                        onChange={handleAmountChange}
+                        type="number"
+                        placeholder="Enter amount"
+                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        step="any"
+                        inputMode="decimal"
+                        onKeyDown={(e) => {
+                          if (["e", "E", "+", "-"].includes(e.key)) {
+                            e.preventDefault()
+                          }
+                        }}
+                      />
                       <span className="text-gray-500 hidden">{ad.account_currency}</span>
                     </div>
                   </div>
@@ -307,9 +325,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       onClick={() => setShowPaymentSelection(true)}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-500">
-                          {getSelectedPaymentMethodsText()}
-                        </span>
+                        <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
                         <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </div>
@@ -320,8 +336,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Exchange rate ({ad.account_currency} 1)</span>
                     <span className="text-slate-1400">
-                      {ad.payment_currency}
-                      {" "}
+                      {ad.payment_currency}{" "}
                       {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
@@ -352,13 +367,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     {ad.payment_methods?.map((method, index) => (
                       <div key={index} className="flex items-center">
                         <div
-                          className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                            ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                            }`}
+                          className={`h-2 w-2 rounded-full mr-2 ${
+                            method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                          }`}
                         />
-                        <span className="text-slate-1400">
-                          {formatPaymentMethodName(method)}
-                        </span>
+                        <span className="text-slate-1400">{formatPaymentMethodName(method)}</span>
                       </div>
                     ))}
                   </div>
@@ -377,7 +390,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     className="w-full"
                     variant="primary"
                     onClick={handleSubmit}
-                    disabled={!amount || (isBuy && selectedPaymentMethods.length === 0) || !!validationError || isSubmitting}
+                    disabled={
+                      !amount || (isBuy && selectedPaymentMethods.length === 0) || !!validationError || isSubmitting
+                    }
                   >
                     {isSubmitting ? (
                       <span className="flex items-center justify-center">

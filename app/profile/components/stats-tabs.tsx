@@ -9,7 +9,6 @@ import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
-import { PlusCircle } from "lucide-react"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
@@ -176,12 +175,12 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
       <div className="mb-6">
         <Tabs defaultValue="stats">
-          <TabsList className="bg-[#F5F5F5] rounded-2xl p-1 h-auto">
+          <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
             {tabs.map((tab) => (
               <TabsTrigger
                 key={tab.id}
                 value={tab.id}
-                className="py-3 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+                className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
               >
                 {tab.label}
               </TabsTrigger>
@@ -224,10 +223,16 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           </TabsContent>
 
           <TabsContent value="payment">
-            <div className="relative">
+            <div className="relative border-slate-1500 rounded-lg px-4">
               <div className="flex justify-end mb-4">
                 <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
+                  <Image
+                    src="/icons/plus_icon.png"
+                    alt="Add payment"
+                    width={20}
+                    height={20}
+                    className="mr-1"
+                  />
                   Add payment
                 </Button>
               </div>

@@ -1,17 +1,61 @@
-import { Info } from "lucide-react"
+import Image from "next/image"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface StatCardProps {
   title: string
   value: string | number
-  hasInfo?: boolean
 }
 
-function StatCard({ title, value, hasInfo = false }: StatCardProps) {
+function StatCard({ title, value }: StatCardProps) {
   return (
-    <div className="py-6">
+    <div className="pt-6 pb-2">
       <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
-        {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
+        {title === "Trade partners" && <Tooltip>
+          <TooltipTrigger asChild>
+            <Image
+              src="/icons/info-circle.png"
+              alt="Info"
+              width={12}
+              height={12}
+              className="ml-1 cursor-pointer"
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="opacity-[0.72]">Total number of users you've successfully traded with.</p>
+            <TooltipArrow className="fill-black" />
+          </TooltipContent>
+        </Tooltip>}
+        {title === "Trade volume (Lifetime)" && <Tooltip>
+          <TooltipTrigger asChild>
+            <Image
+              src="/icons/info-circle.png"
+              alt="Info"
+              width={12}
+              height={12}
+              className="ml-1 cursor-pointer"
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="opacity-[0.72]">The total value of all trades completed in your lifetime.</p>
+            <TooltipArrow className="fill-black" />
+          </TooltipContent>
+        </Tooltip>}
+        {title === "Trade volume (30d)" && <Tooltip>
+          <TooltipTrigger asChild>
+            <Image
+              src="/icons/info-circle.png"
+              alt="Info"
+              width={12}
+              height={12}
+              className="ml-1 cursor-pointer"
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="opacity-[0.72]">The total value of all completed trades in the last 30 days.</p>
+            <TooltipArrow className="fill-black" />
+          </TooltipContent>
+        </Tooltip>}
       </div>
       <div className="font-bold text-black text-base leading-6 tracking-normal">
         {value !== undefined && value !== null ? value : "N/A"}
@@ -53,6 +97,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
   const displayStats = stats || defaultStats
 
   return (
+  <TooltipProvider>
     <div className="bg-slate-1500 rounded-lg px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
@@ -63,19 +108,17 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           title={`Sell completion ${displayStats.sellCompletion.period}`}
           value={displayStats.sellCompletion.rate}
         />
-        <StatCard title="Trade partners" value={displayStats.tradePartners} hasInfo={true} />
+        <StatCard title="Trade partners" value={displayStats.tradePartners} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
           title={`Trade volume ${displayStats.tradeVolume30d.period}`}
           value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
-          hasInfo={true}
         />
         <StatCard
           title="Trade volume (Lifetime)"
           value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
-          hasInfo={true}
         />
         <StatCard title={`Avg. pay time ${displayStats.avgPayTime.period}`} value={displayStats.avgPayTime.time} />
       </div>
@@ -89,5 +132,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
         />
       </div>
     </div>
+    </TooltipProvider>
   )
 }

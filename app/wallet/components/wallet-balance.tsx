@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Plus, Minus, RefreshCw } from "lucide-react"
+import { Minus, RefreshCw } from "lucide-react"
 import Image from "next/image"
 import WalletBottomSheet from "./wallet-bottom-sheet"
 import WalletSidebar from "./wallet-sidebar"
@@ -135,7 +135,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             aria-label="Deposit"
             onClick={handleDepositClick}
           >
-            <Plus className="h-6 w-6" />
+            <Image src="/icons/plus_icon.png" alt="Plus" width={24} height={24} />
           </Button>
           <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">Deposit</span>
         </div>
