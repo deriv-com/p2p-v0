@@ -7,7 +7,7 @@ interface StatCardProps {
   hasInfo?: boolean
 }
 
-function StatCard({ title, value, hasInfo = false }: StatCardProps) {
+function StatCard({ title, value }: StatCardProps) {
   return (
     <div className="pt-6 pb-2">
       <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
@@ -109,19 +109,17 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           title={`Sell completion ${displayStats.sellCompletion.period}`}
           value={displayStats.sellCompletion.rate}
         />
-        <StatCard title="Trade partners" value={displayStats.tradePartners} hasInfo={true} />
+        <StatCard title="Trade partners" value={displayStats.tradePartners} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
           title={`Trade volume ${displayStats.tradeVolume30d.period}`}
           value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
-          hasInfo={true}
         />
         <StatCard
           title="Trade volume (Lifetime)"
           value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
-          hasInfo={true}
         />
         <StatCard title={`Avg. pay time ${displayStats.avgPayTime.period}`} value={displayStats.avgPayTime.time} />
       </div>
