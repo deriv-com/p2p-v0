@@ -193,7 +193,7 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-3 mt-4">
+      <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
         <Button onClick={handleReset} className="flex-1" variant="outline" size={isMobile ? "default" : "sm"}>
           Reset
         </Button>
