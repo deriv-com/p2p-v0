@@ -227,7 +227,13 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <div className="relative">
               <div className="flex justify-end mb-4">
                 <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
-                  <PlusCircle className="mr-2 h-4 w-4" />
+                  <Image
+                    src="/icons/plus_icon.png"
+                    alt="Add payment"
+                    width={20}
+                    height={20}
+                    className="mr-1"
+                  />
                   Add payment
                 </Button>
               </div>
