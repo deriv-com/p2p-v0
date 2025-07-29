@@ -340,7 +340,7 @@ export default function BuySellPage() {
                 }
               />
 
-              <div className="flex-1 md:block md:flex-none">
+              <div className="flex-1 md:block md:flex-none max-w-[calc(100%-158px) md:max-w-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
                   selectedMethods={selectedPaymentMethods}
@@ -349,7 +349,7 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent max-w-[calc(100%-152px)] lg:max-w-[195px]"
+                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent max-w-[calc(100%-158px)] lg:max-w-[195px]"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         { selectedPaymentMethods.length === 0
