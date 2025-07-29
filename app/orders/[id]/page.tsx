@@ -357,7 +357,7 @@ export default function OrderDetailsPage() {
                 {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
                     <div className="p-4 flex gap-4">
-                      <Button className="flex-1" size="sm" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                      <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
                         {isConfirmLoading ? (
                           <>
                             <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
