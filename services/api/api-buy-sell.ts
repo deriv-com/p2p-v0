@@ -33,7 +33,7 @@ export interface SearchParams {
   type?: string
   currency?: string
   account_currency: string
-  paymentMethod?: string
+  paymentMethod?: string[]
   amount?: number
   nickname?: string
   sortBy?: string
@@ -59,7 +59,15 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.type) queryParams.append("advert_type", params.type)
       if (params.currency) queryParams.append("payment_currency", params.currency)
       if (params.account_currency) queryParams.append("account_currency", params.account_currency)
-      if (params.paymentMethod) queryParams.append("paymentMethod", params.paymentMethod)
+      if (params.paymentMethod) {
+          if(params.paymentMethod.length === 0) {
+            queryParams.append('payment_methods', JSON.stringify([]));
+          } else {
+              params.paymentMethod.forEach(method => {
+                queryParams.append('payment_methods', method);
+              });
+          }
+      }
       if (params.amount) queryParams.append("amount", params.amount.toString())
       if (params.nickname) queryParams.append("nickname", params.nickname)
       if (params.sortBy) queryParams.append("sort_by", params.sortBy)

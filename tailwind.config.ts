@@ -87,6 +87,7 @@ const config: Config = {
         grayscale: {
           DEFAULT: "100%",
           100: "#181C25B8",
+          200: "#00000014",
         },
         yellow: {
           50: "#A66C00",
