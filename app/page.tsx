@@ -212,7 +212,7 @@ export default function BuySellPage() {
                             ? "Payment (All)"
                             : selectedPaymentMethods.length === 1
                               ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name ||
-                                "Payment:"
+                                "Payment: "
                               : selectedPaymentMethods.join(",")}
                       </span>
                       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
