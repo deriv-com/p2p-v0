@@ -98,11 +98,9 @@ export default function AdvertiserProfilePage() {
 
     setIsFollowLoading(true)
     try {
-      // Call the API to toggle the favourite status
       const result = await toggleFavouriteAdvertiser(profile.id, !isFollowing)
 
       if (result.success) {
-        // Update the UI state
         setIsFollowing(!isFollowing)
         console.log(result.message)
       } else {
