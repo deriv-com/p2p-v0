@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState, useMemo } from "react"
+import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
