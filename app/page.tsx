@@ -204,6 +204,7 @@ export default function BuySellPage() {
             "method": "bank_transfer",
             "type": "bank"
         }])
+        setSelectedPaymentMethods()
       } catch (error) {
         console.error("Error fetching payment methods:", error)
       } finally {
