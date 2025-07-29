@@ -42,7 +42,7 @@ export default function UserInfo({
   return (
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
-        <div className="h-10 w-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-xl">
+        <div className="h-10 w-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold">
           {nickname.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">
