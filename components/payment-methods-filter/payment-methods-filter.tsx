@@ -151,7 +151,7 @@ export default function PaymentMethodsFilter({
             return Object.entries(groupedMethods).map(([type, methods]) => (
               <div key={type} className="space-y-3">
                 <h4 className="font-semibold text-gray-900 text-sm">
-                  {type === "bank_transfer"
+                  {type === "bank"
                     ? "Bank Transfers"
                       : type.charAt(0).toUpperCase() + type.slice(1)}
                 </h4>
