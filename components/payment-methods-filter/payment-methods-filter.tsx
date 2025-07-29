@@ -170,22 +170,6 @@ export default function PaymentMethodsFilter({
         />
       </div>
 
-      <div className="flex items-center space-x-3 mb-4 pb-3">
-        <Checkbox
-          id="select-all"
-          checked={isAllSelected}
-          ref={(el) => {
-            if (el) el.indeterminate = isIndeterminate
-          }}
-          onCheckedChange={handleSelectAll}
-          className="data-[state=checked]:bg-black border-black"
-          disabled={isLoading || filteredPaymentMethods.length === 0}
-        />
-        <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
-          Select all
-        </label>
-      </div>
-
       <div className="space-y-4 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
@@ -194,6 +178,21 @@ export default function PaymentMethodsFilter({
             {searchQuery ? "Payment method unavailable" : "No payment methods available"}
           </div>
         ) : (
+          <div className="flex items-center space-x-3 mb-4 pb-3">
+              <Checkbox
+                id="select-all"
+                checked={isAllSelected}
+                ref={(el) => {
+                  if (el) el.indeterminate = isIndeterminate
+                }}
+                onCheckedChange={handleSelectAll}
+                className="data-[state=checked]:bg-black border-black"
+                disabled={isLoading || filteredPaymentMethods.length === 0}
+              />
+              <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
+                Select all
+              </label>
+            </div>
           renderPaymentMethodGroups()
         )}
       </div>
