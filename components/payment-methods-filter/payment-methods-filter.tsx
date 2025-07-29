@@ -153,7 +153,7 @@ export default function PaymentMethodsFilter({
                 <h4 className="font-semibold text-gray-900 text-sm">
                   {type === "bank"
                     ? "Bank Transfers"
-                      : type.charAt(0).toUpperCase() + type.slice(1)}
+                      : type?.charAt(0).toUpperCase() + type?.slice(1)}
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {methods.map((method) => (
