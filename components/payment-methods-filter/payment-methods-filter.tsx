@@ -174,7 +174,7 @@ export default function PaymentMethodsFilter({
           className="data-[state=checked]:bg-black border-black"
           disabled={isLoading || filteredPaymentMethods.length === 0}
         />
-        <label htmlFor="select-all" className="text-sm text-gray-700 cursor-pointer font-medium">
+        <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
           Select all
         </label>
       </div>
