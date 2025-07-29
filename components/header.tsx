@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react";
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
@@ -10,12 +10,35 @@ import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 export default function Header() {
   const pathname = usePathname()
-  const [isNavigating, setIsNavigating] = useState(false);
-   const handleClick = () => {
-    if (!isNavigating) {
-      setIsNavigating(true);
-      setTimeout(() => setIsNavigating(false), 1000); // re-enable after 1s
-    }
+  const router = useRouter();
+  const currentPath = router.pathname;
+  const latestUrlRef = useRef("");
+
+  useEffect(() => {
+    const handleRouteChangeStart = (url) => {
+      latestUrlRef.current = url;
+    };
+
+    const handleRouteChangeComplete = (url) => {
+      if (url !== latestUrlRef.current) {
+        router.push(latestUrlRef.current);
+      }
+    };
+
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+    router.events.on("routeChangeError", handleRouteChangeComplete);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+      router.events.off("routeChangeError", handleRouteChangeComplete);
+    };
+  }, []);
+
+  const handleNavClick = (href) => {
+    latestUrlRef.current = href;
+    router.push(href);
   };
   const navItems = [
     { name: "Market", href: "/" },
@@ -33,20 +56,18 @@ export default function Header() {
             const isActive = item.href === "/" ? pathname === "/" || pathname.startsWith("/advertiser")  : pathname.startsWith(item.href)
 
             return (
-              <Link
+             <button
                 key={item.name}
-                href={item.href}
-                 href={isNavigating ? pathname : item.href}
-                onClick={handleClick}
+                onClick={() => handleNavClick(item.href)}
                 className={cn(
-                  "inline-flex h-12 items-center border-b-2 px-4 text-sm",
+                  "inline-flex h-12 items-center border-b-2 px-4 text-sm bg-transparent",
                   isActive
                     ? "text-slate-1400 border-[#00D0FF] font-bold"
                     : "border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-700"
                 )}
               >
                 {item.name}
-              </Link>
+              </button>
             )
           })}
         </nav>
