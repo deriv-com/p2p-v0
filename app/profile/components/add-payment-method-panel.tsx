@@ -31,7 +31,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
   const [availableMethods, setAvailableMethods] = useState<AvailablePaymentMethod[]>([])
   const [selectedMethod, setSelectedMethod] = useState<string>("")
   const [formFields, setFormFields] = useState<Record<string, string>>({})
-  const [isLoadingMethods, setIsLoadingMethods] = useState(true)
 
   useEffect(() => {
     fetchAvailablePaymentMethods()
@@ -49,8 +48,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
       }
     } catch (error) {
       console.error("Failed to fetch payment methods:", error)
-    } finally {
-      setIsLoadingMethods(false)
     }
   }
 
