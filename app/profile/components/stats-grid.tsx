@@ -1,4 +1,4 @@
-import { Info } from "lucide-react"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface StatCardProps {
   title: string
@@ -53,6 +53,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
   const displayStats = stats || defaultStats
 
   return (
+  <TooltipProvider>
     <div className="bg-slate-1500 rounded-lg px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
@@ -89,5 +90,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
         />
       </div>
     </div>
+    </TooltipProvider>
   )
 }
