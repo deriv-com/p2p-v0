@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useMemo } from "react"
+import { useCallback, useState, useMemo } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -191,7 +191,7 @@ export default function PaymentMethodsFilter({
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
-            {searchQuery ? "No payment methods found" : "No payment methods available"}
+            {searchQuery ? "Payment method unavailable" : "No payment methods available"}
           </div>
         ) : (
           renderPaymentMethodGroups()
