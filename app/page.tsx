@@ -340,7 +340,7 @@ export default function BuySellPage() {
                 }
               />
 
-              <div className="flex-1 md:block md:flex-none max-w-[calc(100%-158px) md:max-w-none">
+              <div className="flex-1 md:block md:flex-none max-w-[calc(100%-158px)] md:max-w-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
                   selectedMethods={selectedPaymentMethods}
