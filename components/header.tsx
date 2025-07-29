@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef, useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation"
+import { , useRouter } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 export default function Header() {
-  const pathname = usePathname()
   const router = useRouter();
   const currentPath = router.pathname;
   const latestUrlRef = useRef("");
