@@ -60,9 +60,13 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.currency) queryParams.append("payment_currency", params.currency)
       if (params.account_currency) queryParams.append("account_currency", params.account_currency)
       if (params.paymentMethod) {
-          params.paymentMethod.split(',').forEach(method => {
-              queryParams.append('payment_methods', method);
-            });
+          if(params.paymentMethod = "") {
+           queryParams.append('payment_methods', []);
+          } else {
+                params.paymentMethod.split(',').forEach(method => {
+                    queryParams.append('payment_methods', method);
+                  });
+            }
       }
       if (params.amount) queryParams.append("amount", params.amount.toString())
       if (params.nickname) queryParams.append("nickname", params.nickname)
