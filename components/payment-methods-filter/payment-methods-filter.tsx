@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
+import Button from "@/components/ui/button"
 
 export interface PaymentMethod {
   display_name: string
@@ -126,7 +127,7 @@ export default function PaymentMethodsFilter({
         </label>
       </div>
 
-      <div className="space-y-3 max-h-60 overflow-y-auto">
+      <div className="space-y-4 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
@@ -134,35 +135,55 @@ export default function PaymentMethodsFilter({
             {searchQuery ? "No payment methods found" : "No payment methods available"}
           </div>
         ) : (
-          filteredPaymentMethods.map((method) => (
-            <div key={method.method} className="flex items-center space-x-3">
-              <Checkbox
-                id={method.method}
-                checked={tempSelectedMethods.includes(method.method)}
-                onCheckedChange={(checked) => handleMethodToggle(method.method, checked as boolean)}
-                className="data-[state=checked]:bg-black border-black"
-              />
-              <label htmlFor={method.method} className="text-sm text-gray-700 cursor-pointer flex-1">
-                {method.display_name}
-              </label>
-            </div>
-          ))
+          (() => {
+            // Group payment methods by type
+            const groupedMethods = filteredPaymentMethods.reduce(
+              (acc, method) => {
+                const type = method.type || "Other"
+                if (!acc[type]) {
+                  acc[type] = []
+                }
+                acc[type].push(method)
+                return acc
+              },
+              {} as Record<string, PaymentMethod[]>,
+            )
+
+            return Object.entries(groupedMethods).map(([type, methods]) => (
+              <div key={type} className="space-y-3">
+                <h4 className="font-semibold text-gray-900 text-sm">
+                  {type === "bank_transfer"
+                    ? "Bank Transfers"
+                    : type === "ewallet"
+                      ? "E-Wallets"
+                      : type.charAt(0).toUpperCase() + type.slice(1)}
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {methods.map((method) => (
+                    <button
+                      key={method.method}
+                      onClick={() => handleMethodToggle(method.method, !tempSelectedMethods.includes(method.method))}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        tempSelectedMethods.includes(method.method)
+                          ? "bg-black text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {method.display_name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))
+          })()
         )}
       </div>
 
       <div className="flex flex-col md:flex-row gap-3">
-        <Button
-          onClick={handleReset}
-          className="flex-1"
-          variant="outline"
-        >
+        <Button onClick={handleReset} className="flex-1 bg-transparent" variant="outline">
           Reset
         </Button>
-        <Button
-          onClick={handleApply}
-          className="flex-1"
-          variant="black"
-        >
+        <Button onClick={handleApply} className="flex-1" variant="black">
           Apply
         </Button>
       </div>
