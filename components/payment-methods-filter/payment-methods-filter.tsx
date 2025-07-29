@@ -167,6 +167,8 @@ export default function PaymentMethodsFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           className="pl-10 border-gray-300 focus:border-black"
+          autoComplete="off"
+          autoFocus
         />
       </div>
 
