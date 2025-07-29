@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react";
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
@@ -9,6 +10,13 @@ import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 export default function Header() {
   const pathname = usePathname()
+  const [isNavigating, setIsNavigating] = useState(false);
+   const handleClick = () => {
+    if (!isNavigating) {
+      setIsNavigating(true);
+      setTimeout(() => setIsNavigating(false), 1000); // re-enable after 1s
+    }
+  };
   const navItems = [
     { name: "Market", href: "/" },
     { name: "Orders", href: "/orders" },
@@ -28,6 +36,8 @@ export default function Header() {
               <Link
                 key={item.name}
                 href={item.href}
+                 href={isNavigating ? pathname : item.href}
+                onClick={handleClick}
                 className={cn(
                   "inline-flex h-12 items-center border-b-2 px-4 text-sm",
                   isActive
