@@ -145,7 +145,7 @@ export default function PaymentMethodsFilter({
         <SheetTrigger asChild>{trigger}</SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-center">Payment methods</h3>
+            <h3 className="text-xl font-bold text-center">Payment method</h3>
           </div>
           <FilterContent />
         </SheetContent>
