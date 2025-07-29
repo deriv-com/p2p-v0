@@ -77,7 +77,6 @@ export default function PaymentMethodsFilter({
     if (!open) {
       setSearchQuery("")
     } else {
-      // Reset temp state when opening
       setTempSelectedMethods(selectedMethods)
     }
   }
@@ -147,7 +146,8 @@ export default function PaymentMethodsFilter({
               },
               {} as Record<string, PaymentMethod[]>,
             )
-
+            console.log(groupedMethods);
+             console.log(filteredPaymentMethods);
             return Object.entries(groupedMethods).map(([type, methods]) => (
               <div key={type} className="space-y-3">
                 <h4 className="font-semibold text-gray-900 text-sm">
