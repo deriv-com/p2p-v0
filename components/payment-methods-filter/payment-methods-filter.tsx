@@ -137,7 +137,7 @@ export default function PaymentMethodsFilter({
           (() => {
             const groupedMethods = filteredPaymentMethods.reduce(
               (acc, method) => {
-                const type = method.type || "Other"
+                const { type } = method
                 if (!acc[type]) {
                   acc[type] = []
                 }
