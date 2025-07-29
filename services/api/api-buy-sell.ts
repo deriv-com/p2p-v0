@@ -60,6 +60,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.currency) queryParams.append("payment_currency", params.currency)
       if (params.account_currency) queryParams.append("account_currency", params.account_currency)
       if (params.paymentMethod) {
+      console.log(params.paymentMethod)
           if(params.paymentMethod == "") {
            queryParams.append('payment_methods', JSON.stringify([]));
           } else {
