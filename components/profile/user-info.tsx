@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Check, Info } from "lucide-react"
+import { Check } from "lucide-react"
 import Image from "next/image"
 import { USER } from "@/lib/local-variables"
 
