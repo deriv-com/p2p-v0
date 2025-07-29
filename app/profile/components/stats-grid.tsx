@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface StatCardProps {
@@ -11,7 +12,21 @@ function StatCard({ title, value, hasInfo = false }: StatCardProps) {
     <div className="pt-6 pb-2">
       <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
-        {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
+        {title === "Trade partners" && <Tooltip>
+          <TooltipTrigger asChild>
+            <Image
+              src="/icons/info-circle.png"
+              alt="Info"
+              width={12}
+              height={12}
+              className="ml-1 cursor-pointer"
+            />
+          </TooltipTrigger>
+          <TooltipContent>
+            <p className="opacity-[0.72]">Total number of users you’ve successfully traded with.</p>
+            <TooltipArrow className="fill-black" />
+          </TooltipContent>
+        </Tooltip>}
       </div>
       <div className="font-bold text-black text-base leading-6 tracking-normal">
         {value !== undefined && value !== null ? value : "N/A"}
