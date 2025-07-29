@@ -136,7 +136,6 @@ export default function PaymentMethodsFilter({
           </div>
         ) : (
           (() => {
-            // Group payment methods by type
             const groupedMethods = filteredPaymentMethods.reduce(
               (acc, method) => {
                 const type = method.type || "Other"
@@ -180,7 +179,7 @@ export default function PaymentMethodsFilter({
       </div>
 
       <div className="flex flex-col md:flex-row gap-3">
-        <Button onClick={handleReset} className="flex-1 bg-transparent" variant="outline">
+        <Button onClick={handleReset} className="flex-1" variant="outline">
           Reset
         </Button>
         <Button onClick={handleApply} className="flex-1" variant="black">
