@@ -135,8 +135,8 @@ const AdPaymentMethods = () => {
                   <Image
                     src="/icons/plus_icon.png"
                     alt="Add payment method"
-                    width={32}
-                    height={32}
+                    width={14}
+                    height={24}
                     className="mx-auto mb-2"
                   />
                   <p className="text-sm font-medium text-black">Add payment method</p>

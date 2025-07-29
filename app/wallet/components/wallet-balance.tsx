@@ -135,7 +135,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             aria-label="Deposit"
             onClick={handleDepositClick}
           >
-            <Image src="/icons/plus_icon.png" alt="Plus" width={24} height={24} />
+            <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
           </Button>
           <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">Deposit</span>
         </div>

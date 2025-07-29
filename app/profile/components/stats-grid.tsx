@@ -9,7 +9,7 @@ interface StatCardProps {
 function StatCard({ title, value }: StatCardProps) {
   return (
     <div className="pt-6 pb-2">
-      <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
+      <div className="flex items-center text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
         {title === "Trade partners" && <Tooltip>
           <TooltipTrigger asChild>
