@@ -230,7 +230,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                     src="/icons/plus_icon.png"
                     alt="Add payment"
                     width={14}
-                    height={20}
+                    height={24}
                     className="mr-1"
                   />
                   Add payment
