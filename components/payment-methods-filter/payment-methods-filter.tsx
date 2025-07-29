@@ -34,7 +34,6 @@ export default function PaymentMethodsFilter({
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
 
-  // Filter payment methods based on search query
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
 
@@ -45,22 +44,18 @@ export default function PaymentMethodsFilter({
     )
   }, [paymentMethods, searchQuery])
 
-  // Check if all filtered methods are selected
   const isAllSelected =
     filteredPaymentMethods.length > 0 &&
     filteredPaymentMethods.every((method) => selectedMethods.includes(method.method))
 
-  // Check if some (but not all) filtered methods are selected
   const isIndeterminate =
     filteredPaymentMethods.some((method) => selectedMethods.includes(method.method)) && !isAllSelected
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      // Add all filtered methods to selection
       const newSelection = [...new Set([...selectedMethods, ...filteredPaymentMethods.map((m) => m.method)])]
       onSelectionChange(newSelection)
     } else {
-      // Remove all filtered methods from selection
       const filteredMethodIds = filteredPaymentMethods.map((m) => m.method)
       const newSelection = selectedMethods.filter((id) => !filteredMethodIds.includes(id))
       onSelectionChange(newSelection)
@@ -84,7 +79,6 @@ export default function PaymentMethodsFilter({
 
   const FilterContent = () => (
     <div className="w-full">
-      {/* Search Input */}
       <div className="relative mb-4">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
         <Input
@@ -95,7 +89,6 @@ export default function PaymentMethodsFilter({
         />
       </div>
 
-      {/* Select All Checkbox */}
       <div className="flex items-center space-x-3 mb-4 pb-3 border-b border-gray-200">
         <Checkbox
           id="select-all"
@@ -112,7 +105,6 @@ export default function PaymentMethodsFilter({
         </label>
       </div>
 
-      {/* Payment Methods List */}
       <div className="space-y-3 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
