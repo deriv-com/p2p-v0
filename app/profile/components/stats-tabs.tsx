@@ -229,7 +229,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   <Image
                     src="/icons/plus_icon.png"
                     alt="Add payment"
-                    width={20}
+                    width={14}
                     height={20}
                     className="mr-1"
                   />
