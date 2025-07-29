@@ -31,7 +31,7 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {*/
-          AuthPrevAPI.getSocketToken(response.access_token)
+         // AuthPrevAPI.getSocketToken(response.access_token)
           router.push(pathname)
        // }
       } catch (error) {
