@@ -10,8 +10,7 @@ interface TradeTypeSelectorProps {
 
 export function TradeTypeSelector({ value, onChange, isEditMode = false }: TradeTypeSelectorProps) {
   return (
-    <div className="flex bg-gray-50 rounded-lg w-full md:w-[270px] h-10 min-h-10 max-h-10 px-1 py-0">
-      <Tabs
+    <Tabs
         className="w-full md:w-[230px] md:min-w-[230px]"
         defaultValue={activeTab}
         onValueChange={(value) => !isEditMode && onChange("buy")}
@@ -25,6 +24,5 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
           </TabsTrigger>
         </TabsList>
       </Tabs>
-    </div>
   )
 }
