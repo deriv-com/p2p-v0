@@ -430,7 +430,7 @@ export default function CreateAdPage() {
       return
     }
 
-    if (currentStep === 1) {
+    if (currentStep === 1 && !isEditMode) {
       if (formData.type === "buy" && !paymentFormValid) {
         return
       }
@@ -440,6 +440,12 @@ export default function CreateAdPage() {
       }
 
       if (isSubmitting) {
+        return
+      }
+    }
+
+    if (currentStep === 1 && isEditMode) {
+      if (!adFormValid || isSubmitting) {
         return
       }
     }
@@ -479,124 +485,125 @@ export default function CreateAdPage() {
   const isButtonDisabled =
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    (currentStep === 1 && formData.type === "buy" && !paymentFormValid && !isEditMode) ||
+    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods && !isEditMode) ||
+    (currentStep === 1 && isEditMode && !adFormValid) ||
     isBottomSheetOpen
 
   return (
     <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
-      <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
-        <div
-          className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-        >
-          {currentStep === 1 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setCurrentStep(0)}
-              className="text-gray-700 hover:text-gray-900 p-2"
-            >
-              <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
+        <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
+          <div
+            className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
+          >
+            {currentStep === 1 && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setCurrentStep(0)}
+                className="text-gray-700 hover:text-gray-900 p-2"
+              >
+                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+              </Button>
+            )}
+            {currentStep === 0 && <div></div>}
+            <div className="block md:hidden text-xl-bold text-black text-left">
+              {getPageTitle(isEditMode, formData.type)}
+            </div>
+            <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
             </Button>
-          )}
-          {currentStep === 0 && <div></div>}
-          <div className="block md:hidden text-xl-bold text-black text-left">
+          </div>
+
+          <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
             {getPageTitle(isEditMode, formData.type)}
           </div>
-          <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
 
-        <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-          {getPageTitle(isEditMode, formData.type)}
-        </div>
+          <ProgressSteps currentStep={currentStep} steps={steps} />
 
-        <ProgressSteps currentStep={currentStep} steps={steps} />
+          {currentStep === 0 && (
+            <div className="block md:hidden mt-4 mb-6 text-left">
+              <div className="text-sm font-normal text-slate-1200">Step 1</div>
+              <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
+            </div>
+          )}
 
-        {currentStep === 0 && (
-          <div className="block md:hidden mt-4 mb-6 text-left">
-            <div className="text-sm font-normal text-slate-1200">Step 1</div>
-            <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
+          {currentStep === 1 && (
+            <div className="block md:hidden mt-4 mb-6 text-left">
+              <div className="text-sm font-normal text-slate-1200">Step 2</div>
+              <div className="text-lg font-bold text-slate-1200">Payment details</div>
+            </div>
+          )}
+
+          <div className="relative mb-16 md:mb-0">
+            {currentStep === 0 ? (
+              <AdDetailsForm
+                onNext={handleAdDetailsNext}
+                onClose={handleClose}
+                initialData={formData}
+                isEditMode={isEditMode}
+              />
+            ) : (
+              <PaymentDetailsForm
+                onBack={() => setCurrentStep(0)}
+                onSubmit={handlePaymentDetailsSubmit}
+                onClose={handleClose}
+                initialData={formData}
+                isSubmitting={isSubmitting}
+                isEditMode={isEditMode}
+                onBottomSheetOpenChange={handleBottomSheetOpenChange}
+              />
+            )}
           </div>
-        )}
 
-        {currentStep === 1 && (
-          <div className="block md:hidden mt-4 mb-6 text-left">
-            <div className="text-sm font-normal text-slate-1200">Step 2</div>
-            <div className="text-lg font-bold text-slate-1200">Payment details</div>
-          </div>
-        )}
-
-        <div className="relative mb-16 md:mb-0">
-          {currentStep === 0 ? (
-            <AdDetailsForm
-              onNext={handleAdDetailsNext}
-              onClose={handleClose}
-              initialData={formData}
-              isEditMode={isEditMode}
-            />
+          {isMobile ? (
+            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
+              <div className="mx-6">
+                <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                  {getButtonText(isEditMode, isSubmitting, currentStep)}
+                </Button>
+              </div>
+            </div>
           ) : (
-            <PaymentDetailsForm
-              onBack={() => setCurrentStep(0)}
-              onSubmit={handlePaymentDetailsSubmit}
-              onClose={handleClose}
-              initialData={formData}
-              isSubmitting={isSubmitting}
-              isEditMode={isEditMode}
-              onBottomSheetOpenChange={handleBottomSheetOpenChange}
+            <div className="hidden md:block"></div>
+          )}
+
+          <div className="hidden md:flex justify-end mt-8">
+            <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+              {getButtonText(isEditMode, isSubmitting, currentStep)}
+            </Button>
+          </div>
+
+          {statusModal.show && !isMobile && (
+            <StatusModal
+              type={statusModal.type}
+              title={statusModal.title}
+              message={statusModal.message}
+              subMessage={statusModal.subMessage}
+              adType={statusModal.adType}
+              adId={statusModal.adId}
+              onClose={handleModalClose}
+              actionButtonText={statusModal.actionButtonText}
+            />
+          )}
+
+          {statusModal.show && isMobile && (
+            <StatusBottomSheet
+              isOpen={statusModal.show}
+              onClose={handleModalClose}
+              type={statusModal.type}
+              title={statusModal.title}
+              message={statusModal.message}
+              subMessage={statusModal.subMessage}
+              adType={statusModal.adType}
+              adId={statusModal.adId}
+              actionButtonText={statusModal.actionButtonText}
             />
           )}
         </div>
-
-        {isMobile ? (
-          <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
-            <div className="mx-6">
-              <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                {getButtonText(isEditMode, isSubmitting, currentStep)}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="hidden md:block"></div>
-        )}
-
-        <div className="hidden md:flex justify-end mt-8">
-          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-            {getButtonText(isEditMode, isSubmitting, currentStep)}
-          </Button>
-        </div>
-
-        {statusModal.show && !isMobile && (
-          <StatusModal
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            subMessage={statusModal.subMessage}
-            adType={statusModal.adType}
-            adId={statusModal.adId}
-            onClose={handleModalClose}
-            actionButtonText={statusModal.actionButtonText}
-          />
-        )}
-
-        {statusModal.show && isMobile && (
-          <StatusBottomSheet
-            isOpen={statusModal.show}
-            onClose={handleModalClose}
-            type={statusModal.type}
-            title={statusModal.title}
-            message={statusModal.message}
-            subMessage={statusModal.subMessage}
-            adType={statusModal.adType}
-            adId={statusModal.adId}
-            actionButtonText={statusModal.actionButtonText}
-          />
-        )}
       </div>
-    </div>
     </>
   )
 }
