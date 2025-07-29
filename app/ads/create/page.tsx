@@ -510,7 +510,7 @@ export default function CreateAdPage() {
           </Button>
         </div>
 
-        <div className="hidden md:block text-left mb-6 text-2xl-bold text-[#00080a]">
+        <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
           {getPageTitle(isEditMode, formData.type)}
         </div>
 
