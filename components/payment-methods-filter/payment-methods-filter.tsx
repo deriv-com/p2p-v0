@@ -150,20 +150,21 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      {/* Reset and Apply Buttons */}
       <div className="flex gap-3 mt-6 pt-4 border-t border-gray-200">
-        <button
+        <Button
           onClick={handleReset}
-          className="flex-1 px-4 py-2 border border-gray-300 rounded-full text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+          className="flex-1"
+          variant="outline"
         >
           Reset
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={handleApply}
-          className="flex-1 px-4 py-2 bg-gray-900 text-white rounded-full font-medium hover:bg-gray-800 transition-colors"
+          className="flex-1"
+          variant="black"
         >
           Apply
-        </button>
+        </Button>
       </div>
     </div>
   )
