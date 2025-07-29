@@ -298,7 +298,7 @@ export async function toggleFavouriteAdvertiser(
       method,
       // credentials: "include",
       headers,
-      body,
+       ...(!isFavourite && { body }),
     })
 
     if (!response.ok) {
