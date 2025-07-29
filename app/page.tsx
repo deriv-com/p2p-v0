@@ -222,7 +222,7 @@ export default function BuySellPage() {
         type: activeTab,
         account_currency: selectedAccountCurrency,
         currency: currency,
-        paymentMethod: selectedPaymentMethods.length > 0 ? selectedPaymentMethods.join(",") : undefined,
+        paymentMethod: selectedPaymentMethods.length > 0 ? selectedPaymentMethods.join(",") : "",
         sortBy: sortBy,
       }
 
