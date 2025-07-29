@@ -209,7 +209,7 @@ export default function BuySellPage() {
                         {isLoadingPaymentMethods
                           ? "Loading..."
                           : selectedPaymentMethods.length === 0
-                            ? "Payment method"
+                            ? "Payment (All)"
                             : selectedPaymentMethods.length === 1
                               ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name ||
                                 "Payment method"
