@@ -63,6 +63,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
           if(params.paymentMethod.length === 0) {
             queryParams.append('payment_methods', JSON.stringify([]));
           } else {
+              params.paymentMethod..join(",")
               params.paymentMethod.split(',').forEach(method => {
                 queryParams.append('payment_methods', method);
               });
