@@ -147,8 +147,7 @@ export default function PaymentMethodsFilter({
               {} as Record<string, PaymentMethod[]>,
             )
           
-            return Object.entries(groupedMethods).map(([type, methods]) => {
-              return (  
+            return Object.entries(groupedMethods).map(([type, methods]) => (
               <div key={type} className="space-y-3">
                 <h4 className="font-semibold text-gray-900 text-sm">
                   {type === "bank"
@@ -171,8 +170,8 @@ export default function PaymentMethodsFilter({
                     </Button>
                   ))}
                 </div>
-              </div>)
-          })
+              </div>
+            ))
           })()}
         )}
       </div>
