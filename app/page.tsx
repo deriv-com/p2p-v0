@@ -305,7 +305,7 @@ export default function BuySellPage() {
                           className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
                           key={ad.id}
                         >
-                          <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full">
+                          <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
