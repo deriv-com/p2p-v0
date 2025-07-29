@@ -1,6 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface TradeTypeSelectorProps {
   value: "buy" | "sell"
@@ -10,29 +10,19 @@ interface TradeTypeSelectorProps {
 
 export function TradeTypeSelector({ value, onChange, isEditMode = false }: TradeTypeSelectorProps) {
   return (
-    <div className="flex bg-gray-50 rounded-lg w-full md:w-[270px] h-10 min-h-10 max-h-10 px-1 py-0">
-      <Button
-        type="button"
-        variant="ghost"
-        size="xs"
-        onClick={() => !isEditMode && onChange("buy")}
-        disabled={isEditMode}
-        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8 whitespace-nowrap
-          ${value === "buy" ? "bg-white shadow-sm my-1" : "bg-transparent text-gray-500 my-1"}`}
+    <Tabs
+        className="w-full md:w-[250px] md:min-w-[270px]"
+        defaultValue={value}
+        onValueChange={(type) => !isEditMode && onChange(type)}
       >
-        I want to buy
-      </Button>
-      <Button
-        type="button"
-        variant="ghost"
-        size="xs"
-        onClick={() => !isEditMode && onChange("sell")}
-        disabled={isEditMode}
-        className={`flex-1 flex items-center justify-center rounded-lg text-center font-medium transition-all h-8 whitespace-nowrap
-          ${value === "sell" ? "bg-white shadow-sm my-1" : "bg-transparent text-gray-500 my-1"}`}
-      >
-        I want to sell
-      </Button>
-    </div>
+        <TabsList className="w-full md:min-w-[270px]">
+          <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+            I want to buy
+          </TabsTrigger>
+          <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+            I want to sell
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
   )
 }

@@ -280,7 +280,7 @@ export async function toggleFavouriteAdvertiser(
   isFavourite: boolean,
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.userFavourites}`
+    const url = isFavourite ? `${API.baseUrl}${API.endpoints.userFavourites}` : `${API.baseUrl}${API.endpoints.userFavourites}/${advertiserId}`
     const method = isFavourite ? "POST" : "DELETE"
 
     const headers = {
@@ -298,7 +298,7 @@ export async function toggleFavouriteAdvertiser(
       method,
       // credentials: "include",
       headers,
-      body,
+       ...(!isFavourite && { body }),
     })
 
     if (!response.ok) {
