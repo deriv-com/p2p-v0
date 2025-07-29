@@ -164,7 +164,7 @@ export default function AdsPage() {
               size="pill"
               className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
             >
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={20} />
+              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
               Create ad
             </Button>
           </div>
