@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
+import Image from "next/image"
 
 import { useState, useEffect, useCallback } from "react"
 import { MoreVertical, Edit, Trash } from "lucide-react"
@@ -263,13 +264,8 @@ export default function PaymentMethodsTab() {
   const eWallets = paymentMethods.filter((method) => method.category === "e_wallet")
 
   const getBankIcon = () => (
-    <div className="w-10 h-10 flex items-center justify-center text-success">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M2 10H22V18C22 18.5304 21.7893 19.0391 21.4142 19.4142C21.0391 19.7893 20.5304 20 20 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V10ZM12 3L22 8H2L12 3Z"
-          fill="currentColor"
-        />
-      </svg>
+    <div className="w-10 h-10 flex items-center justify-center">
+      <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} className="object-contain" />
     </div>
   )
 
