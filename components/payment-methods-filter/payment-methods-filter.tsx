@@ -150,7 +150,7 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      <div className="flex gap-3 mt-6 pt-4">
+      <div className="flex flex-col md:flex-row gap-3">
         <Button
           onClick={handleReset}
           className="flex-1"
