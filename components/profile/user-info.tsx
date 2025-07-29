@@ -71,19 +71,19 @@ export default function UserInfo({
           </div>
           <div className="flex flex-wrap gap-2 mt-3">
             {isVerified.id && (
-              <div className="bg-success-bg text-success px-3 h-[24px] rounded-sm text-xs flex items-center">
+              <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Check className="h-3 w-3 mr-1 text-success" />
                 ID
               </div>
             )}
             {isVerified.address && (
-              <div className="bg-success-bg text-success px-3 h-[24px] rounded-sm text-xs flex items-center">
+              <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Check className="h-3 w-3 mr-1 text-success" />
                 Address
               </div>
             )}
             {isVerified.phone && (
-              <div className="bg-success-bg text-success px-3 h-[24px] rounded-sm text-xs flex items-center">
+              <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Check className="h-3 w-3 mr-1 text-success" />
                 Phone number
               </div>
