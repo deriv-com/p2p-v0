@@ -11,7 +11,7 @@ interface TradeTypeSelectorProps {
 export function TradeTypeSelector({ value, onChange, isEditMode = false }: TradeTypeSelectorProps) {
   return (
     <Tabs
-        className="w-full md:w-[230px] md:min-w-[230px]"
+        className="w-full md:w-[250px] md:min-w-[270px]"
         defaultValue="buy"
         onValueChange={(value) => !isEditMode && onChange(value)}
       >
