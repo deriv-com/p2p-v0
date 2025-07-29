@@ -7,8 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
-import Button from "@/components/ui/button"
 
 export interface PaymentMethod {
   display_name: string
@@ -46,6 +46,20 @@ export default function PaymentMethodsFilter({
     )
   }, [paymentMethods, searchQuery])
 
+  const groupedMethods = useMemo(() => {
+    return filteredPaymentMethods.reduce(
+      (acc, method) => {
+        const { type } = method
+        if (!acc[type]) {
+          acc[type] = []
+        }
+        acc[type].push(method)
+        return acc
+      },
+      {} as Record<string, PaymentMethod[]>,
+    )
+  }, [filteredPaymentMethods])
+
   const isAllSelected =
     filteredPaymentMethods.length > 0 &&
     filteredPaymentMethods.every((method) => tempSelectedMethods.includes(method.method))
@@ -64,11 +78,12 @@ export default function PaymentMethodsFilter({
     }
   }
 
-  const handleMethodToggle = (methodId: string, checked: boolean) => {
-    if (checked) {
-      setTempSelectedMethods([...tempSelectedMethods, methodId])
-    } else {
+  const handleMethodToggle = (methodId: string) => {
+    const isSelected = tempSelectedMethods.includes(methodId)
+    if (isSelected) {
       setTempSelectedMethods(tempSelectedMethods.filter((id) => id !== methodId))
+    } else {
+      setTempSelectedMethods([...tempSelectedMethods, methodId])
     }
   }
 
@@ -90,6 +105,43 @@ export default function PaymentMethodsFilter({
     onSelectionChange(tempSelectedMethods)
     setIsOpen(false)
     setSearchQuery("")
+  }
+
+  const getGroupTitle = (type: string) => {
+    if (type === "bank") return "Bank Transfers"
+    if (type === "ewallet") return "E-Wallets"
+    return type?.charAt(0).toUpperCase() + type?.slice(1)
+  }
+
+  const getMethodButtonClass = (methodId: string) => {
+    const isSelected = tempSelectedMethods.includes(methodId)
+    return `px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+      isSelected ? "bg-black text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+    }`
+  }
+
+  const renderPaymentMethodGroups = () => {
+    if (Object.keys(groupedMethods).length === 0) {
+      return null
+    }
+
+    return Object.entries(groupedMethods).map(([type, methods]) => (
+      <div key={type} className="space-y-3">
+        <h4 className="font-semibold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
+        <div className="flex flex-wrap gap-2">
+          {methods.map((method) => (
+            <Button
+              key={method.method}
+              onClick={() => handleMethodToggle(method.method)}
+              variant="outline"
+              className={getMethodButtonClass(method.method)}
+            >
+              {method.display_name}
+            </Button>
+          ))}
+        </div>
+      </div>
+    ))
   }
 
   const FilterContent = () => (
@@ -134,54 +186,15 @@ export default function PaymentMethodsFilter({
             {searchQuery ? "No payment methods found" : "No payment methods available"}
           </div>
         ) : (
-          (() => {
-            const groupedMethods = filteredPaymentMethods.reduce(
-              (acc, method) => {
-                const { type } = method
-                if (!acc[type]) {
-                  acc[type] = []
-                }
-                acc[type].push(method)
-                return acc
-              },
-              {} as Record<string, PaymentMethod[]>,
-            )
-          
-              if(groupedMethods.length === 0) return <></>
-            return Object.entries(groupedMethods).map(([type, methods]) => (
-              <div key={type} className="space-y-3">
-                <h4 className="font-semibold text-gray-900 text-sm">
-                  {type === "bank"
-                    ? "Bank Transfers"
-                      : type?.charAt(0).toUpperCase() + type?.slice(1)}
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {methods.map((method) => (
-                    <Button
-                      key={method.method}
-                      onClick={() => handleMethodToggle(method.method, !tempSelectedMethods.includes(method.method))}
-                      variant="outline"
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                        tempSelectedMethods.includes(method.method)
-                          ? "bg-black text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                    >
-                      {method.display_name}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            ))
-          })()
+          renderPaymentMethodGroups()
         )}
       </div>
 
-      <div className="flex flex-col md:flex-row gap-3">
-        <Button onClick={handleReset} className="flex-1" variant="outline">
+      <div className="flex flex-col md:flex-row gap-3 mt-4">
+        <Button onClick={handleReset} className="flex-1 bg-transparent" variant="outline">
           Reset
         </Button>
-        <Button onClick={handleApply} className="flex-1" variant="black">
+        <Button onClick={handleApply} className="flex-1" variant="default">
           Apply
         </Button>
       </div>
