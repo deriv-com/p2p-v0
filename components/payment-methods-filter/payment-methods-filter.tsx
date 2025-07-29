@@ -153,8 +153,6 @@ export default function PaymentMethodsFilter({
                 <h4 className="font-semibold text-gray-900 text-sm">
                   {type === "bank_transfer"
                     ? "Bank Transfers"
-                    : type === "ewallet"
-                      ? "E-Wallets"
                       : type.charAt(0).toUpperCase() + type.slice(1)}
                 </h4>
                 <div className="flex flex-wrap gap-2">
