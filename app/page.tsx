@@ -19,6 +19,7 @@ import { formatPaymentMethodName } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
+import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -36,7 +37,7 @@ export default function BuySellPage() {
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>("all")
+  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("USD")
 
@@ -48,7 +49,7 @@ export default function BuySellPage() {
 
   useEffect(() => {
     fetchAdverts()
-  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethod, selectedAccountCurrency])
+  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethods, selectedAccountCurrency])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -74,7 +75,7 @@ export default function BuySellPage() {
         type: activeTab,
         account_currency: selectedAccountCurrency,
         currency: currency,
-        paymentMethod: selectedPaymentMethod || undefined,
+        paymentMethod: selectedPaymentMethods.length > 0 ? selectedPaymentMethods.join(",") : undefined,
         sortBy: sortBy,
       }
 
@@ -193,23 +194,31 @@ export default function BuySellPage() {
               />
 
               <div className="flex-1 md:block md:flex-none">
-                <Select
-                  value={selectedPaymentMethod}
-                  onValueChange={setSelectedPaymentMethod}
-                  disabled={isLoadingPaymentMethods}
-                >
-                  <SelectTrigger className="w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px]">
-                    <SelectValue placeholder={isLoadingPaymentMethods ? "Loading..." : "Payment method"} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Payment (All)</SelectItem>
-                    {paymentMethods.map((method) => (
-                      <SelectItem key={method.method} value={method.method}>
-                        {method.display_name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <PaymentMethodsFilter
+                  paymentMethods={paymentMethods}
+                  selectedMethods={selectedPaymentMethods}
+                  onSelectionChange={setSelectedPaymentMethods}
+                  isLoading={isLoadingPaymentMethods}
+                  trigger={
+                    <Button
+                      variant="outline"
+                      className="w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between font-normal bg-transparent"
+                      disabled={isLoadingPaymentMethods}
+                    >
+                      <span>
+                        {isLoadingPaymentMethods
+                          ? "Loading..."
+                          : selectedPaymentMethods.length === 0
+                            ? "Payment method"
+                            : selectedPaymentMethods.length === 1
+                              ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name ||
+                                "Payment method"
+                              : `${selectedPaymentMethods.length} methods selected`}
+                      </span>
+                      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
+                    </Button>
+                  }
+                />
               </div>
 
               <div className="filter-dropdown-container flex-shrink-0 md:flex-1">
