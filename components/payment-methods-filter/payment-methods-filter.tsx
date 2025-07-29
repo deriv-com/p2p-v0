@@ -134,7 +134,7 @@ export default function PaymentMethodsFilter({
             {searchQuery ? "No payment methods found" : "No payment methods available"}
           </div>
         ) : (
-          <>{(() => {
+        (() => {
             const groupedMethods = filteredPaymentMethods.reduce(
               (acc, method) => {
                 const { type } = method
@@ -172,8 +172,7 @@ export default function PaymentMethodsFilter({
                 </div>
               </div>
             ))
-          })()}
-          </>
+          })()
         )}
       </div>
 
