@@ -8,7 +8,7 @@ interface StatCardProps {
 
 function StatCard({ title, value, hasInfo = false }: StatCardProps) {
   return (
-    <div className="py-6">
+    <div className="pt-6 pb-2">
       <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
         {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
