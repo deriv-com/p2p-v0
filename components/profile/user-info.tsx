@@ -61,7 +61,7 @@ export default function UserInfo({
               <div className="flex items-center text-neutral-10">
                 <Check className="h-4 w-4 text-primary mr-1" />
                 <span>{completionRate}</span>
-                <Info className="h-4 w-4 ml-1 text-slate-400" />
+                <span className="text-neutral-7">(Recommended)</span>
               </div>
             )}
 
