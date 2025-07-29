@@ -120,7 +120,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
   if (isMobile) {
     return (
-      <div className="relative">
+      <div className="relative mx-[-24px]">
         {notification.show && (
           <CustomNotificationBanner
             message={notification.message}
