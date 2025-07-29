@@ -191,10 +191,10 @@ export default function PaymentMethodsFilter({
       </div>
 
       <div className="flex flex-col md:flex-row gap-3 mt-4">
-        <Button onClick={handleReset} className="flex-1 bg-transparent" variant="outline">
+        <Button onClick={handleReset} className="flex-1" variant="outline">
           Reset
         </Button>
-        <Button onClick={handleApply} className="flex-1" variant="default">
+        <Button onClick={handleApply} className="flex-1" variant="black">
           Apply
         </Button>
       </div>
