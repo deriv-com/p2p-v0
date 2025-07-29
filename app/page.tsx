@@ -349,7 +349,7 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px]"
+                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         { selectedPaymentMethods.length === 0
