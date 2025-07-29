@@ -47,7 +47,7 @@ export default function PaymentMethodsFilter({
   }, [paymentMethods, searchQuery])
 
   const groupedMethods = useMemo(() => {
-    return filteredPaymentMethods.reduce(
+    const grouped = filteredPaymentMethods.reduce(
       (acc, method) => {
         const { type } = method
         if (!acc[type]) {
@@ -57,6 +57,10 @@ export default function PaymentMethodsFilter({
         return acc
       },
       {} as Record<string, PaymentMethod[]>,
+    )
+
+    return Object.entries(grouped).sort(([typeA], [typeB]) =>
+      typeA.localeCompare(typeB)
     )
   }, [filteredPaymentMethods])
 
