@@ -115,8 +115,8 @@ export default function PaymentMethodsFilter({
 
   const getMethodButtonClass = (methodId: string) => {
     const isSelected = tempSelectedMethods.includes(methodId)
-    return `px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-      isSelected ? "bg-black text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+    return `rounded-full text-sm font-medium transition-colors ${
+      isSelected ? "bg-black text-white" : "text-grayscale-100"
     }`
   }
 
