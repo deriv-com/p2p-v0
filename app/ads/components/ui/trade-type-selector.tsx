@@ -13,7 +13,7 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
     <Tabs
         className="w-full md:w-[250px] md:min-w-[270px]"
         defaultValue={value}
-        onValueChange={(value) => !isEditMode && onChange(value)}
+        onValueChange={(type) => !isEditMode && onChange(type)}
       >
         <TabsList className="w-full md:min-w-[270px]">
           <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
