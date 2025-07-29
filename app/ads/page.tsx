@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
-import { Plus } from "lucide-react"
+import Image from "next/image"
 import type { MyAd } from "./types"
 import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -39,13 +39,11 @@ export default function AdsPage() {
   const router = useRouter()
 
   useEffect(() => {
-
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
-
 
     if (
       success &&
@@ -67,7 +65,6 @@ export default function AdsPage() {
       })
     }
 
-
     if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
       setStatusData({
         success,
@@ -76,7 +73,6 @@ export default function AdsPage() {
         showStatusModal: true,
       })
     }
-
 
     const fetchAds = async () => {
       try {
@@ -103,7 +99,6 @@ export default function AdsPage() {
   }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
-
     const reload = async () => {
       try {
         const userAdverts = await getUserAdverts()
@@ -135,77 +130,77 @@ export default function AdsPage() {
         description: errorModal.message,
         confirmText: "OK",
         onConfirm: handleCloseErrorModal,
-        type:"warning",
+        type: "warning",
       })
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
   return (
     <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="flex flex-col h-screen bg-white px-[24px]">
-      {showDeletedBanner && (
-        <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
-      )}
-      <div className="flex-none container mx-auto pr-4">
-        <MyAdsHeader hasAds={ads.length > 0} />
-        {ads.length > 0 && !isMobile && (
-          <Button
-            onClick={() => router.push("/ads/create")}
-            variant="cyan"
-            size="pill"
-            className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
-          >
-            <Plus className="h-5 w-5" />
-            Create ad
-          </Button>
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      <div className="flex flex-col h-screen bg-white px-[24px]">
+        {showDeletedBanner && (
+          <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
-      </div>
-      {ads.length > 0 && isMobile && (
-        <div className="fixed bottom-20 right-4 z-10">
-          <Button
-            onClick={() => router.push("/ads/create")}
-            variant="cyan"
-            size="pill"
-            className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
-          >
-            <Plus className="h-5 w-5" />
-            Create ad
-          </Button>
+        <div className="flex-none container mx-auto pr-4">
+          <MyAdsHeader hasAds={ads.length > 0} />
+          {ads.length > 0 && !isMobile && (
+            <Button
+              onClick={() => router.push("/ads/create")}
+              variant="cyan"
+              size="pill"
+              className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
+            >
+              <Image src="/icons/plus_icon.png" alt="Plus" width={20} height={20} />
+              Create ad
+            </Button>
+          )}
         </div>
-      )}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-        {loading ? (
-          <div className="text-center py-8">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-            <p className="mt-2 text-gray-600">Loading your ads...</p>
+        {ads.length > 0 && isMobile && (
+          <div className="fixed bottom-20 right-4 z-10">
+            <Button
+              onClick={() => router.push("/ads/create")}
+              variant="cyan"
+              size="pill"
+              className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
+            >
+              <Image src="/icons/plus_icon.png" alt="Plus" width={20} height={20} />
+              Create ad
+            </Button>
           </div>
-        ) : error ? (
-          <div className="text-center py-8 text-red-500">{error}</div>
-        ) : isMobile ? (
-          <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
-        ) : (
-          <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+        )}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
+              <p className="mt-2 text-gray-600">Loading your ads...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-8 text-red-500">{error}</div>
+          ) : isMobile ? (
+            <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
+          ) : (
+            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+          )}
+        </div>
+        {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
+        {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
+          <StatusBottomSheet
+            isOpen
+            onClose={handleCloseStatusModal}
+            type="success"
+            title={statusData.success === "create" ? "Ad created" : "Ad updated"}
+            message={
+              statusData.success === "create"
+                ? `You've successfully created Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
+                : `You've successfully updated Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nYour changes have been saved and are now live.`
+            }
+            adType={statusData.type}
+            adId={statusData.id}
+            isUpdate={statusData.success === "update"}
+          />
         )}
       </div>
-      {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
-      {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
-        <StatusBottomSheet
-          isOpen
-          onClose={handleCloseStatusModal}
-          type="success"
-          title={statusData.success === "create" ? "Ad created" : "Ad updated"}
-          message={
-            statusData.success === "create"
-              ? `You've successfully created Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
-              : `You've successfully updated Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nYour changes have been saved and are now live.`
-          }
-          adType={statusData.type}
-          adId={statusData.id}
-          isUpdate={statusData.success === "update"}
-        />
-      )}
-    </div>
     </>
   )
 }
