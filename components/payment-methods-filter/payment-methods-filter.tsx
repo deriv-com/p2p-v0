@@ -127,7 +127,7 @@ export default function PaymentMethodsFilter({
 
     return Object.entries(groupedMethods).map(([type, methods]) => (
       <div key={type} className="space-y-3">
-        <h4 className="font-semibold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
+        <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
         <div className="flex flex-wrap gap-2">
           {methods.map((method) => (
             <Button
