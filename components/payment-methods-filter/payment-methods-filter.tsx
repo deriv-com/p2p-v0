@@ -134,6 +134,7 @@ export default function PaymentMethodsFilter({
               key={method.method}
               onClick={() => handleMethodToggle(method.method)}
               variant="outline"
+              size="sm"
               className={getMethodButtonClass(method.method)}
             >
               {method.display_name}
