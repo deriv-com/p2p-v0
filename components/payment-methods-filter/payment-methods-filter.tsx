@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Search } from "lucide-react"
 
 export interface PaymentMethod {
   display_name: string
@@ -80,7 +79,13 @@ export default function PaymentMethodsFilter({
   const FilterContent = () => (
     <div className="w-full">
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+        <Image
+          src="/icons/search-icon-custom.png"
+          alt="Search"
+          width={24}
+          height={24}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2"
+        />
         <Input
           placeholder="Search"
           value={searchQuery}
