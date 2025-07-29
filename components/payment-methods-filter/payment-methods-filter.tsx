@@ -78,6 +78,11 @@ export default function PaymentMethodsFilter({
     }
   }
 
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchQuery(value)
+  }, [])
+
   const handleMethodToggle = (methodId: string) => {
     const isSelected = tempSelectedMethods.includes(methodId)
     if (isSelected) {
@@ -160,7 +165,7 @@ export default function PaymentMethodsFilter({
         <Input
           placeholder="Search"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleSearchChange}
           className="pl-10 border-gray-300 focus:border-black"
         />
       </div>
