@@ -21,7 +21,7 @@ export default function MyAdsHeader({ totalAds, activeAds }: MyAdsHeaderProps) {
 
       <Link href="/ads/create">
         <Button className="flex items-center gap-2 bg-black hover:bg-gray-800 text-white">
-          <Image src="/icons/plus_icon.png" alt="Create" width={16} height={16} />
+          <Image src="/icons/plus_icon.png" alt="Create" width={20} height={20} />
           Create Ad
         </Button>
       </Link>
