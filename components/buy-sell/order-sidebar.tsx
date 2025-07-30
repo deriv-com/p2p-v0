@@ -263,9 +263,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         key={method.id}
                         className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-center justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center mb-2">
+                            <div className="flex items-center mb-[6px]">
                               <div
                                 className={`h-2 w-2 rounded-full mr-2 ${
                                   method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
