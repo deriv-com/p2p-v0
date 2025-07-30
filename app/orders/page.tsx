@@ -236,7 +236,7 @@ export default function OrdersPage() {
     const counterpartyName =
       selectedOrder.type === "buy" ? selectedOrder.advert.user.nickname : selectedOrder.user.nickname
     const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
-    const isClosed = selectedOrder.status === "completed" || selectedOrder.status === "cancelled"
+    const isClosed = ["cancelled", "completed", "timed_out", "refunded"].includes(selectedOrder?.status)
 
     return (
       <div className="h-[calc(100vh - 64px)] flex flex-col">
@@ -246,6 +246,7 @@ export default function OrdersPage() {
             counterpartyName={counterpartyName}
             counterpartyInitial={counterpartyInitial}
             isClosed={isClosed}
+            navigateToOrderDetails={true}
           />
         </div>
       </div>
