@@ -342,7 +342,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                           <Image src="/icons/more-options-vertical.png" alt="Edit" width={24} height={24} />
+                           <Image src="/icons/more-options-vertical.png" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
@@ -392,7 +392,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <Image src="/icons/more-options-vertical.png" alt="Edit" width={24} height={24} />
+                          <Image src="/icons/more-options-vertical.png" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
