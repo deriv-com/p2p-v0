@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
 import { formatAmount, formatDateTime } from "@/lib/utils"
+import Image from "next/image"
 
 interface OrderDetailsSidebarProps {
   isOpen: boolean
