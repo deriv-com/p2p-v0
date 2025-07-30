@@ -34,6 +34,7 @@ export default function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
+  const [showChat, setShowChat] = useState(false)
   const { isConnected, joinChannel } = useWebSocketContext()
 
   useEffect(() => {
@@ -312,7 +313,7 @@ export default function OrderDetailsPage() {
                     {isMobile && (
                       <Button
                         onClick={(e) => {
-                          handleChatClick(e, order)
+                          setShowChat(true)
                         }}
                         className="text-slate-500 hover:text-slate-700"
                         variant="ghost"
