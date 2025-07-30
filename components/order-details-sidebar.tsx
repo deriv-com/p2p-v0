@@ -62,8 +62,10 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
                 {formatDateTime(order.created_at)}
               </p>
             </div>
+            <div>
               <h3 className="text-sm text-slate-500 mb-1">{counterpartyLabel}</h3>
               <p className="font-bold">{counterpartyNickname}</p> </div>
+            </div>
           </div>
         </div>
       </div>
