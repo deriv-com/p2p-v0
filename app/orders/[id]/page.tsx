@@ -75,11 +75,6 @@ export default function OrderDetailsPage() {
       }
     } catch (err) {
       console.error("Error marking payment as sent:", err)
-      toast({
-        title: "Payment notification failed",
-        description: "Could not mark payment as sent. Please try again.",
-        variant: "destructive",
-      })
     } finally {
       setIsPaymentLoading(false)
     }
