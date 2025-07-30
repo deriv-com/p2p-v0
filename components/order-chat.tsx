@@ -206,11 +206,11 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
                   ) : (
-                    <div
+                    {msg.time && (<div
                       className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
                     >
                       {formatDateTime(msg.time)}
-                    </div>
+                    </div>}
                   )}
                 </div>
               </div>
