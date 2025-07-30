@@ -300,7 +300,10 @@ export default function AdvertiserProfilePage() {
                       </Tooltip>
                     </div>
                     <div className="flex items-center mt-1">
-                      <span className="font-bold text-lg">{profile?.recommend_average_lifetime}%</span>
+                      {profile?.recommend_average_lifetime ? 
+                        <span className="font-bold text-lg">{profile?.recommend_average_lifetime}%</span> :
+                        <span className="font-bold text-lg">-</span>
+                      }
                     </div>
                   </div>
                   <div>
