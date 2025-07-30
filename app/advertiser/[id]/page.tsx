@@ -273,8 +273,11 @@ export default function AdvertiserProfilePage() {
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
                     <div className="flex items-center mt-1">
-                      <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
-                      <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span>
+                      {profile?.rating_average_lifetime ?
+                        (<Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                        <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span>) :
+                        <span>Not yet </span>
+                      }
                     </div>
                   </div>
                   <div>
