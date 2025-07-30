@@ -13,6 +13,7 @@ interface OrderDetailsSidebarProps {
 
 export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDetailsSidebarProps) {
   if (!isOpen) return null
+  const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
@@ -62,7 +63,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
               {order.type === "buy" ?
                <div>
                 <h3 className="text-sm text-slate-500 mb-1">Seller</h3>
-                <p className="font-bold">{order.advert?.user?.nickname}</p> </div> :
+                <p className="font-bold">{counterpartyNickname}</p> </div> :
                 <div>
                 <h3 className="text-sm text-slate-500 mb-1">Buyer</h3>
                 <p className="font-bold">{order.user?.nickname}</p></div>
