@@ -5,7 +5,7 @@ import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical, Edit, Trash } from "lucide-react"
+import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
@@ -347,17 +347,17 @@ export default function PaymentMethodsTab() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Trash className="h-4 w-4" />
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -397,17 +397,17 @@ export default function PaymentMethodsTab() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Trash className="h-4 w-4" />
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
