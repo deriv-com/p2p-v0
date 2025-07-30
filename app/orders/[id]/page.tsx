@@ -40,12 +40,10 @@ export default function OrderDetailsPage() {
   useEffect(() => {
     fetchOrderDetails()
 
-    // Connect to websocket on page load if not already connected
     if (!isConnected) {
       reconnect()
     }
 
-    // Join orders channel once connected
     if (isConnected) {
       joinChannel("orders")
     }
