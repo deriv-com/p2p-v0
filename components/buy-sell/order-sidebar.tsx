@@ -285,6 +285,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <Checkbox
                             checked={selectedPaymentMethods.includes(method.id)}
                             onCheckedChange={() => handlePaymentMethodToggle(method.id)}
+                            className="border-neutral-7 data-[state=checked]:bg-black w-[24px] h-[24px]"
                           />
                         </div>
                       </div>
