@@ -238,7 +238,7 @@ export default function OrdersPage() {
     const isClosed = ["cancelled", "completed", "timed_out", "refunded"].includes(selectedOrder?.status)
 
     return (
-      <div className="h-[calc(100vh - 64px)] flex flex-col">
+      <div className="h-[calc(100vh-64px)] flex flex-col">
         <div className="flex-1">
           <OrderChat
             orderId={selectedOrder.id}
