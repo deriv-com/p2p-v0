@@ -240,7 +240,7 @@ export default function OrdersPage() {
 
     return (
       <div className="h-screen flex flex-col">
-        <Navigation isBackBtnVisible={true} redirectUrl="/orders" title="Chat" onBackClick={handleChatClose} />
+        <Navigation isBackBtnVisible={true} redirectUrl={`/orders/${selectedOrder.id}`} title="Chat" onBackClick={handleChatClose} />
         <div className="flex-1">
           <OrderChat
             orderId={selectedOrder.id}
