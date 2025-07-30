@@ -43,11 +43,13 @@ export default function OrderDetailsPage() {
     if (!isConnected) {
       reconnect()
     }
+  }, [orderId])
 
+  useEffect(() => {
     if (isConnected) {
       joinChannel("orders")
     }
-  }, [orderId, isConnected])
+  }, [isConnected])
 
   const fetchOrderDetails = async () => {
     setIsLoading(true)
