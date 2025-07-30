@@ -290,7 +290,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
         </div>
       </form>
 
-      <div className="p-6 border-t">
+      <div className="p-4">
         <Button
           type="submit"
           onClick={handleSubmit}
