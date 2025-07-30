@@ -115,11 +115,6 @@ export default function OrdersPage() {
     }
   }
 
-  const handleChatClose = () => {
-    setShowChat(false)
-    setSelectedOrder(null)
-  }
-
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
