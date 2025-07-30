@@ -1,6 +1,5 @@
 "use client"
 
-import { X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
 import { formatAmount, formatDateTime } from "@/lib/utils"
@@ -20,7 +19,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
         <div className="flex justify-between items-center px-4 py-1 border-b">
           <h2 className="text-xl font-bold">Order details</h2>
           <Button onClick={onClose} variant="ghost" size="icon" className="p-1">
-            <X className="h-6 w-6" />
+            <Image src="/icons/close-circle.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
         <div className="flex-1 overflow-auto p-4">
