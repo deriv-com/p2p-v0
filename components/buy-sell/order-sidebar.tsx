@@ -10,7 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { getCategoryDisplayName, formatPaymentMethodName } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { addPaymentMethod } from "@/app/profile/api/api-payment-methods"
@@ -271,9 +271,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                                   method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                                 }`}
                               />
-                              <span className="font-medium text-gray-600">
-                                {formatPaymentMethodName(method.display_name)}
+                              <span className="font-bold text-neutral-7">
+                                {getCategoryDisplayName(method.type)}
                               </span>
+                            </div>
+                            <div className="font-normal text-neutral-7">
+                                {formatPaymentMethodName(method.display_name)}
                             </div>
                           </div>
                           <Checkbox
