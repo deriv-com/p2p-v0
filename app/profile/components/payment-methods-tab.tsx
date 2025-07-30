@@ -5,7 +5,7 @@ import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical, Trash } from "lucide-react"
+import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
@@ -342,7 +342,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                           <Image src="/icons/more-options-vertical.png" alt="Options" height={16} />
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
@@ -392,7 +392,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <Image src="/icons/more-options-vertical.png" alt="Options" height={16} />
+                          <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
