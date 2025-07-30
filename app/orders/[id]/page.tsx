@@ -35,7 +35,7 @@ export default function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
-  const [showChat, setShowChat] = useState()
+  const [showChat, setShowChat] = useState(false)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
@@ -460,7 +460,7 @@ export default function OrderDetailsPage() {
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.recommend && (
                         <div className="flex items-center gap-2">
-                          <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={24} height={24} />
+                          <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={24} height={24} />
                           <span className="text-sm">Recommended</span>
                         </div>
                       )}
