@@ -276,6 +276,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                               </span>
                             </div>
                             <div className="font-normal text-neutral-7">
+                                {formatPaymentMethodName(method.fields.account.value)}
+                            </div>
+                            <div className="font-normal text-neutral-7">
                                 {formatPaymentMethodName(method.display_name)}
                             </div>
                           </div>
