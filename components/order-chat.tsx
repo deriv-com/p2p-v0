@@ -85,9 +85,22 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       const result = await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
 
       if (result.success) {
-        if (isConnected) {
-          getChatHistory("orders", orderId)
+        // Create a new message object to append to existing messages
+        const newMessage: Message = {
+          attachment: {
+            name: "",
+            url: "",
+          },
+          id: Date.now().toString(), // Generate a temporary ID
+          message: messageToSend,
+          sender_is_self: true,
+          time: Date.now(),
+          rejected: false,
+          tags: [],
         }
+
+        // Append the new message to existing messages
+        setMessages((prev) => [...prev, newMessage])
       }
     } catch (error) {
       console.log(error)
