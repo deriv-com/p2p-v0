@@ -64,7 +64,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
             </div>
             <div>
               <h3 className="text-sm text-slate-500 mb-1">{counterpartyLabel}</h3>
-              <p className="font-bold">{counterpartyNickname}</p> </div>
+              <p className="font-bold">{counterpartyNickname}</p> 
             </div>
           </div>
         </div>
