@@ -223,7 +223,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           </TabsContent>
 
           <TabsContent value="payment">
-            <div className="relative border-slate-1500 rounded-lg border p-4">
+            <div className="relative rounded-lg border p-4">
               <div className="flex justify-end mb-4">
                 <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
                   <Image
