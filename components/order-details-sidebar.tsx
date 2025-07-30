@@ -17,10 +17,10 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
-        <div className="flex justify-between items-center px-4 py-1 border-b">
+        <div className="flex justify-between items-center px-4 py3 border-b">
           <h2 className="text-xl font-bold">Order details</h2>
-          <Button onClick={onClose} variant="ghost" size="icon" className="p-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={32} height={32} />
+          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={32} />
           </Button>
         </div>
         <div className="flex-1 overflow-auto p-4">
