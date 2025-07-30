@@ -16,10 +16,11 @@ import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
+import OrderChat from "@/components/order-chat"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
-  const pad = (n: number) => String(n).padStart(2, '0')
+  const pad = (n: number) => String(n).padStart(2, "0")
 
   if (timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
 
@@ -38,6 +39,8 @@ export default function OrdersPage() {
   const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
+  const [showChat, setShowChat] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const isMobile = useIsMobile()
 
   useEffect(() => {
@@ -101,6 +104,19 @@ export default function OrdersPage() {
     fetchOrders()
   }
 
+  const handleChatClick = (e: React.MouseEvent, order: Order) => {
+    e.stopPropagation()
+    if (isMobile) {
+      setSelectedOrder(order)
+      setShowChat(true)
+    }
+  }
+
+  const handleChatClose = () => {
+    setShowChat(false)
+    setSelectedOrder(null)
+  }
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -111,9 +127,7 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" &&
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
-              }
+              {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
@@ -146,9 +160,11 @@ export default function OrdersPage() {
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
-                    {!isMobile && <div className="mt-[4px] text-slate-600 text-xs">
-                      Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
-                    </div>}
+                    {!isMobile && (
+                      <div className="mt-[4px] text-slate-600 text-xs">
+                        Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
+                      </div>
+                    )}
                   </div>
                 </TableCell>
                 <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
@@ -187,25 +203,39 @@ export default function OrdersPage() {
                 )}
                 <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
-                    {isMobile && <div className="text-xs">
-                      {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
-                    </div>}
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        navigateToOrderDetails(order.id)
-                      }}
-                      className="text-slate-500 hover:text-slate-700"
-                      variant="ghost"
-                      size="sm"
-                    >
-                      <Image
-                        src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                        alt="View Details"
-                        width={20}
-                        height={20}
-                      />
-                    </Button>
+                    {isMobile && (
+                      <div className="text-xs">
+                        {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      {isMobile && activeTab === "active" && (
+                        <Button
+                          onClick={(e) => handleChatClick(e, order)}
+                          className="text-slate-500 hover:text-slate-700"
+                          variant="ghost"
+                          size="sm"
+                        >
+                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                        </Button>
+                      )}
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          navigateToOrderDetails(order.id)
+                        }}
+                        className="text-slate-500 hover:text-slate-700"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image
+                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
+                          alt="View Details"
+                          width={20}
+                          height={20}
+                        />
+                      </Button>
+                    </div>
                   </div>
                 </TableCell>
               </TableRow>
@@ -216,13 +246,38 @@ export default function OrdersPage() {
     </div>
   )
 
+  if (isMobile && showChat && selectedOrder) {
+    const counterpartyName =
+      selectedOrder.type === "buy" ? selectedOrder.advert.user.nickname : selectedOrder.user.nickname
+    const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
+    const isClosed = selectedOrder.status === "completed" || selectedOrder.status === "cancelled"
+
+    return (
+      <div className="h-screen flex flex-col">
+        <Navigation isBackBtnVisible={true} redirectUrl="#" title="Chat" onBackClick={handleChatClose} />
+        <div className="flex-1">
+          <OrderChat
+            orderId={selectedOrder.id}
+            counterpartyName={counterpartyName}
+            counterpartyInitial={counterpartyInitial}
+            isClosed={isClosed}
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
           <div className="mb-6">
-            <Tabs className="w-full md:w-[330px] md:min-w-[330px]" defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
+            <Tabs
+              className="w-full md:w-[330px] md:min-w-[330px]"
+              defaultValue={activeTab}
+              onValueChange={(value) => setActiveTab(value as "active" | "past")}
+            >
               <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
                 <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
                   Active orders
