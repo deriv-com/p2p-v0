@@ -239,6 +239,22 @@ export default function OrderDetailsPage() {
         ? "You pay"
         : "You receive"
 
+  if (isMobile && showChat && order) {
+      return (
+        <div className="h-[calc(100vh-64px)] flex flex-col">
+          <div className="flex-1">
+            <OrderChat
+              orderId={orderId}
+              counterpartyName={counterpartyNickname || "User"}
+              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+              isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
+              navigateToOrderDetails={true}
+            />
+          </div>
+        </div>
+      )
+    }
+
   return (
     <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
       {order?.type && (
