@@ -54,7 +54,8 @@ export default function OrderDetailsPage() {
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
-      if (data?.type === "order_update" && data?.order?.id === orderId) {
+      
+      if (["buyer_paid", "completed", "cancelled", "refunded", "disputed"].includes(data?.type) && data?.order?.id === orderId) {
         setOrder(data.order)
       }
     })
