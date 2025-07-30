@@ -462,7 +462,7 @@ export default function AdvertiserProfilePage() {
                                             : "bg-paymentMethod-ewallet"
                                         }`}
                                       ></div>
-                                      <span className="text-sm">{formatPaymentMethodName(method)}</span>
+                                      <span className="text-xs">{formatPaymentMethodName(method)}</span>
                                     </div>
                                   ))}
                                 </div>
