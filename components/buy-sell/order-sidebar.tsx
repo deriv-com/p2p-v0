@@ -291,7 +291,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   >
                     <div className="flex items-center justify-center">
                       <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-                      <span className="text-gray-900 font-medium">Add payment method</span>
+                      <span className="text-neutral-10 text-sm">Add payment method</span>
                     </div>
                   </div>
                 </div>
