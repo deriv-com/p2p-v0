@@ -50,7 +50,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
             </Button>
           )}
           <h2 className="text-xl font-bold">{title}</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300">
+          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
@@ -223,7 +223,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                 <Button
                   key={paymentMethod.method}
                   type="button"
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => handleMethodSelect(paymentMethod)}
                   className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
                 >
