@@ -43,7 +43,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
           isMobile ? "inset-0 w-full" : "w-full max-w-md"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-3 border-b relative">
+        <div className="flex items-center justify-between px-4 py-3 border-b">
           {onBack && (
             <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
               <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
