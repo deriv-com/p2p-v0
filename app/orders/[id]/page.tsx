@@ -9,7 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
-import { useToast } from "@/hooks/use-toast"
+import { toast } from "@/components/ui/use-toast"
 import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
@@ -23,7 +23,6 @@ export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
-  const { toast } = useToast()
 
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -36,7 +35,7 @@ export default function OrderDetailsPage() {
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState()
-  const { isConnected, joinChannel, reconnect } = useWebSocketContext()
+  const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
@@ -52,10 +51,21 @@ export default function OrderDetailsPage() {
     }
   }, [isConnected])
 
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (data?.type === "order_update" && data?.order?.id === orderId) {
+        setOrder(data.order)
+      }
+    })
+
+    return unsubscribe
+  }, [orderId, subscribe])
+
   const fetchOrderDetails = async () => {
     setIsLoading(true)
     setError(null)
     try {
+      // Use the mock data for now since we're having issues with the API
       const order = await OrdersAPI.getOrderById(orderId)
       setOrder(order.data)
     } catch (err) {
@@ -71,10 +81,20 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.payOrder(orderId)
       if (result.errors.length == 0) {
+        toast({
+          title: "Payment marked as sent",
+          description: "The seller has been notified of your payment.",
+          variant: "default",
+        })
         fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error marking payment as sent:", err)
+      toast({
+        title: "Payment notification failed",
+        description: "Could not mark payment as sent. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsPaymentLoading(false)
     }
@@ -85,10 +105,20 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.completeOrder(orderId)
       if (result.errors.length == 0) {
+        toast({
+          title: "Order completed",
+          description: "The order has been successfully completed.",
+          variant: "default",
+        })
         fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error completing order:", err)
+      toast({
+        title: "Completion failed",
+        description: "Could not complete the order. Please try again.",
+        variant: "destructive",
+      })
     } finally {
       setIsConfirmLoading(false)
     }
@@ -124,14 +154,9 @@ export default function OrderDetailsPage() {
     try {
       await navigator.clipboard.writeText(text)
       toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              <span>The text has been copied to your clipboard.</span>
-            </div>
-          ),
-        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
+        title: "Copied to clipboard",
+        description: "The text has been copied to your clipboard.",
+        variant: "default",
       })
     } catch (err) {
       console.error("Failed to copy text: ", err)
@@ -161,7 +186,7 @@ export default function OrderDetailsPage() {
                 size="sm"
                 className="p-0 h-auto"
               >
-                <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
+                <Image src="/icons/copy-icon.png" alt="Copy" width={16} height={16} className="text-slate-500" />
               </Button>
             </div>
           ) : (
@@ -472,10 +497,20 @@ export default function OrderDetailsPage() {
                   try {
                     const result = await OrdersAPI.cancelOrder(orderId)
                     if (result.success) {
+                      toast({
+                        title: "Order cancelled",
+                        description: "Your order has been successfully cancelled.",
+                        variant: "default",
+                      })
                       fetchOrderDetails()
                     }
                   } catch (error) {
                     console.error("Failed to cancel order:", error)
+                    toast({
+                      title: "Cancellation failed",
+                      description: "Could not cancel your order. Please try again.",
+                      variant: "destructive",
+                    })
                   }
                 }}
                 className="w-full"
