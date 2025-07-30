@@ -239,8 +239,7 @@ export default function OrdersPage() {
     const isClosed = selectedOrder.status === "completed" || selectedOrder.status === "cancelled"
 
     return (
-      <div className="h-screen flex flex-col">
-        <Navigation isBackBtnVisible={true} redirectUrl={`/orders/${selectedOrder.id}`} title="Chat" onBackClick={handleChatClose} />
+      <div className="h-[calc(100vh - 64px)] flex flex-col">
         <div className="flex-1">
           <OrderChat
             orderId={selectedOrder.id}
