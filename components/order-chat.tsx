@@ -143,7 +143,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     <div className="flex flex-col h-full">
       <div className="flex items-center p-4 border-b">
        {isBackBtnVisible && (
-          <Link href={redirectUrl}>
+          <Link href={`/orders/${orderId}`}>
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
           </Link>
         )}
