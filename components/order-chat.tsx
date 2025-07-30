@@ -28,7 +28,7 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
-  navigateToOrderDetails: boolean
+  navigateToOrderDetails: () => void
 }
 
 export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed, onNavigateToOrderDetails}: OrderChatProps) {
@@ -145,7 +145,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     <div className="flex flex-col h-full">
       <div className="flex items-center p-4 border-b">
        {onNavigateToOrderDetails && (
-          <Button variant="ghost" size="sm" onClick={Button}>
+          <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails}>
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
           </Button>
         )}
