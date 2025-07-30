@@ -276,7 +276,7 @@ export default function AdvertiserProfilePage() {
                         <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
                         {profile?.rating_average_lifetime ? 
                           <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span> :
-                          <span className="text-sm mt-1">Not yet rated</span>
+                          <span className="text-sm mt-1">Not rated</span>
                         }
                     </div>
                   </div>
