@@ -124,9 +124,14 @@ export default function OrderDetailsPage() {
     try {
       await navigator.clipboard.writeText(text)
       toast({
-        title: "Copied to clipboard",
-        description: "The text has been copied to your clipboard.",
-        variant: "default",
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>The text has been copied to your clipboard.</span>
+            </div>
+          ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
       })
     } catch (err) {
       console.error("Failed to copy text: ", err)
