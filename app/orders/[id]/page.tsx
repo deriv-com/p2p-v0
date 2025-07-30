@@ -9,7 +9,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
-import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
 import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
@@ -23,6 +23,7 @@ export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
+  const { toast } = useToast()
 
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -34,21 +35,42 @@ export default function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
-  const [showChat, setShowChat] = useState()
-  const { isConnected, joinChannel } = useWebSocketContext()
+  const [showChat, setShowChat] = useState(false)
+  const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
+
+    if (!isConnected) {
+      reconnect()
+    }
+  }, [orderId])
+
+  useEffect(() => {
     if (isConnected) {
       joinChannel("orders")
     }
-  }, [orderId])
+  }, [isConnected])
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (
+        ["buyer_paid", "completed", "cancelled", "refunded", "disputed", "user_review", "advertiser_review"].includes(
+          data.payload.data?.event,
+        ) &&
+        data.payload.data?.order?.id == orderId
+      ) {
+        setOrder(data.payload.data.order)
+      }
+    })
+
+    return unsubscribe
+  }, [orderId, subscribe])
 
   const fetchOrderDetails = async () => {
     setIsLoading(true)
     setError(null)
     try {
-      // Use the mock data for now since we're having issues with the API
       const order = await OrdersAPI.getOrderById(orderId)
       setOrder(order.data)
     } catch (err) {
@@ -64,20 +86,10 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.payOrder(orderId)
       if (result.errors.length == 0) {
-        toast({
-          title: "Payment marked as sent",
-          description: "The seller has been notified of your payment.",
-          variant: "default",
-        })
         fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error marking payment as sent:", err)
-      toast({
-        title: "Payment notification failed",
-        description: "Could not mark payment as sent. Please try again.",
-        variant: "destructive",
-      })
     } finally {
       setIsPaymentLoading(false)
     }
@@ -88,20 +100,10 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.completeOrder(orderId)
       if (result.errors.length == 0) {
-        toast({
-          title: "Order completed",
-          description: "The order has been successfully completed.",
-          variant: "default",
-        })
         fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error completing order:", err)
-      toast({
-        title: "Completion failed",
-        description: "Could not complete the order. Please try again.",
-        variant: "destructive",
-      })
     } finally {
       setIsConfirmLoading(false)
     }
@@ -109,12 +111,10 @@ export default function OrderDetailsPage() {
 
   const handleSubmitReview = () => {
     setShowRatingSidebar(false)
-    fetchOrderDetails()
   }
 
   const handleSubmitComplaint = () => {
     setShowComplaintForm(false)
-    fetchOrderDetails()
   }
 
   const formatRatingDeadline = (ratingDeadline) => {
@@ -137,9 +137,14 @@ export default function OrderDetailsPage() {
     try {
       await navigator.clipboard.writeText(text)
       toast({
-        title: "Copied to clipboard",
-        description: "The text has been copied to your clipboard.",
-        variant: "default",
+        description: (
+          <div className="flex items-center gap-2">
+            <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+            <span>The text has been copied to your clipboard.</span>
+          </div>
+        ),
+        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+        duration: 2500,
       })
     } catch (err) {
       console.error("Failed to copy text: ", err)
@@ -163,8 +168,13 @@ export default function OrderDetailsPage() {
           {isCopyable ? (
             <div className="flex items-center justify-between">
               <p className="text-sm">{val.value}</p>
-              <Button onClick={() => copyToClipboard(String(val.value))} variant="ghost" size="sm" className="p-0 h-auto">
-                <Image src="/icons/copy-icon.png" alt="Copy" width={16} height={16} className="text-slate-500" />
+              <Button
+                onClick={() => copyToClipboard(String(val.value))}
+                variant="ghost"
+                size="sm"
+                className="p-0 h-auto"
+              >
+                <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
               </Button>
             </div>
           ) : (
@@ -175,6 +185,22 @@ export default function OrderDetailsPage() {
     })
 
     return fields
+  }
+
+  const renderStars = (rating: number) => {
+    const stars = []
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <Image
+          key={i}
+          src={i <= rating ? "/icons/star-active.png" : "/icons/star-icon.png"}
+          alt={i <= rating ? "Filled star" : "Empty star"}
+          width={32}
+          height={32}
+        />,
+      )
+    }
+    return stars
   }
 
   useEffect(() => {
@@ -241,20 +267,22 @@ export default function OrderDetailsPage() {
         : "You receive"
 
   if (isMobile && showChat && order) {
-      return (
-        <div className="h-[calc(100vh-64px)] flex flex-col">
-          <div className="flex-1">
-            <OrderChat
-              orderId={orderId}
-              counterpartyName={counterpartyNickname || "User"}
-              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-              isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
-              onNavigateToOrderDetails={() => { setShowChat(false) }}
-            />
-          </div>
+    return (
+      <div className="h-[calc(100vh-64px)] flex flex-col">
+        <div className="flex-1">
+          <OrderChat
+            orderId={orderId}
+            counterpartyName={counterpartyNickname || "User"}
+            counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+            isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
+            onNavigateToOrderDetails={() => {
+              setShowChat(false)
+            }}
+          />
         </div>
-      )
-    }
+      </div>
+    )
+  }
 
   return (
     <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
@@ -279,7 +307,9 @@ export default function OrderDetailsPage() {
                 <div
                   className={cn(
                     `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
-                    order.status === "pending_payment" || order.status === "pending_release" ? "justify-between" : "justify-center",
+                    order.status === "pending_payment" || order.status === "pending_release"
+                      ? "justify-between"
+                      : "justify-center",
                   )}
                 >
                   <div className="flex items-center">
@@ -367,41 +397,41 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                      <Button
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                        onClick={() => setShowCancelConfirmation(true)}
-                      >
-                        Cancel order
-                      </Button>
-                      <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                        {isPaymentLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "I've paid"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                      onClick={() => setShowCancelConfirmation(true)}
+                    >
+                      Cancel order
+                    </Button>
+                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                      {isPaymentLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've paid"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
-                    <div className="p-4 flex gap-4">
-                      <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                        {isConfirmLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "Confirm"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="p-4 flex gap-4">
+                    <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                      {isConfirmLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "Confirm"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
@@ -413,15 +443,37 @@ export default function OrderDetailsPage() {
                       </p>
                     </div>
                     <div className="pt-2 flex justify-end">
-                      <Button variant="outline" onClick={() => setShowRatingSidebar(true)} className="flex-auto md:flex-none">
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowRatingSidebar(true)}
+                        className="flex-auto md:flex-none"
+                      >
                         Rate transaction
                       </Button>
                     </div>
                   </div>
                 )}
+                {order.status === "completed" && !order.is_reviewable && order.rating && (
+                  <div className="space-y-1 mt-[24px]">
+                    <h2 className="text-base font-bold">Your transaction rating</h2>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
+                      {order.recommend && (
+                        <div className="flex items-center gap-2">
+                          <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={16} />
+                          <span className="text-sm">Recommended</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
                 {order.status === "timed_out" && (
                   <div className="py-4 flex justify-end flex-auto md:flex-none">
-                    <Button variant="outline" onClick={() => setShowComplaintForm(true)} className="flex-auto md:flex-none">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowComplaintForm(true)}
+                      className="flex-auto md:flex-none"
+                    >
                       Make a complaint
                     </Button>
                   </div>
@@ -463,20 +515,10 @@ export default function OrderDetailsPage() {
                   try {
                     const result = await OrdersAPI.cancelOrder(orderId)
                     if (result.success) {
-                      toast({
-                        title: "Order cancelled",
-                        description: "Your order has been successfully cancelled.",
-                        variant: "default",
-                      })
                       fetchOrderDetails()
                     }
                   } catch (error) {
                     console.error("Failed to cancel order:", error)
-                    toast({
-                      title: "Cancellation failed",
-                      description: "Could not cancel your order. Please try again.",
-                      variant: "destructive",
-                    })
                   }
                 }}
                 className="w-full"
