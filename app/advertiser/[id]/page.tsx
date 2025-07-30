@@ -245,7 +245,7 @@ export default function AdvertiserProfilePage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className={cn("text-xs", isBlocked && "text-red-500")}
+                              className={cn("text-xs underline", isBlocked && "text-red-500")}
                               onClick={handleBlockClick}
                               disabled={isBlockLoading}
                             >
