@@ -28,7 +28,7 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
-  navigateToOrderDetails: () => void
+  onNavigateToOrderDetails: () => void
 }
 
 export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed, onNavigateToOrderDetails}: OrderChatProps) {
