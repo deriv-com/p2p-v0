@@ -454,7 +454,7 @@ export default function OrderDetailsPage() {
                   </div>
                 )}
                 {order.status === "completed" && !order.is_reviewable && order.rating && (
-                  <div className="space-y-4 mt-[24px]">
+                  <div className="space-y-1 mt-[24px]">
                     <h2 className="text-base font-bold">Your transaction rating</h2>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
