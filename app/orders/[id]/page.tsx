@@ -472,20 +472,10 @@ export default function OrderDetailsPage() {
                   try {
                     const result = await OrdersAPI.cancelOrder(orderId)
                     if (result.success) {
-                      toast({
-                        title: "Order cancelled",
-                        description: "Your order has been successfully cancelled.",
-                        variant: "default",
-                      })
                       fetchOrderDetails()
                     }
                   } catch (error) {
                     console.error("Failed to cancel order:", error)
-                    toast({
-                      title: "Cancellation failed",
-                      description: "Could not cancel your order. Please try again.",
-                      variant: "destructive",
-                    })
                   }
                 }}
                 className="w-full"
