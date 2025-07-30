@@ -455,12 +455,12 @@ export default function OrderDetailsPage() {
                 )}
                 {order.status === "completed" && !order.is_reviewable && order.rating && (
                   <div className="space-y-4 mt-[24px]">
-                    <h2 className="text-lg font-bold">Your transaction rating</h2>
+                    <h2 className="text-base font-bold">Your transaction rating</h2>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.is_recommended && (
                         <div className="flex items-center gap-2">
-                          <Image src="/icons/thumbs-up-custom.png" alt="Recommended" width={24} height={24} />
+                          <Image src="/icons/thumbs-up-custom.png" alt="Recommended" width={32} height={32} />
                           <span className="text-sm font-medium">Recommended</span>
                         </div>
                       )}
