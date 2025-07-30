@@ -272,13 +272,15 @@ export default function AdvertiserProfilePage() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
-                    <div className="flex items-center mt-1">
-                      {profile?.rating_average_lifetime ?
-                        (<Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
-                        <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span>) :
-                        <span>Not yet rated</span>
-                      }
-                    </div>
+                    {profile?.rating_average_lifetime ?
+                      (
+                        <div className="flex items-center mt-1">
+                          <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                          <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span>
+                        </div>
+                      ) :
+                      <div className="mt-1">Not yet rated</div>
+                    }
                   </div>
                   <div>
                     <div className="flex items-center text-xs text-slate-500">
