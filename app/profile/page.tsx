@@ -13,7 +13,7 @@ export default function ProfilePage() {
   const isMobile = useIsMobile()
   const [userData, setUserData] = useState({
     username: "",
-    rating: "Not yet rated",
+    rating: "Not rated",
     completionRate: "",
     joinDate: "",
     realName: "",
@@ -95,7 +95,7 @@ export default function ProfilePage() {
           setUserData((prevData) => ({
             ...prevData,
             username: data.nickname || prevData.username,
-            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not yet rated",
+            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
             completionRate: `${data.completion_average_30day || 0}%`,
             joinDate: joinDateString,
             tradeLimits: {
