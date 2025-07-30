@@ -109,6 +109,8 @@ export default function OrdersPage() {
     if (isMobile) {
       setSelectedOrder(order)
       setShowChat(true)
+    } else {
+      navigateToOrderDetails(order.id)
     }
   }
 
@@ -211,12 +213,7 @@ export default function OrdersPage() {
                     <div className="flex items-center gap-2">
                         <Button
                           onClick={(e) => {
-                              if(isMobile) {
-                                  handleChatClick(e, order)
-                              } else {
-                                  e.stopPropagation()
-                                  navigateToOrderDetails(order.id)
-                              }
+                            handleChatClick(e, order)
                           }}
                           className="text-slate-500 hover:text-slate-700"
                           variant="ghost"
