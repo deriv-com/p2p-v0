@@ -85,18 +85,9 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       const result = await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
 
       if (result.success) {
-       /* const newMessage: Message = {
-          attachment: {
-            name: "",
-            url: "",
-          },
-          id: Date.now().toString(),
-          message: messageToSend,
-          sender_is_self: true,
-          time: Date.now()
-        }*/
-
-        setMessages((prev) => [...prev, messageToSend])
+        if (isConnected) {
+          getChatHistory("orders", orderId)
+        }
       }
     } catch (error) {
       console.log(error)
