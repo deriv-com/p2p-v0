@@ -312,7 +312,7 @@ export default function OrderDetailsPage() {
                     </div>
                     {isMobile && (
                       <Button
-                        onClick={(e) => {
+                        onClick={() => {
                           setShowChat(true)
                         }}
                         className="text-slate-500 hover:text-slate-700"
