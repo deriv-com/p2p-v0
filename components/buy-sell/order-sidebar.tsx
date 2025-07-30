@@ -261,7 +261,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     userPaymentMethods.map((method) => (
                       <div
                         key={method.id}
-                        className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
+                        className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
@@ -286,7 +286,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   )}
 
                   <div
-                    className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+                    className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={() => setShowAddPaymentMethod(true)}
                   >
                     <div className="flex items-center justify-center">
