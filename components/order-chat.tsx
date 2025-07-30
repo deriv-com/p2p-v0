@@ -145,7 +145,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     <div className="flex flex-col h-full">
       <div className="flex items-center p-4 border-b">
        {onNavigateToOrderDetails && (
-          <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails} className="p-0 mr-[16px] hover:bg-none">
+          <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails} className="p-0 mr-[16px] hover:bg-transparent">
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
           </Button>
         )}
