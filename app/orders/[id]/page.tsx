@@ -106,12 +106,10 @@ export default function OrderDetailsPage() {
 
   const handleSubmitReview = () => {
     setShowRatingSidebar(false)
-    fetchOrderDetails()
   }
 
   const handleSubmitComplaint = () => {
     setShowComplaintForm(false)
-    fetchOrderDetails()
   }
 
   const formatRatingDeadline = (ratingDeadline) => {
