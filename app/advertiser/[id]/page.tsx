@@ -279,7 +279,7 @@ export default function AdvertiserProfilePage() {
                           <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span>
                         </div>
                       ) :
-                      <div className="text-xs mt-1">Not yet rated</div>
+                      <div className="text-sm mt-1">Not yet rated</div>
                     }
                   </div>
                   <div>
