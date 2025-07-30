@@ -218,9 +218,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       onClick={() => setShowPaymentSelection(false)}
                       variant="ghost"
                       size="sm"
-                      className="p-1 mr-3"
+                      className="p-0 mr-[16px]"
                     >
-                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
+                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
                     </Button>
                     <h2 className="text-xl font-bold">Payment method</h2>
                   </div>
@@ -275,7 +275,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                                 {getCategoryDisplayName(method.type)}
                               </span>
                             </div>
-                            <div className="font-normal text-neutral-7">
+                            <div className="font-normal text-neutral-10">
                                 {maskAccountNumber(method.fields.account.value)}
                             </div>
                             <div className="font-normal text-neutral-7">
