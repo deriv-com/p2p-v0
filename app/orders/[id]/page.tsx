@@ -458,7 +458,7 @@ export default function OrderDetailsPage() {
                     <h2 className="text-base font-bold">Your transaction rating</h2>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
-                      {order.is_recommended && (
+                      {order.recommend && (
                         <div className="flex items-center gap-2">
                           <Image src="/icons/thumbs-up-custom.png" alt="Recommended" width={24} height={24} />
                           <span className="text-sm font-medium">Recommended</span>
