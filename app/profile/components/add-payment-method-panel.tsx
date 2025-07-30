@@ -247,7 +247,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
   return (
     <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
+        <div className="p-4 space-y-6">
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
