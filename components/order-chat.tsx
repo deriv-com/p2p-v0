@@ -27,9 +27,10 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
+  onNavigateToOrderDetails: () => void
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed }: OrderChatProps) {
+export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed, onNavigateToOrderDetails}: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -142,6 +143,11 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center p-4 border-b">
+       {onNavigateToOrderDetails && (
+          <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails} className="p-0 mr-[16px] hover:bg-transparent">
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
+          </Button>
+        )}
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
         </div>
@@ -209,7 +215,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                     <div
                       className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
                     >
-                      {formatDateTime(msg.time)}
+                      {msg.time && formatDateTime(msg.time)}
                     </div>
                   )}
                 </div>

@@ -272,9 +272,12 @@ export default function AdvertiserProfilePage() {
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
-                    <div className="flex items-center mt-1">
-                      <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
-                      <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span>
+                     <div className="flex items-center mt-1">
+                        <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                        {profile?.rating_average_lifetime ? 
+                          <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span> :
+                          <span className="text-sm mt-1">Not rated yet</span>
+                        }
                     </div>
                   </div>
                   <div>
@@ -297,7 +300,10 @@ export default function AdvertiserProfilePage() {
                       </Tooltip>
                     </div>
                     <div className="flex items-center mt-1">
-                      <span className="font-bold text-lg">{profile?.recommend_average_lifetime}%</span>
+                      {profile?.recommend_average_lifetime ? 
+                        <span className="font-bold text-lg">{profile?.recommend_average_lifetime}%</span> :
+                        <span className="font-bold text-lg">-</span>
+                      }
                     </div>
                   </div>
                   <div>

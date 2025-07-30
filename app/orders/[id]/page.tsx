@@ -5,6 +5,7 @@ import { useParams } from "next/navigation"
 import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
@@ -21,6 +22,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
+  const isMobile = useIsMobile()
 
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -32,6 +34,7 @@ export default function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
+  const [showChat, setShowChat] = useState()
   const { isConnected, joinChannel } = useWebSocketContext()
 
   useEffect(() => {
@@ -237,6 +240,22 @@ export default function OrderDetailsPage() {
         ? "You pay"
         : "You receive"
 
+  if (isMobile && showChat && order) {
+      return (
+        <div className="h-[calc(100vh-64px)] flex flex-col">
+          <div className="flex-1">
+            <OrderChat
+              orderId={orderId}
+              counterpartyName={counterpartyNickname || "User"}
+              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+              isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
+              onNavigateToOrderDetails={() => { setShowChat(false) }}
+            />
+          </div>
+        </div>
+      )
+    }
+
   return (
     <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
       {order?.type && (
@@ -286,9 +305,23 @@ export default function OrderDetailsPage() {
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </button>
                   </div>
-                  <div>
-                    <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                    <p className="font-bold">{counterpartyNickname}</p>
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                      <p className="font-bold">{counterpartyNickname}</p>
+                    </div>
+                    {isMobile && (
+                      <Button
+                        onClick={() => {
+                          setShowChat(true)
+                        }}
+                        className="text-slate-500 hover:text-slate-700"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-6 mt-4">
