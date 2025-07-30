@@ -147,7 +147,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-sm text-slate-500">Online</div>
+          <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
         </div>
       </div>
       <div className="h-full overflow-auto">
