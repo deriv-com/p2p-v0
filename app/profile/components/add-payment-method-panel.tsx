@@ -224,6 +224,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                   key={paymentMethod.method}
                   type="button"
                   variant="ghost"
+                  size="lg"
                   onClick={() => handleMethodSelect(paymentMethod)}
                   className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
                 >
