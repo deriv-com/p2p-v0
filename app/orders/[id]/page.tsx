@@ -460,7 +460,7 @@ export default function OrderDetailsPage() {
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.recommend && (
                         <div className="flex items-center gap-2">
-                          <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={24} />
+                          <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={16} />
                           <span className="text-sm">Recommended</span>
                         </div>
                       )}
