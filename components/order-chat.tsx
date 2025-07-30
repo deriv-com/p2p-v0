@@ -27,9 +27,10 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
+  navigateToOrderDetails: boolean
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed }: OrderChatProps) {
+export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed, navigateToOrderDetails}: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -142,7 +143,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center p-4 border-b">
-       {isBackBtnVisible && (
+       {navigateToOrderDetails && (
           <Link href={`/orders/${orderId}`}>
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
           </Link>
