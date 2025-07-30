@@ -230,9 +230,8 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                   <Image
                     src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
                     alt={paymentMethod.display_name}
-                    width={20}
+                    width={24}
                     height={20}
-                    className="w-5 h-5"
                   />
                   <span className="font-medium">{paymentMethod.display_name}</span>
                 </Button>
