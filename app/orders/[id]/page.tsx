@@ -81,20 +81,10 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.payOrder(orderId)
       if (result.errors.length == 0) {
-        toast({
-          title: "Payment marked as sent",
-          description: "The seller has been notified of your payment.",
-          variant: "default",
-        })
         fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error marking payment as sent:", err)
-      toast({
-        title: "Payment notification failed",
-        description: "Could not mark payment as sent. Please try again.",
-        variant: "destructive",
-      })
     } finally {
       setIsPaymentLoading(false)
     }
@@ -105,20 +95,10 @@ export default function OrderDetailsPage() {
     try {
       const result = await OrdersAPI.completeOrder(orderId)
       if (result.errors.length == 0) {
-        toast({
-          title: "Order completed",
-          description: "The order has been successfully completed.",
-          variant: "default",
-        })
         fetchOrderDetails()
       }
     } catch (err) {
       console.error("Error completing order:", err)
-      toast({
-        title: "Completion failed",
-        description: "Could not complete the order. Please try again.",
-        variant: "destructive",
-      })
     } finally {
       setIsConfirmLoading(false)
     }
