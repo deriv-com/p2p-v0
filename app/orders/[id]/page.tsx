@@ -172,7 +172,7 @@ export default function OrderDetailsPage() {
                 size="sm"
                 className="p-0 h-auto"
               >
-                <Image src="/icons/copy-icon.png" alt="Copy" width={16} height={16} className="text-slate-500" />
+                <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
               </Button>
             </div>
           ) : (
