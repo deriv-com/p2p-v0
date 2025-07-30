@@ -14,6 +14,7 @@ interface OrderDetailsSidebarProps {
 
 export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDetailsSidebarProps) {
   if (!isOpen) return null
+  
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel = order?.type === "buy" ? "Seller" : "Buyer"
 
