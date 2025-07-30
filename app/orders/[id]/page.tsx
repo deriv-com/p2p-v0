@@ -34,7 +34,7 @@ export default function OrderDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
-  const [showChat, setShowChat] = useState(false)
+  const [showChat, setShowChat] = useState()
   const { isConnected, joinChannel } = useWebSocketContext()
 
   useEffect(() => {
