@@ -95,7 +95,7 @@ export default function ProfilePage() {
           setUserData((prevData) => ({
             ...prevData,
             username: data.nickname || prevData.username,
-            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
+            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not yet rated",
             completionRate: `${data.completion_average_30day || 0}%`,
             joinDate: joinDateString,
             tradeLimits: {
