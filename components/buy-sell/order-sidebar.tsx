@@ -218,7 +218,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       onClick={() => setShowPaymentSelection(false)}
                       variant="ghost"
                       size="sm"
-                      className="p-0 mr-[16px] hover:bg-transparen"
+                      className="p-0 mr-[16px] hover:bg-transparent"
                     >
                       <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
                     </Button>
