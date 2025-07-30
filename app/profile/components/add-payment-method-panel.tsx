@@ -43,7 +43,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
           isMobile ? "inset-0 w-full" : "w-full max-w-md"
         }`}
       >
-        <div className="flex items-center justify-between px-4 py-1 border-b relative">
+        <div className="flex items-center justify-between px-4 py-3 border-b relative">
           {onBack && (
             <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
               <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
@@ -217,7 +217,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     return (
       <PanelWrapper onClose={onClose} title="Select a payment method">
         <div className="flex-1 overflow-y-auto">
-          <div className="p-6">
+          <div className="p-4">
             <div className="space-y-3">
               {availablePaymentMethods.map((paymentMethod) => (
                 <Button
