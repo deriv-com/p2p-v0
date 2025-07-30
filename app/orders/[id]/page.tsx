@@ -24,7 +24,7 @@ export default function OrderDetailsPage() {
   const orderId = params.id as string
   const isMobile = useIsMobile()
   const { toast } = useToast()
-  
+
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [timeLeft, setTimeLeft] = useState<string>("--:--")
@@ -54,7 +54,12 @@ export default function OrderDetailsPage() {
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
-      if (["buyer_paid", "completed", "cancelled", "refunded", "disputed", "user_review", "advertiser_review"].includes(data.payload.data?.event) && data.payload.data?.order?.id == orderId) {
+      if (
+        ["buyer_paid", "completed", "cancelled", "refunded", "disputed", "user_review", "advertiser_review"].includes(
+          data.payload.data?.event,
+        ) &&
+        data.payload.data?.order?.id == orderId
+      ) {
         setOrder(data.payload.data.order)
       }
     })
@@ -133,13 +138,13 @@ export default function OrderDetailsPage() {
       await navigator.clipboard.writeText(text)
       toast({
         description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              <span>The text has been copied to your clipboard.</span>
-            </div>
-          ),
+          <div className="flex items-center gap-2">
+            <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+            <span>The text has been copied to your clipboard.</span>
+          </div>
+        ),
         className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500
+        duration: 2500,
       })
     } catch (err) {
       console.error("Failed to copy text: ", err)
@@ -180,6 +185,22 @@ export default function OrderDetailsPage() {
     })
 
     return fields
+  }
+
+  const renderStars = (rating: number) => {
+    const stars = []
+    for (let i = 1; i <= 5; i++) {
+      stars.push(
+        <Image
+          key={i}
+          src={i <= rating ? "/icons/star-active.png" : "/icons/star-icon.png"}
+          alt={i <= rating ? "Filled star" : "Empty star"}
+          width={24}
+          height={24}
+        />,
+      )
+    }
+    return stars
   }
 
   useEffect(() => {
@@ -429,6 +450,20 @@ export default function OrderDetailsPage() {
                       >
                         Rate transaction
                       </Button>
+                    </div>
+                  </div>
+                )}
+                {order.status === "completed" && !order.is_reviewable && order.rating && (
+                  <div className="space-y-4 mt-[24px]">
+                    <h2 className="text-lg font-bold">Your transaction rating</h2>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
+                      {order.is_recommended && (
+                        <div className="flex items-center gap-2">
+                          <Image src="/icons/thumbs-up-custom.png" alt="Recommended" width={24} height={24} />
+                          <span className="text-sm font-medium">Recommended</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
