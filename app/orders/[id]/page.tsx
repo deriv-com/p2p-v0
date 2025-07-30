@@ -5,6 +5,7 @@ import { useParams } from "next/navigation"
 import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
@@ -21,6 +22,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
+  const isMobile = useIsMobile()
 
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -286,9 +288,23 @@ export default function OrderDetailsPage() {
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </button>
                   </div>
-                  <div>
-                    <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                    <p className="font-bold">{counterpartyNickname}</p>
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                      <p className="font-bold">{counterpartyNickname}</p>
+                    </div>
+                    {isMobile && (
+                      <Button
+                        onClick={(e) => {
+                          handleChatClick(e, order)
+                        }}
+                        className="text-slate-500 hover:text-slate-700"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                      </Button>
+                    )}
                   </div>
                 </div>
                 <div className="space-y-6 mt-4">
