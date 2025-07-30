@@ -209,32 +209,21 @@ export default function OrdersPage() {
                       </div>
                     )}
                     <div className="flex items-center gap-2">
-                      {isMobile && activeTab === "active" && (
                         <Button
-                          onClick={(e) => handleChatClick(e, order)}
+                          onClick={(e) => {
+                              if(isMobile) {
+                                  handleChatClick(e, order)
+                              } else {
+                                  e.stopPropagation()
+                                  navigateToOrderDetails(order.id)
+                              }
+                          }}
                           className="text-slate-500 hover:text-slate-700"
                           variant="ghost"
                           size="sm"
                         >
                           <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
                         </Button>
-                      )}
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          navigateToOrderDetails(order.id)
-                        }}
-                        className="text-slate-500 hover:text-slate-700"
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <Image
-                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                          alt="View Details"
-                          width={20}
-                          height={20}
-                        />
-                      </Button>
                     </div>
                   </div>
                 </TableCell>
