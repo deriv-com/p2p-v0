@@ -3,15 +3,17 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronRight, ArrowLeft } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
+import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
+import { addPaymentMethod } from "@/app/profile/api/api-payment-methods"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -42,6 +44,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
+  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
+  const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
@@ -88,11 +92,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         return
       }
 
-      // Filter user payment methods to only show those accepted by the buyer
       const buyerAcceptedMethods = ad?.payment_methods || []
       const filteredMethods =
         response?.filter((method: PaymentMethod) => {
-          // Check if the user's payment method matches any of the buyer's accepted methods
           return buyerAcceptedMethods.some(
             (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
           )
@@ -143,6 +145,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setAmount(null)
       setValidationError(null)
       setShowPaymentSelection(false)
+      setShowAddPaymentMethod(false)
       onClose()
     }, 300)
   }
@@ -155,6 +158,24 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const handleConfirmPaymentSelection = () => {
     setShowPaymentSelection(false)
+  }
+
+  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
+    try {
+      setIsAddingPaymentMethod(true)
+      const response = await addPaymentMethod(method, fields)
+
+      if (response.success) {
+        await fetchUserPaymentMethods()
+        setShowAddPaymentMethod(false)
+      } else {
+        console.error("Failed to add payment method:", response.errors)
+      }
+    } catch (error) {
+      console.error("Error adding payment method:", error)
+    } finally {
+      setIsAddingPaymentMethod(false)
+    }
   }
 
   const getSelectedPaymentMethodsText = () => {
@@ -195,10 +216,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <Button
                       onClick={() => setShowPaymentSelection(false)}
                       variant="ghost"
-                      size="icon"
-                      className="p-1 mr-3"
+                      size="sm"
+                      className="p-0 mr-[16px] hover:bg-transparent"
                     >
-                      <ArrowLeft className="h-6 w-6" />
+                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
                     </Button>
                     <h2 className="text-xl font-bold">Payment method</h2>
                   </div>
@@ -239,34 +260,44 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     userPaymentMethods.map((method) => (
                       <div
                         key={method.id}
-                        className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
+                        className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
                       >
-                        <div className="flex items-start justify-between">
+                        <div className="flex items-center justify-between">
                           <div className="flex-1">
-                            <div className="flex items-center mb-2">
+                            <div className="flex items-center mb-[6px]">
                               <div
                                 className={`h-2 w-2 rounded-full mr-2 ${
                                   method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                                 }`}
                               />
-                              <span className="font-medium text-gray-600">
-                                {formatPaymentMethodName(method.display_name)}
+                              <span className="font-bold text-neutral-7">
+                                {getCategoryDisplayName(method.type)}
                               </span>
+                            </div>
+                            <div className="font-normal text-neutral-10">
+                                {maskAccountNumber(method.fields.account.value)}
+                            </div>
+                            <div className="font-normal text-neutral-7">
+                                {formatPaymentMethodName(method.display_name)}
                             </div>
                           </div>
                           <Checkbox
                             checked={selectedPaymentMethods.includes(method.id)}
                             onCheckedChange={() => handlePaymentMethodToggle(method.id)}
+                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px]"
                           />
                         </div>
                       </div>
                     ))
                   )}
 
-                  <div className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors hidden">
+                  <div
+                    className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() => setShowAddPaymentMethod(true)}
+                  >
                     <div className="flex items-center justify-center">
                       <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-                      <span className="text-gray-900 font-medium">Add payment method</span>
+                      <span className="text-neutral-10 text-sm">Add payment method</span>
                     </div>
                   </div>
                 </div>
@@ -410,6 +441,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               </>
             )}
           </div>
+        )}
+        {showAddPaymentMethod && (
+          <AddPaymentMethodPanel
+            onClose={() => setShowAddPaymentMethod(false)}
+            onAdd={handleAddPaymentMethod}
+            isLoading={isAddingPaymentMethod}
+          />
         )}
       </div>
     </div>
