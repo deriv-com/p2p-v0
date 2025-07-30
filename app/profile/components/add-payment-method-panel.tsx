@@ -43,15 +43,17 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
           isMobile ? "inset-0 w-full" : "w-full max-w-md"
         }`}
       >
-        <div className="p-6 border-b relative">
-          {onBack && (
-            <Button variant="ghost" size="icon" onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2">
-              <Image src="/icons/back-circle.png" alt="Back" width={20} height={20} className="w-5 h-5" />
-            </Button>
-          )}
-          <h2 className="text-xl font-semibold text-center">{title}</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
-            <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+        <div className="flex items-center justify-between px-4 py-3 border-b">
+          <div className="flex items-center justify-between gap-4">
+            {onBack && (
+              <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
+                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+              </Button>
+            )}
+            <h2 className="text-xl font-bold">{title}</h2>
+          </div>
+          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
         {children}
@@ -217,24 +219,24 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     return (
       <PanelWrapper onClose={onClose} title="Select a payment method">
         <div className="flex-1 overflow-y-auto">
-          <div className="p-6">
+          <div className="p-4">
             <div className="space-y-3">
               {availablePaymentMethods.map((paymentMethod) => (
                 <Button
                   key={paymentMethod.method}
                   type="button"
-                  variant="outline"
+                  variant="ghost"
+                  size="lg"
                   onClick={() => handleMethodSelect(paymentMethod)}
-                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg border border-gray-200 hover:border-gray-300"
+                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
                 >
                   <Image
                     src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
                     alt={paymentMethod.display_name}
-                    width={20}
-                    height={20}
-                    className="w-5 h-5"
+                    width={24}
+                    height={24}
                   />
-                  <span className="font-medium">{paymentMethod.display_name}</span>
+                  <span className="text-sm font-normal">{paymentMethod.display_name}</span>
                 </Button>
               ))}
             </div>
@@ -247,7 +249,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
   return (
     <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
+        <div className="p-4 space-y-6">
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
@@ -288,7 +290,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
         </div>
       </form>
 
-      <div className="p-6 border-t">
+      <div className="p-4">
         <Button
           type="submit"
           onClick={handleSubmit}

@@ -27,7 +27,7 @@ export default function Navigation({ isBackBtnVisible = true, redirectUrl = "/",
           <>
             <h1 className="text-xl font-bold">{title}</h1>
             <Link href={redirectUrl}>
-              <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="h-5 w-5" />
+              <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="h-5 w-5" />
             </Link>
           </>
         )}

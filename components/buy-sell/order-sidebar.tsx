@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { X, ChevronRight, ArrowLeft } from "lucide-react"
+import { ChevronRight, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -188,7 +188,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       >
         {ad && (
           <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between px-4 py-1 border-b">
+            <div className="flex items-center justify-between px-4 py-3 border-b">
               {showPaymentSelection ? (
                 <>
                   <div className="flex items-center">
@@ -206,8 +206,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               ) : (
                 <>
                   <h2 className="text-xl font-bold">{title}</h2>
-                  <Button onClick={handleClose} variant="ghost" size="icon" className="p-1">
-                    <X className="h-6 w-6" />
+                  <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+                    <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
                   </Button>
                 </>
               )}

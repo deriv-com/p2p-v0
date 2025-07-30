@@ -26,6 +26,7 @@ export default function Header() {
 
             return (
               <Link
+                prefetch
                 key={item.name}
                 href={item.href}
                 className={cn(
