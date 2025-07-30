@@ -225,7 +225,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                   type="button"
                   variant="outline"
                   onClick={() => handleMethodSelect(paymentMethod)}
-                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-gray-200"
+                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-gray-[]"
                 >
                   <Image
                     src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
