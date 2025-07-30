@@ -357,7 +357,7 @@ export default function PaymentMethodsTab() {
                           className="flex items-center gap-2 text-destructive focus:text-destructive"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Image src="/icons/delete-trash-icon.png" alt="Delte" width={24} height={24} />
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -407,7 +407,7 @@ export default function PaymentMethodsTab() {
                           className="flex items-center gap-2 text-destructive focus:text-destructive"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Image src="/icons/delete-trash-icon.png" alt="Delte" width={24} height={24} />
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
