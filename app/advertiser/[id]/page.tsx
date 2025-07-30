@@ -428,7 +428,7 @@ export default function AdvertiserProfilePage() {
                               className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
                               key={ad.id}
                             >
-                              <TableCell className="py-4 px-4 align-top text-base">
+                              <TableCell className="py-4 px-4 align-top text-base whitespace-nowrap">
                                 <div className="font-bold">
                                   {ad.payment_currency}{" "}
                                   {ad.exchange_rate
@@ -442,7 +442,7 @@ export default function AdvertiserProfilePage() {
                                   <div className="text-xs text-slate-500">0.1%</div>
                                 )}
                               </TableCell>
-                              <TableCell className="py-4 px-4 align-top">
+                              <TableCell className="py-4 px-4 align-top whitespace-nowrap">
                                 <div>
                                   {ad.account_currency} {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
                                 </div>
@@ -451,7 +451,7 @@ export default function AdvertiserProfilePage() {
                                   <span>{ad.order_expiry_period} min</span>
                                 </div>
                               </TableCell>
-                              <TableCell className="py-4 px-4 align-top">
+                              <TableCell className="py-4 px-4 align-top whitespace-nowrap">
                                 <div className="flex flex-wrap gap-2 text-xs">
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
@@ -467,7 +467,7 @@ export default function AdvertiserProfilePage() {
                                   ))}
                                 </div>
                               </TableCell>
-                              <TableCell className="py-4 px-4 text-right align-top">
+                              <TableCell className="py-4 px-4 text-right align-top whitespace-nowrap">
                                 {CURRENT_USER.id != ad.user.id && (
                                   <Button
                                     variant={ad.type === "buy" ? "destructive" : "secondary"}
