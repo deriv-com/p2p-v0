@@ -246,7 +246,7 @@ export default function OrdersPage() {
             counterpartyName={counterpartyName}
             counterpartyInitial={counterpartyInitial}
             isClosed={isClosed}
-            navigateToOrderDetails={true}
+            onNavigateToOrderDetails={() => router.push(`/orders/${}`)}
           />
         </div>
       </div>
