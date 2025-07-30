@@ -44,12 +44,14 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
         }`}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b">
-          {onBack && (
-            <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
-              <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
-            </Button>
-          )}
-          <h2 className="text-xl font-bold">{title}</h2>
+          <div className="flex items-center justify-between gap-4">
+            {onBack && (
+              <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
+                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+              </Button>
+            )}
+            <h2 className="text-xl font-bold">{title}</h2>
+          </div>
           <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
