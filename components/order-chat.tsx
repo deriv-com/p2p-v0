@@ -201,16 +201,16 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
                     </div>
                   )}
-                  {msg.rejected ? (
+                  {msg.rejected  (
                     <div className="text-xs text-error-text mt-[4px]">
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
                   ) : (
-                    <div
+                    {msg.time && (<div
                       className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
                     >
-                      {msg.time && formatDateTime(msg.time)}
-                    </div>
+                      {formatDateTime(msg.time)}
+                    </div>}
                   )}
                 </div>
               </div>
