@@ -45,12 +45,12 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
       >
         <div className="flex items-center justify-between px-4 py-1 border-b relative">
           {onBack && (
-            <Button variant="ghost" size="sm" onClick={onBack} className="absolute left-6 top-1/2 -translate-y-1/2 bg-[#EFF3F5]">
+            <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300">
               <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
             </Button>
           )}
           <h2 className="text-xl font-bold">{title}</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2 bg-[#EFF3F5]">
+          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
@@ -225,7 +225,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
                   type="button"
                   variant="outline"
                   onClick={() => handleMethodSelect(paymentMethod)}
-                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-gray-[#F8F9FA]"
+                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
                 >
                   <Image
                     src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
