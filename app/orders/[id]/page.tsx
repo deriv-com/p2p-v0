@@ -55,7 +55,6 @@ export default function OrderDetailsPage() {
     setIsLoading(true)
     setError(null)
     try {
-      // Use the mock data for now since we're having issues with the API
       const order = await OrdersAPI.getOrderById(orderId)
       setOrder(order.data)
     } catch (err) {
