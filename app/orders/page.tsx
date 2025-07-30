@@ -160,7 +160,7 @@ export default function OrdersPage() {
                     </div>
                     {!isMobile && (
                       <div className="mt-[4px] text-slate-600 text-xs">
-                        Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
+                        Counterparty: {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}{" "}
                       </div>
                     )}
                   </div>
