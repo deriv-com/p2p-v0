@@ -12,6 +12,8 @@ import { createOrder } from "@/services/api/api-orders"
 import { getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
 import { formatPaymentMethodName } from "@/lib/utils"
 import Image from "next/image"
+import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
+import { addPaymentMethod } from "@/app/profile/api/api-payment-methods"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -42,6 +44,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
+  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
+  const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
 
   useEffect(() => {
     if (isOpen) {
@@ -143,6 +147,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setAmount(null)
       setValidationError(null)
       setShowPaymentSelection(false)
+      setShowAddPaymentMethod(false)
       onClose()
     }, 300)
   }
@@ -155,6 +160,25 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const handleConfirmPaymentSelection = () => {
     setShowPaymentSelection(false)
+  }
+
+  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
+    try {
+      setIsAddingPaymentMethod(true)
+      const response = await addPaymentMethod(method, fields)
+
+      if (response.success) {
+        // Refresh payment methods after successful addition
+        await fetchUserPaymentMethods()
+        setShowAddPaymentMethod(false)
+      } else {
+        console.error("Failed to add payment method:", response.errors)
+      }
+    } catch (error) {
+      console.error("Error adding payment method:", error)
+    } finally {
+      setIsAddingPaymentMethod(false)
+    }
   }
 
   const getSelectedPaymentMethodsText = () => {
@@ -263,7 +287,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     ))
                   )}
 
-                  <div className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors hidden">
+                  <div
+                    className="border border-gray-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() => setShowAddPaymentMethod(true)}
+                  >
                     <div className="flex items-center justify-center">
                       <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
                       <span className="text-gray-900 font-medium">Add payment method</span>
@@ -410,6 +437,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               </>
             )}
           </div>
+        )}
+        {showAddPaymentMethod && (
+          <AddPaymentMethodPanel
+            onClose={() => setShowAddPaymentMethod(false)}
+            onAdd={handleAddPaymentMethod}
+            isLoading={isAddingPaymentMethod}
+          />
         )}
       </div>
     </div>
