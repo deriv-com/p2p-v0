@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronRight, ArrowLeft } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -198,7 +198,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       size="icon"
                       className="p-1 mr-3"
                     >
-                      <ArrowLeft className="h-6 w-6" />
+                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
                     </Button>
                     <h2 className="text-xl font-bold">Payment method</h2>
                   </div>
