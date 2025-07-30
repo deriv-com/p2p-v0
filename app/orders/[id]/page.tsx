@@ -195,8 +195,8 @@ export default function OrderDetailsPage() {
           key={i}
           src={i <= rating ? "/icons/star-active.png" : "/icons/star-icon.png"}
           alt={i <= rating ? "Filled star" : "Empty star"}
-          width={24}
-          height={24}
+          width={32}
+          height={32}
         />,
       )
     }
