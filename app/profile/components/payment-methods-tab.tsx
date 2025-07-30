@@ -5,7 +5,7 @@ import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical, Edit, Trash } from "lucide-react"
+import { MoreVertical, Trash } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
@@ -350,7 +350,12 @@ export default function PaymentMethodsTab() {
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Image
+                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-AVqhC09xhUGwSWUSjhvtwlYkTcM8Q3.png"
+                            alt="Edit"
+                            width={16}
+                            height={16}
+                          />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
@@ -400,7 +405,12 @@ export default function PaymentMethodsTab() {
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Image
+                            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-AVqhC09xhUGwSWUSjhvtwlYkTcM8Q3.png"
+                            alt="Edit"
+                            width={16}
+                            height={16}
+                          />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
