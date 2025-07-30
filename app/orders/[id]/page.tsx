@@ -35,14 +35,21 @@ export default function OrderDetailsPage() {
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState()
-  const { isConnected, joinChannel } = useWebSocketContext()
+  const { isConnected, joinChannel, reconnect } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
+
+    // Connect to websocket on page load if not already connected
+    if (!isConnected) {
+      reconnect()
+    }
+
+    // Join orders channel once connected
     if (isConnected) {
       joinChannel("orders")
     }
-  }, [orderId])
+  }, [orderId, isConnected])
 
   const fetchOrderDetails = async () => {
     setIsLoading(true)
@@ -163,7 +170,12 @@ export default function OrderDetailsPage() {
           {isCopyable ? (
             <div className="flex items-center justify-between">
               <p className="text-sm">{val.value}</p>
-              <Button onClick={() => copyToClipboard(String(val.value))} variant="ghost" size="sm" className="p-0 h-auto">
+              <Button
+                onClick={() => copyToClipboard(String(val.value))}
+                variant="ghost"
+                size="sm"
+                className="p-0 h-auto"
+              >
                 <Image src="/icons/copy-icon.png" alt="Copy" width={16} height={16} className="text-slate-500" />
               </Button>
             </div>
@@ -241,20 +253,22 @@ export default function OrderDetailsPage() {
         : "You receive"
 
   if (isMobile && showChat && order) {
-      return (
-        <div className="h-[calc(100vh-64px)] flex flex-col">
-          <div className="flex-1">
-            <OrderChat
-              orderId={orderId}
-              counterpartyName={counterpartyNickname || "User"}
-              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-              isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
-              onNavigateToOrderDetails={() => { setShowChat(false) }}
-            />
-          </div>
+    return (
+      <div className="h-[calc(100vh-64px)] flex flex-col">
+        <div className="flex-1">
+          <OrderChat
+            orderId={orderId}
+            counterpartyName={counterpartyNickname || "User"}
+            counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+            isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
+            onNavigateToOrderDetails={() => {
+              setShowChat(false)
+            }}
+          />
         </div>
-      )
-    }
+      </div>
+    )
+  }
 
   return (
     <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
@@ -279,7 +293,9 @@ export default function OrderDetailsPage() {
                 <div
                   className={cn(
                     `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
-                    order.status === "pending_payment" || order.status === "pending_release" ? "justify-between" : "justify-center",
+                    order.status === "pending_payment" || order.status === "pending_release"
+                      ? "justify-between"
+                      : "justify-center",
                   )}
                 >
                   <div className="flex items-center">
@@ -367,41 +383,41 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                      <Button
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                        onClick={() => setShowCancelConfirmation(true)}
-                      >
-                        Cancel order
-                      </Button>
-                      <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                        {isPaymentLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "I've paid"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                      onClick={() => setShowCancelConfirmation(true)}
+                    >
+                      Cancel order
+                    </Button>
+                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                      {isPaymentLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've paid"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_release" && order.user.id == USER.id)) && (
-                    <div className="p-4 flex gap-4">
-                      <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                        {isConfirmLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "Confirm"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="p-4 flex gap-4">
+                    <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                      {isConfirmLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "Confirm"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
@@ -413,7 +429,11 @@ export default function OrderDetailsPage() {
                       </p>
                     </div>
                     <div className="pt-2 flex justify-end">
-                      <Button variant="outline" onClick={() => setShowRatingSidebar(true)} className="flex-auto md:flex-none">
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowRatingSidebar(true)}
+                        className="flex-auto md:flex-none"
+                      >
                         Rate transaction
                       </Button>
                     </div>
@@ -421,7 +441,11 @@ export default function OrderDetailsPage() {
                 )}
                 {order.status === "timed_out" && (
                   <div className="py-4 flex justify-end flex-auto md:flex-none">
-                    <Button variant="outline" onClick={() => setShowComplaintForm(true)} className="flex-auto md:flex-none">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowComplaintForm(true)}
+                      className="flex-auto md:flex-none"
+                    >
                       Make a complaint
                     </Button>
                   </div>
