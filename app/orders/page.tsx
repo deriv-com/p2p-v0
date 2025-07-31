@@ -44,7 +44,7 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const isMobile = useIsMobile()
-  const { isConnected, joinChannel } = useWebSocketContext()
+  const { joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
@@ -113,7 +113,7 @@ export default function OrdersPage() {
       setSelectedOrder(order)
       setShowChat(true)
 
-      joinChannel()
+      joinChannel("orders")
     } else {
       navigateToOrderDetails(order.id)
     }
