@@ -34,9 +34,10 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
   }, [initialFilters])
 
   const handleReset = () => {
-    setFilters(initialFilters)
-    if(isMobile) setSortBy(initialSortBy)
-    handleApply()
+    if(isMobile) onApply(initialFilters, initialSortBy)
+    else onApply(initialFilters)
+
+    setIsOpen(false)
   }
 
   const handleApply = () => {
