@@ -328,7 +328,7 @@ export default function PaymentMethodsTab() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
               <Card key={method.id} variant="default" className="overflow-hidden">
-                <CardContent className="p-4">
+                <CardContent className="p-2">
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
                       {getBankIcon()}
@@ -378,7 +378,7 @@ export default function PaymentMethodsTab() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
               <Card key={method.id} variant="default" className="overflow-hidden">
-                <CardContent className="p-4">
+                <CardContent className="p-2">
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
                       {getEWalletIcon()}
