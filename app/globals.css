@@ -19,6 +19,10 @@ body {
     text-wrap: balance;
   }
 
+  .w-1\/7 {
+    width: 14.285%;
+     }
+     
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
