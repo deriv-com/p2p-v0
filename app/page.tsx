@@ -33,7 +33,6 @@ export default function BuySellPage() {
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
-    withinBalance: false,
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
