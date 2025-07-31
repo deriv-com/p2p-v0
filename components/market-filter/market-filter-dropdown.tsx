@@ -70,7 +70,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
             <h4 className="text-sm font-bold mb-4">Ad types</h4>
           </div>
         )}
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 hidden">
           <Checkbox
             id="within-balance"
             checked={filters.withinBalance}
