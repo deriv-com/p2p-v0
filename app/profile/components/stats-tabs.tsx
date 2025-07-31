@@ -128,7 +128,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       )}
 
       <div className="mb-6">
-        {isMobile ? (
+        {isMobile ?
             <div>
               <Divider />
               <div className="p-4">
@@ -148,7 +148,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               </div>
               <Divider />
             </div>
-        ) : (
+          :
             <Tabs defaultValue="stats">
               <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
                 {tabs.map((tab) => (
@@ -223,7 +223,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                 </div>
               </TabsContent>
             </Tabs>
-        )
+      
       </div>
 
       {showAddPaymentMethodPanel && (
