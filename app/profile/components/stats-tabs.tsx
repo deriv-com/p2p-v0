@@ -143,9 +143,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <SheetTrigger asChild>
               </SheetTrigger>
               <SheetContent side="right" className="w-full sm:max-w-md">
-                <SheetHeader>
-                  <SheetTitle>Stats</SheetTitle>
-                </SheetHeader>
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-center">Stats</h3>
                 </div>
