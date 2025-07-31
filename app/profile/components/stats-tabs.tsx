@@ -165,7 +165,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   <SheetTitle>Payment methods</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6">
-                  <StatsGrid stats={userStats} />
+                   <PaymentMethodsTab key={refreshKey} />
                 </div>
               </SheetContent>
             </Sheet>
