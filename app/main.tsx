@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useEffect, useState, useRef } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
