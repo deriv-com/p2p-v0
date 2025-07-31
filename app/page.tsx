@@ -250,7 +250,6 @@ export default function BuySellPage() {
                   initialSortBy={sortBy}
                   hasActiveFilters={hasActiveFilters}
                   trigger={
-                    <div className="relative">
                       <Button
                         variant="outline"
                         className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
@@ -264,10 +263,6 @@ export default function BuySellPage() {
                           </>
                         )}
                       </Button>
-                      {isMobile && hasActiveFilters && (
-                        <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>
-                      )}
-                    </div>
                   }
                 />
               </div>
