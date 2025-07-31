@@ -134,7 +134,8 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         {isMobile ? (
           <div>
             <Divider />
-            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+            <div onClick={() => { setShowStatsSidebar(true) }}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
               <span className="text-sm font-normal text-gray-900">Stats</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
@@ -151,7 +152,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               </SheetContent>
             </Sheet>
             <Divider />
-            <div
+            <div onClick={() => { setShowStatsSidebar(true) }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
