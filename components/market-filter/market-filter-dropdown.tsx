@@ -146,7 +146,7 @@ export default function MarketFilterDropdown({
         <SheetTrigger asChild>
           <div className="relative">
             {trigger}
-            {hasActiveFilters && <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>}
+            {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
           </div>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
