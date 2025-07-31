@@ -34,8 +34,10 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
   }, [initialFilters])
 
   const handleReset = () => {
-    if(isMobile) onApply(initialFilters, initialSortBy)
-    else onApply(initialFilters)
+    if(isMobile) onApply({ fromFollowing: false }, "exchange_rate")
+    else onApply({
+      fromFollowing: false
+    })
 
     setIsOpen(false)
   }
