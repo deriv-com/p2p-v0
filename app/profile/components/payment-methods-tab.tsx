@@ -383,7 +383,7 @@ export default function PaymentMethodsTab() {
                     <div className="flex items-start gap-3 flex-1 min-w-0">
                       {getEWalletIcon()}
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm">{method.name}</div>
+                        <div className="text-sm">{method.name}</div>
                         <StatusIndicator variant="neutral" size="sm" className="truncate">
                           {method.details?.account?.value || `ID: ${method.id}`}
                         </StatusIndicator>
