@@ -327,7 +327,7 @@ export default function PaymentMethodsTab() {
           <h3 className="text-base font-bold mb-4">Bank transfer</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
                 <CardContent className="p-2">
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
@@ -375,7 +375,7 @@ export default function PaymentMethodsTab() {
           <h3 className="text-base font-bold mb-4">E-wallets</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
                 <CardContent className="p-2">
                   <div className="flex justify-between items-start">
                     <div className="flex items-start gap-3 flex-1 min-w-0">
