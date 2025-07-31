@@ -111,7 +111,7 @@ export default function OrdersPage() {
       setSelectedOrder(order)
       setShowChat(true)
     } else {
-      navigateToOrderDetails(order.id)
+     navigateToOrderDetails(order.id)
     }
   }
 
