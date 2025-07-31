@@ -152,7 +152,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             </Sheet>
             <Divider />
             <div
-              onClick={() => router.push("/profile/payment-methods")}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
