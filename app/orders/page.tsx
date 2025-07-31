@@ -48,6 +48,10 @@ export default function OrdersPage() {
     fetchOrders()
   }, [activeTab])
 
+  useEffect(() => {
+    
+  }, [isConnected])
+
   const fetchOrders = async () => {
     setIsLoading(true)
     setError(null)
