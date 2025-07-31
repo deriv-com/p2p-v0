@@ -148,7 +148,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-fit p-[16px] rounded-t-2xl">
+        <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Filter</h3>
           </div>
