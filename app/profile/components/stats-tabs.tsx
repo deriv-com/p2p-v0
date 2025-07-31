@@ -152,7 +152,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               </SheetContent>
             </Sheet>
             <Divider />
-            <div onClick={() => { setShowStatsSidebar(true) }}
+            <div onClick={() => { setShowPaymentMethodsSidebar(true) }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
