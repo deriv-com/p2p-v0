@@ -393,7 +393,7 @@ export default function PaymentMethodsTab() {
                           <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent side="left" align="end" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
