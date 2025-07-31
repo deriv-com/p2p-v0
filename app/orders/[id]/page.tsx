@@ -274,7 +274,7 @@ export default function OrderDetailsPage() {
             orderId={orderId}
             counterpartyName={counterpartyNickname || "User"}
             counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-            isClosed={["cancelled", "completed", "timed_out", "refunded"].includes(order?.status)}
+            isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
             onNavigateToOrderDetails={() => {
               setShowChat(false)
             }}
