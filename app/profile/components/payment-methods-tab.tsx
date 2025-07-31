@@ -322,9 +322,9 @@ export default function PaymentMethodsTab() {
         />
       )}
 
-      <div className="m-b4">
-        <h3 className="text-base font-bold mb-4">Bank transfer</h3>
-        {bankTransfers.length > 0 ? (
+      {bankTransfers.length > 0 && (
+        <div className="mb-4">
+          <h3 className="text-base font-bold mb-4">Bank transfer</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
               <Card key={method.id} variant="default" className="overflow-hidden">
@@ -367,14 +367,12 @@ export default function PaymentMethodsTab() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-500 italic">No bank transfers are added at the moment</p>
-        )}
-      </div>
-
-      <div>
-        <h3 className="text-base font-bold mb-4">E-wallets</h3>
-        {eWallets.length > 0 ? (
+        </div>
+      )}
+      
+      {eWallets.length > 0 && (
+        <div>
+          <h3 className="text-base font-bold mb-4">E-wallets</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
               <Card key={method.id} variant="default" className="overflow-hidden">
@@ -417,11 +415,9 @@ export default function PaymentMethodsTab() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-500 italic">No e-wallets are added at the moment</p>
-        )}
-      </div>
-
+        </div>
+      )}
+ 
       <DeleteConfirmationDialog
         open={deleteConfirmModal.show}
         title="Delete payment method?"
