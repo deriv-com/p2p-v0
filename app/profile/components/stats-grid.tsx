@@ -98,7 +98,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
 
   return (
   <TooltipProvider>
-    <div className="bg-slate-1500 rounded-lg px-4">
+    <div className="bg-grayscale-300 md:bg-slate-1500 rounded-lg px-4">
       <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
         <StatCard
           title={`Buy completion ${displayStats.buyCompletion.period}`}
