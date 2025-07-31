@@ -26,19 +26,16 @@ export default function Main({
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 
     const fetchSessionData = async () => {
-      // Cancel previous request if it exists
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
       }
 
-      // Create new AbortController for this request
       const abortController = new AbortController()
       abortControllerRef.current = abortController
 
       try {
         const response = await AuthPrevAPI.getSession()
 
-        // Check if request was aborted
         if (abortController.signal.aborted) {
           return
         }
@@ -51,7 +48,6 @@ export default function Main({
           router.push(pathname)
         }
       } catch (error) {
-        // Don't handle aborted requests as errors
         if (abortController.signal.aborted) {
           return
         }
@@ -60,8 +56,6 @@ export default function Main({
     }
 
     fetchSessionData()
-
-    // Cleanup function to abort request on unmount or dependency change
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
