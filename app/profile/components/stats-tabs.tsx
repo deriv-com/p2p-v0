@@ -118,51 +118,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
-  if (isMobile) {
-    return (
-      <div className="relative mx-[-24px]">
-        {notification.show && (
-          <CustomNotificationBanner
-            message={notification.message}
-            onClose={() => setNotification({ show: false, message: "" })}
-          />
-        )}
-
-        <div>
-          <Divider />
-
-          <div className="p-4">
-            <div className="mb-4">
-              <span className="text-sm font-normal text-gray-900">Stats</span>
-            </div>
-              <StatsGrid stats={userStats} />
-          </div>
-
-          <Divider />
-
-          <div
-            onClick={() => router.push("/profile/payment-methods")}
-            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-sm font-normal text-gray-900">Payment methods</span>
-            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
-          </div>
-
-          <Divider />
-        </div>
-
-        {errorModal.show && (
-          <StatusModal
-            type="error"
-            title="Error"
-            message={errorModal.message}
-            onClose={() => setErrorModal({ show: false, message: "" })}
-          />
-        )}
-      </div>
-    )
-  }
-
   return (
     <div className="relative">
       {notification.show && (
@@ -173,7 +128,27 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       )}
 
       <div className="mb-6">
-        <Tabs defaultValue="stats">
+        {isMobile ? (
+            <div>
+              <Divider />
+              <div className="p-4">
+                <div className="mb-4">
+                  <span className="text-sm font-normal text-gray-900">Stats</span>
+                  <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+                </div>
+                <StatsGrid stats={userStats} />
+              </div>
+              <Divider />
+              <div className="p-4">
+                <div className="mb-4">
+                  <span className="text-sm font-normal text-gray-900">Payment methods</span>
+                  <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+                </div>
+                <PaymentMethodsTab key={refreshKey} />
+              </div>
+              <Divider />
+            </div>
+        ) : (<Tabs defaultValue="stats">
           <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
             {tabs.map((tab) => (
               <TabsTrigger
@@ -246,7 +221,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <p className="text-slate-500">Your counterparties will appear here.</p>
             </div>
           </TabsContent>
-        </Tabs>
+        </Tabs>)
       </div>
 
       {showAddPaymentMethodPanel && (
