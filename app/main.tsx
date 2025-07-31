@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
@@ -19,14 +18,27 @@ export default function Main({
   const pathname = usePathname()
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 
     const fetchSessionData = async () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+
+      const abortController = new AbortController()
+      abortControllerRef.current = abortController
+
       try {
         const response = await AuthPrevAPI.getSession()
+
+        if (abortController.signal.aborted) {
+          return
+        }
+
         if (response?.errors && !isPublic) {
           setIsHeaderVisible(false)
           router.push("/login")
@@ -35,11 +47,19 @@ export default function Main({
           router.push(pathname)
         }
       } catch (error) {
+        if (abortController.signal.aborted) {
+          return
+        }
         console.error("Error fetching data:", error)
       }
     }
 
     fetchSessionData()
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
   }, [pathname, router])
 
   if (pathname === "/login") {

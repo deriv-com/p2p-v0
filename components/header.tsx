@@ -22,7 +22,10 @@ export default function Header() {
       <div>
         <nav className="flex h-12 border-b border-slate-200">
           {navItems.map((item) => {
-            const isActive = item.href === "/" ? pathname === "/" || pathname.startsWith("/advertiser")  : pathname.startsWith(item.href)
+            const isActive =
+              item.href === "/"
+                ? pathname === "/" || pathname.startsWith("/advertiser")
+                : pathname.startsWith(item.href)
 
             return (
               <Link
@@ -33,7 +36,7 @@ export default function Header() {
                   "inline-flex h-12 items-center border-b-2 px-4 text-sm",
                   isActive
                     ? "text-slate-1400 border-[#00D0FF] font-bold"
-                    : "border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-700"
+                    : "border-transparent text-slate-600 hover:border-slate-300 hover:text-slate-700",
                 )}
               >
                 {item.name}
@@ -46,9 +49,7 @@ export default function Header() {
         <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
         </div>
-        <Button
-          size="sm"
-          onClick={() => AuthPrevAPI.logout()}>
+        <Button size="sm" onClick={() => AuthPrevAPI.logout()}>
           Logout
         </Button>
       </div>

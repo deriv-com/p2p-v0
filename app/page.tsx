@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
@@ -47,6 +47,8 @@ export default function BuySellPage() {
 
   const { currencies } = useCurrencyData()
 
+  const abortControllerRef = useRef<AbortController | null>(null)
+
   useEffect(() => {
     fetchAdverts()
   }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethods, selectedAccountCurrency])
@@ -56,7 +58,7 @@ export default function BuySellPage() {
       setIsLoadingPaymentMethods(true)
       try {
         const methods = await BuySellAPI.getPaymentMethods()
-        setPaymentMethods(methods) 
+        setPaymentMethods(methods)
       } catch (error) {
         console.error("Error fetching payment methods:", error)
       } finally {
@@ -68,6 +70,13 @@ export default function BuySellPage() {
   }, [])
 
   const fetchAdverts = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     setIsLoading(true)
     setError(null)
     try {
@@ -83,20 +92,27 @@ export default function BuySellPage() {
         params.favourites_only = 1
       }
 
-      const data = await BuySellAPI.getAdvertisements(params)
-      if (Array.isArray(data)) {
-        setAdverts(data)
-      } else {
-        console.error("API did not return an array:", data)
-        setAdverts([])
-        setError("Received invalid data format from server")
+      const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
+
+      if (!abortController.signal.aborted) {
+        if (Array.isArray(data)) {
+          setAdverts(data)
+        } else {
+          console.error("API did not return an array:", data)
+          setAdverts([])
+          setError("Received invalid data format from server")
+        }
       }
     } catch (err) {
-      console.error("Error fetching adverts:", err)
-      setError("Failed to load advertisements. Please try again.")
-      setAdverts([])
+      if (!abortController.signal.aborted) {
+        console.error("Error fetching adverts:", err)
+        setError("Failed to load advertisements. Please try again.")
+        setAdverts([])
+      }
     } finally {
-      setIsLoading(false)
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
     }
   }
 
@@ -133,6 +149,14 @@ export default function BuySellPage() {
       }
     }
   }, [isFilterPopupOpen])
+
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
+  }, [])
 
   return (
     <>
@@ -205,11 +229,11 @@ export default function BuySellPage() {
                       className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
-                        { selectedPaymentMethods.length === 0
-                            ? "Payment (All)"
-                            : selectedPaymentMethods.length === 1
-                              ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name
-                              : selectedPaymentMethods.join(", ")}
+                        {selectedPaymentMethods.length === 0
+                          ? "Payment (All)"
+                          : selectedPaymentMethods.length === 1
+                            ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name
+                            : selectedPaymentMethods.join(", ")}
                       </span>
                       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
                     </Button>
