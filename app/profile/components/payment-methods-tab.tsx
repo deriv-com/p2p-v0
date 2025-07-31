@@ -15,7 +15,6 @@ import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
-import { StatusIndicator } from "@/components/ui/status-indicator"
 
 interface PaymentMethod {
   id: string
