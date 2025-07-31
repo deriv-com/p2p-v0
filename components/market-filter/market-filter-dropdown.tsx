@@ -12,7 +12,6 @@ import { useIsMobile } from "@/components/ui/use-mobile"
 import { Label } from "@/components/ui/label"
 
 export interface MarketFilterOptions {
-  withinBalance: boolean
   fromFollowing: boolean
 }
 
