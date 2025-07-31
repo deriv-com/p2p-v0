@@ -50,8 +50,6 @@ export default function OrdersPage() {
     fetchOrders()
   }, [activeTab])
 
-  useEffect(() => {}, [isConnected])
-
   const fetchOrders = async () => {
     setIsLoading(true)
     setError(null)
@@ -114,8 +112,8 @@ export default function OrdersPage() {
     if (isMobile) {
       setSelectedOrder(order)
       setShowChat(true)
-      // Join the channel for this order when opening chat on mobile
-      joinChannel(`orders_${order.id}`)
+
+      joinChannel()
     } else {
       navigateToOrderDetails(order.id)
     }
