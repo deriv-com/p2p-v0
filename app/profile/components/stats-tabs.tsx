@@ -186,7 +186,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               ))}
             </TabsList>
 
-            <TabsContent value="stats">
+            <TabsContent value="stats" className="pt-4">
               {isLoadingStats ? (
                 <div className="space-y-4">
                   <div className="bg-[#F5F5F5] rounded-lg p-4">
@@ -221,7 +221,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               )}
             </TabsContent>
 
-            <TabsContent value="payment">
+            <TabsContent value="payment" className="pt-4">
               <div className="relative rounded-lg border p-4">
                 <div className="flex justify-end mb-4">
                   <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
