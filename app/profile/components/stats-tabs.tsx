@@ -186,7 +186,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               ))}
             </TabsList>
 
-            <TabsContent value="stats" className="pt-4">
+            <TabsContent value="stats" className="mt-4">
               {isLoadingStats ? (
                 <div className="space-y-4">
                   <div className="bg-[#F5F5F5] rounded-lg p-4">
