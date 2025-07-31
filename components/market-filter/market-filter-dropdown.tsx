@@ -21,9 +21,17 @@ interface MarketFilterDropdownProps {
   initialFilters: MarketFilterOptions
   initialSortBy: string
   trigger: React.ReactElement
+  hasActiveFilters?: boolean
 }
 
-export default function MarketFilterDropdown({ activeTab, onApply, initialFilters, initialSortBy, trigger }: MarketFilterDropdownProps) {
+export default function MarketFilterDropdown({
+  activeTab,
+  onApply,
+  initialFilters,
+  initialSortBy,
+  trigger,
+  hasActiveFilters = false,
+}: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
   const [sortBy, setSortBy] = useState(initialSortBy)
@@ -34,18 +42,19 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
   }, [initialFilters])
 
   const handleReset = () => {
-    if(isMobile) onApply({ fromFollowing: false }, "exchange_rate")
-    else onApply({
-      fromFollowing: false
-    })
+    if (isMobile) onApply({ fromFollowing: false }, "exchange_rate")
+    else
+      onApply({
+        fromFollowing: false,
+      })
 
     setIsOpen(false)
   }
 
   const handleApply = () => {
-    if(isMobile) onApply(filters, sortBy)
+    if (isMobile) onApply(filters, sortBy)
     else onApply(filters)
-    
+
     setIsOpen(false)
   }
 
@@ -91,13 +100,9 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
             <h4 className="text-sm font-bold mb-4">Sort by</h4>
             <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
               <div className="flex items-center space-x-3">
-                <RadioGroupItem
-                  value="exchange_rate"
-                  id="exchange_rate"
-                  className="border-grayscale-100 text-black"
-                />
+                <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
                 <Label htmlFor="exchange_rate" className="text-sm text-gray-700 cursor-pointer">
-                  {activeTab === "sell" ? (<>Exchange rate (low-high)</>) : (<>Exchange rate (high-low)</>)}
+                  {activeTab === "sell" ? <>Exchange rate (low-high)</> : <>Exchange rate (high-low)</>}
                 </Label>
               </div>
               <div className="flex items-center space-x-3">
@@ -119,7 +124,7 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
         <Button
           variant="outline"
           onClick={handleReset}
-          className="rounded-full flex-1"
+          className="rounded-full flex-1 bg-transparent"
           size={isMobile ? "default" : "sm"}
         >
           Reset
@@ -138,7 +143,12 @@ export default function MarketFilterDropdown({ activeTab, onApply, initialFilter
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
+        <SheetTrigger asChild>
+          <div className="relative">
+            {trigger}
+            {hasActiveFilters && <div className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></div>}
+          </div>
+        </SheetTrigger>
         <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Filter</h3>
