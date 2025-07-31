@@ -142,7 +142,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <Sheet open={showStatsSidebar} onOpenChange={setShowStatsSidebar}>
               <SheetTrigger asChild>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md">
+              <SheetContent side="right" className="w-full sm:max-w-md p-4">
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-center">Stats</h3>
                 </div>
@@ -161,7 +161,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
               <SheetTrigger asChild>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md">
+              <SheetContent side="right" className="w-full sm:max-w-md p-4">
                 <div className="mb-4">
                   <h3 className="text-xl font-bold text-center">Payment methods</h3>
                 </div>
