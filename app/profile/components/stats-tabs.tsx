@@ -5,12 +5,12 @@ import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { UserStats } from "../api/api-user-stats"
@@ -21,7 +21,6 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const router = useRouter()
   const { showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
@@ -49,6 +48,8 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   )
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
+  const [showStatsSidebar, setShowStatsSidebar] = useState(false)
+  const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -118,52 +119,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
-  if (isMobile) {
-    return (
-      <div className="relative mx-[-24px]">
-        {notification.show && (
-          <CustomNotificationBanner
-            message={notification.message}
-            onClose={() => setNotification({ show: false, message: "" })}
-          />
-        )}
-
-        <div>
-          <Divider />
-
-          <div
-            onClick={() => router.push("/profile/stats")}
-            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-sm font-normal text-gray-900">Stats</span>
-            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
-          </div>
-
-          <Divider />
-
-          <div
-            onClick={() => router.push("/profile/payment-methods")}
-            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-          >
-            <span className="text-sm font-normal text-gray-900">Payment methods</span>
-            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
-          </div>
-
-          <Divider />
-        </div>
-
-        {errorModal.show && (
-          <StatusModal
-            type="error"
-            title="Error"
-            message={errorModal.message}
-            onClose={() => setErrorModal({ show: false, message: "" })}
-          />
-        )}
-      </div>
-    )
-  }
-
   return (
     <div className="relative">
       {notification.show && (
@@ -174,86 +129,123 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       )}
 
       <div className="mb-6">
-        <Tabs defaultValue="stats">
-          <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
-            {tabs.map((tab) => (
-              <TabsTrigger
-                key={tab.id}
-                value={tab.id}
-                className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
-              >
-                {tab.label}
-              </TabsTrigger>
-            ))}
-          </TabsList>
+        {isMobile ? (
+          <div>
+            <Divider />
+            <div onClick={() => { setShowStatsSidebar(true) }}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+              <span className="text-sm font-normal text-gray-900">Stats</span>
+              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+            </div>
+            <Sheet open={showStatsSidebar} onOpenChange={setShowStatsSidebar}>
+              <SheetTrigger asChild>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full sm:max-w-md p-4">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-center">Stats</h3>
+                </div>
+                <div className="mt-6">
+                  <StatsGrid stats={userStats} />
+                </div>
+              </SheetContent>
+            </Sheet>
+            <Divider />
+            <div onClick={() => { setShowPaymentMethodsSidebar(true) }}
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <span className="text-sm font-normal text-gray-900">Payment methods</span>
+              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+            </div>
+            <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
+              <SheetTrigger asChild>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full sm:max-w-md p-4">
+                <div className="mb-4">
+                  <h3 className="text-xl font-bold text-center">Payment methods</h3>
+                </div>
+                <div className="mt-6">
+                   <PaymentMethodsTab key={refreshKey} />
+                </div>
+              </SheetContent>
+            </Sheet>
+            <Divider />
+          </div>
+        ) : (
+          <Tabs defaultValue="stats">
+            <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
-          <TabsContent value="stats">
-            {isLoadingStats ? (
-              <div className="space-y-4">
-                <div className="bg-[#F5F5F5] rounded-lg p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
+            <TabsContent value="stats" className="mt-4">
+              {isLoadingStats ? (
+                <div className="space-y-4">
+                  <div className="bg-[#F5F5F5] rounded-lg p-4">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="py-4">
+                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="py-4">
+                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {[...Array(3)].map((_, i) => (
+                        <div key={i} className="py-4">
+                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
+                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
+              ) : (
+                <StatsGrid stats={userStats} />
+              )}
+            </TabsContent>
+
+            <TabsContent value="payment" className="mt-4">
+              <div className="relative rounded-lg border p-4">
+                <div className="flex justify-end mb-4">
+                  <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
+                    <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
+                    Add payment
+                  </Button>
+                </div>
+                <PaymentMethodsTab key={refreshKey} />
               </div>
-            ) : (
-              <StatsGrid stats={userStats} />
-            )}
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="payment">
-            <div className="relative rounded-lg border p-4">
-              <div className="flex justify-end mb-4">
-                <Button variant="outline" size="sm" onClick={() => setShowAddPaymentMethodPanel(true)}>
-                  <Image
-                    src="/icons/plus_icon.png"
-                    alt="Add payment"
-                    width={14}
-                    height={24}
-                    className="mr-1"
-                  />
-                  Add payment
-                </Button>
+            <TabsContent value="ads">
+              <div className="p-4 border rounded-lg">
+                <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
+                <p className="text-slate-500">Your ad details will appear here.</p>
               </div>
-              <PaymentMethodsTab key={refreshKey} />
-            </div>
-          </TabsContent>
+            </TabsContent>
 
-          <TabsContent value="ads">
-            <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
-              <p className="text-slate-500">Your ad details will appear here.</p>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="counterparties">
-            <div className="p-4 border rounded-lg">
-              <h3 className="text-lg font-medium mb-4">Counterparties</h3>
-              <p className="text-slate-500">Your counterparties will appear here.</p>
-            </div>
-          </TabsContent>
-        </Tabs>
+            <TabsContent value="counterparties">
+              <div className="p-4 border rounded-lg">
+                <h3 className="text-lg font-medium mb-4">Counterparties</h3>
+                <p className="text-slate-500">Your counterparties will appear here.</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        )}
       </div>
 
       {showAddPaymentMethodPanel && (

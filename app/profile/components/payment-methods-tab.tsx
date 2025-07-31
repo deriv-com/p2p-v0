@@ -15,7 +15,6 @@ import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
-import { StatusIndicator } from "@/components/ui/status-indicator"
 
 interface PaymentMethod {
   id: string
@@ -322,21 +321,21 @@ export default function PaymentMethodsTab() {
         />
       )}
 
-      <div className="mb-8 mt-6">
-        <h3 className="text-base font-bold mb-4">Bank transfer</h3>
-        {bankTransfers.length > 0 ? (
+      {bankTransfers.length > 0 && (
+        <div className="mb-4">
+          <h3 className="text-base font-bold mb-4">Bank transfer</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
+                <CardContent className="p-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getBankIcon()}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm">{method.details.bank_name.value}</div>
-                        <StatusIndicator variant="neutral" size="sm" className="truncate">
+                      <div className="flex-1 min-w-0 text-sm ">
+                        <div className="text-neutral-10">{method.details.bank_name.value}</div>
+                        <div className="text-neutral-7">
                           {maskAccountNumber(method.details.account.value)}
-                        </StatusIndicator>
+                        </div>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -345,16 +344,16 @@ export default function PaymentMethodsTab() {
                           <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
                           <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
                           <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
@@ -367,26 +366,24 @@ export default function PaymentMethodsTab() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-500 italic">No bank transfers are added at the moment</p>
-        )}
-      </div>
-
-      <div>
-        <h3 className="text-base font-bold mb-4">E-wallets</h3>
-        {eWallets.length > 0 ? (
+        </div>
+      )}
+      
+      {eWallets.length > 0 && (
+        <div>
+          <h3 className="text-base font-bold mb-4">E-wallets</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
+                <CardContent className="p-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getEWalletIcon()}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm">{method.name}</div>
-                        <StatusIndicator variant="neutral" size="sm" className="truncate">
+                      <div className="flex-1 min-w-0 text-sm">
+                        <div className="text-neutral-10">{method.name}</div>
+                        <div className="text-neutral-7">
                           {method.details?.account?.value || `ID: ${method.id}`}
-                        </StatusIndicator>
+                        </div>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -395,7 +392,7 @@ export default function PaymentMethodsTab() {
                           <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
@@ -417,11 +414,9 @@ export default function PaymentMethodsTab() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-500 italic">No e-wallets are added at the moment</p>
-        )}
-      </div>
-
+        </div>
+      )}
+ 
       <DeleteConfirmationDialog
         open={deleteConfirmModal.show}
         title="Delete payment method?"
