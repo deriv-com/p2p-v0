@@ -135,38 +135,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             <div className="mb-4">
               <span className="text-sm font-normal text-gray-900">Stats</span>
             </div>
-            {isLoadingStats ? (
-              <div className="space-y-4">
-                <div className="bg-[#F5F5F5] rounded-lg p-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[...Array(3)].map((_, i) => (
-                      <div key={i} className="py-4">
-                        <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                        <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ) : (
               <StatsGrid stats={userStats} />
-            )}
           </div>
 
           <Divider />
