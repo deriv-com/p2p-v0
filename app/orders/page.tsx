@@ -231,7 +231,7 @@ export default function OrdersPage() {
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName = selectedOrder?.advert.user.id == USER.id ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
     const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
-    const isClosed = ["cancelled", "completed", "timed_out", "refunded"].includes(selectedOrder?.status)
+    const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
 
     return (
       <div className="h-[calc(100vh-64px)] flex flex-col">
