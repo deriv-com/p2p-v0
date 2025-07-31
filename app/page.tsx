@@ -48,7 +48,7 @@ export default function BuySellPage() {
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
-  const hasActiveFilters = filterOptions.fromFollowing !== false
+  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
 
   useEffect(() => {
     fetchAdverts()
