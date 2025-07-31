@@ -333,7 +333,7 @@ export default function PaymentMethodsTab() {
                     <div className="flex items-start gap-3 flex-1 min-w-0">
                       {getBankIcon()}
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-sm">{method.details.bank_name.value}</div>
+                        <div className="text-sm">{method.details.bank_name.value}</div>
                         <StatusIndicator variant="neutral" size="sm" className="truncate">
                           {maskAccountNumber(method.details.account.value)}
                         </StatusIndicator>
