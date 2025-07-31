@@ -8,7 +8,7 @@ interface StatCardProps {
 
 function StatCard({ title, value }: StatCardProps) {
   return (
-    <div className="pt-6 pb-2">
+    <div className="flex justify-between border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
       <div className="flex items-center text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
         {title === "Trade partners" && <Tooltip>
