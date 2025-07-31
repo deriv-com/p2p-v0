@@ -70,12 +70,10 @@ export default function BuySellPage() {
   }, [])
 
   const fetchAdverts = async () => {
-    // Cancel any existing request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
 
-    // Create new AbortController for this request
     const abortController = new AbortController()
     abortControllerRef.current = abortController
 
@@ -96,7 +94,6 @@ export default function BuySellPage() {
 
       const data = await BuySellAPI.getAdvertisements(params, abortController.signal)
 
-      // Only update state if this request wasn't aborted
       if (!abortController.signal.aborted) {
         if (Array.isArray(data)) {
           setAdverts(data)
@@ -107,14 +104,12 @@ export default function BuySellPage() {
         }
       }
     } catch (err) {
-      // Only handle error if request wasn't aborted
       if (!abortController.signal.aborted) {
         console.error("Error fetching adverts:", err)
         setError("Failed to load advertisements. Please try again.")
         setAdverts([])
       }
     } finally {
-      // Only update loading state if this request wasn't aborted
       if (!abortController.signal.aborted) {
         setIsLoading(false)
       }
