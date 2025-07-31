@@ -149,7 +149,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <Divider />
             </div>
           :
-            <Tabs defaultValue="stats">
+            (<Tabs defaultValue="stats">
               <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
                 {tabs.map((tab) => (
                   <TabsTrigger
