@@ -118,6 +118,52 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     }
   }
 
+  if (isMobile) {
+    return (
+      <div className="relative mx-[-24px]">
+        {notification.show && (
+          <CustomNotificationBanner
+            message={notification.message}
+            onClose={() => setNotification({ show: false, message: "" })}
+          />
+        )}
+
+        <div>
+          <Divider />
+
+          <div
+            onClick={() => router.push("/profile/stats")}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-sm font-normal text-gray-900">Stats</span>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
+
+          <Divider />
+
+          <div
+            onClick={() => router.push("/profile/payment-methods")}
+            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          >
+            <span className="text-sm font-normal text-gray-900">Payment methods</span>
+            <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+          </div>
+
+          <Divider />
+        </div>
+
+        {errorModal.show && (
+          <StatusModal
+            type="error"
+            title="Error"
+            message={errorModal.message}
+            onClose={() => setErrorModal({ show: false, message: "" })}
+          />
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="relative">
       {notification.show && (
