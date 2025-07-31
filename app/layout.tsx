@@ -1,5 +1,5 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
@@ -13,6 +13,13 @@ export const metadata: Metadata = {
   title: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
   description: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
   generator: "v0.dev",
+}
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
