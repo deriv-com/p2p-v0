@@ -330,7 +330,7 @@ export default function PaymentMethodsTab() {
               <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
                 <CardContent className="p-2">
                   <div className="flex justify-between items-center">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getBankIcon()}
                       <div className="flex-1 min-w-0 text-sm ">
                         <div className="text-neutral-10">{method.details.bank_name.value}</div>
@@ -377,8 +377,8 @@ export default function PaymentMethodsTab() {
             {eWallets.map((method) => (
               <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
                 <CardContent className="p-2">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getEWalletIcon()}
                       <div className="flex-1 min-w-0 text-sm">
                         <div className="text-neutral-10">{method.name}</div>
