@@ -108,5 +108,13 @@ body {
   
   body {
     @apply bg-background text-foreground;
-  }
+  } 
+}
+
+.filter-to-primary {
+  filter: invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%);
+}
+
+.shadow-dropdown {
+  box-shadow: 0px 16px 24px 4px rgba(0, 0, 0, 0.02), 0px 16px 24px 4px rgba(0, 0, 0, 0.04);
 }
