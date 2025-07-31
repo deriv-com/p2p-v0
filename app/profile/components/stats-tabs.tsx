@@ -51,6 +51,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
+  const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -133,34 +134,19 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         {isMobile ? (
           <div>
             <Divider />
+            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+              <span className="text-sm font-normal text-gray-900">Stats</span>
+              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+            </div>
             <Sheet open={showStatsSidebar} onOpenChange={setShowStatsSidebar}>
               <SheetTrigger asChild>
-                <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
-                  <span className="text-sm font-normal text-gray-900">Stats</span>
-                  <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
-                </div>
               </SheetTrigger>
               <SheetContent side="right" className="w-full sm:max-w-md">
                 <SheetHeader>
                   <SheetTitle>Stats</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6">
-                  {isLoadingStats ? (
-                    <div className="space-y-4">
-                      <div className="bg-[#F5F5F5] rounded-lg p-4">
-                        <div className="grid grid-cols-1 gap-4">
-                          {[...Array(6)].map((_, i) => (
-                            <div key={i} className="py-2">
-                              <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                              <div className="animate-pulse bg-slate-200 h-6 w-1/2 rounded"></div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <StatsGrid stats={userStats} />
-                  )}
+                  <StatsGrid stats={userStats} />
                 </div>
               </SheetContent>
             </Sheet>
@@ -172,6 +158,18 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
+            <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
+              <SheetTrigger asChild>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full sm:max-w-md">
+                <SheetHeader>
+                  <SheetTitle>Payment methods</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6">
+                  <StatsGrid stats={userStats} />
+                </div>
+              </SheetContent>
+            </Sheet>
             <Divider />
           </div>
         ) : (
