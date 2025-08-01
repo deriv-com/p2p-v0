@@ -15,6 +15,7 @@ import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
+import { useToast } from "@/hooks/use-toast"
 
 interface PaymentMethod {
   id: string
@@ -30,6 +31,7 @@ export default function PaymentMethodsTab() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+    const { toast } = useToast()
 
   const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     show: false,
