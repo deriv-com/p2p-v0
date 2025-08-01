@@ -126,7 +126,7 @@ export default function EditPaymentMethodPanel({
                       id={fieldName}
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                      placeholder={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                      label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
                       className="min-h-[120px] resize-none"
                       maxLength={300}
                       variant="floating"
