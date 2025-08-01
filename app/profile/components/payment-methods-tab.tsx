@@ -31,7 +31,6 @@ export default function PaymentMethodsTab() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
-  const [isDeleting, setIsDeleting] = useState(false)
   const [statusModal, setStatusModal] = useState({
     show: false,
     type: "error" as "success" | "error",
@@ -216,7 +215,6 @@ export default function PaymentMethodsTab() {
 
   const confirmDeletePaymentMethod = async (id) => {
     try {
-      setIsDeleting(true)
       const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(id)
 
       if (result.success) {
@@ -248,8 +246,6 @@ export default function PaymentMethodsTab() {
         title: "Failed to delete payment method",
         message: error instanceof Error ? error.message : "An error occurred. Please try again.",
       })
-    } finally {
-      setIsDeleting(false)
     }
   }
 
