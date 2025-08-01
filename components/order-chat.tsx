@@ -30,7 +30,13 @@ type OrderChatProps = {
   onNavigateToOrderDetails: () => void
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed, onNavigateToOrderDetails }: OrderChatProps) {
+export default function OrderChat({
+  orderId,
+  counterpartyName,
+  counterpartyInitial,
+  isClosed,
+  onNavigateToOrderDetails,
+}: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -129,10 +135,15 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   }
 
   return (
-    <div className="flex flex-col h-full overflow-auto">
+    <div className="flex flex-col h-full max-h-screen overflow-hidden">
       <div className="flex items-center p-4 border-b">
         {onNavigateToOrderDetails && (
-          <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails} className="p-0 mr-[16px] hover:bg-transparent">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onNavigateToOrderDetails}
+            className="p-0 mr-[16px] hover:bg-transparent"
+          >
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
           </Button>
         )}
@@ -144,7 +155,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
         </div>
       </div>
-      <div className="h-full overflow-auto">
+      <div className="flex-1 overflow-hidden">
         <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
           <div className="space-y-3">
             <div className="flex items-start gap-[8px]">
@@ -165,7 +176,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
             </div>
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4 min-h-0">
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -195,7 +206,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
                     </div>
                   )}
-                  {(msg.rejected && msg.tags) ? (
+                  {msg.rejected && msg.tags ? (
                     <div className="text-xs text-error-text mt-[4px]">
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
