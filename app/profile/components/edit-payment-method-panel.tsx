@@ -44,7 +44,7 @@ function PanelWrapper({ onClose, children }: PanelWrapperProps) {
           isMobile ? "inset-0 w-full" : "w-full max-w-md"
         }`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center justify-between px-4 py-3 border-b">
           <h2 className="text-xl font-bold">Edit payment method</h2>
           <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
