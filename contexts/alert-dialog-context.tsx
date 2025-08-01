@@ -78,7 +78,12 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="px-8 py-6">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4">{config.description}</div>}
-        <div className="mt-6">
+        <div className="flex mt-6">
+         {config.cancelText && (
+          <Button onClick={handleCancel} variant="black" className="w-full">
+            {config.cancelText}
+          </Button>
+          )}
           <AlertDialogAction onClick={handleConfirm} className="w-full">
             {config.confirmText || "Continue"}
           </AlertDialogAction>
@@ -105,6 +110,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4">{config.description}</div>}
         <div className="mt-6">
+          {config.cancelText && (
+          <Button onClick={handleCancel} variant="black" className="w-full">
+            {config.cancelText}
+          </Button>
+          )}
           <Button onClick={handleConfirm} variant="black" className="w-full">
             {config.confirmText || "Continue"}
           </Button>
