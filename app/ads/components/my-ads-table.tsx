@@ -219,7 +219,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     <>
       <div className="w-full">
         <Table>
-          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white>
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
             <TableRow className="text-sm">
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Ad ID
