@@ -13,7 +13,7 @@ export default function ProfilePage() {
   const isMobile = useIsMobile()
   const [userData, setUserData] = useState({
     username: "",
-    rating: "Not rated yet",
+    rating: "No ratings",
     completionRate: "",
     joinDate: "",
     realName: "",

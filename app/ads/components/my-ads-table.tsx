@@ -82,7 +82,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const formatPaymentMethods = (methods: string[]) => {
     if (!methods || methods.length === 0) return "None"
     return (
-      <div className="space-y-1">
+      <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
             <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
@@ -219,23 +219,23 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     <>
       <div className="w-full">
         <Table>
-          <TableHeader>
-            <TableRow className="border-b">
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+            <TableRow className="text-sm">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Ad ID
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Available amount
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Payment methods
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Status
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {ads.map((ad, index) => {
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
@@ -244,8 +244,8 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
 
               return (
-                <TableRow key={index} className={cn("border-b", !isActive ? "opacity-60" : "")}>
-                  <TableCell className="py-4">
+                <TableRow key={index} className={cn("grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive ? "opacity-60" : "")}>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-span-full whitespace-nowrap">
                     <div>
                       <div className="mb-1">
                         <span
@@ -272,7 +272,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full whitespace-nowrap">
                     <div className="mb-1">
                       USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
                     </div>
@@ -283,9 +283,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                       ></div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4">{formatPaymentMethods(paymentMethods)}</TableCell>
-                  <TableCell className="py-4">{getStatusBadge(isActive)}</TableCell>
-                  <TableCell className="py-4 text-right">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">{getStatusBadge(isActive)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="p-1 hover:bg-gray-100 rounded-full">

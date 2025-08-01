@@ -418,7 +418,7 @@ export default function OrderDetailsPage() {
                     </Button>
                   </div>
                 )}
-                {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
+                {((order.type === "buy" && (order.status === "pending_release" || order.status === "timed_out") && order.advert.user.id == USER.id) ||
                   (order.type === "sell" && (order.status === "pending_release" || order.status === "timed_out") && order.user.id == USER.id)) && (
                   <div className="p-4 flex gap-4 float-right">
                     <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
@@ -473,7 +473,7 @@ export default function OrderDetailsPage() {
                     <Button
                       variant="outline"
                       onClick={() => setShowComplaintForm(true)}
-                      className="flex-auto md:flex-none"
+                      className="flex-auto md:flex-1"
                     >
                       Complain
                     </Button>

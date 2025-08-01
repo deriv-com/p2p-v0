@@ -184,7 +184,7 @@ export default function AdvertiserProfilePage() {
   const filteredAdverts = adverts.filter((ad) => (activeTab === "buy" ? ad.type === "buy" : ad.type === "sell"))
 
   const getDuration = (duration) => {
-    if (duration == null || duration <= 0) return ""
+    if (duration == null || duration <= 0) return "-"
 
     const newDuration = duration / 60 / 60
     if (newDuration < 1) return "< 1 min"
@@ -269,14 +269,14 @@ export default function AdvertiserProfilePage() {
             </div>
             <div className="container mx-auto pb-6">
               <div className="bg-slate-50 rounded-lg p-4">
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:flex gap-4">
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
                      <div className="flex items-center mt-1">
                         <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
                         {profile?.rating_average_lifetime ? 
-                          <span className="font-bold text-sm">{profile?.rating_average_lifetime}/5</span> :
-                          <span className="text-sm mt-1">Not rated yet</span>
+                          <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span> :
+                          <span className="text-base">No ratings</span>
                         }
                     </div>
                   </div>
@@ -301,8 +301,8 @@ export default function AdvertiserProfilePage() {
                     </div>
                     <div className="flex items-center mt-1">
                       {profile?.recommend_average_lifetime ? 
-                        <span className="font-bold text-lg">{profile?.recommend_average_lifetime}%</span> :
-                        <span className="font-bold text-lg">-</span>
+                        <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span> :
+                        <span className="font-bold text-base">No recommendations</span>
                       }
                     </div>
                   </div>

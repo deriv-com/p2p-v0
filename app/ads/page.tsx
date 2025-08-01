@@ -7,7 +7,6 @@ import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import Image from "next/image"
 import type { MyAd } from "./types"
-import MobileMyAdsList from "./components/mobile-my-ads-list"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
@@ -177,8 +176,6 @@ export default function AdsPage() {
             </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
-          ) : isMobile ? (
-            <MobileMyAdsList ads={ads} onAdDeleted={handleAdUpdated} />
           ) : (
             <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
           )}
