@@ -122,10 +122,10 @@ export default function EditPaymentMethodPanel({
           <div className="space-y-4">
             {Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => (
               <div key={fieldName}>
-                <label htmlFor={fieldName} className="block text-sm font-medium text-gray-500 mb-2">
+                /*<label htmlFor={fieldName} className="block text-sm font-medium text-gray-500 mb-2">
                   {fieldConfig.display_name}
                   {fieldConfig.required && <span className="text-red-500 ml-1">*</span>}
-                </label>
+                </label>*/
                 {fieldName === "instructions" ? (
                   <div>
                     <Textarea
@@ -146,7 +146,9 @@ export default function EditPaymentMethodPanel({
                     type={getFieldType(fieldName)}
                     value={fieldValues[fieldName] || ""}
                     onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                    placeholder={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                    label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                    required
+                    variant="floating"
                   />
                 )}
               </div>
