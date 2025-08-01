@@ -285,7 +285,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">{getStatusBadge(isActive)}</TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="p-1 hover:bg-gray-100 rounded-full">
