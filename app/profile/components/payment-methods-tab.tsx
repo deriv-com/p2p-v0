@@ -31,12 +31,6 @@ export default function PaymentMethodsTab() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
-
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    methodId: "",
-    methodName: "",
-  })
   const [isDeleting, setIsDeleting] = useState(false)
   const [statusModal, setStatusModal] = useState({
     show: false,
