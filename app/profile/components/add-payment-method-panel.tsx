@@ -254,10 +254,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
                 <div key={field.name}>
-                  <label htmlFor={field.name} className="block text-sm font-medium text-gray-500 mb-2">
-                    {field.label}
-                    {field.required && <span className="text-red-500 ml-1">*</span>}
-                  </label>
                   <Input
                     id={field.name}
                     type={field.type}
@@ -276,9 +272,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
           )}
 
           <div>
-            <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-              Instructions
-            </label>
             <Textarea
               id="instructions"
               value={instructions}
