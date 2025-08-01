@@ -5,7 +5,6 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { AlertCircle } from "lucide-react"
 import { USER } from "@/lib/local-variables"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
@@ -19,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import OrderChat from "@/components/order-chat"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import EmptyState from "@/components/empty-state"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -292,16 +292,9 @@ export default function OrdersPage() {
               </Button>
             </div>
           ) : orders.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                <AlertCircle className="h-6 w-6 text-slate-400" />
+              <div className="mt-[40%] md:mt-0">
+                <EmptyState icon="/icons/warning-circle.png" title="No orders found" description="Start by placing your first order." />
               </div>
-              <h2 className="text-xl font-medium text-slate-900 mb-2">No orders found</h2>
-              <p className="text-slate-500">Start by placing your first order.</p>
-              <Button size="sm" onClick={() => router.push("/")} className="mt-8">
-                Browse Ads
-              </Button>
-            </div>
           ) : (
             <div>
               <DesktopOrderTable />

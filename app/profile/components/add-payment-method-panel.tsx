@@ -254,16 +254,14 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
                 <div key={field.name}>
-                  <label htmlFor={field.name} className="block text-sm font-medium text-gray-500 mb-2">
-                    {field.label}
-                    {field.required && <span className="text-red-500 ml-1">*</span>}
-                  </label>
                   <Input
                     id={field.name}
                     type={field.type}
                     value={details[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    placeholder={`Enter ${field.label.toLowerCase()}`}
+                    label={`Enter ${field.label.toLowerCase()}`}
+                    required
+                    variant="floating"
                   />
                   {touched[field.name] && errors[field.name] && (
                     <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
@@ -274,16 +272,14 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
           )}
 
           <div>
-            <label htmlFor="instructions" className="block text-sm font-medium text-gray-500 mb-2">
-              Instructions
-            </label>
             <Textarea
               id="instructions"
               value={instructions}
               onChange={(e) => handleInstructionsChange(e.target.value)}
-              placeholder="Enter your instructions"
+              label="Enter your instructions"
               className="min-h-[120px] resize-none"
               maxLength={300}
+              variant="floating"
             />
             <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
           </div>

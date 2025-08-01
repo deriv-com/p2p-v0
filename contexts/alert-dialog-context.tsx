@@ -52,7 +52,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
   const renderDesktopContent = () => (
     <>
-      {config.type === "success" || config.type === "warning" ? (
+      {(config.type === "success" || config.type === "warning") && (
         <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
           <div style={{ alignSelf: "end" }} className="px-6 mt-6">
             <Button onClick={hideAlert} size="sm" variant="ghost">
@@ -68,20 +68,24 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             )}
           </div>
         </div>
-      ) : (
-        <div className="flex justify-end px-6 pt-6">
+      )}
+      <div className="px-8 py-6">
+        {!config.type && (<div className="flex justify-end">
           <Button onClick={hideAlert} size="sm" variant="ghost">
             <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="size-5" />
           </Button>
-        </div>
-      )}
-      <div className="px-8 py-6">
+        </div>)}
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-        {config.description && <div className="mb-4">{config.description}</div>}
-        <div className="mt-6">
-          <AlertDialogAction onClick={handleConfirm} className="w-full">
+        {config.description && <div className="mb-4 text-grayscale-100">{config.description}</div>}
+        <div className="flex flex-col gap-2 mt-6">
+         {config.cancelText && (
+          <Button onClick={handleCancel} variant="black" className="w-full">
+            {config.cancelText}
+          </Button>
+          )}
+          <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "black"} className="w-full">
             {config.confirmText || "Continue"}
-          </AlertDialogAction>
+          </Button>
         </div>
       </div>
     </>
@@ -101,11 +105,16 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           </div>
         </div>
       ) : null}
-      <div className="px-8 py-6">
+      <div className="p-6">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-        {config.description && <div className="mb-4">{config.description}</div>}
-        <div className="mt-6">
-          <Button onClick={handleConfirm} variant="black" className="w-full">
+        {config.description && <div className="mb-4 text-grayscale-100">{config.description}</div>}
+        <div className="flex flex-col gap-2 mt-6">
+          {config.cancelText && (
+          <Button onClick={handleCancel} variant="black" className="w-full">
+            {config.cancelText}
+          </Button>
+          )}
+          <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "black"} className="w-full">
             {config.confirmText || "Continue"}
           </Button>
         </div>

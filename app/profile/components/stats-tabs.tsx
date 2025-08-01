@@ -9,11 +9,11 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
-import CustomNotificationBanner from "./ui/custom-notification-banner"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { UserStats } from "../api/api-user-stats"
+import { useToast } from "@/hooks/use-toast"
 
 interface StatsTabsProps {
   stats?: any
@@ -24,10 +24,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const { showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
-  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
   const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({
     show: false,
     message: "",
@@ -50,6 +46,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
+  const { toast } = useToast()
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -94,9 +91,15 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
 
-        setNotification({
-          show: true,
-          message: "Payment method added.",
+      toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method added.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
 
         setRefreshKey((prev) => prev + 1)
@@ -121,13 +124,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
   return (
     <div className="relative">
-      {notification.show && (
-        <CustomNotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
-
       <div className="mb-6">
         {isMobile ? (
           <div>

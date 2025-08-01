@@ -11,10 +11,10 @@ import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "../api"
-import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
-import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
+import { useToast } from "@/hooks/use-toast"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: string
@@ -30,23 +30,14 @@ export default function PaymentMethodsTab() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    methodId: "",
-    methodName: "",
-  })
-  const [isDeleting, setIsDeleting] = useState(false)
+  const { toast } = useToast()
   const [statusModal, setStatusModal] = useState({
     show: false,
     type: "error" as "success" | "error",
     title: "",
     message: "",
   })
-  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
+  const { showDeleteDialog } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -163,9 +154,15 @@ export default function PaymentMethodsTab() {
       const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
 
       if (result.success) {
-        setNotification({
-          show: true,
-          message: "Payment method details updated successfully.",
+        toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method updated.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
 
         fetchPaymentMethods()
@@ -208,26 +205,29 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-    setDeleteConfirmModal({
-      show: true,
-      methodId: id,
-      methodName: name,
-    })
+      showDeleteDialog({
+        title: `Delete ${name}?`,
+        description: "Are you sure you want to delete this payment method?",
+        confirmText: "Yes, delete",
+        onConfirm: () => { confirmDeletePaymentMethod(id) },
+      })
   }
 
-  const confirmDeletePaymentMethod = async () => {
+  const confirmDeletePaymentMethod = async (id) => {
     try {
-      setIsDeleting(true)
-      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(deleteConfirmModal.methodId)
+      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(id)
 
       if (result.success) {
-        setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
-
-        setNotification({
-          show: true,
-          message: "Payment method deleted.",
+        toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method deleted.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
-
         fetchPaymentMethods()
       } else {
         setStatusModal({
@@ -246,13 +246,7 @@ export default function PaymentMethodsTab() {
         title: "Failed to delete payment method",
         message: error instanceof Error ? error.message : "An error occurred. Please try again.",
       })
-    } finally {
-      setIsDeleting(false)
     }
-  }
-
-  const cancelDeletePaymentMethod = () => {
-    setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
   }
 
   const closeStatusModal = () => {
@@ -314,12 +308,6 @@ export default function PaymentMethodsTab() {
 
   return (
     <div>
-      {notification.show && (
-        <CustomNotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
 
       {bankTransfers.length > 0 && (
         <div className="mb-4">
@@ -416,16 +404,6 @@ export default function PaymentMethodsTab() {
           </div>
         </div>
       )}
- 
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete payment method?"
-        description={`Are you sure you want to delete ${deleteConfirmModal.methodName}? You will not be able to restore it.`}
-        isDeleting={isDeleting}
-        onConfirm={confirmDeletePaymentMethod}
-        onCancel={cancelDeletePaymentMethod}
-      />
-
       {editPanel.show && editPanel.paymentMethod && (
         <EditPaymentMethodPanel
           paymentMethod={editPanel.paymentMethod}

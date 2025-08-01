@@ -44,10 +44,10 @@ function PanelWrapper({ onClose, children }: PanelWrapperProps) {
           isMobile ? "inset-0 w-full" : "w-full max-w-md"
         }`}
       >
-        <div className="p-6 border-b relative">
-          <h2 className="text-xl font-semibold text-center">Edit payment method</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
-            <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="w-5 h-5" />
+        <div className="flex items-center justify-between px-4 py-3 border-b">
+          <h2 className="text-xl font-bold">Edit payment details</h2>
+          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
         {children}
@@ -116,25 +116,20 @@ export default function EditPaymentMethodPanel({
   return (
     <PanelWrapper onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-6 space-y-6">
-          <div className="text-lg font-medium">{paymentMethod.name}</div>
-
+        <div className="p-4 space-y-4">
           <div className="space-y-4">
             {Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => (
               <div key={fieldName}>
-                <label htmlFor={fieldName} className="block text-sm font-medium text-gray-500 mb-2">
-                  {fieldConfig.display_name}
-                  {fieldConfig.required && <span className="text-red-500 ml-1">*</span>}
-                </label>
                 {fieldName === "instructions" ? (
                   <div>
                     <Textarea
                       id={fieldName}
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                      placeholder={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                      label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
                       className="min-h-[120px] resize-none"
                       maxLength={300}
+                      variant="floating"
                     />
                     <div className="flex justify-end mt-1 text-xs text-gray-500">
                       {(fieldValues[fieldName] || "").length}/300
@@ -146,7 +141,9 @@ export default function EditPaymentMethodPanel({
                     type={getFieldType(fieldName)}
                     value={fieldValues[fieldName] || ""}
                     onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                    placeholder={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                    label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                    required
+                    variant="floating"
                   />
                 )}
               </div>
@@ -155,7 +152,7 @@ export default function EditPaymentMethodPanel({
         </div>
       </form>
 
-      <div className="p-6 border-t">
+      <div className="p-4">
         <Button
           type="button"
           onClick={handleSubmit}
