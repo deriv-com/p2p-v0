@@ -33,7 +33,6 @@ export default function BuySellPage() {
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
   const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
-    withinBalance: false,
     fromFollowing: false,
   })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -48,6 +47,8 @@ export default function BuySellPage() {
   const { currencies } = useCurrencyData()
 
   const abortControllerRef = useRef<AbortController | null>(null)
+
+  const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
 
   useEffect(() => {
     fetchAdverts()
@@ -181,7 +182,7 @@ export default function BuySellPage() {
                   </TabsList>
                 </Tabs>
 
-                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full">
+                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full scrollbar-hide">
                   {CURRENCY_FILTERS.map((currencyFilter) => (
                     <Button
                       key={currencyFilter}
@@ -226,7 +227,7 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3"
+                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3 bg-transparent"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {selectedPaymentMethods.length === 0
@@ -247,20 +248,21 @@ export default function BuySellPage() {
                   onApply={handleFilterApply}
                   initialFilters={filterOptions}
                   initialSortBy={sortBy}
+                  hasActiveFilters={hasActiveFilters}
                   trigger={
-                    <Button
-                      variant="outline"
-                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
-                    >
-                      {isMobile ? (
-                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
-                      ) : (
-                        <>
-                          <span>Filter by</span>
-                          <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                        </>
-                      )}
-                    </Button>
+                      <Button
+                        variant="outline"
+                        className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
+                      >
+                        {isMobile ? (
+                          <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                        ) : (
+                          <>
+                            <span>Filter by</span>
+                            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                          </>
+                        )}
+                      </Button>
                   }
                 />
               </div>
@@ -294,7 +296,7 @@ export default function BuySellPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto pb-20 md:pb-4">
+        <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
             {isLoading ? (
               <div className="text-center py-12">

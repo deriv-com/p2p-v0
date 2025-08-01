@@ -18,6 +18,7 @@ import { useTimeRemaining } from "@/hooks/use-time-remaining"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import OrderChat from "@/components/order-chat"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -43,6 +44,7 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const isMobile = useIsMobile()
+  const { joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
@@ -110,6 +112,8 @@ export default function OrdersPage() {
     if (isMobile) {
       setSelectedOrder(order)
       setShowChat(true)
+
+      joinChannel("orders")
     } else {
       navigateToOrderDetails(order.id)
     }
@@ -160,7 +164,8 @@ export default function OrdersPage() {
                     </div>
                     {!isMobile && (
                       <div className="mt-[4px] text-slate-600 text-xs">
-                        Counterparty: {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}{" "}
+                        Counterparty:{" "}
+                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}{" "}
                       </div>
                     )}
                   </div>
@@ -207,16 +212,16 @@ export default function OrdersPage() {
                       </div>
                     )}
                     <div className="flex items-center gap-2">
-                        <Button
-                          onClick={(e) => {
-                            handleChatClick(e, order)
-                          }}
-                          className="text-slate-500 hover:text-slate-700"
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                        </Button>
+                      <Button
+                        onClick={(e) => {
+                          handleChatClick(e, order)
+                        }}
+                        className="text-slate-500 hover:text-slate-700"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                      </Button>
                     </div>
                   </div>
                 </TableCell>
@@ -229,7 +234,8 @@ export default function OrdersPage() {
   )
 
   if (isMobile && showChat && selectedOrder) {
-    const counterpartyName = selectedOrder?.advert.user.id == USER.id ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
+    const counterpartyName =
+      selectedOrder?.advert.user.id == USER.id ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
     const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
     const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
 
@@ -241,7 +247,9 @@ export default function OrdersPage() {
             counterpartyName={counterpartyName}
             counterpartyInitial={counterpartyInitial}
             isClosed={isClosed}
-            onNavigateToOrderDetails={() => { router.push(`/orders/${selectedOrder.id}`) }}
+            onNavigateToOrderDetails={() => {
+              router.push(`/orders/${selectedOrder.id}`)
+            }}
           />
         </div>
       </div>
