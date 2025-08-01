@@ -83,13 +83,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       const messageToSend = message
       setMessage("")
 
-      const result = await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
-
-      if (result.success) {
-        if (isConnected) {
-          //getChatHistory("orders", orderId)
-        }
-      }
+      await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
     } catch (error) {
       console.log(error)
     } finally {
@@ -113,13 +107,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
       try {
         const base64 = await fileToBase64(file)
-        const result = await OrdersAPI.sendChatMessage(orderId, "", base64)
-
-        if (result.success) {
-          if (isConnected) {
-            getChatHistory("orders", orderId)
-          }
-        }
+        await OrdersAPI.sendChatMessage(orderId, "", base64)
       } catch (error) {
         console.error("Error sending file:", error)
       } finally {
