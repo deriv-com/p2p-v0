@@ -119,7 +119,7 @@ export default function EditPaymentMethodPanel({
         <div className="p-4 space-y-4">
           <div className="space-y-4">
             {Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => (
-              <div key={fieldName}
+              <div key={fieldName}>
                 {fieldName === "instructions" ? (
                   <div>
                     <Textarea
