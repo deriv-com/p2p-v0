@@ -46,7 +46,7 @@ function PanelWrapper({ onClose, children }: PanelWrapperProps) {
       >
         <div className="p-6 border-b relative">
           <h2 className="text-xl font-semibold text-center">Edit payment method</h2>
-          <Button variant="ghost" size="icon" onClick={onClose} className="absolute right-6 top-1/2 -translate-y-1/2">
+          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
