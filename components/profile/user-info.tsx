@@ -52,8 +52,7 @@ export default function UserInfo({ username, rating, completionRate, joinDate, r
             
               <div className="flex items-center text-neutral-10">
                 <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
-                <span>{completionRate}</span>
-                <span className="text-neutral-7">(Recommended)</span>
+                {completionRate ? (<span>{completionRate}</span> <span className="text-neutral-7">(Recommended)</span> ): <span>{No recommendations}</span>}
               </div>
            
 
