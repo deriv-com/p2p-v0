@@ -231,11 +231,16 @@ export default function PaymentMethodsTab() {
       if (result.success) {
         setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
 
-        setNotification({
-          show: true,
-          message: "Payment method deleted.",
+        toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method deleted.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
-
         fetchPaymentMethods()
       } else {
         setStatusModal({

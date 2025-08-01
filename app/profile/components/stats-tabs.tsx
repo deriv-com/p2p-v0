@@ -47,6 +47,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
+  const { toast } = useToast()
 
   const tabs = [
     { id: "stats", label: "Stats" },
