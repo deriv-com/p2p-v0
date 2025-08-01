@@ -46,6 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(false)
+      setHasValue(e.target.value.length > 0)
       props.onBlur?.(e)
     }
 
@@ -55,12 +56,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     React.useEffect(() => {
-      if (props.value || props.defaultValue) {
-        setHasValue(true)
+      if (props.value !== undefined) {
+        setHasValue(String(props.value).length > 0)
+      } else if (props.defaultValue !== undefined) {
+        setHasValue(String(props.defaultValue).length > 0)
       }
     }, [props.value, props.defaultValue])
 
     if (variant === "floating" && label) {
+      const shouldFloatLabel = isFocused || hasValue
+
       return (
         <div className="relative">
           <input
@@ -77,9 +82,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               "absolute left-3 transition-all duration-200 ease-in-out pointer-events-none",
               "text-gray-500",
-              isFocused || hasValue || props.value || props.defaultValue
-                ? "top-2 text-xs"
-                : "top-1/2 -translate-y-1/2 text-sm",
+              shouldFloatLabel ? "top-2 text-xs" : "top-1/2 -translate-y-1/2 text-sm",
             )}
           >
             {label}
