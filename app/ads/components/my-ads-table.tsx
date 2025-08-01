@@ -82,7 +82,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const formatPaymentMethods = (methods: string[]) => {
     if (!methods || methods.length === 0) return "None"
     return (
-      <div className="space-y-1">
+      <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
             <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
