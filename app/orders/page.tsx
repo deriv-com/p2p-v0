@@ -293,10 +293,10 @@ export default function OrdersPage() {
             </div>
           ) : orders.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16">
-              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-[">
                 <AlertCircle className="h-6 w-6 text-slate-400" />
               </div>
-              <h2 className="text-xl font-medium text-slate-900 mb-2">No orders found</h2>
+              <h2 className="text-lg font-bold text-neutral-10 mb-2">No orders found</h2>
               <p className="text-slate-500">Start by placing your first order.</p>
               <Button size="sm" onClick={() => router.push("/")} className="mt-8">
                 Browse Ads
