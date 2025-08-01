@@ -256,7 +256,8 @@ export default function OrderDetailsPage() {
 
   const orderType = order?.type === "buy" ? "Buy" : "Sell"
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
-  const counterpartyLabel = order?.type === "buy" ? "Seller" : "Buyer"
+  const counterpartyLabel = order?.type === "sell" ? (order?.advert.user.id == USER.id ? "Seller" : "Buyer") :
+  (order?.advert.user.id == USER.id ? "Buyer" : "Seller")
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == USER.id
@@ -419,7 +420,7 @@ export default function OrderDetailsPage() {
                 )}
                 {((order.type === "buy" && order.status === "pending_release" && order.advert.user.id == USER.id) ||
                   (order.type === "sell" && (order.status === "pending_release" || order.status === "timed_out") && order.user.id == USER.id)) && (
-                  <div className="p-4 flex gap-4">
+                  <div className="p-4 flex gap-4 float-right">
                     <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
                       {isConfirmLoading ? (
                         <>
@@ -474,7 +475,7 @@ export default function OrderDetailsPage() {
                       onClick={() => setShowComplaintForm(true)}
                       className="flex-auto md:flex-none"
                     >
-                      Make a complaint
+                      Complain
                     </Button>
                   </div>
                 )}
