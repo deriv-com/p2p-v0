@@ -212,7 +212,6 @@ export default function PaymentMethodsTab() {
         description: "Are you sure you want to delete this payment method?",
         confirmText: "Yes, delete",
         onConfirm: confirmDeletePaymentMethod(id),
-        type: "warning",
       })
   }
 
