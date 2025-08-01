@@ -129,6 +129,7 @@ export default function EditPaymentMethodPanel({
                       placeholder={`Enter ${fieldConfig.display_name.toLowerCase()}`}
                       className="min-h-[120px] resize-none"
                       maxLength={300}
+                      variant="floating"
                     />
                     <div className="flex justify-end mt-1 text-xs text-gray-500">
                       {(fieldValues[fieldName] || "").length}/300
