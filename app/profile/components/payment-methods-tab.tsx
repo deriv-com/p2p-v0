@@ -255,7 +255,7 @@ export default function PaymentMethodsTab() {
   }
 
   const cancelDeletePaymentMethod = () => {
-    setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
+  
   }
 
   const closeStatusModal = () => {
