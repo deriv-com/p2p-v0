@@ -38,6 +38,7 @@ export default function PaymentMethodsTab() {
     title: "",
     message: "",
   })
+  const { showAlert } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
