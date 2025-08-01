@@ -25,7 +25,7 @@ export default function EmptyState({
         <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
             <Image src={icon || "/icons/search-icon.png"} alt="No ads found" width={56} height={56} className="opacity-60" />
             {title && <p className="text-lg text-neutral-10 mt-[24px] font-bold">{title}</p>}
-            {description && <p className="text-base text-neutral-7 mb-[10px]">{description}</p>}
+            {description && <p className="text-base text-neutral-7 my-[10px]">{description}</p>}
             {redirectToAds && <Button onClick={() => router.push("/ads/create")} className="mt-[24px]">
                 + Create ad
             </Button>
