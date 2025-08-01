@@ -67,7 +67,7 @@ export default function OrdersPage() {
       const orders = await OrdersAPI.getOrders(filters)
 
       const ordersArray = Array.isArray(orders.data) ? orders.data : []
-      setOrders(ordersArray)
+      //setOrders(ordersArray)
     } catch (err) {
       console.error("Error fetching orders:", err)
       setError("Failed to load orders. Please try again.")
