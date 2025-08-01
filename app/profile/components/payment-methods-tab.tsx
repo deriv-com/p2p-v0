@@ -15,6 +15,7 @@ import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: string
