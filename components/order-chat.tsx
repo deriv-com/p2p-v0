@@ -129,7 +129,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-auto">
       <div className="flex items-center p-4 border-b">
         {onNavigateToOrderDetails && (
           <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails} className="p-0 mr-[16px] hover:bg-transparent">
