@@ -13,7 +13,7 @@ interface EmptyStateProps {
 }
 
 export default function EmptyState({
-    icon = "/icons/search-icon.png"
+    icon = "/icons/search-icon.png",
     title = "No ads available",
     description,
     className,
