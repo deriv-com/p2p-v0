@@ -39,21 +39,13 @@ const getErrorTitle = (isEditMode: boolean) => {
 
 export default function CreateAdPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
+  //const searchParams = useSearchParams()
   const isMobile = useIsMobile()
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
-  useEffect(() => {
-    const mode = searchParams.get("mode")
-    const id = searchParams.get("id")
 
-    if (mode === "edit" && id) {
-      setLocalEditMode(true)
-      setLocalAdId(id)
-    }
-  }, [searchParams])
 
   const isEditMode = localEditMode
   const adId = localAdId
