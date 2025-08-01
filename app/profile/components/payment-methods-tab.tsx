@@ -211,16 +211,21 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-  
+      showAlert({
+        title: `Delete ${name}?`,
+        description: "Are you sure you want to delete this payment method?",
+        confirmText: "Yes, delete",
+        onConfirm: confirmDeletePaymentMethod(id),
+        type: "warning",
+      })
   }
 
-  const confirmDeletePaymentMethod = async () => {
+  const confirmDeletePaymentMethod = async (id) => {
     try {
       setIsDeleting(true)
-      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(deleteConfirmModal.methodId)
+      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(id)
 
       if (result.success) {
-
         toast({
             description: (
                 <div className="flex items-center gap-2">
@@ -252,10 +257,6 @@ export default function PaymentMethodsTab() {
     } finally {
       setIsDeleting(false)
     }
-  }
-
-  const cancelDeletePaymentMethod = () => {
-  
   }
 
   const closeStatusModal = () => {
