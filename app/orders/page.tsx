@@ -208,7 +208,7 @@ export default function OrdersPage() {
                   <div className="flex flex-row items-center justify-between">
                     {isMobile && (
                       <div className="text-xs">
-                        {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                         {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
                       </div>
                     )}
                     <div className="flex items-center gap-2">
