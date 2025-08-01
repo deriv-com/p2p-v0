@@ -24,10 +24,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const { showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
-  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
   const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({
     show: false,
     message: "",
@@ -127,13 +123,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
   return (
     <div className="relative">
-      {notification.show && (
-        <CustomNotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
-
       <div className="mb-6">
         {isMobile ? (
           <div>
