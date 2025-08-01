@@ -68,8 +68,6 @@ export default function CreateAdPage() {
     subMessage: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
@@ -93,8 +91,6 @@ export default function CreateAdPage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        setIsLoading(true)
-
         if (isEditMode) {
           const editData = localStorage.getItem("editAdData")
           if (editData) {
@@ -139,7 +135,7 @@ export default function CreateAdPage() {
                   .filter((id: number) => !isNaN(id))
 
                 if (typeof window !== "undefined") {
-                  ;(window as any).adPaymentMethodIds = paymentMethodIds
+                  ; (window as any).adPaymentMethodIds = paymentMethodIds
                 }
               }
             }
@@ -161,8 +157,6 @@ export default function CreateAdPage() {
         }
       } catch (error) {
         console.log(error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
