@@ -474,7 +474,7 @@ export default function OrderDetailsPage() {
                       onClick={() => setShowComplaintForm(true)}
                       className="flex-auto md:flex-none"
                     >
-                      Make a complaint
+                      Complain
                     </Button>
                   </div>
                 )}
