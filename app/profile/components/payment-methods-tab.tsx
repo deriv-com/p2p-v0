@@ -45,10 +45,6 @@ export default function PaymentMethodsTab() {
     title: "",
     message: "",
   })
-  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -327,12 +323,6 @@ export default function PaymentMethodsTab() {
 
   return (
     <div>
-      {notification.show && (
-        <CustomNotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
 
       {bankTransfers.length > 0 && (
         <div className="mb-4">
