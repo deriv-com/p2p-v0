@@ -14,6 +14,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { UserStats } from "../api/api-user-stats"
+import { useToast } from "@/hooks/use-toast"
 
 interface StatsTabsProps {
   stats?: any
