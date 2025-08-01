@@ -39,7 +39,7 @@ export default function PaymentMethodsTab() {
     title: "",
     message: "",
   })
-  const { showAlert } = useAlertDialog()
+  const { showDeleteDialog } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -207,7 +207,7 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-      showAlert({
+      showDeleteDialog({
         title: `Delete ${name}?`,
         description: "Are you sure you want to delete this payment method?",
         confirmText: "Yes, delete",
