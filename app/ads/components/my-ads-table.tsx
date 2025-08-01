@@ -245,7 +245,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
 
               return (
                 <TableRow key={index} className={cn("grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive ? "opacity-60" : "")}>
-                  <TableCell className="py-4">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     <div>
                       <div className="mb-1">
                         <span
@@ -272,7 +272,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full whitespace-nowrap">
                     <div className="mb-1">
                       USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
                     </div>
@@ -283,9 +283,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                       ></div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4">{formatPaymentMethods(paymentMethods)}</TableCell>
-                  <TableCell className="py-4">{getStatusBadge(isActive)}</TableCell>
-                  <TableCell className="py-4 text-right">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{getStatusBadge(isActive)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-5 col-span-full whitespace-nowrap">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="p-1 hover:bg-gray-100 rounded-full">
