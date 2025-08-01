@@ -293,7 +293,9 @@ export default function OrdersPage() {
               </Button>
             </div>
           ) : orders.length === 0 ? (
-              <EmptyState icon="/icons/warning-circle.png" title="No orders found" description="Start by placing your first order." />
+              <div className="mt-[40%] md:mt-0">
+                <EmptyState icon="/icons/warning-circle.png" title="No orders found" description="Start by placing your first order." />
+              </div>
           ) : (
             <div>
               <DesktopOrderTable />
