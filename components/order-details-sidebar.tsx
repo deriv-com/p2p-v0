@@ -16,7 +16,8 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
   if (!isOpen) return null
   
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
-  const counterpartyLabel = order?.type === "buy" ? "Seller" : "Buyer"
+  const counterpartyLabel = order?.type === "sell" ? (order?.advert.user.id == USER.id ? "Seller" : "Buyer") :
+  (order?.advert.user.id == USER.id ? "Buyer" : "Seller")
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
