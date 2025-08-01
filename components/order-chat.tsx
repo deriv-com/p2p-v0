@@ -50,7 +50,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
         if (data.payload.data.message) {
           const newMessage = data.payload.data
-          //setMessages((prev) => [...prev, newMessage])
+          setMessages((prev) => [...prev, newMessage])
 
         }
 
@@ -88,7 +88,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
       if (result.success) {
         if (isConnected) {
-          getChatHistory("orders", orderId)
+          //getChatHistory("orders", orderId)
         }
       }
     } catch (error) {
