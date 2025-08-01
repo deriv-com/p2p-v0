@@ -31,7 +31,7 @@ export default function PaymentMethodsTab() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-    const { toast } = useToast()
+  const { toast } = useToast()
 
   const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     show: false,
