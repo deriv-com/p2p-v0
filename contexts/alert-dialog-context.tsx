@@ -106,7 +106,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           </div>
         </div>
       ) : null}
-      <div className="px-8 py-6">
+      <div className="p-6">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4">{config.description}</div>}
         <div className="flex flex-col gap-2 mt-6">
