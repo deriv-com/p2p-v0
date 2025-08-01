@@ -293,7 +293,7 @@ export default function OrdersPage() {
               </Button>
             </div>
           ) : orders.length === 0 ? (
-              <EmptyState title="No orders found" description="Start by placing your first order." />
+              <EmptyState icon="/icons/search-icon.png" title="No orders found" description="Start by placing your first order." />
           ) : (
             <div>
               <DesktopOrderTable />
