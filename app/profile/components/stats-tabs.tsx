@@ -94,9 +94,15 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
 
-        setNotification({
-          show: true,
-          message: "Payment method added.",
+      toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method added.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
 
         setRefreshKey((prev) => prev + 1)
