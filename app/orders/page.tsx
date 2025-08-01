@@ -208,7 +208,7 @@ export default function OrdersPage() {
                   <div className="flex flex-row items-center justify-between">
                     {isMobile && (
                       <div className="text-xs">
-                        {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}
+                         {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
                       </div>
                     )}
                     <div className="flex items-center gap-2">
@@ -240,8 +240,8 @@ export default function OrdersPage() {
     const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
 
     return (
-      <div className="h-[calc(100vh-64px)] flex flex-col">
-        <div className="flex-1">
+      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+        <div className="flex-1 h-full">
           <OrderChat
             orderId={selectedOrder.id}
             counterpartyName={counterpartyName}
