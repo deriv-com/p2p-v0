@@ -84,9 +84,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             {config.cancelText}
           </Button>
           )}
-          <AlertDialogAction onClick={handleConfirm} className="w-full">
+          <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "black"} className="w-full">
             {config.confirmText || "Continue"}
-          </AlertDialogAction>
+          </Button>
         </div>
       </div>
     </>
@@ -115,7 +115,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
             {config.cancelText}
           </Button>
           )}
-          <Button onClick={handleConfirm} variant="black" className="w-full">
+          <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "black"} className="w-full">
             {config.confirmText || "Continue"}
           </Button>
         </div>
