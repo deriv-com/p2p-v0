@@ -43,11 +43,6 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
   useEffect(() => {
     const unsubscribe = subscribe((data) => {
-      if (data && data.payload && data.payload.data) {
-        if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
-          //setMessages(data.payload.data.chat_history)
-        }
-
         if (data.payload.data.message) {
           const newMessage = data.payload.data
           setMessages((prev) => [...prev, newMessage])
