@@ -13,7 +13,6 @@ import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "../api"
 import CustomNotificationBanner from "./ui/custom-notification-banner"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
-import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 
@@ -212,11 +211,7 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-    setDeleteConfirmModal({
-      show: true,
-      methodId: id,
-      methodName: name,
-    })
+  
   }
 
   const confirmDeletePaymentMethod = async () => {
@@ -225,7 +220,6 @@ export default function PaymentMethodsTab() {
       const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(deleteConfirmModal.methodId)
 
       if (result.success) {
-        setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
 
         toast({
             description: (
@@ -419,16 +413,6 @@ export default function PaymentMethodsTab() {
           </div>
         </div>
       )}
- 
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete payment method?"
-        description={`Are you sure you want to delete ${deleteConfirmModal.methodName}? You will not be able to restore it.`}
-        isDeleting={isDeleting}
-        onConfirm={confirmDeletePaymentMethod}
-        onCancel={cancelDeletePaymentMethod}
-      />
-
       {editPanel.show && editPanel.paymentMethod && (
         <EditPaymentMethodPanel
           paymentMethod={editPanel.paymentMethod}
