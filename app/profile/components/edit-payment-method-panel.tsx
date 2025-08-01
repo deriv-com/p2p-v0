@@ -122,10 +122,7 @@ export default function EditPaymentMethodPanel({
           <div className="space-y-4">
             {Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => (
               <div key={fieldName}>
-                /*<label htmlFor={fieldName} className="block text-sm font-medium text-gray-500 mb-2">
-                  {fieldConfig.display_name}
-                  {fieldConfig.required && <span className="text-red-500 ml-1">*</span>}
-                </label>*/
+                
                 {fieldName === "instructions" ? (
                   <div>
                     <Textarea
