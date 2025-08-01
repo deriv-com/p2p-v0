@@ -78,7 +78,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="px-8 py-6">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4">{config.description}</div>}
-        <div className="flex mt-6">
+        <div className="flex flex-col gap-2 mt-6">
          {config.cancelText && (
           <Button onClick={handleCancel} variant="black" className="w-full">
             {config.cancelText}
@@ -109,7 +109,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="px-8 py-6">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4">{config.description}</div>}
-        <div className="mt-6">
+        <div className="flex flex-col gap-2 mt-6">
           {config.cancelText && (
           <Button onClick={handleCancel} variant="black" className="w-full">
             {config.cancelText}
