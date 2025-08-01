@@ -235,7 +235,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {ads.map((ad, index) => {
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
@@ -244,7 +244,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
 
               return (
-                <TableRow key={index} className={cn("border-b", !isActive ? "opacity-60" : "")}>
+                <TableRow key={index} className={cn("grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive ? "opacity-60" : "")}>
                   <TableCell className="py-4">
                     <div>
                       <div className="mb-1">
