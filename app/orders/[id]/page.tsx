@@ -473,7 +473,7 @@ export default function OrderDetailsPage() {
                     <Button
                       variant="outline"
                       onClick={() => setShowComplaintForm(true)}
-                      className="flex-auto md:flex-none"
+                      className="flex-auto md:flex-1"
                     >
                       Complain
                     </Button>
