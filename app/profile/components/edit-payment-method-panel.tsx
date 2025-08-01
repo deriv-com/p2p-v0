@@ -117,12 +117,9 @@ export default function EditPaymentMethodPanel({
     <PanelWrapper onClose={onClose}>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-4">
-          <div className="text-lg font-medium">{paymentMethod.name}</div>
-
           <div className="space-y-4">
             {Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => (
-              <div key={fieldName}>
-                
+              <div key={fieldName}
                 {fieldName === "instructions" ? (
                   <div>
                     <Textarea
