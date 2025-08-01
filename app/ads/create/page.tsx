@@ -471,17 +471,6 @@ export default function CreateAdPage() {
     router.push("/ads")
   }
 
-  if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-          <p className="mt-2 text-gray-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
-
   const isButtonDisabled =
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
