@@ -60,6 +60,8 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
+        const data = methods.map((item) => item.method)
+        setSelectedPaymentMethods(data)
       } catch (error) {
         console.error("Error fetching payment methods:", error)
       } finally {
