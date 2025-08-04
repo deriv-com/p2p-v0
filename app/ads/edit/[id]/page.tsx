@@ -232,7 +232,7 @@ export default function EditAdPage() {
           : { payment_method_ids: selectedPaymentMethodIds }),
       }
 
-      const updateResult = await updateAd(adId, payload)
+      const updateResult = await updateAd(data.id, payload)
 
       if (updateResult.errors && updateResult.errors.length > 0) {
         const errorMessage = formatErrorMessage(updateResult.errors)
