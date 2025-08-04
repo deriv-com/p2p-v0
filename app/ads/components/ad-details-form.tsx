@@ -241,7 +241,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         )}
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Set amount and rate</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Price type</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput
@@ -251,7 +251,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder="Total amount"
+                placeholder={type ==="buy"? "Sell quantity": "Buy quantity"}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
               />
