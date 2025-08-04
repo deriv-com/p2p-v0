@@ -83,7 +83,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
           <label
             className={cn(
-              "absolute left-3 transition-all duration-200 ease-in-out pointer-events-none",
+              "absolute left-4 transition-all duration-200 ease-in-out pointer-events-none",
               "text-[#000000B8]",
               shouldFloatLabel ? "top-2 text-xs" : "top-1/2 -translate-y-1/2 text-sm",
             )}
@@ -92,7 +92,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
           {variant === "floatingCurrency" && currency && (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-medium text-[#000000B8]">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-[#000000B8]">
               {currency}
             </div>
           )}
