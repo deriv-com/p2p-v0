@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useCallback, useState, useMemo } from "react"
+import { useCallback, useEffect, useState, useMemo } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
