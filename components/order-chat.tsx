@@ -51,8 +51,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         if (data.payload.data.message) {
           const newMessage = data.payload.data
           setMessages((prev) => {
-            const exists = prev.some(msg => !msg.sender_is_self);
-            if (exists) return prev;
+            const filtered = prev.filter(msg => !msg.sender_is_self);
             return [...prev, newMessage];
           })
         }
