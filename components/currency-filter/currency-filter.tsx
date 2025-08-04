@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-
+import React from "react"
 import { useState, useMemo, useCallback } from "react"
 import Image from "next/image"
 import { Input } from "@/components/ui/input"
@@ -40,7 +39,7 @@ export function CurrencyFilter({
     }
     const selectedCurrencyItem = filtered.find((currency) => currency.code === selectedCurrency)
     const unselectedCurrencies = filtered.filter((currency) => currency.code !== selectedCurrency)
-    
+
     unselectedCurrencies.sort((a, b) => a.code.localeCompare(b.code))
 
     return selectedCurrencyItem ? [selectedCurrencyItem, ...unselectedCurrencies] : unselectedCurrencies
@@ -118,10 +117,29 @@ export function CurrencyFilter({
     </div>
   )
 
+  const ChevronIcon = () => (
+    <Image
+      src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+      alt={isOpen ? "Collapse" : "Expand"}
+      width={24}
+      height={24}
+      className="ml-2"
+    />
+  )
+
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
+        <SheetTrigger asChild>
+          {React.cloneElement(trigger, {
+            children: (
+              <>
+                {trigger.props.children}
+                <ChevronIcon />
+              </>
+            ),
+          })}
+        </SheetTrigger>
         <SheetContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Choose currency</h3>
@@ -134,7 +152,16 @@ export function CurrencyFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>
+        {React.cloneElement(trigger, {
+          children: (
+            <>
+              {trigger.props.children}
+              <ChevronIcon />
+            </>
+          ),
+        })}
+      </PopoverTrigger>
       <PopoverContent className="w-80 h-80 p-2" align="start">
         <CurrencyList />
       </PopoverContent>

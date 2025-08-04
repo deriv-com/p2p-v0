@@ -1,7 +1,8 @@
 "use client"
 
-import type React from "react"
-
+import React from "react"
+import Image from "next/image"
+import type { ReactElement } from "react"
 import { useCallback, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -17,10 +18,10 @@ export interface MarketFilterOptions {
 
 interface MarketFilterDropdownProps {
   activeTab?: string
-  onApply: (filters: MarketFilterOptions) => void
+  onApply: (filters: MarketFilterOptions, sortBy?: string) => void
   initialFilters: MarketFilterOptions
   initialSortBy: string
-  trigger: React.ReactElement
+  trigger: ReactElement
   hasActiveFilters?: boolean
 }
 
@@ -42,23 +43,20 @@ export default function MarketFilterDropdown({
   }, [initialFilters])
 
   const handleReset = () => {
-            
     if (isMobile) {
-    setSortBy("exchange_rate")
-              onApply({ fromFollowing: false }, "exchange_rate")
+      setSortBy("exchange_rate")
+      onApply({ fromFollowing: false }, "exchange_rate")
     } else {
       onApply({
         fromFollowing: false,
       })
-      }
-
+    }
     setIsOpen(false)
   }
 
   const handleApply = () => {
     if (isMobile) onApply(filters, sortBy)
     else onApply(filters)
-
     setIsOpen(false)
   }
 
@@ -76,6 +74,16 @@ export default function MarketFilterDropdown({
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
   }
+
+  const ChevronIcon = () => (
+    <Image
+      src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+      alt={isOpen ? "Collapse" : "Expand"}
+      width={24}
+      height={24}
+      className="ml-2"
+    />
+  )
 
   const FilterContent = () => (
     <div className="w-full h-full">
@@ -128,7 +136,7 @@ export default function MarketFilterDropdown({
         <Button
           variant="outline"
           onClick={handleReset}
-          className="rounded-full flex-1"
+          className="rounded-full flex-1 bg-transparent"
           size={isMobile ? "default" : "sm"}
         >
           Reset
@@ -149,8 +157,17 @@ export default function MarketFilterDropdown({
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>
           <div className="relative">
-            {trigger}
-            {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
+            {React.cloneElement(trigger, {
+              children: (
+                <>
+                  {trigger.props.children}
+                  <ChevronIcon />
+                </>
+              ),
+            })}
+            {hasActiveFilters && (
+              <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
+            )}
           </div>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
@@ -165,7 +182,16 @@ export default function MarketFilterDropdown({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>
+        {React.cloneElement(trigger, {
+          children: (
+            <>
+              {trigger.props.children}
+              <ChevronIcon />
+            </>
+          ),
+        })}
+      </PopoverTrigger>
       <PopoverContent className="w-fit h-fit p-2" align="start">
         <FilterContent />
       </PopoverContent>

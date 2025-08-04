@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { useCallback, useState, useMemo } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -36,6 +36,16 @@ export default function PaymentMethodsFilter({
   const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
 
+  const ChevronIcon = () => (
+    <Image
+      src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+      alt={isOpen ? "Collapse" : "Expand"}
+      width={24}
+      height={24}
+      className="ml-2"
+    />
+  )
+
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
 
@@ -47,7 +57,7 @@ export default function PaymentMethodsFilter({
   }, [paymentMethods, searchQuery])
 
   const groupedMethods = useMemo(() => {
-     return filteredPaymentMethods.reduce(
+    return filteredPaymentMethods.reduce(
       (acc, method) => {
         const { type } = method
         if (!acc[type]) {
@@ -132,26 +142,26 @@ export default function PaymentMethodsFilter({
       return null
     }
 
-    return Object.entries(groupedMethods).sort(([typeA], [typeB]) =>
-      typeA.localeCompare(typeB)
-    ).map(([type, methods]) => (
-      <div key={type} className="space-y-3">
-        <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
-        <div className="flex flex-wrap gap-2">
-          {methods.map((method) => (
-            <Button
-              key={method.method}
-              onClick={() => handleMethodToggle(method.method)}
-              variant="outline"
-              size="sm"
-              className={getMethodButtonClass(method.method)}
-            >
-              {method.display_name}
-            </Button>
-          ))}
+    return Object.entries(groupedMethods)
+      .sort(([typeA], [typeB]) => typeA.localeCompare(typeB))
+      .map(([type, methods]) => (
+        <div key={type} className="space-y-3">
+          <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
+          <div className="flex flex-wrap gap-2">
+            {methods.map((method) => (
+              <Button
+                key={method.method}
+                onClick={() => handleMethodToggle(method.method)}
+                variant="outline"
+                size="sm"
+                className={getMethodButtonClass(method.method)}
+              >
+                {method.display_name}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
-    ))
+      ))
   }
 
   const FilterContent = () => (
@@ -174,21 +184,23 @@ export default function PaymentMethodsFilter({
         />
       </div>
 
-      {filteredPaymentMethods.length > 0 && <div className="flex items-center space-x-3 mb-4 pb-3">
-        <Checkbox
-          id="select-all"
-          checked={isAllSelected}
-          ref={(el) => {
-            if (el) el.indeterminate = isIndeterminate
-          }}
-          onCheckedChange={handleSelectAll}
-          className="data-[state=checked]:bg-black border-black"
-          disabled={isLoading || filteredPaymentMethods.length === 0}
-        />
-        <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
-          Select all
-        </label>
-      </div>}
+      {filteredPaymentMethods.length > 0 && (
+        <div className="flex items-center space-x-3 mb-4 pb-3">
+          <Checkbox
+            id="select-all"
+            checked={isAllSelected}
+            ref={(el) => {
+              if (el) el.indeterminate = isIndeterminate
+            }}
+            onCheckedChange={handleSelectAll}
+            className="data-[state=checked]:bg-black border-black"
+            disabled={isLoading || filteredPaymentMethods.length === 0}
+          />
+          <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
+            Select all
+          </label>
+        </div>
+      )}
 
       <div className="space-y-4 max-h-60 overflow-y-auto">
         {isLoading ? (
@@ -203,7 +215,12 @@ export default function PaymentMethodsFilter({
       </div>
 
       <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
-        <Button onClick={handleReset} className="flex-1" variant="outline" size={isMobile ? "default" : "sm"}>
+        <Button
+          onClick={handleReset}
+          className="flex-1 bg-transparent"
+          variant="outline"
+          size={isMobile ? "default" : "sm"}
+        >
           Reset
         </Button>
         <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
@@ -216,7 +233,16 @@ export default function PaymentMethodsFilter({
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
+        <SheetTrigger asChild>
+          {React.cloneElement(trigger, {
+            children: (
+              <>
+                {trigger.props.children}
+                <ChevronIcon />
+              </>
+            ),
+          })}
+        </SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Payment method</h3>
@@ -229,7 +255,16 @@ export default function PaymentMethodsFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>
+        {React.cloneElement(trigger, {
+          children: (
+            <>
+              {trigger.props.children}
+              <ChevronIcon />
+            </>
+          ),
+        })}
+      </PopoverTrigger>
       <PopoverContent className="w-80 p-4" align="start">
         <FilterContent />
       </PopoverContent>
