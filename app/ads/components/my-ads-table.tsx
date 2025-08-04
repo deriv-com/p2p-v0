@@ -101,16 +101,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   }
 
   const handleEdit = (ad: Ad) => {
-    const editData = {
-      ...ad,
-      description: ad.description || "",
-    }
-
-    localStorage.setItem("editAdData", JSON.stringify(editData))
-
-    const editUrl = `/ads/create?mode=edit&id=${ad.id}`
-
-    window.location.href = editUrl
+    router.push(`/ads/edit/${ad.id}`)
   }
 
   const handleToggleStatus = async (ad: Ad) => {

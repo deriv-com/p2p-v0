@@ -424,6 +424,36 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
   }
 }
 
+export async function getAdvert(id: string): Promise<MyAd> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      headers,
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user adverts")
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      console.warn("⚠️ Could not parse response as JSON:", e)
+      data = {}
+    }
+
+    return data
+  } catch (error) {
+    console.log(error);
+    return {}
+  }
+}
+
 export const AdsAPI = {
   getCurrencies,
   getUserAdverts,
@@ -432,4 +462,5 @@ export const AdsAPI = {
   createAd,
   updateAd,
   activateAd,
+  getAdvert,
 }

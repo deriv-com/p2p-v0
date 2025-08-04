@@ -1,37 +1,41 @@
 "use client"
 
-import { Suspense, useState, useRef, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import AdDetailsForm from "../components/ad-details-form"
-import PaymentDetailsForm from "../components/payment-details-form"
-import { createAd } from "../api/api-ads"
+import { useState, useRef, useEffect } from "react"
+import { useParams, useRouter } from "next/navigation"
+import AdDetailsForm from "@/app/ads/components/ad-details-form"
+import PaymentDetailsForm from "@/app/ads/components/payment-details-form"
+import { getAdvert, updateAd } from "@/app/ads/api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { ProgressSteps } from "../components/ui/progress-steps"
+import { ProgressSteps } from "@/app/ads/components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
+const getPageTitle = (adType?: string) => {
+  return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
+}
+
 const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
-    return "Creating..."
+    return "Saving..."
   }
 
   if (currentStep === 0) {
     return "Next"
   }
 
-  return "Create Ad"
+  return "Save Details"
 }
 
-export default function CreateAdPage() {
+export default function EditAdPage() {
   const router = useRouter()
+  const { id } = useParams() as { id: string }
   const isMobile = useIsMobile()
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<>({})
+  const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
-  const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
@@ -44,19 +48,64 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
+  const convertToSnakeCase = (str: string): string => {
+    return str
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "")
+  }
+
   useEffect(() => {
-    const checkSelectedPaymentMethods = () => {
-      if (formData.type === "sell" && typeof window !== "undefined") {
-        const selectedIds = (window as any).adPaymentMethodIds || []
-        setHasSelectedPaymentMethods(selectedIds.length > 0)
+    const loadInitialData = async () => {
+      try {
+          const advertData = await getAdvert(id)
+          const { data } = advertData
+
+          if (data) {
+            let paymentMethodNames: string[] = []
+            let paymentMethodIds: number[] = []
+
+            if (data.payment_methods && Array.isArray(data.payment_methods)) {
+              if (data.type === "buy") {
+                paymentMethodNames = data.payment_methods.map((methodName: string) => {
+                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
+                    return methodName
+                  }
+                  return convertToSnakeCase(methodName)
+                })
+              } else {
+                paymentMethodIds = data.payment_method_ids
+                  .map((id: any) => Number(id))
+                  .filter((id: number) => !isNaN(id))
+
+                if (typeof window !== "undefined") {
+                  ; (window as any).adPaymentMethodIds = paymentMethodIds
+                }
+              }
+            }
+
+            const formattedData = {
+              ...data,
+              totalAmount: data.available_amount,
+              fixedRate: Number.parseFloat(data.exchange_rate),
+              minAmount: data.minimum_order_amount,
+              maxAmount: data.maximum_order_amount,
+              paymentMethods: paymentMethodNames,
+              payment_method_ids: paymentMethodIds,
+              instructions: data.description || "",
+            }
+
+            setFormData(formattedData)
+            formDataRef.current = formattedData
+          }
+        
+      } catch (error) {
+        console.log(error)
       }
     }
 
-    checkSelectedPaymentMethods()
-    const interval = setInterval(checkSelectedPaymentMethods, 100)
-
-    return () => clearInterval(interval)
-  }, [formData.type])
+    loadInitialData()
+  }, [])
 
   useEffect(() => {
     const handleAdFormValidation = (e: any) => {
@@ -69,7 +118,6 @@ export default function CreateAdPage() {
     }
 
     const handlePaymentFormValidation = (e: any) => {
-      setPaymentFormValid(e.detail.isValid)
       if (e.detail.isValid) {
         const updatedData = { ...formData, ...e.detail.formData }
         setFormData(updatedData)
@@ -154,36 +202,32 @@ export default function CreateAdPage() {
 
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
+      const payload = {
+        is_active: true,
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        available_amount: finalData.totalAmount || 0,
+        exchange_rate: finalData.fixedRate || 0,
+        exchange_rate_type: "fixed",
+        order_expiry_period: 15,
+        description: finalData.instructions || "",
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIds }),
+      }
 
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: "USD",
-          payment_currency: "IDR",
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed" as const,
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: 15,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
+      const updateResult = await updateAd(data.id, payload)
 
-        const result = await createAd(payload)
-
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        } else {
-          router.push("/ads");
-        }
+      if (updateResult.errors && updateResult.errors.length > 0) {
+        const errorMessage = formatErrorMessage(updateResult.errors)
+        throw new Error(errorMessage)
+      } else {
+        router.push("/ads")
+      }
       
     } catch (error) {
       let errorInfo = {
-        title: "",
+        title: "Failed to update ad",
         message: "Please try again.",
         type: "error" as "error" | "warning",
         actionButtonText: "Update ad",
@@ -265,15 +309,7 @@ export default function CreateAdPage() {
     }
 
     if (currentStep === 1) {
-      if (formData.type === "buy" && !paymentFormValid) {
-        return
-      }
-
-      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        return
-      }
-
-      if (isSubmitting) {
+      if (!adFormValid || isSubmitting) {
         return
       }
     }
@@ -296,14 +332,11 @@ export default function CreateAdPage() {
   }
 
   const isButtonDisabled =
-    isSubmitting ||
-    (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    isSubmitting || !adFormValid ||
     isBottomSheetOpen
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
         <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
@@ -322,7 +355,7 @@ export default function CreateAdPage() {
             )}
             {currentStep === 0 && <div></div>}
             <div className="block md:hidden text-xl-bold text-black text-left">
-              Create new ad
+              {getPageTitle(formData.type)}
             </div>
             <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
@@ -330,7 +363,7 @@ export default function CreateAdPage() {
           </div>
 
           <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            Create new ad
+            {getPageTitle(formData.type)}
           </div>
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
@@ -355,7 +388,7 @@ export default function CreateAdPage() {
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
-                isEditMode={false}
+                isEditMode={true}
               />
             ) : (
               <PaymentDetailsForm
@@ -364,7 +397,7 @@ export default function CreateAdPage() {
                 onClose={handleClose}
                 initialData={formData}
                 isSubmitting={isSubmitting}
-                isEditMode={false}
+                isEditMode={true}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
               />
             )}
@@ -389,6 +422,6 @@ export default function CreateAdPage() {
           </div>
         </div>
       </div>
-    </Suspense>
+    </>
   )
 }
