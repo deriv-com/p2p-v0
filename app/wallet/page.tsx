@@ -12,17 +12,17 @@ export default function WalletPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="min-h-screen bg-background px-[24px]">
         <div className="container mx-auto px-4 py-6">
-          <Tabs defaultValue="my-assets" className="w-full">
+          <Tabs defaultValue="assets" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="my-assets" className="text-sm font-medium">
+              <TabsTrigger value="assets" className="w-full data-[state=active]:font-bold">
                 My Assets
               </TabsTrigger>
-              <TabsTrigger value="transactions" className="text-sm font-medium">
+              <TabsTrigger value="transactions" className="w-full data-[state=active]:font-bold">
                 Transactions
               </TabsTrigger>
             </TabsList>
 
-            <TabsContent value="my-assets" className="mt-0">
+            <TabsContent value="assets" className="mt-0">
               <WalletBalance />
             </TabsContent>
 
