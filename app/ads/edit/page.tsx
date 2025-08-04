@@ -18,9 +18,9 @@ const getPageTitle = (adType?: string) => {
   return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
 }
 
-const getButtonText = ( isSubmitting: boolean, currentStep: number) => {
+const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
-    return isEditMode ? "Saving..." : "Creating..."
+    return "Saving..."
   }
 
   if (currentStep === 0) {
