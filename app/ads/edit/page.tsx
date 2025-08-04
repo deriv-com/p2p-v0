@@ -369,10 +369,6 @@ export default function EditAdPage() {
     }
   }
 
-  const handleModalClose = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
-  }
-
   const handleClose = () => {
     router.push("/ads")
   }
