@@ -1,7 +1,6 @@
 "use client"
 
-import React from "react"
-import type { ReactNode } from "react"
+import type React from "react"
 
 import { useState, useMemo, useCallback } from "react"
 import Image from "next/image"
@@ -41,7 +40,7 @@ export function CurrencyFilter({
     }
     const selectedCurrencyItem = filtered.find((currency) => currency.code === selectedCurrency)
     const unselectedCurrencies = filtered.filter((currency) => currency.code !== selectedCurrency)
-
+    
     unselectedCurrencies.sort((a, b) => a.code.localeCompare(b.code))
 
     return selectedCurrencyItem ? [selectedCurrencyItem, ...unselectedCurrencies] : unselectedCurrencies
@@ -122,24 +121,7 @@ export function CurrencyFilter({
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>
-          {React.cloneElement(trigger as ReactNode, {
-            children: (
-              <>
-                {React.Children.toArray(trigger.props.children).filter(
-                  (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
-                )}
-                <Image
-                  src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-                  alt="Arrow"
-                  width={24}
-                  height={24}
-                  className="ml-2"
-                />
-              </>
-            ),
-          })}
-        </SheetTrigger>
+        <SheetTrigger asChild>{trigger}</SheetTrigger>
         <SheetContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Choose currency</h3>
@@ -152,24 +134,7 @@ export function CurrencyFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
-        {React.cloneElement(trigger as ReactNode, {
-          children: (
-            <>
-              {React.Children.toArray(trigger.props.children).filter(
-                (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
-              )}
-              <Image
-                src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-                alt="Arrow"
-                width={24}
-                height={24}
-                className="ml-2"
-              />
-            </>
-          ),
-        })}
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent className="w-80 h-80 p-2" align="start">
         <CurrencyList />
       </PopoverContent>

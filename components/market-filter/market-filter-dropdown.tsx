@@ -1,7 +1,6 @@
 "use client"
 
-import React from "react"
-import type { ReactElement } from "react"
+import type React from "react"
 
 import { useCallback, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -11,7 +10,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { Label } from "@/components/ui/label"
-import Image from "next/image"
 
 export interface MarketFilterOptions {
   fromFollowing: boolean
@@ -19,10 +17,10 @@ export interface MarketFilterOptions {
 
 interface MarketFilterDropdownProps {
   activeTab?: string
-  onApply: (filters: MarketFilterOptions, sortBy?: string) => void
+  onApply: (filters: MarketFilterOptions) => void
   initialFilters: MarketFilterOptions
   initialSortBy: string
-  trigger: ReactElement
+  trigger: React.ReactElement
   hasActiveFilters?: boolean
 }
 
@@ -44,20 +42,23 @@ export default function MarketFilterDropdown({
   }, [initialFilters])
 
   const handleReset = () => {
+            
     if (isMobile) {
-      setSortBy("exchange_rate")
-      onApply({ fromFollowing: false }, "exchange_rate")
+    setSortBy("exchange_rate")
+              onApply({ fromFollowing: false }, "exchange_rate")
     } else {
       onApply({
         fromFollowing: false,
       })
-    }
+      }
+
     setIsOpen(false)
   }
 
   const handleApply = () => {
     if (isMobile) onApply(filters, sortBy)
     else onApply(filters)
+
     setIsOpen(false)
   }
 
@@ -127,7 +128,7 @@ export default function MarketFilterDropdown({
         <Button
           variant="outline"
           onClick={handleReset}
-          className="rounded-full flex-1 bg-transparent"
+          className="rounded-full flex-1"
           size={isMobile ? "default" : "sm"}
         >
           Reset
@@ -148,25 +149,8 @@ export default function MarketFilterDropdown({
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>
           <div className="relative">
-            {React.cloneElement(trigger, {
-              children: (
-                <>
-                  {React.Children.toArray(trigger.props.children).filter(
-                    (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
-                  )}
-                  <Image
-                    src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-                    alt="Arrow"
-                    width={24}
-                    height={24}
-                    className="ml-2"
-                  />
-                </>
-              ),
-            })}
-            {hasActiveFilters && (
-              <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
-            )}
+            {trigger}
+            {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
           </div>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
@@ -181,24 +165,7 @@ export default function MarketFilterDropdown({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>
-        {React.cloneElement(trigger, {
-          children: (
-            <>
-              {React.Children.toArray(trigger.props.children).filter(
-                (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
-              )}
-              <Image
-                src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-                alt="Arrow"
-                width={24}
-                height={24}
-                className="ml-2"
-              />
-            </>
-          ),
-        })}
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent className="w-fit h-fit p-2" align="start">
         <FilterContent />
       </PopoverContent>
