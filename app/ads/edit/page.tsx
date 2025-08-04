@@ -366,7 +366,7 @@ export default function CreateAdPage() {
       return
     }
 
-    if (currentStep === 1 && isEditMode) {
+    if (currentStep === 1) {
       if (!adFormValid || isSubmitting) {
         return
       }
@@ -396,8 +396,6 @@ export default function CreateAdPage() {
   const isButtonDisabled =
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid && !isEditMode) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods && !isEditMode) ||
     (currentStep === 1 && isEditMode && !adFormValid) ||
     isBottomSheetOpen
 
