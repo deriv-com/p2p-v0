@@ -85,7 +85,7 @@ export default function BuySellPage() {
         type: activeTab,
         account_currency: selectedAccountCurrency,
         currency: currency,
-        paymentMethod: selectedPaymentMethods,
+        paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
         sortBy: sortBy,
       }
 
