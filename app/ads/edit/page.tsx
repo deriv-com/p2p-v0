@@ -263,8 +263,6 @@ export default function EditAdPage() {
       } else {
         router.push("/ads")
       }
-
-      localStorage.removeItem("editAdData")
       
     } catch (error) {
       let errorInfo = {
