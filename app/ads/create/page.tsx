@@ -42,7 +42,7 @@ export default function CreateAdPage() {
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
 
-  const formDataRef = useRef<Partial<AdFormData>>({})
+  const formDataRef = useRef({})
 
   const steps = [
     { title: "Set Type and Price", completed: currentStep > 0 },
@@ -99,7 +99,7 @@ export default function CreateAdPage() {
     }
   }, [formData])
 
-  const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+  const handleAdDetailsNext = (data, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
     formDataRef.current = updatedData
