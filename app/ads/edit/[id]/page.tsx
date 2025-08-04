@@ -61,7 +61,7 @@ export default function EditAdPage() {
       try {
           const advertData = await getAdvert(id)
           const { data } = advertData
-          console.log(advertData);
+          console.log(data);
           if (data) {
             let rateValue = 0
             if (data.rate && data.rate.value) {
