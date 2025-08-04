@@ -34,7 +34,7 @@ export default function CreateAdPage() {
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<>({})
+  const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
@@ -99,7 +99,7 @@ export default function CreateAdPage() {
     }
   }, [formData])
 
-  const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+  const handleAdDetailsNext = (data, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
     formDataRef.current = updatedData
@@ -155,7 +155,7 @@ export default function CreateAdPage() {
     return "There was an error processing your request. Please try again."
   }
 
-  const handlePaymentDetailsSubmit = async (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+  const handlePaymentDetailsSubmit = async (data, errors?: Record<string, string>) => {
     const finalData = { ...formData, ...data }
     formDataRef.current = finalData
 
