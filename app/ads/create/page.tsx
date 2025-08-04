@@ -341,8 +341,7 @@ export default function CreateAdPage() {
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
     (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods && !isEditMode) ||
-    (currentStep === 1 && isEditMode && !adFormValid) ||
+    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
     isBottomSheetOpen
 
   return (
@@ -365,7 +364,7 @@ export default function CreateAdPage() {
             )}
             {currentStep === 0 && <div></div>}
             <div className="block md:hidden text-xl-bold text-black text-left">
-              {getPageTitle(isEditMode, formData.type)}
+              {getPageTitle(false, formData.type)}
             </div>
             <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
@@ -373,7 +372,7 @@ export default function CreateAdPage() {
           </div>
 
           <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            {getPageTitle(isEditMode, formData.type)}
+            {getPageTitle(false, formData.type)}
           </div>
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
