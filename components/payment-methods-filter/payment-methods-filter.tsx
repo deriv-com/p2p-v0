@@ -97,8 +97,7 @@ export default function PaymentMethodsFilter({
     if (!open) {
       setSearchQuery("")
     } else {
-      const allMethodIds = paymentMethods.map((method) => method.method)
-      setTempSelectedMethods(allMethodIds)
+      setTempSelectedMethods(selectedMethods)
     }
   }
 
