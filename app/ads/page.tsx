@@ -158,7 +158,7 @@ export default function AdsPage() {
         {ads.length > 0 && isMobile && (
           <div className="fixed bottom-20 right-4 z-10">
             <Button
-              onClick={() => router.push("/ads/create")}
+              onClick={() => router.push("/ads/edit")}
               variant="cyan"
               size="pill"
               className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
