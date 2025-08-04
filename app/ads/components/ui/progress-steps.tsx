@@ -22,7 +22,7 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
                 index < currentStep
                   ? "bg-black border-black"
                   : index === currentStep
-                    ? "bg-white border-black" // Current step (white with black border)
+                    ? "bg-white border-black"
                     : "bg-white border-gray-300"
               }`}
           >
@@ -42,8 +42,6 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
               </svg>
             )}
           </div>
-
-          {/* Step title */}
           <span
             className={`text-sm mt-2 text-center hidden md:block
               ${index <= currentStep ? "text-black font-medium" : "text-gray-400"}`}
