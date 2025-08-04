@@ -322,7 +322,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="p-4 border-t">
+                <div className="p-4">
                   <Button
                     className="w-full"
                     onClick={handleConfirmPaymentSelection}
