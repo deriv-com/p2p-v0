@@ -67,7 +67,7 @@ export default function EditAdPage() {
             let paymentMethodIds: number[] = []
 
             if (data.payment_methods && Array.isArray(data.payment_methods)) {
-              if (data.type?.toLowerCase() === "buy") {
+              if (data.type === "buy") {
                 paymentMethodNames = data.payment_methods.map((methodName: string) => {
                   if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
                     return methodName
