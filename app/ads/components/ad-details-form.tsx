@@ -289,7 +289,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, minAmount: true }))}
-                placeholder="Minimum order amount"
+                placeholder="Minimum order"
                 error={touched.minAmount && !!formErrors.minAmount}
               />
               {touched.minAmount && formErrors.minAmount && (
