@@ -142,7 +142,6 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto pr-4">
-          <MyAdsHeader hasAds={ads.length > 0} />
           {ads.length > 0 && !isMobile && (
             <Button
               onClick={() => router.push("/ads/create")}
