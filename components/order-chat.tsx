@@ -57,7 +57,7 @@ export default function OrderChat({
         if (data.payload.data.message) {
           const newMessage = data.payload.data
           setMessages((prev) => {
-            const filtered = prev.filter((msg) => !msg.sender_is_self)
+            const filtered = prev.filter((msg) => !msg.sender_is_self && msg.order_id == orderId )
             return [...prev, newMessage]
           })
         }
