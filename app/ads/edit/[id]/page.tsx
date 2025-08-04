@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import AdDetailsForm from "@/app/ads/components/ad-details-form"
 import PaymentDetailsForm from "@/app/ads/components/payment-details-form"
 import { getAdvert, updateAd } from "@/app/ads/api/api-ads"
@@ -30,6 +30,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
 
 export default function EditAdPage() {
   const router = useRouter()
+  const { id } = useParams() as { id: string }
   const isMobile = useIsMobile()
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState({})
