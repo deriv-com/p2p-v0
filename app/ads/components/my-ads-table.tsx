@@ -271,7 +271,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                     </div>
                     <div className="h-2 bg-[#E9ECEF] rounded-xs w-full max-w-[180px] overflow-hidden">
                       <div
-                        className="h-full bg-black rounded-xs"
+                        className="h-full bg-neutral-10 rounded-xs"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>
