@@ -42,7 +42,6 @@ export default function CreateAdPage() {
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
-
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
   const [statusModal, setStatusModal] = useState<StatusModalState>({
@@ -76,7 +75,6 @@ export default function CreateAdPage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-        if (isEditMode) {
           const editData = localStorage.getItem("editAdData")
           if (editData) {
             const parsedData = JSON.parse(editData)
@@ -139,14 +137,14 @@ export default function CreateAdPage() {
             setFormData(formattedData)
             formDataRef.current = formattedData
           }
-        }
+        
       } catch (error) {
         console.log(error)
       }
     }
 
     loadInitialData()
-  }, [isEditMode])
+  }, [])
 
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
