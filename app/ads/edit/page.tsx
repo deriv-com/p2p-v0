@@ -462,33 +462,6 @@ export default function EditAdPage() {
               {getButtonText(isSubmitting, currentStep)}
             </Button>
           </div>
-
-          {statusModal.show && !isMobile && (
-            <StatusModal
-              type={statusModal.type}
-              title={statusModal.title}
-              message={statusModal.message}
-              subMessage={statusModal.subMessage}
-              adType={statusModal.adType}
-              adId={statusModal.adId}
-              onClose={handleModalClose}
-              actionButtonText={statusModal.actionButtonText}
-            />
-          )}
-
-          {statusModal.show && isMobile && (
-            <StatusBottomSheet
-              isOpen={statusModal.show}
-              onClose={handleModalClose}
-              type={statusModal.type}
-              title={statusModal.title}
-              message={statusModal.message}
-              subMessage={statusModal.subMessage}
-              adType={statusModal.adType}
-              adId={statusModal.adId}
-              actionButtonText={statusModal.actionButtonText}
-            />
-          )}
         </div>
       </div>
     </Suspense>
