@@ -86,6 +86,7 @@ export default function EditAdPage() {
             }
 
             const formattedData = {
+              ...data,
               type: data.type,
               totalAmount: data.available_amount,
               fixedRate: Number.parseFloat(data.exchange_rate),
@@ -94,7 +95,6 @@ export default function EditAdPage() {
               paymentMethods: paymentMethodNames,
               payment_method_ids: paymentMethodIds,
               instructions: data.description || "",
-              ...data
             }
 
             setFormData(formattedData)
