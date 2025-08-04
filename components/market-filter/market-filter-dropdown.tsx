@@ -1,8 +1,8 @@
 "use client"
 
 import React from "react"
-import Image from "next/image"
 import type { ReactElement } from "react"
+
 import { useCallback, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { Label } from "@/components/ui/label"
+import Image from "next/image"
 
 export interface MarketFilterOptions {
   fromFollowing: boolean
@@ -74,16 +75,6 @@ export default function MarketFilterDropdown({
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
   }
-
-  const ChevronIcon = () => (
-    <Image
-      src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-      alt={isOpen ? "Collapse" : "Expand"}
-      width={24}
-      height={24}
-      className="ml-2"
-    />
-  )
 
   const FilterContent = () => (
     <div className="w-full h-full">
@@ -160,8 +151,16 @@ export default function MarketFilterDropdown({
             {React.cloneElement(trigger, {
               children: (
                 <>
-                  {trigger.props.children}
-                  <ChevronIcon />
+                  {React.Children.toArray(trigger.props.children).filter(
+                    (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
+                  )}
+                  <Image
+                    src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+                    alt="Arrow"
+                    width={24}
+                    height={24}
+                    className="ml-2"
+                  />
                 </>
               ),
             })}
@@ -186,8 +185,16 @@ export default function MarketFilterDropdown({
         {React.cloneElement(trigger, {
           children: (
             <>
-              {trigger.props.children}
-              <ChevronIcon />
+              {React.Children.toArray(trigger.props.children).filter(
+                (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
+              )}
+              <Image
+                src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+                alt="Arrow"
+                width={24}
+                height={24}
+                className="ml-2"
+              />
             </>
           ),
         })}

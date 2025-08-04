@@ -1,6 +1,8 @@
 "use client"
 
 import React from "react"
+import type { ReactNode } from "react"
+
 import { useState, useMemo, useCallback } from "react"
 import Image from "next/image"
 import { Input } from "@/components/ui/input"
@@ -117,25 +119,23 @@ export function CurrencyFilter({
     </div>
   )
 
-  const ChevronIcon = () => (
-    <Image
-      src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-      alt={isOpen ? "Collapse" : "Expand"}
-      width={24}
-      height={24}
-      className="ml-2"
-    />
-  )
-
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetTrigger asChild>
-          {React.cloneElement(trigger, {
+          {React.cloneElement(trigger as ReactNode, {
             children: (
               <>
-                {trigger.props.children}
-                <ChevronIcon />
+                {React.Children.toArray(trigger.props.children).filter(
+                  (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
+                )}
+                <Image
+                  src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+                  alt="Arrow"
+                  width={24}
+                  height={24}
+                  className="ml-2"
+                />
               </>
             ),
           })}
@@ -153,11 +153,19 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        {React.cloneElement(trigger, {
+        {React.cloneElement(trigger as ReactNode, {
           children: (
             <>
-              {trigger.props.children}
-              <ChevronIcon />
+              {React.Children.toArray(trigger.props.children).filter(
+                (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
+              )}
+              <Image
+                src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+                alt="Arrow"
+                width={24}
+                height={24}
+                className="ml-2"
+              />
             </>
           ),
         })}

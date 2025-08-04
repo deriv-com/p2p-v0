@@ -36,16 +36,6 @@ export default function PaymentMethodsFilter({
   const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
 
-  const ChevronIcon = () => (
-    <Image
-      src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
-      alt={isOpen ? "Collapse" : "Expand"}
-      width={24}
-      height={24}
-      className="ml-2"
-    />
-  )
-
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
 
@@ -237,8 +227,15 @@ export default function PaymentMethodsFilter({
           {React.cloneElement(trigger, {
             children: (
               <>
-                {trigger.props.children}
-                <ChevronIcon />
+                {React.Children.toArray(trigger.props.children).filter(
+                  (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
+                )}
+                <Image
+                  src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+                  alt="Arrow"
+                  width={24}
+                  height={24}
+                />
               </>
             ),
           })}
@@ -259,8 +256,15 @@ export default function PaymentMethodsFilter({
         {React.cloneElement(trigger, {
           children: (
             <>
-              {trigger.props.children}
-              <ChevronIcon />
+              {React.Children.toArray(trigger.props.children).filter(
+                (child) => !(React.isValidElement(child) && child.props.alt === "Arrow"),
+              )}
+              <Image
+                src={isOpen ? "/icons/chevron-up.png" : "/icons/chevron-down.png"}
+                alt="Arrow"
+                width={24}
+                height={24}
+              />
             </>
           ),
         })}
