@@ -1,7 +1,7 @@
 "use client"
 
 import { Suspense, useState, useRef, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
 import StatusModal from "../components/ui/status-modal"
@@ -39,7 +39,6 @@ const getErrorTitle = (isEditMode: boolean) => {
 
 export default function CreateAdPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const isMobile = useIsMobile()
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
