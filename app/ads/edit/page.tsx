@@ -27,11 +27,11 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
     return "Next"
   }
 
-  return isEditMode ? "Save Details"
+  return "Save Details"
 }
 
-const getErrorTitle = (isEditMode: boolean) => {
-  return isEditMode ? "Failed to update ad" : "Failed to create ad"
+const getErrorTitle = () => {
+  return isEditMode ? "Failed to update ad"
 }
 
 export default function CreateAdPage() {
