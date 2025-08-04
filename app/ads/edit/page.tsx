@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 const getPageTitle = (adType?: string) => {
   return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
@@ -30,7 +31,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   return "Save Details"
 }
 
-export default function CreateAdPage() {
+export default function EditAdPage() {
   const router = useRouter()
   const isMobile = useIsMobile()
 
@@ -44,6 +45,7 @@ export default function CreateAdPage() {
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
+  onst { showAlert } = useAlertDialog()
 
   const formDataRef = useRef<Partial<AdFormData>>({})
 
