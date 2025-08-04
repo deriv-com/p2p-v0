@@ -7,7 +7,7 @@ import { WebSocketClient, type WebSocketMessage, type WebSocketOptions } from "@
 interface WebSocketContextType {
   isConnected: boolean
   sendMessage: (message: WebSocketMessage) => void
-  joinChannel: (channel: string) => void
+  joinChannel: (channel: string, id: string) => void
   leaveChannel: (channel: string) => void
   getChatHistory: (channel: string, orderId: string) => void
   reconnect: () => void
