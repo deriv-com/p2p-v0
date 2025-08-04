@@ -129,7 +129,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
       if(order.errors) {
-        const errorCode = orders.errors[0].code
+        const errorCode = order.errors[0].code
         if(errorCode === "OrderExists") {
           showAlert({
             title: "Unable to create an order",
