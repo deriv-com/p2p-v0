@@ -3,17 +3,37 @@
 import WalletBalance from "./components/wallet-balance"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 export default function WalletPage() {
   const isMobile = useIsMobile()
   return (
     <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="min-h-screen bg-background px-[24px]">
-      <div className="container mx-auto px-4 py-6">
-        <WalletBalance />
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      <div className="min-h-screen bg-background px-[24px]">
+        <div className="container mx-auto px-4 py-6">
+          <Tabs defaultValue="my-assets" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
+              <TabsTrigger value="my-assets" className="text-sm font-medium">
+                My Assets
+              </TabsTrigger>
+              <TabsTrigger value="transactions" className="text-sm font-medium">
+                Transactions
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="my-assets" className="mt-0">
+              <WalletBalance />
+            </TabsContent>
+
+            <TabsContent value="transactions" className="mt-0">
+              <div className="text-center py-8 text-muted-foreground">
+                <p>Transaction history will be displayed here</p>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </div>
     </>
   )
 }
