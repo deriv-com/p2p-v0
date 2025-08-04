@@ -375,7 +375,6 @@ export default function EditAdPage() {
     isBottomSheetOpen
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
         <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
@@ -461,6 +460,5 @@ export default function EditAdPage() {
           </div>
         </div>
       </div>
-    </Suspense>
   )
 }
