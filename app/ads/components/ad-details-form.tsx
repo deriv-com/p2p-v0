@@ -281,7 +281,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Transaction limit</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-row md:flex-col items-center">
             <div>
               <CurrencyInput
                 value={minAmount}
@@ -297,7 +297,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                 <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
               )}
             </div>
-            <div className="text-xl font-bold mx-2">~</div>
+            <div className="text-xl mx-2">~</div>
             <div>
               <CurrencyInput
                 value={maxAmount}
