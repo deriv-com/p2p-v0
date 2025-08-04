@@ -31,7 +31,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
 }
 
 const getErrorTitle = () => {
-  return isEditMode ? "Failed to update ad"
+  return "Failed to update ad"
 }
 
 export default function CreateAdPage() {
@@ -41,19 +41,7 @@ export default function CreateAdPage() {
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
-
-  useEffect(() => {
-    const mode = searchParams.get("mode")
-    const id = searchParams.get("id")
-
-    if (mode === "edit" && id) {
-      setLocalEditMode(true)
-      setLocalAdId(id)
-    }
-  }, [searchParams])
-
-  const isEditMode = localEditMode
-  const adId = localAdId
+ 
 
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
