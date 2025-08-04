@@ -94,6 +94,7 @@ export default function EditAdPage() {
               paymentMethods: paymentMethodNames,
               payment_method_ids: paymentMethodIds,
               instructions: data.description || "",
+              ...data
             }
 
             setFormData(formattedData)
