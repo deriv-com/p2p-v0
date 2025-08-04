@@ -9,7 +9,7 @@ export default function MobileFooterNav() {
   const pathname = usePathname()
   const hideOnPaths = ["/orders/"]
 
-  if (hideOnPaths.includes(pathname)) {
+  if (hideOnPaths.startsWith(pathname)) {
     return null
   }
 
