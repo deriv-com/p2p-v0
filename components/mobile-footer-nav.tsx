@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
-  const hideOnPaths = ["/profile/payment-methods", "/profile/stats"]
+  const hideOnPaths = ["/profile/payment-methods", "/profile/stats", "/orders/*"]
 
   if (hideOnPaths.includes(pathname)) {
     return null
