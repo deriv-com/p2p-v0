@@ -361,7 +361,7 @@ export default function CreateAdPage() {
           </div>
 
           <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            {getPageTitle(false, formData.type)}
+            Create new ad
           </div>
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
