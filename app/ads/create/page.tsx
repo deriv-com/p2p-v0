@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
@@ -40,6 +41,7 @@ export default function CreateAdPage() {
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
+  const { showAlert } = useAlertDialog()
 
   const formDataRef = useRef<Partial<AdFormData>>({})
 
@@ -190,15 +192,6 @@ export default function CreateAdPage() {
           const errorMessage = formatErrorMessage(result.errors)
           throw new Error(errorMessage)
         }
-
-        const params = new URLSearchParams({
-          success: "create",
-          type: result.data.type,
-          id: result.data.id,
-          showStatusModal: "true",
-        })
-
-        window.location.href = `/ads?${params.toString()}`
       
     } catch (error) {
       let errorInfo = {
