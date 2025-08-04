@@ -438,20 +438,16 @@ export async function getAdvert(id: string): Promise<MyAd> {
     }
 
     const responseText = await response.text()
-    let apiData
+    let data
 
     try {
-      apiData = JSON.parse(responseText)
+      data = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
-      apiData = { data: {} }
+      console.warn("⚠️ Could not parse response as JSON:", e)
+      data = {}
     }
 
-    if (!apiData || !apiData.data) {
-      return {}
-    }
-
-    return apiData.data
+    return data
   } catch (error) {
     console.log(error);
     return {}
