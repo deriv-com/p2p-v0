@@ -48,9 +48,9 @@ export default function OrderDetailsPage() {
 
   useEffect(() => {
     if (isConnected) {
-      joinChannel("orders")
+      joinChannel("orders", orderId)
     }
-  }, [isConnected])
+  }, [isConnected, orderId])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
@@ -256,8 +256,14 @@ export default function OrderDetailsPage() {
 
   const orderType = order?.type === "buy" ? "Buy" : "Sell"
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
-  const counterpartyLabel = order?.type === "sell" ? (order?.advert.user.id == USER.id ? "Seller" : "Buyer") :
-  (order?.advert.user.id == USER.id ? "Buyer" : "Seller")
+  const counterpartyLabel =
+    order?.type === "sell"
+      ? order?.advert.user.id == USER.id
+        ? "Seller"
+        : "Buyer"
+      : order?.advert.user.id == USER.id
+        ? "Buyer"
+        : "Seller"
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == USER.id
@@ -418,8 +424,12 @@ export default function OrderDetailsPage() {
                     </Button>
                   </div>
                 )}
-                {((order.type === "buy" && (order.status === "pending_release" || order.status === "timed_out") && order.advert.user.id == USER.id) ||
-                  (order.type === "sell" && (order.status === "pending_release" || order.status === "timed_out") && order.user.id == USER.id)) && (
+                {((order.type === "buy" &&
+                  (order.status === "pending_release" || order.status === "timed_out") &&
+                  order.advert.user.id == USER.id) ||
+                  (order.type === "sell" &&
+                    (order.status === "pending_release" || order.status === "timed_out") &&
+                    order.user.id == USER.id)) && (
                   <div className="p-4 flex gap-4 float-right">
                     <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
                       {isConfirmLoading ? (
