@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { cn } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
+import EmptyState from "@/components/empty-state"
 
 export function CurrencyFilter({
   currencies,
@@ -17,7 +18,6 @@ export function CurrencyFilter({
   onCurrencySelect,
   trigger,
   placeholder = "Search",
-  emptyMessage = "Currency is unavailable",
 }: CurrencyFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -97,7 +97,11 @@ export function CurrencyFilter({
 
       <div className="max-h-[85%] overflow-y-auto">
         {filteredCurrencies.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">{emptyMessage}</div>
+          <EmptyState
+                title={`${searchQuery} is unavailable`}
+                description="Select another currency"
+                redirectToAds={false}
+              /> 
         ) : (
           <div className="space-y-1">
             {filteredCurrencies.map((currency) => (

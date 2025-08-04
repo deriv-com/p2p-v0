@@ -39,6 +39,7 @@ export default function BuySellPage() {
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("USD")
+  const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
@@ -51,8 +52,18 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
 
   useEffect(() => {
-    fetchAdverts()
-  }, [activeTab, currency, sortBy, filterOptions, selectedPaymentMethods, selectedAccountCurrency])
+    if (paymentMethodsInitialized) {
+      fetchAdverts()
+    }
+  }, [
+    activeTab,
+    currency,
+    sortBy,
+    filterOptions,
+    selectedPaymentMethods,
+    selectedAccountCurrency,
+    paymentMethodsInitialized,
+  ])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -60,8 +71,12 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
+
+        setSelectedPaymentMethods(methods.map((method) => method.method))
+        setPaymentMethodsInitialized(true)
       } catch (error) {
         console.error("Error fetching payment methods:", error)
+        setPaymentMethodsInitialized(true)
       } finally {
         setIsLoadingPaymentMethods(false)
       }
@@ -85,7 +100,7 @@ export default function BuySellPage() {
         type: activeTab,
         account_currency: selectedAccountCurrency,
         currency: currency,
-        paymentMethod: selectedPaymentMethods,
+        paymentMethod: paymentMethods.length === selectedPaymentMethods.length ? [] : selectedPaymentMethods,
         sortBy: sortBy,
       }
 
@@ -134,6 +149,24 @@ export default function BuySellPage() {
   const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue: string) => {
     setFilterOptions(newFilters)
     if (sortByValue) setSortBy(sortByValue)
+  }
+
+  const getPaymentMethodsDisplayText = () => {
+    if (selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
+      return "Payment (All)"
+    }
+
+    if (selectedPaymentMethods.length === 1) {
+      return (
+        paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name || selectedPaymentMethods[0]
+      )
+    }
+
+    const displayNames = selectedPaymentMethods.map(
+      (methodId) => paymentMethods.find((m) => m.method === methodId)?.display_name || methodId,
+    )
+
+    return "Payment: " + displayNames.join(", ")
   }
 
   useEffect(() => {
@@ -230,11 +263,7 @@ export default function BuySellPage() {
                       className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3 bg-transparent"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
-                        {selectedPaymentMethods.length === 0
-                          ? "Payment (All)"
-                          : selectedPaymentMethods.length === 1
-                            ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name
-                            : selectedPaymentMethods.join(", ")}
+                        {getPaymentMethodsDisplayText()}
                       </span>
                       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
                     </Button>
@@ -250,19 +279,19 @@ export default function BuySellPage() {
                   initialSortBy={sortBy}
                   hasActiveFilters={hasActiveFilters}
                   trigger={
-                      <Button
-                        variant="outline"
-                        className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
-                      >
-                        {isMobile ? (
-                          <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
-                        ) : (
-                          <>
-                            <span>Filter by</span>
-                            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                          </>
-                        )}
-                      </Button>
+                    <Button
+                      variant="outline"
+                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
+                    >
+                      {isMobile ? (
+                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                      ) : (
+                        <>
+                          <span>Filter by</span>
+                          <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                        </>
+                      )}
+                    </Button>
                   }
                 />
               </div>

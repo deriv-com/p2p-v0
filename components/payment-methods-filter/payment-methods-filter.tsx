@@ -9,6 +9,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
+import EmptyState from "@/components/empty-state"
 
 export interface PaymentMethod {
   display_name: string
@@ -47,7 +48,7 @@ export default function PaymentMethodsFilter({
   }, [paymentMethods, searchQuery])
 
   const groupedMethods = useMemo(() => {
-     return filteredPaymentMethods.reduce(
+    return filteredPaymentMethods.reduce(
       (acc, method) => {
         const { type } = method
         if (!acc[type]) {
@@ -102,8 +103,9 @@ export default function PaymentMethodsFilter({
   }
 
   const handleReset = () => {
-    setTempSelectedMethods([])
-    onSelectionChange([])
+    const allMethodIds = paymentMethods.map((method) => method.method)
+    setTempSelectedMethods(allMethodIds)
+    onSelectionChange(allMethodIds)
     setIsOpen(false)
     setSearchQuery("")
   }
@@ -132,26 +134,26 @@ export default function PaymentMethodsFilter({
       return null
     }
 
-    return Object.entries(groupedMethods).sort(([typeA], [typeB]) =>
-      typeA.localeCompare(typeB)
-    ).map(([type, methods]) => (
-      <div key={type} className="space-y-3">
-        <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
-        <div className="flex flex-wrap gap-2">
-          {methods.map((method) => (
-            <Button
-              key={method.method}
-              onClick={() => handleMethodToggle(method.method)}
-              variant="outline"
-              size="sm"
-              className={getMethodButtonClass(method.method)}
-            >
-              {method.display_name}
-            </Button>
-          ))}
+    return Object.entries(groupedMethods)
+      .sort(([typeA], [typeB]) => typeA.localeCompare(typeB))
+      .map(([type, methods]) => (
+        <div key={type} className="space-y-3">
+          <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
+          <div className="flex flex-wrap gap-2">
+            {methods.map((method) => (
+              <Button
+                key={method.method}
+                onClick={() => handleMethodToggle(method.method)}
+                variant="outline"
+                size="sm"
+                className={getMethodButtonClass(method.method)}
+              >
+                {method.display_name}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
-    ))
+      ))
   }
 
   const FilterContent = () => (
@@ -174,28 +176,34 @@ export default function PaymentMethodsFilter({
         />
       </div>
 
-      {filteredPaymentMethods.length > 0 && <div className="flex items-center space-x-3 mb-4 pb-3">
-        <Checkbox
-          id="select-all"
-          checked={isAllSelected}
-          ref={(el) => {
-            if (el) el.indeterminate = isIndeterminate
-          }}
-          onCheckedChange={handleSelectAll}
-          className="data-[state=checked]:bg-black border-black"
-          disabled={isLoading || filteredPaymentMethods.length === 0}
-        />
-        <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
-          Select all
-        </label>
-      </div>}
+      {filteredPaymentMethods.length > 0 && (
+        <div className="flex items-center space-x-3 mb-4 pb-3">
+          <Checkbox
+            id="select-all"
+            checked={isAllSelected}
+            ref={(el) => {
+              if (el) el.indeterminate = isIndeterminate
+            }}
+            onCheckedChange={handleSelectAll}
+            className="data-[state=checked]:bg-black border-black"
+            disabled={isLoading || filteredPaymentMethods.length === 0}
+          />
+          <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
+            Select all
+          </label>
+        </div>
+      )}
 
       <div className="space-y-4 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
-            {searchQuery ? "Payment method unavailable" : "No payment methods available"}
+            {searchQuery ? <EmptyState
+                title="Payment method unavailable"
+                description="Search for a different payment method."
+                redirectToAds={false}
+              /> : "No payment methods available"}
           </div>
         ) : (
           renderPaymentMethodGroups()
@@ -203,7 +211,12 @@ export default function PaymentMethodsFilter({
       </div>
 
       <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
-        <Button onClick={handleReset} className="flex-1" variant="outline" size={isMobile ? "default" : "sm"}>
+        <Button
+          onClick={handleReset}
+          className="flex-1 bg-transparent"
+          variant="outline"
+          size={isMobile ? "default" : "sm"}
+        >
           Reset
         </Button>
         <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
