@@ -102,7 +102,8 @@ export default function PaymentMethodsFilter({
   }
 
   const handleReset = () => {
-    handleSelectAll(true)
+    setTempSelectedMethods([])
+    onSelectionChange([])
     setIsOpen(false)
     setSearchQuery("")
   }
