@@ -23,7 +23,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
     return "Next"
   }
 
-  return isEditMode ? "Save Details" : "Create Ad"
+  return "Create Ad"
 }
 
 const getErrorTitle = (isEditMode: boolean) => {
