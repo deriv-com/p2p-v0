@@ -155,7 +155,7 @@ export default function CreateAdPage() {
     return "There was an error processing your request. Please try again."
   }
 
-  const handlePaymentDetailsSubmit = async (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+  const handlePaymentDetailsSubmit = async (data, errors?: Record<string, string>) => {
     const finalData = { ...formData, ...data }
     formDataRef.current = finalData
 
