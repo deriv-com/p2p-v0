@@ -13,20 +13,17 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
     <div className="flex items-center justify-center mb-12 max-w-xl mx-auto">
       {steps.map((step, index) => (
         <div key={index} className="flex flex-col items-center relative flex-1">
-          {/* Connect lines between steps */}
           {index > 0 && (
             <div className="absolute top-3 right-full h-[1px] bg-gray-300" style={{ right: "50%", left: "-50%" }}></div>
           )}
-
-          {/* Step circle */}
           <div
             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center z-10 
               ${
                 index < currentStep
-                  ? "bg-black border-black" // Completed step (black with checkmark)
+                  ? "bg-black border-black"
                   : index === currentStep
                     ? "bg-white border-black" // Current step (white with black border)
-                    : "bg-white border-gray-300" // Future step (white with gray border)
+                    : "bg-white border-gray-300"
               }`}
           >
             {index < currentStep && (
