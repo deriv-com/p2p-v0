@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
-import { , updateAd } from "../api/api-ads"
+import { updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -260,6 +260,8 @@ export default function EditAdPage() {
       if (updateResult.errors && updateResult.errors.length > 0) {
         const errorMessage = formatErrorMessage(updateResult.errors)
         throw new Error(errorMessage)
+      } else {
+        router.push("/ads")
       }
 
       localStorage.removeItem("editAdData")
