@@ -26,10 +26,6 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   return "Create Ad"
 }
 
-const getErrorTitle = (isEditMode: boolean) => {
-  return  "Failed to create ad"
-}
-
 export default function CreateAdPage() {
   const router = useRouter()
   const isMobile = useIsMobile()
