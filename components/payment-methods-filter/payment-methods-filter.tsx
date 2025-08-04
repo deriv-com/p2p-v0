@@ -33,7 +33,7 @@ export default function PaymentMethodsFilter({
 }: PaymentMethodsFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods || paymentMethods)
+  const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
 
   const filteredPaymentMethods = useMemo(() => {
