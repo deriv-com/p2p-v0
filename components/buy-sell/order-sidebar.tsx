@@ -257,6 +257,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       </p>
                     </div>
                   ) : (
+                    <div>Select up to 3</div>
                     userPaymentMethods.map((method) => (
                       <div
                         key={method.id}
