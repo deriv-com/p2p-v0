@@ -4,8 +4,6 @@ import { Suspense, useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
-import StatusModal from "../components/ui/status-modal"
-import StatusBottomSheet from "../components/ui/status-bottom-sheet"
 import { createAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -29,10 +27,6 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
 export default function CreateAdPage() {
   const router = useRouter()
   const isMobile = useIsMobile()
-
-  const [localEditMode, setLocalEditMode] = useState<boolean>(false)
-  const [localAdId, setLocalAdId] = useState<string | null>(null)
-
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
