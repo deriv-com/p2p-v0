@@ -254,11 +254,11 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
                           <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
-                          <span className="text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                          <span className="text-sm font-normal md:font-bold leading-5 text-gray-900">{rate}</span>
                         </div>
                         <div className="flex items-center justify-between md:justify-normal gap-1">
                           <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limits:</span>
-                          <span className="text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                          <span className="text-sm font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
                             {formatLimits(ad)}
                           </span>
                         </div>
