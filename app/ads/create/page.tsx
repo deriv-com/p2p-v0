@@ -397,7 +397,7 @@ export default function CreateAdPage() {
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
-                isEditMode={isEditMode}
+                isEditMode={false}
               />
             ) : (
               <PaymentDetailsForm
@@ -406,7 +406,7 @@ export default function CreateAdPage() {
                 onClose={handleClose}
                 initialData={formData}
                 isSubmitting={isSubmitting}
-                isEditMode={isEditMode}
+                isEditMode={false}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
               />
             )}
