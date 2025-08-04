@@ -70,7 +70,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
   }
 
-  const joinChannel = (channel: string, id: string) => {
+  const joinChannel = (channel: string, id: number) => {
     if (wsClientRef.current) {
       wsClientRef.current.joinChannel(channel, id)
     }
