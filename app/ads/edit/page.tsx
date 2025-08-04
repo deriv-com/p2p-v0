@@ -14,11 +14,8 @@ import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 
-const getPageTitle = (isEditMode: boolean, adType?: string) => {
-  if (isEditMode && adType) {
+const getPageTitle = (adType?: string) => {
     return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
-  }
-  return "Create new ad"
 }
 
 const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: number) => {
