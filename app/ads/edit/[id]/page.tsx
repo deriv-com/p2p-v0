@@ -118,7 +118,7 @@ export default function EditAdPage() {
               instructions: data.description || "",
             }
 
-            setFormData(data)
+            setFormData(formattedData)
             formDataRef.current = formattedData
           }
         
