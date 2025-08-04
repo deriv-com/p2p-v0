@@ -32,7 +32,6 @@ export default function CreateAdPage() {
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
-
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -41,8 +40,7 @@ export default function CreateAdPage() {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
-
-  const formDataRef = useRef<Partial<AdFormData>>({})
+  const formDataRef = useRef({})
 
   const steps = [
     { title: "Set Type and Price", completed: currentStep > 0 },
