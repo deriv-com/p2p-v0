@@ -39,13 +39,6 @@ export default function CreateAdPage() {
 
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
-  const [statusModal, setStatusModal] = useState<StatusModalState>({
-    show: false,
-    type: "success",
-    title: "",
-    message: "",
-    subMessage: "",
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
