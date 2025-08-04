@@ -291,7 +291,7 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
     })
 
     if (!response.ok) {
-      throw new Error(`Error creating order: ${response.statusText}`)
+     // throw new Error(`Error creating order: ${response.statusText}`)
     }
 
     const responseText = await response.text()
