@@ -58,7 +58,7 @@ export default function EditAdPage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-          const editData = localStorage.getItem("editAdData")
+          const editData = await getAdvert(editData)
           if (editData) {
             const parsedData = JSON.parse(editData)
 

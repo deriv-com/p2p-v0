@@ -466,5 +466,5 @@ export const AdsAPI = {
   createAd,
   updateAd,
   activateAd,
-  getAdvert
+  getAdvert,
 }
