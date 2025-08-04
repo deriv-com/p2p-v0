@@ -324,7 +324,7 @@ export default function CreateAdPage() {
             <div className="block md:hidden text-xl-bold text-black text-left">
               Create new ad
             </div>
-            <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
+            <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2 bg-grayscale-300 px-1">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
             </Button>
           </div>
