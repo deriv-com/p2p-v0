@@ -14,7 +14,7 @@ import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 
-const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: number) => {
+const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
     return isEditMode ? "Saving..." : "Creating..."
   }
