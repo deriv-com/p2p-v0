@@ -240,7 +240,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           </div>
         )}
 
-        <div>
+        <div className="rounded-lg">
           <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Price type</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -305,7 +305,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, maxAmount: true }))}
-                placeholder="Maximum order amount"
+                placeholder="Maximum order"
                 error={touched.maxAmount && !!formErrors.maxAmount}
               />
               {touched.maxAmount && formErrors.maxAmount && (
