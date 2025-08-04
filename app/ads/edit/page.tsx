@@ -394,9 +394,7 @@ export default function CreateAdPage() {
   }
 
   const isButtonDisabled =
-    isSubmitting ||
-    (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && isEditMode && !adFormValid) ||
+    isSubmitting || !adFormValid ||
     isBottomSheetOpen
 
   return (
