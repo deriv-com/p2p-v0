@@ -15,10 +15,10 @@ import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 
 const getPageTitle = (adType?: string) => {
-    return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
+  return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
 }
 
-const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: number) => {
+const getButtonText = ( isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
     return isEditMode ? "Saving..." : "Creating..."
   }
