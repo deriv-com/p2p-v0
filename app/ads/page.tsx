@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
-import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import Image from "next/image"
 import type { MyAd } from "./types"
