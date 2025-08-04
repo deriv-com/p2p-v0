@@ -176,9 +176,9 @@ export default function OrdersPage() {
                       ? order.advert.user.id == USER.id
                         ? "You receive"
                         : "You pay"
-                      : order.advert.user.id == USER.id
-                        ? "You pay"
-                        : "You receive"} 
+                      : order.user.id == USER.id
+                        ? "You receive"
+                        : "You pay"} 
                         {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
