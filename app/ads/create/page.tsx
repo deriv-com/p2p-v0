@@ -190,6 +190,8 @@ export default function CreateAdPage() {
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
           throw new Error(errorMessage)
+        } else {
+          router.push("");
         }
       
     } catch (error) {
