@@ -16,7 +16,7 @@ import Navigation from "@/components/navigation"
 
 const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
-    return  "Creating..."
+    return "Creating..."
   }
 
   if (currentStep === 0) {
@@ -27,7 +27,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
 }
 
 const getErrorTitle = (isEditMode: boolean) => {
-  return isEditMode ? "Failed to update ad" : "Failed to create ad"
+  return  "Failed to create ad"
 }
 
 export default function CreateAdPage() {
