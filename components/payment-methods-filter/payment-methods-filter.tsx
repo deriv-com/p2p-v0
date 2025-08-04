@@ -198,7 +198,11 @@ export default function PaymentMethodsFilter({
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
-            {searchQuery ? "Payment method unavailable" : "No payment methods available"}
+            {searchQuery ? <EmptyState
+                title="Payment method unavailable"
+                description="Search for a different payment method."
+                redirectToAds={false}
+              /> : "No payment methods available"}
           </div>
         ) : (
           renderPaymentMethodGroups()
