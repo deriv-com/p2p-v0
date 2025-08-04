@@ -119,6 +119,15 @@ export default function OrdersPage() {
     }
   }
 
+  const youPayReceiveLabel =
+    order?.type === "buy"
+      ? order?.user.id == USER.id
+        ? "You receive"
+        : "You pay"
+      : order?.user.id == USER.id
+        ? "You pay"
+        : "You receive"
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -172,7 +181,7 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
                   <div className="lg:font-bold">
-                    {order.advert.payment_currency} {formatAmount(order.payment_amount)}
+                    {youPayReceiveLabel}: {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
                 <TableCell className="lg:py-4 px-4 align-top row-start-1">
