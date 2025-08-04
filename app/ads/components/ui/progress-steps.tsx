@@ -44,7 +44,7 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
           </div>
           <span
             className={`text-sm mt-2 text-center hidden md:block
-              ${index <= currentStep ? "text-black font-medium" : "text-gray-400"}`}
+              ${index <= currentStep ? "text-black font-bold" : "text-gray-400"}`}
           >
             {step.title}
           </span>
