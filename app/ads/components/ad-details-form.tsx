@@ -197,7 +197,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
   return (
     <div className="max-w-[800px] mx-auto">
-      <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-10">
+      <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
         {!isEditMode && (
           <div>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
@@ -241,8 +241,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         )}
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Set amount and rate</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-grayscale-200 rounded-lg p-4">
             <div>
               <CurrencyInput
                 value={totalAmount}
@@ -251,9 +251,10 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder="Total amount"
+                placeholder={type ==="sell"? "Sell quantity": "Buy quantity"}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
+                currency={buyCurrency}
               />
               {touched.totalAmount && formErrors.totalAmount && (
                 <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
@@ -279,8 +280,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         </div>
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Transaction limit</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Transaction limit</h3>
+          <div className="flex flex-col md:flex-row items-center">
             <div>
               <CurrencyInput
                 value={minAmount}
@@ -289,14 +290,14 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, minAmount: true }))}
-                placeholder="Minimum order amount"
+                placeholder="Minimum order"
                 error={touched.minAmount && !!formErrors.minAmount}
               />
               {touched.minAmount && formErrors.minAmount && (
                 <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
               )}
             </div>
-
+            <div className="text-xl mx-2">~</div>
             <div>
               <CurrencyInput
                 value={maxAmount}
@@ -305,7 +306,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, maxAmount: true }))}
-                placeholder="Maximum order amount"
+                placeholder="Maximum order"
                 error={touched.maxAmount && !!formErrors.maxAmount}
               />
               {touched.maxAmount && formErrors.maxAmount && (

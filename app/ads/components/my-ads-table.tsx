@@ -224,6 +224,8 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Status
               </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -238,7 +240,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                 <TableRow key={index} className={cn("grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive ? "opacity-60" : "")}>
                   <TableCell className="p-2 lg:p-4 align-top row-start-3 col-span-full whitespace-nowrap">
                     <div>
-                      <div className="mb-1">
+                      <div className="mb-1 flex justify-between md:justify-normal ">
                         <span
                           className={cn(
                             "font-bold text-base leading-6",
@@ -250,13 +252,13 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                         <span className="text-gray-900 text-base font-normal leading-6"> {ad.id}</span>
                       </div>
                       <div className="space-y-1">
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-normal leading-5 text-slate-500">Rate:</span>
-                          <span className="text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                        <div className="flex items-center justify-between md:justify-normal gap-1">
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
+                          <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-normal leading-5 text-slate-500">Limits:</span>
-                          <span className="text-sm font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                        <div className="flex items-center justify-between md:justify-normal gap-1">
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limits:</span>
+                          <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
                             {formatLimits(ad)}
                           </span>
                         </div>
@@ -267,9 +269,9 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                     <div className="mb-1">
                       USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full w-full max-w-[180px] overflow-hidden">
+                    <div className="h-2 bg-[#E9ECEF] rounded-xs w-full overflow-hidden">
                       <div
-                        className="h-full bg-black rounded-full"
+                        className="h-full bg-neutral-10 rounded-xs"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>

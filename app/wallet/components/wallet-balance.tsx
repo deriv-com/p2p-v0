@@ -125,7 +125,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           <RefreshCw className={cn("h-4 w-4 text-gray-400", isRefreshing && "animate-spin")} />
         </Button>
       </div>
-      <p className="mt-1 text-sm font-normal text-muted-foreground text-center leading-[22px]">P2P Wallet</p>
+      <p className="mt-1 text-sm font-normal text-muted-foreground text-center leading-[22px]">Est total assets</p>
 
       <div className="mt-[50px] md:mt-12 flex w-full max-w-md justify-center md:justify-between gap-[50px] md:gap-0 px-4">
         <div className="flex flex-col items-center">

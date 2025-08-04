@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
-import MyAdsHeader from "./components/my-ads-header"
 import { getUserAdverts } from "./api/api-ads"
 import Image from "next/image"
 import type { MyAd } from "./types"
@@ -142,7 +141,6 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto pr-4">
-          <MyAdsHeader hasAds={ads.length > 0} />
           {ads.length > 0 && !isMobile && (
             <Button
               onClick={() => router.push("/ads/create")}

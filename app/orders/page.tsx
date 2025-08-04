@@ -123,7 +123,7 @@ export default function OrdersPage() {
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
         <Table>
-          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-9 shadow-sm">
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
@@ -216,7 +216,7 @@ export default function OrdersPage() {
                         onClick={(e) => {
                           handleChatClick(e, order)
                         }}
-                        className="text-slate-500 hover:text-slate-700"
+                        className="text-slate-500 hover:text-slate-700 z-auto"
                         variant="ghost"
                         size="sm"
                       >
