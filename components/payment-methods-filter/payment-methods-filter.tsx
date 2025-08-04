@@ -77,7 +77,7 @@ export default function PaymentMethodsFilter({
       setTempSelectedMethods(newSelection)
     }
   }
-
+  
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
