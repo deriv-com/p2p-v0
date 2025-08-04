@@ -59,8 +59,8 @@ export default function EditAdPage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-          const data = await getAdvert(id)
-          console.log(data);
+          const advertData = await getAdvert(id)
+          const { data } = advertData
           if (data) {
             let rateValue = 0
             if (data.rate && data.rate.value) {
