@@ -14,13 +14,6 @@ import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 
-const getPageTitle = (isEditMode: boolean, adType?: string) => {
-  if (isEditMode && adType) {
-    return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
-  }
-  return "Create new ad"
-}
-
 const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
     return isEditMode ? "Saving..." : "Creating..."
@@ -364,7 +357,7 @@ export default function CreateAdPage() {
             )}
             {currentStep === 0 && <div></div>}
             <div className="block md:hidden text-xl-bold text-black text-left">
-              {getPageTitle(false, formData.type)}
+              Create new ad
             </div>
             <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
@@ -416,7 +409,7 @@ export default function CreateAdPage() {
             <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
                 <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                  {getButtonText(isEditMode, isSubmitting, currentStep)}
+                  {getButtonText(false, isSubmitting, currentStep)}
                 </Button>
               </div>
             </div>
@@ -426,7 +419,7 @@ export default function CreateAdPage() {
 
           <div className="hidden md:flex justify-end mt-8">
             <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-              {getButtonText(isEditMode, isSubmitting, currentStep)}
+              {getButtonText(false, isSubmitting, currentStep)}
             </Button>
           </div>
 
