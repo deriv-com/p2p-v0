@@ -2,13 +2,13 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import AdDetailsForm from "../components/ad-details-form"
-import PaymentDetailsForm from "../components/payment-details-form"
-import { updateAd } from "../api/api-ads"
+import AdDetailsForm from "@/app/ads/components/ad-details-form"
+import PaymentDetailsForm from "@/app/ads/components/payment-details-form"
+import { updateAd } from "@/app/ads/api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { ProgressSteps } from "../components/ui/progress-steps"
+import { ProgressSteps } from "@/app/ads/components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
