@@ -60,6 +60,7 @@ export default function EditAdPage() {
     const loadInitialData = async () => {
       try {
           const data = await getAdvert(id)
+          console.log(data);
           if (data) {
             let rateValue = 0
             if (data.rate && data.rate.value) {
