@@ -298,7 +298,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             checked={selectedPaymentMethods.includes(method.id)}
                             onCheckedChange={() => handlePaymentMethodToggle(method.id)}
                             disabled={!selectedPaymentMethods.includes(method.id) && selectedPaymentMethods.length >= 3}
-                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
