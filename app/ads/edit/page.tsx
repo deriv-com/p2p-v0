@@ -30,10 +30,6 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   return "Save Details"
 }
 
-const getErrorTitle = () => {
-  return "Failed to update ad"
-}
-
 export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -288,7 +284,7 @@ export default function CreateAdPage() {
       
     } catch (error) {
       let errorInfo = {
-        title: getErrorTitle(isEditMode),
+        title: "Failed to update ad",
         message: "Please try again.",
         type: "error" as "error" | "warning",
         actionButtonText: "Update ad",
