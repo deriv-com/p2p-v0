@@ -83,7 +83,7 @@ export function CurrencyInput({
             </div>
           )}
         </div>
-        <div className="flex items-center justify-center bg-gray-50 px-4 text-gray-500 min-w-[80px] text-center">
+        <div className="flex items-center justify-center bg-slate-50 px-4 text-gray-500 min-w-[80px] text-center">
           {currency}
         </div>
       </div>
