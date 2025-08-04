@@ -158,7 +158,7 @@ export default function BuySellPage() {
 
     if (selectedPaymentMethods.length === 1) {
       return (
-        paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name || selectedPaymentMethods[0]
+        paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name
       )
     }
 
