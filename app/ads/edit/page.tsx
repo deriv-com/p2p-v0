@@ -326,7 +326,7 @@ export default function EditAdPage() {
         }
       }
 
-       showAlert({
+      showAlert({
         title: errorInfo.title,
         description: errorInfo.message,
         confirmText: errorInfo.actionButtonText,
