@@ -337,13 +337,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               <>
                 <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
-                    <div className="flex items-center justify-between">
                       <Input
                         value={amount}
                         onChange={handleAmountChange}
                         type="number"
                         label="Enter amount"
-                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 flex-auto"
+                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
                         step="any"
                         inputMode="decimal"
                         onKeyDown={(e) => {
@@ -353,8 +352,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         }}
                         variant="floatingCurrency"
                         currency={ad.account_currency}
-                    />
-                    </div>
+                      />
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
                   <div className="flex items-center">
