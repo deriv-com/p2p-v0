@@ -153,14 +153,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const handlePaymentMethodToggle = (methodId: string) => {
     setSelectedPaymentMethods((prev) => {
       if (prev.includes(methodId)) {
-        // If already selected, remove it
         return prev.filter((id) => id !== methodId)
       } else {
-        // If not selected and we haven't reached the limit of 3, add it
         if (prev.length < 3) {
           return [...prev, methodId]
         }
-        // If we've reached the limit, don't add it
         return prev
       }
     })
