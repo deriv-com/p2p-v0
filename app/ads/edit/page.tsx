@@ -1,7 +1,7 @@
 "use client"
 
 import { Suspense, useState, useRef, useEffect } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
 import StatusModal from "../components/ui/status-modal"
@@ -273,13 +273,6 @@ export default function CreateAdPage() {
       }
 
       localStorage.removeItem("editAdData")
-
-      const params = new URLSearchParams({
-        success: "update",
-        type: finalData.type || "buy",
-        id: adId,
-        showStatusModal: "true",
-      })
       
     } catch (error) {
       let errorInfo = {
