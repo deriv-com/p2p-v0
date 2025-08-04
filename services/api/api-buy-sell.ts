@@ -53,9 +53,7 @@ export interface PaymentMethod {
  */
 export async function getAdvertisements(params?: SearchParams): Promise<Advertisement[]> {
   try {
-   // const queryParams = new URLSearchParams()
-     const queryParams = {}
-
+   const queryParams = new URLSearchParams()
     if (params) {
       if (params.type) queryParams.append("advert_type", params.type)
       if (params.currency) queryParams.append("payment_currency", params.currency)
@@ -84,7 +82,6 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-      body: JSON.stringify(queryParams),
       //credentials: "include" 
     })
 
