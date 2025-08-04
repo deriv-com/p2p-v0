@@ -181,7 +181,7 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
                   <div className="lg:font-bold">
-                    {youPayReceiveLabel}: {order.advert.payment_currency} {formatAmount(order.payment_amount)}
+                    {youPayReceiveLabel} {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
                 <TableCell className="lg:py-4 px-4 align-top row-start-1">
