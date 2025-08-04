@@ -151,9 +151,19 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handlePaymentMethodToggle = (methodId: string) => {
-    setSelectedPaymentMethods((prev) =>
-      prev.includes(methodId) ? prev.filter((id) => id !== methodId) : [...prev, methodId],
-    )
+    setSelectedPaymentMethods((prev) => {
+      if (prev.includes(methodId)) {
+        // If already selected, remove it
+        return prev.filter((id) => id !== methodId)
+      } else {
+        // If not selected and we haven't reached the limit of 3, add it
+        if (prev.length < 3) {
+          return [...prev, methodId]
+        }
+        // If we've reached the limit, don't add it
+        return prev
+      }
+    })
   }
 
   const handleConfirmPaymentSelection = () => {
@@ -261,7 +271,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     userPaymentMethods.map((method) => (
                       <div
                         key={method.id}
-                        className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
+                        className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
+                          !selectedPaymentMethods.includes(method.id) && selectedPaymentMethods.length >= 3
+                            ? "opacity-50 cursor-not-allowed hover:bg-white"
+                            : ""
+                        }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
@@ -271,21 +285,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                                   method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                                 }`}
                               />
-                              <span className="font-bold text-neutral-7">
-                                {getCategoryDisplayName(method.type)}
-                              </span>
+                              <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
                             </div>
                             <div className="font-normal text-neutral-10">
-                                {maskAccountNumber(method.fields.account.value)}
+                              {maskAccountNumber(method.fields.account.value)}
                             </div>
                             <div className="font-normal text-neutral-7">
-                                {formatPaymentMethodName(method.display_name)}
+                              {formatPaymentMethodName(method.display_name)}
                             </div>
                           </div>
                           <Checkbox
                             checked={selectedPaymentMethods.includes(method.id)}
                             onCheckedChange={() => handlePaymentMethodToggle(method.id)}
-                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px]"
+                            disabled={!selectedPaymentMethods.includes(method.id) && selectedPaymentMethods.length >= 3}
+                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-50 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
