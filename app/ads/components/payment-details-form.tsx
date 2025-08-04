@@ -152,7 +152,6 @@ export default function PaymentDetailsForm({
           <div className="space-y-8">
             {initialData.type === "buy" && (
               <div>
-                <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Select payment method</h3>
                 <div className="mb-6">
                   {isMobile ? (
                     <>
