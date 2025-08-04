@@ -44,13 +44,6 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
-  const convertToSnakeCase = (str: string): string => {
-    return str
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "")
-  }
-
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
       if (formData.type === "sell" && typeof window !== "undefined") {
