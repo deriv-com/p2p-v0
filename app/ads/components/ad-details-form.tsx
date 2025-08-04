@@ -240,9 +240,9 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           </div>
         )}
 
-        <div className="border-grayscale-200 rounded-lg p-4">
+        <div >
           <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Price type</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-grayscale-200 rounded-lg p-4">
             <div>
               <CurrencyInput
                 value={totalAmount}
