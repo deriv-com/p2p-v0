@@ -60,10 +60,10 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.account_currency) queryParams.append("account_currency", params.account_currency)
       if (params.paymentMethod) {
         if (params.paymentMethod.length === 0) {
-          queryParams.append('payment_methods', JSON.stringify([]));
+          queryParams.append('payment_methods[]', JSON.stringify([]));
         } else {
           params.paymentMethod.forEach(method => {
-            queryParams.append('payment_methods', method);
+            queryParams.append('payment_methods[]', method);
           });
         }
       }
