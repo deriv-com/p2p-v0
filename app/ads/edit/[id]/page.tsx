@@ -87,7 +87,6 @@ export default function EditAdPage() {
 
             const formattedData = {
               ...data,
-              type: data.type,
               totalAmount: data.available_amount,
               fixedRate: Number.parseFloat(data.exchange_rate),
               minAmount: data.minimum_order_amount,
