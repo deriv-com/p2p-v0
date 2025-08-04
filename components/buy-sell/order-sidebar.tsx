@@ -46,6 +46,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
   const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
+  const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
 
   useEffect(() => {
     if (isOpen) {
@@ -151,7 +152,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handlePaymentMethodToggle = (methodId: string) => {
-    setSelectedPaymentMethods((prev) => {
+    setTempSelectedPaymentMethods((prev) => {
       if (prev.includes(methodId)) {
         return prev.filter((id) => id !== methodId)
       } else {
@@ -164,6 +165,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleConfirmPaymentSelection = () => {
+    setSelectedPaymentMethods(tempSelectedPaymentMethods)
     setShowPaymentSelection(false)
   }
 
@@ -200,6 +202,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
+
+  const handleShowPaymentSelection = () => {
+    setTempSelectedPaymentMethods(selectedPaymentMethods)
+    setShowPaymentSelection(true)
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -269,7 +276,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       <div
                         key={method.id}
                         className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
-                          !selectedPaymentMethods.includes(method.id) && selectedPaymentMethods.length >= 3
+                          !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
                             ? "opacity-30 cursor-not-allowed hover:bg-white"
                             : ""
                         }`}
@@ -292,9 +299,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             </div>
                           </div>
                           <Checkbox
-                            checked={selectedPaymentMethods.includes(method.id)}
+                            checked={tempSelectedPaymentMethods.includes(method.id)}
                             onCheckedChange={() => handlePaymentMethodToggle(method.id)}
-                            disabled={!selectedPaymentMethods.includes(method.id) && selectedPaymentMethods.length >= 3}
+                            disabled={
+                              !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
+                            }
                             className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                           />
                         </div>
@@ -317,7 +326,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <Button
                     className="w-full"
                     onClick={handleConfirmPaymentSelection}
-                    disabled={selectedPaymentMethods.length === 0}
+                    disabled={tempSelectedPaymentMethods.length === 0}
                     variant="black"
                   >
                     Confirm
@@ -364,7 +373,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => setShowPaymentSelection(true)}
+                      onClick={() => handleShowPaymentSelection()}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
