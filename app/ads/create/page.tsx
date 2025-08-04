@@ -16,7 +16,7 @@ import Navigation from "@/components/navigation"
 
 const getButtonText = (isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
-    return isEditMode ? "Saving..." : "Creating..."
+    return  "Creating..."
   }
 
   if (currentStep === 0) {
