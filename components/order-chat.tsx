@@ -30,7 +30,13 @@ type OrderChatProps = {
   onNavigateToOrderDetails: () => void
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed, onNavigateToOrderDetails }: OrderChatProps) {
+export default function OrderChat({
+  orderId,
+  counterpartyName,
+  counterpartyInitial,
+  isClosed,
+  onNavigateToOrderDetails,
+}: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -39,7 +45,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
 
-  const { isConnected, getChatHistory, subscribe } = useWebSocketContext()
+  const { isConnected, getChatHistory, subscribe, leaveChannel } = useWebSocketContext()
 
   useEffect(() => {
     const unsubscribe = subscribe((data) => {
@@ -51,8 +57,8 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
         if (data.payload.data.message) {
           const newMessage = data.payload.data
           setMessages((prev) => {
-            const filtered = prev.filter(msg => !msg.sender_is_self);
-            return [...prev, newMessage];
+            const filtered = prev.filter((msg) => !msg.sender_is_self)
+            return [...prev, newMessage]
           })
         }
 
@@ -72,6 +78,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       }, 100)
     }
   }, [isConnected, getChatHistory, orderId])
+
+  useEffect(() => {
+    return () => {
+      // Leave the order channel when component unmounts
+      leaveChannel(`orders_${orderId}`)
+    }
+  }, [leaveChannel, orderId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -135,7 +148,12 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
     <div className="flex flex-col h-full overflow-auto">
       <div className="flex items-center p-4 border-b">
         {onNavigateToOrderDetails && (
-          <Button variant="ghost" size="sm" onClick={onNavigateToOrderDetails} className="p-0 mr-[16px] hover:bg-transparent">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onNavigateToOrderDetails}
+            className="p-0 mr-[16px] hover:bg-transparent"
+          >
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
           </Button>
         )}
@@ -198,7 +216,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
                     </div>
                   )}
-                  {(msg.rejected && msg.tags) ? (
+                  {msg.rejected && msg.tags ? (
                     <div className="text-xs text-error-text mt-[4px]">
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
