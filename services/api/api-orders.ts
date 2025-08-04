@@ -303,6 +303,7 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
       throw new Error("Invalid response format")
     }
 
+console.log(data);
     return data
   } catch (error) {
     throw error
