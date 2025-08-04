@@ -343,7 +343,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         onChange={handleAmountChange}
                         type="number"
                         label="Enter amount"
-                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 flex-1"
+                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 flex-auto"
                         step="any"
                         inputMode="decimal"
                         onKeyDown={(e) => {
