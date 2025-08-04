@@ -113,7 +113,7 @@ export default function OrdersPage() {
       setSelectedOrder(order)
       setShowChat(true)
 
-      joinChannel("orders")
+      joinChannel("orders", order.id)
     } else {
       navigateToOrderDetails(order.id)
     }
