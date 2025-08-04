@@ -10,6 +10,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { cn } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
+import EmptyState from "@/components/empty-state"
 
 export function CurrencyFilter({
   currencies,
