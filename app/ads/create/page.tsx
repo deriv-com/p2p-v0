@@ -6,7 +6,6 @@ import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
 import StatusModal from "../components/ui/status-modal"
 import StatusBottomSheet from "../components/ui/status-bottom-sheet"
-import type { AdFormData } from "../types"
 import { createAd, updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
@@ -35,7 +34,7 @@ export default function CreateAdPage() {
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<Partial<AdFormData>>({})
+  const [formData, setFormData] = useState<>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
