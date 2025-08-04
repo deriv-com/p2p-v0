@@ -366,20 +366,6 @@ export default function CreateAdPage() {
       return
     }
 
-    if (currentStep === 1 && !isEditMode) {
-      if (formData.type === "buy" && !paymentFormValid) {
-        return
-      }
-
-      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        return
-      }
-
-      if (isSubmitting) {
-        return
-      }
-    }
-
     if (currentStep === 1 && isEditMode) {
       if (!adFormValid || isSubmitting) {
         return
