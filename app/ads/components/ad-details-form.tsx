@@ -241,7 +241,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         )}
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Price type</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-grayscale-200 rounded-lg p-4">
             <div>
               <CurrencyInput
@@ -279,7 +279,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         </div>
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Transaction limit</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-">Transaction limit</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <CurrencyInput
