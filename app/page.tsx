@@ -52,7 +52,6 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
 
   useEffect(() => {
-    // Only fetch adverts after payment methods have been initialized
     if (paymentMethodsInitialized) {
       fetchAdverts()
     }
@@ -72,12 +71,12 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
-        // Select all payment methods by default on mount
+
         setSelectedPaymentMethods(methods.map((method) => method.method))
         setPaymentMethodsInitialized(true)
       } catch (error) {
         console.error("Error fetching payment methods:", error)
-        setPaymentMethodsInitialized(true) // Set to true even on error to prevent infinite loading
+        setPaymentMethodsInitialized(true)
       } finally {
         setIsLoadingPaymentMethods(false)
       }
