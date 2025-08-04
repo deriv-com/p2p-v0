@@ -273,7 +273,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         key={method.id}
                         className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
                           !selectedPaymentMethods.includes(method.id) && selectedPaymentMethods.length >= 3
-                            ? "opacity-50 cursor-not-allowed hover:bg-white"
+                            ? "opacity-30 cursor-not-allowed hover:bg-white"
                             : ""
                         }`}
                       >
