@@ -79,7 +79,7 @@ export default function PaymentMethodsFilter({
   }
 
   useEffect(() => {
-      if(paymentMethods.length === selectedMethods.length) handleSelectAll(true)
+      if(selectedMethods.length == 0) handleSelectAll(true)
   }, [])
   
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
