@@ -253,7 +253,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center gap-1">
-                          <span className="text-xs font-normal leading-5 text-slate-500">Rate:</span>
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
                           <span className="text-sm font-bold leading-5 text-gray-900">{rate}</span>
                         </div>
                         <div className="flex items-center gap-1">
