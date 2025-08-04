@@ -425,7 +425,7 @@ export default function CreateAdPage() {
           </div>
 
           <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            {getPageTitle(isEditMode, formData.type)}
+            {getPageTitle(formData.type)}
           </div>
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
@@ -450,7 +450,7 @@ export default function CreateAdPage() {
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
-                isEditMode={isEditMode}
+                isEditMode={true}
               />
             ) : (
               <PaymentDetailsForm
