@@ -43,8 +43,8 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
             )}
           </div>
           <span
-            className={`text-sm mt-2 text-center hidden md:block
-              ${index <= currentStep ? "text-slate-1200 font-bold" : "text-grayscale-100"}`}
+            className={`text-sm mt-2 text-center hidden md:block font-bold 
+              ${index <= currentStep ? "text-slate-1200 " : "text-grayscale-100"}`}
           >
             {step.title}
           </span>
