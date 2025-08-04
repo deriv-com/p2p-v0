@@ -106,9 +106,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
       description: ad.description || "",
     }
 
-    localStorage.setItem("editAdData", JSON.stringify(editData))
-
-    const editUrl = `/ads/create?mode=edit&id=${ad.id}`
+    const editUrl = `/ads/edit/${ad.id}`
 
     window.location.href = editUrl
   }
