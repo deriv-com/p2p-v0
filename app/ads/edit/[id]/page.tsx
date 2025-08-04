@@ -132,7 +132,6 @@ export default function EditAdPage() {
     }
 
     const handlePaymentFormValidation = (e: any) => {
-      setPaymentFormValid(e.detail.isValid)
       if (e.detail.isValid) {
         const updatedData = { ...formData, ...e.detail.formData }
         setFormData(updatedData)
