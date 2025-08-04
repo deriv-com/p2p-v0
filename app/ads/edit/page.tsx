@@ -7,38 +7,56 @@ import PaymentDetailsForm from "../components/payment-details-form"
 import StatusModal from "../components/ui/status-modal"
 import StatusBottomSheet from "../components/ui/status-bottom-sheet"
 import type { AdFormData, StatusModalState } from "../types"
-import { updateAd, getUserAdverts } from "../api/api-ads"
+import { createAd, updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 
-const getPageTitle = (adType?: string) => {
-  if (adType) {
+const getPageTitle = (isEditMode: boolean, adType?: string) => {
+  if (isEditMode && adType) {
     return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
   }
-  return "Edit ad"
+  return "Create new ad"
 }
 
-const getButtonText = (isSubmitting: boolean, currentStep: number) => {
+const getButtonText = (isEditMode: boolean, isSubmitting: boolean, currentStep: number) => {
   if (isSubmitting) {
-    return "Saving..."
+    return isEditMode ? "Saving..." : "Creating..."
   }
 
   if (currentStep === 0) {
     return "Next"
   }
 
-  return "Save Details"
+  return isEditMode ? "Save Details" : "Create Ad"
 }
 
-function EditAdPageContent() {
+const getErrorTitle = (isEditMode: boolean) => {
+  return isEditMode ? "Failed to update ad" : "Failed to create ad"
+}
+
+export default function CreateAdPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const isMobile = useIsMobile()
 
-  const adId = searchParams.get("id")
+  const [localEditMode, setLocalEditMode] = useState<boolean>(false)
+  const [localAdId, setLocalAdId] = useState<string | null>(null)
+
+  useEffect(() => {
+    const mode = searchParams.get("mode")
+    const id = searchParams.get("id")
+
+    if (mode === "edit" && id) {
+      setLocalEditMode(true)
+      setLocalAdId(id)
+    }
+  }, [searchParams])
+
+  const isEditMode = localEditMode
+  const adId = localAdId
 
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
@@ -54,13 +72,13 @@ function EditAdPageContent() {
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
 
   const formDataRef = useRef<Partial<AdFormData>>({})
 
   const steps = [
     { title: "Set Type and Price", completed: currentStep > 0 },
     { title: "Set payment details", completed: currentStep > 1 },
+    { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
   const convertToSnakeCase = (str: string): string => {
@@ -71,120 +89,79 @@ function EditAdPageContent() {
   }
 
   useEffect(() => {
-    const loadAdData = async () => {
-      if (!adId) {
-        router.push("/ads")
-        return
-      }
-
+    const loadInitialData = async () => {
       try {
-        setIsLoading(true)
+        if (isEditMode) {
+          const editData = localStorage.getItem("editAdData")
+          if (editData) {
+            const parsedData = JSON.parse(editData)
 
-        // Try to get data from localStorage first (from the ads table)
-        const editData = localStorage.getItem("editAdData")
-        if (editData) {
-          const parsedData = JSON.parse(editData)
-
-          let rateValue = 0
-          if (parsedData.rate && parsedData.rate.value) {
-            const rateMatch = parsedData.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
-            if (rateMatch && rateMatch[2]) {
-              rateValue = Number.parseFloat(rateMatch[2])
-            }
-          }
-
-          let minAmount = 0
-          let maxAmount = 0
-
-          if (typeof parsedData.limits === "string") {
-            const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
-            if (limitsMatch) {
-              minAmount = Number.parseFloat(limitsMatch[2])
-              maxAmount = Number.parseFloat(limitsMatch[3])
-            }
-          } else if (parsedData.limits && typeof parsedData.limits === "object") {
-            minAmount = parsedData.limits.min || 0
-            maxAmount = parsedData.limits.max || 0
-          }
-
-          let paymentMethodNames: string[] = []
-          let paymentMethodIds: number[] = []
-
-          if (parsedData.paymentMethods && Array.isArray(parsedData.paymentMethods)) {
-            if (parsedData.type?.toLowerCase() === "buy") {
-              paymentMethodNames = parsedData.paymentMethods.map((methodName: string) => {
-                if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                  return methodName
-                }
-                return convertToSnakeCase(methodName)
-              })
-            } else {
-              paymentMethodIds = parsedData.paymentMethods
-                .map((id: any) => Number(id))
-                .filter((id: number) => !isNaN(id))
-
-              if (typeof window !== "undefined") {
-                ;(window as any).adPaymentMethodIds = paymentMethodIds
+            let rateValue = 0
+            if (parsedData.rate && parsedData.rate.value) {
+              const rateMatch = parsedData.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
+              if (rateMatch && rateMatch[2]) {
+                rateValue = Number.parseFloat(rateMatch[2])
               }
             }
-          }
 
-          const formattedData: Partial<AdFormData> = {
-            type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
-            totalAmount: parsedData.available?.current || 0,
-            fixedRate: rateValue,
-            minAmount: minAmount,
-            maxAmount: maxAmount,
-            paymentMethods: paymentMethodNames,
-            payment_method_ids: paymentMethodIds,
-            instructions: parsedData.description || "",
-          }
+            let minAmount = 0
+            let maxAmount = 0
 
-          setFormData(formattedData)
-          formDataRef.current = formattedData
-          localStorage.removeItem("editAdData") // Clean up after loading
-        } else {
-          // Fallback: fetch ad data from API
-          const ads = await getUserAdverts()
-          const adToEdit = ads.find((ad) => ad.id === adId)
-
-          if (!adToEdit) {
-            router.push("/ads")
-            return
-          }
-
-          // Parse the ad data similar to above
-          let rateValue = 0
-          if (adToEdit.rate && adToEdit.rate.value) {
-            const rateMatch = adToEdit.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
-            if (rateMatch && rateMatch[2]) {
-              rateValue = Number.parseFloat(rateMatch[2])
+            if (typeof parsedData.limits === "string") {
+              const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
+              if (limitsMatch) {
+                minAmount = Number.parseFloat(limitsMatch[2])
+                maxAmount = Number.parseFloat(limitsMatch[3])
+              }
+            } else if (parsedData.limits && typeof parsedData.limits === "object") {
+              minAmount = parsedData.limits.min || 0
+              maxAmount = parsedData.limits.max || 0
             }
-          }
 
-          const formattedData: Partial<AdFormData> = {
-            type: adToEdit.type?.toLowerCase() === "sell" ? "sell" : "buy",
-            totalAmount: adToEdit.available?.current || 0,
-            fixedRate: rateValue,
-            minAmount: adToEdit.limits?.min || 0,
-            maxAmount: adToEdit.limits?.max || 0,
-            paymentMethods: adToEdit.paymentMethods || [],
-            instructions: adToEdit.description || "",
-          }
+            let paymentMethodNames: string[] = []
+            let paymentMethodIds: number[] = []
 
-          setFormData(formattedData)
-          formDataRef.current = formattedData
+            if (parsedData.paymentMethods && Array.isArray(parsedData.paymentMethods)) {
+              if (parsedData.type?.toLowerCase() === "buy") {
+                paymentMethodNames = parsedData.paymentMethods.map((methodName: string) => {
+                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
+                    return methodName
+                  }
+                  return convertToSnakeCase(methodName)
+                })
+              } else {
+                paymentMethodIds = parsedData.paymentMethods
+                  .map((id: any) => Number(id))
+                  .filter((id: number) => !isNaN(id))
+
+                if (typeof window !== "undefined") {
+                  ; (window as any).adPaymentMethodIds = paymentMethodIds
+                }
+              }
+            }
+
+            const formattedData: Partial<AdFormData> = {
+              type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
+              totalAmount: parsedData.available?.current || 0,
+              fixedRate: rateValue,
+              minAmount: minAmount,
+              maxAmount: maxAmount,
+              paymentMethods: paymentMethodNames,
+              payment_method_ids: paymentMethodIds,
+              instructions: parsedData.description || "",
+            }
+
+            setFormData(formattedData)
+            formDataRef.current = formattedData
+          }
         }
       } catch (error) {
-        console.error("Error loading ad data:", error)
-        router.push("/ads")
-      } finally {
-        setIsLoading(false)
+        console.log(error)
       }
     }
 
-    loadAdData()
-  }, [adId, router])
+    loadInitialData()
+  }, [isEditMode])
 
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
@@ -292,47 +269,80 @@ function EditAdPageContent() {
       return
     }
 
-    if (!adId) {
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
-      const payload = {
-        is_active: true,
-        minimum_order_amount: finalData.minAmount || 0,
-        maximum_order_amount: finalData.maxAmount || 0,
-        available_amount: finalData.totalAmount || 0,
-        exchange_rate: finalData.fixedRate || 0,
-        exchange_rate_type: "fixed",
-        order_expiry_period: 15,
-        description: finalData.instructions || "",
-        ...(finalData.type === "buy"
-          ? { payment_method_names: finalData.paymentMethods || [] }
-          : { payment_method_ids: selectedPaymentMethodIds }),
+      if (isEditMode && adId) {
+        const payload = {
+          is_active: true,
+          minimum_order_amount: finalData.minAmount || 0,
+          maximum_order_amount: finalData.maxAmount || 0,
+          available_amount: finalData.totalAmount || 0,
+          exchange_rate: finalData.fixedRate || 0,
+          exchange_rate_type: "fixed",
+          order_expiry_period: 15,
+          description: finalData.instructions || "",
+          ...(finalData.type === "buy"
+            ? { payment_method_names: finalData.paymentMethods || [] }
+            : { payment_method_ids: selectedPaymentMethodIds }),
+        }
+
+        const updateResult = await updateAd(adId, payload)
+
+        if (updateResult.errors && updateResult.errors.length > 0) {
+          const errorMessage = formatErrorMessage(updateResult.errors)
+          throw new Error(errorMessage)
+        }
+
+        localStorage.removeItem("editAdData")
+
+        const params = new URLSearchParams({
+          success: "update",
+          type: finalData.type || "buy",
+          id: adId,
+          showStatusModal: "true",
+        })
+
+        window.location.href = `/ads?${params.toString()}`
+      } else {
+        const payload = {
+          type: finalData.type || "buy",
+          account_currency: "USD",
+          payment_currency: "IDR",
+          minimum_order_amount: finalData.minAmount || 0,
+          maximum_order_amount: finalData.maxAmount || 0,
+          available_amount: finalData.totalAmount || 0,
+          exchange_rate: finalData.fixedRate || 0,
+          exchange_rate_type: "fixed" as const,
+          description: finalData.instructions || "",
+          is_active: 1,
+          order_expiry_period: 15,
+          ...(finalData.type === "buy"
+            ? { payment_method_names: finalData.paymentMethods || [] }
+            : { payment_method_ids: selectedPaymentMethodIds }),
+        }
+
+        const result = await createAd(payload)
+
+        if (result.errors && result.errors.length > 0) {
+          const errorMessage = formatErrorMessage(result.errors)
+          throw new Error(errorMessage)
+        }
+
+        const params = new URLSearchParams({
+          success: "create",
+          type: result.data.type,
+          id: result.data.id,
+          showStatusModal: "true",
+        })
+
+        window.location.href = `/ads?${params.toString()}`
       }
-
-      const updateResult = await updateAd(adId, payload)
-
-      if (updateResult.errors && updateResult.errors.length > 0) {
-        const errorMessage = formatErrorMessage(updateResult.errors)
-        throw new Error(errorMessage)
-      }
-
-      const params = new URLSearchParams({
-        success: "update",
-        type: finalData.type || "buy",
-        id: adId,
-        showStatusModal: "true",
-      })
-
-      window.location.href = `/ads?${params.toString()}`
     } catch (error) {
       let errorInfo = {
-        title: "Failed to update ad",
+        title: getErrorTitle(isEditMode),
         message: "Please try again.",
         type: "error" as "error" | "warning",
         actionButtonText: "Update ad",
@@ -414,7 +424,7 @@ function EditAdPageContent() {
       return
     }
 
-    if (currentStep === 1) {
+    if (currentStep === 1 && !isEditMode) {
       if (formData.type === "buy" && !paymentFormValid) {
         return
       }
@@ -424,6 +434,12 @@ function EditAdPageContent() {
       }
 
       if (isSubmitting) {
+        return
+      }
+    }
+
+    if (currentStep === 1 && isEditMode) {
+      if (!adFormValid || isSubmitting) {
         return
       }
     }
@@ -452,24 +468,14 @@ function EditAdPageContent() {
   const isButtonDisabled =
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    (currentStep === 1 && formData.type === "buy" && !paymentFormValid && !isEditMode) ||
+    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods && !isEditMode) ||
+    (currentStep === 1 && isEditMode && !adFormValid) ||
     isBottomSheetOpen
 
-  if (isLoading) {
-    return (
-      <div className="fixed w-full h-full bg-white top-0 left-0 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading ad details...</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/ads" title="P2P" />}
+    <Suspense fallback={<div>Loading...</div>}>
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
         <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
           <div
@@ -486,14 +492,16 @@ function EditAdPageContent() {
               </Button>
             )}
             {currentStep === 0 && <div></div>}
-            <div className="block md:hidden text-xl-bold text-black text-left">{getPageTitle(formData.type)}</div>
+            <div className="block md:hidden text-xl-bold text-black text-left">
+              {getPageTitle(isEditMode, formData.type)}
+            </div>
             <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
             </Button>
           </div>
 
           <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            {getPageTitle(formData.type)}
+            {getPageTitle(isEditMode, formData.type)}
           </div>
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
@@ -514,11 +522,20 @@ function EditAdPageContent() {
 
           <div className="relative mb-16 md:mb-0">
             {currentStep === 0 ? (
-              <AdDetailsForm onNext={handleAdDetailsNext} initialData={formData} isEditMode={true} />
+              <AdDetailsForm
+                onNext={handleAdDetailsNext}
+                onClose={handleClose}
+                initialData={formData}
+                isEditMode={isEditMode}
+              />
             ) : (
               <PaymentDetailsForm
+                onBack={() => setCurrentStep(0)}
                 onSubmit={handlePaymentDetailsSubmit}
+                onClose={handleClose}
                 initialData={formData}
+                isSubmitting={isSubmitting}
+                isEditMode={isEditMode}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
               />
             )}
@@ -528,7 +545,7 @@ function EditAdPageContent() {
             <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
                 <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                  {getButtonText(isSubmitting, currentStep)}
+                  {getButtonText(isEditMode, isSubmitting, currentStep)}
                 </Button>
               </div>
             </div>
@@ -538,7 +555,7 @@ function EditAdPageContent() {
 
           <div className="hidden md:flex justify-end mt-8">
             <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-              {getButtonText(isSubmitting, currentStep)}
+              {getButtonText(isEditMode, isSubmitting, currentStep)}
             </Button>
           </div>
 
@@ -570,23 +587,6 @@ function EditAdPageContent() {
           )}
         </div>
       </div>
-    </>
-  )
-}
-
-export default function EditAdPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="fixed w-full h-full bg-white top-0 left-0 flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
-          </div>
-        </div>
-      }
-    >
-      <EditAdPageContent />
     </Suspense>
   )
 }
