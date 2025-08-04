@@ -83,7 +83,7 @@ export default function OrderChat({
     return () => {
       leaveChannel("orders")
     }
-  }, [leaveChannel])
+  }, [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
