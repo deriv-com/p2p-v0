@@ -59,6 +59,14 @@ export default function EditAdPage() {
 
   useEffect(() => {
     const loadInitialData = async () => {
+      const advert = await updateAd(adId)
+
+        if (updateResult.errors && updateResult.errors.length > 0) {
+          const errorMessage = formatErrorMessage(updateResult.errors)
+          throw new Error(errorMessage)
+        } else {
+          router.push("/ads")
+        }
       try {
           const editData = localStorage.getItem("editAdData")
           if (editData) {
