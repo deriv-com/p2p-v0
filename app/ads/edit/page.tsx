@@ -43,7 +43,7 @@ export default function EditAdPage() {
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
 
-  const formDataRef = useRef<Partial<AdFormData>>({})
+  const formDataRef = useRef({})
 
   const steps = [
     { title: "Set Type and Price", completed: currentStep > 0 },
@@ -109,7 +109,7 @@ export default function EditAdPage() {
               }
             }
 
-            const formattedData: Partial<AdFormData> = {
+            const formattedData = {
               type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
               totalAmount: parsedData.available?.current || 0,
               fixedRate: rateValue,
