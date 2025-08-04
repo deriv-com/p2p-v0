@@ -185,39 +185,6 @@ export default function CreateAdPage() {
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
-      if (isEditMode && adId) {
-        const payload = {
-          is_active: true,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed",
-          order_expiry_period: 15,
-          description: finalData.instructions || "",
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
-
-        const updateResult = await updateAd(adId, payload)
-
-        if (updateResult.errors && updateResult.errors.length > 0) {
-          const errorMessage = formatErrorMessage(updateResult.errors)
-          throw new Error(errorMessage)
-        }
-
-        localStorage.removeItem("editAdData")
-
-        const params = new URLSearchParams({
-          success: "update",
-          type: finalData.type || "buy",
-          id: adId,
-          showStatusModal: "true",
-        })
-
-        window.location.href = `/ads?${params.toString()}`
-      } else {
         const payload = {
           type: finalData.type || "buy",
           account_currency: "USD",
@@ -250,10 +217,10 @@ export default function CreateAdPage() {
         })
 
         window.location.href = `/ads?${params.toString()}`
-      }
+      
     } catch (error) {
       let errorInfo = {
-        title: getErrorTitle(isEditMode),
+        title: "",
         message: "Please try again.",
         type: "error" as "error" | "warning",
         actionButtonText: "Update ad",
@@ -335,7 +302,7 @@ export default function CreateAdPage() {
       return
     }
 
-    if (currentStep === 1 && !isEditMode) {
+    if (currentStep === 1) {
       if (formData.type === "buy" && !paymentFormValid) {
         return
       }
@@ -345,12 +312,6 @@ export default function CreateAdPage() {
       }
 
       if (isSubmitting) {
-        return
-      }
-    }
-
-    if (currentStep === 1 && isEditMode) {
-      if (!adFormValid || isSubmitting) {
         return
       }
     }
@@ -379,7 +340,7 @@ export default function CreateAdPage() {
   const isButtonDisabled =
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid && !isEditMode) ||
+    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods && !isEditMode) ||
     (currentStep === 1 && isEditMode && !adFormValid) ||
     isBottomSheetOpen
