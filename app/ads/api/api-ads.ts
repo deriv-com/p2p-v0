@@ -451,47 +451,10 @@ export async function getAdvert(id: string): Promise<MyAd> {
       return {}
     }
 
-    return apiData.data.map((advert: APIAdvert) => {
-      const minAmount = advert.minimum_order_amount || 0
-      const maxAmount = advert.maximum_order_amount || 0
-      const exchangeRate = advert.exchange_rate || 0
-      const currency = advert.payment_currency || "USD"
-      const isActive = advert.is_active !== undefined ? advert.is_active : true
-      const availableAmount = advert.available_amount || 0
-
-      const status: "Active" | "Inactive" = isActive ? "Active" : "Inactive"
-
-      return {
-        id: String(advert.id || "0"),
-        type: ((advert.type || "buy") as string).toLowerCase() === "buy" ? "Buy" : "Sell",
-        rate: {
-          value: `${currency} ${exchangeRate.toFixed(4)}`,
-          percentage: "0.1%",
-          currency: currency,
-        },
-        limits: {
-          min: minAmount,
-          max: maxAmount,
-          currency: "USD",
-        },
-        available: {
-          current: availableAmount,
-          total:
-            Number(availableAmount || 0) +
-            Number(advert.open_order_amount || 0) +
-            Number(advert.completed_order_amount || 0),
-          currency: "USD",
-        },
-        paymentMethods: advert.payment_methods || [],
-        status: status,
-        description: advert.description || "",
-        createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
-        updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
-      }
-    })
+    return apiData.data
   } catch (error) {
     console.log(error);
-    return []
+    return {}
   }
 }
 
