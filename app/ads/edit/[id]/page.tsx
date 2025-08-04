@@ -36,7 +36,6 @@ export default function EditAdPage() {
   const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
-  const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
