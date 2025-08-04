@@ -14,6 +14,7 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { addPaymentMethod } from "@/app/profile/api/api-payment-methods"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -126,7 +127,27 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const numAmount = Number.parseFloat(amount)
 
       const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
-      router.push("/orders/" + order.data.id)
+      if(order.errors) {
+        const errorCode = orders.errors[0].code
+        if(errorCode === "OrderExists") {
+          showAlert({
+            title: "Unable to create an order",
+            description: "Order already exists.",
+            confirmText: "OK",
+            type: "warning",
+          })
+        } else {
+          showAlert({
+            title: "Unable to create an order",
+            description: "There was an error when creating the order. Please try again.",
+            confirmText: "OK",
+            type: "warning",
+          })
+        }
+        
+      } else {
+        router.push("/orders/" + order.data.id)
+      }
     } catch (error) {
       console.error("Failed to create order:", error)
       setOrderStatus({
