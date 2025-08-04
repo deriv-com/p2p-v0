@@ -11,7 +11,6 @@ export default function WalletPage() {
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="min-h-screen bg-background px-[24px]">
-        <div>
           <Tabs defaultValue="assets" className="w-full flex flex-col justify-center items-center">
             <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
               <TabsTrigger value="assets" className="w-full data-[state=active]:font-bold">
@@ -30,7 +29,6 @@ export default function WalletPage() {
               <div className="text-center py-8 text-muted-foreground"></div>
             </TabsContent>
           </Tabs>
-        </div>
       </div>
     </>
   )
