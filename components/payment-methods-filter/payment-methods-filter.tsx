@@ -97,7 +97,6 @@ export default function PaymentMethodsFilter({
     if (!open) {
       setSearchQuery("")
     } else {
-      // Select all payment methods by default when opening
       const allMethodIds = paymentMethods.map((method) => method.method)
       setTempSelectedMethods(allMethodIds)
     }
