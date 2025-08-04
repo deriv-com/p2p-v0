@@ -37,7 +37,6 @@ export default function EditAdPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
 
   const formDataRef = useRef({})
@@ -58,47 +57,47 @@ export default function EditAdPage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-          const advertData = await getAdvert(id)
-          const { data } = advertData
+        const advertData = await getAdvert(id)
+        const { data } = advertData
 
-          if (data) {
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
+        if (data) {
+          let paymentMethodNames: string[] = []
+          let paymentMethodIds: number[] = []
 
-            if (data.payment_methods && Array.isArray(data.payment_methods)) {
-              if (data.type === "buy") {
-                paymentMethodNames = data.payment_methods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
-              } else {
-                paymentMethodIds = data.payment_method_ids
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
-
-                if (typeof window !== "undefined") {
-                  ; (window as any).adPaymentMethodIds = paymentMethodIds
+          if (data.payment_methods && Array.isArray(data.payment_methods)) {
+            if (data.type === "buy") {
+              paymentMethodNames = data.payment_methods.map((methodName: string) => {
+                if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
+                  return methodName
                 }
+                return convertToSnakeCase(methodName)
+              })
+            } else {
+              paymentMethodIds = data.payment_method_ids
+                .map((id: any) => Number(id))
+                .filter((id: number) => !isNaN(id))
+
+              if (typeof window !== "undefined") {
+                ; (window as any).adPaymentMethodIds = paymentMethodIds
               }
             }
-
-            const formattedData = {
-              ...data,
-              totalAmount: data.available_amount,
-              fixedRate: Number.parseFloat(data.exchange_rate),
-              minAmount: data.minimum_order_amount,
-              maxAmount: data.maximum_order_amount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: data.description || "",
-            }
-
-            setFormData(formattedData)
-            formDataRef.current = formattedData
           }
-        
+
+          const formattedData = {
+            ...data,
+            totalAmount: data.available_amount,
+            fixedRate: Number.parseFloat(data.exchange_rate),
+            minAmount: data.minimum_order_amount,
+            maxAmount: data.maximum_order_amount,
+            paymentMethods: paymentMethodNames,
+            payment_method_ids: paymentMethodIds,
+            instructions: data.description || "",
+          }
+
+          setFormData(formattedData)
+          formDataRef.current = formattedData
+        }
+
       } catch (error) {
         console.log(error)
       }
@@ -224,7 +223,7 @@ export default function EditAdPage() {
       } else {
         router.push("/ads")
       }
-      
+
     } catch (error) {
       let errorInfo = {
         title: "Failed to update ad",
