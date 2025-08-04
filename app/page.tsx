@@ -230,7 +230,7 @@ export default function BuySellPage() {
                       className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3 bg-transparent"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
-                        {selectedPaymentMethods.length === 0
+                        {selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length
                           ? "Payment (All)"
                           : selectedPaymentMethods.length === 1
                             ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name
@@ -250,19 +250,19 @@ export default function BuySellPage() {
                   initialSortBy={sortBy}
                   hasActiveFilters={hasActiveFilters}
                   trigger={
-                      <Button
-                        variant="outline"
-                        className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
-                      >
-                        {isMobile ? (
-                          <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
-                        ) : (
-                          <>
-                            <span>Filter by</span>
-                            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                          </>
-                        )}
-                      </Button>
+                    <Button
+                      variant="outline"
+                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
+                    >
+                      {isMobile ? (
+                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                      ) : (
+                        <>
+                          <span>Filter by</span>
+                          <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                        </>
+                      )}
+                    </Button>
                   }
                 />
               </div>
