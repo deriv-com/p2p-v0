@@ -256,7 +256,6 @@ export default function CreateAdPage() {
         title: errorInfo.title,
         description: errorInfo.message,
         confirmText: errorInfo.actionButtonText,
-        onConfirm: handleCloseErrorModal,
         type: errorInfo.type,
       })
     } finally {
