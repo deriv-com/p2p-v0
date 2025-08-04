@@ -342,7 +342,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         value={amount}
                         onChange={handleAmountChange}
                         type="number"
-                        placeholder="Enter amount"
+                        label="Enter amount"
                         className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                         step="any"
                         inputMode="decimal"
@@ -351,7 +351,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             e.preventDefault()
                           }
                         }}
-                        va
+                        variant="floating"
                       />
                       <span className="text-gray-500 hidden">{ad.account_currency}</span>
                     </div>
