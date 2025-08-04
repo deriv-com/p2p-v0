@@ -97,7 +97,11 @@ export function CurrencyFilter({
 
       <div className="max-h-[85%] overflow-y-auto">
         {filteredCurrencies.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">{emptyMessage}</div>
+          <EmptyState
+                title={`${searchQuery} is unavailable`}
+                description="Select another currency"
+                redirectToAds={false}
+              /> 
         ) : (
           <div className="space-y-1">
             {filteredCurrencies.map((currency) => (
