@@ -31,8 +31,6 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
 export default function EditAdPage() {
   const router = useRouter()
   const isMobile = useIsMobile()
-  const [localEditMode, setLocalEditMode] = useState<boolean>(false)
-  const [localAdId, setLocalAdId] = useState<string | null>(null)
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
