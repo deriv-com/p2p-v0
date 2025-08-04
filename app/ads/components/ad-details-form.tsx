@@ -254,6 +254,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                 placeholder={type ==="sell"? "Sell quantity": "Buy quantity"}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
+                currency={type ==="sell"? sellCurrency : buyCurrency}
               />
               {touched.totalAmount && formErrors.totalAmount && (
                 <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
