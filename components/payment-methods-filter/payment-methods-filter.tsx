@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useCallback, useEffect, useState, useMemo } from "react"
+import { useCallback, useState, useMemo } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -77,13 +77,6 @@ export default function PaymentMethodsFilter({
       setTempSelectedMethods(newSelection)
     }
   }
-
-  useEffect(() => {
-      if(selectedMethods.length == 0) {
-         const filteredMethods = paymentMethods.map((m) => m.method)
-         setTempSelectedMethods(filteredMethods)
-      }
-  }, [])
   
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
