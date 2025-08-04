@@ -166,7 +166,7 @@ export default function BuySellPage() {
       (methodId) => paymentMethods.find((m) => m.method === methodId)?.display_name || methodId,
     )
 
-    return displayNames.join(", ")
+    return "Payment: " + displayNames.join(", ")
   }
 
   useEffect(() => {
