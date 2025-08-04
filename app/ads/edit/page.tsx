@@ -1,6 +1,6 @@
 "use client"
 
-import { Suspense, useState, useRef, useEffect } from "react"
+import {  useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
