@@ -4,8 +4,6 @@ import { Suspense, useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
-import StatusModal from "../components/ui/status-modal"
-import StatusBottomSheet from "../components/ui/status-bottom-sheet"
 import type { AdFormData, StatusModalState } from "../types"
 import { createAd, updateAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -45,7 +43,7 @@ export default function EditAdPage() {
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
-  onst { showAlert } = useAlertDialog()
+  const { showAlert } = useAlertDialog()
 
   const formDataRef = useRef<Partial<AdFormData>>({})
 
@@ -328,12 +326,11 @@ export default function EditAdPage() {
         }
       }
 
-      setStatusModal({
-        show: true,
-        type: errorInfo.type,
+       showAlert({
         title: errorInfo.title,
-        message: errorInfo.message,
-        actionButtonText: errorInfo.actionButtonText,
+        description: errorInfo.message,
+        confirmText: errorInfo.actionButtonText,
+        type: errorInfo.type,
       })
     } finally {
       setIsSubmitting(false)
