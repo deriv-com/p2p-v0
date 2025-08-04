@@ -44,19 +44,6 @@ export default function CreateAdPage() {
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
   const [localAdId, setLocalAdId] = useState<string | null>(null)
 
-  useEffect(() => {
-    const mode = searchParams.get("mode")
-    const id = searchParams.get("id")
-
-    if (mode === "edit" && id) {
-      setLocalEditMode(true)
-      setLocalAdId(id)
-    }
-  }, [searchParams])
-
-  const isEditMode = localEditMode
-  const adId = localAdId
-
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
   const [statusModal, setStatusModal] = useState<StatusModalState>({
@@ -86,81 +73,6 @@ export default function CreateAdPage() {
       .replace(/\s+/g, "_")
       .replace(/[^a-z0-9_]/g, "")
   }
-
-  useEffect(() => {
-    const loadInitialData = async () => {
-      try {
-        if (isEditMode) {
-          const editData = localStorage.getItem("editAdData")
-          if (editData) {
-            const parsedData = JSON.parse(editData)
-
-            let rateValue = 0
-            if (parsedData.rate && parsedData.rate.value) {
-              const rateMatch = parsedData.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
-              if (rateMatch && rateMatch[2]) {
-                rateValue = Number.parseFloat(rateMatch[2])
-              }
-            }
-
-            let minAmount = 0
-            let maxAmount = 0
-
-            if (typeof parsedData.limits === "string") {
-              const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
-              if (limitsMatch) {
-                minAmount = Number.parseFloat(limitsMatch[2])
-                maxAmount = Number.parseFloat(limitsMatch[3])
-              }
-            } else if (parsedData.limits && typeof parsedData.limits === "object") {
-              minAmount = parsedData.limits.min || 0
-              maxAmount = parsedData.limits.max || 0
-            }
-
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
-
-            if (parsedData.paymentMethods && Array.isArray(parsedData.paymentMethods)) {
-              if (parsedData.type?.toLowerCase() === "buy") {
-                paymentMethodNames = parsedData.paymentMethods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
-              } else {
-                paymentMethodIds = parsedData.paymentMethods
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
-
-                if (typeof window !== "undefined") {
-                  ; (window as any).adPaymentMethodIds = paymentMethodIds
-                }
-              }
-            }
-
-            const formattedData: Partial<AdFormData> = {
-              type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
-              totalAmount: parsedData.available?.current || 0,
-              fixedRate: rateValue,
-              minAmount: minAmount,
-              maxAmount: maxAmount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: parsedData.description || "",
-            }
-
-            setFormData(formattedData)
-            formDataRef.current = formattedData
-          }
-        }
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
-    loadInitialData()
-  }, [isEditMode])
 
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
