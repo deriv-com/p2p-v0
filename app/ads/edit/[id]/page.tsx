@@ -59,13 +59,11 @@ export default function EditAdPage() {
   useEffect(() => {
     const loadInitialData = async () => {
       try {
-          const editData = await getAdvert(editData)
-          if (editData) {
-            const parsedData = JSON.parse(editData)
-
+          const data = await getAdvert(id)
+          if (data) {
             let rateValue = 0
-            if (parsedData.rate && parsedData.rate.value) {
-              const rateMatch = parsedData.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
+            if (data.rate && data.rate.value) {
+              const rateMatch = data.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
               if (rateMatch && rateMatch[2]) {
                 rateValue = Number.parseFloat(rateMatch[2])
               }
@@ -74,30 +72,30 @@ export default function EditAdPage() {
             let minAmount = 0
             let maxAmount = 0
 
-            if (typeof parsedData.limits === "string") {
-              const limitsMatch = parsedData.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
+            if (typeof data.limits === "string") {
+              const limitsMatch = data.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
               if (limitsMatch) {
                 minAmount = Number.parseFloat(limitsMatch[2])
                 maxAmount = Number.parseFloat(limitsMatch[3])
               }
-            } else if (parsedData.limits && typeof parsedData.limits === "object") {
-              minAmount = parsedData.limits.min || 0
-              maxAmount = parsedData.limits.max || 0
+            } else if (data.limits && typeof data.limits === "object") {
+              minAmount = data.limits.min || 0
+              maxAmount = data.limits.max || 0
             }
 
             let paymentMethodNames: string[] = []
             let paymentMethodIds: number[] = []
 
-            if (parsedData.paymentMethods && Array.isArray(parsedData.paymentMethods)) {
-              if (parsedData.type?.toLowerCase() === "buy") {
-                paymentMethodNames = parsedData.paymentMethods.map((methodName: string) => {
+            if (data.paymentMethods && Array.isArray(data.paymentMethods)) {
+              if (data.type?.toLowerCase() === "buy") {
+                paymentMethodNames = data.paymentMethods.map((methodName: string) => {
                   if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
                     return methodName
                   }
                   return convertToSnakeCase(methodName)
                 })
               } else {
-                paymentMethodIds = parsedData.paymentMethods
+                paymentMethodIds = data.paymentMethods
                   .map((id: any) => Number(id))
                   .filter((id: number) => !isNaN(id))
 
@@ -108,14 +106,14 @@ export default function EditAdPage() {
             }
 
             const formattedData = {
-              type: parsedData.type?.toLowerCase() === "sell" ? "sell" : "buy",
-              totalAmount: parsedData.available?.current || 0,
+              type: data.type?.toLowerCase() === "sell" ? "sell" : "buy",
+              totalAmount: data.available?.current || 0,
               fixedRate: rateValue,
               minAmount: minAmount,
               maxAmount: maxAmount,
               paymentMethods: paymentMethodNames,
               payment_method_ids: paymentMethodIds,
-              instructions: parsedData.description || "",
+              instructions: data.description || "",
             }
 
             setFormData(formattedData)
