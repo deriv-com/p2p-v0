@@ -191,7 +191,7 @@ export default function CreateAdPage() {
           const errorMessage = formatErrorMessage(result.errors)
           throw new Error(errorMessage)
         } else {
-          router.push("");
+          router.push("/ads");
         }
       
     } catch (error) {
