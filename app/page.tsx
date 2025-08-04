@@ -151,6 +151,24 @@ export default function BuySellPage() {
     if (sortByValue) setSortBy(sortByValue)
   }
 
+  const getPaymentMethodsDisplayText = () => {
+    if (selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
+      return "Payment (All)"
+    }
+
+    if (selectedPaymentMethods.length === 1) {
+      return (
+        paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name || selectedPaymentMethods[0]
+      )
+    }
+
+    const displayNames = selectedPaymentMethods.map(
+      (methodId) => paymentMethods.find((m) => m.method === methodId)?.display_name || methodId,
+    )
+
+    return displayNames.join(", ")
+  }
+
   useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
@@ -245,11 +263,7 @@ export default function BuySellPage() {
                       className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3 bg-transparent"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
-                        {selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length
-                          ? "Payment (All)"
-                          : selectedPaymentMethods.length === 1
-                            ? paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name
-                            : selectedPaymentMethods.join(", ")}
+                        {getPaymentMethodsDisplayText()}
                       </span>
                       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
                     </Button>
