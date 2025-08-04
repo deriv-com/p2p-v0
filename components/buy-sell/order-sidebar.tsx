@@ -237,6 +237,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             {showPaymentSelection ? (
               <div className="flex flex-col h-full">
                 <div className="flex-1 p-4 space-y-4">
+                  {userPaymentMethods && <div>Select up to 3</div>}
                   {isLoadingPaymentMethods ? (
                     <div className="flex items-center justify-center py-8">
                       <div className="h-8 w-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
@@ -257,7 +258,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       </p>
                     </div>
                   ) : (
-                    <div>Select up to 3</div>
                     userPaymentMethods.map((method) => (
                       <div
                         key={method.id}
