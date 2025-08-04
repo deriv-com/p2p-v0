@@ -256,73 +256,36 @@ export default function CreateAdPage() {
 
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
-
-      if (isEditMode && adId) {
-        const payload = {
-          is_active: true,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed",
-          order_expiry_period: 15,
-          description: finalData.instructions || "",
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
-
-        const updateResult = await updateAd(adId, payload)
-
-        if (updateResult.errors && updateResult.errors.length > 0) {
-          const errorMessage = formatErrorMessage(updateResult.errors)
-          throw new Error(errorMessage)
-        }
-
-        localStorage.removeItem("editAdData")
-
-        const params = new URLSearchParams({
-          success: "update",
-          type: finalData.type || "buy",
-          id: adId,
-          showStatusModal: "true",
-        })
-
-        window.location.href = `/ads?${params.toString()}`
-      } else {
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: "USD",
-          payment_currency: "IDR",
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed" as const,
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: 15,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
-
-        const result = await createAd(payload)
-
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        }
-
-        const params = new URLSearchParams({
-          success: "create",
-          type: result.data.type,
-          id: result.data.id,
-          showStatusModal: "true",
-        })
-
-        window.location.href = `/ads?${params.toString()}`
+      const payload = {
+        is_active: true,
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        available_amount: finalData.totalAmount || 0,
+        exchange_rate: finalData.fixedRate || 0,
+        exchange_rate_type: "fixed",
+        order_expiry_period: 15,
+        description: finalData.instructions || "",
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIds }),
       }
+
+      const updateResult = await updateAd(adId, payload)
+
+      if (updateResult.errors && updateResult.errors.length > 0) {
+        const errorMessage = formatErrorMessage(updateResult.errors)
+        throw new Error(errorMessage)
+      }
+
+      localStorage.removeItem("editAdData")
+
+      const params = new URLSearchParams({
+        success: "update",
+        type: finalData.type || "buy",
+        id: adId,
+        showStatusModal: "true",
+      })
+      
     } catch (error) {
       let errorInfo = {
         title: getErrorTitle(isEditMode),
