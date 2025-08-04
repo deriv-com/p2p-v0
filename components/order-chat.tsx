@@ -81,8 +81,7 @@ export default function OrderChat({
 
   useEffect(() => {
     return () => {
-      // Leave the order channel when component unmounts
-      leaveChannel(`orders_${orderId}`)
+      leaveChannel("orders")
     }
   }, [leaveChannel, orderId])
 
