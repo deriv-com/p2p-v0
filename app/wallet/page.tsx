@@ -28,7 +28,7 @@ export default function WalletPage() {
 
             <TabsContent value="transactions" className="mt-0">
               <div className="text-center py-8 text-muted-foreground">
-                <p>Transaction history will be displayed here</p>
+                
               </div>
             </TabsContent>
           </Tabs>
