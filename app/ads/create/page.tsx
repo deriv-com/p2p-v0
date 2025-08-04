@@ -252,12 +252,12 @@ export default function CreateAdPage() {
         }
       }
 
-      setStatusModal({
-        show: true,
-        type: errorInfo.type,
+      showAlert({
         title: errorInfo.title,
-        message: errorInfo.message,
-        actionButtonText: errorInfo.actionButtonText,
+        description: errorInfo.message,
+        confirmText: errorInfo.actionButtonText,
+        onConfirm: handleCloseErrorModal,
+        type: errorInfo.type,
       })
     } finally {
       setIsSubmitting(false)
