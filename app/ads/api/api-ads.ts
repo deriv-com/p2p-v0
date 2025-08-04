@@ -444,11 +444,11 @@ export async function getAdvert(id: string): Promise<MyAd> {
       apiData = JSON.parse(responseText)
     } catch (e) {
       console.log(e);
-      apiData = { data: [] }
+      apiData = { data: {} }
     }
 
-    if (!apiData || !apiData.data || !Array.isArray(apiData.data)) {
-      return []
+    if (!apiData || !apiData.data) {
+      return {}
     }
 
     return apiData.data.map((advert: APIAdvert) => {
