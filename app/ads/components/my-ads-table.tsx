@@ -224,6 +224,8 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Status
               </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+              </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
