@@ -81,7 +81,7 @@ export default function PaymentMethodsFilter({
   useEffect(() => {
       if(selectedMethods.length == 0) {
          const filteredMethods = paymentMethods.map((m) => m.method)
-         filteredMethods
+         setTempSelectedMethods(filteredMethods)
       }
   }, [])
   
