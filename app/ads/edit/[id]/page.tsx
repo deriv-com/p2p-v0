@@ -61,43 +61,21 @@ export default function EditAdPage() {
       try {
           const advertData = await getAdvert(id)
           const { data } = advertData
-          console.log(data);
+
           if (data) {
-            let rateValue = 0
-            if (data.rate && data.rate.value) {
-              const rateMatch = data.rate.value.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)/)
-              if (rateMatch && rateMatch[2]) {
-                rateValue = Number.parseFloat(rateMatch[2])
-              }
-            }
-
-            let minAmount = 0
-            let maxAmount = 0
-
-            if (typeof data.limits === "string") {
-              const limitsMatch = data.limits.match(/([A-Z]+)\s+(\d+(?:\.\d+)?)\s+-\s+(\d+(?:\.\d+)?)/)
-              if (limitsMatch) {
-                minAmount = Number.parseFloat(limitsMatch[2])
-                maxAmount = Number.parseFloat(limitsMatch[3])
-              }
-            } else if (data.limits && typeof data.limits === "object") {
-              minAmount = data.limits.min || 0
-              maxAmount = data.limits.max || 0
-            }
-
             let paymentMethodNames: string[] = []
             let paymentMethodIds: number[] = []
 
-            if (data.paymentMethods && Array.isArray(data.paymentMethods)) {
+            if (data.payment_methods && Array.isArray(data.payment_methods)) {
               if (data.type?.toLowerCase() === "buy") {
-                paymentMethodNames = data.paymentMethods.map((methodName: string) => {
+                paymentMethodNames = data.payment_methods.map((methodName: string) => {
                   if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
                     return methodName
                   }
                   return convertToSnakeCase(methodName)
                 })
               } else {
-                paymentMethodIds = data.paymentMethods
+                paymentMethodIds = data.payment_method_ids
                   .map((id: any) => Number(id))
                   .filter((id: number) => !isNaN(id))
 
@@ -108,11 +86,11 @@ export default function EditAdPage() {
             }
 
             const formattedData = {
-              type: data.type?.toLowerCase() === "sell" ? "sell" : "buy",
+              type: data.type,
               totalAmount: data.available?.current || 0,
-              fixedRate: rateValue,
-              minAmount: minAmount,
-              maxAmount: maxAmount,
+              fixedRate: Number.parseFloat(data.exchange_rate),
+              minAmount: data.minimum_order_amount,
+              maxAmount: data.maximum_order_amount,
               paymentMethods: paymentMethodNames,
               payment_method_ids: paymentMethodIds,
               instructions: data.description || "",
