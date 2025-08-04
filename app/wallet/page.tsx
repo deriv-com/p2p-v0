@@ -12,8 +12,8 @@ export default function WalletPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="min-h-screen bg-background px-[24px]">
         <div className="container mx-auto px-4 py-6">
-          <Tabs defaultValue="assets" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
+          <Tabs defaultValue="assets" className="w-full md:w-[330px] md:min-w-[330px]">
+            <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
               <TabsTrigger value="assets" className="w-full data-[state=active]:font-bold">
                 My Assets
               </TabsTrigger>
