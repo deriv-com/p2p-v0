@@ -47,7 +47,7 @@ export default function PaymentMethodsFilter({
   }, [paymentMethods, searchQuery])
 
   const groupedMethods = useMemo(() => {
-     return filteredPaymentMethods.reduce(
+    return filteredPaymentMethods.reduce(
       (acc, method) => {
         const { type } = method
         if (!acc[type]) {
@@ -97,7 +97,9 @@ export default function PaymentMethodsFilter({
     if (!open) {
       setSearchQuery("")
     } else {
-      setTempSelectedMethods(selectedMethods)
+      // Select all payment methods by default when opening
+      const allMethodIds = paymentMethods.map((method) => method.method)
+      setTempSelectedMethods(allMethodIds)
     }
   }
 
@@ -132,26 +134,26 @@ export default function PaymentMethodsFilter({
       return null
     }
 
-    return Object.entries(groupedMethods).sort(([typeA], [typeB]) =>
-      typeA.localeCompare(typeB)
-    ).map(([type, methods]) => (
-      <div key={type} className="space-y-3">
-        <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
-        <div className="flex flex-wrap gap-2">
-          {methods.map((method) => (
-            <Button
-              key={method.method}
-              onClick={() => handleMethodToggle(method.method)}
-              variant="outline"
-              size="sm"
-              className={getMethodButtonClass(method.method)}
-            >
-              {method.display_name}
-            </Button>
-          ))}
+    return Object.entries(groupedMethods)
+      .sort(([typeA], [typeB]) => typeA.localeCompare(typeB))
+      .map(([type, methods]) => (
+        <div key={type} className="space-y-3">
+          <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
+          <div className="flex flex-wrap gap-2">
+            {methods.map((method) => (
+              <Button
+                key={method.method}
+                onClick={() => handleMethodToggle(method.method)}
+                variant="outline"
+                size="sm"
+                className={getMethodButtonClass(method.method)}
+              >
+                {method.display_name}
+              </Button>
+            ))}
+          </div>
         </div>
-      </div>
-    ))
+      ))
   }
 
   const FilterContent = () => (
@@ -174,21 +176,23 @@ export default function PaymentMethodsFilter({
         />
       </div>
 
-      {filteredPaymentMethods.length > 0 && <div className="flex items-center space-x-3 mb-4 pb-3">
-        <Checkbox
-          id="select-all"
-          checked={isAllSelected}
-          ref={(el) => {
-            if (el) el.indeterminate = isIndeterminate
-          }}
-          onCheckedChange={handleSelectAll}
-          className="data-[state=checked]:bg-black border-black"
-          disabled={isLoading || filteredPaymentMethods.length === 0}
-        />
-        <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
-          Select all
-        </label>
-      </div>}
+      {filteredPaymentMethods.length > 0 && (
+        <div className="flex items-center space-x-3 mb-4 pb-3">
+          <Checkbox
+            id="select-all"
+            checked={isAllSelected}
+            ref={(el) => {
+              if (el) el.indeterminate = isIndeterminate
+            }}
+            onCheckedChange={handleSelectAll}
+            className="data-[state=checked]:bg-black border-black"
+            disabled={isLoading || filteredPaymentMethods.length === 0}
+          />
+          <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
+            Select all
+          </label>
+        </div>
+      )}
 
       <div className="space-y-4 max-h-60 overflow-y-auto">
         {isLoading ? (
@@ -203,7 +207,12 @@ export default function PaymentMethodsFilter({
       </div>
 
       <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
-        <Button onClick={handleReset} className="flex-1" variant="outline" size={isMobile ? "default" : "sm"}>
+        <Button
+          onClick={handleReset}
+          className="flex-1 bg-transparent"
+          variant="outline"
+          size={isMobile ? "default" : "sm"}
+        >
           Reset
         </Button>
         <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
