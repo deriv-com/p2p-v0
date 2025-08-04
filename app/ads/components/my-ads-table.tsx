@@ -101,11 +101,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   }
 
   const handleEdit = (ad: Ad) => {
-    const editData = {
-      ...ad,
-      description: ad.description || "",
-    }
-
+    router.push()
     const editUrl = `/ads/edit/${ad.id}`
 
     window.location.href = editUrl
