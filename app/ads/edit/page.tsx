@@ -174,7 +174,7 @@ export default function EditAdPage() {
     }
   }, [formData])
 
-  const handleAdDetailsNext = (data: Partial<AdFormData>, errors?: Record<string, string>) => {
+  const handleAdDetailsNext = (data, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
     formDataRef.current = updatedData
