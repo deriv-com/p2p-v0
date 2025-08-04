@@ -108,20 +108,6 @@ export default function EditAdPage() {
   }, [])
 
   useEffect(() => {
-    const checkSelectedPaymentMethods = () => {
-      if (formData.type === "sell" && typeof window !== "undefined") {
-        const selectedIds = (window as any).adPaymentMethodIds || []
-        setHasSelectedPaymentMethods(selectedIds.length > 0)
-      }
-    }
-
-    checkSelectedPaymentMethods()
-    const interval = setInterval(checkSelectedPaymentMethods, 100)
-
-    return () => clearInterval(interval)
-  }, [formData.type])
-
-  useEffect(() => {
     const handleAdFormValidation = (e: any) => {
       setAdFormValid(e.detail.isValid)
       if (e.detail.isValid) {
