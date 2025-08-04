@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils"
 export default function MobileFooterNav() {
   const pathname = usePathname()
 
-  if (pathname.startsWith("/orders/")) {
+  if (pathname.startsWith("/orders/") || pathname.startsWith("/ads/create") || pathname.startsWith("/ads/edit")) {
     return null
   }
 
