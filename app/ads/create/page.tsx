@@ -35,13 +35,6 @@ export default function CreateAdPage() {
 
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState<Partial<AdFormData>>({})
-  const [statusModal, setStatusModal] = useState<StatusModalState>({
-    show: false,
-    type: "success",
-    title: "",
-    message: "",
-    subMessage: "",
-  })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
@@ -318,10 +311,6 @@ export default function CreateAdPage() {
     }
   }
 
-  const handleModalClose = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
-  }
-
   const handleClose = () => {
     router.push("/ads")
   }
@@ -418,33 +407,6 @@ export default function CreateAdPage() {
               {getButtonText(false, isSubmitting, currentStep)}
             </Button>
           </div>
-
-          {statusModal.show && !isMobile && (
-            <StatusModal
-              type={statusModal.type}
-              title={statusModal.title}
-              message={statusModal.message}
-              subMessage={statusModal.subMessage}
-              adType={statusModal.adType}
-              adId={statusModal.adId}
-              onClose={handleModalClose}
-              actionButtonText={statusModal.actionButtonText}
-            />
-          )}
-
-          {statusModal.show && isMobile && (
-            <StatusBottomSheet
-              isOpen={statusModal.show}
-              onClose={handleModalClose}
-              type={statusModal.type}
-              title={statusModal.title}
-              message={statusModal.message}
-              subMessage={statusModal.subMessage}
-              adType={statusModal.adType}
-              adId={statusModal.adId}
-              actionButtonText={statusModal.actionButtonText}
-            />
-          )}
         </div>
       </div>
     </Suspense>
