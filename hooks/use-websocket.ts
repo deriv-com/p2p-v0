@@ -51,7 +51,7 @@ export function useWebSocket(options?: WebSocketOptions) {
   }, [])
 
   // Join a channel
-  const joinChannel = useCallback((channel: string) => {
+  const joinChannel = useCallback((channel: string, id: number) => {
     if (wsClientRef.current) {
       wsClientRef.current.joinChannel(channel)
     }

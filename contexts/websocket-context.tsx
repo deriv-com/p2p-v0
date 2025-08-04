@@ -7,7 +7,7 @@ import { WebSocketClient, type WebSocketMessage, type WebSocketOptions } from "@
 interface WebSocketContextType {
   isConnected: boolean
   sendMessage: (message: WebSocketMessage) => void
-  joinChannel: (channel: string) => void
+  joinChannel: (channel: string, id: number) => void
   leaveChannel: (channel: string) => void
   getChatHistory: (channel: string, orderId: string) => void
   reconnect: () => void
@@ -70,9 +70,9 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
   }
 
-  const joinChannel = (channel: string) => {
+  const joinChannel = (channel: string, id: number) => {
     if (wsClientRef.current) {
-      wsClientRef.current.joinChannel(channel)
+      wsClientRef.current.joinChannel(channel, id)
     }
   }
 

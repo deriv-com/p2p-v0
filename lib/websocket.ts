@@ -92,13 +92,15 @@ export class WebSocketClient {
     }
   }
 
-  public joinChannel(channel: string): void {
+  public joinChannel(channel: string, id: number): void {
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
         channel,
       },
-      payload: {},
+      payload: {
+        order_id: id
+      },
     }
     this.send(joinMessage)
   }

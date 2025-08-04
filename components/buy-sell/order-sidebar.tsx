@@ -46,6 +46,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
   const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
+  const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
 
   useEffect(() => {
     if (isOpen) {
@@ -151,12 +152,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handlePaymentMethodToggle = (methodId: string) => {
-    setSelectedPaymentMethods((prev) =>
-      prev.includes(methodId) ? prev.filter((id) => id !== methodId) : [...prev, methodId],
-    )
+    setTempSelectedPaymentMethods((prev) => {
+      if (prev.includes(methodId)) {
+        return prev.filter((id) => id !== methodId)
+      } else {
+        if (prev.length < 3) {
+          return [...prev, methodId]
+        }
+        return prev
+      }
+    })
   }
 
   const handleConfirmPaymentSelection = () => {
+    setSelectedPaymentMethods(tempSelectedPaymentMethods)
     setShowPaymentSelection(false)
   }
 
@@ -193,6 +202,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
+
+  const handleShowPaymentSelection = () => {
+    setTempSelectedPaymentMethods(selectedPaymentMethods)
+    setShowPaymentSelection(true)
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -237,6 +251,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             {showPaymentSelection ? (
               <div className="flex flex-col h-full">
                 <div className="flex-1 p-4 space-y-4">
+                  {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
                   {isLoadingPaymentMethods ? (
                     <div className="flex items-center justify-center py-8">
                       <div className="h-8 w-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
@@ -260,7 +275,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     userPaymentMethods.map((method) => (
                       <div
                         key={method.id}
-                        className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color"
+                        className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
+                          !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
+                            ? "opacity-30 cursor-not-allowed hover:bg-white"
+                            : ""
+                        }`}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex-1">
@@ -270,21 +289,22 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                                   method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                                 }`}
                               />
-                              <span className="font-bold text-neutral-7">
-                                {getCategoryDisplayName(method.type)}
-                              </span>
+                              <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
                             </div>
                             <div className="font-normal text-neutral-10">
-                                {maskAccountNumber(method.fields.account.value)}
+                              {maskAccountNumber(method.fields.account.value)}
                             </div>
                             <div className="font-normal text-neutral-7">
-                                {formatPaymentMethodName(method.display_name)}
+                              {formatPaymentMethodName(method.display_name)}
                             </div>
                           </div>
                           <Checkbox
-                            checked={selectedPaymentMethods.includes(method.id)}
+                            checked={tempSelectedPaymentMethods.includes(method.id)}
                             onCheckedChange={() => handlePaymentMethodToggle(method.id)}
-                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px]"
+                            disabled={
+                              !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
+                            }
+                            className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
@@ -302,11 +322,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="p-4 border-t">
+                <div className="p-4">
                   <Button
                     className="w-full"
                     onClick={handleConfirmPaymentSelection}
-                    disabled={selectedPaymentMethods.length === 0}
+                    disabled={tempSelectedPaymentMethods.length === 0}
                     variant="black"
                   >
                     Confirm
@@ -317,13 +337,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               <>
                 <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
-                    <div className="flex items-center justify-between">
                       <Input
                         value={amount}
                         onChange={handleAmountChange}
                         type="number"
-                        placeholder="Enter amount"
-                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        label="Enter amount"
+                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
                         step="any"
                         inputMode="decimal"
                         onKeyDown={(e) => {
@@ -331,9 +350,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             e.preventDefault()
                           }
                         }}
+                        variant="floatingCurrency"
+                        currency={ad.account_currency}
                       />
-                      <span className="text-gray-500 hidden">{ad.account_currency}</span>
-                    </div>
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
                   <div className="flex items-center">
@@ -353,7 +372,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => setShowPaymentSelection(true)}
+                      onClick={() => handleShowPaymentSelection()}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
@@ -416,7 +435,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </p>
                 </div>
 
-                <div className="mt-auto p-4 border-t">
+                <div className="mt-auto p-4">
                   <Button
                     className="w-full"
                     variant="primary"

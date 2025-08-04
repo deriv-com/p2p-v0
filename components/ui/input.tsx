@@ -18,6 +18,8 @@ const inputVariants = cva(
           "h-[32px] bg-gray-100 border-transparent rounded-lg px-2 flex flex-row items-center gap-2 focus-visible:outline-none focus:border-black focus:ring-0 placeholder:text-[#0000003D] pl-10 pr-4",
         floating:
           "h-14 bg-white border border-input rounded-lg px-3 pt-6 pb-2 focus-visible:outline-none focus:border-black focus:ring-0",
+        floatingCurrency:
+          "h-14 bg-white border border-input rounded-lg px-3 pt-6 pb-2 pr-16 focus-visible:outline-none focus:border-black focus:ring-0",
       },
     },
     defaultVariants: {
@@ -26,15 +28,16 @@ const inputVariants = cva(
   },
 )
 
-const VALID_VARIANTS = ["default", "secondary", "tertiary", "floating"]
+const VALID_VARIANTS = ["default", "secondary", "tertiary", "floating", "floatingCurrency"]
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> {
   label?: string
   required?: boolean
+  currency?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, variant, type, label, required, ...props }, ref) => {
+  ({ className, variant, type, label, required, currency, ...props }, ref) => {
     const [isFocused, setIsFocused] = React.useState(false)
     const [hasValue, setHasValue] = React.useState(false)
     const computedVariant = VALID_VARIANTS.includes(variant as string) ? variant : "default"
@@ -63,7 +66,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     }, [props.value, props.defaultValue])
 
-    if (variant === "floating" && label) {
+    if ((variant === "floating" || variant === "floatingCurrency") && label) {
       const shouldFloatLabel = isFocused || hasValue
 
       return (
@@ -80,7 +83,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           />
           <label
             className={cn(
-              "absolute left-3 transition-all duration-200 ease-in-out pointer-events-none",
+              "absolute left-4 transition-all duration-200 ease-in-out pointer-events-none",
               "text-[#000000B8]",
               shouldFloatLabel ? "top-2 text-xs" : "top-1/2 -translate-y-1/2 text-sm",
             )}
@@ -88,6 +91,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
+          {variant === "floatingCurrency" && currency && (
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-[#000000B8]">
+              {currency}
+            </div>
+          )}
         </div>
       )
     }
