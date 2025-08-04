@@ -32,7 +32,6 @@ const getButtonText = (isSubmitting: boolean, currentStep: number) => {
 
 export default function CreateAdPage() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const isMobile = useIsMobile()
 
   const [localEditMode, setLocalEditMode] = useState<boolean>(false)
