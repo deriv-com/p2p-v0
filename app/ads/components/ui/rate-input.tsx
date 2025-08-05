@@ -6,6 +6,7 @@ import { AlertTriangle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface RateInputProps {
+  currency: string
   value: string
   onChange: (value: string) => void
   onBlur?: () => void
@@ -16,6 +17,7 @@ interface RateInputProps {
 }
 
 export function RateInput({
+   currency,
   value,
   onChange,
   onBlur,
@@ -76,7 +78,7 @@ export function RateInput({
         </div>
 
         <div className="flex items-center justify-center bg-gray-50 px-4 text-gray-500 min-w-[80px] text-center">
-          IDR
+        {currency}
         </div>
       </div>
     </div>
