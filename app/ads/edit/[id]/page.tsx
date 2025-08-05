@@ -353,7 +353,7 @@ export default function EditAdPage() {
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
           {currentStep === 0 && (
-            <div className="block md:hidden mb-4 text-left">
+            <div className="block md:hidden m-4 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 1</div>
               <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
             </div>
