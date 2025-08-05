@@ -26,12 +26,8 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
               <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20}/>
             </Button>
             <h1 className="text-xl font-bold">{title}</h1>
-          )
-      } else if(onClose) {
-        return (
-            <h1 className="text-xl font-bold">{title}</h1>
             <Button variant="ghost" onClick={onClose}>
-              <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} />
+              <Image src="/icons/arrow-left-icon.png" alt="Close" width={20} height={20}/>
             </Button>
           )
       } else {
