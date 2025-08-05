@@ -250,7 +250,7 @@ export default function PaymentDetailsForm({
                             >
                               {isMethodSelected(method.method) && <Check className="h-3 w-3 text-white" />}
                             </div>
-                            <span>{method.display_name}</span>
+                            <span className="text-base">{method.display_name}</span>
                           </DropdownMenuItem>
                         ))}
                       </DropdownMenuContent>
