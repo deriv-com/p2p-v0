@@ -23,7 +23,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
       if(onBack) {
         return (
             <Button variant="ghost" onClick={onBack}>
-              <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
+              <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20}/>
             </Button>
             <h1 className="text-xl font-bold">{title}</h1>
           )
@@ -31,7 +31,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
         return (
             <h1 className="text-xl font-bold">{title}</h1>
             <Button variant="ghost" onClick={onClose}>
-              <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="mr-[16px]" />
+              <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} />
             </Button>
           )
       } else {
