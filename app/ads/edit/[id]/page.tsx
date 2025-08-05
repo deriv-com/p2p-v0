@@ -133,8 +133,7 @@ export default function EditAdPage() {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
     formDataRef.current = updatedData
-
-    // Always proceed to next step if we have valid form data
+    
     if (adFormValid) {
       setCurrentStep(1)
     }
