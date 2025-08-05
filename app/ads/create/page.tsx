@@ -313,7 +313,7 @@ export default function CreateAdPage() {
             title="Create new ad"
           />
 
-          <ProgressSteps currentStep={currentStep} steps={steps} />
+          <ProgressSteps currentStep={currentStep} steps={steps} className="mb-[40px]"/>
 
           {currentStep === 0 && (
             <div className="block md:hidden mt-4 mb-6 text-left">
