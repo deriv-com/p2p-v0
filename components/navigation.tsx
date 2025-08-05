@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import BalanceInfoPopup from "@/components/balance-info-popup"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
@@ -16,6 +17,7 @@ interface NavigationProps {
 }
 
 export default function Navigation({ isBackBtnVisible = true, onBack, onClose, redirectUrl = "/", title }: NavigationProps) {
+  const router = useRouter()  
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   const getHeaderComponent = () => {
@@ -42,9 +44,9 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
     
     return (<>
         <h1 className="text-xl font-bold">{title}</h1>
-        <Link href={redirectUrl}>
-          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="h-5 w-5" />
-        </Link>
+        <Button variant="ghost" onClick={() => { router.push(redirectUrl) }} size="sm">
+          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20}/>
+        </Button>
       </>)
   }
   
