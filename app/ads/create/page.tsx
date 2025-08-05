@@ -1,6 +1,6 @@
 "use client"
 
-import { , useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../components/ad-details-form"
 import PaymentDetailsForm from "../components/payment-details-form"
@@ -303,7 +303,6 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
         <div className="md:max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 md:px-0">
           <Navigation
