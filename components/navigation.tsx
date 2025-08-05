@@ -37,10 +37,12 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
             </div>
           )
       } else {
-        return(<Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="mr-[16px]" />
-            <h1 className="text-xl font-bold">{title}</h1>
-          </Link>)
+        return(<div className="flex gap-2">
+                <Button variant="ghost" onClick={() => router.push(redirectUrl)} size="sm" className="bg-grayscale-300 px-1">
+                  <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24}/>
+                </Button>
+                <h1 className="text-xl font-bold">{title}</h1>
+              </div>)
       }
     }
     
