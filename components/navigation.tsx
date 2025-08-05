@@ -21,7 +21,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   const getHeaderComponent = () => {
-    if(isBackBtnVisible && title){
+    if(isBackBtnVisible){
       if(onBack && onClose) {
         return (
             <div className="flex w-full justify-between">
