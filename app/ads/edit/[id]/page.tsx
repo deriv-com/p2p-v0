@@ -349,7 +349,7 @@ export default function EditAdPage() {
             onClose={handleClose}
             title={isMobile ? getPageTitle(formData.type) : ""}
           />
-          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">getPageTitle(formData.type)</div>
+          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">getPageTitle(formData.type)}</div>
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
           {currentStep === 0 && (
