@@ -26,19 +26,19 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
         return (
             <div className="flex w-full justify-between">
               <div className="flex gap-2">
-                <Button variant="ghost" onClick={onBack} size="sm" className="p-0">
-                  <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20}/>
+                <Button variant="ghost" onClick={onBack} size="sm" className="bg-grayscale-300 px-1">
+                  <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24}/>
                 </Button>
                 <h1 className="text-xl font-bold">{title}</h1>
               </div>
-              <Button variant="ghost" onClick={onClose} size="sm" className="p-0">
-                <Image src="/icons/close-circle.png" alt="Close" width={20} height={20}/>
+              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+                <Image src="/icons/close-circle.png" alt="Close" width={24} height={24}/>
               </Button>
             </div>
           )
       } else {
         return(<Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="mr-[16px]" />
             <h1 className="text-xl font-bold">{title}</h1>
           </Link>)
       }
@@ -49,8 +49,8 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
         <Button variant="ghost" onClick={() => { 
             if(onClose) { onClose() } 
             else { router.push(redirectUrl)} 
-          }} size="sm" className="p-0">
-          <Image src="/icons/close-circle.png" alt="Close" width={20} height={20}/>
+          }} size="sm" className="bg-grayscale-300 px-1">
+          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24}/>
         </Button>
       </>)
   }
