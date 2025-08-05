@@ -131,8 +131,8 @@ export default function EditAdPage() {
 
   const handleAdDetailsNext = (data, errors?: Record<string, string>) => {
     const updatedData = { ...formData, ...data }
-    setFormData(updatedData)
-    formDataRef.current = updatedData
+    //setFormData(updatedData)
+    //formDataRef.current = updatedData
     
     if (!errors || Object.keys(errors).length === 0) {
       setCurrentStep(1)
