@@ -216,15 +216,21 @@ export default function PaymentDetailsForm({
                           onKeyDown={(e) => e.stopPropagation()}
                           className="relative p-1"
                         >
-                          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black z-10" />
+                          <Image
+                            src="/icons/search-icon-custom.png"
+                            alt="Search"
+                            width={24}
+                            height={24}
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                          />
                           <Input
-                            type="text"
                             placeholder="Search"
                             value={searchQuery}
                             onChange={(e) => {
                               e.stopPropagation()
                               setSearchQuery(e.target.value)
                             }}
+                            className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
                             onKeyDown={(e) => e.stopPropagation()}
                             variant="secondary"
                             onClick={(e) => e.stopPropagation()}
