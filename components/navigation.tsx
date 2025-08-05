@@ -2,35 +2,65 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import BalanceInfoPopup from "@/components/balance-info-popup"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
   isVisible?: boolean
+  onBack?: () => void
+  onClose?: () => void
   redirectUrl?: string
   title: string
 }
 
-export default function Navigation({ isBackBtnVisible = true, redirectUrl = "/", title }: NavigationProps) {
+export default function Navigation({ isBackBtnVisible = true, onBack, onClose, redirectUrl = "/", title }: NavigationProps) {
+  const router = useRouter()  
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
+  const getHeaderComponent = () => {
+    if(isBackBtnVisible){
+      if(onBack && onClose) {
+        return (
+            <div className="flex w-full justify-between">
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" onClick={onBack} size="sm" className="bg-grayscale-300 px-1">
+                  <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24}/>
+                </Button>
+                <h1 className="text-xl font-bold">{title}</h1>
+              </div>
+              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+                <Image src="/icons/close-circle.png" alt="Close" width={24} height={24}/>
+              </Button>
+            </div>
+          )
+      } else {
+        return(<div className="flex gap-4">
+          <Button variant="ghost" onClick={() => router.push(redirectUrl)} size="sm" className="bg-grayscale-300 px-1">
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24}/>
+          </Button>
+          <h1 className="text-xl font-bold">{title}</h1>
+        </div>)
+      }
+    }
+    
+    return (<>
+        <h1 className="text-xl font-bold">{title}</h1>
+        <Button variant="ghost" onClick={() => { 
+            if(onClose) { onClose() } 
+            else { router.push(redirectUrl)} 
+          }} size="sm" className="bg-grayscale-300 px-1">
+          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24}/>
+        </Button>
+      </>)
+  }
+  
   return (
     <div className="mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]">
       <div className="flex items-center justify-between md:px-0">
-        {isBackBtnVisible && title ? (
-          <Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
-            <h1 className="text-xl font-bold">{title}</h1>
-          </Link>
-        ) : (
-          <>
-            <h1 className="text-xl font-bold">{title}</h1>
-            <Link href={redirectUrl}>
-              <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="h-5 w-5" />
-            </Link>
-          </>
-        )}
+        {getHeaderComponent()}
       </div>
       <BalanceInfoPopup isOpen={isBalanceInfoOpen} onClose={() => setIsBalanceInfoOpen(false)} />
     </div>

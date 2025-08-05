@@ -8,6 +8,7 @@ import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getCurrencies } from "../api/api-ads"
+import { useCurrencyData } from "@/hooks/use-currency-data"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -30,6 +31,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState("USD")
   const [forCurrency, setForCurrency] = useState("USD")
+  const { currencies: currencyList } = useCurrencyData()
   const [currencies, setCurrencies] = useState<string[]>([])
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
@@ -228,9 +230,9 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                     <SelectValue>{forCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
+                    {currencyList.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        {currency.code}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -263,6 +265,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <RateInput
+                  currency={forCurrency}
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
@@ -281,7 +284,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Transaction limit</h3>
-          <div className="flex flex-col md:flex-row items-center">
+          <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div>
               <CurrencyInput
                 value={minAmount}
@@ -297,7 +300,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                 <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
               )}
             </div>
-            <div className="text-xl mx-2">~</div>
+            <div className="text-xl hidden md:block">~</div>
             <div>
               <CurrencyInput
                 value={maxAmount}

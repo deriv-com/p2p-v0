@@ -10,7 +10,7 @@ interface ProgressStepsProps {
 
 export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
   return (
-    <div className="flex items-center justify-center mb-12 max-w-xl mx-auto">
+    <div className="flex items-center justify-center mb-6 md:mb-12 max-w-xl mx-auto">
       {steps.map((step, index) => (
         <div key={index} className="flex flex-col items-center relative flex-1">
           {index > 0 && (

@@ -103,13 +103,13 @@ const AdPaymentMethods = () => {
               return (
                 <Card
                   key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-gray-100 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                  className="cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-3">
+                  <CardContent className="p-2">
+                    <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
                         checked={isSelected}
@@ -118,8 +118,8 @@ const AdPaymentMethods = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="font-medium text-gray-900">{displayDetails.primary}</div>
-                      <div className="text-sm text-gray-500">{displayDetails.secondary}</div>
+                      <div className="font-medium text-sm text-neutral-10">{displayDetails.primary}</div>
+                      <div className="text-sm text-neutral-7">{displayDetails.secondary}</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -127,7 +127,7 @@ const AdPaymentMethods = () => {
             })}
 
             <Card
-              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
+              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-grayscale-300 bg-white"
               onClick={() => setShowAddPanel(true)}
             >
               <CardContent className="p-4 h-full flex items-center justify-center">
@@ -139,7 +139,7 @@ const AdPaymentMethods = () => {
                     height={24}
                     className="mx-auto mb-2"
                   />
-                  <p className="text-sm font-medium text-black">Add payment method</p>
+                  <p className="text-sm font-bold text-neutral-10">Add payment method</p>
                 </div>
               </CardContent>
             </Card>

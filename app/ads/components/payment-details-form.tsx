@@ -2,9 +2,10 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Check, ChevronDown, ChevronUp, Search } from "lucide-react"
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
@@ -216,15 +217,21 @@ export default function PaymentDetailsForm({
                           onKeyDown={(e) => e.stopPropagation()}
                           className="relative p-1"
                         >
-                          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black z-10" />
+                          <Image
+                            src="/icons/search-icon-custom.png"
+                            alt="Search"
+                            width={24}
+                            height={24}
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                          />
                           <Input
-                            type="text"
                             placeholder="Search"
                             value={searchQuery}
                             onChange={(e) => {
                               e.stopPropagation()
                               setSearchQuery(e.target.value)
                             }}
+                            className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
                             onKeyDown={(e) => e.stopPropagation()}
                             variant="secondary"
                             onClick={(e) => e.stopPropagation()}
@@ -239,18 +246,18 @@ export default function PaymentDetailsForm({
                               togglePaymentMethod(method.method)
                             }}
                             disabled={!isMethodSelected(method.method) && isMaxReached}
-                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${
+                            className={`flex items-center gap-2 px-4 py-3 cursor-pointer ${
                               !isMethodSelected(method.method) && isMaxReached ? "opacity-50" : ""
                             }`}
                           >
                             <div
-                              className={`w-5 h-5 flex items-center justify-center rounded border ${
+                              className={`w-4 h-4 flex items-center justify-center rounded border ${
                                 isMethodSelected(method.method) ? "bg-black border-black" : "border-gray-300"
                               }`}
                             >
                               {isMethodSelected(method.method) && <Check className="h-3 w-3 text-white" />}
                             </div>
-                            <span>{method.display_name}</span>
+                            <span className="text-base">{method.display_name}</span>
                           </DropdownMenuItem>
                         ))}
                       </DropdownMenuContent>
@@ -281,7 +288,7 @@ export default function PaymentDetailsForm({
               <Textarea
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
-                placeholder="Advertisers' instructions"
+                placeholder="Advertisers' instructions (Optional)"
                 className="min-h-[120px] resize-none"
                 maxLength={300}
               />

@@ -7,7 +7,6 @@ import PaymentDetailsForm from "@/app/ads/components/payment-details-form"
 import { getAdvert, updateAd } from "@/app/ads/api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import { ProgressSteps } from "@/app/ads/components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -73,12 +72,10 @@ export default function EditAdPage() {
                 return convertToSnakeCase(methodName)
               })
             } else {
-              paymentMethodIds = data.payment_method_ids
-                .map((id: any) => Number(id))
-                .filter((id: number) => !isNaN(id))
+              paymentMethodIds = data.payment_method_ids.map((id: any) => Number(id)).filter((id: number) => !isNaN(id))
 
               if (typeof window !== "undefined") {
-                ; (window as any).adPaymentMethodIds = paymentMethodIds
+                ;(window as any).adPaymentMethodIds = paymentMethodIds
               }
             }
           }
@@ -97,7 +94,6 @@ export default function EditAdPage() {
           setFormData(formattedData)
           formDataRef.current = formattedData
         }
-
       } catch (error) {
         console.log(error)
       }
@@ -137,7 +133,7 @@ export default function EditAdPage() {
     const updatedData = { ...formData, ...data }
     setFormData(updatedData)
     formDataRef.current = updatedData
-
+    
     if (!errors || Object.keys(errors).length === 0) {
       setCurrentStep(1)
     }
@@ -223,7 +219,6 @@ export default function EditAdPage() {
       } else {
         router.push("/ads")
       }
-
     } catch (error) {
       let errorInfo = {
         title: "Failed to update ad",
@@ -330,58 +325,41 @@ export default function EditAdPage() {
     router.push("/ads")
   }
 
-  const isButtonDisabled =
-    isSubmitting || !adFormValid ||
-    isBottomSheetOpen
+  const isButtonDisabled = isSubmitting || !adFormValid || isBottomSheetOpen
 
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-      <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
-        <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 px-4 md:px-0">
-          <div
-            className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-          >
-            {currentStep === 1 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCurrentStep(0)}
-                className="text-gray-700 hover:text-gray-900 p-2"
-              >
-                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
-              </Button>
-            )}
-            {currentStep === 0 && <div></div>}
-            <div className="block md:hidden text-xl-bold text-black text-left">
-              {getPageTitle(formData.type)}
-            </div>
-            <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-            </Button>
-          </div>
-
-          <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            {getPageTitle(formData.type)}
-          </div>
-
+      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
+        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
+          <Navigation
+            isBackBtnVisible={currentStep != 0}
+            isVisible={false}
+            onBack={() => {
+              const updatedStep = currentStep - 1
+              setCurrentStep(updatedStep)
+            }}
+            onClose={handleClose}
+            title={isMobile ? getPageTitle(formData.type) : ""}
+          />
+          <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(formData.type)}</div>
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
           {currentStep === 0 && (
-            <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="block md:hidden m-6 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 1</div>
               <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
             </div>
           )}
 
           {currentStep === 1 && (
-            <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="block md:hidden m-6 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 2</div>
               <div className="text-lg font-bold text-slate-1200">Payment details</div>
             </div>
           )}
 
-          <div className="relative mb-16 md:mb-0">
+          <div className="relative mb-16 md:mb-0 mx-6">
             {currentStep === 0 ? (
               <AdDetailsForm
                 onNext={handleAdDetailsNext}
@@ -403,7 +381,7 @@ export default function EditAdPage() {
           </div>
 
           {isMobile ? (
-            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
+            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
                 <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
                   {getButtonText(isSubmitting, currentStep)}
