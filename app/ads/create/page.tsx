@@ -90,7 +90,6 @@ export default function CreateAdPage() {
     setFormData(updatedData)
     formDataRef.current = updatedData
 
-    // Always proceed to next step if we have valid form data
     if (adFormValid) {
       setCurrentStep(1)
     }
