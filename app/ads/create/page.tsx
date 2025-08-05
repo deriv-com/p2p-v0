@@ -313,7 +313,7 @@ export default function CreateAdPage() {
               setCurrentStep(updatedStep)
             }}
             onClose={handleClose}
-            title=""
+            title={isMobile ? "Create new ad" : ""}
           />
           <div className="hidden md:block text-2xl font-bold my-6">Create new ad</div>
           <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]"/>
