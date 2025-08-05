@@ -22,12 +22,12 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
     if(isBackBtnVisible && title){
       if(onBack && onClose) {
         return (
-            <div className="flex justify-between">
-              <Button variant="ghost" onClick={onBack}>
+            <div className="flex w-full justify-between">
+              <Button variant="ghost" onClick={onBack} size="sm">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20}/>
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
-              <Button variant="ghost" onClick={onClose}>
+              <Button variant="ghost" onClick={onClose} size="sm">
                 <Image src="/icons/close-circle.png" alt="Close" width={20} height={20}/>
               </Button>
             </div>
