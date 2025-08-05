@@ -319,14 +319,14 @@ export default function CreateAdPage() {
           <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]"/>
 
           {currentStep === 0 && (
-            <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="block md:hidden m-6 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 1</div>
               <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
             </div>
           )}
 
           {currentStep === 1 && (
-            <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="block md:hidden m-6 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 2</div>
               <div className="text-lg font-bold text-slate-1200">Payment details</div>
             </div>
