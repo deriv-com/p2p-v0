@@ -8,6 +8,7 @@ import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getCurrencies } from "../api/api-ads"
+import { useCurrencyData } from "@/hooks/use-currency-data"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -30,6 +31,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState("USD")
   const [forCurrency, setForCurrency] = useState("USD")
+  const { currencyList } = useCurrencyData()
   const [currencies, setCurrencies] = useState<string[]>([])
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
@@ -228,7 +230,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                     <SelectValue>{forCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((currency) => (
+                    {currencyList.map((currency) => (
                       <SelectItem key={currency} value={currency}>
                         {currency}
                       </SelectItem>
