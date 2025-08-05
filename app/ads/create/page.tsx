@@ -312,6 +312,7 @@ export default function CreateAdPage() {
               const updatedStep = currentStep - 1;
               setCurrentStep(updatedStep)
             }}
+            onClose={handleClose}
             title="Create new ad"
           />
 
