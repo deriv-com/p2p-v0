@@ -315,7 +315,7 @@ export default function CreateAdPage() {
             onClose={handleClose}
             title={isMobile ? "Create new ad" : ""}
           />
-          <div className="hidden md:block text-2xl font-bold my-6">Create new ad</div>
+          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">Create new ad</div>
           <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]"/>
           {currentStep === 0 && (
             <div className="block md:hidden m-4 text-left">
