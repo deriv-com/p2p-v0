@@ -18,18 +18,18 @@ export default function Navigation({ isBackBtnVisible = true, onBack, redirectUr
 
   const getHeaderComponent = () => {
     if(isBackBtnVisible && title){
-      if(redirectUrl) {
-        return(<Link href={redirectUrl} className="flex items-center text-slate-1400">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
-            <h1 className="text-xl font-bold">{title}</h1>
-          </Link>)
-      } else {
+      if(onBack) {
         return (
             <Button variant="ghost" onClick={() => onBack?.()}>
               <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
               <h1 className="text-xl font-bold">{title}</h1>
             </Button>
           )
+      } else {
+        return(<Link href={redirectUrl} className="flex items-center text-slate-1400">
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
+            <h1 className="text-xl font-bold">{title}</h1>
+          </Link>)
       }
     }
     
