@@ -10,11 +10,12 @@ interface NavigationProps {
   isBackBtnVisible?: boolean
   isVisible?: boolean
   onBack?: () => void
+  onClose?: () => void
   redirectUrl?: string
   title: string
 }
 
-export default function Navigation({ isBackBtnVisible = true, onBack, redirectUrl = "/", title }: NavigationProps) {
+export default function Navigation({ isBackBtnVisible = true, onBack, onClose, redirectUrl = "/", title }: NavigationProps) {
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   const getHeaderComponent = () => {
@@ -23,7 +24,14 @@ export default function Navigation({ isBackBtnVisible = true, onBack, redirectUr
         return (
             <Button variant="ghost" onClick={onBack}>
               <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
-              <h1 className="text-xl font-bold">{title}</h1>
+            </Button>
+            <h1 className="text-xl font-bold">{title}</h1>
+          )
+      } else if(onClose) {
+        return (
+            <h1 className="text-xl font-bold">{title}</h1>
+            <Button variant="ghost" onClick={onClose}>
+              <Image src="/icons/close-circle.png" alt="Close" width={20} height={20} className="mr-[16px]" />
             </Button>
           )
       } else {
