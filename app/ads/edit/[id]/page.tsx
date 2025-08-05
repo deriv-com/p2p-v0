@@ -7,7 +7,6 @@ import PaymentDetailsForm from "@/app/ads/components/payment-details-form"
 import { getAdvert, updateAd } from "@/app/ads/api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import { ProgressSteps } from "@/app/ads/components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -73,12 +72,10 @@ export default function EditAdPage() {
                 return convertToSnakeCase(methodName)
               })
             } else {
-              paymentMethodIds = data.payment_method_ids
-                .map((id: any) => Number(id))
-                .filter((id: number) => !isNaN(id))
+              paymentMethodIds = data.payment_method_ids.map((id: any) => Number(id)).filter((id: number) => !isNaN(id))
 
               if (typeof window !== "undefined") {
-                ; (window as any).adPaymentMethodIds = paymentMethodIds
+                ;(window as any).adPaymentMethodIds = paymentMethodIds
               }
             }
           }
@@ -97,7 +94,6 @@ export default function EditAdPage() {
           setFormData(formattedData)
           formDataRef.current = formattedData
         }
-
       } catch (error) {
         console.log(error)
       }
@@ -138,7 +134,8 @@ export default function EditAdPage() {
     setFormData(updatedData)
     formDataRef.current = updatedData
 
-    if (!errors || Object.keys(errors).length === 0) {
+    // Always proceed to next step if we have valid form data
+    if (adFormValid) {
       setCurrentStep(1)
     }
   }
@@ -223,7 +220,6 @@ export default function EditAdPage() {
       } else {
         router.push("/ads")
       }
-
     } catch (error) {
       let errorInfo = {
         title: "Failed to update ad",
@@ -330,9 +326,7 @@ export default function EditAdPage() {
     router.push("/ads")
   }
 
-  const isButtonDisabled =
-    isSubmitting || !adFormValid ||
-    isBottomSheetOpen
+  const isButtonDisabled = isSubmitting || !adFormValid || isBottomSheetOpen
 
   return (
     <>
@@ -343,7 +337,7 @@ export default function EditAdPage() {
             isBackBtnVisible={currentStep != 0}
             isVisible={false}
             onBack={() => {
-              const updatedStep = currentStep - 1;
+              const updatedStep = currentStep - 1
               setCurrentStep(updatedStep)
             }}
             onClose={handleClose}

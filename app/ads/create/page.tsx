@@ -7,7 +7,6 @@ import PaymentDetailsForm from "../components/payment-details-form"
 import { createAd } from "../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
 import { ProgressSteps } from "../components/ui/progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -28,7 +27,7 @@ export default function CreateAdPage() {
   const router = useRouter()
   const isMobile = useIsMobile()
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState<>({})
+  const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
@@ -91,7 +90,8 @@ export default function CreateAdPage() {
     setFormData(updatedData)
     formDataRef.current = updatedData
 
-    if (!errors || Object.keys(errors).length === 0) {
+    // Always proceed to next step if we have valid form data
+    if (adFormValid) {
       setCurrentStep(1)
     }
   }
@@ -155,32 +155,31 @@ export default function CreateAdPage() {
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: "USD",
-          payment_currency: "IDR",
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed" as const,
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: 15,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
-        }
+      const payload = {
+        type: finalData.type || "buy",
+        account_currency: "USD",
+        payment_currency: "IDR",
+        minimum_order_amount: finalData.minAmount || 0,
+        maximum_order_amount: finalData.maxAmount || 0,
+        available_amount: finalData.totalAmount || 0,
+        exchange_rate: finalData.fixedRate || 0,
+        exchange_rate_type: "fixed" as const,
+        description: finalData.instructions || "",
+        is_active: 1,
+        order_expiry_period: 15,
+        ...(finalData.type === "buy"
+          ? { payment_method_names: finalData.paymentMethods || [] }
+          : { payment_method_ids: selectedPaymentMethodIds }),
+      }
 
-        const result = await createAd(payload)
+      const result = await createAd(payload)
 
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        } else {
-          router.push("/ads");
-        }
-      
+      if (result.errors && result.errors.length > 0) {
+        const errorMessage = formatErrorMessage(result.errors)
+        throw new Error(errorMessage)
+      } else {
+        router.push("/ads")
+      }
     } catch (error) {
       let errorInfo = {
         title: "",
@@ -303,73 +302,73 @@ export default function CreateAdPage() {
     isBottomSheetOpen
 
   return (
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
-          <Navigation
-            isBackBtnVisible={currentStep != 0}
-            isVisible={false}
-            onBack={() => {
-              const updatedStep = currentStep - 1;
-              setCurrentStep(updatedStep)
-            }}
-            onClose={handleClose}
-            title={isMobile ? "Create new ad" : ""}
-          />
-          <div className="hidden md:block text-2xl font-bold m-6 mb-10">Create new ad</div>
-          <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]"/>
-          {currentStep === 0 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 1</div>
-              <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
-            </div>
-          )}
-
-          {currentStep === 1 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 2</div>
-              <div className="text-lg font-bold text-slate-1200">Payment details</div>
-            </div>
-          )}
-
-          <div className="relative mb-16 md:mb-0 mx-6">
-            {currentStep === 0 ? (
-              <AdDetailsForm
-                onNext={handleAdDetailsNext}
-                onClose={handleClose}
-                initialData={formData}
-                isEditMode={false}
-              />
-            ) : (
-              <PaymentDetailsForm
-                onBack={() => setCurrentStep(0)}
-                onSubmit={handlePaymentDetailsSubmit}
-                onClose={handleClose}
-                initialData={formData}
-                isSubmitting={isSubmitting}
-                isEditMode={false}
-                onBottomSheetOpenChange={handleBottomSheetOpenChange}
-              />
-            )}
+    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
+      <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
+        <Navigation
+          isBackBtnVisible={currentStep != 0}
+          isVisible={false}
+          onBack={() => {
+            const updatedStep = currentStep - 1
+            setCurrentStep(updatedStep)
+          }}
+          onClose={handleClose}
+          title={isMobile ? "Create new ad" : ""}
+        />
+        <div className="hidden md:block text-2xl font-bold m-6 mb-10">Create new ad</div>
+        <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
+        {currentStep === 0 && (
+          <div className="block md:hidden m-6 text-left">
+            <div className="text-sm font-normal text-slate-1200">Step 1</div>
+            <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
           </div>
+        )}
 
-          {isMobile ? (
-            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
-              <div className="mx-6">
-                <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                  {getButtonText(isSubmitting, currentStep)}
-                </Button>
-              </div>
-            </div>
+        {currentStep === 1 && (
+          <div className="block md:hidden m-6 text-left">
+            <div className="text-sm font-normal text-slate-1200">Step 2</div>
+            <div className="text-lg font-bold text-slate-1200">Payment details</div>
+          </div>
+        )}
+
+        <div className="relative mb-16 md:mb-0 mx-6">
+          {currentStep === 0 ? (
+            <AdDetailsForm
+              onNext={handleAdDetailsNext}
+              onClose={handleClose}
+              initialData={formData}
+              isEditMode={false}
+            />
           ) : (
-            <div className="hidden md:block"></div>
+            <PaymentDetailsForm
+              onBack={() => setCurrentStep(0)}
+              onSubmit={handlePaymentDetailsSubmit}
+              onClose={handleClose}
+              initialData={formData}
+              isSubmitting={isSubmitting}
+              isEditMode={false}
+              onBottomSheetOpenChange={handleBottomSheetOpenChange}
+            />
           )}
+        </div>
 
-          <div className="hidden md:flex justify-end mt-8">
-            <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
-              {getButtonText(isSubmitting, currentStep)}
-            </Button>
+        {isMobile ? (
+          <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
+            <div className="mx-6">
+              <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                {getButtonText(isSubmitting, currentStep)}
+              </Button>
+            </div>
           </div>
+        ) : (
+          <div className="hidden md:block"></div>
+        )}
+
+        <div className="hidden md:flex justify-end mt-8">
+          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+            {getButtonText(isSubmitting, currentStep)}
+          </Button>
         </div>
       </div>
+    </div>
   )
 }
