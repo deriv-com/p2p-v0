@@ -306,7 +306,7 @@ export default function CreateAdPage() {
     <Suspense fallback={<div>Loading...</div>}>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
-        <div className="max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 md:px-0">
+        <div className="md:max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 md:px-0">
           <div
             className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
           >
