@@ -25,7 +25,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
       if(onBack && onClose) {
         return (
             <div className="flex w-full justify-between">
-              <div className="flex gap-4">
+              <div className="flex items-center gap-4">
                 <Button variant="ghost" onClick={onBack} size="sm" className="bg-grayscale-300 px-1">
                   <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24}/>
                 </Button>
