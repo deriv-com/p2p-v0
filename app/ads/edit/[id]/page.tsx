@@ -349,24 +349,24 @@ export default function EditAdPage() {
             onClose={handleClose}
             title={isMobile ? getPageTitle(formData.type) : ""}
           />
-          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">getPageTitle(formData.type)}</div>
+          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">{getPageTitle(formData.type)}</div>
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
           {currentStep === 0 && (
-            <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="block md:hidden mb-4 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 1</div>
               <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
             </div>
           )}
 
           {currentStep === 1 && (
-            <div className="block md:hidden mt-4 mb-6 text-left">
+            <div className="block md:hidden m-4 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 2</div>
               <div className="text-lg font-bold text-slate-1200">Payment details</div>
             </div>
           )}
 
-          <div className="relative mb-16 md:mb-0">
+          <div className="relative mb-16 md:mb-0 mx-4">
             {currentStep === 0 ? (
               <AdDetailsForm
                 onNext={handleAdDetailsNext}
