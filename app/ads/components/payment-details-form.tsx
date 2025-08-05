@@ -239,7 +239,7 @@ export default function PaymentDetailsForm({
                               togglePaymentMethod(method.method)
                             }}
                             disabled={!isMethodSelected(method.method) && isMaxReached}
-                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${
+                            className={`flex items-center gap-2 px-4 py-2 cursor-pointer ${
                               !isMethodSelected(method.method) && isMaxReached ? "opacity-50" : ""
                             }`}
                           >
