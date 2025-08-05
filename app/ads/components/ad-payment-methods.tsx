@@ -103,7 +103,7 @@ const AdPaymentMethods = () => {
               return (
                 <Card
                   key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-gray-100 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                  className="cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
                 >
                   <CardContent className="p-2">
                     <div className="flex items-start justify-between mb-3">
