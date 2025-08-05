@@ -127,7 +127,7 @@ const AdPaymentMethods = () => {
             })}
 
             <Card
-              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
+              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-grayscale-300 bg-white"
               onClick={() => setShowAddPanel(true)}
             >
               <CardContent className="p-4 h-full flex items-center justify-center">
