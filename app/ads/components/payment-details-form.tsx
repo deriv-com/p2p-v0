@@ -288,7 +288,7 @@ export default function PaymentDetailsForm({
               <Textarea
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
-                placeholder="Advertisers' instructions"
+                placeholder="Advertisers' instructions (Optional)"
                 className="min-h-[120px] resize-none"
                 maxLength={300}
               />
