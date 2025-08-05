@@ -134,7 +134,7 @@ export default function EditAdPage() {
     setFormData(updatedData)
     formDataRef.current = updatedData
     
-    if (adFormValid) {
+    if (!errors || Object.keys(errors).length === 0) {
       setCurrentStep(1)
     }
   }
