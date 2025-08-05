@@ -349,9 +349,6 @@ export default function EditAdPage() {
             onClose={handleClose}
             title={getPageTitle(formData.type)}
           />
-          <div
-            className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-          >
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
