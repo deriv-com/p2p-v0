@@ -44,7 +44,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
     
     return (<>
         <h1 className="text-xl font-bold">{title}</h1>
-        <Button variant="ghost" onClick={() => { if(redirectUrl) router.push(redirectUrl); onClose?.() }} size="sm">
+        <Button variant="ghost" onClick={() => { if(onClose) onClose() else router.push(redirectUrl) }} size="sm">
           <Image src="/icons/close-circle.png" alt="Close" width={20} height={20}/>
         </Button>
       </>)
