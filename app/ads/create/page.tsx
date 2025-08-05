@@ -312,7 +312,6 @@ export default function CreateAdPage() {
               const updatedStep = currentStep - 1;
               setCurrentStep(updatedStep)
             }}
-            redirectUrl={null}
             title="Create new ad"
           />
 
