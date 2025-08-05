@@ -309,7 +309,8 @@ export default function CreateAdPage() {
             isBackBtnVisible={currentStep != 0}
             isVisible={false}
             onBack={() => {
-              setCurrentStep(0)
+              const updatedStep = currentStep - 1;
+              setCurrentStep(updatedStep)
             }}
             title="Create new ad"
           />
