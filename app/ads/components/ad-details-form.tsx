@@ -297,7 +297,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                 <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
               )}
             </div>
-            <div className="text-xl mx-2">~</div>
+            <div className="text-xl mx-2 hidden md:block">~</div>
             <div>
               <CurrencyInput
                 value={maxAmount}
