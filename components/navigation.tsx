@@ -8,21 +8,27 @@ import Image from "next/image"
 interface NavigationProps {
   isBackBtnVisible?: boolean
   isVisible?: boolean
+  onBack?: () => void
   redirectUrl?: string
   title: string
 }
 
-export default function Navigation({ isBackBtnVisible = true, redirectUrl = "/", title }: NavigationProps) {
+export default function Navigation({ isBackBtnVisible = true, onBack, redirectUrl = "/", title }: NavigationProps) {
   const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   return (
     <div className="mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]">
       <div className="flex items-center justify-between md:px-0">
         {isBackBtnVisible && title ? (
-          <Link href={redirectUrl} className="flex items-center text-slate-1400">
+          {redirectUrl ? (<Link href={redirectUrl} className="flex items-center text-slate-1400">
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
             <h1 className="text-xl font-bold">{title}</h1>
-          </Link>
+          </Link>) : (
+            <Button variant="ghost" onClick={() => onBack?.()}>
+              <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
+              <h1 className="text-xl font-bold">{title}</h1>
+            </Button>
+          )}
         ) : (
           <>
             <h1 className="text-xl font-bold">{title}</h1>
