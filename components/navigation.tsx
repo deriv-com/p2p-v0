@@ -3,6 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import BalanceInfoPopup from "@/components/balance-info-popup"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
 interface NavigationProps {
