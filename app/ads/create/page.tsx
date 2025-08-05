@@ -308,6 +308,9 @@ export default function CreateAdPage() {
           <Navigation
             isBackBtnVisible={currentStep != 0}
             isVisible={false}
+            onBack={() => {
+              setCurrentStep(0)
+            }}
             title="Create new ad"
           />
 
