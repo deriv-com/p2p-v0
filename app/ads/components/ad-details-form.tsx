@@ -263,6 +263,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <RateInput
+                  currency={forCurrency}
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
