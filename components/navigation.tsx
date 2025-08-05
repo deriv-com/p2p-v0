@@ -25,7 +25,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
       if(onBack && onClose) {
         return (
             <div className="flex w-full justify-between">
-              <Button variant="ghost" onClick={onBack} size="sm">
+              <Button variant="ghost" onClick={onBack} size="sm" className="p-0">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20}/>
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
@@ -47,7 +47,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
         <Button variant="ghost" onClick={() => { 
             if(onClose) { onClose() } 
             else { router.push(redirectUrl)} 
-          }} size="sm">
+          }} size="sm" className="p-0">
           <Image src="/icons/close-circle.png" alt="Close" width={20} height={20}/>
         </Button>
       </>)
