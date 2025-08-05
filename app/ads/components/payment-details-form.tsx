@@ -244,7 +244,7 @@ export default function PaymentDetailsForm({
                             }`}
                           >
                             <div
-                              className={`w-2 h-2 flex items-center justify-center rounded border ${
+                              className={`w-4 h-4 flex items-center justify-center rounded border ${
                                 isMethodSelected(method.method) ? "bg-black border-black" : "border-gray-300"
                               }`}
                             >
