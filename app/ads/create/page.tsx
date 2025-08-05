@@ -311,7 +311,6 @@ export default function CreateAdPage() {
             isBackBtnVisible={currentStep != 0}
             isVisible={false}
             title="Create new ad"
-            redirectUrl={"/orders"}
           />
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
