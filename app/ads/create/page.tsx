@@ -313,11 +313,10 @@ export default function CreateAdPage() {
               setCurrentStep(updatedStep)
             }}
             onClose={handleClose}
-            title="Create new ad"
+            title=""
           />
-
+          <div className="hidden md:block text-2xl font-bold my-6">Create new ad</div>
           <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]"/>
-
           {currentStep === 0 && (
             <div className="block md:hidden m-4 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 1</div>
