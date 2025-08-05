@@ -307,31 +307,12 @@ export default function CreateAdPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="fixed w-full h-full bg-white top-0 left-0 px-[24px]">
         <div className="md:max-w-[600px] mx-auto pb-12 mt-8 progress-steps-container overflow-auto h-full pb-40 md:px-0">
-          <div
-            className={`flex justify-between mb-7 md:mt-4 sticky top-0 z-20 bg-white py-1 relative items-center border-b md:border-b-0 -mx-4 px-4 md:mx-0 md:px-0 border-gray-200`}
-          >
-            {currentStep === 1 && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setCurrentStep(0)}
-                className="text-gray-700 hover:text-gray-900 p-2"
-              >
-                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
-              </Button>
-            )}
-            {currentStep === 0 && <div></div>}
-            <div className="block md:hidden text-xl-bold text-black text-left">
-              Create new ad
-            </div>
-            <Button variant="ghost" size="sm" onClick={handleClose} className="text-gray-700 hover:text-gray-900 p-2 bg-grayscale-300 px-1">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-            </Button>
-          </div>
-
-          <div className="hidden md:block text-left mb-[40px] text-2xl-bold text-[#00080a]">
-            Create new ad
-          </div>
+          <Navigation
+            isBackBtnVisible={false}
+            isVisible={false}
+            title="Create new ad"
+            redirectUrl={"/orders"}
+          />
 
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
