@@ -388,7 +388,7 @@ export default function EditAdPage() {
           </div>
 
           {isMobile ? (
-            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 mb-16 md:mb-0 border-t border-gray-200">
+            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
                 <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
                   {getButtonText(isSubmitting, currentStep)}
