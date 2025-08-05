@@ -347,9 +347,9 @@ export default function EditAdPage() {
               setCurrentStep(updatedStep)
             }}
             onClose={handleClose}
-            title={isMobile ? "Create new ad" : ""}
+            title={isMobile ? "Edit ad" : ""}
           />
-          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">Create new ad</div>
+          <div className="hidden md:block text-2xl font-bold mt-6 mb-10">Editw ad</div>
           <ProgressSteps currentStep={currentStep} steps={steps} />
 
           {currentStep === 0 && (
