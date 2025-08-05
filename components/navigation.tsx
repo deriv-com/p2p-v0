@@ -21,7 +21,7 @@ export default function Navigation({ isBackBtnVisible = true, onBack, redirectUr
     if(isBackBtnVisible && title){
       if(onBack) {
         return (
-            <Button variant="ghost" onClick={() => onBack?.()}>
+            <Button variant="ghost" onClick={() => onBack()}>
               <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} className="mr-[16px]" />
               <h1 className="text-xl font-bold">{title}</h1>
             </Button>
