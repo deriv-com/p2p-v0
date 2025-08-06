@@ -221,12 +221,7 @@ export default function AdsPage() {
         )}
         
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-              <p className="mt-2 text-gray-600">Loading your ads...</p>
-            </div>
-          ) : error ? (
+              { error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
             <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
