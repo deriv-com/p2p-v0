@@ -152,7 +152,7 @@ export default function AdsPage() {
       <div className="flex items-center">
         <Switch
           id="hide-ads"
-          checked={hideMyAds}
+          checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
         />
