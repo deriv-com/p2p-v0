@@ -185,7 +185,7 @@ export default function AdsPage() {
           )}
           
           {ads.length > 0 && isMobile && (
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-end mb-4">
               {getHideMyAdsComponent()}
             </div>
           )}
