@@ -144,7 +144,7 @@ export default function AdsPage() {
       setHiddenAdverts(hide)
     } catch (error) {
       console.error("Failed to hide/show ads:", error)
-      setHiddenAdverts(!hide)
+      setHiddenAdverts(hide)
     }
   }
 
@@ -228,7 +228,7 @@ export default function AdsPage() {
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} />
           )}
         </div>
       
