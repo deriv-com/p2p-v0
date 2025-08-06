@@ -19,10 +19,11 @@ import { useToast } from "@/hooks/use-toast"
 interface MyAdsTableProps {
   ads: Ad[]
   hiddenAdverts: boolean
+  isLoading: boolean
   onAdDeleted?: (status?: string) => void
 }
 
-export default function MyAdsTable({ ads, hiddenAdverts, onAdDeleted }: MyAdsTableProps) {
+export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
