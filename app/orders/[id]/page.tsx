@@ -331,7 +331,7 @@ export default function OrderDetailsPage() {
                   )}
                 </div>
                 <div className="p-4 border rounded-lg mb-[24px]">
-                  {order.status === "completed"? (<div className="flex justify-between items-start mb-4">
+                  {order.status === "completed" ? (<div className="flex justify-between items-start mb-4">
                     <div>
                       <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                       <p className="font-bold">
