@@ -142,15 +142,7 @@ export default function AdsPage() {
       setHideMyAds(hide)
     } catch (error) {
       console.error("Failed to hide/show ads:", error)
-      // Revert the toggle state on error
       setHideMyAds(!hide)
-      
-      showAlert({
-        title: "Error",
-        description: `Failed to ${hide ? "hide" : "show"} ads. Please try again.`,
-        confirmText: "OK",
-        type: "warning",
-      })
     }
   }
 
