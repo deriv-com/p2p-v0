@@ -22,7 +22,7 @@ interface MyAdsTableProps {
 }
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
-  const hiddenAdverts = USER.adverts_are_listed
+  const hiddenAdverts = USER.advertsAreListed
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
