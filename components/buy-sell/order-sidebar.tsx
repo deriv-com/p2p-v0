@@ -255,7 +255,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       size="sm"
                       className="mr-[16px] bg-grayscale-300 px-1"
                     >
-                      <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                     </Button>
                     <h2 className="text-xl font-bold">Payment method</h2>
                   </div>
