@@ -87,6 +87,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
         testId="order-time-item"
       />
       
+      <div className="flex items-center justify-between">
       <OrderDetailItem
         label={counterpartyLabel}
         value={counterpartyNickname || ''}
@@ -98,6 +99,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
           counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
           isClosed={["cancelled", "completed", "refunded"].includes(order.status)}
         />
+      </div>
     </div>
   )
 }
