@@ -17,6 +17,7 @@ const OrderDetailItem = ({ label, value, testId }: OrderDetailItemProps) => (
 
 export const OrderDetails = ({ order, setShowChat } ) => {
   const { toast } = useToast()
+  const isMobile = useIsMobile()
   if (!order) return null
 
   const counterpartyNickname = order?.advert?.user?.id === USER.id 
