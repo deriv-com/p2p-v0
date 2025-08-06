@@ -8,4 +8,6 @@ export interface OrderDetailItemProps {
   label: string
   value: string
   testId?: string
+  showCopy?: boolean
+  onCopy?: () => void
 }
