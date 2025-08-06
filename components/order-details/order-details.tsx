@@ -93,12 +93,12 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
             value={counterpartyNickname || ''}
             testId="counterparty-item"
           />
-          <OrderChat
-          orderId={order.id}
-          counterpartyName={counterpartyNickname || "User"}
-          counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-          isClosed={["cancelled", "completed", "refunded"].includes(order.status)}
-        />
+          {order.status === "completed" && <OrderChat
+              orderId={order.id}
+              counterpartyName={counterpartyNickname || "User"}
+              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+              isClosed={["cancelled", "completed", "refunded"].includes(order.status)}
+            />}
       </div>
     </div>
   )
