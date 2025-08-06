@@ -279,12 +279,32 @@ export default function CreateAdPage() {
     if (currentStep === 0) {
       const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
       if (adDetailsFormData) {
-        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+        // Safari-compatible form submission
+        try {
+          if (adDetailsFormData.requestSubmit) {
+            adDetailsFormData.requestSubmit()
+          } else {
+            adDetailsFormData.submit()
+          }
+        } catch (error) {
+          // Fallback to event dispatch for older browsers
+          adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+        }
       }
     } else {
       const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
       if (paymentDetailsFormData) {
-        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+        // Safari-compatible form submission
+        try {
+          if (paymentDetailsFormData.requestSubmit) {
+            paymentDetailsFormData.requestSubmit()
+          } else {
+            paymentDetailsFormData.submit()
+          }
+        } catch (error) {
+          // Fallback to event dispatch for older browsers
+          paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+        }
       }
     }
   }
