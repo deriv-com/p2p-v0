@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight } from "lucide-react"
+import { X, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -10,7 +10,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { useToast } from "@/hooks/use-toast"
-import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
+import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle, copyToClipboard } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
@@ -134,24 +134,6 @@ export default function OrderDetailsPage() {
     return deadline.toLocaleDateString("en-GB", options)
   }
 
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-            <span>The text has been copied to your clipboard.</span>
-          </div>
-        ),
-        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
-      })
-    } catch (err) {
-      console.error("Failed to copy text: ", err)
-    }
-  }
-
   const renderPaymentMethodFields = (method: any) => {
     const fields = []
 
@@ -170,7 +152,21 @@ export default function OrderDetailsPage() {
             <div className="flex items-center justify-between">
               <p className="text-sm">{val.value}</p>
               <Button
-                onClick={() => copyToClipboard(String(val.value))}
+                onClick={async () => {
+                  const success = await copyToClipboard(String(val.value))
+                  if (success) {
+                    toast({
+                      description: (
+                        <div className="flex items-center gap-2">
+                          <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                          <span>The text has been copied to your clipboard.</span>
+                        </div>
+                      ),
+                      className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                      duration: 2500,
+                    })
+                  }
+                }}
                 variant="ghost"
                 size="sm"
                 className="p-0 h-auto"
@@ -332,7 +328,7 @@ export default function OrderDetailsPage() {
                 </div>
                 <div className="p-4 border rounded-lg mb-[24px]">
                   {order.status === "completed" ? (
-                    <OrderDetails order={order} />
+                    <OrderDetails order={order} setShowChat={setShowChat} />
                   ) : (<><div className="flex justify-between items-start mb-4">
                     <div>
                       <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
@@ -471,7 +467,7 @@ export default function OrderDetailsPage() {
                 {order.status === "completed" && !order.is_reviewable && order.rating && (
                   <div className="space-y-1 mt-[24px]">
                     <h2 className="text-base font-bold">Your transaction rating</h2>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.recommend && (
                         <div className="flex items-center gap-2">

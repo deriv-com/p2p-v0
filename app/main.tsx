@@ -8,7 +8,6 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
-import { preventSwipeNavigation } from "@/lib/utils"
 import "./globals.css"
 
 export default function Main({
@@ -62,12 +61,7 @@ export default function Main({
       }
     }
   }, [pathname, router])
-
-  useEffect(() => {
-    const cleanup = preventSwipeNavigation()
-    return cleanup
-  }, [])
-
+  
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
   }
