@@ -8,6 +8,7 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
+import { preventSwipeNavigation } from "@/lib/utils"
 import "./globals.css"
 
 export default function Main({
@@ -63,92 +64,8 @@ export default function Main({
   }, [pathname, router])
 
   useEffect(() => {
-    let startX = 0
-    let startY = 0
-    let isHorizontalSwipe = false
-
-    const handleTouchStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX
-      startY = e.touches[0].clientY
-      isHorizontalSwipe = false
-      
-      // Prevent swipe navigation if touch starts near edges
-      if (startX < 50 || startX > window.innerWidth - 50) {
-        e.preventDefault()
-      }
-    }
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!startX || !startY) {
-        return
-      }
-
-      const currentX = e.touches[0].clientX
-      const currentY = e.touches[0].clientY
-      const diffX = Math.abs(startX - currentX)
-      const diffY = Math.abs(startY - currentY)
-
-      // Detect if this is a horizontal swipe
-      if (diffX > diffY && diffX > 10) {
-        isHorizontalSwipe = true
-      }
-
-      // Prevent horizontal swipes that start from edges
-      if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
-        e.preventDefault()
-        e.stopPropagation()
-      }
-    }
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      // Prevent any remaining navigation attempts
-      if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
-        e.preventDefault()
-        e.stopPropagation()
-      }
-      
-      startX = 0
-      startY = 0
-      isHorizontalSwipe = false
-    }
-
-    // Prevent default behavior for gesture events (Safari specific)
-    const handleGestureStart = (e: Event) => {
-      e.preventDefault()
-    }
-
-    const handleGestureChange = (e: Event) => {
-      e.preventDefault()
-    }
-
-    const handleGestureEnd = (e: Event) => {
-      e.preventDefault()
-    }
-
-    // Add touch event listeners
-    document.addEventListener('touchstart', handleTouchStart, { passive: false })
-    document.addEventListener('touchmove', handleTouchMove, { passive: false })
-    document.addEventListener('touchend', handleTouchEnd, { passive: false })
-    
-    // Add Safari-specific gesture event listeners
-    document.addEventListener('gesturestart', handleGestureStart, { passive: false })
-    document.addEventListener('gesturechange', handleGestureChange, { passive: false })
-    document.addEventListener('gestureend', handleGestureEnd, { passive: false })
-
-    // Prevent overscroll behavior
-    document.body.style.overscrollBehaviorX = 'none'
-
-    return () => {
-      document.removeEventListener('touchstart', handleTouchStart)
-      document.removeEventListener('touchmove', handleTouchMove)
-      document.removeEventListener('touchend', handleTouchEnd)
-      document.removeEventListener('gesturestart', handleGestureStart)
-      document.removeEventListener('gesturechange', handleGestureChange)
-      document.removeEventListener('gestureend', handleGestureEnd)
-      
-      // Reset overscroll behavior
-      document.body.style.overscrollBehaviorX = 'auto'
-    }
+    const cleanup = preventSwipeNavigation()
+    return cleanup
   }, [])
 
   if (pathname === "/login") {
