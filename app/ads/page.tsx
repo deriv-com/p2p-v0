@@ -136,8 +136,32 @@ export default function AdsPage() {
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
-  // Filter ads based on hideMyAds toggle
   const filteredAds = hideMyAds ? [] : ads
+  const getHideMyAdsComponent = () => {
+   return (<div className="flex items-center gap-2">
+    <Switch
+      id="hide-ads"
+      checked={hideMyAds}
+      onCheckedChange={setHideMyAds}
+      className="data-[state=checked]:bg-gray-400"
+    />
+    <label htmlFor="hide-ads" className="text-sm font-medium text-gray-900 cursor-pointer">
+      Hide my ads
+    </label>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button className="ml-1">
+            <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Hidden ads won't appear on the Buy/Sell page.</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  </div>)
+  }
 
   return (
     <>
@@ -158,58 +182,13 @@ export default function AdsPage() {
                 <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
                 Create ad
               </Button>
-              
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="hide-ads"
-                  checked={hideMyAds}
-                  onCheckedChange={setHideMyAds}
-                  className="data-[state=checked]:bg-gray-400"
-                />
-                <label htmlFor="hide-ads" className="text-sm font-medium text-gray-900 cursor-pointer">
-                  Hide my ads
-                </label>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="ml-1">
-                        <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Hidden ads won't appear on the Buy/Sell page.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+                {getHideMyAdsComponent()}
             </div>
           )}
           
           {ads.length > 0 && isMobile && (
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Switch
-                  id="hide-ads-mobile"
-                  checked={hideMyAds}
-                  onCheckedChange={setHideMyAds}
-                  className="data-[state=checked]:bg-gray-400"
-                />
-                <label htmlFor="hide-ads-mobile" className="text-sm font-medium text-gray-900 cursor-pointer">
-                  Hide my ads
-                </label>
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button className="ml-1">
-                        <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Hidden ads won't appear on the Buy/Sell page.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+              {getHideMyAdsComponent()}
             </div>
           )}
         </div>
