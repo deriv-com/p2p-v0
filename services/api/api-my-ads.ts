@@ -461,7 +461,7 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
       "Content-Type": "application/json",
   }
     const payload = {
-      adverts_are_listed: hide,
+      adverts_are_listed: !hide,
     }
 
     const requestData = { data: payload }
