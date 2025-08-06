@@ -93,7 +93,7 @@ export const OrderDetails = ({ order, setShowChat } ) => {
             value={counterpartyNickname || ''}
             testId="counterparty-item"
           />
-          {order.status === "completed" && <Button
+          {order.status === "completed" && isMobile && <Button
             onClick={() => {
               setShowChat(true)
             }}
