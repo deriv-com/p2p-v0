@@ -15,6 +15,7 @@ const OrderDetailItem = ({ label, value, testId }: OrderDetailItemProps) => (
 )
 
 export const OrderDetails = ({ order }: OrderDetailsProps) => {
+  const { toast } = useToast()
   if (!order) return null
 
   const counterpartyNickname = order?.advert?.user?.id === USER.id 
@@ -32,7 +33,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
 
   return (
     <div className="space-y-[16px]" data-testid="order-details-container">
-        <div>
+        <div className="flex items-center justify-between">
           <OrderDetailItem
             label="Order ID"
             value={order.id}
