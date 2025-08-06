@@ -92,6 +92,12 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
         value={counterpartyNickname || ''}
         testId="counterparty-item"
       />
+      <OrderChat
+                  orderId={orderId}
+                  counterpartyName={counterpartyNickname || "User"}
+                  counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                  isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+                />
     </div>
   )
 }
