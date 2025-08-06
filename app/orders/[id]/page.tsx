@@ -467,7 +467,7 @@ export default function OrderDetailsPage() {
                 {order.status === "completed" && !order.is_reviewable && order.rating && (
                   <div className="space-y-1 mt-[24px]">
                     <h2 className="text-base font-bold">Your transaction rating</h2>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.recommend && (
                         <div className="flex items-center gap-2">
