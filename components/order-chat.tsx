@@ -152,9 +152,9 @@ export default function OrderChat({
             variant="ghost"
             size="sm"
             onClick={onNavigateToOrderDetails}
-            className="p-0 mr-[16px] hover:bg-transparent"
+            className="mr-[16px] bg-grayscale-300 px-1"
           >
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
           </Button>
         )}
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">

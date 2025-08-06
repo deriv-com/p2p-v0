@@ -128,7 +128,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const numAmount = Number.parseFloat(amount)
 
       const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
-      if(order.errors) {
+      if(order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if(errorCode === "OrderExists") {
           showAlert({
@@ -253,9 +253,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       onClick={() => setShowPaymentSelection(false)}
                       variant="ghost"
                       size="sm"
-                      className="p-0 mr-[16px] hover:bg-transparent"
+                      className="mr-[16px] bg-grayscale-300 px-1"
                     >
-                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={20} height={20} />
+                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                     </Button>
                     <h2 className="text-xl font-bold">Payment method</h2>
                   </div>
