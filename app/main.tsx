@@ -63,10 +63,6 @@ export default function Main({
     }
   }, [pathname, router])
 
-  useEffect(() => {
-    const cleanup = preventSwipeNavigation()
-    return cleanup
-  }, [])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
