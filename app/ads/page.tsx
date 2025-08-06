@@ -30,7 +30,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const [hiddenAdverts, setHiddenAdverts] = useState(!USER.advertsAreListed)
+  const [hiddenAdverts, setHiddenAdverts] = useState(USER.advertsAreListed)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -153,7 +153,7 @@ export default function AdsPage() {
       <div className="flex items-center">
         <Switch
           id="hide-ads"
-          checked={hiddenAdverts}
+          checked={!hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
         />
