@@ -21,6 +21,7 @@ interface MyAdsTableProps {
 }
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
+  const hiddenAdverts = localStorage.getItem("adverts_are_listed")
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
