@@ -136,7 +136,6 @@ export default function AdsPage() {
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
-  const filteredAds = hideMyAds ? [] : ads
   const getHideMyAdsComponent = () => {
    return (<div className="flex items-center gap-2">
           <Switch
