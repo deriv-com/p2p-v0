@@ -331,7 +331,7 @@ export default function OrderDetailsPage() {
                   )}
                 </div>
                 <div className="p-4 border rounded-lg mb-[24px]">
-                  {order.status === "completed" ?  : (
+                  {order.status === "completed" ? (
                     <OrderDetails order={order} />
                   ) : (<div className="flex justify-between items-start mb-4">
                     <div>
