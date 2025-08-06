@@ -12,6 +12,8 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import Navigation from "@/components/navigation"
+import { Switch } from "@/components/ui/switch"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface StatusData {
   success: "create" | "update"
@@ -26,6 +28,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
+  const [hideMyAds, setHideMyAds] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -133,6 +136,9 @@ export default function AdsPage() {
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
+  // Filter ads based on hideMyAds toggle
+  const filteredAds = hideMyAds ? [] : ads
+
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
@@ -142,17 +148,72 @@ export default function AdsPage() {
         )}
         <div className="flex-none container mx-auto pr-4">
           {ads.length > 0 && !isMobile && (
-            <Button
-              onClick={() => router.push("/ads/create")}
-              variant="cyan"
-              size="pill"
-              className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
-            >
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
-              Create ad
-            </Button>
+            <div className="flex items-center justify-between mb-6">
+              <Button
+                onClick={() => router.push("/ads/create")}
+                variant="cyan"
+                size="pill"
+                className="font-extrabold text-base leading-4 tracking-[0%] text-center"
+              >
+                <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+                Create ad
+              </Button>
+              
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="hide-ads"
+                  checked={hideMyAds}
+                  onCheckedChange={setHideMyAds}
+                  className="data-[state=checked]:bg-gray-400"
+                />
+                <label htmlFor="hide-ads" className="text-sm font-medium text-gray-900 cursor-pointer">
+                  Hide my ads
+                </label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="ml-1">
+                        <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Toggle to hide or show your ads in the list</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
+          )}
+          
+          {ads.length > 0 && isMobile && (
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="hide-ads-mobile"
+                  checked={hideMyAds}
+                  onCheckedChange={setHideMyAds}
+                  className="data-[state=checked]:bg-gray-400"
+                />
+                <label htmlFor="hide-ads-mobile" className="text-sm font-medium text-gray-900 cursor-pointer">
+                  Hide my ads
+                </label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button className="ml-1">
+                        <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Toggle to hide or show your ads in the list</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
           )}
         </div>
+        
         {ads.length > 0 && isMobile && (
           <div className="fixed bottom-20 right-4 z-10">
             <Button
@@ -166,6 +227,7 @@ export default function AdsPage() {
             </Button>
           </div>
         )}
+        
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
           {loading ? (
             <div className="text-center py-8">
@@ -174,10 +236,21 @@ export default function AdsPage() {
             </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
+          ) : hideMyAds ? (
+            <div className="flex flex-col items-center justify-center py-16">
+              <div className="bg-gray-100 rounded-full p-6 mb-6">
+                <Image src="/icons/search-icon.png" alt="Search" width={48} height={48} className="text-gray-400" />
+              </div>
+              <h2 className="text-xl font-semibold mb-2">Your ads are hidden</h2>
+              <p className="text-gray-600 mb-6 text-center max-w-md">
+                Toggle "Hide my ads" to show your ads in the list.
+              </p>
+            </div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+            <MyAdsTable ads={filteredAds} onAdDeleted={handleAdUpdated} />
           )}
         </div>
+        
         {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
