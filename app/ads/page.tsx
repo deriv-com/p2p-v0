@@ -168,7 +168,7 @@ export default function AdsPage() {
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
-        <div className="flex-none container mx-auto pr-4">
+        <div className="flex-none container mx-auto">
           {ads.length > 0 && !isMobile && (
             <div className="flex items-center justify-between mb-6">
               <Button
