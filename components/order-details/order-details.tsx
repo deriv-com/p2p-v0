@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
 import type { OrderDetailsProps, OrderDetailItemProps } from './types'
