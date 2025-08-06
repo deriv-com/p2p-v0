@@ -96,7 +96,6 @@ const config: Config = {
         },
         green: {
           50: "#EAF3EB",
-          100: ""
         }
         slate: {
           50: "#f8fafc",
