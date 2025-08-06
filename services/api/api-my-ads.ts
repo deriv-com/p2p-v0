@@ -459,10 +459,9 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-    }
-
+  }
     const payload = {
-      adverts_are_listed: !hide,
+      adverts_are_listed: hide,
     }
 
     const requestData = { data: payload }
