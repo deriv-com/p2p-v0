@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { getUserAdverts } from "./api/api-ads"
 import { hideMyAds } from "@/services/api/api-my-ads"
+import { USER_DATA } from "@/lib/local-variables"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -29,7 +30,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const [hiddenAdverts, setHiddenAdverts] = useState(typeof window !== 'undefined' ? localStorage.getItem("adverts_are_listed") : false)
+  const [hiddenAdverts, setHiddenAdverts] = useState(USER_DATA.adverts_are_listed)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
