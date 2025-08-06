@@ -216,7 +216,6 @@ export function preventSwipeNavigation(): () => void {
   const handleTouchStart = (e: TouchEvent) => {
     const target = e.target as Element
     
-    // Don't prevent swipes on bottom sheets, sidebars, or their children
     if (target.closest('[data-sidebar]') || 
         target.closest('.fixed.bottom-0') || 
         target.closest('[role="dialog"]') ||
@@ -227,8 +226,7 @@ export function preventSwipeNavigation(): () => void {
     startX = e.touches[0].clientX
     startY = e.touches[0].clientY
     isHorizontalSwipe = false
-    
-    // Prevent swipe navigation if touch starts near edges
+
     if (startX < 50 || startX > window.innerWidth - 50) {
       e.preventDefault()
     }
@@ -236,8 +234,7 @@ export function preventSwipeNavigation(): () => void {
 
   const handleTouchMove = (e: TouchEvent) => {
     const target = e.target as Element
-    
-    // Don't prevent swipes on bottom sheets, sidebars, or their children
+  
     if (target.closest('[data-sidebar]') || 
         target.closest('.fixed.bottom-0') || 
         target.closest('[role="dialog"]') ||
@@ -254,12 +251,10 @@ export function preventSwipeNavigation(): () => void {
     const diffX = Math.abs(startX - currentX)
     const diffY = Math.abs(startY - currentY)
 
-    // Detect if this is a horizontal swipe
     if (diffX > diffY && diffX > 10) {
       isHorizontalSwipe = true
     }
 
-    // Prevent horizontal swipes that start from edges
     if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
       e.preventDefault()
       e.stopPropagation()
@@ -268,8 +263,7 @@ export function preventSwipeNavigation(): () => void {
 
   const handleTouchEnd = (e: TouchEvent) => {
     const target = e.target as Element
-    
-    // Don't prevent swipes on bottom sheets, sidebars, or their children
+  
     if (target.closest('[data-sidebar]') || 
         target.closest('.fixed.bottom-0') || 
         target.closest('[role="dialog"]') ||
@@ -277,7 +271,6 @@ export function preventSwipeNavigation(): () => void {
       return
     }
 
-    // Prevent any remaining navigation attempts
     if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
       e.preventDefault()
       e.stopPropagation()
@@ -288,11 +281,9 @@ export function preventSwipeNavigation(): () => void {
     isHorizontalSwipe = false
   }
 
-  // Prevent default behavior for gesture events (Safari specific)
   const handleGestureStart = (e: Event) => {
     const target = e.target as Element
     
-    // Don't prevent gestures on bottom sheets, sidebars, or their children
     if (target.closest('[data-sidebar]') || 
         target.closest('.fixed.bottom-0') || 
         target.closest('[role="dialog"]') ||
@@ -306,7 +297,6 @@ export function preventSwipeNavigation(): () => void {
   const handleGestureChange = (e: Event) => {
     const target = e.target as Element
     
-    // Don't prevent gestures on bottom sheets, sidebars, or their children
     if (target.closest('[data-sidebar]') || 
         target.closest('.fixed.bottom-0') || 
         target.closest('[role="dialog"]') ||
@@ -320,7 +310,6 @@ export function preventSwipeNavigation(): () => void {
   const handleGestureEnd = (e: Event) => {
     const target = e.target as Element
     
-    // Don't prevent gestures on bottom sheets, sidebars, or their children
     if (target.closest('[data-sidebar]') || 
         target.closest('.fixed.bottom-0') || 
         target.closest('[role="dialog"]') ||
@@ -331,20 +320,16 @@ export function preventSwipeNavigation(): () => void {
     e.preventDefault()
   }
 
-  // Add touch event listeners
   document.addEventListener('touchstart', handleTouchStart, { passive: false })
   document.addEventListener('touchmove', handleTouchMove, { passive: false })
   document.addEventListener('touchend', handleTouchEnd, { passive: false })
   
-  // Add Safari-specific gesture event listeners
   document.addEventListener('gesturestart', handleGestureStart, { passive: false })
   document.addEventListener('gesturechange', handleGestureChange, { passive: false })
   document.addEventListener('gestureend', handleGestureEnd, { passive: false })
 
-  // Prevent overscroll behavior
   document.body.style.overscrollBehaviorX = 'none'
 
-  // Return cleanup function
   return () => {
     document.removeEventListener('touchstart', handleTouchStart)
     document.removeEventListener('touchmove', handleTouchMove)
@@ -352,8 +337,7 @@ export function preventSwipeNavigation(): () => void {
     document.removeEventListener('gesturestart', handleGestureStart)
     document.removeEventListener('gesturechange', handleGestureChange)
     document.removeEventListener('gestureend', handleGestureEnd)
-    
-    // Reset overscroll behavior
+  
     document.body.style.overscrollBehaviorX = 'auto'
   }
 }
