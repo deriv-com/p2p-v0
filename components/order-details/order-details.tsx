@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
-import type { OrderDetailsProps, OrderDetailItemProps } from './types'
+import type { OrderDetailItemProps } from './types'
 
 const OrderDetailItem = ({ label, value, testId }: OrderDetailItemProps) => (
   <div data-testid={testId}>
