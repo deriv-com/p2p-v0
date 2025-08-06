@@ -160,7 +160,7 @@ export function getStatusBadgeStyle(status: string, type: string): string {
     case "pending_release":
       return type === "buy" ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
     case "completed":
-      return "bg-green-100 text-green-800"
+      return "bg-green-100 text-buy-DEFAULT"
     case "cancelled":
       return "bg-slate-100 text-slate-800"
     case "disputed":
