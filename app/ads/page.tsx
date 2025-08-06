@@ -29,7 +29,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const [hideMyAds, setHideMyAds] = useState(false)
+  const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -140,10 +140,10 @@ export default function AdsPage() {
   const handleHideMyAds = async (hide: boolean) => {
     try {
       await hideMyAds(hide)
-      setHideMyAds(hide)
+      setHiddenAdverts(hide)
     } catch (error) {
       console.error("Failed to hide/show ads:", error)
-      setHideMyAds(!hide)
+      setHiddenAdverts(!hide)
     }
   }
 
