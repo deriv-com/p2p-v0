@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
-import { getUserAdverts } from "./api/api-ads"
+import { getUserAdverts, hideMyAds } from "./api/api-ads"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -136,30 +136,51 @@ export default function AdsPage() {
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
-  const getHideMyAdsComponent = () => {
-   return (<div className="flex items-center">
-          <Switch
-            id="hide-ads"
-            checked={hideMyAds}
-            onCheckedChange={setHideMyAds}
-            className="data-[state=checked]:bg-completed-icon"
-          />
-          <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
-            Hide my ads
-          </label>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                  <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Hidden ads won't appear on the Buy/Sell page.</p>
-                <TooltipArrow className="fill-black" />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>)
+  const handleHideMyAds = async (hide: boolean) => {
+    try {
+      await hideMyAds(hide)
+      setHideMyAds(hide)
+    } catch (error) {
+      console.error("Failed to hide/show ads:", error)
+      // Revert the toggle state on error
+      setHideMyAds(!hide)
+      
+      showAlert({
+        title: "Error",
+        description: `Failed to ${hide ? "hide" : "show"} ads. Please try again.`,
+        confirmText: "OK",
+        type: "warning",
+      })
+    }
   }
+
+  const getHideMyAdsComponent = () => {
+    return (
+      <div className="flex items-center">
+        <Switch
+          id="hide-ads"
+          checked={hideMyAds}
+          onCheckedChange={handleHideMyAds}
+          className="data-[state=checked]:bg-completed-icon"
+        />
+        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
+          Hide my ads
+        </label>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Hidden ads won't appear on the Buy/Sell page.</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
+  )
+}
 
   return (
     <>
