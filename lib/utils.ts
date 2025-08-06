@@ -214,6 +214,16 @@ export function preventSwipeNavigation(): () => void {
   let isHorizontalSwipe = false
 
   const handleTouchStart = (e: TouchEvent) => {
+    const target = e.target as Element
+    
+    // Don't prevent swipes on bottom sheets, sidebars, or their children
+    if (target.closest('[data-sidebar]') || 
+        target.closest('.fixed.bottom-0') || 
+        target.closest('[role="dialog"]') ||
+        target.closest('.sheet-content')) {
+      return
+    }
+
     startX = e.touches[0].clientX
     startY = e.touches[0].clientY
     isHorizontalSwipe = false
@@ -225,6 +235,16 @@ export function preventSwipeNavigation(): () => void {
   }
 
   const handleTouchMove = (e: TouchEvent) => {
+    const target = e.target as Element
+    
+    // Don't prevent swipes on bottom sheets, sidebars, or their children
+    if (target.closest('[data-sidebar]') || 
+        target.closest('.fixed.bottom-0') || 
+        target.closest('[role="dialog"]') ||
+        target.closest('.sheet-content')) {
+      return
+    }
+
     if (!startX || !startY) {
       return
     }
@@ -247,6 +267,16 @@ export function preventSwipeNavigation(): () => void {
   }
 
   const handleTouchEnd = (e: TouchEvent) => {
+    const target = e.target as Element
+    
+    // Don't prevent swipes on bottom sheets, sidebars, or their children
+    if (target.closest('[data-sidebar]') || 
+        target.closest('.fixed.bottom-0') || 
+        target.closest('[role="dialog"]') ||
+        target.closest('.sheet-content')) {
+      return
+    }
+
     // Prevent any remaining navigation attempts
     if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
       e.preventDefault()
@@ -260,14 +290,44 @@ export function preventSwipeNavigation(): () => void {
 
   // Prevent default behavior for gesture events (Safari specific)
   const handleGestureStart = (e: Event) => {
+    const target = e.target as Element
+    
+    // Don't prevent gestures on bottom sheets, sidebars, or their children
+    if (target.closest('[data-sidebar]') || 
+        target.closest('.fixed.bottom-0') || 
+        target.closest('[role="dialog"]') ||
+        target.closest('.sheet-content')) {
+      return
+    }
+    
     e.preventDefault()
   }
 
   const handleGestureChange = (e: Event) => {
+    const target = e.target as Element
+    
+    // Don't prevent gestures on bottom sheets, sidebars, or their children
+    if (target.closest('[data-sidebar]') || 
+        target.closest('.fixed.bottom-0') || 
+        target.closest('[role="dialog"]') ||
+        target.closest('.sheet-content')) {
+      return
+    }
+    
     e.preventDefault()
   }
 
   const handleGestureEnd = (e: Event) => {
+    const target = e.target as Element
+    
+    // Don't prevent gestures on bottom sheets, sidebars, or their children
+    if (target.closest('[data-sidebar]') || 
+        target.closest('.fixed.bottom-0') || 
+        target.closest('[role="dialog"]') ||
+        target.closest('.sheet-content')) {
+      return
+    }
+    
     e.preventDefault()
   }
 
