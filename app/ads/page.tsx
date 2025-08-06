@@ -168,7 +168,6 @@ export default function AdsPage() {
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
-        </Tooltip>
       </TooltipProvider>
     </div>
   )
