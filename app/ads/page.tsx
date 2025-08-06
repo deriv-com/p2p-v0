@@ -224,7 +224,7 @@ export default function AdsPage() {
               </p>
             </div>
           ) : (
-            <MyAdsTable ads={filteredAds} onAdDeleted={handleAdUpdated} />
+            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
           )}
         </div>
       
