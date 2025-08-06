@@ -455,7 +455,7 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
 
 export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.ads}/hide`
+    const url = `${API.baseUrl}users/${USER.id}`
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
