@@ -41,7 +41,7 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
           />
           <Button
             onClick={async () => {
-              const success = await copyToClipboard(String(val.value))
+              const success = await copyToClipboard(String(order.id))
               if (success) {
                 toast({
                   description: (
