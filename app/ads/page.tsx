@@ -139,28 +139,28 @@ export default function AdsPage() {
   const filteredAds = hideMyAds ? [] : ads
   const getHideMyAdsComponent = () => {
    return (<div className="flex items-center gap-2">
-    <Switch
-      id="hide-ads"
-      checked={hideMyAds}
-      onCheckedChange={setHideMyAds}
-      className="data-[state=checked]:bg-gray-400"
-    />
-    <label htmlFor="hide-ads" className="text-sm font-medium text-gray-900 cursor-pointer">
-      Hide my ads
-    </label>
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <button className="ml-1">
-            <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
-          </button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Hidden ads won't appear on the Buy/Sell page.</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  </div>)
+          <Switch
+            id="hide-ads"
+            checked={hideMyAds}
+            onCheckedChange={setHideMyAds}
+            className="data-[state=checked]:bg-gray-400"
+          />
+          <label htmlFor="hide-ads" className="text-sm font-medium text-gray-900 cursor-pointer">
+            Hide my ads
+          </label>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className="ml-1">
+                  <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Hidden ads won't appear on the Buy/Sell page.</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>)
   }
 
   return (
