@@ -128,7 +128,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const numAmount = Number.parseFloat(amount)
 
       const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
-      if(order.errors) {
+      if(order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if(errorCode === "OrderExists") {
           showAlert({
