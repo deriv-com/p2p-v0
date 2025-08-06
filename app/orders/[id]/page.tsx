@@ -18,6 +18,7 @@ import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
 import { ComplaintForm } from "@/components/complaint"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { OrderDetails } from "@/components/order-details"
 
 export default function OrderDetailsPage() {
   const params = useParams()
