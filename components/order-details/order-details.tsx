@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
 import type { OrderDetailItemProps } from './types'
