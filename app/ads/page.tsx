@@ -144,7 +144,7 @@ export default function AdsPage() {
             onCheckedChange={setHideMyAds}
             className="data-[state=checked]:bg-gray-400"
           />
-          <label htmlFor="hide-ads" className="text-sm font-medium text-gray-900 cursor-pointer">
+          <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer">
             Hide my ads
           </label>
           <TooltipProvider>
