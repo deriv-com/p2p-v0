@@ -81,9 +81,7 @@ export default function Main({
       const diffX = startX - currentX
       const diffY = startY - currentY
 
-      // Check if it's a horizontal swipe
       if (Math.abs(diffX) > Math.abs(diffY)) {
-        // Check if swipe starts from edge (within 50px from left or right edge)
         if (startX < 50 || startX > window.innerWidth - 50) {
           e.preventDefault()
         }
@@ -95,7 +93,6 @@ export default function Main({
       startY = 0
     }
 
-    // Add event listeners with passive: false to allow preventDefault
     document.addEventListener('touchstart', handleTouchStart, { passive: false })
     document.addEventListener('touchmove', handleTouchMove, { passive: false })
     document.addEventListener('touchend', handleTouchEnd, { passive: false })
