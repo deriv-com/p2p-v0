@@ -453,6 +453,46 @@ export async function activateAd(id: string): Promise<{ success: boolean }> {
   }
 }
 
+export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
+  try {
+    const url = `${API.baseUrl}/users/${USER.id}`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+  }
+    const payload = {
+      adverts_are_listed: !hide,
+    }
+
+    const requestData = { data: payload }
+    const body = JSON.stringify(requestData)
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers,
+      body,
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = {}
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to ${hide ? "hide" : "show"} ads: ${response.statusText || responseText}`)
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error("Error hiding/showing ads:", error)
+    throw error
+  }
+}
+
 export const MyAdsAPI = {
   getUserAdverts,
   getMyAds,
@@ -462,4 +502,5 @@ export const MyAdsAPI = {
   createAd,
   updateAd,
   activateAd,
+  hideMyAds,
 }

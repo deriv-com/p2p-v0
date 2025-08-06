@@ -144,7 +144,7 @@ export default function CreateAdPage() {
   const handlePaymentDetailsSubmit = async (data, errors?: Record<string, string>) => {
     const finalData = { ...formData, ...data }
     formDataRef.current = finalData
-
+    
     if (errors && Object.keys(errors).length > 0) {
       return
     }

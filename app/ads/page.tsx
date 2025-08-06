@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { getUserAdverts } from "./api/api-ads"
+import { hideMyAds } from "@/services/api/api-my-ads"
+import { USER } from "@/lib/local-variables"
 import Image from "next/image"
 import type { MyAd } from "./types"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -12,6 +14,8 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import Navigation from "@/components/navigation"
+import { Switch } from "@/components/ui/switch"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface StatusData {
   success: "create" | "update"
@@ -26,6 +30,8 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
+  const userData = (typeof window !== "undefined") ? JSON.parse(localStorage.getItem("user_data")) : {}
+  const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -133,6 +139,43 @@ export default function AdsPage() {
     }
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
+  const handleHideMyAds = async (value: boolean) => {
+    try {
+      await hideMyAds(value)
+      setHiddenAdverts(value)
+    } catch (error) {
+      console.error("Failed to hide/show ads:", error)
+      setHiddenAdverts(value)
+    }
+  }
+
+  const getHideMyAdsComponent = () => {
+    return (
+      <div className="flex items-center">
+        <Switch
+          id="hide-ads"
+          checked={hiddenAdverts}
+          onCheckedChange={handleHideMyAds}
+          className="data-[state=checked]:bg-completed-icon"
+        />
+        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
+          Hide my ads
+        </label>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Hidden ads won't appear on the Buy/Sell page.</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+      </TooltipProvider>
+    </div>
+  )
+}
+
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
@@ -140,19 +183,29 @@ export default function AdsPage() {
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
-        <div className="flex-none container mx-auto pr-4">
+        <div className="flex-none container mx-auto">
           {ads.length > 0 && !isMobile && (
-            <Button
-              onClick={() => router.push("/ads/create")}
-              variant="cyan"
-              size="pill"
-              className="font-extrabold text-base leading-4 tracking-[0%] text-center mb-6"
-            >
-              <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
-              Create ad
-            </Button>
+            <div className="flex items-center justify-between mb-6">
+              <Button
+                onClick={() => router.push("/ads/create")}
+                variant="cyan"
+                size="pill"
+                className="font-extrabold text-base leading-4 tracking-[0%] text-center"
+              >
+                <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+                Create ad
+              </Button>
+                {getHideMyAdsComponent()}
+            </div>
+          )}
+          
+          {ads.length > 0 && isMobile && (
+            <div className="flex items-center justify-end mb-4">
+              {getHideMyAdsComponent()}
+            </div>
           )}
         </div>
+        
         {ads.length > 0 && isMobile && (
           <div className="fixed bottom-20 right-4 z-10">
             <Button
@@ -166,19 +219,15 @@ export default function AdsPage() {
             </Button>
           </div>
         )}
+        
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent"></div>
-              <p className="mt-2 text-gray-600">Loading your ads...</p>
-            </div>
-          ) : error ? (
+              { error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
+            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
           )}
         </div>
-        {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
+      
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
             isOpen

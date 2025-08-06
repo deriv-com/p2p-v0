@@ -10,6 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
+import { USER } from "@/lib/local-variables"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
@@ -17,10 +18,12 @@ import { useToast } from "@/hooks/use-toast"
 
 interface MyAdsTableProps {
   ads: Ad[]
+  hiddenAdverts: boolean
+  isLoading: boolean
   onAdDeleted?: (status?: string) => void
 }
 
-export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
+export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
@@ -189,6 +192,16 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     })
   }
 
+  if(isLoading) {
+
+       return (
+              <div className="text-center py-12">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                <p className="mt-2 text-slate-600">Loading ads...</p>
+              </div>
+            )
+  }
+
   if (ads.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
@@ -237,7 +250,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
 
               return (
-                <TableRow key={index} className={cn("grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive ? "opacity-60" : "")}>
+                <TableRow key={index} className={cn("grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive || hiddenAdverts ? "opacity-60" : "")}>
                   <TableCell className="p-2 lg:p-4 align-top row-start-3 col-span-full whitespace-nowrap">
                     <div>
                       <div className="mb-1 flex justify-between md:justify-normal ">
