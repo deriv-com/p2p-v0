@@ -87,7 +87,7 @@ export const OrderDetails = ({ order, setShowChat } ) => {
         testId="order-time-item"
       />
       
-      <div className="flex items-center justify-between">
+      <div className="flex items-end justify-between">
           <OrderDetailItem
             label={counterpartyLabel}
             value={counterpartyNickname || ''}
