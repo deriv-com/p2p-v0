@@ -29,12 +29,34 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
 
   return (
     <div className="space-y-[16px]" data-testid="order-details-container">
-     <div>
-      <OrderDetailItem
-        label="Order ID"
-        value={order.id}
-        testId="order-id-item"
-      />
+        <div>
+          <OrderDetailItem
+            label="Order ID"
+            value={order.id}
+            testId="order-id-item"
+          />
+          <Button
+            onClick={async () => {
+              const success = await copyToClipboard(String(val.value))
+              if (success) {
+                toast({
+                  description: (
+                    <div className="flex items-center gap-2">
+                      <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                      <span>The text has been copied to your clipboard.</span>
+                    </div>
+                  ),
+                  className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                  duration: 2500,
+                })
+              }
+            }}
+            variant="ghost"
+            size="sm"
+            className="p-0 h-auto"
+          >
+            <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
+          </Button>
       </div>
       
       <OrderDetailItem
