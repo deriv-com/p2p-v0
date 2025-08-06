@@ -151,9 +151,7 @@ export default function AdsPage() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <button className="ml-1">
-                  <Image src="/icons/info-circle.png" alt="Info" width={16} height={16} className="text-gray-400" />
-                </button>
+                  <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
               </TooltipTrigger>
               <TooltipContent>
                 <p>Hidden ads won't appear on the Buy/Sell page.</p>
