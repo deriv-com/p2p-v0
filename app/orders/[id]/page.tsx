@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight } from "lucide-react"
+import { X, ChevronRight } from 'lucide-react'
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -10,7 +10,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { useToast } from "@/hooks/use-toast"
-import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle } from "@/lib/utils"
+import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle, copyToClipboard } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
@@ -134,24 +134,6 @@ export default function OrderDetailsPage() {
     return deadline.toLocaleDateString("en-GB", options)
   }
 
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-            <span>The text has been copied to your clipboard.</span>
-          </div>
-        ),
-        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
-      })
-    } catch (err) {
-      console.error("Failed to copy text: ", err)
-    }
-  }
-
   const renderPaymentMethodFields = (method: any) => {
     const fields = []
 
@@ -170,7 +152,21 @@ export default function OrderDetailsPage() {
             <div className="flex items-center justify-between">
               <p className="text-sm">{val.value}</p>
               <Button
-                onClick={() => copyToClipboard(String(val.value))}
+                onClick={async () => {
+                  const success = await copyToClipboard(String(val.value))
+                  if (success) {
+                    toast({
+                      description: (
+                        <div className="flex items-center gap-2">
+                          <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                          <span>The text has been copied to your clipboard.</span>
+                        </div>
+                      ),
+                      className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                      duration: 2500,
+                    })
+                  }
+                }}
                 variant="ghost"
                 size="sm"
                 className="p-0 h-auto"
