@@ -88,12 +88,12 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
       />
       
       <div className="flex items-center justify-between">
-      <OrderDetailItem
-        label={counterpartyLabel}
-        value={counterpartyNickname || ''}
-        testId="counterparty-item"
-      />
-      <OrderChat
+          <OrderDetailItem
+            label={counterpartyLabel}
+            value={counterpartyNickname || ''}
+            testId="counterparty-item"
+          />
+          <OrderChat
           orderId={order.id}
           counterpartyName={counterpartyNickname || "User"}
           counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
