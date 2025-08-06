@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
-import OrderChat from "@/components/order-chat"
 import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
 import type { OrderDetailsProps, OrderDetailItemProps } from './types'
@@ -15,7 +14,7 @@ const OrderDetailItem = ({ label, value, testId }: OrderDetailItemProps) => (
   </div>
 )
 
-export const OrderDetails = ({ order }: OrderDetailsProps) => {
+export const OrderDetails = ({ order, setShowChat } ) => {
   const { toast } = useToast()
   if (!order) return null
 
@@ -94,12 +93,16 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
             value={counterpartyNickname || ''}
             testId="counterparty-item"
           />
-          {order.status === "completed" && <OrderChat
-              orderId={order.id}
-              counterpartyName={counterpartyNickname || "User"}
-              counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
-              isClosed={["cancelled", "completed", "refunded"].includes(order.status)}
-            />}
+          {order.status === "completed" && <Button
+            onClick={() => {
+              setShowChat(true)
+            }}
+            className="text-slate-500 hover:text-slate-700"
+            variant="ghost"
+            size="sm"
+          >
+            <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+          </Button>}
       </div>
     </div>
   )

@@ -328,7 +328,7 @@ export default function OrderDetailsPage() {
                 </div>
                 <div className="p-4 border rounded-lg mb-[24px]">
                   {order.status === "completed" ? (
-                    <OrderDetails order={order} />
+                    <OrderDetails order={order} setShowChat={setShowChat} />
                   ) : (<><div className="flex justify-between items-start mb-4">
                     <div>
                       <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
