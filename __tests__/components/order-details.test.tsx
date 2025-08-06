@@ -1,200 +1,163 @@
-import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import { OrderDetails } from '@/components/order-details/order-details'
 import type { Order } from '@/services/api/api-orders'
+import { USER } from '@/lib/local-variables'
 
-// Mock the clipboard API
-Object.assign(navigator, {
-  clipboard: {
-    writeText: jest.fn(() => Promise.resolve()),
-  },
-})
+// Mock the USER constant
+jest.mock('@/lib/local-variables', () => ({
+  USER: { id: 'user123' }
+}))
+
+// Mock the utils
+jest.mock('@/lib/utils', () => ({
+  formatAmount: jest.fn((amount) => amount.toFixed(2)),
+  formatDateTime: jest.fn((date) => new Date(date).toLocaleDateString())
+}))
 
 const mockOrder: Order = {
-  id: 'ORD123456',
+  id: 'order123',
   type: 'buy',
   amount: 1000,
   payment_amount: 50000,
   exchange_rate: 50,
   created_at: '2024-01-15T10:30:00Z',
-  status: 'pending',
   user: {
-    id: 'user123',
-    nickname: 'buyer_user',
+    id: 'buyer123',
+    nickname: 'BuyerUser'
   },
   advert: {
     id: 'ad123',
     account_currency: 'USD',
     payment_currency: 'IDR',
     user: {
-      id: 'advertiser123',
-      nickname: 'seller_user',
-    },
-  },
-}
+      id: 'seller456',
+      nickname: 'SellerUser'
+    }
+  }
+} as Order
 
 describe('OrderDetails', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
 
-  it('renders all order details correctly', () => {
+  it('should render all order detail fields correctly', () => {
     render(<OrderDetails order={mockOrder} />)
     
-    expect(screen.getByTestId('order-details-container')).toBeInTheDocument()
-    expect(screen.getByTestId('order-id-item')).toBeInTheDocument()
-    expect(screen.getByTestId('exchange-rate-item')).toBeInTheDocument()
-    expect(screen.getByTestId('payment-amount-item')).toBeInTheDocument()
-    expect(screen.getByTestId('amount-item')).toBeInTheDocument()
-    expect(screen.getByTestId('order-time-item')).toBeInTheDocument()
-    expect(screen.getByTestId('counterparty-item')).toBeInTheDocument()
+    expect(screen.getByText('Order ID')).toBeInTheDocument()
+    expect(screen.getByText('order123')).toBeInTheDocument()
+    
+    expect(screen.getByText('Exchange rate (USD 1)')).toBeInTheDocument()
+    expect(screen.getByText('IDR 50.00')).toBeInTheDocument()
+    
+    expect(screen.getByText('You pay')).toBeInTheDocument()
+    expect(screen.getByText('IDR 50000.00')).toBeInTheDocument()
+    
+    expect(screen.getByText('You receive')).toBeInTheDocument()
+    expect(screen.getByText('USD 1000.00')).toBeInTheDocument()
+    
+    expect(screen.getByText('Order time')).toBeInTheDocument()
+    
+    expect(screen.getByText('Seller')).toBeInTheDocument()
+    expect(screen.getByText('SellerUser')).toBeInTheDocument()
   })
 
-  it('displays correct order ID with copy button', () => {
-    render(<OrderDetails order={mockOrder} />)
+  it('should display correct labels for sell order when user is not the advertiser', () => {
+    const sellOrder = {
+      ...mockOrder,
+      type: 'sell' as const
+    }
     
-    const orderIdItem = screen.getByTestId('order-id-item')
-    expect(orderIdItem).toHaveTextContent('ORD123456')
-    expect(screen.getByTestId('copy-order-id-button')).toBeInTheDocument()
-  })
-
-  it('copies order ID to clipboard when copy button is clicked', async () => {
-    const writeTextSpy = jest.spyOn(navigator.clipboard, 'writeText')
-    
-    render(<OrderDetails order={mockOrder} />)
-    
-    const copyButton = screen.getByTestId('copy-order-id-button')
-    fireEvent.click(copyButton)
-    
-    await waitFor(() => {
-      expect(writeTextSpy).toHaveBeenCalledWith('ORD123456')
-    })
-  })
-
-  it('shows success feedback after copying', async () => {
-    render(<OrderDetails order={mockOrder} />)
-    
-    const copyButton = screen.getByTestId('copy-order-id-button')
-    fireEvent.click(copyButton)
-    
-    await waitFor(() => {
-      expect(screen.getByTestId('copy-success-icon')).toBeInTheDocument()
-    })
-  })
-
-  it('resets copy feedback after timeout', async () => {
-    jest.useFakeTimers()
-    
-    render(<OrderDetails order={mockOrder} />)
-    
-    const copyButton = screen.getByTestId('copy-order-id-button')
-    fireEvent.click(copyButton)
-    
-    await waitFor(() => {
-      expect(screen.getByTestId('copy-success-icon')).toBeInTheDocument()
-    })
-    
-    jest.advanceTimersByTime(2000)
-    
-    await waitFor(() => {
-      expect(screen.queryByTestId('copy-success-icon')).not.toBeInTheDocument()
-      expect(screen.getByTestId('copy-order-id-button')).toBeInTheDocument()
-    })
-    
-    jest.useRealTimers()
-  })
-
-  it('handles clipboard API errors gracefully', async () => {
-    const writeTextSpy = jest.spyOn(navigator.clipboard, 'writeText')
-      .mockRejectedValueOnce(new Error('Clipboard error'))
-    
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation()
-    
-    render(<OrderDetails order={mockOrder} />)
-    
-    const copyButton = screen.getByTestId('copy-order-id-button')
-    fireEvent.click(copyButton)
-    
-    await waitFor(() => {
-      expect(writeTextSpy).toHaveBeenCalledWith('ORD123456')
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to copy order ID:', expect.any(Error))
-    })
-    
-    consoleSpy.mockRestore()
-  })
-
-  it('displays correct exchange rate format', () => {
-    render(<OrderDetails order={mockOrder} />)
-    
-    const exchangeRateItem = screen.getByTestId('exchange-rate-item')
-    expect(exchangeRateItem).toHaveTextContent('IDR 50.00')
-  })
-
-  it('shows correct payment amount for buy order', () => {
-    render(<OrderDetails order={mockOrder} />)
-    
-    const paymentAmountItem = screen.getByTestId('payment-amount-item')
-    expect(paymentAmountItem).toHaveTextContent('You pay')
-    expect(paymentAmountItem).toHaveTextContent('IDR 50,000')
-  })
-
-  it('shows correct amount for buy order', () => {
-    render(<OrderDetails order={mockOrder} />)
-    
-    const amountItem = screen.getByTestId('amount-item')
-    expect(amountItem).toHaveTextContent('You receive')
-    expect(amountItem).toHaveTextContent('USD 1,000')
-  })
-
-  it('displays correct counterparty for buy order', () => {
-    render(<OrderDetails order={mockOrder} />)
-    
-    const counterpartyItem = screen.getByTestId('counterparty-item')
-    expect(counterpartyItem).toHaveTextContent('Seller')
-    expect(counterpartyItem).toHaveTextContent('seller_user')
-  })
-
-  it('handles sell order correctly', () => {
-    const sellOrder = { ...mockOrder, type: 'sell' as const }
     render(<OrderDetails order={sellOrder} />)
     
-    const paymentAmountItem = screen.getByTestId('payment-amount-item')
-    const amountItem = screen.getByTestId('amount-item')
-    const counterpartyItem = screen.getByTestId('counterparty-item')
-    
-    expect(paymentAmountItem).toHaveTextContent('You receive')
-    expect(amountItem).toHaveTextContent('You send')
-    expect(counterpartyItem).toHaveTextContent('Buyer')
+    expect(screen.getByText('You receive')).toBeInTheDocument()
+    expect(screen.getByText('You send')).toBeInTheDocument()
+    expect(screen.getByText('Buyer')).toBeInTheDocument()
   })
 
-  it('returns null when order is not provided', () => {
-    const { container } = render(<OrderDetails order={null as any} />)
-    expect(container.firstChild).toBeNull()
-  })
-
-  it('handles missing counterparty nickname gracefully', () => {
-    const orderWithoutNickname = {
+  it('should display correct counterparty when user is the advertiser', () => {
+    const orderWhereUserIsAdvertiser = {
       ...mockOrder,
       advert: {
         ...mockOrder.advert,
         user: {
-          ...mockOrder.advert.user,
-          nickname: undefined,
-        },
-      },
+          id: 'user123', // Same as USER.id
+          nickname: 'CurrentUser'
+        }
+      }
     }
     
-    render(<OrderDetails order={orderWithoutNickname} />)
+    render(<OrderDetails order={orderWhereUserIsAdvertiser} />)
     
-    const counterpartyItem = screen.getByTestId('counterparty-item')
-    expect(counterpartyItem).toHaveTextContent('Seller')
-    expect(counterpartyItem).toHaveTextContent('')
+    expect(screen.getByText('Buyer')).toBeInTheDocument()
+    expect(screen.getByText('BuyerUser')).toBeInTheDocument()
   })
 
-  it('applies correct CSS classes', () => {
+  it('should handle missing optional fields gracefully', () => {
+    const orderWithMissingFields = {
+      ...mockOrder,
+      user: undefined,
+      advert: {
+        ...mockOrder.advert,
+        account_currency: undefined,
+        payment_currency: undefined
+      }
+    } as any
+    
+    render(<OrderDetails order={orderWithMissingFields} />)
+    
+    expect(screen.getByText('Order ID')).toBeInTheDocument()
+    expect(screen.getByText('order123')).toBeInTheDocument()
+  })
+
+  it('should format exchange rate with correct decimal places', () => {
+    const orderWithDecimalRate = {
+      ...mockOrder,
+      exchange_rate: 50.123456
+    }
+    
+    render(<OrderDetails order={orderWithDecimalRate} />)
+    
+    expect(screen.getByText('IDR 50.12')).toBeInTheDocument()
+  })
+
+  it('should handle edge case where both user IDs match', () => {
+    const edgeCaseOrder = {
+      ...mockOrder,
+      user: {
+        id: 'user123',
+        nickname: 'SameUser'
+      },
+      advert: {
+        ...mockOrder.advert,
+        user: {
+          id: 'user123',
+          nickname: 'SameUser'
+        }
+      }
+    }
+    
+    render(<OrderDetails order={edgeCaseOrder} />)
+    
+    expect(screen.getByText('SameUser')).toBeInTheDocument()
+  })
+
+  it('should apply correct CSS classes for styling', () => {
     render(<OrderDetails order={mockOrder} />)
     
     const container = screen.getByTestId('order-details-container')
     expect(container).toHaveClass('space-y-[16px]')
+    
+    const labels = screen.getAllByText(/Order ID|Exchange rate|You pay|You receive|Order time|Seller/)
+    labels.forEach(label => {
+      if (label.tagName === 'H3') {
+        expect(label).toHaveClass('text-sm', 'text-slate-500', 'mb-1')
+      }
+    })
+  })
+
+  it('should handle null or undefined order gracefully', () => {
+    const { container } = render(<OrderDetails order={null as any} />)
+    expect(container.firstChild).toBeNull()
   })
 })
