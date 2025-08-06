@@ -13,7 +13,7 @@ import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import Navigation from "@/components/navigation"
 import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface StatusData {
   success: "create" | "update"
@@ -155,6 +155,7 @@ export default function AdsPage() {
               </TooltipTrigger>
               <TooltipContent>
                 <p>Hidden ads won't appear on the Buy/Sell page.</p>
+                <TooltipArrow className="fill-black" />
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
