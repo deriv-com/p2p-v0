@@ -140,6 +140,7 @@ export default function AdsPage() {
 
   const handleHideMyAds = async (hide: boolean) => {
     try {
+      console.log(hide);
       await hideMyAds(hide)
       setHiddenAdverts(hide)
     } catch (error) {
