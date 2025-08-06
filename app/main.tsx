@@ -62,6 +62,51 @@ export default function Main({
     }
   }, [pathname, router])
 
+  useEffect(() => {
+    let startX = 0
+    let startY = 0
+
+    const handleTouchStart = (e: TouchEvent) => {
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY
+    }
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (!startX || !startY) {
+        return
+      }
+
+      const currentX = e.touches[0].clientX
+      const currentY = e.touches[0].clientY
+      const diffX = startX - currentX
+      const diffY = startY - currentY
+
+      // Check if it's a horizontal swipe
+      if (Math.abs(diffX) > Math.abs(diffY)) {
+        // Check if swipe starts from edge (within 50px from left or right edge)
+        if (startX < 50 || startX > window.innerWidth - 50) {
+          e.preventDefault()
+        }
+      }
+    }
+
+    const handleTouchEnd = () => {
+      startX = 0
+      startY = 0
+    }
+
+    // Add event listeners with passive: false to allow preventDefault
+    document.addEventListener('touchstart', handleTouchStart, { passive: false })
+    document.addEventListener('touchmove', handleTouchMove, { passive: false })
+    document.addEventListener('touchend', handleTouchEnd, { passive: false })
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart)
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleTouchEnd)
+    }
+  }, [])
+
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
   }
