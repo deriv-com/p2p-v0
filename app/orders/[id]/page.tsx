@@ -430,7 +430,7 @@ export default function OrderDetailsPage() {
                   (order.type === "sell" &&
                     (order.status === "pending_release" || order.status === "timed_out") &&
                     order.user.id == USER.id)) && (
-                  <div className="p-4 flex gap-4 float-right">
+                  <div className="pl-4 flex gap-4 md:float-right">
                     <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
                       {isConfirmLoading ? (
                         <>
