@@ -8,9 +8,7 @@ interface OrderDetailsSidebarProps {
 const OrderDetailsSidebar: React.FC<OrderDetailsSidebarProps> = ({ order }) => {
   return (
     <div>
-      {/* Other sidebar content */}
       <OrderDetails order={order} />
-      {/* Other sidebar content */}
     </div>
   );
 };
