@@ -142,7 +142,7 @@ export default function AdsPage() {
             id="hide-ads"
             checked={hideMyAds}
             onCheckedChange={setHideMyAds}
-            className="data-[state=checked]:bg-gray-400"
+            className="data-[state=checked]:bg-completed-icon"
           />
           <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer">
             Hide my ads
