@@ -5,6 +5,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/utils.ts",
     "*.{js,ts,jsx,tsx,mdx}",
   ],
   safelist: ["bg-paymentMethod-bank", "bg-paymentMethod-ewallet"],
@@ -93,6 +94,9 @@ const config: Config = {
         yellow: {
           50: "#A66C00",
           100: "#FFF7E6",
+        },
+        green: {
+          50: "#EAF3EB",
         },
         slate: {
           50: "#f8fafc",
