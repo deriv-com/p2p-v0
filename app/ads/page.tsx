@@ -137,14 +137,14 @@ export default function AdsPage() {
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
   const getHideMyAdsComponent = () => {
-   return (<div className="flex items-center gap-2">
+   return (<div className="flex items-center">
           <Switch
             id="hide-ads"
             checked={hideMyAds}
             onCheckedChange={setHideMyAds}
             className="data-[state=checked]:bg-completed-icon"
           />
-          <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer">
+          <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
             Hide my ads
           </label>
           <TooltipProvider>
