@@ -54,7 +54,6 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
     const response = await fetch(`${API.coreUrl}/verify`, {
-
       method: "POST",
       headers: {
         "X-Enable-Session": "true"
@@ -153,6 +152,9 @@ export async function fetchUserIdAndStore(): Promise<void> {
     if (userId) {
       localStorage.setItem("user_id", userId.toString())
       localStorage.setItem("user_data", JSON.stringify(result.data))
+      if (result?.data?.adverts_are_listed !== undefined) {
+        localStorage.setItem("adverts_are_listed", result.data.adverts_are_listed.toString())
+      }
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
@@ -186,7 +188,6 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token: string): Promise<void> {
   try {
-
     const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
       method: "GET",
       credentials: "include",
