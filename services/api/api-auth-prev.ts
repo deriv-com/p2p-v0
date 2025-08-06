@@ -114,6 +114,12 @@ export async function getSession(): Promise<VerificationResponse> {
             }
         }
 
+        const userId = data?.id
+        if (userId) {
+            localStorage.setItem("user_id", userId.toString())
+            localStorage.setItem("user_data", JSON.stringify(data))
+        }
+
         return {
             access_token: token
         }
