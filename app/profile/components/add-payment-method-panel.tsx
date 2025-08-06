@@ -47,7 +47,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
           <div className="flex items-center justify-between gap-4">
             {onBack && (
               <Button variant="ghost" size="sm" onClick={onBack} className="bg-grayscale-300 px-1">
-                <Image src="/icons/back-circle.png" alt="Back" width={24} height={24} />
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
               </Button>
             )}
             <h2 className="text-xl font-bold">{title}</h2>
