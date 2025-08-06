@@ -213,16 +213,6 @@ export default function AdsPage() {
             </div>
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
-          ) : hideMyAds ? (
-            <div className="flex flex-col items-center justify-center py-16">
-              <div className="bg-gray-100 rounded-full p-6 mb-6">
-                <Image src="/icons/search-icon.png" alt="Search" width={48} height={48} className="text-gray-400" />
-              </div>
-              <h2 className="text-xl font-semibold mb-2">Your ads are hidden</h2>
-              <p className="text-gray-600 mb-6 text-center max-w-md">
-                Toggle "Hide my ads" to show your ads in the list.
-              </p>
-            </div>
           ) : (
             <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} />
           )}
