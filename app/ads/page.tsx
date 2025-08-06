@@ -177,7 +177,7 @@ export default function AdsPage() {
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Toggle to hide or show your ads in the list</p>
+                      <p>Hidden ads won't appear on the Buy/Sell page.</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -205,7 +205,7 @@ export default function AdsPage() {
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Toggle to hide or show your ads in the list</p>
+                      <p>Hidden ads won't appear on the Buy/Sell page.</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -250,8 +250,7 @@ export default function AdsPage() {
             <MyAdsTable ads={filteredAds} onAdDeleted={handleAdUpdated} />
           )}
         </div>
-        
-        {/* Status modal - only show if statusData exists, not loading, no error modal, and showStatusModal is true */}
+      
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
             isOpen
