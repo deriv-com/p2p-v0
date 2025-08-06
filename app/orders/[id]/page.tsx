@@ -361,7 +361,7 @@ export default function OrderDetailsPage() {
                       </Button>
                     )}
                   </div>) : (
-                    
+                    <OrderDetails />
                   )}
                 </div>
                 <div className="space-y-6 mt-4">
