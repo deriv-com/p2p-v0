@@ -10,7 +10,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
-import {USER_DATA} from "@/lib/local-variables"
+import { USER } from "@/lib/local-variables"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
@@ -22,7 +22,7 @@ interface MyAdsTableProps {
 }
 
 export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
-  const hiddenAdverts = USER_DATA.adverts_are_listed
+  const hiddenAdverts = USER.adverts_are_listed
   const router = useRouter()
   const { toast } = useToast()
   const [isDeleting, setIsDeleting] = useState(false)
