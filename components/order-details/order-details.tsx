@@ -33,7 +33,7 @@ export const OrderDetails = ({ order, setShowChat } ) => {
 
   return (
     <div className="space-y-[16px]" data-testid="order-details-container">
-        <div className="flex items-center justify-between">
+        <div className="flex items-end justify-between">
           <OrderDetailItem
             label="Order ID"
             value={order.id}
