@@ -462,7 +462,7 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
     }
 
     const payload = {
-      hide_ads: hide,
+      adverts_are_listed: true,
     }
 
     const requestData = { data: payload }
