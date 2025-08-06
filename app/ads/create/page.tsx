@@ -145,6 +145,8 @@ export default function CreateAdPage() {
     const finalData = { ...formData, ...data }
     formDataRef.current = finalData
 
+     console.log(errors);
+
     if (errors && Object.keys(errors).length > 0) {
       return
     }
@@ -279,32 +281,12 @@ export default function CreateAdPage() {
     if (currentStep === 0) {
       const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
       if (adDetailsFormData) {
-        // Safari-compatible form submission
-        try {
-          if (adDetailsFormData.requestSubmit) {
-            adDetailsFormData.requestSubmit()
-          } else {
-            adDetailsFormData.submit()
-          }
-        } catch (error) {
-          // Fallback to event dispatch for older browsers
-          adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-        }
+        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
     } else {
       const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
       if (paymentDetailsFormData) {
-        // Safari-compatible form submission
-        try {
-          if (paymentDetailsFormData.requestSubmit) {
-            paymentDetailsFormData.requestSubmit()
-          } else {
-            paymentDetailsFormData.submit()
-          }
-        } catch (error) {
-          // Fallback to event dispatch for older browsers
-          paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-        }
+        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
     }
   }
