@@ -152,9 +152,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     if (userId) {
       localStorage.setItem("user_id", userId.toString())
       localStorage.setItem("user_data", JSON.stringify(result.data))
-      if (result?.data?.adverts_are_listed !== undefined) {
-        localStorage.setItem("adverts_are_listed", result.data.adverts_are_listed.toString())
-      }
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
