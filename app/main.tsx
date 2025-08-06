@@ -8,7 +8,7 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
-import { preventSwipeNavigation } from "@/lib/utils"
+
 import "./globals.css"
 
 export default function Main({
