@@ -1,6 +1,6 @@
 "use client"
 
-import { formatAmount, formatDateTime } from "@/lib/utils"
+import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
 import type { OrderDetailsProps, OrderDetailItemProps } from './types'
 
@@ -29,11 +29,13 @@ export const OrderDetails = ({ order }: OrderDetailsProps) => {
 
   return (
     <div className="space-y-[16px]" data-testid="order-details-container">
+     <div>
       <OrderDetailItem
         label="Order ID"
         value={order.id}
         testId="order-id-item"
       />
+      </div>
       
       <OrderDetailItem
         label={`Exchange rate (${order.advert?.account_currency} 1)`}
