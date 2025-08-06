@@ -229,7 +229,7 @@ export default function AdsPage() {
           ) : error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} />
+            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
           )}
         </div>
       
