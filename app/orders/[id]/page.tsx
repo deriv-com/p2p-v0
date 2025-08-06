@@ -362,7 +362,8 @@ export default function OrderDetailsPage() {
                         <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
                       </Button>
                     )}
-                  </div>)}
+                  </div>
+                  )}
                 </div>
                 <div className="space-y-6 mt-4">
                   <div className="space-y-4">
