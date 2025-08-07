@@ -192,7 +192,7 @@ export default function AdsPage() {
                 className="font-extrabold text-base leading-4 tracking-[0%] text-center"
               >
                 <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
-                Create ads
+                Create ad
               </Button>
                 {getHideMyAdsComponent()}
             </div>
