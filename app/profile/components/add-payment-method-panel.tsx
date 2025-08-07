@@ -13,7 +13,7 @@ interface AddPaymentMethodPanelProps {
   onClose: () => void
   onAdd: (method: string, fields: Record<string, string>) => void
   isLoading: boolean
-  allowedPaymentMethods?: string[] // Add this new prop
+  allowedPaymentMethods?: string[]
 }
 
 interface PanelWrapperProps {
@@ -87,7 +87,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
           methods = response
         }
 
-        // Filter methods based on allowedPaymentMethods if provided
         if (allowedPaymentMethods && allowedPaymentMethods.length > 0) {
           methods = methods.filter(method => 
             allowedPaymentMethods.some(allowed => 
