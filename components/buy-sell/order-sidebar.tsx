@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -488,6 +488,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             onClose={() => setShowAddPaymentMethod(false)}
             onAdd={handleAddPaymentMethod}
             isLoading={isAddingPaymentMethod}
+            allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
           />
         )}
       </div>
