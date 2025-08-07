@@ -17,12 +17,12 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
   return (
     <div className={cn("flex items-center justify-between mb-8", className)}>
       {steps.map((step, index) => (
-        <div key={index} className={cn"flex items-center flex-1",
+        <div key={index} className={cn("flex items-center flex-1",
           step > currentStep ? "opacity-48": "opacity-100"
         )}>
           <div className="flex flex-col items-center">
             <div className="border border-[2px] border-black rounded-full w-[24px] h-[24px]"></div>
-            <div className={"text-slate-1200 mt-2 text-sm text-center"}>
+            <div className="text-slate-1200 mt-2 text-sm text-center">
               {step.title}
             </div>
           </div>
