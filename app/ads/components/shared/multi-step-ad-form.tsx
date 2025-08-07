@@ -367,10 +367,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         return
       }
       
-      const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
-      if (adDetailsForm) {
-        adDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
+      setCurrentStep(1)
       return
     }
 
@@ -392,10 +389,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         return
       }
 
-      const paymentDetailsForm = document.getElementById("payment-details-form") as HTMLFormElement
-      if (paymentDetailsForm) {
-        paymentDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
+      setCurrentStep(2)
       return
     }
   }
