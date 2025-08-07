@@ -1,54 +1,46 @@
-interface ProgressStep {
+"use client"
+
+import { cn } from "@/lib/utils"
+
+interface Step {
   title: string
   completed: boolean
 }
 
 interface ProgressStepsProps {
   currentStep: number
-  steps: ProgressStep[]
+  steps: Step[]
   className?: string
 }
 
-export function ProgressSteps({ currentStep, steps, className = "" }: ProgressStepsProps) {
+export function ProgressSteps({ currentStep, steps, className }: ProgressStepsProps) {
   return (
-    <div className={`flex items-center justify-center mb-6 md:mb-12 max-w-xl mx-auto ${className}`}>
+    <div className={cn("flex items-center justify-between mb-8 px-6", className)}>
       {steps.map((step, index) => (
-        <div key={index} className="flex flex-col items-center relative flex-1">
-          {index > 0 && (
-            <div className="absolute top-3 right-full h-[1px] bg-gray-300" style={{ right: "50%", left: "-50%" }}></div>
-          )}
-          <div
-            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center z-10 
-              ${
-                index < currentStep
-                  ? "bg-black border-black"
-                  : index === currentStep
-                    ? "bg-white border-black"
-                    : "bg-white border-gray-300"
-              }`}
-          >
-            {index < currentStep && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-            )}
+        <div key={index} className="flex items-center flex-1">
+          <div className="flex flex-col items-center">
+            <div
+              className={cn(
+                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
+                index <= currentStep
+                  ? "bg-primary text-white"
+                  : "bg-gray-200 text-gray-500"
+              )}
+            >
+              {index + 1}
+            </div>
+            <div className="mt-2 text-xs text-center max-w-[80px]">
+              {step.title}
+            </div>
           </div>
-          <span
-            className={`text-sm mt-2 text-center hidden md:block font-bold 
-              ${index <= currentStep ? "text-slate-1200 " : "text-grayscale-100"}`}
-          >
-            {step.title}
-          </span>
+          {index < steps.length - 1 && (
+            <div
+              className={cn(
+                "flex-1 h-0.5 mx-4",
+                index < currentStep ? "bg-primary" : "bg-gray-200"
+              )}
+            />
+          )}
         </div>
       ))}
     </div>

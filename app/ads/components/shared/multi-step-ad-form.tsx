@@ -346,43 +346,56 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     setIsBottomSheetOpen(isOpen)
   }
 
-  const handleButtonClick = () => {
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+
     if (isBottomSheetOpen) {
       return
     }
 
-    if (currentStep === 0 && !adFormValid) {
+    // Step 0 validation
+    if (currentStep === 0) {
+      if (!adFormValid) {
+        return
+      }
+      
+      // Trigger form submission for step 0
+      const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
+      if (adDetailsForm) {
+        const submitEvent = new Event("submit", { cancelable: true, bubbles: true })
+        adDetailsForm.dispatchEvent(submitEvent)
+      }
       return
     }
 
+    // Step 1 validation and submission
     if (currentStep === 1) {
-      if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
-        return
-      }
-
-      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        return
-      }
-
-      if (mode === "edit" && (!adFormValid || isSubmitting)) {
-        return
+      // Check validation based on mode and form type
+      if (mode === "create") {
+        if (formData.type === "buy" && !paymentFormValid) {
+          return
+        }
+        if (formData.type === "sell" && !hasSelectedPaymentMethods) {
+          return
+        }
+      } else if (mode === "edit") {
+        if (!adFormValid) {
+          return
+        }
       }
 
       if (isSubmitting) {
         return
       }
-    }
 
-    if (currentStep === 0) {
-      const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
-      if (adDetailsFormData) {
-        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
+      // Trigger form submission for step 1
+      const paymentDetailsForm = document.getElementById("payment-details-form") as HTMLFormElement
+      if (paymentDetailsForm) {
+        const submitEvent = new Event("submit", { cancelable: true, bubbles: true })
+        paymentDetailsForm.dispatchEvent(submitEvent)
       }
-    } else {
-      const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
-      if (paymentDetailsFormData) {
-        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
+      return
     }
   }
 
@@ -390,13 +403,32 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     router.push("/ads")
   }
 
-  const isButtonDisabled =
-    isSubmitting ||
-    (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-    (currentStep === 1 && mode === "edit" && !adFormValid) ||
-    isBottomSheetOpen
+  const getButtonDisabledState = () => {
+    if (isSubmitting || isBottomSheetOpen) {
+      return true
+    }
+
+    if (currentStep === 0) {
+      return !adFormValid
+    }
+
+    if (currentStep === 1) {
+      if (mode === "create") {
+        if (formData.type === "buy") {
+          return !paymentFormValid
+        }
+        if (formData.type === "sell") {
+          return !hasSelectedPaymentMethods
+        }
+      } else if (mode === "edit") {
+        return !adFormValid
+      }
+    }
+
+    return false
+  }
+
+  const isButtonDisabled = getButtonDisabledState()
 
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
@@ -452,7 +484,12 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         {isMobile ? (
           <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
             <div className="mx-6">
-              <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+              <Button 
+                onClick={handleButtonClick} 
+                disabled={isButtonDisabled} 
+                className="w-full"
+                type="button"
+              >
                 {getButtonText(isSubmitting, currentStep, mode)}
               </Button>
             </div>
@@ -462,7 +499,11 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         )}
 
         <div className="hidden md:flex justify-end mt-8">
-          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+          <Button 
+            onClick={handleButtonClick} 
+            disabled={isButtonDisabled}
+            type="button"
+          >
             {getButtonText(isSubmitting, currentStep, mode)}
           </Button>
         </div>
