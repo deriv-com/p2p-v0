@@ -389,7 +389,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         return
       }
 
-      setCurrentStep(2)
+      handleFinalSubmit()
       return
     }
   }
@@ -443,14 +443,15 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
+                 setFormData={setFormData}
                 isEditMode={mode === "edit"}
               />
             ) : (
               <PaymentDetailsForm
                 onBack={() => setCurrentStep(0)}
-                onSubmit={handlePaymentDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
+                setFormData={setFormData}
                 isSubmitting={isSubmitting}
                 isEditMode={mode === "edit"}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
@@ -478,7 +479,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           <div className="hidden md:flex justify-end mt-8">
             <Button 
               type="button"
-              onClick={handlePaymentDetailsNext} 
+              onClick={handleButtonClick} 
               disabled={isButtonDisabled}
             >
               {getButtonText(isSubmitting, currentStep, mode)}
