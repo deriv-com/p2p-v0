@@ -22,7 +22,7 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
         )}>
           <div className="flex flex-col items-center">
             <div className="border border-[2px] border-black rounded-full w-[24px] h-[24px]"></div>
-            <div className={"text-slate-1200 mt-2 text-xs text-center max-w-[80px]"}>
+            <div className={"text-slate-1200 mt-2 text-sm text-center"}>
               {step.title}
             </div>
           </div>
