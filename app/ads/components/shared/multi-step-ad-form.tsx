@@ -489,7 +489,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
               type="button"
               onClick={handleButtonClick} 
               disabled={isButtonDisabled}
-            >
+            >hjsgghjfhg
               {getButtonText(isSubmitting, currentStep, mode)}
             </Button>
           </div>
