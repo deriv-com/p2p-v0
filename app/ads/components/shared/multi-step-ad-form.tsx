@@ -358,19 +358,16 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
   const handleButtonClick = () => {
     if (isBottomSheetOpen) {
-    console.log("1");
       return
     }
 
     // Step 0: Validate and proceed to next step
     if (currentStep === 0) {
       if (!adFormValid) {
-      console.log("2");
         return
       }
       
       const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
-        console.log(adDetailsForm);
       if (adDetailsForm) {
         adDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
@@ -489,7 +486,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
               type="button"
               onClick={handleButtonClick} 
               disabled={isButtonDisabled}
-            >hjsgghjfhg
+            >
               {getButtonText(isSubmitting, currentStep, mode)}
             </Button>
           </div>
