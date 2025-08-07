@@ -20,8 +20,9 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
         <div key={index} className="flex items-center flex-1">
           <div className="flex flex-col items-center">
             <div className="border border-[2px] border-black rounded-full w-[24px] h-[24px]"></div>
-            <div className={cn("mt-2 text-xs text-center max-w-[80px]"), 
-              step == currentStep ? "text-slate-1200": "text-slate-1200 opacity-48">
+            <div className={cn("mt-2 text-xs text-center max-w-[80px]", 
+              step == currentStep ? "text-slate-1200": "text-slate-1200 opacity-48"
+              )}>
               {step.title}
             </div>
           </div>
