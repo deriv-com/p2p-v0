@@ -358,12 +358,14 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
   const handleButtonClick = () => {
     if (isBottomSheetOpen) {
+    console.log("1");
       return
     }
 
     // Step 0: Validate and proceed to next step
     if (currentStep === 0) {
       if (!adFormValid) {
+      console.log("2");
         return
       }
       
