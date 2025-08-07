@@ -6,25 +6,14 @@ import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
 import { createAd, updateAd, getAdvert } from "../../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
+
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
   adId?: string
-}
-
-const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
-  if (isSubmitting) {
-    return mode === "create" ? "Creating..." : "Saving..."
+  
   }
-
-  if (currentStep === 0) {
-    return "Next"
-  }
-
-  return mode === "create" ? "Create Ad" : "Save Details"
-}
-
 const getPageTitle = (mode: "create" | "edit", adType?: string) => {
   if (mode === "create") {
     return "Create new ad"
@@ -341,62 +330,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       setIsSubmitting(false)
     }
   }
-
-  const handleBottomSheetOpenChange = (isOpen: boolean) => {
-    setIsBottomSheetOpen(isOpen)
-  }
-
-  const handleButtonClick = () => {
-    if (isBottomSheetOpen) {
-      return
-    }
-
-    if (currentStep === 0 && !adFormValid) {
-      return
-    }
-
-    if (currentStep === 1) {
-      if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
-        return
-      }
-
-      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        return
-      }
-
-      if (mode === "edit" && (!adFormValid || isSubmitting)) {
-        return
-      }
-
-      if (isSubmitting) {
-        return
-      }
-    }
-
-    if (currentStep === 0) {
-      const adDetailsFormData = document.getElementById("ad-details-form") as HTMLFormElement
-      if (adDetailsFormData) {
-        adDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
-    } else {
-      const paymentDetailsFormData = document.getElementById("payment-details-form") as HTMLFormElement
-      if (paymentDetailsFormData) {
-        paymentDetailsFormData.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
-    }
-  }
-
-  const handleClose = () => {
-    router.push("/ads")
-  }
-
-  const isButtonDisabled =
-    isSubmitting ||
-    (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-    (currentStep === 1 && mode === "edit" && !adFormValid) ||
-    isBottomSheetOpen
 
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
