@@ -19,7 +19,7 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
       {steps.map((step, index) => (
         <div key={index} className="flex items-center flex-1">
           <div className="flex flex-col items-center">
-            <div className="border border-[2px] border-black rounded-"></div>
+            <div className="border border-[2px] border-black rounded-full"></div>
             <div className="mt-2 text-xs text-center max-w-[80px]">
               {step.title}
             </div>
