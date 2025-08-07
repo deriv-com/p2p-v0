@@ -13,6 +13,7 @@ interface AddPaymentMethodPanelProps {
   onClose: () => void
   onAdd: (method: string, fields: Record<string, string>) => void
   isLoading: boolean
+  allowedPaymentMethods?: string[] // Add this new prop
 }
 
 interface PanelWrapperProps {
@@ -62,7 +63,7 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
   )
 }
 
-export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: AddPaymentMethodPanelProps) {
+export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allowedPaymentMethods }: AddPaymentMethodPanelProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("")
   const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
@@ -79,11 +80,23 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
         setIsLoadingMethods(true)
         const response = await getPaymentMethods()
 
+        let methods: AvailablePaymentMethod[] = []
         if (response && response.data && Array.isArray(response.data)) {
-          setAvailablePaymentMethods(response.data)
+          methods = response.data
         } else if (Array.isArray(response)) {
-          setAvailablePaymentMethods(response)
+          methods = response
         }
+
+        // Filter methods based on allowedPaymentMethods if provided
+        if (allowedPaymentMethods && allowedPaymentMethods.length > 0) {
+          methods = methods.filter(method => 
+            allowedPaymentMethods.some(allowed => 
+              method.method.toLowerCase() === allowed.toLowerCase()
+            )
+          )
+        }
+
+        setAvailablePaymentMethods(methods)
       } catch (error) {
         console.log(error)
       } finally {
@@ -92,7 +105,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading }: Add
     }
 
     fetchAvailablePaymentMethods()
-  }, [])
+  }, [allowedPaymentMethods])
 
   useEffect(() => {
     setDetails({})
