@@ -30,7 +30,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create
 
 const getPageTitle = (mode: "create" | "edit", adType?: string) => {
   if (mode === "create") {
-    return "Create new ads"
+    return "Create new ad"
   }
   return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
 }
