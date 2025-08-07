@@ -341,17 +341,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     }
   }
 
-  const handlePaymentDetailsNext = (data, errors?: Record<string, string>) => {
-    const updatedData = { ...formData, ...data }
-    setFormData(updatedData)
-    formDataRef.current = updatedData
-    
-    if (!errors || Object.keys(errors).length === 0) {
-      // At the last step, submit the form
-      handleFinalSubmit()
-    }
-  }
-
   const handleBottomSheetOpenChange = (isOpen: boolean) => {
     setIsBottomSheetOpen(isOpen)
   }
