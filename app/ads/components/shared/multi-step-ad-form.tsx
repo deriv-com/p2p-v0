@@ -25,6 +25,10 @@ const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create
     return "Next"
   }
 
+  if (currentStep === 1) {
+    return mode === "create" ? "Create Ad" : "Save Details"
+  }
+
   return mode === "create" ? "Create Ad" : "Save Details"
 }
 
@@ -211,14 +215,9 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     return "There was an error processing your request. Please try again."
   }
 
-  const handlePaymentDetailsSubmit = async (data, errors?: Record<string, string>) => {
-    const finalData = { ...formData, ...data }
-    formDataRef.current = finalData
+  const handleFinalSubmit = async () => {
+    const finalData = { ...formDataRef.current }
     
-    if (errors && Object.keys(errors).length > 0) {
-      return
-    }
-
     setIsSubmitting(true)
 
     try {
@@ -263,7 +262,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        const updateResult = await updateAd(data.id, payload)
+        const updateResult = await updateAd(finalData.id, payload)
 
         if (updateResult.errors && updateResult.errors.length > 0) {
           const errorMessage = formatErrorMessage(updateResult.errors)
@@ -342,58 +341,60 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     }
   }
 
+  const handlePaymentDetailsNext = (data, errors?: Record<string, string>) => {
+    const updatedData = { ...formData, ...data }
+    setFormData(updatedData)
+    formDataRef.current = updatedData
+    
+    if (!errors || Object.keys(errors).length === 0) {
+      // At the last step, submit the form
+      handleFinalSubmit()
+    }
+  }
+
   const handleBottomSheetOpenChange = (isOpen: boolean) => {
     setIsBottomSheetOpen(isOpen)
   }
 
-  const handleButtonClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
+  const handleButtonClick = () => {
     if (isBottomSheetOpen) {
       return
     }
 
-    // Step 0 validation
+    // Step 0: Validate and proceed to next step
     if (currentStep === 0) {
       if (!adFormValid) {
         return
       }
       
-      // Trigger form submission for step 0
       const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
       if (adDetailsForm) {
-        const submitEvent = new Event("submit", { cancelable: true, bubbles: true })
-        adDetailsForm.dispatchEvent(submitEvent)
+        adDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
       return
     }
 
-    // Step 1 validation and submission
+    // Step 1: Validate and submit the entire form
     if (currentStep === 1) {
-      // Check validation based on mode and form type
-      if (mode === "create") {
-        if (formData.type === "buy" && !paymentFormValid) {
-          return
-        }
-        if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-          return
-        }
-      } else if (mode === "edit") {
-        if (!adFormValid) {
-          return
-        }
+      if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
+        return
+      }
+
+      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
+        return
+      }
+
+      if (mode === "edit" && !adFormValid) {
+        return
       }
 
       if (isSubmitting) {
         return
       }
 
-      // Trigger form submission for step 1
       const paymentDetailsForm = document.getElementById("payment-details-form") as HTMLFormElement
       if (paymentDetailsForm) {
-        const submitEvent = new Event("submit", { cancelable: true, bubbles: true })
-        paymentDetailsForm.dispatchEvent(submitEvent)
+        paymentDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
       return
     }
@@ -403,111 +404,94 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     router.push("/ads")
   }
 
-  const getButtonDisabledState = () => {
-    if (isSubmitting || isBottomSheetOpen) {
-      return true
-    }
-
-    if (currentStep === 0) {
-      return !adFormValid
-    }
-
-    if (currentStep === 1) {
-      if (mode === "create") {
-        if (formData.type === "buy") {
-          return !paymentFormValid
-        }
-        if (formData.type === "sell") {
-          return !hasSelectedPaymentMethods
-        }
-      } else if (mode === "edit") {
-        return !adFormValid
-      }
-    }
-
-    return false
-  }
-
-  const isButtonDisabled = getButtonDisabledState()
+  const isButtonDisabled =
+    isSubmitting ||
+    (currentStep === 0 && !adFormValid) ||
+    (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
+    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    (currentStep === 1 && mode === "edit" && !adFormValid) ||
+    isBottomSheetOpen
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-      <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
-        <Navigation
-          isBackBtnVisible={currentStep != 0}
-          isVisible={false}
-          onBack={() => {
-            const updatedStep = currentStep - 1
-            setCurrentStep(updatedStep)
-          }}
-          onClose={handleClose}
-          title={isMobile ? getPageTitle(mode, formData.type) : ""}
-        />
-        <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
-        <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
-        
-        {currentStep === 0 && (
-          <div className="block md:hidden m-6 text-left">
-            <div className="text-sm font-normal text-slate-1200">Step 1</div>
-            <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
-          </div>
-        )}
-
-        {currentStep === 1 && (
-          <div className="block md:hidden m-6 text-left">
-            <div className="text-sm font-normal text-slate-1200">Step 2</div>
-            <div className="text-lg font-bold text-slate-1200">Payment details</div>
-          </div>
-        )}
-
-        <div className="relative mb-16 md:mb-0 mx-6">
-          {currentStep === 0 ? (
-            <AdDetailsForm
-              onNext={handleAdDetailsNext}
-              onClose={handleClose}
-              initialData={formData}
-              isEditMode={mode === "edit"}
-            />
-          ) : (
-            <PaymentDetailsForm
-              onBack={() => setCurrentStep(0)}
-              onSubmit={handlePaymentDetailsSubmit}
-              onClose={handleClose}
-              initialData={formData}
-              isSubmitting={isSubmitting}
-              isEditMode={mode === "edit"}
-              onBottomSheetOpenChange={handleBottomSheetOpenChange}
-            />
-          )}
-        </div>
-
-        {isMobile ? (
-          <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
-            <div className="mx-6">
-              <Button 
-                onClick={handleButtonClick} 
-                disabled={isButtonDisabled} 
-                className="w-full"
-                type="button"
-              >
-                {getButtonText(isSubmitting, currentStep, mode)}
-              </Button>
+    <form onSubmit={(e) => e.preventDefault()}>
+      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
+        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
+          <Navigation
+            isBackBtnVisible={currentStep != 0}
+            isVisible={false}
+            onBack={() => {
+              const updatedStep = currentStep - 1
+              setCurrentStep(updatedStep)
+            }}
+            onClose={handleClose}
+            title={isMobile ? getPageTitle(mode, formData.type) : ""}
+          />
+          <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
+          <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
+          
+          {currentStep === 0 && (
+            <div className="block md:hidden m-6 text-left">
+              <div className="text-sm font-normal text-slate-1200">Step 1</div>
+              <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
             </div>
-          </div>
-        ) : (
-          <div className="hidden md:block"></div>
-        )}
+          )}
 
-        <div className="hidden md:flex justify-end mt-8">
-          <Button 
-            onClick={handleButtonClick} 
-            disabled={isButtonDisabled}
-            type="button"
-          >
-            {getButtonText(isSubmitting, currentStep, mode)}
-          </Button>
+          {currentStep === 1 && (
+            <div className="block md:hidden m-6 text-left">
+              <div className="text-sm font-normal text-slate-1200">Step 2</div>
+              <div className="text-lg font-bold text-slate-1200">Payment details</div>
+            </div>
+          )}
+
+          <div className="relative mb-16 md:mb-0 mx-6">
+            {currentStep === 0 ? (
+              <AdDetailsForm
+                onNext={handleAdDetailsNext}
+                onClose={handleClose}
+                initialData={formData}
+                isEditMode={mode === "edit"}
+              />
+            ) : (
+              <PaymentDetailsForm
+                onBack={() => setCurrentStep(0)}
+                onSubmit={handlePaymentDetailsNext}
+                onClose={handleClose}
+                initialData={formData}
+                isSubmitting={isSubmitting}
+                isEditMode={mode === "edit"}
+                onBottomSheetOpenChange={handleBottomSheetOpenChange}
+              />
+            )}
+          </div>
+
+          {isMobile ? (
+            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
+              <div className="mx-6">
+                <Button 
+                  type="button"
+                  onClick={handleButtonClick} 
+                  disabled={isButtonDisabled} 
+                  className="w-full"
+                >
+                  {getButtonText(isSubmitting, currentStep, mode)}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="hidden md:block"></div>
+          )}
+
+          <div className="hidden md:flex justify-end mt-8">
+            <Button 
+              type="button"
+              onClick={handleButtonClick} 
+              disabled={isButtonDisabled}
+            >
+              {getButtonText(isSubmitting, currentStep, mode)}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </form>
   )
 }

@@ -15,7 +15,7 @@ interface ProgressStepsProps {
 
 export function ProgressSteps({ currentStep, steps, className }: ProgressStepsProps) {
   return (
-    <div className={cn("flex items-center justify-between mb-8 px-6", className)}>
+    <div className={cn("flex items-center justify-between mb-8", className)}>
       {steps.map((step, index) => (
         <div key={index} className="flex items-center flex-1">
           <div className="flex flex-col items-center">
@@ -23,7 +23,7 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
               className={cn(
                 "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
                 index <= currentStep
-                  ? "bg-primary text-white"
+                  ? "bg-blue-600 text-white"
                   : "bg-gray-200 text-gray-500"
               )}
             >
@@ -37,7 +37,7 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
             <div
               className={cn(
                 "flex-1 h-0.5 mx-4",
-                index < currentStep ? "bg-primary" : "bg-gray-200"
+                index < currentStep ? "bg-blue-600" : "bg-gray-200"
               )}
             />
           )}
