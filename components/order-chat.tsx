@@ -45,7 +45,7 @@ export default function OrderChat({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
 
-  const { isConnected, getChatHistory, subscribe, leaveChannel } = useWebSocketContext()
+  const { isConnected, getChatHistory, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     const unsubscribe = subscribe((data) => {
@@ -79,12 +79,6 @@ export default function OrderChat({
       }, 100)
     }
   }, [isConnected, getChatHistory, orderId])
-
-  useEffect(() => {
-    return () => {
-      leaveChannel("orders")
-    }
-  }, [])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
