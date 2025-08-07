@@ -22,7 +22,7 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
             ></div>
           )}
           <div
-            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center z-10 ${
+            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center z-10 bg-white ${
               index < currentStep
                 ? "bg-black border-black"
                 : index === currentStep
