@@ -341,17 +341,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     }
   }
 
-  const handlePaymentDetailsNext = (data, errors?: Record<string, string>) => {
-    const updatedData = { ...formData, ...data }
-    setFormData(updatedData)
-    formDataRef.current = updatedData
-    
-    if (!errors || Object.keys(errors).length === 0) {
-      // At the last step, submit the form
-      handleFinalSubmit()
-    }
-  }
-
   const handleBottomSheetOpenChange = (isOpen: boolean) => {
     setIsBottomSheetOpen(isOpen)
   }
@@ -367,10 +356,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         return
       }
       
-      const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
-      if (adDetailsForm) {
-        adDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
+      setCurrentStep(1)
       return
     }
 
@@ -392,10 +378,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         return
       }
 
-      const paymentDetailsForm = document.getElementById("payment-details-form") as HTMLFormElement
-      if (paymentDetailsForm) {
-        paymentDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
-      }
+      handleFinalSubmit()
       return
     }
   }
@@ -449,14 +432,15 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
+                 setFormData={setFormData}
                 isEditMode={mode === "edit"}
               />
             ) : (
               <PaymentDetailsForm
                 onBack={() => setCurrentStep(0)}
-                onSubmit={handlePaymentDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
+                setFormData={setFormData}
                 isSubmitting={isSubmitting}
                 isEditMode={mode === "edit"}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}

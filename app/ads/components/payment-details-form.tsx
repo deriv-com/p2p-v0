@@ -93,6 +93,8 @@ export default function PaymentDetailsForm({
       instructions,
     }
 
+    setFormData(formData)
+
     if (formValid) {
       onSubmit(formData)
     } else {
