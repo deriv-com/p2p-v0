@@ -2,27 +2,37 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import MultiStepAdForm from "../components/shared/multi-step-ad-form"
-import { createAd } from "../api/api-ads"
+import AdDetailsForm from "../ad-details-form"
+import PaymentDetailsForm from "../payment-details-form"
+import { createAd, updateAd, getAdvert } from "../../api/api-ads"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Button } from "@/components/ui/button"
-import { ProgressSteps } from "../components/ui/progress-steps"
-import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
-const getButtonText = (isSubmitting: boolean, currentStep: number) => {
+interface MultiStepAdFormProps {
+  mode: "create" | "edit"
+  adId?: string
+}
+
+const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
   if (isSubmitting) {
-    return "Creating..."
+    return mode === "create" ? "Creating..." : "Saving..."
   }
 
   if (currentStep === 0) {
     return "Next"
   }
 
-  return "Create Ad"
+  return mode === "create" ? "Create Ad" : "Save Details"
 }
 
-export default function CreateAdPage() {
+const getPageTitle = (mode: "create" | "edit", adType?: string) => {
+  if (mode === "create") {
+    return "Create new ad"
+  }
+  return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
+}
+
+export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
   const [currentStep, setCurrentStep] = useState(0)
@@ -42,6 +52,66 @@ export default function CreateAdPage() {
     { title: "Set ad conditions", completed: currentStep > 2 },
   ]
 
+  const convertToSnakeCase = (str: string): string => {
+    return str
+      .toLowerCase()
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "")
+  }
+
+  // Load initial data for edit mode
+  useEffect(() => {
+    if (mode === "edit" && adId) {
+      const loadInitialData = async () => {
+        try {
+          const advertData = await getAdvert(adId)
+          const { data } = advertData
+
+          if (data) {
+            let paymentMethodNames: string[] = []
+            let paymentMethodIds: number[] = []
+
+            if (data.payment_methods && Array.isArray(data.payment_methods)) {
+              if (data.type === "buy") {
+                paymentMethodNames = data.payment_methods.map((methodName: string) => {
+                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
+                    return methodName
+                  }
+                  return convertToSnakeCase(methodName)
+                })
+              } else {
+                paymentMethodIds = data.payment_method_ids.map((id: any) => Number(id)).filter((id: number) => !isNaN(id))
+
+                if (typeof window !== "undefined") {
+                  ;(window as any).adPaymentMethodIds = paymentMethodIds
+                }
+              }
+            }
+
+            const formattedData = {
+              ...data,
+              totalAmount: data.available_amount,
+              fixedRate: Number.parseFloat(data.exchange_rate),
+              minAmount: data.minimum_order_amount,
+              maxAmount: data.maximum_order_amount,
+              paymentMethods: paymentMethodNames,
+              payment_method_ids: paymentMethodIds,
+              instructions: data.description || "",
+            }
+
+            setFormData(formattedData)
+            formDataRef.current = formattedData
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      }
+
+      loadInitialData()
+    }
+  }, [mode, adId])
+
+  // Check selected payment methods for sell ads
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
       if (formData.type === "sell" && typeof window !== "undefined") {
@@ -56,6 +126,7 @@ export default function CreateAdPage() {
     return () => clearInterval(interval)
   }, [formData.type])
 
+  // Form validation listeners
   useEffect(() => {
     const handleAdFormValidation = (e: any) => {
       setAdFormValid(e.detail.isValid)
@@ -153,37 +224,60 @@ export default function CreateAdPage() {
     try {
       const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
-      const payload = {
-        type: finalData.type || "buy",
-        account_currency: "USD",
-        payment_currency: "IDR",
-        minimum_order_amount: finalData.minAmount || 0,
-        maximum_order_amount: finalData.maxAmount || 0,
-        available_amount: finalData.totalAmount || 0,
-        exchange_rate: finalData.fixedRate || 0,
-        exchange_rate_type: "fixed" as const,
-        description: finalData.instructions || "",
-        is_active: 1,
-        order_expiry_period: 15,
-        ...(finalData.type === "buy"
-          ? { payment_method_names: finalData.paymentMethods || [] }
-          : { payment_method_ids: selectedPaymentMethodIds }),
-      }
+      if (mode === "create") {
+        const payload = {
+          type: finalData.type || "buy",
+          account_currency: "USD",
+          payment_currency: "IDR",
+          minimum_order_amount: finalData.minAmount || 0,
+          maximum_order_amount: finalData.maxAmount || 0,
+          available_amount: finalData.totalAmount || 0,
+          exchange_rate: finalData.fixedRate || 0,
+          exchange_rate_type: "fixed" as const,
+          description: finalData.instructions || "",
+          is_active: 1,
+          order_expiry_period: 15,
+          ...(finalData.type === "buy"
+            ? { payment_method_names: finalData.paymentMethods || [] }
+            : { payment_method_ids: selectedPaymentMethodIds }),
+        }
 
-      const result = await createAd(payload)
+        const result = await createAd(payload)
 
-      if (result.errors && result.errors.length > 0) {
-        const errorMessage = formatErrorMessage(result.errors)
-        throw new Error(errorMessage)
+        if (result.errors && result.errors.length > 0) {
+          const errorMessage = formatErrorMessage(result.errors)
+          throw new Error(errorMessage)
+        }
       } else {
-        router.push("/ads")
+        const payload = {
+          is_active: true,
+          minimum_order_amount: finalData.minAmount || 0,
+          maximum_order_amount: finalData.maxAmount || 0,
+          available_amount: finalData.totalAmount || 0,
+          exchange_rate: finalData.fixedRate || 0,
+          exchange_rate_type: "fixed",
+          order_expiry_period: 15,
+          description: finalData.instructions || "",
+          ...(finalData.type === "buy"
+            ? { payment_method_names: finalData.paymentMethods || [] }
+            : { payment_method_ids: selectedPaymentMethodIds }),
+        }
+
+        const updateResult = await updateAd(data.id, payload)
+
+        if (updateResult.errors && updateResult.errors.length > 0) {
+          const errorMessage = formatErrorMessage(updateResult.errors)
+          throw new Error(errorMessage)
+        }
       }
+
+      router.push("/ads")
     } catch (error) {
       let errorInfo = {
-        title: "",
+        title: mode === "create" ? "" : "Failed to update ad",
         message: "Please try again.",
         type: "error" as "error" | "warning",
-        actionButtonText: "Update ad",
+        actionButtonText: mode === "create" ? "Update ad" : "Update ad",
       }
 
       if (error instanceof Error) {
@@ -262,11 +356,15 @@ export default function CreateAdPage() {
     }
 
     if (currentStep === 1) {
-      if (formData.type === "buy" && !paymentFormValid) {
+      if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
         return
       }
 
       if (formData.type === "sell" && !hasSelectedPaymentMethods) {
+        return
+      }
+
+      if (mode === "edit" && (!adFormValid || isSubmitting)) {
         return
       }
 
@@ -295,13 +393,80 @@ export default function CreateAdPage() {
   const isButtonDisabled =
     isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && formData.type === "buy" && !paymentFormValid) ||
+    (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
+    (currentStep === 1 && mode === "edit" && !adFormValid) ||
     isBottomSheetOpen
 
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-      <MultiStepAdForm mode="create" />
+      <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
+        <Navigation
+          isBackBtnVisible={currentStep != 0}
+          isVisible={false}
+          onBack={() => {
+            const updatedStep = currentStep - 1
+            setCurrentStep(updatedStep)
+          }}
+          onClose={handleClose}
+          title={isMobile ? getPageTitle(mode, formData.type) : ""}
+        />
+        <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
+        <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
+        
+        {currentStep === 0 && (
+          <div className="block md:hidden m-6 text-left">
+            <div className="text-sm font-normal text-slate-1200">Step 1</div>
+            <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
+          </div>
+        )}
+
+        {currentStep === 1 && (
+          <div className="block md:hidden m-6 text-left">
+            <div className="text-sm font-normal text-slate-1200">Step 2</div>
+            <div className="text-lg font-bold text-slate-1200">Payment details</div>
+          </div>
+        )}
+
+        <div className="relative mb-16 md:mb-0 mx-6">
+          {currentStep === 0 ? (
+            <AdDetailsForm
+              onNext={handleAdDetailsNext}
+              onClose={handleClose}
+              initialData={formData}
+              isEditMode={mode === "edit"}
+            />
+          ) : (
+            <PaymentDetailsForm
+              onBack={() => setCurrentStep(0)}
+              onSubmit={handlePaymentDetailsSubmit}
+              onClose={handleClose}
+              initialData={formData}
+              isSubmitting={isSubmitting}
+              isEditMode={mode === "edit"}
+              onBottomSheetOpenChange={handleBottomSheetOpenChange}
+            />
+          )}
+        </div>
+
+        {isMobile ? (
+          <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
+            <div className="mx-6">
+              <Button onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                {getButtonText(isSubmitting, currentStep, mode)}
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="hidden md:block"></div>
+        )}
+
+        <div className="hidden md:flex justify-end mt-8">
+          <Button onClick={handleButtonClick} disabled={isButtonDisabled}>
+            {getButtonText(isSubmitting, currentStep, mode)}
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }
