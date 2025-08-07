@@ -478,7 +478,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           <div className="hidden md:flex justify-end mt-8">
             <Button 
               type="button"
-              onClick={handleButtonClick} 
+              onClick={handlePaymentDetailsNext} 
               disabled={isButtonDisabled}
             >
               {getButtonText(isSubmitting, currentStep, mode)}
