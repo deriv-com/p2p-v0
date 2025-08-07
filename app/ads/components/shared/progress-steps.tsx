@@ -27,7 +27,7 @@ export function ProgressSteps({ currentStep, steps }: ProgressStepsProps) {
                 ? "bg-black border-black"
                 : index === currentStep
                 ? "bg-white border-black"
-                : "border-gray-300"
+                : "bg-white border-gray-300"
             }`}
           >
             {index < currentStep && (
