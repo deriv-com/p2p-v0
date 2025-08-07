@@ -17,12 +17,36 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
   return (
     <div className={cn("flex items-center justify-between mb-8", className)}>
       {steps.map((step, index) => (
-        <div key={index} className={cn("flex items-center flex-1",
-          index < currentStep ? "opacity-48": "opacity-100"
-        )}>
+        <div key={index} className="flex items-center flex-1">
           <div className="flex flex-col items-center">
-            <div className="border border-[2px] border-black rounded-full w-[24px] h-[24px]"></div>
-            <div className="text-slate-1200 mt-2 text-sm text-center">
+            <div 
+              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                index < currentStep
+                  ? "bg-black border-black"
+                  : index === currentStep
+                  ? "bg-white border-black"
+                  : "bg-gray-300 border-gray-300"
+              }`}
+            >
+              {index < currentStep && (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="12"
+                  height="12"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              )}
+            </div>
+            <div className={`text-slate-1200 mt-2 text-sm text-center ${
+              index <= currentStep ? "text-black font-medium" : "text-gray-400"
+            }`}>
               {step.title}
             </div>
           </div>
@@ -30,7 +54,7 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
             <div
               className={cn(
                 "flex-1 h-0.5 mx-4",
-                index < currentStep ? "bg-blue-600" : "bg-gray-200"
+                index < currentStep ? "bg-black" : "bg-gray-300"
               )}
             />
           )}
