@@ -19,16 +19,6 @@ export function ProgressSteps({ currentStep, steps, className }: ProgressStepsPr
       {steps.map((step, index) => (
         <div key={index} className="flex items-center flex-1">
           <div className="flex flex-col items-center">
-            <div
-              className={cn(
-                "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
-                index <= currentStep
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200 text-gray-500"
-              )}
-            >
-              {index + 1}
-            </div>
             <div className="mt-2 text-xs text-center max-w-[80px]">
               {step.title}
             </div>
