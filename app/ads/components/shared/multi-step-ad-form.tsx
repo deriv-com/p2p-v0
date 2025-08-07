@@ -62,7 +62,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       .replace(/[^a-z0-9_]/g, "")
   }
 
-  // Load initial data for edit mode
   useEffect(() => {
     if (mode === "edit" && adId) {
       const loadInitialData = async () => {
@@ -114,7 +113,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     }
   }, [mode, adId])
 
-  // Check selected payment methods for sell ads
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
       if (formData.type === "sell" && typeof window !== "undefined") {
@@ -129,7 +127,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     return () => clearInterval(interval)
   }, [formData.type])
 
-  // Form validation listeners
   useEffect(() => {
     const handleAdFormValidation = (e: any) => {
       setAdFormValid(e.detail.isValid)
