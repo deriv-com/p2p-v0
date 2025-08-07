@@ -370,6 +370,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       }
       
       const adDetailsForm = document.getElementById("ad-details-form") as HTMLFormElement
+        console.log(adDetailsForm);
       if (adDetailsForm) {
         adDetailsForm.dispatchEvent(new Event("submit", { cancelable: true, bubbles: true }))
       }
