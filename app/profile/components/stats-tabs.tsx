@@ -162,11 +162,9 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                 <div className="mt-6">
                    <PaymentMethodsTab key={refreshKey} />
                 </div>
-                <div className="flex flex-col gap-3 mt-6">
-                  <Button onClick={()=>{}} variant="outline" className="w-full rounded-full">
-                    Add payment
-                  </Button>
-                </div>
+                <Button onClick={()=>{}} variant="outline" className="w-full rounded-full mt-6">
+                  Add payment
+                </Button>
               </SheetContent>
             </Sheet>
             <Divider />
