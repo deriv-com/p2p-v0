@@ -4,7 +4,6 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import type { Currency } from "@/components/currency-filter/types"
 import jest from "jest" // Import jest to declare the variable
 
-// Mock the mobile hook
 jest.mock("@/components/ui/use-mobile", () => ({
   useIsMobile: jest.fn(() => false),
 }))
