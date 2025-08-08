@@ -90,7 +90,7 @@ export default function EditPaymentMethodPanel({
         return newErrors
       })
     }
-    
+
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
