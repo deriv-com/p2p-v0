@@ -83,7 +83,6 @@ export default function EditPaymentMethodPanel({
   const handleInputChange = (fieldName: string, value: string) => {
     setFieldValues((prev) => ({ ...prev, [fieldName]: value }))
 
-    // Clear existing error for this field
     if (errors[fieldName]) {
       setErrors((prev) => {
         const newErrors = { ...prev }
@@ -91,8 +90,7 @@ export default function EditPaymentMethodPanel({
         return newErrors
       })
     }
-
-    // Validate input in real-time
+    
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
