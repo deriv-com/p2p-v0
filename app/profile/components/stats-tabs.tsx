@@ -153,7 +153,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
-             {showPaymentMethodsSidebar && <div
+             {showPaymentMethodsSidebar && (<div
                 className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
               >
                 <div className="flex items-center justify-between px-4 py-3 border-b">
@@ -168,7 +168,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                 <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full mt-6">
                   Add payment method
                 </Button>
-              </div>}
+              </div>)}
             <Divider />
           </div>
         ) : (
