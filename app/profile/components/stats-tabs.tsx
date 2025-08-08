@@ -142,7 +142,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   </Button>
                   <h2 className="text-xl font-bold">Stats</h2>
                 </div>
-                <div className="mt-6">
+                <div className="m-4">
                    <StatsGrid stats={userStats} />
                 </div>
               </div>
