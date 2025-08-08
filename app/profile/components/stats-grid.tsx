@@ -99,7 +99,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
   return (
   <TooltipProvider>
     <div className="bg-grayscale-300 md:bg-slate-1500 rounded-lg px-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
         <StatCard
           title={`Buy completion ${displayStats.buyCompletion.period}`}
           value={displayStats.buyCompletion.rate}
@@ -111,7 +111,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
         <StatCard title="Trade partners" value={displayStats.tradePartners} />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
+      <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
         <StatCard
           title={`Trade volume ${displayStats.tradeVolume30d.period}`}
           value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
