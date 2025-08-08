@@ -63,6 +63,7 @@ export default function EditPaymentMethodPanel({
   paymentMethod,
 }: EditPaymentMethodPanelProps) {
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     if (!paymentMethod?.details) return
@@ -74,19 +75,53 @@ export default function EditPaymentMethodPanel({
     )
   }, [paymentMethod])
 
-  const sanitizeInput = (value: string) => {
-    return value.replace(/[^\p{L}0-9\s\-+.,'#@():;]/gu, "")
+  const validateInput = (value: string) => {
+    const allowedPattern = /^[\p{L}0-9\s\-+.,'#@():;]*$/u
+    return allowedPattern.test(value)
   }
 
   const handleInputChange = (fieldName: string, value: string) => {
-    const sanitizedValue = sanitizeInput(value)
-    setFieldValues((prev) => ({ ...prev, [fieldName]: sanitizedValue }))
+    setFieldValues((prev) => ({ ...prev, [fieldName]: value }))
+
+    // Clear existing error for this field
+    if (errors[fieldName]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors[fieldName]
+        return newErrors
+      })
+    }
+
+    // Validate input in real-time
+    if (value && !validateInput(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        [fieldName]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+      }))
+    }
+  }
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {}
+
+    Object.entries(paymentMethod.details).forEach(([fieldName, fieldConfig]) => {
+      const value = fieldValues[fieldName]?.trim()
+      
+      if (!value && fieldConfig.required) {
+        newErrors[fieldName] = `${fieldConfig.display_name} is required`
+      } else if (value && !validateInput(value)) {
+        newErrors[fieldName] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+      }
+    })
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (isFormValid()) {
+    if (validateForm() && isFormValid()) {
       onSave(paymentMethod.id, fieldValues)
     }
   }
@@ -99,6 +134,9 @@ export default function EditPaymentMethodPanel({
 
   const isFormValid = (): boolean => {
     if (!paymentMethod?.details) return false
+
+    // Check if there are any validation errors
+    if (Object.keys(errors).length > 0) return false
 
     return Object.entries(paymentMethod.details)
       .filter(([, fieldConfig]) => fieldConfig.required)
@@ -136,20 +174,28 @@ export default function EditPaymentMethodPanel({
                       maxLength={300}
                       variant="floating"
                     />
+                    {errors[fieldName] && (
+                      <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>
+                    )}
                     <div className="flex justify-end mt-1 text-xs text-gray-500">
                       {(fieldValues[fieldName] || "").length}/300
                     </div>
                   </div>
                 ) : (
-                  <Input
-                    id={fieldName}
-                    type={getFieldType(fieldName)}
-                    value={fieldValues[fieldName] || ""}
-                    onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                    label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
-                    required
-                    variant="floating"
-                  />
+                  <div>
+                    <Input
+                      id={fieldName}
+                      type={getFieldType(fieldName)}
+                      value={fieldValues[fieldName] || ""}
+                      onChange={(e) => handleInputChange(fieldName, e.target.value)}
+                      label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                      required
+                      variant="floating"
+                    />
+                    {errors[fieldName] && (
+                      <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>
+                    )}
+                  </div>
                 )}
               </div>
             ))}

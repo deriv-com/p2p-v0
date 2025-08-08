@@ -132,6 +132,11 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     setInstructions("")
   }
 
+  const validateInput = (value: string) => {
+    const allowedPattern = /^[\p{L}0-9\s\-+.,'#@():;]*$/u
+    return allowedPattern.test(value)
+  }
+
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
@@ -140,24 +145,29 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     }
 
     selectedMethodFields.forEach((field) => {
-      if (!details[field.name]?.trim() && field.required) {
+      const value = details[field.name]?.trim()
+      
+      if (!value && field.required) {
         newErrors[field.name] = `${field.label} is required`
+      } else if (value && !validateInput(value)) {
+        newErrors[field.name] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
       }
     })
+
+    // Validate instructions
+    if (instructions && !validateInput(instructions)) {
+      newErrors.instructions = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
 
-  const sanitizeInput = (value: string) => {
-    return value.replace(/[^\p{L}0-9\s\-+.,'#@():;]/gu, "")
-  }
-
   const handleInputChange = (name: string, value: string) => {
-    const sanitizedValue = sanitizeInput(value)
-    setDetails((prev) => ({ ...prev, [name]: sanitizedValue }))
+    setDetails((prev) => ({ ...prev, [name]: value }))
     setTouched((prev) => ({ ...prev, [name]: true }))
 
+    // Clear existing error for this field
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev }
@@ -165,11 +175,35 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
         return newErrors
       })
     }
+
+    // Validate input in real-time
+    if (value && !validateInput(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+      }))
+    }
   }
 
   const handleInstructionsChange = (value: string) => {
-    const sanitizedValue = sanitizeInput(value)
-    setInstructions(sanitizedValue)
+    setInstructions(value)
+
+    // Clear existing error for instructions
+    if (errors.instructions) {
+      setErrors((prev) => {
+        const newErrors = { ...prev }
+        delete newErrors.instructions
+        return newErrors
+      })
+    }
+
+    // Validate instructions in real-time
+    if (value && !validateInput(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+      }))
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -198,6 +232,9 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
 
   const isFormValid = () => {
     if (!selectedMethod) return false
+
+    // Check if there are any validation errors
+    if (Object.keys(errors).length > 0) return false
 
     return selectedMethodFields.every((field) => {
       if (field.required) {
@@ -275,7 +312,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
                     required
                     variant="floating"
                   />
-                  {touched[field.name] && errors[field.name] && (
+                  {(touched[field.name] || details[field.name]) && errors[field.name] && (
                     <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
                   )}
                 </div>
@@ -293,6 +330,9 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
               maxLength={300}
               variant="floating"
             />
+            {errors.instructions && (
+              <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>
+            )}
             <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
           </div>
         </div>
