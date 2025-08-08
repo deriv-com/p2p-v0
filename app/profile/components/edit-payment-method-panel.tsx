@@ -133,7 +133,6 @@ export default function EditPaymentMethodPanel({
   const isFormValid = (): boolean => {
     if (!paymentMethod?.details) return false
 
-    // Check if there are any validation errors
     if (Object.keys(errors).length > 0) return false
 
     return Object.entries(paymentMethod.details)
