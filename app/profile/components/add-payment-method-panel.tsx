@@ -154,7 +154,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
       }
     })
 
-    // Validate instructions
     if (instructions && !validateInput(instructions)) {
       newErrors.instructions = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
     }
@@ -167,7 +166,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     setDetails((prev) => ({ ...prev, [name]: value }))
     setTouched((prev) => ({ ...prev, [name]: true }))
 
-    // Clear existing error for this field
     if (errors[name]) {
       setErrors((prev) => {
         const newErrors = { ...prev }
@@ -176,7 +174,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
       })
     }
 
-    // Validate input in real-time
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
@@ -188,7 +185,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
   const handleInstructionsChange = (value: string) => {
     setInstructions(value)
 
-    // Clear existing error for instructions
     if (errors.instructions) {
       setErrors((prev) => {
         const newErrors = { ...prev }
@@ -197,7 +193,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
       })
     }
 
-    // Validate instructions in real-time
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
