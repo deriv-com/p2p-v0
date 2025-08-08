@@ -153,7 +153,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
-              
               <SheetContent side="right" className="w-full sm:max-w-md p-4">
               <SheetHeader className="pb-4">
                 <SheetTitle className="text-xl font-bold text-left">Payment methods</SheetTitle>
