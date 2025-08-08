@@ -163,12 +163,14 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   </Button>
                   <h2 className="text-xl font-bold">Payment methods</h2>
                 </div>
-                <div className="m-4">
+                <div className="m-4 flex-1 overflow-auto">
                    <PaymentMethodsTab key={refreshKey} />
                 </div>
-                <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full mt-6">
-                  Add payment method
-                </Button>
+                <div className="p-4">
+                  <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full mt-6">
+                    Add payment method
+                  </Button>
+                </div>
               </div>)}
             <Divider />
           </div>
