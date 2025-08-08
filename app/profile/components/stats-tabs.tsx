@@ -125,7 +125,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     <div className="relative">
       <div className="mb-6">
         {isMobile ? (
-          <div>
+          <div className="mx-[-24px]">
             <Divider />
             <div onClick={() => { setShowStatsSidebar(true) }}
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
