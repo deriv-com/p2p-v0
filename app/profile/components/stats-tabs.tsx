@@ -153,12 +153,11 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
-              <SheetTrigger asChild>
-              </SheetTrigger>
+              
               <SheetContent side="right" className="w-full sm:max-w-md p-4">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-center">Payment methods</h3>
-                </div>
+              <SheetHeader className="pb-4">
+                <SheetTitle className="text-xl font-bold text-left">Payment methods</SheetTitle>
+              </SheetHeader>
                 <div className="mt-6">
                    <PaymentMethodsTab key={refreshKey} />
                 </div>
