@@ -156,11 +156,11 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
              {showPaymentMethodsSidebar && (<div
                 className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
               >
-                <div className="flex items-center justify-between px-4 py-3 border-b">
-                  <h2 className="text-xl font-bold">Payment methods</h2>
+                <div className="flex items-center gap-2 px-4 py-3 border-b">
                   <Button variant="ghost" size="sm" onClick={() => setShowPaymentMethodsSidebar(false)} className="bg-grayscale-300 px-1">
                     <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
                   </Button>
+                  <h2 className="text-xl font-bold">Payment methods</h2>
                 </div>
                 <div className="mt-6">
                    <PaymentMethodsTab key={refreshKey} />
