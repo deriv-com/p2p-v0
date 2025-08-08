@@ -167,7 +167,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                    <PaymentMethodsTab key={refreshKey} />
                 </div>
                 <div className="p-4">
-                  <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full mt-6">
+                  <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full">
                     Add payment method
                   </Button>
                 </div>
