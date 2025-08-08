@@ -133,6 +133,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <span className="text-sm font-normal text-gray-900">Stats</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
+            <div className="fixed inset-0 z-40 bg-black/80" onClick={setShowStatsSidebar} />
             <Sheet open={showStatsSidebar} onOpenChange={setShowStatsSidebar}>
               <SheetTrigger asChild>
               </SheetTrigger>
@@ -152,19 +153,22 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
-            <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
-              <SheetContent side="right" className="w-full sm:max-w-md p-4">
-              <SheetHeader className="pb-4">
-                <SheetTitle className="text-xl font-bold text-left">Payment methods</SheetTitle>
-              </SheetHeader>
+             <div
+                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
+              >
+                <div className="flex items-center justify-between px-4 py-3 border-b">
+                  <h2 className="text-xl font-bold">Payment methods</h2>
+                  <Button variant="ghost" size="sm" onClick={() => setShowPaymentMethodsSidebar(false)} className="bg-grayscale-300 px-1">
+                    <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+                  </Button>
+                </div>
                 <div className="mt-6">
                    <PaymentMethodsTab key={refreshKey} />
                 </div>
                 <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full mt-6">
                   Add payment method
                 </Button>
-              </SheetContent>
-            </Sheet>
+              </div>
             <Divider />
           </div>
         ) : (
