@@ -133,19 +133,21 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <span className="text-sm font-normal text-gray-900">Stats</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
-            <div className="fixed inset-0 z-40 bg-black/80" onClick={setShowStatsSidebar} />
-            <Sheet open={showStatsSidebar} onOpenChange={setShowStatsSidebar}>
-              <SheetTrigger asChild>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md p-4">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-center">Stats</h3>
+            {showStatsSidebar && (
+            <div
+                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
+              >
+                <div className="flex items-center gap-2 px-4 py-3 border-b">
+                  <Button variant="ghost" size="sm" onClick={() => setShowStatsSidebar(false)} className="bg-grayscale-300 px-1">
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                  <h2 className="text-xl font-bold">Stats</h2>
                 </div>
                 <div className="mt-6">
-                  <StatsGrid stats={userStats} />
+                   <StatsGrid stats={userStats} />
                 </div>
-              </SheetContent>
-            </Sheet>
+              </div>
+              )}
             <Divider />
             <div onClick={() => { setShowPaymentMethodsSidebar(true) }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
