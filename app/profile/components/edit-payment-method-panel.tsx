@@ -76,7 +76,7 @@ export default function EditPaymentMethodPanel({
   }, [paymentMethod])
 
   const validateInput = (value: string) => {
-    const allowedPattern = /^[\p{L}0-9\s\-+.,'#@():;]*$/u
+    const allowedPattern = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/
     return allowedPattern.test(value)
   }
 
