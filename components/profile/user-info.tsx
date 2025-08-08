@@ -39,7 +39,7 @@ export default function UserInfo({ username, rating, completionRate, joinDate, r
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold">{nickname}</h2>
-          <div className="flex flex-wrap ml-[-56px] md:ml-[0] items-center mt-4 md:mt-1 text-sm">
+          <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-2 items-center mt-4 md:mt-1 text-sm">
             {rating && (
               <div className="flex items-center">
                 <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />

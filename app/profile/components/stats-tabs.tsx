@@ -5,7 +5,6 @@ import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
 import StatusModal from "./ui/status-modal"
@@ -126,25 +125,28 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     <div className="relative">
       <div className="mb-6">
         {isMobile ? (
-          <div>
+          <div className="mx-[-24px]">
             <Divider />
             <div onClick={() => { setShowStatsSidebar(true) }}
             className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
               <span className="text-sm font-normal text-gray-900">Stats</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
-            <Sheet open={showStatsSidebar} onOpenChange={setShowStatsSidebar}>
-              <SheetTrigger asChild>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md p-4">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-center">Stats</h3>
+            {showStatsSidebar && (
+            <div
+                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
+              >
+                <div className="flex items-center gap-4 px-4 py-3 border-b">
+                  <Button variant="ghost" size="sm" onClick={() => setShowStatsSidebar(false)} className="bg-grayscale-300 px-1">
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                  <h2 className="text-xl font-bold">Stats</h2>
                 </div>
-                <div className="mt-6">
-                  <StatsGrid stats={userStats} />
+                <div className="m-4">
+                   <StatsGrid stats={userStats} />
                 </div>
-              </SheetContent>
-            </Sheet>
+              </div>
+              )}
             <Divider />
             <div onClick={() => { setShowPaymentMethodsSidebar(true) }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -152,18 +154,24 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
-            <Sheet open={showPaymentMethodsSidebar} onOpenChange={setShowPaymentMethodsSidebar}>
-              <SheetTrigger asChild>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md p-4">
-                <div className="mb-4">
-                  <h3 className="text-xl font-bold text-center">Payment methods</h3>
+             {showPaymentMethodsSidebar && (<div
+                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
+              >
+                <div className="flex items-center gap-4 px-4 py-3 border-b">
+                  <Button variant="ghost" size="sm" onClick={() => setShowPaymentMethodsSidebar(false)} className="bg-grayscale-300 px-1">
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                  <h2 className="text-xl font-bold">Payment methods</h2>
                 </div>
-                <div className="mt-6">
+                <div className="m-4 flex-1 overflow-auto">
                    <PaymentMethodsTab key={refreshKey} />
                 </div>
-              </SheetContent>
-            </Sheet>
+                <div className="p-4">
+                  <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full">
+                    Add payment method
+                  </Button>
+                </div>
+              </div>)}
             <Divider />
           </div>
         ) : (
