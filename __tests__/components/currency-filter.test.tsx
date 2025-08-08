@@ -50,7 +50,6 @@ describe("CurrencyFilter", () => {
   it("filters currencies continuously as user types", async () => {
     render(<CurrencyFilter {...defaultProps} />)
 
-    // Open the filter
     const trigger = screen.getByText("Open Currency Filter")
     await userEvent.click(trigger)
 
