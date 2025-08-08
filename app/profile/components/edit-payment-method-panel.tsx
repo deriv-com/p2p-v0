@@ -74,8 +74,13 @@ export default function EditPaymentMethodPanel({
     )
   }, [paymentMethod])
 
+  const sanitizeInput = (value: string) => {
+    return value.replace(/[^\p{L}0-9\s\-+.,'#@():;]/gu, "")
+  }
+
   const handleInputChange = (fieldName: string, value: string) => {
-    setFieldValues((prev) => ({ ...prev, [fieldName]: value }))
+    const sanitizedValue = sanitizeInput(value)
+    setFieldValues((prev) => ({ ...prev, [fieldName]: sanitizedValue }))
   }
 
   const handleSubmit = (e: React.FormEvent) => {

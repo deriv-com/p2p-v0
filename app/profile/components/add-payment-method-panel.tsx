@@ -150,7 +150,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
   }
 
   const sanitizeInput = (value: string) => {
-    return value.replace(/[^\p{L}0-9\s\-.@_+#(),:;']/gu, "")
+    return value.replace(/[^\p{L}0-9\s\-+.,'#@():;]/gu, "")
   }
 
   const handleInputChange = (name: string, value: string) => {
