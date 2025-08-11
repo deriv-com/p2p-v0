@@ -135,13 +135,14 @@ export default function OrdersPage() {
   }
 
   const getRecommendLabel = () => {
-    if(order.type === "buy") {
-      if(order.user.id == USER.id) return ""
-      else return <span className="text-destructive text-base">Sell</span>
-    } else {
-      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
-      else return <span className="text-secondary text-base">Buy</span>
-    }
+    const counterpartyLabel =
+    order.type === "sell"
+      ? order.advert.user.id == USER.id
+        ? "seller"
+        : "buyer"
+      : order.advert.user.id == USER.id
+        ? "buyer"
+        : "seller"
   }
 
   const DesktopOrderTable = () => (
