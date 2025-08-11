@@ -40,18 +40,18 @@ export const COMPLAINT_OPTIONS: ComplaintOption[] = [
     id: "seller-not-released",
     value: "seller_not_released",
     label: "I’ve made the payment, but the seller hasn’t released the funds.",
-    type: "seller"
+    type: "buyer"
   },
   {
     id: "buyer-underpaid",
     value: "buyer_underpaid",
     label: "I couldn’t complete the full payment.",
-    type: "seller"
+    type: "buyer"
   },
   {
     id: "buyer-overpaid",
     value: "buyer_overpaid",
     label: "I paid more than the agreed amount.",
-    type: "seller"
+    type: "buyer"
   },
 ]
