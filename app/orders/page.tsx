@@ -95,6 +95,7 @@ export default function OrdersPage() {
     e.stopPropagation()
     setIsRatingSidebarOpen(true)
     setSelectedOrderId(order.id)
+    setSelectedOrder(order)
   }
 
   const handleRatingSidebarClose = () => {
