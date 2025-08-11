@@ -135,13 +135,13 @@ export default function OrdersPage() {
   }
 
   const getRecommendLabel = () => {
-    selectedOrder?.type === "sell"
-      ? selectedOrder?.advert.user.id == USER.id
-        ? "seller"
-        : "buyer"
-      : selectedOrder?.advert.user.id == USER.id
-        ? "buyer"
-        : "seller"
+    if(selectedOrder?.type === "sell")
+      if(selectedOrder?.advert.user.id == USER.id) return "seller"
+      return "buyer"
+    else {
+      if(selectedOrder?.advert.user.id == USER.id) return "buyer"
+      return "seller"
+    }
   }
 
   const DesktopOrderTable = () => (
