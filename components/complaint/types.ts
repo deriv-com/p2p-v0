@@ -30,6 +30,21 @@ export const COMPLAINT_OPTIONS: ComplaintOption[] = [
   {
     id: "third-party",
     value: "third_party",
-    label: "I've received payment from 3rd party",
+    label: "I've received payment from 3rd party.",
+  },
+  {
+    id: "third-party",
+    value: "third_party",
+    label: "I’ve made the payment, but the seller hasn’t released the funds.",
+  },
+  {
+    id: "third-party",
+    value: "third_party",
+    label: "I couldn’t complete the full payment.",
+  },
+  {
+    id: "third-party",
+    value: "third_party",
+    label: " paid more than the agreed amount.",
   },
 ]
