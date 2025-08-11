@@ -361,7 +361,7 @@ export default function OrderDetailsPage() {
                   </div></>
                   )}
                 </div>
-                <div className="space-y-6 mt-4">
+                {order.status !== "completed" && <div className="space-y-6 mt-4">
                   <div className="space-y-4">
                     {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
                     {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
@@ -400,7 +400,7 @@ export default function OrderDetailsPage() {
                       </div>
                     )}
                   </div>
-                </div>
+                </div>}
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
