@@ -304,7 +304,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
                     value={details[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
                     label={`Enter ${field.label.toLowerCase()}`}
-                    required
+                    required={field.required}
                     variant="floating"
                   />
                   {(touched[field.name] || details[field.name]) && errors[field.name] && (
