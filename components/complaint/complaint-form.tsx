@@ -10,7 +10,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 
-export function ComplaintForm({ isOpen, onClose, onSubmit, orderId }: ComplaintProps) {
+export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: ComplaintProps) {
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
