@@ -264,11 +264,11 @@ export default function OrderDetailsPage() {
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == USER.id
-        ? "You receive"
-        : "You pay"
-      : order?.user.id == USER.id
         ? "You pay"
         : "You receive"
+      : order?.user.id == USER.id
+        ? "You receive"
+        : "You pay"
   const complainType =
     order?.type === "buy"
       ? order?.user.id == USER.id
