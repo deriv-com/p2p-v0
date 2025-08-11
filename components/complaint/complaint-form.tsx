@@ -45,7 +45,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
       <div className="flex-1 p-4 space-y-6">
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           {COMPLAINT_OPTIONS.map((option) => {
-            if(option.type !== type) return
+            if(option.type !== type) return;
             return (
               <div key={option.id} className="flex items-start space-x-3">
                 <RadioGroupItem value={option.value} id={option.id} className="mt-1 border-grayscale-100 text-black" />
