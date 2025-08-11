@@ -14,6 +14,14 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
+  const complainType =
+    order?.type === "buy"
+      ? order?.user.id == USER.id
+        ? "You receive"
+        : "You pay"
+      : order?.user.id == USER.id
+        ? "You pay"
+        : "You receive"
 
   const handleSubmit = async () => {
     if (selectedOption && !isSubmitting) {
