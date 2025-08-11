@@ -13,38 +13,38 @@ export interface ComplaintProps {
 
 export const COMPLAINT_OPTIONS: ComplaintOption[] = [
   {
-    id: "no-payment",
-    value: "no_payment",
+    id: "buyer-not-paid",
+    value: "buyer_not_paid",
     label: "I didn't receive any payment.",
   },
   {
-    id: "less-amount",
-    value: "less_amount",
+    id: "buyer-underpaid",
+    value: "buyer_underpaid",
     label: "I received less than the agreed amount.",
   },
   {
-    id: "more-amount",
-    value: "more_amount",
+    id: "buyer-overpaid",
+    value: "buyer_overpaid",
     label: "I received more than the agreed amount.",
   },
   {
-    id: "third-party",
-    value: "third_party",
+    id: "buyer-third_party-payment-method",
+    value: "buyer_third_party_payment_method",
     label: "I've received payment from 3rd party.",
   },
   {
-    id: "third-party",
-    value: "third_party",
+    id: "seller-not-released",
+    value: "seller_not_released",
     label: "I’ve made the payment, but the seller hasn’t released the funds.",
   },
   {
-    id: "third-party",
-    value: "third_party",
+    id: "buyer-underpaid",
+    value: "buyer_underpaid",
     label: "I couldn’t complete the full payment.",
   },
   {
-    id: "third-party",
-    value: "third_party",
-    label: " paid more than the agreed amount.",
+    id: "buyer-overpaid",
+    value: "buyer_overpaid",
+    label: "I paid more than the agreed amount.",
   },
 ]
