@@ -158,7 +158,7 @@ export default function OrdersPage() {
                         {order.type === "buy" ? (
                           {order.advert.user.id == USER.id ? <span className="text-secondary text-base">Buy</span> : <span className="text-secondary text-base">Sell</span>
                         }) : (
-                         {order.advert.user.id == USER.id ? <span className="text-destructive text-base">Sell</span> : <span className="text-destructive text-base">Sell</span>
+                         {order.advert.user.id == USER.id ? <span className="text-destructive text-base">Sell</span> : <span className="text-destructive text-base">Buy</span>
                         })
                         }
                         <span className="text-base">
