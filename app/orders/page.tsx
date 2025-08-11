@@ -124,6 +124,16 @@ export default function OrdersPage() {
     setActiveTab(value as "active" | "past")
   }
 
+  const getOrderType = (order) => {
+    if(order.type === "buy") {
+      if(order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
+      else return <span className="text-destructive text-base">Sell</span>
+    } else {
+      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      else return <span className="text-secondary text-base">Buy</span>
+    }
+  }
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -155,14 +165,10 @@ export default function OrdersPage() {
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
-                        {order.type === "buy" ? (
-                          <span className="text-secondary text-base">Buy</span>
-                        ) : (
-                          <span className="text-destructive text-base">Sell</span>
-                        )}
+                        {getOrderType(order)}
                         <span className="text-base">
                           {" "}
-                          {order.advert.account_currency} {formatAmount(order.amount)}
+                          {order.account_currency} {formatAmount(order.amount)}
                         </span>
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
@@ -177,7 +183,7 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
                   <div className="lg:font-bold">
-                    {order.advert.payment_currency} {formatAmount(order.payment_amount)}
+                    {order.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
                 <TableCell className="lg:py-4 px-4 align-top row-start-1">
