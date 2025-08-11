@@ -13,6 +13,7 @@ import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { UserStats } from "../api/api-user-stats"
 import { useToast } from "@/hooks/use-toast"
+import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 interface StatsTabsProps {
   stats?: any
@@ -172,6 +173,10 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   </Button>
                 </div>
               </div>)}
+            <Divider />
+            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900" onClick={() => AuthPrevAPI.logout()}>
+                Logout
+            </div>
             <Divider />
           </div>
         ) : (

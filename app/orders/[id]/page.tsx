@@ -251,7 +251,7 @@ export default function OrderDetailsPage() {
     )
   }
 
-  const orderType = order?.type === "buy" ? "Buy" : "Sell"
+  const orderType = order?.type === "buy" ? (order?.user.id == USER.id ? "Buy" : "Sell") : (order?.user.id == USER.id ? "Sell" : "Buy")
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel =
     order?.type === "sell"
@@ -264,11 +264,19 @@ export default function OrderDetailsPage() {
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == USER.id
-        ? "You receive"
-        : "You pay"
-      : order?.user.id == USER.id
         ? "You pay"
         : "You receive"
+      : order?.user.id == USER.id
+        ? "You receive"
+        : "You pay"
+  const complainType =
+    order?.type === "sell"
+      ? order?.advert.user.id == USER.id
+        ? "buyer"
+        : "seller"
+      : order?.advert.user.id == USER.id
+        ? "seller"
+        : "buyer"
 
   if (isMobile && showChat && order) {
     return (
@@ -333,7 +341,7 @@ export default function OrderDetailsPage() {
                     <div>
                       <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                       <p className="font-bold">
-                        {order?.advert?.account_currency} {formatAmount(order.amount)}
+                        {order?.payment_currency} {formatAmount(order.payment_amount)}
                       </p>
                     </div>
                     <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
@@ -546,6 +554,7 @@ export default function OrderDetailsPage() {
         onClose={() => setShowComplaintForm(false)}
         onSubmit={handleSubmitComplaint}
         orderId={orderId}
+        type={complainType}
       />
       <RatingSidebar
         isOpen={showRatingSidebar}
