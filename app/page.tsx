@@ -80,8 +80,7 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
-
-        // Only set initial payment methods if none are selected
+        
         if (selectedPaymentMethods.length === 0) {
           setSelectedPaymentMethods(methods.map((method) => method.method))
         }
