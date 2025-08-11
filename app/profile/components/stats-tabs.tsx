@@ -13,6 +13,7 @@ import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import type { UserStats } from "../api/api-user-stats"
 import { useToast } from "@/hooks/use-toast"
+import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
 interface StatsTabsProps {
   stats?: any
