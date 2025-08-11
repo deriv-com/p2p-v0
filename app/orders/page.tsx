@@ -124,6 +124,16 @@ export default function OrdersPage() {
     setActiveTab(value as "active" | "past")
   }
 
+  const getOrderType = (order) => {
+    if(order.type === "buy") {
+      if(order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
+      else return <span className="text-destructive text-base">Sell</span>
+    } else {
+      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      else return <span className="text-secondary text-base">Buy</span>
+    }
+  }
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -155,13 +165,7 @@ export default function OrdersPage() {
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
-                        {order.type === "buy" ? (
-                          {order.user.id == USER.id ? (<span className="text-secondary text-base">Buy</span>) : (<span className="text-secondary text-base">Sell</span>)
-                        }) : (
-                         {order.user.id == USER.id ?
-                            (<span className="text-destructive text-base">Sell</span>) : (<span className="text-destructive text-base">Buy</span>)
-                        })
-                        }
+                        {getOrderType(order)}
                         <span className="text-base">
                           {" "}
                           {order.account_currency} {formatAmount(order.amount)}
