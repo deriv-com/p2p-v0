@@ -11,18 +11,11 @@ import { OrdersAPI } from "@/services/api"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 import { USER } from "@/lib/local-variables"
 
-export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, orderType }: ComplaintProps) {
+export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: ComplaintProps) {
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
-  const complainType =
-    orderType === "buy"
-      ? order?.user.id == USER.id
-        ? "seller"
-        : "buyer"
-      : order?.user.id == USER.id
-        ? "buyer"
-        : "seller"
+
 
   const handleSubmit = async () => {
     if (selectedOption && !isSubmitting) {
