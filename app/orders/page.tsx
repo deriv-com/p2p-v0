@@ -135,11 +135,11 @@ export default function OrdersPage() {
   }
 
   const getRecommendLabel = () => {
-    selectedOrder.type === "sell"
-      ? selectedOrder.advert.user.id == USER.id
+    selectedOrder?.type === "sell"
+      ? selectedOrder?.advert.user.id == USER.id
         ? "seller"
         : "buyer"
-      : selectedOrder.advert.user.id == USER.id
+      : selectedOrder?.advert.user.id == USER.id
         ? "buyer"
         : "seller"
   }
