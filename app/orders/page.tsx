@@ -134,6 +134,16 @@ export default function OrdersPage() {
     }
   }
 
+  const getRecommendLabel = () => {
+    if(order.type === "buy") {
+      if(order.user.id == USER.id) return ""
+      else return <span className="text-destructive text-base">Sell</span>
+    } else {
+      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      else return <span className="text-secondary text-base">Buy</span>
+    }
+  }
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
