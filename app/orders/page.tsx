@@ -156,9 +156,9 @@ export default function OrdersPage() {
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
                         {order.type === "buy" ? (
-                          {order.advert.user.id == USER.id ? (<span className="text-secondary text-base">Buy</span>) : (<span className="text-secondary text-base">Sell</span>)
+                          {order.user.id == USER.id ? (<span className="text-secondary text-base">Buy</span>) : (<span className="text-secondary text-base">Sell</span>)
                         }) : (
-                         {order.advert.user.id == USER.id ?
+                         {order.user.id == USER.id ?
                             (<span className="text-destructive text-base">Sell</span>) : (<span className="text-destructive text-base">Buy</span>)
                         })
                         }
