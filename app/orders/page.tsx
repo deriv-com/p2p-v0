@@ -126,10 +126,10 @@ export default function OrdersPage() {
 
   const getOrderType = (order) => {
     if(order.type === "buy") {
-      if(order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
+      if(order.advert.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
       else return <span className="text-destructive text-base">Sell</span>
     } else {
-      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      if(order.advert.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
       else return <span className="text-secondary text-base">Buy</span>
     }
   }
