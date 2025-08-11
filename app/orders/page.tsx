@@ -135,10 +135,10 @@ export default function OrdersPage() {
   }
 
   const getRecommendLabel = () => {
-    if(selectedOrder?.type === "sell")
+    if(selectedOrder?.type === "sell") {
       if(selectedOrder?.advert.user.id == USER.id) return "seller"
       return "buyer"
-    else {
+    } else {
       if(selectedOrder?.advert.user.id == USER.id) return "buyer"
       return "seller"
     }
