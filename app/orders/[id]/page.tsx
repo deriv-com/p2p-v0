@@ -270,13 +270,13 @@ export default function OrderDetailsPage() {
         ? "You receive"
         : "You pay"
   const complainType =
-    order?.type === "buy"
-      ? order?.user.id == USER.id
-        ? "seller"
-        : "buyer"
-      : order?.user.id == USER.id
+    order?.type === "sell"
+      ? order?.advert.user.id == USER.id
         ? "buyer"
         : "seller"
+      : order?.advert.user.id == USER.id
+        ? "seller"
+        : "buyer"
 
   if (isMobile && showChat && order) {
     return (
