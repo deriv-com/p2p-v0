@@ -156,10 +156,11 @@ export default function OrdersPage() {
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
                         {order.type === "buy" ? (
-                          <span className="text-secondary text-base">Buy</span>
-                        ) : (
-                          <span className="text-destructive text-base">Sell</span>
-                        )}
+                          {order.advert.user.id == USER.id ? <span className="text-secondary text-base">Buy</span> : <span className="text-secondary text-base">Sell</span>
+                        }) : (
+                         {order.advert.user.id == USER.id ? <span className="text-destructive text-base">Sell</span> : <span className="text-destructive text-base">Sell</span>
+                        })
+                        }
                         <span className="text-base">
                           {" "}
                           {order.account_currency} {formatAmount(order.amount)}
