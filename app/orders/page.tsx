@@ -328,6 +328,7 @@ export default function OrdersPage() {
           onClose={handleRatingSidebarClose}
           orderId={selectedOrderId}
           onSubmit={handleRatingSubmit}
+          recommendLabel={getRecommendLabel()}
         />
       </div>
     </>
