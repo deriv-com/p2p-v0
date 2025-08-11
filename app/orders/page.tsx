@@ -135,12 +135,11 @@ export default function OrdersPage() {
   }
 
   const getRecommendLabel = () => {
-    const counterpartyLabel =
-    order.type === "sell"
-      ? order.advert.user.id == USER.id
+    selectedOrder.type === "sell"
+      ? selectedOrder.advert.user.id == USER.id
         ? "seller"
         : "buyer"
-      : order.advert.user.id == USER.id
+      : selectedOrder.advert.user.id == USER.id
         ? "buyer"
         : "seller"
   }
