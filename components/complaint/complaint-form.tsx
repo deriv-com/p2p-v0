@@ -16,7 +16,6 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
 
-
   const handleSubmit = async () => {
     if (selectedOption && !isSubmitting) {
       setIsSubmitting(true)

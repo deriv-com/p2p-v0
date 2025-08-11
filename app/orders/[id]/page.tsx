@@ -269,6 +269,14 @@ export default function OrderDetailsPage() {
       : order?.user.id == USER.id
         ? "You pay"
         : "You receive"
+  const complainType =
+    order?.type === "buy"
+      ? order?.user.id == USER.id
+        ? "seller"
+        : "buyer"
+      : order?.user.id == USER.id
+        ? "buyer"
+        : "seller"
 
   if (isMobile && showChat && order) {
     return (
@@ -546,7 +554,7 @@ export default function OrderDetailsPage() {
         onClose={() => setShowComplaintForm(false)}
         onSubmit={handleSubmitComplaint}
         orderId={orderId}
-        orderType={order.type}
+        complainType={complainType}
       />
       <RatingSidebar
         isOpen={showRatingSidebar}
