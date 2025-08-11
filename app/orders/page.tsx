@@ -19,6 +19,7 @@ import Navigation from "@/components/navigation"
 import OrderChat from "@/components/order-chat"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
+import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -35,7 +36,7 @@ function TimeRemainingDisplay({ expiresAt }) {
 
 export default function OrdersPage() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<"active" | "past">("active")
+  const { activeTab, setActiveTab } = useOrdersFilterStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -119,6 +120,10 @@ export default function OrdersPage() {
     }
   }
 
+  const handleTabChange = (value: string) => {
+    setActiveTab(value as "active" | "past")
+  }
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -172,7 +177,7 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
                   <div className="lg:font-bold">
-                        {order.advert.payment_currency} {formatAmount(order.payment_amount)}
+                    {order.advert.payment_currency} {formatAmount(order.payment_amount)}
                   </div>
                 </TableCell>
                 <TableCell className="lg:py-4 px-4 align-top row-start-1">
@@ -208,7 +213,7 @@ export default function OrdersPage() {
                   <div className="flex flex-row items-center justify-between">
                     {isMobile && (
                       <div className="text-xs">
-                         {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
+                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
                       </div>
                     )}
                     <div className="flex items-center gap-2">
@@ -262,11 +267,7 @@ export default function OrdersPage() {
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
           <div className="mb-6">
-            <Tabs
-              className="w-full md:w-[330px] md:min-w-[330px]"
-              defaultValue={activeTab}
-              onValueChange={(value) => setActiveTab(value as "active" | "past")}
-            >
+            <Tabs className="w-full md:w-[330px] md:min-w-[330px]" value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
                 <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
                   Active orders
@@ -292,9 +293,13 @@ export default function OrdersPage() {
               </Button>
             </div>
           ) : orders.length === 0 ? (
-              <div className="mt-[40%] md:mt-0">
-                <EmptyState icon="/icons/warning-circle.png" title="No orders found" description="Start by placing your first order." />
-              </div>
+            <div className="mt-[40%] md:mt-0">
+              <EmptyState
+                icon="/icons/warning-circle.png"
+                title="No orders found"
+                description="Start by placing your first order."
+              />
+            </div>
           ) : (
             <div>
               <DesktopOrderTable />
