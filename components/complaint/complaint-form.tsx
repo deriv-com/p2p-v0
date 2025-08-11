@@ -8,7 +8,8 @@ import { Label } from "@/components/ui/label"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
-import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"import { USER } from "@/lib/local-variables"
+import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
+import { USER } from "@/lib/local-variables"
 
 export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, orderType }: ComplaintProps) {
   const [selectedOption, setSelectedOption] = useState<string>("")
