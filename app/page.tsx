@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { MarketFilterDropdown, type MarketFilterOptions } from "@/components/market-filter"
+import { MarketFilterDropdown } from "@/components/market-filter"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -20,25 +20,34 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
+import { useMarketFilterStore } from "@/stores/market-filter-store"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
   const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<"buy" | "sell">("sell")
-  const [currency, setCurrency] = useState("IDR")
-  const [sortBy, setSortBy] = useState("exchange_rate")
+
+  const {
+    activeTab,
+    currency,
+    sortBy,
+    filterOptions,
+    selectedPaymentMethods,
+    selectedAccountCurrency,
+    setActiveTab,
+    setCurrency,
+    setSortBy,
+    setFilterOptions,
+    setSelectedPaymentMethods,
+    setSelectedAccountCurrency,
+  } = useMarketFilterStore()
+
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isFilterPopupOpen, setIsFilterPopupOpen] = useState(false)
-  const [filterOptions, setFilterOptions] = useState<MarketFilterOptions>({
-    fromFollowing: false,
-  })
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
-  const [selectedAccountCurrency, setSelectedAccountCurrency] = useState("USD")
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
 
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
@@ -72,7 +81,10 @@ export default function BuySellPage() {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
 
-        setSelectedPaymentMethods(methods.map((method) => method.method))
+        // Only set initial payment methods if none are selected
+        if (selectedPaymentMethods.length === 0) {
+          setSelectedPaymentMethods(methods.map((method) => method.method))
+        }
         setPaymentMethodsInitialized(true)
       } catch (error) {
         console.error("Error fetching payment methods:", error)
@@ -83,7 +95,7 @@ export default function BuySellPage() {
     }
 
     fetchPaymentMethods()
-  }, [])
+  }, [selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const fetchAdverts = async () => {
     if (abortControllerRef.current) {
@@ -146,7 +158,7 @@ export default function BuySellPage() {
     setCurrency(currencyCode)
   }
 
-  const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue: string) => {
+  const handleFilterApply = (newFilters: typeof filterOptions, sortByValue?: string) => {
     setFilterOptions(newFilters)
     if (sortByValue) setSortBy(sortByValue)
   }
@@ -202,7 +214,7 @@ export default function BuySellPage() {
               <div className="w-full flex flex-col-reverse md:flex-row items-start md:items-center gap-[16px] md:gap-[24px]">
                 <Tabs
                   className="w-full md:w-[230px] md:min-w-[230px]"
-                  defaultValue={activeTab}
+                  value={activeTab}
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
                 >
                   <TabsList className="w-full md:min-w-[230px]">
@@ -297,7 +309,7 @@ export default function BuySellPage() {
               </div>
 
               <div className="hidden md:block">
-                <Select defaultValue="exchange_rate" onValueChange={setSortBy}>
+                <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>

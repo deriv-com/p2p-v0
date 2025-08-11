@@ -17,7 +17,7 @@ export interface MarketFilterOptions {
 
 interface MarketFilterDropdownProps {
   activeTab?: string
-  onApply: (filters: MarketFilterOptions) => void
+  onApply: (filters: MarketFilterOptions, sortByValue?: string) => void
   initialFilters: MarketFilterOptions
   initialSortBy: string
   trigger: React.ReactElement
@@ -42,23 +42,18 @@ export default function MarketFilterDropdown({
   }, [initialFilters])
 
   const handleReset = () => {
-            
     if (isMobile) {
-    setSortBy("exchange_rate")
-              onApply({ fromFollowing: false }, "exchange_rate")
+      setSortBy("exchange_rate")
+      onApply({ fromFollowing: false }, "exchange_rate")
     } else {
-      onApply({
-        fromFollowing: false,
-      })
-      }
-
+      onApply({ fromFollowing: false })
+    }
     setIsOpen(false)
   }
 
   const handleApply = () => {
     if (isMobile) onApply(filters, sortBy)
     else onApply(filters)
-
     setIsOpen(false)
   }
 
@@ -128,7 +123,7 @@ export default function MarketFilterDropdown({
         <Button
           variant="outline"
           onClick={handleReset}
-          className="rounded-full flex-1"
+          className="rounded-full flex-1 bg-transparent"
           size={isMobile ? "default" : "sm"}
         >
           Reset
@@ -150,7 +145,9 @@ export default function MarketFilterDropdown({
         <SheetTrigger asChild>
           <div className="relative">
             {trigger}
-            {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
+            {hasActiveFilters && (
+              <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
+            )}
           </div>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
