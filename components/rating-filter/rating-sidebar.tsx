@@ -17,7 +17,7 @@ export function RatingSidebar({
   orderId,
   title = "Rate and recommend",
   ratingLabel = "How would you rate this transaction?",
-  recommendLabel = "Would you recommend this seller?",
+  recommendLabel,
 }: RatingSidebarProps) {
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
