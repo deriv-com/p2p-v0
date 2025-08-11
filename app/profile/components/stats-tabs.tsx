@@ -173,6 +173,9 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                 </div>
               </div>)}
             <Divider />
+            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors" onClick={() => AuthPrevAPI.logout()}>
+                Logout
+            </div>
           </div>
         ) : (
           <Tabs defaultValue="stats">
