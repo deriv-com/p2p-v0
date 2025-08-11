@@ -5,15 +5,12 @@ export interface MarketFilterOptions {
 }
 
 interface MarketFilterState {
-  // Filter states
   activeTab: "buy" | "sell"
   currency: string
   sortBy: string
   filterOptions: MarketFilterOptions
   selectedPaymentMethods: string[]
   selectedAccountCurrency: string
-
-  // Actions
   setActiveTab: (tab: "buy" | "sell") => void
   setCurrency: (currency: string) => void
   setSortBy: (sortBy: string) => void
