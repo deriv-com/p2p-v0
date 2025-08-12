@@ -33,38 +33,4 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
     totalSeconds,
     isExpired: false,
   }
-}
-
-export function formatTimeRemaining(timeRemaining: TimeRemaining): string {
-  if (timeRemaining.isExpired) {
-    return "Expired"
   }
-
-  if (timeRemaining.hours > 0) {
-    return `${timeRemaining.hours}h ${timeRemaining.minutes}m left`
-  }
-
-  if (timeRemaining.minutes > 0) {
-    return `${timeRemaining.minutes}m left`
-  }
-
-  return "< 1m left"
-}
-
-export function getTimeRemainingColor(timeRemaining: TimeRemaining): string {
-  if (timeRemaining.isExpired) {
-    return "text-red-600"
-  }
-
-  const totalMinutes = timeRemaining.hours * 60 + timeRemaining.minutes
-
-  if (totalMinutes < 5) {
-    return "text-red-600"
-  }
-
-  if (totalMinutes <= 30) {
-    return "text-orange-600"
-  }
-
-  return "text-green-600"
-}
