@@ -150,7 +150,7 @@ export default function PaymentDetailsForm({
 
   return (
     <div className="h-full flex flex-col">
-      <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1 py-6">
+      <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1">
         <div className="max-w-[800px] mx-auto h-full flex flex-col">
           <div className="space-y-8">
             {initialData.type === "buy" && (
@@ -294,7 +294,7 @@ export default function PaymentDetailsForm({
                 className="min-h-[120px] resize-none"
                 maxLength={300}
               />
-              <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
+              <div className="flex justify-between items-start mt-2 text-xs text-gray-500 mx-4">
                 <span>
                   This information will be visible to everyone. Don&rsquo;t share your phone number or personal details.
                 </span>
