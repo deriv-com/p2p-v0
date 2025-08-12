@@ -63,7 +63,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
 
   return (
     <Select value={value.toString()} onValueChange={(selectedValue) => onValueChange(Number(selectedValue))}>
-      <SelectTrigger className={`w-full h-14 rounded-lg ${className}`}>
+      <SelectTrigger className={`rounded-lg ${className}`}>
         <SelectValue>{selectedOption?.label}</SelectValue>
       </SelectTrigger>
       <SelectContent>
