@@ -10,6 +10,9 @@ import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import OrderTimeLimitSelector from "./order-time-limit-selector"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import Image from "next/image"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -26,6 +29,10 @@ const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create
   }
 
   if (currentStep === 1) {
+    return "Next"
+  }
+
+  if (currentStep === 2) {
     return mode === "create" ? "Create Ad" : "Save Details"
   }
 
@@ -50,6 +57,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
+  const [orderTimeLimit, setOrderTimeLimit] = useState(15)
 
   const formDataRef = useRef({})
 
@@ -86,7 +94,9 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                   return convertToSnakeCase(methodName)
                 })
               } else {
-                paymentMethodIds = data.payment_method_ids.map((id: any) => Number(id)).filter((id: number) => !isNaN(id))
+                paymentMethodIds = data.payment_method_ids
+                  .map((id: any) => Number(id))
+                  .filter((id: number) => !isNaN(id))
 
                 if (typeof window !== "undefined") {
                   ;(window as any).adPaymentMethodIds = paymentMethodIds
@@ -107,6 +117,10 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
             setFormData(formattedData)
             formDataRef.current = formattedData
+
+            if (data.order_expiry_period) {
+              setOrderTimeLimit(data.order_expiry_period)
+            }
           }
         } catch (error) {
           console.log(error)
@@ -217,7 +231,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
   const handleFinalSubmit = async () => {
     const finalData = { ...formDataRef.current }
-    
+
     setIsSubmitting(true)
 
     try {
@@ -235,7 +249,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           exchange_rate_type: "fixed" as const,
           description: finalData.instructions || "",
           is_active: 1,
-          order_expiry_period: 15,
+          order_expiry_period: orderTimeLimit,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIds }),
@@ -255,7 +269,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           available_amount: finalData.totalAmount || 0,
           exchange_rate: finalData.fixedRate || 0,
           exchange_rate_type: "fixed",
-          order_expiry_period: 15,
+          order_expiry_period: orderTimeLimit,
           description: finalData.instructions || "",
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
@@ -355,12 +369,12 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       if (!adFormValid) {
         return
       }
-      
+
       setCurrentStep(1)
       return
     }
 
-    // Step 1: Validate and submit the entire form
+    // Step 1: Validate and proceed to next step
     if (currentStep === 1) {
       if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
         return
@@ -370,6 +384,12 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         return
       }
 
+      setCurrentStep(2)
+      return
+    }
+
+    // Step 2: Validate and submit the entire form
+    if (currentStep === 2) {
       if (mode === "edit" && !adFormValid) {
         return
       }
@@ -392,7 +412,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     (currentStep === 0 && !adFormValid) ||
     (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-    (currentStep === 1 && mode === "edit" && !adFormValid) ||
+    (currentStep === 2 && mode === "edit" && !adFormValid) ||
     isBottomSheetOpen
 
   return (
@@ -411,7 +431,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           />
           <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
           <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
-          
+
           {currentStep === 0 && (
             <div className="block md:hidden m-6 text-left">
               <div className="text-sm font-normal text-slate-1200">Step 1</div>
@@ -426,16 +446,23 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
             </div>
           )}
 
+          {currentStep === 2 && (
+            <div className="block md:hidden m-6 text-left">
+              <div className="text-sm font-normal text-slate-1200">Step 3</div>
+              <div className="text-lg font-bold text-slate-1200">Set ad conditions</div>
+            </div>
+          )}
+
           <div className="relative mb-16 md:mb-0 mx-6">
             {currentStep === 0 ? (
               <AdDetailsForm
                 onNext={handleAdDetailsNext}
                 onClose={handleClose}
                 initialData={formData}
-                 setFormData={setFormData}
+                setFormData={setFormData}
                 isEditMode={mode === "edit"}
               />
-            ) : (
+            ) : currentStep === 1 ? (
               <PaymentDetailsForm
                 onBack={() => setCurrentStep(0)}
                 onClose={handleClose}
@@ -445,18 +472,33 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                 isEditMode={mode === "edit"}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
               />
+            ) : (
+              <div className="space-y-6">
+                <div>
+                  <div className="flex gap-[4px] items-center mb-4">
+                        <h3 className="text-base font-bold leading-6 tracking-normal">Order time limit</h3>
+                        <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Orders will expire if they aren't completed within this timeframe.</p>
+                                <TooltipArrow className="fill-black" />
+                              </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                  </div>
+                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                </div>
+              </div>
             )}
           </div>
 
           {isMobile ? (
             <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
-                <Button 
-                  type="button"
-                  onClick={handleButtonClick} 
-                  disabled={isButtonDisabled} 
-                  className="w-full"
-                >
+                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
                   {getButtonText(isSubmitting, currentStep, mode)}
                 </Button>
               </div>
@@ -466,11 +508,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           )}
 
           <div className="hidden md:flex justify-end mt-8">
-            <Button 
-              type="button"
-              onClick={handleButtonClick} 
-              disabled={isButtonDisabled}
-            >
+            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
               {getButtonText(isSubmitting, currentStep, mode)}
             </Button>
           </div>

@@ -1,11 +1,11 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useRef } from "react"
-import { Check, Search, AlertCircle } from "lucide-react"
+import { Check, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import Image from "next/image"
 
 interface PaymentMethod {
   display_name: string
@@ -173,9 +173,13 @@ export default function PaymentMethodBottomSheet({
 
           {/* Search input */}
           <div className="relative mb-6">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-black" />
-            </div>
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            />
             <Input
               type="text"
               placeholder="Search"
@@ -188,8 +192,6 @@ export default function PaymentMethodBottomSheet({
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-
-          {/* Payment methods list */}
           <div className="space-y-4 mb-8 h-[300px] overflow-y-auto">
             {filteredMethods.length > 0 ? (
               filteredMethods.map((method) => (
@@ -202,7 +204,7 @@ export default function PaymentMethodBottomSheet({
                   disabled={!isMethodSelected(method) && isMaxReached}
                 >
                   <div
-                    className={`w-10 h-10 flex items-center justify-center rounded-md border ${
+                    className={`w-6 h-6 flex items-center justify-center rounded-md border ${
                       isMethodSelected(method)
                         ? "bg-black border-black"
                         : isMaxReached
@@ -227,8 +229,6 @@ export default function PaymentMethodBottomSheet({
               </div>
             )}
           </div>
-
-          {/* Action buttons */}
           <div className="space-y-3">
             <Button
               type="button"
