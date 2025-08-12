@@ -139,7 +139,7 @@ const AdPaymentMethods = () => {
                     height={24}
                     className="mx-auto mb-2"
                   />
-                  <p className="text-sm font-bold text-neutral-10">Add payment method</p>
+                  <p className="text-sm text-neutral-10">Add payment method</p>
                 </div>
               </CardContent>
             </Card>
