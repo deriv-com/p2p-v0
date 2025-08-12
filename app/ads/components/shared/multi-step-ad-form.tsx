@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
 import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import OrderTimeLimitSelector from "./order-time-limit-selector"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -474,22 +474,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
               <div className="space-y-6">
                 <div>
                   <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Order time limit</h3>
-                  <div className="w-full">
-                    <Select
-                      value={orderTimeLimit.toString()}
-                      onValueChange={(value) => setOrderTimeLimit(Number(value))}
-                    >
-                      <SelectTrigger className="w-full h-14 rounded-lg">
-                        <SelectValue>{orderTimeLimit} minutes</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="15">15 minutes</SelectItem>
-                        <SelectItem value="30">30 minutes</SelectItem>
-                        <SelectItem value="45">45 minutes</SelectItem>
-                        <SelectItem value="60">60 minutes</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
                   <p className="text-sm text-gray-600 mt-2">
                     Orders will be automatically cancelled if payment is not received within this time.
                   </p>
