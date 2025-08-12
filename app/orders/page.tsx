@@ -146,13 +146,16 @@ export default function OrdersPage() {
   }
 
   const getPayReceiveLabel = (order) => {
+    const label = ""
     if(order.type === "buy") {
-      if(order.user.id == USER.id) return "You pay"
-      return "You receive"
+      if(order.user.id == USER.id) label = "You pay"
+      else label = "You receive"
     } else { 
-      if(order.user.id == USER.id) return "You receive"
-      return "You pay"
+      if(order.user.id == USER.id) label = "You receive"
+      else label = "You pay"
     }
+
+    return isMobile? label + ": "  : label
   }
   
   const DesktopOrderTable = () => (
