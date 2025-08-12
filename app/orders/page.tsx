@@ -145,6 +145,19 @@ export default function OrdersPage() {
     }
   }
 
+  const getPayReceiveLabel = (order) => {
+    const label = ""
+    if(order.type === "buy") {
+      if(order.user.id == USER.id) label = "You pay"
+      else label = "You receive"
+    } else { 
+      if(order.user.id == USER.id) label = "You receive"
+      else label = "You pay"
+    }
+
+    return isMobile? label + ": "  : label
+  }
+  
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -192,9 +205,12 @@ export default function OrdersPage() {
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="py-0 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
-                  <div className="lg:font-bold">
-                    {order.payment_currency} {formatAmount(order.payment_amount)}
+                <TableCell className="py-1 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
+                  <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
+                      <div className="lg:font-bold">
+                        {order.payment_currency} {formatAmount(order.payment_amount)}
+                      </div>
+                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
                 <TableCell className="lg:py-4 px-4 align-top row-start-1">
