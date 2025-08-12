@@ -202,7 +202,7 @@ export default function PaymentMethodBottomSheet({
                   disabled={!isMethodSelected(method) && isMaxReached}
                 >
                   <div
-                    className={`w-10 h-10 flex items-center justify-center rounded-md border ${
+                    className={`w-6 h-6 flex items-center justify-center rounded-md border ${
                       isMethodSelected(method)
                         ? "bg-black border-black"
                         : isMaxReached
