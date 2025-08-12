@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useRef } from "react"
 import { Check, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -193,8 +192,6 @@ export default function PaymentMethodBottomSheet({
               onClick={(e) => e.stopPropagation()}
             />
           </div>
-
-          {/* Payment methods list */}
           <div className="space-y-4 mb-8 h-[300px] overflow-y-auto">
             {filteredMethods.length > 0 ? (
               filteredMethods.map((method) => (
