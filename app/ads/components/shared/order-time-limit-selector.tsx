@@ -49,7 +49,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
               <Button
                 key={option.value}
                 variant={value === option.value ? "black" : "ghost"}
-                className="w-full justify-start rounded-sm"
+                className="w-full justify-start rounded-sm font-normal opacity-72"
                 onClick={() => handleSelect(option.value)}
               >
                 {option.label}
