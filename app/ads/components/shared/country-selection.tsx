@@ -141,10 +141,10 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between h-12 px-4 bg-transparent"
+            className="w-[70%] justify-between px-4 rounded-sm"
             onClick={() => setIsOpen(true)}
           >
-            <span className="text-left">{getDisplayText()}</span>
+            <span className="text-left font-normal">{getDisplayText()}</span>
             <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
           </Button>
         </SheetTrigger>
@@ -165,10 +165,10 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between h-12 px-4"
+          className="w-[70%] justify-between px-4 rounded-sm"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="text-left font-normal">{getDisplayText()}</span>
+          <span className="text-left font-normal rounded-sm">{getDisplayText()}</span>
           <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
         </Button>
       </PopoverTrigger>
