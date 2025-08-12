@@ -165,7 +165,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between h-12 px-4 bg-transparent"
+          className="w-full justify-between h-12 px-4"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="text-left">{getDisplayText()}</span>
