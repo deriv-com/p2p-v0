@@ -173,9 +173,13 @@ export default function PaymentMethodBottomSheet({
 
           {/* Search input */}
           <div className="relative mb-6">
-            <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-black" />
-            </div>
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            />
             <Input
               type="text"
               placeholder="Search"
