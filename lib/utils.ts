@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-interface AvailablePaymentMethod {
+export interface AvailablePaymentMethod {
   id: number
   method: string
   display_name: string
@@ -178,12 +178,15 @@ export function getChatErrorMessage(tags: string[]): string {
     link: "Links and URLs are not permitted in this chat.",
     profanity: "Please keep the conversation professional and avoid offensive language.",
     promotional_content: "Promotional content and advertisements are not allowed.",
-    off_platform_communication: "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
+    off_platform_communication:
+      "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
     human_attention: "Threatening or harassing language is not tolerated. Please communicate respectfully.",
     harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
-    fake_identity: "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
-    sensitive_data_requests: "Your message requires additional review. Please wait while we connect you with a specialist.",
-    miscellaneous: "Your message doesn't meet our community guidelines. Please try again."
+    fake_identity:
+      "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
+    sensitive_data_requests:
+      "Your message requires additional review. Please wait while we connect you with a specialist.",
+    miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
   }
 
   const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
@@ -192,20 +195,22 @@ export function getChatErrorMessage(tags: string[]): string {
 }
 
 export function formatAmount(amount: string) {
-  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 export function formatDateTime(datetime) {
-  const d = new Date(datetime);
+  const d = new Date(datetime)
 
-  return d.toLocaleString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  }).replace(',', '');
+  return d
+    .toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    .replace(",", "")
 }
 
 export async function copyToClipboard(text: string): Promise<boolean> {
@@ -225,11 +230,13 @@ export function preventSwipeNavigation(): () => void {
 
   const handleTouchStart = (e: TouchEvent) => {
     const target = e.target as Element
-    
-    if (target.closest('[data-sidebar]') || 
-        target.closest('.fixed.bottom-0') || 
-        target.closest('[role="dialog"]') ||
-        target.closest('.sheet-content')) {
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
       return
     }
 
@@ -244,11 +251,13 @@ export function preventSwipeNavigation(): () => void {
 
   const handleTouchMove = (e: TouchEvent) => {
     const target = e.target as Element
-  
-    if (target.closest('[data-sidebar]') || 
-        target.closest('.fixed.bottom-0') || 
-        target.closest('[role="dialog"]') ||
-        target.closest('.sheet-content')) {
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
       return
     }
 
@@ -273,11 +282,13 @@ export function preventSwipeNavigation(): () => void {
 
   const handleTouchEnd = (e: TouchEvent) => {
     const target = e.target as Element
-  
-    if (target.closest('[data-sidebar]') || 
-        target.closest('.fixed.bottom-0') || 
-        target.closest('[role="dialog"]') ||
-        target.closest('.sheet-content')) {
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
       return
     }
 
@@ -285,7 +296,7 @@ export function preventSwipeNavigation(): () => void {
       e.preventDefault()
       e.stopPropagation()
     }
-    
+
     startX = 0
     startY = 0
     isHorizontalSwipe = false
@@ -293,61 +304,67 @@ export function preventSwipeNavigation(): () => void {
 
   const handleGestureStart = (e: Event) => {
     const target = e.target as Element
-    
-    if (target.closest('[data-sidebar]') || 
-        target.closest('.fixed.bottom-0') || 
-        target.closest('[role="dialog"]') ||
-        target.closest('.sheet-content')) {
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
       return
     }
-    
+
     e.preventDefault()
   }
 
   const handleGestureChange = (e: Event) => {
     const target = e.target as Element
-    
-    if (target.closest('[data-sidebar]') || 
-        target.closest('.fixed.bottom-0') || 
-        target.closest('[role="dialog"]') ||
-        target.closest('.sheet-content')) {
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
       return
     }
-    
+
     e.preventDefault()
   }
 
   const handleGestureEnd = (e: Event) => {
     const target = e.target as Element
-    
-    if (target.closest('[data-sidebar]') || 
-        target.closest('.fixed.bottom-0') || 
-        target.closest('[role="dialog"]') ||
-        target.closest('.sheet-content')) {
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
       return
     }
-    
+
     e.preventDefault()
   }
 
-  document.addEventListener('touchstart', handleTouchStart, { passive: false })
-  document.addEventListener('touchmove', handleTouchMove, { passive: false })
-  document.addEventListener('touchend', handleTouchEnd, { passive: false })
-  
-  document.addEventListener('gesturestart', handleGestureStart, { passive: false })
-  document.addEventListener('gesturechange', handleGestureChange, { passive: false })
-  document.addEventListener('gestureend', handleGestureEnd, { passive: false })
+  document.addEventListener("touchstart", handleTouchStart, { passive: false })
+  document.addEventListener("touchmove", handleTouchMove, { passive: false })
+  document.addEventListener("touchend", handleTouchEnd, { passive: false })
 
-  document.body.style.overscrollBehaviorX = 'none'
+  document.addEventListener("gesturestart", handleGestureStart, { passive: false })
+  document.addEventListener("gesturechange", handleGestureChange, { passive: false })
+  document.addEventListener("gestureend", handleGestureEnd, { passive: false })
+
+  document.body.style.overscrollBehaviorX = "none"
 
   return () => {
-    document.removeEventListener('touchstart', handleTouchStart)
-    document.removeEventListener('touchmove', handleTouchMove)
-    document.removeEventListener('touchend', handleTouchEnd)
-    document.removeEventListener('gesturestart', handleGestureStart)
-    document.removeEventListener('gesturechange', handleGestureChange)
-    document.removeEventListener('gestureend', handleGestureEnd)
-  
-    document.body.style.overscrollBehaviorX = 'auto'
+    document.removeEventListener("touchstart", handleTouchStart)
+    document.removeEventListener("touchmove", handleTouchMove)
+    document.removeEventListener("touchend", handleTouchEnd)
+    document.removeEventListener("gesturestart", handleGestureStart)
+    document.removeEventListener("gesturechange", handleGestureChange)
+    document.removeEventListener("gestureend", handleGestureEnd)
+
+    document.body.style.overscrollBehaviorX = "auto"
   }
 }
