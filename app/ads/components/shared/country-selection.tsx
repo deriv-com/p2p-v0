@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Search } from "lucide-react"
 import Image from "next/image"
 
 interface Country {
@@ -76,10 +75,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   const handleAllToggle = () => {
     if (isAllSelected) {
-      // If "All" is currently selected, don't change anything
       return
     } else {
-      // Select "All" by clearing the selection
       onCountriesChange([])
     }
   }
@@ -98,7 +95,13 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
   const CountryList = () => (
     <div className="space-y-4">
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+         <Image
+          src="/icons/search-icon-custom.png"
+          alt="Search"
+          width={24}
+          height={24}
+          className="absolute left-3 top-1/2 transform -translate-y-1/2"
+        />
         <Input
           placeholder="Search"
           value={searchTerm}
