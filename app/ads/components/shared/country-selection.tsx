@@ -83,7 +83,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return "All countries"
+      return "All"
     }
     if (selectedCount === 1) {
       const country = COUNTRIES.find((c) => c.code === selectedCountries[0])
