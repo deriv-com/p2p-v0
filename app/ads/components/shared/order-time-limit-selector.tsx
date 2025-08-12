@@ -42,7 +42,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         </SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-center">Order time limit</h3>
+            <h3 className="text-xl font-bold text-left">Order time limit</h3>
           </div>
           <div className="mt-6 space-y-2">
             {TIME_LIMIT_OPTIONS.map((option) => (
