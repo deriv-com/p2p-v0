@@ -56,7 +56,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
-  const [conditionsFormValid, setConditionsFormValid] = useState(true)
 
   const formDataRef = useRef({})
 
