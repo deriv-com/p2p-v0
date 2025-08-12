@@ -135,10 +135,26 @@ export function NovuNotifications() {
           poweredBy: "Notifications by",
         }}
         onNotificationClick={(notification) => {
+          // Handle order navigation if order_id exists
           if (notification.data && notification.data["order_id"]) {
             const orderId = notification.data["order_id"]
             router.push(`/orders/${orderId}`)
           }
+
+          // Close the inbox by triggering a click outside or using the built-in close mechanism
+          // This ensures the inbox closes regardless of notification type
+          setTimeout(() => {
+            const inboxElement = document.querySelector("[data-novu-inbox]") as HTMLElement
+            if (inboxElement) {
+              // Trigger a click outside to close the inbox
+              const clickOutsideEvent = new MouseEvent("click", {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+              })
+              document.body.dispatchEvent(clickOutsideEvent)
+            }
+          }, 100)
         }}
         placement="bottom-end"
         appearance={appearance}
