@@ -513,7 +513,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                     may reduce ad visibility.
                   </p>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Country selection</label>
                     <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
                   </div>
                 </div>
