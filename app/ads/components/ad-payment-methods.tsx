@@ -118,7 +118,7 @@ const AdPaymentMethods = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="font-medium text-sm text-neutral-10">{displayDetails.primary}</div>
+                      <div className="text-sm text-neutral-10">{displayDetails.primary}</div>
                       <div className="text-sm text-neutral-7">{displayDetails.secondary}</div>
                     </div>
                   </CardContent>
