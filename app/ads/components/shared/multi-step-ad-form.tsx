@@ -475,9 +475,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                 <div>
                   <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Order time limit</h3>
                   <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
-                  <p className="text-sm text-gray-600 mt-2">
-                    Orders will be automatically cancelled if payment is not received within this time.
-                  </p>
                 </div>
               </div>
             )}
