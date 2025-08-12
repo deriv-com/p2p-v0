@@ -95,6 +95,7 @@ export default function OrdersPage() {
     e.stopPropagation()
     setIsRatingSidebarOpen(true)
     setSelectedOrderId(order.id)
+    setSelectedOrder(order)
   }
 
   const handleRatingSidebarClose = () => {
@@ -131,6 +132,16 @@ export default function OrdersPage() {
     } else {
       if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
       else return <span className="text-secondary text-base">Buy</span>
+    }
+  }
+
+  const getRecommendLabel = () => {
+    if(selectedOrder?.type === "sell") {
+      if(selectedOrder?.advert.user.id == USER.id) return "seller"
+      return "buyer"
+    } else {
+      if(selectedOrder?.advert.user.id == USER.id) return "buyer"
+      return "seller"
     }
   }
 
@@ -317,6 +328,7 @@ export default function OrdersPage() {
           onClose={handleRatingSidebarClose}
           orderId={selectedOrderId}
           onSubmit={handleRatingSubmit}
+          recommendLabel={`Would you recommend this ${getRecommendLabel()}?`}
         />
       </div>
     </>

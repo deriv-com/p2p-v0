@@ -33,4 +33,4 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
     totalSeconds,
     isExpired: false,
   }
-}
+  }
