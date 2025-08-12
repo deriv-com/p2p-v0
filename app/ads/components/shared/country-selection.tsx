@@ -141,7 +141,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="w-f justify-between px-4 rounded-sm"
+            className="w-f justify-between px-4 rounded-lg"
             onClick={() => setIsOpen(true)}
           >
             <span className="text-left font-normal">{getDisplayText()}</span>
@@ -165,7 +165,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between px-4 rounded-sm"
+          className="w-full justify-between px-4 rounded-lg"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="text-left font-normal rounded-sm">{getDisplayText()}</span>
