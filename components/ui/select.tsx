@@ -26,7 +26,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={18} height={14} className="opacity-70 ml-[8px]" />
+      <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="opacity-70 ml-[8px]" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -41,7 +41,7 @@ const SelectScrollUpButton = React.forwardRef<
     className={cn("flex cursor-default items-center justify-center py-1", className)}
     {...props}
   >
-    <Image src="/icons/chevron-down.png" alt="Scroll up" width={12} height={8} className="opacity-70 rotate-180" />
+    <Image src="/icons/chevron-down.png" alt="Scroll up" width={24} height={24} className="opacity-70 rotate-180" />
   </SelectPrimitive.ScrollUpButton>
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
@@ -55,7 +55,7 @@ const SelectScrollDownButton = React.forwardRef<
     className={cn("flex cursor-default items-center justify-center py-1", className)}
     {...props}
   >
-    <Image src="/icons/chevron-down.png" alt="Scroll down" width={12} height={8} className="opacity-70" />
+    <Image src="/icons/chevron-down.png" alt="Scroll down" width={24} height={24} className="opacity-70" />
   </SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
