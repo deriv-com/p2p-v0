@@ -168,7 +168,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
           className="w-full justify-between h-12 px-4"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="text-left">{getDisplayText()}</span>
+          <span className="text-left font-normal">{getDisplayText()}</span>
           <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
         </Button>
       </PopoverTrigger>
