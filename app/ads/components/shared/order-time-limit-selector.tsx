@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Sheet, SheetContent SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { ChevronDown } from "lucide-react"
 
