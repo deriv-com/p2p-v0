@@ -135,18 +135,14 @@ export function NovuNotifications() {
           poweredBy: "Notifications by",
         }}
         onNotificationClick={(notification) => {
-          // Handle order navigation if order_id exists
           if (notification.data && notification.data["order_id"]) {
             const orderId = notification.data["order_id"]
             router.push(`/orders/${orderId}`)
           }
 
-          // Close the inbox by triggering a click outside or using the built-in close mechanism
-          // This ensures the inbox closes regardless of notification type
           setTimeout(() => {
-            const inboxElement = document.querySelector("[data-novu-inbox]") as HTMLElement
+            const inboxElement = document.querySelector(".nv-popoverContent") as HTMLElement
             if (inboxElement) {
-              // Trigger a click outside to close the inbox
               const clickOutsideEvent = new MouseEvent("click", {
                 bubbles: true,
                 cancelable: true,
