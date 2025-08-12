@@ -124,8 +124,8 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
               setOrderTimeLimit(data.order_expiry_period)
             }
 
-            if (data.eligible_countries) {
-              setSelectedCountries(data.eligible_countries)
+            if (data.available_countries) {
+              setSelectedCountries(data.available_countries)
             }
           }
         } catch (error) {
@@ -256,7 +256,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           description: finalData.instructions || "",
           is_active: 1,
           order_expiry_period: orderTimeLimit,
-          eligible_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIds }),
@@ -277,7 +277,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           exchange_rate: finalData.fixedRate || 0,
           exchange_rate_type: "fixed",
           order_expiry_period: orderTimeLimit,
-          eligible_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           description: finalData.instructions || "",
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
