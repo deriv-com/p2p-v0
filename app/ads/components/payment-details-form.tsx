@@ -150,7 +150,7 @@ export default function PaymentDetailsForm({
 
   return (
     <div className="h-full flex flex-col">
-      <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1 py-6">
+      <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1">
         <div className="max-w-[800px] mx-auto h-full flex flex-col">
           <div className="space-y-8">
             {initialData.type === "buy" && (
