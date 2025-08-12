@@ -475,19 +475,19 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
             ) : (
               <div className="space-y-6">
                 <div>
-                  <div className="flex gap-[4px] i">
-                  <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Order time limit</h3>
-                  <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Orders will expire if they aren't completed within this timeframe.</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                  </TooltipProvider>
+                  <div className="flex gap-[4px] items-center">
+                        <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Order time limit</h3>
+                        <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Orders will expire if they aren't completed within this timeframe.</p>
+                                <TooltipArrow className="fill-black" />
+                              </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
                   </div>
                   <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
                 </div>
