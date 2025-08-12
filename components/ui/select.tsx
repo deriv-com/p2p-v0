@@ -41,7 +41,7 @@ const SelectScrollUpButton = React.forwardRef<
     className={cn("flex cursor-default items-center justify-center py-1", className)}
     {...props}
   >
-    <Image src="/icons/chevron-down.png" alt="Scroll up" width={24} height={24} className="opacity-70 rotate-180" />
+    <Image src="/icons/chevron-down.png" alt="Scroll up" width={18} height={18} className="opacity-70 rotate-180" />
   </SelectPrimitive.ScrollUpButton>
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
@@ -55,7 +55,7 @@ const SelectScrollDownButton = React.forwardRef<
     className={cn("flex cursor-default items-center justify-center py-1", className)}
     {...props}
   >
-    <Image src="/icons/chevron-down.png" alt="Scroll down" width={24} height={24} className="opacity-70" />
+    <Image src="/icons/chevron-down.png" alt="Scroll down" width={18} height={18} className="opacity-70" />
   </SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
