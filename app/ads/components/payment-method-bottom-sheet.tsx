@@ -229,8 +229,6 @@ export default function PaymentMethodBottomSheet({
               </div>
             )}
           </div>
-
-          {/* Action buttons */}
           <div className="space-y-3">
             <Button
               type="button"
