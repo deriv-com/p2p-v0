@@ -475,7 +475,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
             ) : (
               <div className="space-y-6">
                 <div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-[4">
                   <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Order time limit</h3>
                   <TooltipProvider>
                       <Tooltip>
