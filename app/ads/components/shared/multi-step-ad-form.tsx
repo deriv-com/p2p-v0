@@ -508,7 +508,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
                 <div>
                   <h3 className="text-base font-bold mb-2">Choose your audience</h3>
-                  <p className="text-sm text-gray-600 mb-4">
+                  <p className="text-sm text-gray-600 mb-4 w-[70%[">
                     You can filter who interacts with your ads based on their location or P2P history. Stricter filters
                     may reduce ad visibility.
                   </p>
