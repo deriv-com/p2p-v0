@@ -294,7 +294,7 @@ export default function PaymentDetailsForm({
                 className="min-h-[120px] resize-none"
                 maxLength={300}
               />
-              <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
+              <div className="flex justify-between items-start mt-2 text-xs text-gray-500">
                 <span>
                   This information will be visible to everyone. Don&rsquo;t share your phone number or personal details.
                 </span>
