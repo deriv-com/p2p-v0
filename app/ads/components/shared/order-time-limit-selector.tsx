@@ -35,7 +35,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" className={`w-full h-14 rounded-lg justify-between ${className}`}>
+          <Button variant="outline" className={`w-full h-14 rounded-lg justify-between ${className} font-normal`}>
             <span>{selectedOption?.label || "Order time limit"}</span>
             <ChevronDown className="h-4 w-4" />
           </Button>
