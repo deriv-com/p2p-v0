@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+import Image from "next/image"
 
 interface OrderTimeLimitSelectorProps {
   value: number
