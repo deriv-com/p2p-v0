@@ -3,7 +3,7 @@
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -128,9 +128,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const numAmount = Number.parseFloat(amount)
 
       const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
-      if(order.errors.length > 0) {
+      if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
-        if(errorCode === "OrderExists") {
+        if (errorCode === "OrderExists") {
           showAlert({
             title: "Unable to create an order",
             description: "Order already exists.",
@@ -145,7 +145,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             type: "warning",
           })
         }
-        
       } else {
         router.push("/orders/" + order.data.id)
       }
@@ -201,9 +200,21 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         setShowAddPaymentMethod(false)
       } else {
         console.error("Failed to add payment method:", response.errors)
+        showAlert({
+          title: "Unable to add payment method",
+          description: "There was an error when adding the payment method. Please try again.",
+          confirmText: "OK",
+          type: "warning",
+        })
       }
     } catch (error) {
       console.error("Error adding payment method:", error)
+      showAlert({
+        title: "Unable to add payment method",
+        description: "There was an error when adding the payment method. Please try again.",
+        confirmText: "OK",
+        type: "warning",
+      })
     } finally {
       setIsAddingPaymentMethod(false)
     }
@@ -359,22 +370,22 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               <>
                 <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
-                      <Input
-                        value={amount}
-                        onChange={handleAmountChange}
-                        type="number"
-                        label="Enter amount"
-                        className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
-                        step="any"
-                        inputMode="decimal"
-                        onKeyDown={(e) => {
-                          if (["e", "E", "+", "-"].includes(e.key)) {
-                            e.preventDefault()
-                          }
-                        }}
-                        variant="floatingCurrency"
-                        currency={ad.account_currency}
-                      />
+                    <Input
+                      value={amount}
+                      onChange={handleAmountChange}
+                      type="number"
+                      label="Enter amount"
+                      className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
+                      step="any"
+                      inputMode="decimal"
+                      onKeyDown={(e) => {
+                        if (["e", "E", "+", "-"].includes(e.key)) {
+                          e.preventDefault()
+                        }
+                      }}
+                      variant="floatingCurrency"
+                      currency={ad.account_currency}
+                    />
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
                   <div className="flex items-center">
