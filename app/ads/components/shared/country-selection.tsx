@@ -86,7 +86,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         />
       </div>
 
-      <div className="space-y-4 overflow-y-auto">
+      <div className="space-y-4 overflow-y-auto px-4">
         <div className="flex items-center space-x-3">
           <Checkbox id="all-countries" checked={isAllSelected} onCheckedChange={handleAllToggle} className="data-[state=checked]:bg-black border-black" />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
