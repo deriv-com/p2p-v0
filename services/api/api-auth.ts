@@ -141,7 +141,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       method: "GET",
       credentials: "include",
       headers: {
-        "X-Branch": ""
+        "X-Branch": "master"
       }
     })
 
