@@ -63,6 +63,13 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
       const country = COUNTRIES.find((c) => c.code === selectedCountries[0])
       return country?.name || "1 country selected"
     }
+    if (selectedCount <= 3) {
+      const countryNames = selectedCountries
+        .map((code) => COUNTRIES.find((c) => c.code === code)?.name)
+        .filter(Boolean)
+        .join(", ")
+      return countryNames || `${selectedCount} countries selected`
+    }
     return `${selectedCount} countries selected`
   }
 
@@ -88,7 +95,12 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
       <div className="space-y-4 overflow-y-auto px-4">
         <div className="flex items-center space-x-3">
-          <Checkbox id="all-countries" checked={isAllSelected} onCheckedChange={handleAllToggle} className="data-[state=checked]:bg-black border-black" />
+          <Checkbox
+            id="all-countries"
+            checked={isAllSelected}
+            onCheckedChange={handleAllToggle}
+            className="data-[state=checked]:bg-black border-black"
+          />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
             All
           </label>
