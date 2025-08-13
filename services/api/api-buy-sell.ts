@@ -123,7 +123,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-      //credentials: "include" 
+      credentials: "include" 
     })
 
     if (!response.ok) {
