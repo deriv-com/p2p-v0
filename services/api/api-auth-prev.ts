@@ -92,8 +92,9 @@ export async function getSession(): Promise<VerificationResponse> {
         // TODO: To be removed once the session-based authentication is implemented
         const response = await fetch(`${API.baseUrl}/users/me`, {
             method: "GET",
+             credentials: "include",
             headers: {
-                Authorization: `Bearer ${token}`,
+               // Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
                 "X-Branch": "development",
             }
