@@ -86,7 +86,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         />
       </div>
 
-      <div className="space-y-3 max-h-64 overflow-y-auto">
+      <div className="space-y-4 overflow-y-auto">
         <div className="flex items-center space-x-3">
           <Checkbox id="all-countries" checked={isAllSelected} onCheckedChange={handleAllToggle} className="data-[state=checked]:bg-black border-black" />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
@@ -128,7 +128,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
-            <div className="text-base">Select any number of countries.</div>
+            <div className="text-base text-center opacity-72">Select any number of countries.</div>
           </div>
           <div className="mt-6">
             <CountryList />
