@@ -20,7 +20,7 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       headers
-      //credentials: "include",
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -57,7 +57,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       method: "POST",
       headers,
-      // credentials: "include",
+       credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
