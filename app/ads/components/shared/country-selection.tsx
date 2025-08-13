@@ -117,7 +117,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
       <div className="space-y-3 max-h-64 overflow-y-auto">
         <div className="flex items-center space-x-3">
-          <Checkbox id="all-countries" checked={isAllSelected} onCheckedChange={handleAllToggle} />
+          <Checkbox id="all-countries" checked={isAllSelected} onCheckedChange={handleAllToggle} className="data-[state=checked]:bg-black border-black" />
           <label htmlFor="all-countries" className="text-sm font-medium cursor-pointer">
             All
           </label>
@@ -130,6 +130,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
               checked={selectedCountries.includes(country.code)}
               onCheckedChange={() => handleCountryToggle(country.code)}
               disabled={false}
+              className="data-[state=checked]:bg-black border-black"
             />
             <label htmlFor={country.code} className="text-sm cursor-pointer">
               {country.name}
