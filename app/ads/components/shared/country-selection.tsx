@@ -126,9 +126,9 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
           </Button>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
-          <SheetHeader>
-            <SheetTitle>Country selection</SheetTitle>
-          </SheetHeader>
+          <div className="mb-4">
+            <h3 className="text-xl font-bold text-center">Country selection</h3>
+          </div>
           <div className="mt-6">
             <CountryList />
           </div>
