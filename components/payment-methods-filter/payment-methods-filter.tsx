@@ -176,11 +176,11 @@ export default function PaymentMethodsFilter({
         />
         {searchQuery && (
           <Button
-            variant="ghost"  
+            variant="ghost"
             onClick={() => setSearchQuery("")}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
           >
-            <Image src="/icons/close-circle.png" alt="Clear search" width={20} height={20} />
+            <Image src="/icons/clear-search-icon.png" alt="Clear search" width={20} height={20} />
           </Button>
         )}
       </div>
@@ -223,19 +223,20 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      {filteredPaymentMethods.length > 0 && (<div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
-        <Button
-          onClick={handleReset}
-          className="flex-1 bg-transparent"
-          variant="outline"
-          size={isMobile ? "default" : "sm"}
-        >
-          Reset
-        </Button>
-        <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
-          Apply
-        </Button>
-      </div>
+      {filteredPaymentMethods.length > 0 && (
+        <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
+          <Button
+            onClick={handleReset}
+            className="flex-1 bg-transparent"
+            variant="outline"
+            size={isMobile ? "default" : "sm"}
+          >
+            Reset
+          </Button>
+          <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
+            Apply
+          </Button>
+        </div>
       )}
     </div>
   )
