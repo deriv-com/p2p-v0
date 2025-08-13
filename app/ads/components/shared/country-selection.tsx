@@ -71,7 +71,6 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     } else {
       onCountriesChange([...selectedCountries, countryCode])
     }
-    setIsOpen(false)
   }
 
   const handleAllToggle = (checked: boolean | string) => {
