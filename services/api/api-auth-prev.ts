@@ -167,6 +167,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
         const response = await fetch(`${API.baseUrl}/users/me`, {
             method: "GET",
+            credentials: "include",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
@@ -219,7 +220,7 @@ export async function getSocketToken(token: string): Promise<void> {
     try {
         const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
             method: "GET",
-            //credentials: "include",
+            credentials: "include",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
