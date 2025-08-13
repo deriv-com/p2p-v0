@@ -34,7 +34,6 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
   const filteredCountries = COUNTRIES.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const isAllSelected = selectedCountries.length === 0
-  const selectedCount = selectedCountries.length
 
   const handleCountryToggle = (countryCode: string) => {
     if (selectedCountries.length === 0) {
