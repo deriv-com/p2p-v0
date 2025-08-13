@@ -223,7 +223,7 @@ export async function getSocketToken(token: string): Promise<void> {
             method: "GET",
             credentials: "include",
             headers: {
-                Authorization: `Bearer ${token}`,
+               // Authorization: `Bearer ${token}`,
                 "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
                 "X-Branch": "development",
                 "Content-Type": "application/json",
