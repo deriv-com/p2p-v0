@@ -71,15 +71,13 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     } else {
       onCountriesChange([...selectedCountries, countryCode])
     }
-    setIsOpen(false) // Close the sheet or popover when a country is toggled
+    setIsOpen(false)
   }
 
   const handleAllToggle = (checked: boolean | string) => {
     if (checked) {
-      // When "All" is checked, select all countries
       onCountriesChange(COUNTRIES.map((country) => country.code))
     } else {
-      // When "All" is unchecked, clear all selections
       onCountriesChange([])
     }
   }
