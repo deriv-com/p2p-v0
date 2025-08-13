@@ -12,7 +12,7 @@ async function fetchSubscriberHash() {
 
     const response = await fetch(url, {
       method: "POST",
-      headers: AUTH.getNotificationHeader(),
+      credentials: "include",
     })
 
     if (!response.ok) {
