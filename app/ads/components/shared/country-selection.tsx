@@ -62,12 +62,15 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   const filteredCountries = COUNTRIES.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-  const isAllSelected = selectedCountries.length === COUNTRIES.length
+  const isAllSelected = selectedCountries.length === 0
   const selectedCount = selectedCountries.length
 
   const handleCountryToggle = (countryCode: string) => {
-    if (selectedCountries.includes(countryCode)) {
-      onCountriesChange(selectedCountries.filter((code) => code !== countryCode))
+    if (selectedCountries.length === 0) {
+      onCountriesChange([countryCode])
+    } else if (selectedCountries.includes(countryCode)) {
+      const newSelection = selectedCountries.filter((code) => code !== countryCode)
+      onCountriesChange(newSelection.length === 0 ? [] : newSelection)
     } else {
       onCountriesChange([...selectedCountries, countryCode])
     }
@@ -75,7 +78,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   const handleAllToggle = (checked: boolean | string) => {
     if (checked) {
-      onCountriesChange(COUNTRIES.map((country) => country.code))
+      onCountriesChange([])
     } else {
       onCountriesChange([])
     }
@@ -126,6 +129,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
               id={country.code}
               checked={selectedCountries.includes(country.code)}
               onCheckedChange={() => handleCountryToggle(country.code)}
+              disabled={false}
             />
             <label htmlFor={country.code} className="text-sm cursor-pointer">
               {country.name}
