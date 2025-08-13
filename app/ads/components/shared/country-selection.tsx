@@ -59,18 +59,13 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     if (isAllSelected) {
       return "All"
     }
-    if (selectedCount === 1) {
-      const country = COUNTRIES.find((c) => c.code === selectedCountries[0])
-      return country?.name || "1 country selected"
-    }
-    if (selectedCount <= 3) {
+  
       const countryNames = selectedCountries
         .map((code) => COUNTRIES.find((c) => c.code === code)?.name)
         .filter(Boolean)
         .join(", ")
-      return countryNames || `${selectedCount} countries selected`
-    }
-    return `${selectedCount} countries selected`
+      return countryNames
+  
   }
 
   const CountryList = () => (
