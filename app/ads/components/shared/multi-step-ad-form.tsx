@@ -13,6 +13,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
+import CountrySelection from "./country-selection"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -58,6 +59,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
 
   const formDataRef = useRef({})
 
@@ -120,6 +122,10 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
             if (data.order_expiry_period) {
               setOrderTimeLimit(data.order_expiry_period)
+            }
+
+            if (data.available_countries) {
+              setSelectedCountries(data.available_countries)
             }
           }
         } catch (error) {
@@ -250,6 +256,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           description: finalData.instructions || "",
           is_active: 1,
           order_expiry_period: orderTimeLimit,
+          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIds }),
@@ -270,6 +277,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           exchange_rate: finalData.fixedRate || 0,
           exchange_rate_type: "fixed",
           order_expiry_period: orderTimeLimit,
+          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           description: finalData.instructions || "",
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
@@ -476,20 +484,37 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
               <div className="space-y-6">
                 <div>
                   <div className="flex gap-[4px] items-center mb-4">
-                        <h3 className="text-base font-bold leading-6 tracking-normal">Order time limit</h3>
-                        <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <p>Orders will expire if they aren't completed within this timeframe.</p>
-                                <TooltipArrow className="fill-black" />
-                              </TooltipContent>
-                            </Tooltip>
-                        </TooltipProvider>
+                    <h3 className="text-base font-bold leading-6 tracking-normal">Order time limit</h3>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.png"
+                            alt="Info"
+                            width={12}
+                            height={12}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Orders will expire if they aren't completed within this timeframe.</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                   <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                </div>
+
+                <div className="w-full md:w-[70%]">
+                  <h3 className="text-base font-bold mb-2">Choose your audience</h3>
+                  <p className="text-sm text-neutral-7 mb-4">
+                    You can filter who interacts with your ads based on their location or P2P history. Stricter filters
+                    may reduce ad visibility.
+                  </p>
+                  <div>
+                    <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
+                  </div>
                 </div>
               </div>
             )}

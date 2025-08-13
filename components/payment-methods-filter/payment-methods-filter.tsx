@@ -170,10 +170,20 @@ export default function PaymentMethodsFilter({
           placeholder="Search"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="pl-10 border-gray-300 focus:border-black"
+          className="pl-10 pr-10 border-gray-300 focus:border-black"
           autoComplete="off"
           autoFocus
         />
+        {searchQuery && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSearchQuery("")}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+          >
+            <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+          </Button>
+        )}
       </div>
 
       {filteredPaymentMethods.length > 0 && (
@@ -199,30 +209,36 @@ export default function PaymentMethodsFilter({
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
-            {searchQuery ? <EmptyState
+            {searchQuery ? (
+              <EmptyState
                 title="Payment method unavailable"
                 description="Search for a different payment method."
                 redirectToAds={false}
-              /> : "No payment methods available"}
+              />
+            ) : (
+              "No payment methods available"
+            )}
           </div>
         ) : (
           renderPaymentMethodGroups()
         )}
       </div>
 
-      <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
-        <Button
-          onClick={handleReset}
-          className="flex-1 bg-transparent"
-          variant="outline"
-          size={isMobile ? "default" : "sm"}
-        >
-          Reset
-        </Button>
-        <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
-          Apply
-        </Button>
-      </div>
+      {filteredPaymentMethods.length > 0 && (
+        <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
+          <Button
+            onClick={handleReset}
+            className="flex-1 bg-transparent"
+            variant="outline"
+            size={isMobile ? "default" : "sm"}
+          >
+            Reset
+          </Button>
+          <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
+            Apply
+          </Button>
+        </div>
+      )}
     </div>
   )
 
