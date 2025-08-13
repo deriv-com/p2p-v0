@@ -170,10 +170,19 @@ export default function PaymentMethodsFilter({
           placeholder="Search"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="pl-10 border-gray-300 focus:border-black"
+          className="pl-10 pr-10 border-gray-300 focus:border-black"
           autoComplete="off"
           autoFocus
         />
+        {searchQuery && (
+          <button
+            type="button"
+            onClick={() => setSearchQuery("")}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            <Image src="/icons/close-circle.png" alt="Clear search" width={20} height={20} />
+          </button>
+        )}
       </div>
 
       {filteredPaymentMethods.length > 0 && (
@@ -199,11 +208,15 @@ export default function PaymentMethodsFilter({
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
-            {searchQuery ? <EmptyState
+            {searchQuery ? (
+              <EmptyState
                 title="Payment method unavailable"
                 description="Search for a different payment method."
                 redirectToAds={false}
-              /> : "No payment methods available"}
+              />
+            ) : (
+              "No payment methods available"
+            )}
           </div>
         ) : (
           renderPaymentMethodGroups()
