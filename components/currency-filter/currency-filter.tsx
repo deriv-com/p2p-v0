@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useMemo, useCallback } from "react"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
