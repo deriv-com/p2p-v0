@@ -302,7 +302,7 @@ export default function OrderDetailsPage() {
         <Navigation
           isBackBtnVisible={false}
           isVisible={false}
-          title={`${orderType} ${order?.account_currency}`}
+          title={`${orderType} ${order?.advert.account_currency}`}
           redirectUrl={"/orders"}
         />
       )}
