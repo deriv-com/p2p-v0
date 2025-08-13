@@ -62,7 +62,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   const filteredCountries = COUNTRIES.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-  const isAllSelected = selectedCountries.length === 0
+  const isAllSelected = selectedCountries.length === COUNTRIES.length
   const selectedCount = selectedCountries.length
 
   const handleCountryToggle = (countryCode: string) => {
@@ -71,10 +71,15 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     } else {
       onCountriesChange([...selectedCountries, countryCode])
     }
+    setIsOpen(false) // Close the sheet or popover when a country is toggled
   }
 
   const handleAllToggle = (checked: boolean | string) => {
     if (checked) {
+      // When "All" is checked, select all countries
+      onCountriesChange(COUNTRIES.map((country) => country.code))
+    } else {
+      // When "All" is unchecked, clear all selections
       onCountriesChange([])
     }
   }
@@ -124,7 +129,6 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
               id={country.code}
               checked={selectedCountries.includes(country.code)}
               onCheckedChange={() => handleCountryToggle(country.code)}
-              disabled={isAllSelected}
             />
             <label htmlFor={country.code} className="text-sm cursor-pointer">
               {country.name}
@@ -141,7 +145,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         <SheetTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between px-4 rounded-lg"
+            className="w-full justify-between px-4 rounded-lg bg-transparent"
             onClick={() => setIsOpen(true)}
           >
             <span className="text-left font-normal">{getDisplayText()}</span>
@@ -165,7 +169,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between px-4 rounded-lg"
+          className="w-full justify-between px-4 rounded-lg bg-transparent"
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="text-left font-normal">{getDisplayText()}</span>
