@@ -179,7 +179,7 @@ export default function PaymentMethodsFilter({
             variant="ghost"
             size="sm"
             onClick={() => setSearchQuery("")}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
             <Image src="/icons/clear-search-icon.png" alt="Clear search" width={20} height={20} />
           </Button>
