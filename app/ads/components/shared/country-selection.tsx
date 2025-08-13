@@ -125,7 +125,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
             <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
           </Button>
         </SheetTrigger>
-        <SheetContent side="bottom" className="h-[80vh]">
+        <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <SheetHeader>
             <SheetTitle>Country selection</SheetTitle>
           </SheetHeader>
