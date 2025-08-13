@@ -247,7 +247,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
 
     const response = await fetch(url, {
       headers,
-      // credentials: "include" 
+       credentials: "include" 
     })
 
     if (!response.ok) {
@@ -296,7 +296,7 @@ export async function toggleFavouriteAdvertiser(
 
     const response = await fetch(url, {
       method,
-      // credentials: "include",
+       credentials: "include",
       headers,
       ...(isFavourite && { body }),
     })
