@@ -28,6 +28,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       show_inactive: "true",
       show_unorderable: "true",
       show_unlisted: "true",
+      show_ineligible: "true"
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
