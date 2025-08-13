@@ -223,7 +223,7 @@ export default function PaymentMethodsFilter({
         )}
       </div>
 
-      <div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
+      {filteredPaymentMethods.length > 0 && (<div className="flex flex-col-reverse md:flex-row gap-3 mt-4">
         <Button
           onClick={handleReset}
           className="flex-1 bg-transparent"
@@ -236,6 +236,7 @@ export default function PaymentMethodsFilter({
           Apply
         </Button>
       </div>
+      )}
     </div>
   )
 
