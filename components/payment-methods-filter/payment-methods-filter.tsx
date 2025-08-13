@@ -175,13 +175,13 @@ export default function PaymentMethodsFilter({
           autoFocus
         />
         {searchQuery && (
-          <button
-            type="button"
+          <Button
+            variant="ghost"  
             onClick={() => setSearchQuery("")}
             className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
           >
             <Image src="/icons/close-circle.png" alt="Clear search" width={20} height={20} />
-          </button>
+          </Button>
         )}
       </div>
 
