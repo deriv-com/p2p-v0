@@ -170,7 +170,7 @@ export default function PaymentMethodsFilter({
           placeholder="Search"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="pl-10 pr-10 border-gray-300 focus:border-black"
+          className="pl-10 pr-10 border-gray-300 focus:border-black bg-grayscale-500 md:bg-transparent"
           autoComplete="off"
           autoFocus
         />
