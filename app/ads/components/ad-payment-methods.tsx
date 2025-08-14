@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
 
@@ -58,10 +58,10 @@ const AdPaymentMethods = () => {
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       setIsAddingMethod(true)
-      const result = await addPaymentMethod(method, fields)
+      const result = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (result.success) {
-        const data = await getUserPaymentMethods()
+        const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
         setShowAddPanel(false)
       }
