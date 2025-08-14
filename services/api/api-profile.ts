@@ -129,30 +129,6 @@ export async function getUserBalance(): Promise<{ balance: number; currency: str
 }
 
 /**
- * Get user payment methods
- */
-export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
-  try {
-    const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      // credentials: "include",
-      headers: {
-        ...AUTH.getAuthHeader(),
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`Error fetching payment methods: ${response.statusText}`)
-    }
-
-    return await response.json()
-  } catch (error) {
-    console.error("Failed to fetch payment methods:", error)
-    throw error
-  }
-}
-
-/**
  * Toggle real name visibility
  */
 export async function toggleRealNameVisibility(show: boolean): Promise<{ success: boolean }> {
