@@ -193,92 +193,6 @@ export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
   }
 }
 
-export async function updateAd(id: string, adData: any): Promise<{ success: boolean }> {
-  try {
-    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
-    }
-
-    if (adData.payment_method_names !== undefined) {
-      if (!Array.isArray(adData.payment_method_names)) {
-        adData.payment_method_names = [String(adData.payment_method_names)]
-      } else {
-        adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
-      }
-    }
-
-    const requestData = { data: adData }
-    const body = JSON.stringify(requestData)
-
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers,
-      //credentials: "include",
-      body,
-    })
-
-    const responseText = await response.text()
-    let responseData
-
-    try {
-      responseData = JSON.parse(responseText)
-    } catch (e) {
-      responseData = {}
-    }
-
-    if (!response.ok) {
-      throw new Error(`Failed to update ad: ${response.statusText || responseText}`)
-    }
-
-    return { success: true }
-  } catch (error) {
-    throw error
-  }
-}
-
-export async function toggleAdActiveStatus(id: string, isActive: boolean): Promise<{ success: boolean }> {
-  try {
-    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
-    }
-
-    const payload = {
-      is_active: isActive,
-    }
-
-    const requestData = { data: payload }
-    const body = JSON.stringify(requestData)
-
-    const response = await fetch(url, {
-      method: "PATCH",
-      headers,
-      //credentials: "include",
-      body,
-    })
-
-    const responseText = await response.text()
-    let responseData
-
-    try {
-      responseData = JSON.parse(responseText)
-    } catch (e) {
-      responseData = {}
-    }
-
-    if (!response.ok) {
-      throw new Error(`Failed to ${isActive ? "activate" : "deactivate"} ad: ${response.statusText || responseText}`)
-    }
-
-    return { success: true }
-  } catch (error) {
-    throw error
-  }
-}
-
 export async function toggleAdStatus(id: string, isActive: boolean, currentAd: MyAd): Promise<{ success: boolean }> {
   try {
     const adData = {
@@ -553,8 +467,6 @@ export async function toggleAdActiveStatus(
     }
   }
 }
-
-
 
 export async function deleteAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
   try {
