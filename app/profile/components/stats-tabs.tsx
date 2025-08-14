@@ -21,7 +21,7 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showWarningDialog } = useAlertDialog()
+  const { showAlert, showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({
@@ -47,6 +47,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const { toast } = useToast()
+  const { showAlert } = useAlertDialog()
 
   const tabs = [
     { id: "stats", label: "Stats" },
