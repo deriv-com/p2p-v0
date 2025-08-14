@@ -29,7 +29,7 @@ const AdPaymentMethods = () => {
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const data = await getUserPaymentMethods()
+        const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
       } catch (error) {
         console.log(error)
