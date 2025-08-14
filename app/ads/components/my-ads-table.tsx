@@ -148,26 +148,40 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       setIsDeleting(true)
       const result = await deleteAd(deleteConfirmModal.adId)
 
-      if (result.errors && result.errors.length > 0) {
-        const errorMessage = result.errors[0].message || "Failed to delete ad. Please try again."
-        throw new Error(errorMessage)
-      }
+      if(result.success) {
+      
+      } else {
+        if (onAdDeleted) {
+          onAdDeleted()
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                <span>Ad deleted</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+        }
+      } else {
+        let title = "Unable to delete advert"
+        let description = "There was an error when deleting the advert. Please try again."
 
-      if (onAdDeleted) {
-        onAdDeleted()
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              <span>Ad deleted</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
+        if(result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
+          description = "Advert has open orders."
+        } 
+        showAlert({
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
         })
       }
 
       setDeleteConfirmModal({ show: false, adId: "" })
+
+      
     } catch (error) {
       setErrorModal({
         show: true,
