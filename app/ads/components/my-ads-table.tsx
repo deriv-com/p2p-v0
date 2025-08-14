@@ -11,9 +11,9 @@ import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
-import StatusModal from "./ui/status-modal"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -25,13 +25,8 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const { showAlert, showWarningDialog } = useAlertDialog()
+  const { showAlert } = useAlertDialog()
   const [isDeleting, setIsDeleting] = useState(false)
-  const [errorModal, setErrorModal] = useState({
-    show: false,
-    title: "",
-    message: "",
-  })
   const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     show: false,
     adId: "",
@@ -184,14 +179,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     setDeleteConfirmModal({ show: false, adId: "" })
   }
 
-  const handleCloseErrorModal = () => {
-    setErrorModal({
-      show: false,
-      title: "",
-      message: "",
-    })
-  }
-
   if(isLoading) {
 
        return (
@@ -341,15 +328,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         onConfirm={confirmDelete}
         onCancel={cancelDelete}
       />
-
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={handleCloseErrorModal}
-        />
-      )}
     </>
   )
 }
