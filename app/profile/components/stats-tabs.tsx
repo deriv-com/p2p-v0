@@ -82,29 +82,27 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       setIsAddingPaymentMethod(true)
 
       const result = await ProfileAPI.PaymentMethods.addPaymentMethod(method, fields)
-      const responseData = await result.json()
-      console.log(responseData)
 
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
 
-      toast({
-            description: (
-                <div className="flex items-center gap-2">
-                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                  <span>Payment method added.</span>
-                </div>
-              ),
-              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-              duration: 2500,
-        })
+        toast({
+          description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                <span>Payment method added.</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
 
         setRefreshKey((prev) => prev + 1)
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(responseData.errors.length > 0 && responseData.errors[0].code === "PaymentMethodDuplicate") {
+        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
         } 
@@ -116,12 +114,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         })
       }
     } catch (error) {
-       showAlert({
-        title: "Unable to add payment method",
-        description: error,
-        confirmText: "OK",
-        type: "warning",
-      })
+      console.log(error)
     } finally {
       setIsAddingPaymentMethod(false)
     }
