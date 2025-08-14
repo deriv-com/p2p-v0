@@ -220,7 +220,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     } catch (error) {
       showAlert({
         title: "Unable to add payment method",
-        description: "There was an error when adding the payment method. Please try again.",
+        description: error,
         confirmText: "OK",
         type: "warning",
       })
