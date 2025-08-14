@@ -149,7 +149,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         router.push("/orders/" + order.data.id)
       }
     } catch (error) {
-      console.error("Failed to create order:", error)
       setOrderStatus({
         success: false,
         message: error instanceof Error ? error.message : "Failed to create order. Please try again.",
@@ -199,22 +198,22 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         await fetchUserPaymentMethods()
         setShowAddPaymentMethod(false)
       } else {
-        console.error("Failed to add payment method:", response.errors)
+        let title = "Unable to add payment method"
+        let description = "There was an error when adding the payment method. Please try again."
+
+        if(response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
+          title = "Duplicate payment method"
+          description = "A payment method with the same values already exists. Add a new one."
+        } 
         showAlert({
-          title: "Unable to add payment method",
-          description: "There was an error when adding the payment method. Please try again.",
-          confirmText: "OK",
-          type: "warning",
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
         })
       }
     } catch (error) {
-      console.error("Error adding payment method:", error)
-      showAlert({
-        title: "Unable to add payment method",
-        description: "There was an error when adding the payment method. Please try again.",
-        confirmText: "OK",
-        type: "warning",
-      })
+      console.log(error);
     } finally {
       setIsAddingPaymentMethod(false)
     }

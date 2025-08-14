@@ -293,7 +293,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="p-1 hover:bg-gray-100 rounded-full">
+                        <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
                           <Image
                             src="/icons/ellipsis-vertical-md.png"
                             alt="More options"
@@ -301,7 +301,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             height={20}
                             className="text-gray-500"
                           />
-                        </button>
+                        </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
                         <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleEdit(ad)}>

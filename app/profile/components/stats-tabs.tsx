@@ -7,7 +7,6 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
 import { ProfileAPI } from "../api"
-import StatusModal from "./ui/status-modal"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -21,13 +20,9 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showWarningDialog } = useAlertDialog()
+  const { showAlert, showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
-  const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
   const [refreshKey, setRefreshKey] = useState(0)
   const [userStats, setUserStats] = useState<UserStats>(
     initialStats || {
@@ -91,32 +86,35 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
 
-      toast({
-            description: (
-                <div className="flex items-center gap-2">
-                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                  <span>Payment method added.</span>
-                </div>
-              ),
-              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-              duration: 2500,
-        })
+        toast({
+          description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                <span>Payment method added.</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
 
         setRefreshKey((prev) => prev + 1)
       } else {
-        const errorMessage =
-          result.errors && result.errors.length > 0 ? result.errors[0].message : "Failed to add payment method"
+        let title = "Unable to add payment method"
+        let description = "There was an error when adding the payment method. Please try again."
 
-        setErrorModal({
-          show: true,
-          message: errorMessage,
+        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+          title = "Duplicate payment method"
+          description = "A payment method with the same values already exists. Add a new one."
+        } 
+        showAlert({
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
         })
       }
     } catch (error) {
-      setErrorModal({
-        show: true,
-        message: error instanceof Error ? error.message : "An unexpected error occurred",
-      })
+      console.log(error)
     } finally {
       setIsAddingPaymentMethod(false)
     }
@@ -262,15 +260,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           onClose={() => setShowAddPaymentMethodPanel(false)}
           onAdd={handleAddPaymentMethod}
           isLoading={isAddingPaymentMethod}
-        />
-      )}
-
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title="Error"
-          message={errorModal.message}
-          onClose={() => setErrorModal({ show: false, message: "" })}
         />
       )}
     </div>

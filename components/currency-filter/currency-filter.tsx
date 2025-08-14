@@ -90,7 +90,7 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
+          className="text-base pl-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 md:focus:border-black bg-grayscale-500 md:bg-transparent rounded-lg"
           autoComplete="off"
           autoFocus
         />

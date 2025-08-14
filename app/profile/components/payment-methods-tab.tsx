@@ -321,7 +321,7 @@ export default function PaymentMethodsTab() {
                       {getBankIcon()}
                       <div className="flex-1 min-w-0 text-sm ">
                         <div className="text-neutral-10">{method.details.bank_name.value}</div>
-                        <div className="text-neutral-7">
+                        <div className="text-neutral-7 tracking-wide">
                           {maskAccountNumber(method.details.account.value)}
                         </div>
                       </div>
