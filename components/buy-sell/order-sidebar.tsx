@@ -194,7 +194,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     try {
       setIsAddingPaymentMethod(true)
       const response = await addPaymentMethod(method, fields)
-      console.log(response)
+      const responseData = await response.json()
+      console.log(responseData)
 
       if (response.success) {
         await fetchUserPaymentMethods()
@@ -203,7 +204,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
+        if(responseData.errors.length > 0 && responseData.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
         } 
