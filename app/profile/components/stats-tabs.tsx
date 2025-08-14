@@ -83,6 +83,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
       const result = await ProfileAPI.PaymentMethods.addPaymentMethod(method, fields)
       const responseData = await result.json()
+      console.log(responseData)
 
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
