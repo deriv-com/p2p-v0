@@ -13,7 +13,6 @@ import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { addPaymentMethod } from "@/app/profile/api/api-payment-methods"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface OrderSidebarProps {
@@ -192,7 +191,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       setIsAddingPaymentMethod(true)
-      const response = await addPaymentMethod(method, fields)
+      const response = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (response.success) {
         await fetchUserPaymentMethods()
