@@ -149,8 +149,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       const result = await deleteAd(deleteConfirmModal.adId)
 
       if(result.success) {
-      
-      } else {
         if (onAdDeleted) {
           onAdDeleted()
           toast({
@@ -180,14 +178,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       }
 
       setDeleteConfirmModal({ show: false, adId: "" })
-
-      
     } catch (error) {
-      setErrorModal({
-        show: true,
-        title: "Failed to Delete Ad",
-        message: error instanceof Error ? error.message : "Failed to delete ad. Please try again.",
-      })
+      console.log(error)
     } finally {
       setIsDeleting(false)
     }
