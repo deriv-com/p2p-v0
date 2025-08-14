@@ -212,8 +212,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             confirmText: "OK",
             type: "warning"
         })
-
-        return
       }
     } catch (error) {
       console.log(error);
