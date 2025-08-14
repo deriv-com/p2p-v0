@@ -108,7 +108,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
-      const result = await AdstoggleAdActiveStatus(ad.id, isListed)
+      const result = await AdsAPI.toggleAdActiveStatus(ad.id, isListed)
 
       if(result.success) {
         if (onAdDeleted) {

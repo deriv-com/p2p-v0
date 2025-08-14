@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
-import { createAd, updateAd, getAdvert } from "../../api/api-ads"
+import { AdsAPI } from "@/services/api"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
@@ -80,7 +80,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     if (mode === "edit" && adId) {
       const loadInitialData = async () => {
         try {
-          const advertData = await getAdvert(adId)
+          const advertData = await AdsAPI.getAdvert(adId)
           const { data } = advertData
 
           if (data) {
@@ -262,7 +262,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        const result = await createAd(payload)
+        const result = await AdsAPI.createAd(payload)
 
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
@@ -284,7 +284,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
             : { payment_method_ids: selectedPaymentMethodIds }),
         }
 
-        const updateResult = await updateAd(finalData.id, payload)
+        const updateResult = await AdsAPI.updateAd(finalData.id, payload)
 
         if (updateResult.errors && updateResult.errors.length > 0) {
           const errorMessage = formatErrorMessage(updateResult.errors)
