@@ -206,7 +206,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         const confirmText = "OK"
         const type = "warning"
 
-        if(data.errors[0]?.code === "PaymentMethodDuplicate") {
+        if(data.errors.length > 0 && data.errors[0]?.code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
         } 
