@@ -364,9 +364,6 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
   }
 }
 
-import { USER, API, AUTH } from "@/lib/local-variables"
-import type { APIAdvert, MyAd, CreateAdPayload, CreateAdResponse } from "@/services/api/api-my-ads"
-
 export async function getCurrencies(): Promise<string[]> {
   try {
     const url = `${API.baseUrl}${API.endpoints.settings}`;
