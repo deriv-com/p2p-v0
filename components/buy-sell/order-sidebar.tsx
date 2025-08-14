@@ -149,7 +149,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         router.push("/orders/" + order.data.id)
       }
     } catch (error) {
-      console.error("Failed to create order:", error)
       setOrderStatus({
         success: false,
         message: error instanceof Error ? error.message : "Failed to create order. Please try again.",
