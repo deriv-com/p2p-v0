@@ -291,39 +291,6 @@ export async function toggleAdStatus(id: string, isActive: boolean, currentAd: M
   }
 }
 
-export async function deleteAd(id: string): Promise<{ success: boolean }> {
-  try {
-    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      Accept: "application/json",
-    }
-
-    const response = await fetch(url, {
-      method: "DELETE",
-      headers,
-      //credentials: "include"
-    })
-
-    const responseText = await response.text()
-    let responseData
-
-    try {
-      responseData = JSON.parse(responseText)
-    } catch (e) {
-      responseData = {}
-    }
-
-    if (!response.ok) {
-      throw new Error(`Failed to delete ad: ${response.statusText}`)
-    }
-
-    return { success: true }
-  } catch (error) {
-    throw error
-  }
-}
-
 export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}/users/${USER.id}`
@@ -816,15 +783,4 @@ export async function getAdvert(id: string): Promise<MyAd> {
     console.log(error);
     return {}
   }
-}
-
-export const AdsAPI = {
-  getCurrencies,
-  getUserAdverts,
-  toggleAdActiveStatus,
-  deleteAd,
-  createAd,
-  updateAd,
-  activateAd,
-  getAdvert,
 }
