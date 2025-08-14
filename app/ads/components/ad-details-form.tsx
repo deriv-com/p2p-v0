@@ -7,7 +7,7 @@ import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getCurrencies } from "../api/api-ads"
+import { AdsAPI } from "@/services/api"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 
 interface AdDetailsFormProps {
@@ -49,7 +49,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
   useEffect(() => {
     const loadCurrencies = async () => {
-      const currencyList = await getCurrencies()
+      const currencyList = await AdsAPI.getCurrencies()
       setCurrencies(currencyList)
     }
     loadCurrencies()

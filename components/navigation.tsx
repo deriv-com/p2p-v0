@@ -1,8 +1,6 @@
 "use client"
 
-import { useState } from "react"
 import { useRouter } from "next/navigation"
-import BalanceInfoPopup from "@/components/balance-info-popup"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 
@@ -17,7 +15,6 @@ interface NavigationProps {
 
 export default function Navigation({ isBackBtnVisible = true, onBack, onClose, redirectUrl = "/", title }: NavigationProps) {
   const router = useRouter()
-  const [isBalanceInfoOpen, setIsBalanceInfoOpen] = useState(false)
 
   const getHeaderComponent = () => {
     if (isBackBtnVisible) {
@@ -61,7 +58,6 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
       <div className="flex items-center justify-between md:px-0">
         {getHeaderComponent()}
       </div>
-      <BalanceInfoPopup isOpen={isBalanceInfoOpen} onClose={() => setIsBalanceInfoOpen(false)} />
     </div>
   )
 }
