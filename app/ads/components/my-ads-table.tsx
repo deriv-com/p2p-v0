@@ -112,7 +112,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
       if(result.success) {
         if (onAdDeleted) {
-          onAdDeleted()
+          //onAdDeleted()
         }
       } else {
         showAlert({
