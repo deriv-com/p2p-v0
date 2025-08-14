@@ -194,6 +194,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setIsAddingPaymentMethod(true)
       const response = await addPaymentMethod(method, fields)
       const responseData = await response.text()
+      console.log(responseData)
 
       if (response.success) {
         await fetchUserPaymentMethods()
