@@ -24,10 +24,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const { showAlert, showWarningDialog } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
-  const [errorModal, setErrorModal] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
   const [refreshKey, setRefreshKey] = useState(0)
   const [userStats, setUserStats] = useState<UserStats>(
     initialStats || {
@@ -47,7 +43,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const { toast } = useToast()
-  const { showAlert } = useAlertDialog()
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -272,15 +267,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
           onClose={() => setShowAddPaymentMethodPanel(false)}
           onAdd={handleAddPaymentMethod}
           isLoading={isAddingPaymentMethod}
-        />
-      )}
-
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title="Error"
-          message={errorModal.message}
-          onClose={() => setErrorModal({ show: false, message: "" })}
         />
       )}
     </div>
