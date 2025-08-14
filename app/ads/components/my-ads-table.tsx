@@ -25,6 +25,7 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
+  const { showAlert, showWarningDialog } = useAlertDialog()
   const [isDeleting, setIsDeleting] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -112,27 +113,22 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
-      const updateResult = await toggleAdActiveStatus(ad.id, isListed)
+      const result = await toggleAdActiveStatus(ad.id, isListed)
 
-      if (updateResult.errors && updateResult.errors.length > 0) {
-        const errorMessage =
-          updateResult.errors[0].message || `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`
-        throw new Error(errorMessage)
-      }
-
-      if (onAdDeleted) {
-        onAdDeleted()
+      if(result.success) {
+        if (onAdDeleted) {
+          onAdDeleted()
+        }
+      } else {
+        showAlert({
+            title: "Unable to update advert",
+            description: "There was an error when updating the advert. Please try again.",
+            confirmText: "OK",
+            type: "warning"
+        })
       }
     } catch (error) {
-      const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
-      setErrorModal({
-        show: true,
-        title: `Failed to ${isActive ? "Deactivate" : "Activate"} Ad`,
-        message:
-          error instanceof Error
-            ? error.message
-            : `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`,
-      })
+      console.log(error)
     }
   }
 
@@ -163,14 +159,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           })
         }
       } else {
-        let title = "Unable to delete advert"
         let description = "There was an error when deleting the advert. Please try again."
 
         if(result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
           description = "Advert has open orders."
         } 
         showAlert({
-            title,
+            title: "Unable to delete advert",
             description,
             confirmText: "OK",
             type: "warning"
