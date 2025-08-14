@@ -249,7 +249,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType}
                         </span>
-                        <span className="text-gray-900 text-base font-normal leading-6"> {ad.id}</span>
+                        <span className="text-gray-900 text-base font-normal leading-6 ml-1"> {ad.id}</span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
