@@ -10,7 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import CustomStatusModal from "./ui/custom-status-modal"
-import { ProfileAPI } from "../api"
+import { ProfileAPI } from "@/services/api"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
@@ -151,7 +151,7 @@ export default function PaymentMethodsTab() {
         fields: { ...fields },
       }
 
-      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
+      const result = await ProfileAPI.updatePaymentMethod(id, payload)
 
       if (result.success) {
         toast({
@@ -215,7 +215,7 @@ export default function PaymentMethodsTab() {
 
   const confirmDeletePaymentMethod = async (id) => {
     try {
-      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(id)
+      const result = await ProfileAPI.deletePaymentMethod(id)
 
       if (result.success) {
         toast({

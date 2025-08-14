@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
 import AddPaymentMethodPanel from "./add-payment-method-panel"
-import { ProfileAPI } from "../api"
+import { ProfileAPI } from "@/services/api"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -52,7 +52,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     const loadUserStats = async () => {
       try {
         setIsLoadingStats(true)
-        const result = await ProfileAPI.UserStats.fetchUserStats()
+        const result = await ProfileAPI.fetchUserStats()
 
         if ("error" in result) {
           const errorMessage = Array.isArray(result.error) ? result.error.join(", ") : result.error
@@ -81,7 +81,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     try {
       setIsAddingPaymentMethod(true)
 
-      const result = await ProfileAPI.PaymentMethods.addPaymentMethod(method, fields)
+      const result = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
