@@ -120,9 +120,11 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
         })
       }
     } catch (error) {
-      setErrorModal({
-        show: true,
-        message: error instanceof Error ? error.message : "An unexpected error occurred",
+       showAlert({
+        title: "Unable to add payment method",
+        description: error,
+        confirmText: "OK",
+        type: "warning",
       })
     } finally {
       setIsAddingPaymentMethod(false)
