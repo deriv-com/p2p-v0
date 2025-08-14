@@ -87,6 +87,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
       setIsAddingPaymentMethod(true)
 
       const result = await ProfileAPI.PaymentMethods.addPaymentMethod(method, fields)
+      const responseData = await result.json()
 
       if (result.success) {
         setShowAddPaymentMethodPanel(false)
@@ -104,12 +105,18 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
 
         setRefreshKey((prev) => prev + 1)
       } else {
-        const errorMessage =
-          result.errors && result.errors.length > 0 ? result.errors[0].message : "Failed to add payment method"
+        let title = "Unable to add payment method"
+        let description = "There was an error when adding the payment method. Please try again."
 
-        setErrorModal({
-          show: true,
-          message: errorMessage,
+        if(responseData.errors.length > 0 && responseData.errors[0].code === "PaymentMethodDuplicate") {
+          title = "Duplicate payment method"
+          description = "A payment method with the same values already exists. Add a new one."
+        } 
+        showAlert({
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
         })
       }
     } catch (error) {
