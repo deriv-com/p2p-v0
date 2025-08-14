@@ -148,15 +148,14 @@ const AdPaymentMethods = () => {
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
-
-      {showAddPanel && (
+    </>
+    {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}
           onAdd={handleAddPaymentMethod}
           isLoading={isAddingMethod}
         />
       )}
-    </>
   )
 }
 
