@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
+import { AdsAPI } from "@/services/api"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
 import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
@@ -108,7 +108,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
-      const result = await toggleAdActiveStatus(ad.id, isListed)
+      const result = await AdstoggleAdActiveStatus(ad.id, isListed)
 
       if(result.success) {
         if (onAdDeleted) {
@@ -137,7 +137,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const confirmDelete = async () => {
     try {
       setIsDeleting(true)
-      const result = await deleteAd(deleteConfirmModal.adId)
+      const result = await AdsAPI.deleteAd(deleteConfirmModal.adId)
 
       if(result.success) {
         if (onAdDeleted) {
