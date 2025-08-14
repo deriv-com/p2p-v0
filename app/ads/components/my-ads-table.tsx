@@ -157,7 +157,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         let description = "There was an error when deleting the advert. Please try again."
 
         if(result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
-          description = "Advert has ongoing orders."
+          description = "The advert has ongoing orders."
         } 
         showAlert({
             title: "Unable to delete advert",
