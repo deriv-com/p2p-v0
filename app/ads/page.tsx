@@ -81,7 +81,7 @@ export default function AdsPage() {
       try {
         setLoading(true)
         setError(null)
-        const userAdverts = await getUserAdverts()
+        const userAdverts = await AdsAPI.getUserAdverts()
 
         setAds(userAdverts)
       } catch (err) {
@@ -104,7 +104,7 @@ export default function AdsPage() {
   const handleAdUpdated = (status?: string) => {
     const reload = async () => {
       try {
-        const userAdverts = await getUserAdverts()
+        const userAdverts = await AdsAPI.getUserAdverts()
         setAds(userAdverts)
       } catch (err) {
         console.error("Error reloading ads:", err)
