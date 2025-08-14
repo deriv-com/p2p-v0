@@ -153,66 +153,6 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
 }
 
 /**
- * Add new payment method
- */
-export async function addPaymentMethod(name: string, instructions: string): Promise<PaymentMethod> {
-  try {
-    const requestBody = { name, instructions }
-    console.log("Payment Method API - Request Body:", JSON.stringify(requestBody, null, 2))
-
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods`, {
-      method: "POST",
-      //credentials: "include",
-      headers: {
-        ...AUTH.getAuthHeader(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    })
-
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error(`Error adding payment method: ${response.status} ${response.statusText}`)
-      console.error("Error Response Body:", errorText)
-      throw new Error(`Error adding payment method: ${response.statusText}`)
-    }
-
-    const responseData = await response.json()
-    console.log("Payment Method API - Response Body:", JSON.stringify(responseData, null, 2))
-
-    return responseData
-  } catch (error) {
-    console.error("Failed to add payment method:", error)
-    throw error
-  }
-}
-
-/**
- * Delete payment method
- */
-export async function deletePaymentMethod(id: string): Promise<{ success: boolean }> {
-  try {
-    const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/payment-methods/${id}`, {
-      method: "DELETE",
-      //credentials: "include",
-      headers: {
-        ...AUTH.getAuthHeader(),
-        "Content-Type": "application/json",
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(`Error deleting payment method: ${response.statusText}`)
-    }
-
-    return await response.json()
-  } catch (error) {
-    console.error(`Failed to delete payment method with ID ${id}:`, error)
-    throw error
-  }
-}
-
-/**
  * Toggle real name visibility
  */
 export async function toggleRealNameVisibility(show: boolean): Promise<{ success: boolean }> {
