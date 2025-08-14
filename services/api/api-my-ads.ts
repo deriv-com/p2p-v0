@@ -97,81 +97,6 @@ export interface Advert {
   type: string
 }
 
-export async function getUserAdverts(): Promise<MyAd[]> {
-  try {
-    const userId = USER.id
-
-    const queryParams = new URLSearchParams({
-      user_id: userId.toString(),
-      show_inactive: "true",
-    })
-
-    const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
-    const headers = AUTH.getAuthHeader()
-
-    const response = await fetch(url, {
-      headers,
-      // credentials: "include" 
-    })
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch user adverts")
-    }
-
-    const responseText = await response.text()
-    let apiData
-
-    try {
-      apiData = JSON.parse(responseText)
-    } catch (e) {
-      apiData = { data: [] }
-    }
-
-    if (!apiData || !apiData.data || !Array.isArray(apiData.data)) {
-      return []
-    }
-
-    return apiData.data.map((advert: APIAdvert) => {
-      const minAmount = advert.minimum_order_amount || 0
-      const maxAmount = advert.maximum_order_amount || 0
-      const exchangeRate = advert.exchange_rate || 0
-      const currency = advert.payment_currency || "USD"
-      const isActive = advert.is_active !== undefined ? advert.is_active : true
-
-      const status: "Active" | "Inactive" = isActive ? "Active" : "Inactive"
-
-      return {
-        id: String(advert.id || "0"),
-        type: ((advert.type || "buy") as string).toLowerCase() === "buy" ? "Buy" : "Sell",
-        rate: {
-          value: `${currency} ${exchangeRate.toFixed(4)}`,
-          percentage: "0.1%",
-          currency: currency,
-        },
-        limits: {
-          min: minAmount,
-          max: maxAmount,
-          currency: "USD",
-        },
-        available: {
-          current: advert.available_amount || minAmount,
-          total:
-            Number(advert.available_amount || 0) +
-            Number(advert.open_order_amount || 0) +
-            Number(advert.completed_order_amount || 0),
-          currency: "USD",
-        },
-        paymentMethods: advert.payment_method_names || [],
-        status: status,
-        createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
-        updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
-      }
-    })
-  } catch (error) {
-    return []
-  }
-}
-
 export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
   try {
     const userAdverts = await getUserAdverts()
@@ -344,8 +269,6 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     return []
   }
 }
-
-
 
 export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
   try {
