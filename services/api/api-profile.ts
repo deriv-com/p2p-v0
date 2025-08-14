@@ -531,10 +531,3 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
     }
   }
 }
-
-export const PaymentMethodsAPI = {
-  getUserPaymentMethods,
-  addPaymentMethod,
-  updatePaymentMethod,
-  deletePaymentMethod,
-}
