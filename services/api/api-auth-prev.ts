@@ -95,7 +95,7 @@ export async function getSession(): Promise<VerificationResponse> {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                "X-Branch": "development",
+                "X-Branch": "master",
             }
         })
 
@@ -170,7 +170,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                "X-Branch": "development",
+                "X-Branch": "master",
             }
         })
 
