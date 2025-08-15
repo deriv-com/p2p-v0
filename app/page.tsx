@@ -163,7 +163,7 @@ export default function BuySellPage() {
   }
 
   const getPaymentMethodsDisplayText = () => {
-    if (selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
+    if (paymentMethods.length === 0 || selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
       return "Payment (All)"
     }
 
