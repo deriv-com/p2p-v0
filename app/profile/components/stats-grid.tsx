@@ -119,27 +119,26 @@ export default function StatsGrid({ stats }: StatsGridProps) {
             </TabsList>
             <TabsContent value="last30days" className="mt-0">
               <div className="grid grid-cols-1">
-                  <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
                   <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
-                  <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
-                  <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
-                  <StatCard title="Total orders" value={displayStats.totalOrders30d} />
+                  <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
                   <StatCard
                     title="Trade volume"
                     value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
                   />
+                  <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
+                  <StatCard title="Total orders" value={displayStats.totalOrders30d} />
+                  <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
+                  
                 </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0">
-              <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
-                  <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
-                  <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
-                  <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
-                  <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
+                  <StatCard title="Trade partners" value={displayStats.tradePartners} />
                   <StatCard
                     title="Trade volume"
                     value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
                   />
+                  <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
+                  
             </TabsContent>
           </Tabs>
         </div>
