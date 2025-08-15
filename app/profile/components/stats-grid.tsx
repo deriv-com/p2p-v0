@@ -103,16 +103,16 @@ export default function StatsGrid({ stats }: StatsGridProps) {
       <div className="bg-transparent md:bg-slate-1500 rounded-lg px-4">
         <div className="md:hidden">
           <Tabs defaultValue="last30days" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-transparent h-auto p-0 px-4 mb-6">
+            <TabsList className="w-full">
               <TabsTrigger
                 value="last30days"
-                className="py-3 px-4 text-center font-medium bg-transparent border-b-2 border-transparent data-[state=active]:bg-transparent data-[state=active]:text-black data-[state=active]:border-black data-[state=active]:shadow-none text-slate-500 rounded-none"
+                className="w-full data-[state=active]:font-bold"
               >
                 Last 30 days
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="py-3 px-4 text-center font-medium bg-transparent border-b-2 border-transparent data-[state=active]:bg-transparent data-[state=active]:text-black data-[state=active]:border-black data-[state=active]:shadow-none text-slate-500 rounded-none"
+                className="w-full data-[state=active]:font-bold"
               >
                 Lifetime
               </TabsTrigger>
