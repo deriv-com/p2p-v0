@@ -98,34 +98,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
 
   const displayStats = stats || defaultStats
 
-  const renderLast30DaysStats = () => (
-    <div className="grid grid-cols-1">
-      <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
-      <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
-      <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
-      <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
-      <StatCard title="Total orders" value={displayStats.totalOrders30d} />
-      <StatCard
-        title="Trade volume"
-        value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
-      />
-    </div>
-  )
-
-  const renderLifetimeStats = () => (
-    <div className="grid grid-cols-1">
-      <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
-      <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
-      <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
-      <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
-      <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
-      <StatCard
-        title="Trade volume"
-        value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
-      />
-    </div>
-  )
-
   return (
     <TooltipProvider>
       <div className="bg-grayscale-300 md:bg-slate-1500 rounded-lg px-4">
@@ -146,10 +118,28 @@ export default function StatsGrid({ stats }: StatsGridProps) {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0">
-              {renderLast30DaysStats()}
+              <div className="grid grid-cols-1">
+                  <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
+                  <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
+                  <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
+                  <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
+                  <StatCard title="Total orders" value={displayStats.totalOrders30d} />
+                  <StatCard
+                    title="Trade volume"
+                    value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
+                  />
+                </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0">
-              {renderLifetimeStats()}
+              <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
+                  <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
+                  <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
+                  <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
+                  <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
+                  <StatCard
+                    title="Trade volume"
+                    value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
+                  />
             </TabsContent>
           </Tabs>
         </div>
