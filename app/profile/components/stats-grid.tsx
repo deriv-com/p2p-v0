@@ -100,7 +100,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
 
   return (
     <TooltipProvider>
-      <div className="bg-grayscale-300 md:bg-slate-1500 rounded-lg px-4">
+      <div className="bg-transparent md:bg-slate-1500 rounded-lg px-4">
         <div className="md:hidden">
           <Tabs defaultValue="last30days" className="w-full">
             <TabsList className="grid w-full grid-cols-2 bg-transparent h-auto p-0 mb-6">
