@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface StatCardProps {
   title: string
@@ -66,32 +66,6 @@ function StatCard({ title, value }: StatCardProps) {
   )
 }
 
-function MobileTabs({
-  activeTab,
-  onTabChange,
-}: { activeTab: "last30days" | "lifetime"; onTabChange: (tab: "last30days" | "lifetime") => void }) {
-  return (
-    <div className="flex mb-6 md:hidden">
-      <button
-        onClick={() => onTabChange("last30days")}
-        className={`flex-1 py-3 px-4 text-center font-medium ${
-          activeTab === "last30days" ? "text-black border-b-2 border-black" : "text-slate-500"
-        }`}
-      >
-        Last 30 days
-      </button>
-      <button
-        onClick={() => onTabChange("lifetime")}
-        className={`flex-1 py-3 px-4 text-center font-medium ${
-          activeTab === "lifetime" ? "text-black border-b-2 border-black" : "text-slate-500"
-        }`}
-      >
-        Lifetime
-      </button>
-    </div>
-  )
-}
-
 interface StatsGridProps {
   stats:
     | {
@@ -110,8 +84,6 @@ interface StatsGridProps {
 }
 
 export default function StatsGrid({ stats }: StatsGridProps) {
-  const [activeTab, setActiveTab] = useState<"last30days" | "lifetime">("last30days")
-
   const defaultStats = {
     buyCompletion: { rate: "N/A", period: "(30d)" },
     sellCompletion: { rate: "N/A", period: "(30d)" },
@@ -126,44 +98,61 @@ export default function StatsGrid({ stats }: StatsGridProps) {
 
   const displayStats = stats || defaultStats
 
-  const renderMobileStats = () => {
-    if (activeTab === "last30days") {
-      return (
-        <div className="grid grid-cols-1">
-          <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
-          <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
-          <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
-          <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
-          <StatCard title="Total orders" value={displayStats.totalOrders30d} />
-          <StatCard
-            title="Trade volume"
-            value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
-          />
-        </div>
-      )
-    } else {
-      return (
-        <div className="grid grid-cols-1">
-          <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
-          <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
-          <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
-          <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
-          <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
-          <StatCard
-            title="Trade volume"
-            value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
-          />
-        </div>
-      )
-    }
-  }
+  const renderLast30DaysStats = () => (
+    <div className="grid grid-cols-1">
+      <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
+      <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
+      <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
+      <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
+      <StatCard title="Total orders" value={displayStats.totalOrders30d} />
+      <StatCard
+        title="Trade volume"
+        value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
+      />
+    </div>
+  )
+
+  const renderLifetimeStats = () => (
+    <div className="grid grid-cols-1">
+      <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
+      <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
+      <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
+      <StatCard title="Avg. release time" value={displayStats.avgReleaseTime.time} />
+      <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
+      <StatCard
+        title="Trade volume"
+        value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
+      />
+    </div>
+  )
 
   return (
     <TooltipProvider>
       <div className="bg-grayscale-300 md:bg-slate-1500 rounded-lg px-4">
-        <MobileTabs activeTab={activeTab} onTabChange={setActiveTab} />
-
-        <div className="md:hidden">{renderMobileStats()}</div>
+        <div className="md:hidden">
+          <Tabs defaultValue="last30days" className="w-full">
+            <TabsList className="grid w-full grid-cols-2 bg-transparent h-auto p-0 mb-6">
+              <TabsTrigger
+                value="last30days"
+                className="py-3 px-4 text-center font-medium bg-transparent border-b-2 border-transparent data-[state=active]:bg-transparent data-[state=active]:text-black data-[state=active]:border-black data-[state=active]:shadow-none text-slate-500 rounded-none"
+              >
+                Last 30 days
+              </TabsTrigger>
+              <TabsTrigger
+                value="lifetime"
+                className="py-3 px-4 text-center font-medium bg-transparent border-b-2 border-transparent data-[state=active]:bg-transparent data-[state=active]:text-black data-[state=active]:border-black data-[state=active]:shadow-none text-slate-500 rounded-none"
+              >
+                Lifetime
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="last30days" className="mt-0">
+              {renderLast30DaysStats()}
+            </TabsContent>
+            <TabsContent value="lifetime" className="mt-0">
+              {renderLifetimeStats()}
+            </TabsContent>
+          </Tabs>
+        </div>
 
         <div className="hidden md:block">
           <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
