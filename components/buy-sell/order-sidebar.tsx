@@ -248,7 +248,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         onClick={handleClose}
       />
       <div
-        className={`relative w-full max-w-md bg-white h-full overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+        className={`relative w-full max-w-md bg-white h-full transform transition-transform duration-300 ease-in-out ${
           isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -280,7 +280,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             </div>
 
             {showPaymentSelection ? (
-              <div className="flex flex-col h-full">
+              <div className="flex flex-col h-full overflow-y-auto">
                 <div className="flex-1 p-4 space-y-4">
                   {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
                   {isLoadingPaymentMethods ? (
