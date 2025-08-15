@@ -275,7 +275,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
                   className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
                 >
                   <Image
-                    src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
+                    src={getPaymentMethodIcon(paymentMethod.type)}
                     alt={paymentMethod.display_name}
                     width={24}
                     height={24}
