@@ -103,7 +103,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
       <div className="bg-transparent md:bg-slate-1500 rounded-lg md:px-4">
         <div className="md:hidden">
           <Tabs defaultValue="last30days" className="w-full">
-            <TabsList className="w-full">
+            <TabsList className="w-full mb-4">
               <TabsTrigger
                 value="last30days"
                 className="w-full data-[state=active]:font-bold"
