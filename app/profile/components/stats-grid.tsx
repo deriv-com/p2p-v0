@@ -137,7 +137,6 @@ export default function StatsGrid({ stats }: StatsGridProps) {
                     title="Trade volume"
                     value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
                   />
-                  
             </TabsContent>
           </Tabs>
         </div>
