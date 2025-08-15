@@ -11,7 +11,7 @@ interface StatCardProps {
 
 function StatCard({ title, value }: StatCardProps) {
   return (
-    <div className="flex justify-between border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
+    <div className="flex justify-between md:border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
       <div className="flex items-center text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
         {title === "Trade partners" && (
@@ -118,7 +118,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="bg-slate-1500 mt-0 rounded-lg px-4">
-              <div className="grid grid-cols-1">
+              <div className="grid grid-cols-1 divide-y divide-slate-200">
                     <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
                   <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
                   <StatCard title="Avg. pay time" value={displayStats.avgPayTime.time} />
@@ -131,12 +131,14 @@ export default function StatsGrid({ stats }: StatsGridProps) {
                 </div>
             </TabsContent>
             <TabsContent value="lifetime" className="bg-slate-1500 mt-0 rounded-lg px-4">
+            <div className="grid grid-cols-1 divide-y divide-slate-200">
                   <StatCard title="Trade partners" value={displayStats.tradePartners} />
                   <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
                   <StatCard
                     title="Trade volume"
                     value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
                   />
+                  </div>
             </TabsContent>
           </Tabs>
         </div>
