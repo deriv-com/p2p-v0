@@ -117,7 +117,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
                 Lifetime
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="last30days" className="mt-0">
+            <TabsContent value="last30days" className="mt-0 rounded-lg px-4">
               <div className="grid grid-cols-1">
                   <StatCard title="Buy completion" value={displayStats.buyCompletion.rate} />
                   <StatCard title="Sell completion" value={displayStats.sellCompletion.rate} />
@@ -131,7 +131,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
                   
                 </div>
             </TabsContent>
-            <TabsContent value="lifetime" className="mt-0">
+            <TabsContent value="lifetime" className="mt-0 rounded-lg px-4">
                   <StatCard title="Trade partners" value={displayStats.tradePartners} />
                   <StatCard
                     title="Trade volume"
