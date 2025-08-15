@@ -132,11 +132,11 @@ export default function StatsGrid({ stats }: StatsGridProps) {
             </TabsContent>
             <TabsContent value="lifetime" className="bg-slate-1500 mt-0 rounded-lg px-4">
                   <StatCard title="Trade partners" value={displayStats.tradePartners} />
+                  <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
                   <StatCard
                     title="Trade volume"
                     value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
                   />
-                  <StatCard title="Total orders" value={displayStats.totalOrdersLifetime} />
                   
             </TabsContent>
           </Tabs>
