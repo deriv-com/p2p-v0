@@ -13,6 +13,8 @@ import PaymentMethodBottomSheet from "./payment-method-bottom-sheet"
 import { Button } from "@/components/ui/button"
 import { API, AUTH } from "@/lib/local-variables"
 import AdPaymentMethods from "./ad-payment-methods"
+import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
+import { ProfileAPI } from "@/services/api"
 
 interface PaymentMethod {
   display_name: string
@@ -40,6 +42,9 @@ export default function PaymentDetailsForm({
   const [bottomSheetOpen, setBottomSheetOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
+  const [showAddPanel, setShowAddPanel] = useState(false)
+  const [isAddingMethod, setIsAddingMethod] = useState(false)
+  const [userPaymentMethods, setUserPaymentMethods] = useState<any[]>([])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -93,7 +98,7 @@ export default function PaymentDetailsForm({
       instructions,
     }
 
-    setFormData(formData)
+    // setFormData(formData)
 
     if (formValid) {
       onSubmit(formData)
@@ -147,6 +152,27 @@ export default function PaymentDetailsForm({
     })
     document.dispatchEvent(event)
   }, [paymentMethods, instructions])
+
+  const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
+    try {
+      setIsAddingMethod(true)
+      const result = await ProfileAPI.addPaymentMethod(method, fields)
+
+      if (result.success) {
+        const data = await ProfileAPI.getUserPaymentMethods()
+        setUserPaymentMethods(data)
+        setShowAddPanel(false)
+      }
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsAddingMethod(false)
+    }
+  }
+
+  const handlePaymentMethodsChange = (methods: any[]) => {
+    setUserPaymentMethods(methods)
+  }
 
   return (
     <div className="h-full flex flex-col">
@@ -279,7 +305,12 @@ export default function PaymentDetailsForm({
               </div>
             )}
 
-            {initialData.type === "sell" && <AdPaymentMethods />}
+            {initialData.type === "sell" && (
+              <AdPaymentMethods
+                onShowAddPanel={() => setShowAddPanel(true)}
+                onPaymentMethodsChange={handlePaymentMethodsChange}
+              />
+            )}
 
             <div>
               <h3 className="text-base font-bold leading-6 tracking-normal mb-4">
@@ -304,6 +335,14 @@ export default function PaymentDetailsForm({
           </div>
         </div>
       </form>
+
+      {showAddPanel && (
+        <AddPaymentMethodPanel
+          onClose={() => setShowAddPanel(false)}
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingMethod}
+        />
+      )}
     </div>
   )
 }
