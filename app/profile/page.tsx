@@ -105,17 +105,17 @@ export default function ProfilePage() {
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
-              username={userData.username}
-              rating={userData.rating}
-              recommendation={userData.recommend_average_lifetime}
-              joinDate={userData.joinDate}
-              realName={userData.realName}
-              isVerified={userData.isVerified}
+              username={userData?.username}
+              rating={userData?.rating}
+              recommendation={userData?.recommend_average_lifetime}
+              joinDate={userData?.joinDate}
+              realName={userData?.realName}
+              isVerified={userData?.isVerified}
             />
             <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
-              <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
+              <TradeLimits buyLimit={userData?.tradeLimits.buy} sellLimit={userData?.tradeLimits.sell} />
             </div>
-            <StatsTabs stats={userData.stats} />
+            <StatsTabs stats={userData?.stats} />
           </div>
         </div>
       </div>
