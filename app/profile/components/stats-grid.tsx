@@ -132,9 +132,9 @@ export default function StatsGrid({ stats }) {
             />
             <StatCard
               title="Trade volume (Lifetime)"
-              value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : }
+              value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
             />
-            <StatCard title={`Avg. pay time`} value={stats.completion_average_30day ?? "-"} />
+            <StatCard title="Avg. pay time" value={stats.completion_average_30day ?? "-"} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
