@@ -165,7 +165,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
               title="Trade volume (Lifetime)"
               value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
             />
-            <StatCard title={`Avg. pay time ${displayStats.avgPayTime.period}`} value={displayStats.avgPayTime} />
+            <StatCard title={`Avg. pay time (30d)`} value={displayStats.avgPayTime} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
