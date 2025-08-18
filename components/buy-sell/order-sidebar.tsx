@@ -365,7 +365,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                 </div>
               </div>
             ) : (
-              <div className="h-full overflow-y-auto">
+              <div className="flex flex-col h-full overflow-y-auto">
                 <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
                     <Input
