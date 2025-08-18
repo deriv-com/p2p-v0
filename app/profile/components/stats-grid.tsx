@@ -90,7 +90,7 @@ export default function StatsGrid({ stats }) {
               <div className="grid grid-cols-1 divide-y divide-slate-200">
                     <StatCard title="Sell completion" value={stats.sellCompletion} />
                   <StatCard title="Buy completion" value={stats.buyCompletion} />
-                  <StatCard title="Avg. pay time" value={stats.avgPayTime.time} />
+                  <StatCard title="Avg. pay time" value={stats.release_time_average_30day} />
                   <StatCard title="Avg. release time" value={stats.avgReleaseTime.time} />
                   <StatCard title="Total orders" value={stats.totalOrders30d} />
                   <StatCard
