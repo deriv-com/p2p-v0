@@ -180,7 +180,7 @@ export default function StatsTabs({ stats: initialStats, isLoading }: StatsTabsP
                   </div>
                 </div>
               ) : (
-                <StatsGrid stats={userStats} />
+                <StatsGrid stats={stats} />
               )}
             </TabsContent>
 
