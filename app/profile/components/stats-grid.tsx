@@ -88,9 +88,9 @@ export default function StatsGrid({ stats }) {
             </TabsList>
             <TabsContent value="last30days" className="bg-slate-1500 mt-0 rounded-lg px-4">
               <div className="grid grid-cols-1 divide-y divide-slate-200">
-                    <StatCard title="Sell completion" value={stats.buy_time_average_30day} />
+                    <StatCard title="Sell completion" value={stats.completion_average_30day} />
                   <StatCard title="Buy completion" value={stats.buy_time_average_30day} />
-                  <StatCard title="Avg. pay time" value={stats.release_time_average_30day} />
+                  <StatCard title="Avg. pay time" value={stats.completion_average_30day} />
                   <StatCard title="Avg. release time" value={stats.release_time_average_30day} />
                   <StatCard title="Total orders" value={stats.totalOrders30d} />
                   <StatCard
