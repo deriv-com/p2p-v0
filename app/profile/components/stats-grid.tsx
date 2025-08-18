@@ -142,7 +142,7 @@ export default function StatsGrid({ stats }) {
             <StatCard title="Total orders (Lifetime)" value={stats.partner_count_lifetime ?? "0"} />
             <StatCard
               title="Avg. release time"
-              value={stats.release_time_average_30day}
+              value={stats.release_time_average_30day ?? "-"}
             />
           </div>
         </div>
