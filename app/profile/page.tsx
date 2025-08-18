@@ -81,6 +81,10 @@ export default function ProfilePage() {
                 time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
                 period: "(30d)",
               },
+              avgReleaseTime: {
+                time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
+                period: "(30d)",
+              },
             },
             isVerified: {
                 id: true,
