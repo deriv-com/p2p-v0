@@ -109,7 +109,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
              {showPaymentMethodsSidebar && (<div
-                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full mt-0"
+                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
               >
                 <div className="flex items-center gap-4 px-4 py-3 border-b">
                   <Button variant="ghost" size="sm" onClick={() => setShowPaymentMethodsSidebar(false)} className="bg-grayscale-300 px-1">
