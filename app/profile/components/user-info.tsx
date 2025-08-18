@@ -20,7 +20,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
         <div className="h-10 w-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
-          {username.charAt(0).toUpperCase()}
+          {username?.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">
           <h2 className="text-lg font-bold">{username}</h2>
