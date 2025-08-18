@@ -80,6 +80,11 @@ export default function ProfilePage() {
                 period: "(30d)",
               },
             },
+            isVerified: {
+                id: true,
+              address: true,
+              phone: true,
+            }
           }))
         } else {
           showWarningDialog({
