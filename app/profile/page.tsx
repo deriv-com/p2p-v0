@@ -12,6 +12,7 @@ import Navigation from "@/components/navigation"
 export default function ProfilePage() {
   const isMobile = useIsMobile()
   const [userData, setUserData] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function ProfilePage() {
         })
 
         const responseData = await response.json()
+        setIsLoading(false)
 
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
@@ -97,6 +99,8 @@ export default function ProfilePage() {
 
     fetchUserData()
   }, [])
+
+  if(isLoading) return 
 
   return (
     <>
