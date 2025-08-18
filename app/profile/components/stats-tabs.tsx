@@ -17,7 +17,7 @@ interface StatsTabsProps {
   stats?: any
 }
 
-export default function StatsTabs({ stats: initialStats, isLoading }: StatsTabsProps) {
+export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { showAlert} = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
