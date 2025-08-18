@@ -30,6 +30,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
   useEffect(() => {
       setUserStats(stats)
+      console.log(userStats);
   }, [stats])
 
   const tabs = [
