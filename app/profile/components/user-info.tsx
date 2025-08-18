@@ -49,19 +49,19 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
                 ID
               </div>
             )}
-            {isVerified.address && (
+            {isVerified?.address && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 Address
               </div>
             )}
-            {isVerified.phone && (
+            {isVerified?.phone && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 Phone number
               </div>
             )}
-            {isVerified.email && (
+            {isVerified?.email && (
               <div className="bg-success-bg text-success px-3 h-[24px] rounded-sm text-xs flex items-center">
                 <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 Email
