@@ -74,20 +74,6 @@ export default function ProfilePage() {
                 max: data.daily_limits?.sell || 0,
               },
             },
-            stats: {
-              ...prevData.stats,
-              tradePartners: data.partner_count_lifetime || 0,
-              avgPayTime: {
-                time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
-                period: "(30d)",
-              },
-              avgReleaseTime: {
-                time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
-                period: "(30d)",
-              },
-              tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-              tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-            },
             isVerified: {
                 id: true,
               address: true,
