@@ -146,7 +146,7 @@ export default function ProfilePage() {
             username={userData.username}
             rating={userData.rating}
             recommendation={userData.recommend_average_lifetime}
-            recommendation_count={userData.recommend_count_lifetime}
+            recommendationCount={userData.recommend_count_lifetime}
             completionRate={userData.completionRate}
             joinDate={userData.joinDate}
             realName={userData.realName}
