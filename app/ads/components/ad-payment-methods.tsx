@@ -8,6 +8,7 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: number
@@ -25,6 +26,7 @@ const AdPaymentMethods = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
+  const { showAlert } = useAlertDialog()
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
