@@ -132,7 +132,7 @@ export default function ProfilePage() {
             <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
             </div>
-            <StatsTabs stats={userData?.stats} />
+            <StatsTabs stats={userData} />
           </div>
         </div>
       </div>
