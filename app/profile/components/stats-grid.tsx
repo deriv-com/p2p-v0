@@ -158,7 +158,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
             <StatCard
-              title={`Trade volume ${displayStats.tradeVolume30d.period}`}
+              title={`Trade volume (30d)`}
               value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
             />
             <StatCard
