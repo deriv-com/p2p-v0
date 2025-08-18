@@ -43,7 +43,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
             {joinDate && <div className="text-neutral-10">{joinDate}</div>}
           </div>
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-2 mt-3">
-            {isVerified.id && (
+            {isVerified?.id && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
                 <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 ID
