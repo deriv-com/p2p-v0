@@ -6,6 +6,7 @@ interface UserInfoProps {
   username: string
   rating: string
   completionRate: string
+  recommendation: number
   joinDate: string
   isVerified: {
     id: boolean
@@ -15,7 +16,7 @@ interface UserInfoProps {
   }
 }
 
-export default function UserInfo({ username, rating, completionRate, joinDate, isVerified }: UserInfoProps) {
+export default function UserInfo({ username, rating, completionRate, joinDate, isVerified, recommendation }: UserInfoProps) {
   return (
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
@@ -32,13 +33,13 @@ export default function UserInfo({ username, rating, completionRate, joinDate, i
               </div>
             )}
 
-            {rating && completionRate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
+            {rating && recommendation && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
               <div className="flex items-center text-neutral-10">
                 <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
-                 <span>{completionRate}</span>
-                <span className="text-neutral-7">{completionRate ? "(Recommended)" : "No recommendations"}</span>
+                 <span>{recommendation}</span>
+                <span className="text-neutral-7">{recommendation ? "(Recommended)" : "No recommendations"}</span>
               </div>
-            {completionRate && joinDate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
+            {recommendation && joinDate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
             {joinDate && <div className="text-neutral-10">{joinDate}</div>}
           </div>
