@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
@@ -18,16 +18,12 @@ interface StatsTabsProps {
   stats?: any
 }
 
-export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
+export default function StatsTabs({ stats: initialStats, isLoadingStats }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showAlert, showWarningDialog } = useAlertDialog()
+  const { showAlert} = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<UserStats>(
-    initialStats)
-
-  const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const { toast } = useToast()
