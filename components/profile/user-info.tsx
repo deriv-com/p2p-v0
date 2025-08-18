@@ -5,7 +5,6 @@ import Image from "next/image"
 interface UserInfoProps {
   username: string
   rating: string
-  completionRate: string
   recommendation: number
   joinDate: string
   isVerified: {
