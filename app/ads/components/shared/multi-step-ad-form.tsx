@@ -60,10 +60,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
-  const [initialFormData, setInitialFormData] = useState({})
-  const [initialOrderTimeLimit, setInitialOrderTimeLimit] = useState(15)
-  const [initialSelectedCountries, setInitialSelectedCountries] = useState<string[]>([])
-  const [hasChanges, setHasChanges] = useState(false)
 
   const formDataRef = useRef({})
 
@@ -78,32 +74,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       .toLowerCase()
       .replace(/\s+/g, "_")
       .replace(/[^a-z0-9_]/g, "")
-  }
-
-  const checkForChanges = () => {
-    if (mode !== "edit") {
-      setHasChanges(true)
-      return
-    }
-
-    const currentData = { ...formDataRef.current }
-    const hasFormDataChanges = JSON.stringify(currentData) !== JSON.stringify(initialFormData)
-
-    const hasTimeLimitChanges = orderTimeLimit !== initialOrderTimeLimit
-
-    const hasCountryChanges =
-      JSON.stringify(selectedCountries.sort()) !== JSON.stringify(initialSelectedCountries.sort())
-
-    let hasPaymentMethodChanges = false
-    if (currentData.type === "sell" && typeof window !== "undefined") {
-      const currentPaymentMethodIds = (window as any).adPaymentMethodIds || []
-      const initialPaymentMethodIds = initialFormData.payment_method_ids || []
-      hasPaymentMethodChanges =
-        JSON.stringify(currentPaymentMethodIds.sort()) !== JSON.stringify(initialPaymentMethodIds.sort())
-    }
-
-    const hasAnyChanges = hasFormDataChanges || hasTimeLimitChanges || hasCountryChanges || hasPaymentMethodChanges
-    setHasChanges(hasAnyChanges)
   }
 
   useEffect(() => {
@@ -138,10 +108,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
             const formattedData = {
               ...data,
-              totalAmount:
-                Number.parseFloat(data.available_amount) +
-                Number.parseFloat(data.completed_order_amount) +
-                Number.parseFloat(data.open_order_amount),
+              totalAmount: Number.parseFloat(data.available_amount) + Number.parseFloat(data.completed_order_amount) + Number.parseFloat(data.open_order_amount),
               fixedRate: Number.parseFloat(data.exchange_rate),
               minAmount: data.minimum_order_amount,
               maxAmount: data.maximum_order_amount,
@@ -152,16 +119,13 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
             setFormData(formattedData)
             formDataRef.current = formattedData
-            setInitialFormData(formattedData)
 
             if (data.order_expiry_period) {
               setOrderTimeLimit(data.order_expiry_period)
-              setInitialOrderTimeLimit(data.order_expiry_period)
             }
 
             if (data.available_countries) {
               setSelectedCountries(data.available_countries)
-              setInitialSelectedCountries(data.available_countries)
             }
           }
         } catch (error) {
@@ -172,18 +136,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       loadInitialData()
     }
   }, [mode, adId])
-
-  useEffect(() => {
-    checkForChanges()
-  }, [
-    formData,
-    orderTimeLimit,
-    selectedCountries,
-    mode,
-    initialFormData,
-    initialOrderTimeLimit,
-    initialSelectedCountries,
-  ])
 
   useEffect(() => {
     const checkSelectedPaymentMethods = () => {
@@ -420,6 +372,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       return
     }
 
+    // Step 0: Validate and proceed to next step
     if (currentStep === 0) {
       if (!adFormValid) {
         return
@@ -429,6 +382,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       return
     }
 
+    // Step 1: Validate and proceed to next step
     if (currentStep === 1) {
       if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
         return
@@ -442,6 +396,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       return
     }
 
+    // Step 2: Validate and submit the entire form
     if (currentStep === 2) {
       if (mode === "edit" && !adFormValid) {
         return
@@ -466,7 +421,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
     (currentStep === 2 && mode === "edit" && !adFormValid) ||
-    (mode === "edit" && !hasChanges) ||
     isBottomSheetOpen
 
   return (

@@ -64,6 +64,20 @@ const AdPaymentMethods = () => {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
         setShowAddPanel(false)
+      } else {
+        let title = "Unable to add payment method"
+        let description = "There was an error when adding the payment method. Please try again."
+
+        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+          title = "Duplicate payment method"
+          description = "A payment method with the same values already exists. Add a new one."
+        } 
+        showAlert({
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
+        })
       }
     } catch (error) {
       console.log(error)
