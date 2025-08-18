@@ -96,7 +96,7 @@ export default function ProfilePage() {
             ...prevData,
             username: data.nickname || prevData.username,
             rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "No ratings",
-            completionRate: `${data.completion_average_30day || 0}%`,
+            completionRate: data.completion_average_30day? `${data.completion_average_30day}%` : "-",
             joinDate: joinDateString,
             tradeLimits: {
               buy: {
