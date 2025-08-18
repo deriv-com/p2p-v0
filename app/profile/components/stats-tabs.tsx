@@ -32,8 +32,6 @@ export default function StatsTabs({ stats: initialStats, isLoading }: StatsTabsP
     { id: "payment", label: "Payment methods" },
   ]
 
-
-
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       setIsAddingPaymentMethod(true)
