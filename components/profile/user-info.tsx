@@ -19,26 +19,14 @@ interface UserInfoProps {
 }
 
 export default function UserInfo({ username, rating, completionRate, joinDate, realName, isVerified }: UserInfoProps) {
-  const [nickname, setNickname] = useState(username)
-
-  useEffect(() => {
-    try {
-      if (USER && USER.nickname) {
-        setNickname(USER.nickname)
-      }
-    } catch (error) {
-      console.error("Error accessing user data:", error)
-    }
-  }, [username, rating, completionRate, joinDate, realName, isVerified])
-
   return (
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
         <div className="h-10 w-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
-          {nickname.charAt(0).toUpperCase()}
+          {username.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">
-          <h2 className="text-lg font-bold">{nickname}</h2>
+          <h2 className="text-lg font-bold">{username}</h2>
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-y-2 items-center mt-4 md:mt-1 text-sm">
             {rating && (
               <div className="flex items-center">
