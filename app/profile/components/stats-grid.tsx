@@ -60,7 +60,7 @@ function StatCard({ title, value }: StatCardProps) {
         )}
       </div>
       <div className="font-bold text-black text-base leading-6 tracking-normal">
-        {value !== undefined && value !== null ? value : "N/A"}
+        {value}
       </div>
     </div>
   )
