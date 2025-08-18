@@ -7,7 +7,6 @@ interface UserInfoProps {
   rating: string
   completionRate: string
   joinDate: string
-  realName: string
   isVerified: {
     id: boolean
     address: boolean
@@ -16,7 +15,7 @@ interface UserInfoProps {
   }
 }
 
-export default function UserInfo({ username, rating, completionRate, joinDate, realName, isVerified }: UserInfoProps) {
+export default function UserInfo({ username, rating, completionRate, joinDate, isVerified }: UserInfoProps) {
   return (
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
