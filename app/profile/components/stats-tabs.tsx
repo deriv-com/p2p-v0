@@ -29,7 +29,6 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [userStats, setUserStats] = useState(stats)
 
   useEffect(() => {
-  console.log(stats)
       setUserStats(stats)
   }, [stats])
 
@@ -103,7 +102,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   <h2 className="text-xl font-bold">Stats</h2>
                 </div>
                 <div className="m-4">
-                   <StatsGrid stats={userStats} />
+                   <StatsGrid stats={stats} />
                 </div>
               </div>
               )}
@@ -183,7 +182,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </div>
                 </div>
               ) : (
-                <StatsGrid stats={userStats} />
+                <StatsGrid stats={stats} />
               )}
             </TabsContent>
 
