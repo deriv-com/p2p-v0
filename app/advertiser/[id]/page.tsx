@@ -189,7 +189,7 @@ export default function AdvertiserProfilePage() {
     const newDuration = duration / 60 / 60
     if (newDuration < 1) return "< 1 min"
 
-    return newDuration.toString() + " mins"
+    return newDuration.toFixed(2).toString() + " mins"
   }
 
   const CURRENT_USER = USER
@@ -273,10 +273,10 @@ export default function AdvertiserProfilePage() {
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
                      <div className="flex items-center mt-1">
-                        <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                        {profile?.rating_average_lifetime && <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />}
                         {profile?.rating_average_lifetime ? 
                           <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span> :
-                          <span className="text-base">No ratings</span>
+                          <span className="font-bold text-base">Not rated yet</span>
                         }
                     </div>
                   </div>
@@ -302,13 +302,13 @@ export default function AdvertiserProfilePage() {
                     <div className="flex items-center mt-1">
                       {profile?.recommend_average_lifetime ? 
                         <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span> :
-                        <span className="font-bold text-base">No recommendations</span>
+                        <span className="font-bold text-base">Not recommended yet</span>
                       }
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-slate-500">Total orders</div>
-                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime}</div>
+                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime }</div>
                   </div>
                 </div>
               </div>
@@ -318,13 +318,13 @@ export default function AdvertiserProfilePage() {
             <div>
               <div className="text-xs text-slate-500">Buy completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.completion_average_30day}% ({profile?.buy_count_30day})
+                {profile?.buy_count_30day? `${profile?.completion_average_30day}% ${profile?.buy_count_30day}` : "-"}
               </div>
             </div>
             <div>
               <div className="text-xs text-slate-500">Sell completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.completion_average_30day}% ({profile?.sell_count_30day})
+                {profile?.sell_count_30day? `${profile?.completion_average_30day}% ${profile?.sell_count_30day}` : "-"}
               </div>
             </div>
             <div>

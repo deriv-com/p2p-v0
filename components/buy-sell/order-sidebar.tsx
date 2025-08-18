@@ -248,7 +248,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         onClick={handleClose}
       />
       <div
-        className={`relative w-full max-w-md bg-white h-full overflow-y-auto transform transition-transform duration-300 ease-in-out ${
+        className={`relative w-full max-w-md bg-white h-full transform transition-transform duration-300 ease-in-out ${
           isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -280,7 +280,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             </div>
 
             {showPaymentSelection ? (
-              <div className="flex flex-col h-full">
+              <div className="flex flex-col h-full overflow-y-auto">
                 <div className="flex-1 p-4 space-y-4">
                   {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
                   {isLoadingPaymentMethods ? (
@@ -365,7 +365,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                 </div>
               </div>
             ) : (
-              <>
+              <div className="flex flex-col h-full overflow-y-auto">
                 <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
                   <div className="mb-2">
                     <Input
@@ -458,7 +458,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="mx-4 mt-4 border-t py-2 text-sm">
+                <div className="mx-4 mt-4 border-t py-2 text-sm flex-1">
                   <h3 className="text-slate-500">{isBuy ? "Buyer's instructions" : "Seller's instructions"}</h3>
                   <p className="text-slate-1400 break-words">
                     {ad.description ||
@@ -488,7 +488,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm">{orderStatus.message}</div>
                   )}
                 </div>
-              </>
+              </div>
             )}
           </div>
         )}

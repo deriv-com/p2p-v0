@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import { Button } from "@/components/ui/button"
@@ -10,7 +10,6 @@ import { ProfileAPI } from "@/services/api"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import type { UserStats } from "../api/api-user-stats"
 import { useToast } from "@/hooks/use-toast"
 import * as AuthPrevAPI from "@/services/api/api-auth-prev"
 
@@ -18,27 +17,12 @@ interface StatsTabsProps {
   stats?: any
 }
 
-export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
+export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showAlert, showWarningDialog } = useAlertDialog()
+  const { showAlert} = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
-  const [userStats, setUserStats] = useState<UserStats>(
-    initialStats || {
-      buyCompletion: { rate: "-", period: "(30d)" },
-      sellCompletion: { rate: "-", period: "(30d)" },
-      avgPayTime: { time: "-", period: "(30d)" },
-      avgReleaseTime: { time: "-", period: "(30d)" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-    },
-  )
-
-  const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const { toast } = useToast()
@@ -47,35 +31,6 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
   ]
-
-  useEffect(() => {
-    const loadUserStats = async () => {
-      try {
-        setIsLoadingStats(true)
-        const result = await ProfileAPI.fetchUserStats()
-
-        if ("error" in result) {
-          const errorMessage = Array.isArray(result.error) ? result.error.join(", ") : result.error
-          showWarningDialog({
-            title: "Error",
-            description: errorMessage,
-          })
-        } else {
-          setUserStats(result)
-        }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Failed to load user stats"
-        showWarningDialog({
-          title: "Error",
-          description: errorMessage,
-        })
-      } finally {
-        setIsLoadingStats(false)
-      }
-    }
-
-    loadUserStats()
-  }, [])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
@@ -142,7 +97,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   <h2 className="text-xl font-bold">Stats</h2>
                 </div>
                 <div className="m-4">
-                   <StatsGrid stats={userStats} />
+                   <StatsGrid stats={stats} />
                 </div>
               </div>
               )}
@@ -192,7 +147,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
             </TabsList>
 
             <TabsContent value="stats" className="mt-4">
-              {isLoadingStats ? (
+              {isLoading ? (
                 <div className="space-y-4">
                   <div className="bg-[#F5F5F5] rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -222,7 +177,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
                   </div>
                 </div>
               ) : (
-                <StatsGrid stats={userStats} />
+                <StatsGrid stats={stats} />
               )}
             </TabsContent>
 

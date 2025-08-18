@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import UserInfo from "@/components/profile/user-info"
-import TradeLimits from "@/components/profile/trade-limits"
+import UserInfo from "./components/user-info"
+import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -11,44 +11,8 @@ import Navigation from "@/components/navigation"
 
 export default function ProfilePage() {
   const isMobile = useIsMobile()
-  const [userData, setUserData] = useState({
-    username: "",
-    rating: "No ratings",
-    completionRate: "",
-    joinDate: "",
-    realName: "",
-    isVerified: {
-      id: true,
-      address: true,
-      phone: true,
-    },
-    businessHours: {
-      isOpen: true,
-      availability: "",
-    },
-    tradeLimits: {
-      buy: {
-        current: 0,
-        max: 0,
-      },
-      sell: {
-        current: 0,
-        max: 0,
-      },
-    },
-    stats: {
-      buyCompletion: { rate: "", period: "" },
-      sellCompletion: { rate: "100% (50)", period: "" },
-      avgPayTime: { time: "", period: "" },
-      avgReleaseTime: { time: "", period: "" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "", currency: "", period: "" },
-      tradeVolumeLifetime: { amount: "", currency: "" },
-    },
-  })
-
+  const [userData, setUserData] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
   useEffect(() => {
@@ -64,7 +28,7 @@ export default function ProfilePage() {
         })
 
         const responseData = await response.json()
-
+        setIsLoading(false)
 
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
@@ -93,10 +57,12 @@ export default function ProfilePage() {
           }
 
           setUserData((prevData) => ({
-            ...prevData,
+            ...data,
             username: data.nickname || prevData.username,
-            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
-            completionRate: `${data.completion_average_30day || 0}%`,
+            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "No ratings",
+            completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
+            buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
+            sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
             joinDate: joinDateString,
             tradeLimits: {
               buy: {
@@ -108,14 +74,11 @@ export default function ProfilePage() {
                 max: data.daily_limits?.sell || 0,
               },
             },
-            stats: {
-              ...prevData.stats,
-              tradePartners: data.partner_count_lifetime || 0,
-              avgPayTime: {
-                time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
-                period: "(30d)",
-              },
-            },
+            isVerified: {
+                id: true,
+              address: true,
+              phone: true,
+            }
           }))
         } else {
           showWarningDialog({
@@ -134,29 +97,29 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  },[])
+  }, [])
 
   return (
     <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="px-[24px]">
-      <div className="flex flex-col md:flex-row gap-6 h-full">
-        <div className="flex-1 order-1">
-          <UserInfo
-            username={userData.username}
-            rating={userData.rating}
-            completionRate={userData.completionRate}
-            joinDate={userData.joinDate}
-            realName={userData.realName}
-            isVerified={userData.isVerified}
-          />
-          <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
-            <TradeLimits buyLimit={userData.tradeLimits.buy} sellLimit={userData.tradeLimits.sell} />
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      <div className="px-[24px]">
+        <div className="flex flex-col md:flex-row gap-6 h-full">
+          <div className="flex-1 order-1">
+            <UserInfo
+              username={userData?.username}
+              rating={userData?.rating}
+              recommendation={userData?.recommend_average_lifetime}
+              joinDate={userData?.joinDate}
+              realName={userData?.realName}
+              isVerified={userData?.isVerified}
+            />
+            <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
+              <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
+            </div>
+            <StatsTabs stats={userData} isLoading={isLoading} />
           </div>
-          <StatsTabs stats={userData.stats} />
         </div>
       </div>
-    </div>
     </>
   )
 }
