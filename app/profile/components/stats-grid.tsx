@@ -147,11 +147,11 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
             <StatCard
               title={`Buy completion ${displayStats.buyCompletion.period}`}
-              value={displayStats.buyCompletion.rate}
+              value={displayStats.buyCompletion}
             />
             <StatCard
               title={`Sell completion ${displayStats.sellCompletion.period}`}
-              value={displayStats.sellCompletion.rate}
+              value={displayStats.sellCompletion}
             />
             <StatCard title="Trade partners" value={displayStats.tradePartners} />
           </div>
