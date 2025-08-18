@@ -26,12 +26,6 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const { toast } = useToast()
-  const [userStats, setUserStats] = useState(stats)
-
-  useEffect(() => {
-      setUserStats(stats)
-      console.log(userStats);
-  }, [stats])
 
   const tabs = [
     { id: "stats", label: "Stats" },
