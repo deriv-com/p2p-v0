@@ -18,7 +18,7 @@ interface StatsTabsProps {
   stats?: any
 }
 
-export default function StatsTabs({ stats: initialStats, isLoadingStats }: StatsTabsProps) {
+export default function StatsTabs({ stats: initialStats, isLoading }: StatsTabsProps) {
   const isMobile = useIsMobile()
   const { showAlert} = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
@@ -150,7 +150,7 @@ export default function StatsTabs({ stats: initialStats, isLoadingStats }: Stats
             </TabsList>
 
             <TabsContent value="stats" className="mt-4">
-              {isLoadingStats ? (
+              {isLoading ? (
                 <div className="space-y-4">
                   <div className="bg-[#F5F5F5] rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
