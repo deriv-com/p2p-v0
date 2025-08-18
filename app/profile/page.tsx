@@ -85,6 +85,8 @@ export default function ProfilePage() {
                 time: data.release_time_average_30day ? `${data.release_time_average_30day} min` : "-",
                 period: "(30d)",
               },
+              tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
+              tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
             },
             isVerified: {
                 id: true,
