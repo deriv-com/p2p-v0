@@ -12,6 +12,7 @@ import Navigation from "@/components/navigation"
 export default function ProfilePage() {
   const isMobile = useIsMobile()
   const [userData, setUserData] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
   useEffect(() => {
@@ -27,6 +28,7 @@ export default function ProfilePage() {
         })
 
         const responseData = await response.json()
+        setIsLoading(false)
 
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
@@ -114,7 +116,7 @@ export default function ProfilePage() {
             <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
             </div>
-            <StatsTabs stats={userData} />
+            <StatsTabs stats={userData} isLoading={isLoading} />
           </div>
         </div>
       </div>
