@@ -1,8 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
 import Image from "next/image"
-import { USER } from "@/lib/local-variables"
 
 interface UserInfoProps {
   username: string
