@@ -88,14 +88,14 @@ export default function StatsGrid({ stats }) {
             </TabsList>
             <TabsContent value="last30days" className="bg-slate-1500 mt-0 rounded-lg px-4">
               <div className="grid grid-cols-1 divide-y divide-slate-200">
-                    <StatCard title="Sell completion" value={stats.completion_average_30day} />
-                  <StatCard title="Buy completion" value={stats.buy_time_average_30day} />
-                  <StatCard title="Avg. pay time" value={stats.completion_average_30day} />
-                  <StatCard title="Avg. release time" value={stats.release_time_average_30day} />
-                  <StatCard title="Total orders" value={stats.partner_count_lifetime} />
+                  <StatCard title="Sell completion" value={stats.completion_average_30day ?? "-"} />
+                  <StatCard title="Buy completion" value={stats.buy_time_average_30day ?? "-"} />
+                  <StatCard title="Avg. pay time" value={stats.completion_average_30day ?? "-"} />
+                  <StatCard title="Avg. release time" value={stats.release_time_average_30day ?? "-"} />
+                  <StatCard title="Total orders" value={stats.partner_count_lifetime ?? "0"} />
                   <StatCard
                     title="Trade volume"
-                    value={`USD ${stats.completion_average_30day}`}
+                    value={`USD ${stats.completion_average_30day ?? "-"}`}
                   />
                 </div>
             </TabsContent>
@@ -105,7 +105,7 @@ export default function StatsGrid({ stats }) {
                   <StatCard title="Total orders" value={stats.partner_count_lifetime} />
                   <StatCard
                     title="Trade volume"
-                    value={`USD ${stats.completion_average_30day}`}
+                    value={`USD ${stats.completion_average_30day ?? "-"}`}
                   />
                   </div>
             </TabsContent>
@@ -116,30 +116,30 @@ export default function StatsGrid({ stats }) {
           <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
             <StatCard
               title={`Buy completion (30d)`}
-              value={stats.buy_time_average_30day}
+              value={stats.buy_time_average_30day ?? "-"}
             />
             <StatCard
               title={`Sell completion (30d)`}
-              value={stats.completion_average_30day}
+              value={stats.completion_average_30day ?? "-"}
             />
-            <StatCard title="Trade partners" value={stats.partner_count_lifetime} />
+            <StatCard title="Trade partners" value={stats.partner_count_lifetime ?? "0"} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
             <StatCard
               title={`Trade volume (30d)`}
-              value={`USD ${stats.completion_average_30day}`}
+              value={`USD ${stats.completion_average_30day ?? "-"}`}
             />
             <StatCard
               title="Trade volume (Lifetime)"
-              value={`USD ${stats.completion_average_30day}`}
+              value={`USD ${stats.completion_average_30day ?? "-"}`}
             />
-            <StatCard title={`Avg. pay time`} value={stats.completion_average_30day} />
+            <StatCard title={`Avg. pay time`} value={stats.completion_average_30day ?? "-"} />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <StatCard title="Total orders 30d" value={stats.partner_count_lifetime} />
-            <StatCard title="Total orders (Lifetime)" value={stats.partner_count_lifetime} />
+            <StatCard title="Total orders 30d" value={stats.partner_count_lifetime ?? "0"} />
+            <StatCard title="Total orders (Lifetime)" value={stats.partner_count_lifetime ?? "0"} />
             <StatCard
               title="Avg. release time"
               value={stats.release_time_average_30day}
