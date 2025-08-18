@@ -8,6 +8,7 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: number
@@ -25,6 +26,7 @@ const AdPaymentMethods = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
+  const { showAlert } = useAlertDialog()
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -64,6 +66,20 @@ const AdPaymentMethods = () => {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
         setShowAddPanel(false)
+      } else {
+        let title = "Unable to add payment method"
+        let description = "There was an error when adding the payment method. Please try again."
+
+        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+          title = "Duplicate payment method"
+          description = "A payment method with the same values already exists. Add a new one."
+        } 
+        showAlert({
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
+        })
       }
     } catch (error) {
       console.log(error)

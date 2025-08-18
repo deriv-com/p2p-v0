@@ -108,7 +108,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
             const formattedData = {
               ...data,
-              totalAmount: data.available_amount,
+              totalAmount: Number.parseFloat(data.available_amount) + Number.parseFloat(data.completed_order_amount) + Number.parseFloat(data.open_order_amount),
               fixedRate: Number.parseFloat(data.exchange_rate),
               minAmount: data.minimum_order_amount,
               maxAmount: data.maximum_order_amount,
@@ -426,7 +426,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-auto h-full md:px-0">
+        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
           <Navigation
             isBackBtnVisible={currentStep != 0}
             isVisible={false}

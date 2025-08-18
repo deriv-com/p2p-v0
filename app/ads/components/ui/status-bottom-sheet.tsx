@@ -84,7 +84,7 @@ export default function StatusBottomSheet({
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
       <div
         ref={bottomSheetRef}
-        className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[32px] max-h-[90vh] overflow-y-auto z-[60]"
+        className="fixed bottom-0 left-0 right-0 bg-white rounded-t-[32px] max-h-[90vh] overflow-y-auto overflow-x-hidden z-[60]"
         style={getTransformStyle()}
         onClick={(e) => e.stopPropagation()}
         onTouchStart={handleTouchStart}
