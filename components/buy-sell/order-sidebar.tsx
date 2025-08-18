@@ -458,7 +458,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="mx-4 mt-4 border-t py-2 text-sm">
+                <div className="mx-4 mt-4 border-t py-2 text-sm flex-1">
                   <h3 className="text-slate-500">{isBuy ? "Buyer's instructions" : "Seller's instructions"}</h3>
                   <p className="text-slate-1400 break-words">
                     {ad.description ||
