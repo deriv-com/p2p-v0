@@ -101,8 +101,8 @@ export default function StatsGrid({ stats }) {
             </TabsContent>
             <TabsContent value="lifetime" className="bg-slate-1500 mt-0 rounded-lg px-4">
             <div className="grid grid-cols-1 divide-y divide-slate-200">
-                  <StatCard title="Trade partners" value={stats.partner_count_lifetime} />
-                  <StatCard title="Total orders" value={stats.partner_count_lifetime} />
+                  <StatCard title="Trade partners" value={stats.partner_count_lifetime ?? "0"} />
+                  <StatCard title="Total orders" value={stats.partner_count_lifetime ?? "0"} />
                   <StatCard
                     title="Trade volume"
                     value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
