@@ -324,7 +324,7 @@ export default function AdvertiserProfilePage() {
             <div>
               <div className="text-xs text-slate-500">Sell completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.completion_average_30day}% ({profile?.sell_count_30day})
+                {sell_count_30day? `${profile?.completion_average_30day}% ${profile?.sell_count_30day}` : "-"}
               </div>
             </div>
             <div>
