@@ -95,7 +95,7 @@ export default function StatsGrid({ stats }) {
                   <StatCard title="Total orders" value={stats.partner_count_lifetime ?? "0"} />
                   <StatCard
                     title="Trade volume"
-                    value={`USD ${stats.completion_average_30day ?? "-"}`}
+                    value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
                   />
                 </div>
             </TabsContent>
@@ -105,7 +105,7 @@ export default function StatsGrid({ stats }) {
                   <StatCard title="Total orders" value={stats.partner_count_lifetime} />
                   <StatCard
                     title="Trade volume"
-                    value={`USD ${stats.completion_average_30day ?? "-"}`}
+                    value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
                   />
                   </div>
             </TabsContent>
