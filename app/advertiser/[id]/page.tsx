@@ -308,7 +308,7 @@ export default function AdvertiserProfilePage() {
                   </div>
                   <div>
                     <div className="text-xs text-slate-500">Total orders</div>
-                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime ?? 0}</div>
+                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime }</div>
                   </div>
                 </div>
               </div>
@@ -318,7 +318,7 @@ export default function AdvertiserProfilePage() {
             <div>
               <div className="text-xs text-slate-500">Buy completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.completion_average_30day}% ({profile?.buy_count_30day})
+                {buy_count_30day? `${profile?.completion_average_30day}% ${profile?.buy_count_30day}` : "-"}
               </div>
             </div>
             <div>
