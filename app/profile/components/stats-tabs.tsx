@@ -25,18 +25,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [userStats, setUserStats] = useState<UserStats>(
-    initialStats || {
-      buyCompletion: { rate: "-", period: "(30d)" },
-      sellCompletion: { rate: "-", period: "(30d)" },
-      avgPayTime: { time: "-", period: "(30d)" },
-      avgReleaseTime: { time: "-", period: "(30d)" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-      tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-    },
-  )
+    initialStats)
 
   const [isLoadingStats, setIsLoadingStats] = useState(false)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -48,34 +37,7 @@ export default function StatsTabs({ stats: initialStats }: StatsTabsProps) {
     { id: "payment", label: "Payment methods" },
   ]
 
-  useEffect(() => {
-    const loadUserStats = async () => {
-      try {
-        setIsLoadingStats(true)
-        const result = await ProfileAPI.fetchUserStats()
 
-        if ("error" in result) {
-          const errorMessage = Array.isArray(result.error) ? result.error.join(", ") : result.error
-          showWarningDialog({
-            title: "Error",
-            description: errorMessage,
-          })
-        } else {
-          setUserStats(result)
-        }
-      } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Failed to load user stats"
-        showWarningDialog({
-          title: "Error",
-          description: errorMessage,
-        })
-      } finally {
-        setIsLoadingStats(false)
-      }
-    }
-
-    loadUserStats()
-  }, [])
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
