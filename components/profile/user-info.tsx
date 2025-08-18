@@ -16,7 +16,7 @@ interface UserInfoProps {
   }
 }
 
-export default function UserInfo({ username, rating, completionRate, joinDate, isVerified, recommendation }: UserInfoProps) {
+export default function UserInfo({ username, rating, joinDate, isVerified, recommendation }: UserInfoProps) {
   return (
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
