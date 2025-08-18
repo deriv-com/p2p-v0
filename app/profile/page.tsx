@@ -100,7 +100,7 @@ export default function ProfilePage() {
     fetchUserData()
   }, [])
 
-  if(isLoading) return 
+  if(isLoading) return null
 
   return (
     <>
