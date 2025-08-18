@@ -11,44 +11,7 @@ import Navigation from "@/components/navigation"
 
 export default function ProfilePage() {
   const isMobile = useIsMobile()
-  const [userData, setUserData] = useState({
-    username: "",
-    rating: "No ratings",
-    completionRate: "",
-    joinDate: "",
-    realName: "",
-    isVerified: {
-      id: true,
-      address: true,
-      phone: true,
-    },
-    businessHours: {
-      isOpen: true,
-      availability: "",
-    },
-    tradeLimits: {
-      buy: {
-        current: 0,
-        max: 0,
-      },
-      sell: {
-        current: 0,
-        max: 0,
-      },
-    },
-    stats: {
-      buyCompletion: { rate: "", period: "" },
-      sellCompletion: { rate: "100% (50)", period: "" },
-      avgPayTime: { time: "", period: "" },
-      avgReleaseTime: { time: "", period: "" },
-      tradePartners: 0,
-      totalOrders30d: 0,
-      totalOrdersLifetime: 0,
-      tradeVolume30d: { amount: "", currency: "", period: "" },
-      tradeVolumeLifetime: { amount: "", currency: "" },
-    },
-  })
-
+  const [userData, setUserData] = useState({})
   const { showWarningDialog } = useAlertDialog()
 
   useEffect(() => {
