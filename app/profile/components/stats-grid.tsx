@@ -169,7 +169,7 @@ export default function StatsGrid({ stats }: StatsGridProps) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <StatCard title={`Total orders ${displayStats.buyCompletion.period}`} value={displayStats.totalOrders30d} />
+            <StatCard title={`Total orders 30d`} value={displayStats.totalOrders30d} />
             <StatCard title="Total orders (Lifetime)" value={displayStats.totalOrdersLifetime} />
             <StatCard
               title={`Avg. release time ${displayStats.avgReleaseTime.period}`}
