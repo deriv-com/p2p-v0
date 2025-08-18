@@ -108,7 +108,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
             const formattedData = {
               ...data,
-              totalAmount: data.available_amount + data.completed_order_amount + data.available_amount,
+              totalAmount: Number.parseFloat(data.available_amount) + Number.parseFloat(data.completed_order_amount) + Number.parseFloat(data.open_order_amount),
               fixedRate: Number.parseFloat(data.exchange_rate),
               minAmount: data.minimum_order_amount,
               maxAmount: data.maximum_order_amount,
