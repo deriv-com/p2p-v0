@@ -138,7 +138,7 @@ export default function StatsGrid({ stats }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3">
-            <StatCard title={`Total orders 30d`} value={displayStats.totalOrders30d} />
+            <StatCard title="Total orders 30d" value={displayStats.totalOrders30d} />
             <StatCard title="Total orders (Lifetime)" value={displayStats.totalOrdersLifetime} />
             <StatCard
               title="Avg. release time"
