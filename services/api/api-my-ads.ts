@@ -448,7 +448,7 @@ export async function createAd(
     const response = await fetch(url, {
       method: "POST",
       headers,
-      // credentials: "include",
+ credentials: "include",
       body,
     })
 
