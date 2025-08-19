@@ -356,7 +356,7 @@ export async function toggleBlockAdvertiser(
 
     const response = await fetch(url, {
       method,
-      // credentials: "include",
+credentials: "include",
       headers,
       body,
     })
