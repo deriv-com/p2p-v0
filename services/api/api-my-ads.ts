@@ -205,7 +205,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
 
     const response = await fetch(url, {
       headers,
-      // credentials: "include",
+ credentials: "include",
     })
 
     if (!response.ok) {
