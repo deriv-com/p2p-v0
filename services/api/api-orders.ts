@@ -107,7 +107,7 @@ export async function getOrderById(id: string): Promise<Order> {
 
     const response = await fetch(url, {
       headers,
-      // credentials: "include" 
+ credentials: "include" 
     })
 
     if (!response.ok) {
