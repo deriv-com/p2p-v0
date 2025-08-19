@@ -176,6 +176,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
 
     const response = await fetch(url, {
       headers,
+      credentials: "include",
       cache: "no-store",
     })
 
