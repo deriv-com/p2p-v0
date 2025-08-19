@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 
 async function fetchSubscriberHash() {
   try {
-    const url = `${NOTIFICATIONS.subscriberHashUrl}/hash`
+    const url = `https://staging-api.champion.trade/notifications/v1/hash`
 
     const response = await fetch(url, {
       method: "POST",
