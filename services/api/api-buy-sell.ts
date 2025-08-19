@@ -401,7 +401,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
 
     const response = await fetch(url, {
       headers,
-      //credentials: "include" 
+       credentials: "include" 
     })
 
     if (!response.ok) {
