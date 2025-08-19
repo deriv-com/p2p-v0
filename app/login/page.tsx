@@ -65,7 +65,7 @@ export default function LoginPage() {
           localStorage.setItem("auth_token", response.access_token)
 
         await AuthAPI.fetchUserIdAndStore()
-        //await AuthPrevAPI.getClientProfile()
+        //await AuthAPI.getClientProfile()
 
         window.location.href = "/"
       } else {
@@ -84,7 +84,7 @@ export default function LoginPage() {
 
     try {
       setError("")
-      const response = await AuthPrevAPI.login({ email })
+      const response = await AuthAPI.login({ email })
 
       if (response.success) {
         setResendTimer(59)
