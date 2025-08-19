@@ -7,7 +7,7 @@ import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
-import * as AuthPrevAPI from "@/services/api/api-auth-prev"
+import * as AuthAPI from "@/services/api/api-auth"
 import "./globals.css"
 
 export default function Main({
@@ -33,7 +33,7 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
-        const response = await AuthPrevAPI.getSession()
+        const response = await AuthAPI.getSession()
 
         if (abortController.signal.aborted) {
           return
@@ -43,7 +43,7 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
-          AuthPrevAPI.getSocketToken(response.access_token)
+          AuthAPI.getSocketToken(response.access_token)
           router.push(pathname)
         }
       } catch (error) {
