@@ -247,7 +247,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
 
     const response = await fetch(url, {
       headers,
-      // credentials: "include" 
+       credentials: "include" 
     })
 
     if (!response.ok) {
