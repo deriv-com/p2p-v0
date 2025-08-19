@@ -60,7 +60,7 @@ export interface PaymentMethod {
 export async function getUserProfile(): Promise<UserProfile> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
-      //credentials: "include",
+credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -260,8 +260,8 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      headers
-      //credentials: "include",
+      headers,
+credentials: "include",
     })
 
     if (!response.ok) {
