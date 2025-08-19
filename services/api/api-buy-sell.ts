@@ -295,7 +295,8 @@ export async function toggleFavouriteAdvertiser(
     })
 
     const response = await fetch(url, {
-      method, credentials: "include",
+      method,
+      // credentials: "include",
       headers,
       ...(isFavourite && { body }),
     })
@@ -400,7 +401,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
 
     const response = await fetch(url, {
       headers,
-       credentials: "include" 
+credentials: "include" 
     })
 
     if (!response.ok) {
