@@ -424,7 +424,7 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "DELETE",
       headers,
-      // credentials: "include",
+ credentials: "include",
     })
 
     if (!response.ok) {
