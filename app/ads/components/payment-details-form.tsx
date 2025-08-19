@@ -47,7 +47,7 @@ export default function PaymentDetailsForm({
         const headers = AUTH.getAuthHeader()
         const response = await fetch(`${API.baseUrl}${API.endpoints.availablePaymentMethods}`, {
           headers,
-          //credentials: "include",
+          credentials: "include",
         })
         const responseData = await response.json()
 
