@@ -295,8 +295,7 @@ export async function toggleFavouriteAdvertiser(
     })
 
     const response = await fetch(url, {
-      method,
-      // credentials: "include",
+      method, credentials: "include",
       headers,
       ...(isFavourite && { body }),
     })
