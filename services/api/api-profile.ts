@@ -110,7 +110,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
 export async function getUserBalance(): Promise<{ balance: number; currency: string }> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
-      //credentials: "include",
+credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
