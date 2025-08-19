@@ -177,7 +177,7 @@ export async function getCurrencies(): Promise<string[]> {
 
     const response = await fetch(url, {
       headers,
-      //credentials: "include",
+credentials: "include",
     });
     await response.text();
   } catch (error) {
