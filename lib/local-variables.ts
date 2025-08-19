@@ -49,7 +49,7 @@ export const WALLETS = {
 }
 
 export const AUTH = {
-  getAuthHeader: () => (
+  getAuthHeader: () => ({
   //"Authorization: `Bearer ${USER_TOKEN}`,
     "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
     "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
