@@ -127,7 +127,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>)}
             <Divider />
-            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900" onClick={() => AuthPrevAPI.logout()}>
+            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900" onClick={() => AuthAPI.logout()}>
                 Logout
             </div>
             <Divider />
