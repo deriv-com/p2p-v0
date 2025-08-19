@@ -57,7 +57,7 @@ export const AUTH = {
   }),
 
   getNotificationHeader: () => ({
-    Authorization: `Bearer ${USER_TOKEN}`,
+   // Authorization: `Bearer ${USER_TOKEN}`,
     "Content-Type": "application/json",
   }),
 }
