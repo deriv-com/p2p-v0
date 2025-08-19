@@ -82,7 +82,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-      //credentials: "include" 
+          credentials: "include" 
     })
 
     if (!response.ok) {
