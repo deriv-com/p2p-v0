@@ -25,22 +25,19 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: 20.x
-                  cache: 'npm'
+                  cache: 'pnpm'
 
-            - name: Get cached dependencies
-              id: cache-npm
-              uses: actions/cache@v4
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
               with:
-                  path: node_modules
-                  key: npm-${{ hashFiles('./package-lock.json') }}
+                version: 8
+                run_install: false 
 
             - name: Install dependencies
-              if: ${{ steps.cache-npm.outputs.cache-hit != 'true' }}
-              run: npm ci
-              shell: bash
+              run: pnpm install
 
             - name: Build
-              run: npm run build
+              run: pnpm run build
               env:
                 NEXT_PUBLIC_BASE_URL: ${{ vars.NEXT_PUBLIC_BASE_URL }}
                 NEXT_PUBLIC_CORE_URL: ${{ vars.NEXT_PUBLIC_CORE_URL }}
@@ -53,7 +50,7 @@ jobs:
                 NODE_ENV: staging
 
             - name: Run tests for Eslint
-              run: npm run lint
+              run: pnpm run lint
 
             - name: List output folder contents for debugging
               run: ls -lR ./out 
