@@ -49,7 +49,7 @@ export default function Header() {
         <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
         </div>
-        <Button size="sm" onClick={() => AuthPrevAPI.logout()}>
+        <Button size="sm" onClick={() => AuthAPI.logout()}>
           Logout
         </Button>
       </div>
