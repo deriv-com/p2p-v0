@@ -1,0 +1,7 @@
+name = "PROJECT_NAME"
+compatibility_date = "2025-08-20"
+account_id = "ACCOUNT_ID"
+
+[site]
+bucket = ".vercel/output/static"
+entry-point = "."

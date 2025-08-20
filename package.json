@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "postbuild": "next-on-pages"
   },
   "dependencies": {
     "@eslint/eslintrc": "latest",
@@ -73,6 +74,7 @@
     "zustand": "latest"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.14",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
