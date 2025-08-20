@@ -61,7 +61,7 @@ jobs:
               run: pnpm run lint
 
             - name: List output folder contents for debugging
-              run: ls -lR .vercel/output
+              run: ls -lR .vercel/output/static
 
             - name: Publish to Cloudflare Pages
               uses: "deriv-com/shared-actions/.github/actions/publish_to_pages_branch@master"
@@ -70,6 +70,6 @@ jobs:
                 CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                 project_name: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
                 branch_name: staging
-                output_dir: .vercel/output
+                output_dir: .vercel/output/static
                 directory: dist
                 cname_url: staging-p2p.champion.trade
