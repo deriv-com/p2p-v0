@@ -10,7 +10,7 @@ overrides:
   cookie@<0.7.0: '>=0.7.0'
   undici@<5.29.0: '>=5.29.0'
   '@eslint/plugin-kit@<0.3.4': '>=0.3.4'
-  '@cloudflare/next-on-pages>path-to-regexp': 8.0.0
+  path-to-regexp: 8.0.0
 
 importers:
 
@@ -3521,9 +3521,6 @@ packages:
     resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
     engines: {node: '>=8'}
 
-  isarray@0.0.1:
-    resolution: {integrity: sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==}
-
   isarray@2.0.5:
     resolution: {integrity: sha512-xHjhDr3cNBK0BzdUJSPXZntQUx/mwMS5Rw4A7lPJ90XGAO6ISP/ePDNuo0vhqOZU+UD5JoodwCAAoZQd3FeAKw==}
 
@@ -4136,14 +4133,12 @@ packages:
     resolution: {integrity: sha512-Xa4Nw17FS9ApQFJ9umLiJS4orGjm7ZzwUrwamcGQuHSzDyth9boKDaycYdDcZDuqYATXw4HFXgaqWTctW/v1HA==}
     engines: {node: '>=16 || 14 >=14.18'}
 
-  path-to-regexp@1.9.0:
-    resolution: {integrity: sha512-xIp7/apCFJuUHdDLWe8O1HIkb0kQrOMb/0u6FXQjemHn/ii5LrIzU6bdECnsiTF/GjZkMEKg1xdiZwNqDYlZ6g==}
-
-  path-to-regexp@6.1.0:
-    resolution: {integrity: sha512-h9DqehX3zZZDCEm+xbfU0ZmwCGFCAAraPJWMXJ4+v32NjZJilVg3k1TcKsRgIb8IQ/izZSaydDc1OhJCZvs2Dw==}
-
   path-to-regexp@6.3.0:
     resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
+
+  path-to-regexp@8.0.0:
+    resolution: {integrity: sha512-GAWaqWlTjYK/7SVpIUA6CTxmcg65SP30sbjdCvyYReosRkk7Z/LyHWwkK3Vu0FcIi0FNTADUs4eh1AsU5s10cg==}
+    engines: {node: '>=16'}
 
   path@0.12.7:
     resolution: {integrity: sha512-aXXC6s+1w7otVF9UletFkFcDsJeO7lSZBPUQhtb5O0xJe8LtYhj/GxldoL09bBj9+ZmE2hNoHqQSFMN5fikh4Q==}
@@ -7329,7 +7324,7 @@ snapshots:
       esbuild: 0.25.4
       etag: 1.8.1
       node-fetch: 2.6.9
-      path-to-regexp: 6.1.0
+      path-to-regexp: 8.0.0
       path-to-regexp-updated: path-to-regexp@6.3.0
       ts-morph: 12.0.0
       ts-node: 10.9.1(@types/node@16.18.11)(typescript@4.9.5)
@@ -7360,7 +7355,7 @@ snapshots:
       '@vercel/error-utils': 2.0.3
       '@vercel/nft': 0.29.2
       '@vercel/static-config': 3.1.1
-      path-to-regexp: 6.1.0
+      path-to-regexp: 8.0.0
       path-to-regexp-updated: path-to-regexp@6.3.0
       ts-morph: 12.0.0
     transitivePeerDependencies:
@@ -8795,8 +8790,6 @@ snapshots:
     dependencies:
       is-docker: 2.2.1
 
-  isarray@0.0.1: {}
-
   isarray@2.0.5: {}
 
   isexe@2.0.0: {}
@@ -9583,7 +9576,7 @@ snapshots:
   path-match@1.2.4:
     dependencies:
       http-errors: 1.4.0
-      path-to-regexp: 1.9.0
+      path-to-regexp: 8.0.0
 
   path-parse@1.0.7: {}
 
@@ -9592,13 +9585,9 @@ snapshots:
       lru-cache: 10.4.3
       minipass: 7.1.2
 
-  path-to-regexp@1.9.0:
-    dependencies:
-      isarray: 0.0.1
-
-  path-to-regexp@6.1.0: {}
-
   path-to-regexp@6.3.0: {}
+
+  path-to-regexp@8.0.0: {}
 
   path@0.12.7:
     dependencies:
@@ -10670,7 +10659,7 @@ snapshots:
       blake3-wasm: 2.1.5
       esbuild: 0.25.4
       miniflare: 4.20250816.0
-      path-to-regexp: 6.3.0
+      path-to-regexp: 8.0.0
       unenv: 2.0.0-rc.19
       workerd: 1.20250816.0
     optionalDependencies:
