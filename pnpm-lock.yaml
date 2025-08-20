@@ -163,6 +163,9 @@ importers:
       path:
         specifier: latest
         version: 0.12.7
+      pcre-to-regexp:
+        specifier: ^1.1.0
+        version: 1.1.0
       react:
         specifier: ^19
         version: 19.0.0
