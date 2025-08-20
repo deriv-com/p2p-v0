@@ -1,3 +1,5 @@
+export const runtime = 'edge'
+
 "use client"
 
 import { useState, useEffect } from "react"
@@ -119,7 +121,7 @@ export default function AdvertiserProfilePage() {
 
   const handleBlockConfirm = async () => {
     if (!profile) return
-    
+
     setIsBlockLoading(true)
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
@@ -272,12 +274,12 @@ export default function AdvertiserProfilePage() {
                 <div className="grid grid-cols-2 md:flex gap-4">
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
-                     <div className="flex items-center mt-1">
-                        {profile?.rating_average_lifetime && <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />}
-                        {profile?.rating_average_lifetime ? 
-                          <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span> :
-                          <span className="font-bold text-base">Not rated yet</span>
-                        }
+                    <div className="flex items-center mt-1">
+                      {profile?.rating_average_lifetime && <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />}
+                      {profile?.rating_average_lifetime ?
+                        <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span> :
+                        <span className="font-bold text-base">Not rated yet</span>
+                      }
                     </div>
                   </div>
                   <div>
@@ -300,7 +302,7 @@ export default function AdvertiserProfilePage() {
                       </Tooltip>
                     </div>
                     <div className="flex items-center mt-1">
-                      {profile?.recommend_average_lifetime ? 
+                      {profile?.recommend_average_lifetime ?
                         <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span> :
                         <span className="font-bold text-base">Not recommended yet</span>
                       }
@@ -308,7 +310,7 @@ export default function AdvertiserProfilePage() {
                   </div>
                   <div>
                     <div className="text-xs text-slate-500">Total orders</div>
-                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime }</div>
+                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime}</div>
                   </div>
                 </div>
               </div>
@@ -318,13 +320,13 @@ export default function AdvertiserProfilePage() {
             <div>
               <div className="text-xs text-slate-500">Buy completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.buy_count_30day? `${profile?.completion_average_30day}% ${profile?.buy_count_30day}` : "-"}
+                {profile?.buy_count_30day ? `${profile?.completion_average_30day}% ${profile?.buy_count_30day}` : "-"}
               </div>
             </div>
             <div>
               <div className="text-xs text-slate-500">Sell completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.sell_count_30day? `${profile?.completion_average_30day}% ${profile?.sell_count_30day}` : "-"}
+                {profile?.sell_count_30day ? `${profile?.completion_average_30day}% ${profile?.sell_count_30day}` : "-"}
               </div>
             </div>
             <div>
@@ -439,9 +441,9 @@ export default function AdvertiserProfilePage() {
                                   {ad.payment_currency}{" "}
                                   {ad.exchange_rate
                                     ? ad.exchange_rate.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                      })
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    })
                                     : ""}
                                 </div>
                                 {ad.exchange_rate_type === "floating" && (
@@ -462,11 +464,10 @@ export default function AdvertiserProfilePage() {
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
                                       <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${
-                                          method.toLowerCase().includes("bank")
-                                            ? "bg-paymentMethod-bank"
-                                            : "bg-paymentMethod-ewallet"
-                                        }`}
+                                        className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
+                                          ? "bg-paymentMethod-bank"
+                                          : "bg-paymentMethod-ewallet"
+                                          }`}
                                       ></div>
                                       <span className="text-xs">{formatPaymentMethodName(method)}</span>
                                     </div>
