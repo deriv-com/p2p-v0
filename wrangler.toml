@@ -1,6 +1,4 @@
 name = "PROJECT_NAME"
 compatibility_date = "2025-08-20"
-account_id = "ACCOUNT_ID"
-
 pages_build_output_dir = ".vercel/output"
 compatibility_flags = ["nodejs_compat"]
