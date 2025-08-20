@@ -4,3 +4,4 @@ overrides:
   cookie@<0.7.0: '>=0.7.0'
   undici@<5.29.0: '>=5.29.0'
   '@eslint/plugin-kit@<0.3.4': '>=0.3.4'
+  "@cloudflare/next-on-pages>path-to-regexp": "8.0.0"
