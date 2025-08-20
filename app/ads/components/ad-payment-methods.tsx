@@ -5,9 +5,10 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { addPaymentMethod, getUserPaymentMethods } from "@/app/profile/api/api-payment-methods"
+import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: number
@@ -25,11 +26,12 @@ const AdPaymentMethods = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
+  const { showAlert } = useAlertDialog()
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const data = await getUserPaymentMethods()
+        const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
       } catch (error) {
         console.log(error)
@@ -58,12 +60,26 @@ const AdPaymentMethods = () => {
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       setIsAddingMethod(true)
-      const result = await addPaymentMethod(method, fields)
+      const result = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (result.success) {
-        const data = await getUserPaymentMethods()
+        const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
         setShowAddPanel(false)
+      } else {
+        let title = "Unable to add payment method"
+        let description = "There was an error when adding the payment method. Please try again."
+
+        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+          title = "Duplicate payment method"
+          description = "A payment method with the same values already exists. Add a new one."
+        } 
+        showAlert({
+            title,
+            description,
+            confirmText: "OK",
+            type: "warning"
+        })
       }
     } catch (error) {
       console.log(error)
@@ -103,23 +119,23 @@ const AdPaymentMethods = () => {
               return (
                 <Card
                   key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-gray-100 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                  className="cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
                 >
-                  <CardContent className="p-4">
-                    <div className="flex items-start justify-between mb-3">
-                      <div className="flex items-center gap-2">
+                  <CardContent className="p-2">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2 ml-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className="font-medium text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
                         checked={isSelected}
                         onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-                        className="!border-black data-[state=checked]:!bg-black data-[state=checked]:!border-black"
+                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="font-medium text-gray-900">{displayDetails.primary}</div>
-                      <div className="text-sm text-gray-500">{displayDetails.secondary}</div>
+                      <div className="text-sm text-neutral-10 tracking-wide">{displayDetails.primary}</div>
+                      <div className="text-sm text-neutral-7">{displayDetails.secondary}</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -127,7 +143,7 @@ const AdPaymentMethods = () => {
             })}
 
             <Card
-              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-gray-300 bg-white"
+              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-grayscale-400 bg-white"
               onClick={() => setShowAddPanel(true)}
             >
               <CardContent className="p-4 h-full flex items-center justify-center">
@@ -135,11 +151,11 @@ const AdPaymentMethods = () => {
                   <Image
                     src="/icons/plus_icon.png"
                     alt="Add payment method"
-                    width={32}
-                    height={32}
+                    width={14}
+                    height={24}
                     className="mx-auto mb-2"
                   />
-                  <p className="text-sm font-medium text-black">Add payment method</p>
+                  <p className="text-sm text-neutral-10">Add payment method</p>
                 </div>
               </CardContent>
             </Card>
@@ -148,8 +164,7 @@ const AdPaymentMethods = () => {
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
-
-      {showAddPanel && (
+       {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}
           onAdd={handleAddPaymentMethod}
@@ -157,6 +172,7 @@ const AdPaymentMethods = () => {
         />
       )}
     </>
+   
   )
 }
 

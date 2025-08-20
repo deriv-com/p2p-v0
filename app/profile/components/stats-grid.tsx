@@ -1,93 +1,152 @@
-import { Info } from "lucide-react"
+"use client"
+
+import Image from "next/image"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface StatCardProps {
   title: string
   value: string | number
-  hasInfo?: boolean
 }
 
-function StatCard({ title, value, hasInfo = false }: StatCardProps) {
+function StatCard({ title, value }: StatCardProps) {
   return (
-    <div className="py-6">
-      <div className="text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
+    <div className="flex justify-between md:border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
+      <div className="flex items-center text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
         {title}
-        {hasInfo && <Info className="inline-block h-3 w-3 ml-1 text-slate-400" />}
+        {title === "Trade partners" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="opacity-[0.72]">Total number of users you've successfully traded with.</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+        )}
+        {title === "Trade volume (Lifetime)" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="opacity-[0.72]">The total value of all trades completed in your lifetime.</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+        )}
+        {title === "Trade volume (30d)" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="opacity-[0.72]">The total value of all completed trades in the last 30 days.</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+        )}
+        {title === "Trade volume" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="opacity-[0.72]">The total value of all trades completed.</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+        )}
       </div>
       <div className="font-bold text-black text-base leading-6 tracking-normal">
-        {value !== undefined && value !== null ? value : "N/A"}
+        {value}
       </div>
     </div>
   )
 }
 
-interface StatsGridProps {
-  stats:
-    | {
-        buyCompletion: { rate: string; period: string }
-        sellCompletion: { rate: string; period: string }
-        avgPayTime: { time: string; period: string }
-        avgReleaseTime: { time: string; period: string }
-        tradePartners: number
-        totalOrders30d: number
-        totalOrdersLifetime: number
-        tradeVolume30d: { amount: string; currency: string; period: string }
-        tradeVolumeLifetime: { amount: string; currency: string }
-      }
-    | null
-    | undefined
-}
-
-export default function StatsGrid({ stats }: StatsGridProps) {
-  const defaultStats = {
-    buyCompletion: { rate: "N/A", period: "(30d)" },
-    sellCompletion: { rate: "N/A", period: "(30d)" },
-    avgPayTime: { time: "N/A", period: "(30d)" },
-    avgReleaseTime: { time: "N/A", period: "(30d)" },
-    tradePartners: 0,
-    totalOrders30d: 0,
-    totalOrdersLifetime: 0,
-    tradeVolume30d: { amount: "0.00", currency: "USD", period: "(30d)" },
-    tradeVolumeLifetime: { amount: "0.00", currency: "USD" },
-  }
-
-  const displayStats = stats || defaultStats
-
+export default function StatsGrid({ stats }) {
   return (
-    <div className="bg-slate-1500 rounded-lg px-4">
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
-        <StatCard
-          title={`Buy completion ${displayStats.buyCompletion.period}`}
-          value={displayStats.buyCompletion.rate}
-        />
-        <StatCard
-          title={`Sell completion ${displayStats.sellCompletion.period}`}
-          value={displayStats.sellCompletion.rate}
-        />
-        <StatCard title="Trade partners" value={displayStats.tradePartners} hasInfo={true} />
-      </div>
+    <TooltipProvider>
+      <div className="bg-transparent md:bg-slate-1500 rounded-lg md:px-4">
+        <div className="md:hidden">
+          <Tabs defaultValue="last30days" className="w-full">
+            <TabsList className="w-full mb-4">
+              <TabsTrigger
+                value="last30days"
+                className="w-full data-[state=active]:font-bold"
+              >
+                Last 30 days
+              </TabsTrigger>
+              <TabsTrigger
+                value="lifetime"
+                className="w-full data-[state=active]:font-bold"
+              >
+                Lifetime
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="last30days" className="bg-slate-1500 mt-0 rounded-lg px-4">
+              <div className="grid grid-cols-1 divide-y divide-slate-200">
+                  <StatCard title="Sell completion" value={stats.completion_average_30day ?? "-"} />
+                  <StatCard title="Buy completion" value={stats.buy_time_average_30day ?? "-"} />
+                  <StatCard title="Avg. pay time" value={stats.completion_average_30day ?? "-"} />
+                  <StatCard title="Avg. release time" value={stats.release_time_average_30day ?? "-"} />
+                  <StatCard title="Total orders" value={stats.partner_count_lifetime ?? "0"} />
+                  <StatCard
+                    title="Trade volume"
+                    value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
+                  />
+                </div>
+            </TabsContent>
+            <TabsContent value="lifetime" className="bg-slate-1500 mt-0 rounded-lg px-4">
+            <div className="grid grid-cols-1 divide-y divide-slate-200">
+                  <StatCard title="Trade partners" value={stats.partner_count_lifetime ?? "0"} />
+                  <StatCard title="Total orders" value={stats.partner_count_lifetime ?? "0"} />
+                  <StatCard
+                    title="Trade volume"
+                    value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
+                  />
+                  </div>
+            </TabsContent>
+          </Tabs>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-200">
-        <StatCard
-          title={`Trade volume ${displayStats.tradeVolume30d.period}`}
-          value={`${displayStats.tradeVolume30d.currency} ${displayStats.tradeVolume30d.amount}`}
-          hasInfo={true}
-        />
-        <StatCard
-          title="Trade volume (Lifetime)"
-          value={`${displayStats.tradeVolumeLifetime.currency} ${displayStats.tradeVolumeLifetime.amount}`}
-          hasInfo={true}
-        />
-        <StatCard title={`Avg. pay time ${displayStats.avgPayTime.period}`} value={displayStats.avgPayTime.time} />
-      </div>
+        <div className="hidden md:block">
+          <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
+            <StatCard
+              title={`Buy completion (30d)`}
+              value={stats.buy_time_average_30day ?? "-"}
+            />
+            <StatCard
+              title={`Sell completion (30d)`}
+              value={stats.completion_average_30day ?? "-"}
+            />
+            <StatCard title="Trade partners" value={stats.partner_count_lifetime ?? "0"} />
+          </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3">
-        <StatCard title={`Total orders ${displayStats.buyCompletion.period}`} value={displayStats.totalOrders30d} />
-        <StatCard title="Total orders (Lifetime)" value={displayStats.totalOrdersLifetime} />
-        <StatCard
-          title={`Avg. release time ${displayStats.avgReleaseTime.period}`}
-          value={displayStats.avgReleaseTime.time}
-        />
+          <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
+            <StatCard
+              title={`Trade volume (30d)`}
+              value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
+            />
+            <StatCard
+              title="Trade volume (Lifetime)"
+              value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
+            />
+            <StatCard title="Avg. pay time" value={stats.completion_average_30day ?? "-"} />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            <StatCard title="Total orders 30d" value={stats.partner_count_lifetime ?? "0"} />
+            <StatCard title="Total orders (Lifetime)" value={stats.partner_count_lifetime ?? "0"} />
+            <StatCard
+              title="Avg. release time"
+              value={stats.release_time_average_30day ?? "-"}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </TooltipProvider>
   )
 }

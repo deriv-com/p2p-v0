@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { AlertCircle } from "lucide-react"
+import { USER } from "@/lib/local-variables"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
@@ -16,27 +16,36 @@ import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
+import OrderChat from "@/components/order-chat"
+import { useWebSocketContext } from "@/contexts/websocket-context"
+import EmptyState from "@/components/empty-state"
+import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  
+  const pad = (n: number) => String(n).padStart(2, "0")
+
+  if (timeRemaining.hours && timeRemaining.minutes && timeRemaining.seconds) return null
+
   return (
-        <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
-              {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
-        </div>
+    <div className="text-xs bg-[#0000000a] text-[#000000B8] rounded-sm w-fit py-[4px] px-[8px]">
+      {`${pad(timeRemaining.hours)}:${pad(timeRemaining.minutes)}:${pad(timeRemaining.seconds)}`}
+    </div>
   )
 }
 
 export default function OrdersPage() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState<"active" | "past">("active")
+  const { activeTab, setActiveTab } = useOrdersFilterStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
+  const [showChat, setShowChat] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const isMobile = useIsMobile()
+  const { joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
@@ -86,6 +95,7 @@ export default function OrdersPage() {
     e.stopPropagation()
     setIsRatingSidebarOpen(true)
     setSelectedOrderId(order.id)
+    setSelectedOrder(order)
   }
 
   const handleRatingSidebarClose = () => {
@@ -99,19 +109,66 @@ export default function OrdersPage() {
     fetchOrders()
   }
 
+  const handleChatClick = (e: React.MouseEvent, order: Order) => {
+    e.stopPropagation()
+    if (isMobile) {
+      setSelectedOrder(order)
+      setShowChat(true)
+
+      joinChannel("orders", order.id)
+    } else {
+      navigateToOrderDetails(order.id)
+    }
+  }
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value as "active" | "past")
+  }
+
+  const getOrderType = (order) => {
+    if(order.type === "buy") {
+      if(order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
+      else return <span className="text-destructive text-base">Sell</span>
+    } else {
+      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      else return <span className="text-secondary text-base">Buy</span>
+    }
+  }
+
+  const getRecommendLabel = () => {
+    if(selectedOrder?.type === "sell") {
+      if(selectedOrder?.advert.user.id == USER.id) return "seller"
+      return "buyer"
+    } else {
+      if(selectedOrder?.advert.user.id == USER.id) return "buyer"
+      return "seller"
+    }
+  }
+
+  const getPayReceiveLabel = (order) => {
+    const label = ""
+    if(order.type === "buy") {
+      if(order.user.id == USER.id) label = "You pay"
+      else label = "You receive"
+    } else { 
+      if(order.user.id == USER.id) label = "You receive"
+      else label = "You pay"
+    }
+
+    return isMobile? label + ": "  : label
+  }
+  
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
         <Table>
-          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-10 shadow-sm">
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" && (
-                <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>
-              )}
+              {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
@@ -119,24 +176,20 @@ export default function OrdersPage() {
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
                 {activeTab === "past" && (
-                  <TableCell className="py-4 px-4 align-top text-slate-600 text-xs">
+                  <TableCell className="py-0 lg:py-4 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2 col-span-full">
                   <div>
                     <div className="flex flex-row lg:flex-col justify-between">
                       <div className="font-bold">
-                        {order.type === "buy" ? (
-                          <span className="text-secondary text-base">Buy</span>
-                        ) : (
-                          <span className="text-destructive text-base">Sell</span>
-                        )}
+                        {getOrderType(order)}
                         <span className="text-base">
                           {" "}
                           {order.advert.account_currency} {formatAmount(order.amount)}
@@ -144,36 +197,42 @@ export default function OrdersPage() {
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
-                    <div className="mt-[4px] text-slate-600 text-xs">
-                      Counterparty: {order.type === "buy" ? order.advert.user.nickname : order.user.nickname}{" "}
-                    </div>
+                    {!isMobile && (
+                      <div className="mt-[4px] text-slate-600 text-xs">
+                        Counterparty:{" "}
+                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}{" "}
+                      </div>
+                    )}
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top text-base">
-                  <div className="font-bold">
-                    {order.advert.payment_currency} {formatAmount(order.payment_amount)}
+                <TableCell className="py-1 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
+                  <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
+                      <div className="lg:font-bold">
+                        {order.payment_currency} {formatAmount(order.payment_amount)}
+                      </div>
+                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="py-4 px-4 align-top">
+                <TableCell className="lg:py-4 px-4 align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
-                    {formatStatus(order.status, order.type)}
+                    {formatStatus(false, order.status, order.type)}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="py-4 px-4 align-top">
-                    {(order.status === "pending_payment" || order.status === "pending_release")  && (
+                  <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                    {(order.status === "pending_payment" || order.status === "pending_release") && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
-                  )}
+                    )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
-                  <TableCell className="py-4 px-4 align-top">
+                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 flex justify-end items-center lg:justify-start">
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                          {Number(order.rating).toFixed(1)}
+                        {Number(order.rating).toFixed(1)}
                       </div>
                     )}
                     {order.is_reviewable > 0 && (
@@ -183,22 +242,26 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="py-4 px-4 align-top">
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      navigateToOrderDetails(order.id)
-                    }}
-                    className="text-slate-500 hover:text-slate-700"
-                    variant="ghost"
-                  >
-                    <Image
-                      src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-9Nwf9GLJPQ6HUQ8qsdDIBqeJZRacom.png"
-                      alt="View Details"
-                      width={20}
-                      height={20}
-                    />
-                  </Button>
+                <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
+                  <div className="flex flex-row items-center justify-between">
+                    {isMobile && (
+                      <div className="text-xs">
+                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={(e) => {
+                          handleChatClick(e, order)
+                        }}
+                        className="text-slate-500 hover:text-slate-700 z-auto"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                      </Button>
+                    </div>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
@@ -208,61 +271,82 @@ export default function OrdersPage() {
     </div>
   )
 
-  return (
-    <>
-    {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-    <div className="flex flex-col h-full px-[24px]">
-      <div className="flex-shrink-0">
-        <div className="mb-6">
-          <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "past")}>
-            <TabsList className="md:min-w-[330px]">
-              <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
-                Active orders
-              </TabsTrigger>
-              <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
-                Past orders
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
+  if (isMobile && showChat && selectedOrder) {
+    const counterpartyName =
+      selectedOrder?.advert.user.id == USER.id ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
+    const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
+    const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
+
+    return (
+      <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
+        <div className="flex-1 h-full">
+          <OrderChat
+            orderId={selectedOrder.id}
+            counterpartyName={counterpartyName}
+            counterpartyInitial={counterpartyInitial}
+            isClosed={isClosed}
+            onNavigateToOrderDetails={() => {
+              router.push(`/orders/${selectedOrder.id}`)
+            }}
+          />
         </div>
       </div>
-      <div className="flex-1 pb-4">
-        {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading orders...</p>
+    )
+  }
+
+  return (
+    <>
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      <div className="flex flex-col h-full px-[24px]">
+        <div className="flex-shrink-0">
+          <div className="mb-6">
+            <Tabs className="w-full md:w-[330px] md:min-w-[330px]" value={activeTab} onValueChange={handleTabChange}>
+              <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
+                  Active orders
+                </TabsTrigger>
+                <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
+                  Past orders
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
-        ) : error ? (
-          <div className="text-center py-12">
-            <p className="text-red-600">{error}</p>
-            <Button onClick={fetchOrders} className="mt-4 text-white">
-              Try Again
-            </Button>
-          </div>
-        ) : orders.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16">
-            <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-              <AlertCircle className="h-6 w-6 text-slate-400" />
+        </div>
+        <div className="flex-1 pb-4">
+          {isLoading ? (
+            <div className="text-center py-12">
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+              <p className="mt-2 text-slate-600">Loading orders...</p>
             </div>
-            <h2 className="text-xl font-medium text-slate-900 mb-2">No orders found</h2>
-            <p className="text-slate-500">Start by placing your first order.</p>
-            <Button size="sm" onClick={() => router.push("/")} className="mt-8">
-              Browse Ads
-            </Button>
-          </div>
-        ) : (
-          <div>
-            <DesktopOrderTable />
-          </div>
-        )}
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600">{error}</p>
+              <Button onClick={fetchOrders} className="mt-4 text-white">
+                Try Again
+              </Button>
+            </div>
+          ) : orders.length === 0 ? (
+            <div className="mt-[40%] md:mt-0">
+              <EmptyState
+                icon="/icons/warning-circle.png"
+                title="No orders found"
+                description="Start by placing your first order."
+              />
+            </div>
+          ) : (
+            <div>
+              <DesktopOrderTable />
+            </div>
+          )}
+        </div>
+        <RatingSidebar
+          isOpen={isRatingSidebarOpen}
+          onClose={handleRatingSidebarClose}
+          orderId={selectedOrderId}
+          onSubmit={handleRatingSubmit}
+          recommendLabel={`Would you recommend this ${getRecommendLabel()}?`}
+        />
       </div>
-      <RatingSidebar
-        isOpen={isRatingSidebarOpen}
-        onClose={handleRatingSidebarClose}
-        orderId={selectedOrderId}
-        onSubmit={handleRatingSubmit}
-      />
-    </div>
     </>
   )
 }

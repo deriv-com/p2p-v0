@@ -7,27 +7,29 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { deleteAd, toggleAdActiveStatus } from "../api/api-ads"
+import { AdsAPI } from "@/services/api"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
-import StatusModal from "./ui/status-modal"
+import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
+import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface MyAdsTableProps {
   ads: Ad[]
+  hiddenAdverts: boolean
+  isLoading: boolean
   onAdDeleted?: (status?: string) => void
 }
 
-export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
+export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [isTogglingStatus, setIsTogglingStatus] = useState(false)
+  const { toast } = useToast()
   const { showAlert } = useAlertDialog()
-  const [errorModal, setErrorModal] = useState({
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     show: false,
-    title: "",
-    message: "",
+    adId: "",
   })
 
   const formatLimits = (ad: Ad) => {
@@ -78,7 +80,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   const formatPaymentMethods = (methods: string[]) => {
     if (!methods || methods.length === 0) return "None"
     return (
-      <div className="space-y-1">
+      <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
         {methods.map((method, index) => (
           <div key={index} className="flex items-center">
             <span className={`w-2 h-2 rounded-full mr-2 ${getPaymentMethodColourByName(method)}`}></span>
@@ -97,90 +99,94 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
   }
 
   const handleEdit = (ad: Ad) => {
-    const editData = {
-      ...ad,
-      description: ad.description || "",
-    }
-
-    localStorage.setItem("editAdData", JSON.stringify(editData))
-
-    const editUrl = `/ads/create?mode=edit&id=${ad.id}`
-
-    window.location.href = editUrl
+    router.push(`/ads/edit/${ad.id}`)
   }
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
-      setIsTogglingStatus(true)
 
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
-      const updateResult = await toggleAdActiveStatus(ad.id, isListed)
+      const result = await AdsAPI.toggleAdActiveStatus(ad.id, isListed)
 
-      if (updateResult.errors && updateResult.errors.length > 0) {
-        const errorMessage =
-          updateResult.errors[0].message || `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`
-        throw new Error(errorMessage)
-      }
-
-      if (onAdDeleted) {
-        onAdDeleted()
+      if(result.success) {
+        if (onAdDeleted) {
+          onAdDeleted()
+        }
+      } else {
+        showAlert({
+            title: "Unable to update advert",
+            description: "There was an error when updating the advert. Please try again.",
+            confirmText: "OK",
+            type: "warning"
+        })
       }
     } catch (error) {
-      const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
-      setErrorModal({
-        show: true,
-        title: `Failed to ${isActive ? "Deactivate" : "Activate"} Ad`,
-        message:
-          error instanceof Error
-            ? error.message
-            : `Failed to ${isActive ? "deactivate" : "activate"} ad. Please try again.`,
-      })
-    } finally {
-      setIsTogglingStatus(false)
+      console.log(error)
     }
   }
 
   const handleDelete = (adId: string) => {
-    showAlert({
-      title: "Delete ad?",
-      description: "You will not be able to restore it.",
-      confirmText: "Delete",
-      onConfirm: () => confirmDelete(adId),
+    setDeleteConfirmModal({
+      show: true,
+      adId: adId,
     })
   }
 
-  const confirmDelete = async (adId: string) => {
+  const confirmDelete = async () => {
     try {
       setIsDeleting(true)
-      const result = await deleteAd(adId)
+      const result = await AdsAPI.deleteAd(deleteConfirmModal.adId)
 
-      if (result.errors && result.errors.length > 0) {
-        const errorMessage = result.errors[0].message || "Failed to delete ad. Please try again."
-        throw new Error(errorMessage)
+      if(result.success) {
+        if (onAdDeleted) {
+          onAdDeleted()
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                <span>Ad deleted</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+        }
+      } else {
+        let description = "There was an error when deleting the advert. Please try again."
+
+        if(result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
+          description = "The advert has ongoing orders."
+        } 
+        showAlert({
+            title: "Unable to delete advert",
+            description,
+            confirmText: "OK",
+            type: "warning"
+        })
       }
 
-      if (onAdDeleted) {
-        onAdDeleted("deleted")
-      }
+      setDeleteConfirmModal({ show: false, adId: "" })
     } catch (error) {
-      setErrorModal({
-        show: true,
-        title: "Failed to Delete Ad",
-        message: error instanceof Error ? error.message : "Failed to delete ad. Please try again.",
-      })
+      console.log(error)
     } finally {
       setIsDeleting(false)
     }
   }
 
-  const handleCloseErrorModal = () => {
-    setErrorModal({
-      show: false,
-      title: "",
-      message: "",
-    })
+  const cancelDelete = () => {
+    setDeleteConfirmModal({ show: false, adId: "" })
+  }
+
+  if(isLoading) {
+
+       return (
+              <div className="text-center py-12">
+                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                <p className="mt-2 text-slate-600">Loading ads...</p>
+              </div>
+            )
   }
 
   if (ads.length === 0) {
@@ -204,23 +210,25 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
     <>
       <div className="w-full">
         <Table>
-          <TableHeader>
-            <TableRow className="border-b">
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+            <TableRow className="text-sm">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Ad ID
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Available amount
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal w-[25%]">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Payment methods
               </TableHead>
-              <TableHead className="text-left py-4 text-slate-600 font-normal text-sm leading-5 tracking-normal">
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Status
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
               </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
             {ads.map((ad, index) => {
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
@@ -229,10 +237,10 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
 
               return (
-                <TableRow key={index} className={cn("border-b", !isActive ? "opacity-60" : "")}>
-                  <TableCell className="py-4">
+                <TableRow key={index} className={cn("grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive || hiddenAdverts ? "opacity-60" : "")}>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-span-full whitespace-nowrap">
                     <div>
-                      <div className="mb-1">
+                      <div className="mb-1 flex justify-between md:justify-normal ">
                         <span
                           className={cn(
                             "font-bold text-base leading-6",
@@ -241,39 +249,39 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                         >
                           {adType}
                         </span>
-                        <span className="text-gray-900 text-base font-normal leading-6"> {ad.id}</span>
+                        <span className="text-gray-900 text-base font-normal leading-6 ml-1"> {ad.id}</span>
                       </div>
                       <div className="space-y-1">
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-normal leading-5 text-slate-500">Rate:</span>
-                          <span className="text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                        <div className="flex items-center justify-between md:justify-normal gap-1">
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
+                          <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-normal leading-5 text-slate-500">Limits:</span>
-                          <span className="text-sm font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                        <div className="flex items-center justify-between md:justify-normal gap-1">
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limits:</span>
+                          <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
                             {formatLimits(ad)}
                           </span>
                         </div>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full whitespace-nowrap">
                     <div className="mb-1">
                       USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
                     </div>
-                    <div className="h-2 bg-gray-200 rounded-full w-full max-w-[180px] overflow-hidden">
+                    <div className="h-2 bg-[#E9ECEF] rounded-xs w-full overflow-hidden">
                       <div
-                        className="h-full bg-black rounded-full"
+                        className="h-full bg-neutral-10 rounded-xs"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-4">{formatPaymentMethods(paymentMethods)}</TableCell>
-                  <TableCell className="py-4">{getStatusBadge(isActive)}</TableCell>
-                  <TableCell className="py-4 text-right">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">{getStatusBadge(isActive)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <button className="p-1 hover:bg-gray-100 rounded-full">
+                        <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
                           <Image
                             src="/icons/ellipsis-vertical-md.png"
                             alt="More options"
@@ -281,7 +289,7 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                             height={20}
                             className="text-gray-500"
                           />
-                        </button>
+                        </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end" className="w-[160px]">
                         <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleEdit(ad)}>
@@ -291,18 +299,16 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
                         <DropdownMenuItem
                           className="flex items-center gap-2"
                           onSelect={() => handleToggleStatus(ad)}
-                          disabled={isTogglingStatus}
                         >
                           <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
-                          {isTogglingStatus ? "Updating..." : isActive ? "Deactivate" : "Activate"}
+                          {isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-red-600"
                           onSelect={() => handleDelete(ad.id)}
-                          disabled={isDeleting}
                         >
                           <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
-                          <span className="text-red-600">{isDeleting ? "Deleting..." : "Delete"}</span>
+                          <span className="text-red-600">Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -314,14 +320,14 @@ export default function MyAdsTable({ ads, onAdDeleted }: MyAdsTableProps) {
         </Table>
       </div>
 
-      {errorModal.show && (
-        <StatusModal
-          type="error"
-          title={errorModal.title}
-          message={errorModal.message}
-          onClose={handleCloseErrorModal}
-        />
-      )}
+      <DeleteConfirmationDialog
+        open={deleteConfirmModal.show}
+        title="Delete ad?"
+        description="You will not be able to restore it."
+        isDeleting={isDeleting}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+      />
     </>
   )
 }

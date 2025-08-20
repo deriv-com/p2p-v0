@@ -95,7 +95,7 @@ export async function getSession(): Promise<VerificationResponse> {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                "X-Branch": "development",
+                "X-Branch": "master",
             }
         })
 
@@ -112,6 +112,12 @@ export async function getSession(): Promise<VerificationResponse> {
             return {
                 errors: ["No token found"]
             }
+        }
+
+        const userId = data?.id
+        if (userId) {
+            localStorage.setItem("user_id", userId.toString())
+            localStorage.setItem("user_data", JSON.stringify(data))
         }
 
         return {
@@ -164,7 +170,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
-                "X-Branch": "development",
+                "X-Branch": "master",
             }
         })
 

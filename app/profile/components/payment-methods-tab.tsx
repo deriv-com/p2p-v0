@@ -2,19 +2,19 @@
 
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
+import Image from "next/image"
 
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical, Edit, Trash } from "lucide-react"
+import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import CustomStatusModal from "./ui/custom-status-modal"
-import { ProfileAPI } from "../api"
-import CustomNotificationBanner from "./ui/custom-notification-banner"
+import { ProfileAPI } from "@/services/api"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
-import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { Card, CardContent } from "@/components/ui/card"
-import { StatusIndicator } from "@/components/ui/status-indicator"
+import { useToast } from "@/hooks/use-toast"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface PaymentMethod {
   id: string
@@ -30,23 +30,14 @@ export default function PaymentMethodsTab() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    methodId: "",
-    methodName: "",
-  })
-  const [isDeleting, setIsDeleting] = useState(false)
+  const { toast } = useToast()
   const [statusModal, setStatusModal] = useState({
     show: false,
     type: "error" as "success" | "error",
     title: "",
     message: "",
   })
-  const [notification, setNotification] = useState<{ show: boolean; message: string }>({
-    show: false,
-    message: "",
-  })
+  const { showDeleteDialog } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -160,12 +151,18 @@ export default function PaymentMethodsTab() {
         fields: { ...fields },
       }
 
-      const result = await ProfileAPI.PaymentMethods.updatePaymentMethod(id, payload)
+      const result = await ProfileAPI.updatePaymentMethod(id, payload)
 
       if (result.success) {
-        setNotification({
-          show: true,
-          message: "Payment method details updated successfully.",
+        toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method updated.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
 
         fetchPaymentMethods()
@@ -208,26 +205,29 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-    setDeleteConfirmModal({
-      show: true,
-      methodId: id,
-      methodName: name,
-    })
+      showDeleteDialog({
+        title: `Delete ${name}?`,
+        description: "Are you sure you want to delete this payment method?",
+        confirmText: "Yes, delete",
+        onConfirm: () => { confirmDeletePaymentMethod(id) },
+      })
   }
 
-  const confirmDeletePaymentMethod = async () => {
+  const confirmDeletePaymentMethod = async (id) => {
     try {
-      setIsDeleting(true)
-      const result = await ProfileAPI.PaymentMethods.deletePaymentMethod(deleteConfirmModal.methodId)
+      const result = await ProfileAPI.deletePaymentMethod(id)
 
       if (result.success) {
-        setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
-
-        setNotification({
-          show: true,
-          message: "Payment method deleted.",
+        toast({
+            description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                  <span>Payment method deleted.</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
         })
-
         fetchPaymentMethods()
       } else {
         setStatusModal({
@@ -246,13 +246,7 @@ export default function PaymentMethodsTab() {
         title: "Failed to delete payment method",
         message: error instanceof Error ? error.message : "An error occurred. Please try again.",
       })
-    } finally {
-      setIsDeleting(false)
     }
-  }
-
-  const cancelDeletePaymentMethod = () => {
-    setDeleteConfirmModal({ show: false, methodId: "", methodName: "" })
   }
 
   const closeStatusModal = () => {
@@ -263,31 +257,14 @@ export default function PaymentMethodsTab() {
   const eWallets = paymentMethods.filter((method) => method.category === "e_wallet")
 
   const getBankIcon = () => (
-    <div className="w-10 h-10 flex items-center justify-center text-success">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M2 10H22V18C22 18.5304 21.7893 19.0391 21.4142 19.4142C21.0391 19.7893 20.5304 20 20 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V10ZM12 3L22 8H2L12 3Z"
-          fill="currentColor"
-        />
-      </svg>
+    <div className="w-10 h-10 flex items-center justify-center">
+      <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
     </div>
   )
 
   const getEWalletIcon = () => (
-    <div className="w-10 h-10 flex items-center justify-center text-blue">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M19 6H5C3.89543 6 3 6.89543 3 8V16C3 17.1046 3.89543 18 5 18H19C20.1046 18 21 17.1046 21 16V8C21 6.89543 20.1046 6 19 6Z"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M16 13C16.5523 13 17 12.5523 17 12C17 11.4477 16.5523 11 16 11C15.4477 11 15 11.4477 15 12C15 12.5523 15.4477 13 16 13Z"
-          fill="currentColor"
-        />
-      </svg>
+    <div className="w-10 h-10 flex items-center justify-center">
+      <Image src="/icons/ewallet-icon-new.png" alt="E-wallet" width={24} height={24} />
     </div>
   )
 
@@ -331,30 +308,22 @@ export default function PaymentMethodsTab() {
 
   return (
     <div>
-      {notification.show && (
-        <CustomNotificationBanner
-          message={notification.message}
-          onClose={() => setNotification({ show: false, message: "" })}
-        />
-      )}
 
-      <div className="mb-8 mt-6">
-        <h3 className="text-xl font-bold mb-4">Bank transfer</h3>
-        {bankTransfers.length > 0 ? (
+      {bankTransfers.length > 0 && (
+        <div className="mb-4">
+          <h3 className="text-base font-bold mb-4">Bank transfer</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
+                <CardContent className="p-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getBankIcon()}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-lg">Bank Transfer</div>
-                        <StatusIndicator variant="neutral" size="sm" className="truncate">
-                          {method.details?.account?.value
-                            ? maskAccountNumber(method.details.account.value)
-                            : `ID: ${method.id}`}
-                        </StatusIndicator>
+                      <div className="flex-1 min-w-0 text-sm ">
+                        <div className="text-neutral-10">{method.details.bank_name.value}</div>
+                        <div className="text-neutral-7 tracking-wide">
+                          {maskAccountNumber(method.details.account.value)}
+                        </div>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -363,19 +332,19 @@ export default function PaymentMethodsTab() {
                           <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Trash className="h-4 w-4" />
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -385,26 +354,24 @@ export default function PaymentMethodsTab() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-500 italic">No bank transfers are added at the moment</p>
-        )}
-      </div>
-
-      <div className="mb-8">
-        <h3 className="text-xl font-bold mb-4">E-wallets</h3>
-        {eWallets.length > 0 ? (
+        </div>
+      )}
+      
+      {eWallets.length > 0 && (
+        <div>
+          <h3 className="text-base font-bold mb-4">E-wallets</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start gap-3 flex-1 min-w-0">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
+                <CardContent className="p-2">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getEWalletIcon()}
-                      <div className="flex-1 min-w-0">
-                        <div className="font-medium text-lg">{method.name}</div>
-                        <StatusIndicator variant="neutral" size="sm" className="truncate">
+                      <div className="flex-1 min-w-0 text-sm">
+                        <div className="text-neutral-10">{method.name}</div>
+                        <div className="text-neutral-7">
                           {method.details?.account?.value || `ID: ${method.id}`}
-                        </StatusIndicator>
+                        </div>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -413,19 +380,19 @@ export default function PaymentMethodsTab() {
                           <MoreVertical className="h-5 w-5 text-gray-500" />
                         </Button>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
-                          <Edit className="h-4 w-4" />
+                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
-                          <Trash className="h-4 w-4" />
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -435,20 +402,8 @@ export default function PaymentMethodsTab() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-gray-500 italic">No e-wallets are added at the moment</p>
-        )}
-      </div>
-
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete payment method?"
-        description={`Are you sure you want to delete ${deleteConfirmModal.methodName}? You will not be able to restore it.`}
-        isDeleting={isDeleting}
-        onConfirm={confirmDeletePaymentMethod}
-        onCancel={cancelDeletePaymentMethod}
-      />
-
+        </div>
+      )}
       {editPanel.show && editPanel.paymentMethod && (
         <EditPaymentMethodPanel
           paymentMethod={editPanel.paymentMethod}

@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-interface AvailablePaymentMethod {
+export interface AvailablePaymentMethod {
   id: number
   method: string
   display_name: string
@@ -45,7 +45,7 @@ export function getPaymentMethodFields(
 }
 
 export function getPaymentMethodIcon(type: string): string {
-  return type === "ewallet" ? "/icons/ewallet-icon.png" : "/icons/bank-transfer-icon.png"
+  return type === "ewallet" ? "/icons/ewallet-icon-new.png" : "/icons/bank-icon.png"
 }
 
 export function getPaymentMethodColour(type: string): string {
@@ -132,14 +132,14 @@ export function getMethodDisplayDetails(method: {
   }
 }
 
-export function formatStatus(status: string, type: string): string {
+export function formatStatus(isDetailed: boolean, status: string, type: string): string {
   if (!status) return ""
 
   const statusMap: Record<string, string> = {
     refunded: "Refunded",
-    cancelled: "Cancelled",
-    timed_out: "Expired",
-    completed: "Complete",
+    cancelled: isDetailed ? "Order cancelled" : "Cancelled",
+    timed_out: isDetailed ? "Order expired" : "Expired",
+    completed: isDetailed ? "Order complete" : "Completed",
     pending_payment: type === "buy" ? "Complete payment" : "Awaiting payment",
     pending_release: type === "buy" ? "Waiting seller's confirmation" : "Confirm payment",
     disputed: "Under dispute",
@@ -154,23 +154,23 @@ export function formatStatus(status: string, type: string): string {
 }
 
 export function getStatusBadgeStyle(status: string, type: string): string {
-    switch (status) {
-      case "pending_payment":
-        return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
-      case "pending_release":
-        return type === "buy" ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
-      case "completed":
-        return "bg-green-100 text-green-800"
-      case "cancelled":
-        return "bg-slate-100 text-slate-800"
-      case "disputed":
-        return "bg-red-100 text-red-700"
-      case "timed_out":
-        return "bg-slate-100 text-slate-800"
-      default:
-        return "bg-blue-50 text-blue-100"
-    }
+  switch (status) {
+    case "pending_payment":
+      return type === "buy" ? "bg-blue-50 text-blue-100" : "bg-yellow-100 text-yellow-50"
+    case "pending_release":
+      return type === "buy" ? "bg-yellow-100 text-yellow-50" : "bg-blue-50 text-blue-100"
+    case "completed":
+      return "bg-green-50 text-buy"
+    case "cancelled":
+      return "bg-slate-100 text-slate-800"
+    case "disputed":
+      return "bg-red-100 text-red-700"
+    case "timed_out":
+      return "bg-slate-100 text-slate-800"
+    default:
+      return "bg-blue-50 text-blue-100"
   }
+}
 
 export function getChatErrorMessage(tags: string[]): string {
   const messageTypeFormatters = {
@@ -178,12 +178,15 @@ export function getChatErrorMessage(tags: string[]): string {
     link: "Links and URLs are not permitted in this chat.",
     profanity: "Please keep the conversation professional and avoid offensive language.",
     promotional_content: "Promotional content and advertisements are not allowed.",
-    off_platform_communication: "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
+    off_platform_communication:
+      "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
     human_attention: "Threatening or harassing language is not tolerated. Please communicate respectfully.",
     harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
-    fake_identity: "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
-    sensitive_data_requests: "Your message requires additional review. Please wait while we connect you with a specialist.",
-    miscellaneous: "Your message doesn't meet our community guidelines. Please try again."
+    fake_identity:
+      "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
+    sensitive_data_requests:
+      "Your message requires additional review. Please wait while we connect you with a specialist.",
+    miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
   }
 
   const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
@@ -192,18 +195,176 @@ export function getChatErrorMessage(tags: string[]): string {
 }
 
 export function formatAmount(amount: string) {
-  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
 export function formatDateTime(datetime) {
-  const d = new Date(datetime);
-  
-  return d.toLocaleString('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  }).replace(',', '');
+  const d = new Date(datetime)
+
+  return d
+    .toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    })
+    .replace(",", "")
+}
+
+export async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch (err) {
+    console.error("Failed to copy text: ", err)
+    return false
+  }
+}
+
+export function preventSwipeNavigation(): () => void {
+  let startX = 0
+  let startY = 0
+  let isHorizontalSwipe = false
+
+  const handleTouchStart = (e: TouchEvent) => {
+    const target = e.target as Element
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
+      return
+    }
+
+    startX = e.touches[0].clientX
+    startY = e.touches[0].clientY
+    isHorizontalSwipe = false
+
+    if (startX < 50 || startX > window.innerWidth - 50) {
+      e.preventDefault()
+    }
+  }
+
+  const handleTouchMove = (e: TouchEvent) => {
+    const target = e.target as Element
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
+      return
+    }
+
+    if (!startX || !startY) {
+      return
+    }
+
+    const currentX = e.touches[0].clientX
+    const currentY = e.touches[0].clientY
+    const diffX = Math.abs(startX - currentX)
+    const diffY = Math.abs(startY - currentY)
+
+    if (diffX > diffY && diffX > 10) {
+      isHorizontalSwipe = true
+    }
+
+    if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+  }
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    const target = e.target as Element
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
+      return
+    }
+
+    if (isHorizontalSwipe && (startX < 50 || startX > window.innerWidth - 50)) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
+    startX = 0
+    startY = 0
+    isHorizontalSwipe = false
+  }
+
+  const handleGestureStart = (e: Event) => {
+    const target = e.target as Element
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
+      return
+    }
+
+    e.preventDefault()
+  }
+
+  const handleGestureChange = (e: Event) => {
+    const target = e.target as Element
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
+      return
+    }
+
+    e.preventDefault()
+  }
+
+  const handleGestureEnd = (e: Event) => {
+    const target = e.target as Element
+
+    if (
+      target.closest("[data-sidebar]") ||
+      target.closest(".fixed.bottom-0") ||
+      target.closest('[role="dialog"]') ||
+      target.closest(".sheet-content")
+    ) {
+      return
+    }
+
+    e.preventDefault()
+  }
+
+  document.addEventListener("touchstart", handleTouchStart, { passive: false })
+  document.addEventListener("touchmove", handleTouchMove, { passive: false })
+  document.addEventListener("touchend", handleTouchEnd, { passive: false })
+
+  document.addEventListener("gesturestart", handleGestureStart, { passive: false })
+  document.addEventListener("gesturechange", handleGestureChange, { passive: false })
+  document.addEventListener("gestureend", handleGestureEnd, { passive: false })
+
+  document.body.style.overscrollBehaviorX = "none"
+
+  return () => {
+    document.removeEventListener("touchstart", handleTouchStart)
+    document.removeEventListener("touchmove", handleTouchMove)
+    document.removeEventListener("touchend", handleTouchEnd)
+    document.removeEventListener("gesturestart", handleGestureStart)
+    document.removeEventListener("gesturechange", handleGestureChange)
+    document.removeEventListener("gestureend", handleGestureEnd)
+
+    document.body.style.overscrollBehaviorX = "auto"
+  }
 }

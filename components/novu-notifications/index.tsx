@@ -139,6 +139,18 @@ export function NovuNotifications() {
             const orderId = notification.data["order_id"]
             router.push(`/orders/${orderId}`)
           }
+
+          setTimeout(() => {
+            const inboxElement = document.querySelector(".nv-popoverContent") as HTMLElement
+            if (inboxElement) {
+              const clickOutsideEvent = new MouseEvent("click", {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+              })
+              document.body.dispatchEvent(clickOutsideEvent)
+            }
+          }, 100)
         }}
         placement="bottom-end"
         appearance={appearance}

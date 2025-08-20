@@ -2,9 +2,10 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import type { AdFormData } from "../types"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { Check, ChevronDown, ChevronUp, Search } from "lucide-react"
+import { Check, ChevronDown, ChevronUp } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
@@ -86,10 +87,13 @@ export default function PaymentDetailsForm({
     const selectedPaymentMethodIds = initialData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
 
     const formData = {
+      id: initialData.id,
       paymentMethods,
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
+
+    setFormData(formData)
 
     if (formValid) {
       onSubmit(formData)
@@ -146,15 +150,12 @@ export default function PaymentDetailsForm({
 
   return (
     <div className="h-full flex flex-col">
-      <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1 py-6">
+      <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1">
         <div className="max-w-[800px] mx-auto h-full flex flex-col">
-          <div className="space-y-8">
+          <div>
             {initialData.type === "buy" && (
               <div>
-                <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Select payment method</h3>
                 <div className="mb-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Payment methods</label>
-
                   {isMobile ? (
                     <>
                       <Button
@@ -218,15 +219,21 @@ export default function PaymentDetailsForm({
                           onKeyDown={(e) => e.stopPropagation()}
                           className="relative p-1"
                         >
-                          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-black z-10" />
+                          <Image
+                            src="/icons/search-icon-custom.png"
+                            alt="Search"
+                            width={24}
+                            height={24}
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2"
+                          />
                           <Input
-                            type="text"
                             placeholder="Search"
                             value={searchQuery}
                             onChange={(e) => {
                               e.stopPropagation()
                               setSearchQuery(e.target.value)
                             }}
+                            className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
                             onKeyDown={(e) => e.stopPropagation()}
                             variant="secondary"
                             onClick={(e) => e.stopPropagation()}
@@ -241,18 +248,18 @@ export default function PaymentDetailsForm({
                               togglePaymentMethod(method.method)
                             }}
                             disabled={!isMethodSelected(method.method) && isMaxReached}
-                            className={`flex items-center gap-2 px-3 py-2 cursor-pointer ${
+                            className={`flex items-center gap-2 px-4 py-3 cursor-pointer ${
                               !isMethodSelected(method.method) && isMaxReached ? "opacity-50" : ""
                             }`}
                           >
                             <div
-                              className={`w-5 h-5 flex items-center justify-center rounded border ${
+                              className={`w-4 h-4 flex items-center justify-center rounded border ${
                                 isMethodSelected(method.method) ? "bg-black border-black" : "border-gray-300"
                               }`}
                             >
                               {isMethodSelected(method.method) && <Check className="h-3 w-3 text-white" />}
                             </div>
-                            <span>{method.display_name}</span>
+                            <span className="text-base">{method.display_name}</span>
                           </DropdownMenuItem>
                         ))}
                       </DropdownMenuContent>
@@ -283,11 +290,11 @@ export default function PaymentDetailsForm({
               <Textarea
                 value={instructions}
                 onChange={(e) => setInstructions(e.target.value)}
-                placeholder="Advertisers' instructions"
+                placeholder="Advertisers' instructions (Optional)"
                 className="min-h-[120px] resize-none"
                 maxLength={300}
               />
-              <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
+              <div className="flex justify-between items-start mt-2 text-xs text-gray-500 mx-4">
                 <span>
                   This information will be visible to everyone. Don&rsquo;t share your phone number or personal details.
                 </span>

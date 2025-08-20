@@ -27,9 +27,16 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
+  onNavigateToOrderDetails: () => void
 }
 
-export default function OrderChat({ orderId, counterpartyName, counterpartyInitial, isClosed }: OrderChatProps) {
+export default function OrderChat({
+  orderId,
+  counterpartyName,
+  counterpartyInitial,
+  isClosed,
+  onNavigateToOrderDetails,
+}: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -47,9 +54,13 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
           setMessages(data.payload.data.chat_history)
         }
 
-        if (data.payload.data.message) {
-          const newMessage = data.payload.data.message
-          setMessages((prev) => [...prev, newMessage])
+        if (data.payload.data.message || data.payload.data.attachment) {
+          const newMessage = data.payload.data
+          if(newMessage.order_id == orderId) {
+            setMessages((prev) => {
+                return [...prev, newMessage]
+            })
+          }
         }
 
         setIsLoading(false)
@@ -82,13 +93,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
       const messageToSend = message
       setMessage("")
 
-      const result = await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
-
-      if (result.success) {
-        if (isConnected) {
-          getChatHistory("orders", orderId)
-        }
-      }
+      await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
     } catch (error) {
       console.log(error)
     } finally {
@@ -112,13 +117,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
 
       try {
         const base64 = await fileToBase64(file)
-        const result = await OrdersAPI.sendChatMessage(orderId, "", base64)
-
-        if (result.success) {
-          if (isConnected) {
-            getChatHistory("orders", orderId)
-          }
-        }
+        await OrdersAPI.sendChatMessage(orderId, "", base64)
       } catch (error) {
         console.error("Error sending file:", error)
       } finally {
@@ -140,8 +139,18 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full overflow-auto">
       <div className="flex items-center p-4 border-b">
+        {onNavigateToOrderDetails && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onNavigateToOrderDetails}
+            className="mr-[16px] bg-grayscale-300 px-1"
+          >
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+          </Button>
+        )}
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
         </div>
@@ -201,7 +210,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                       {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
                     </div>
                   )}
-                  {msg.rejected ? (
+                  {msg.rejected && msg.tags ? (
                     <div className="text-xs text-error-text mt-[4px]">
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
@@ -209,7 +218,7 @@ export default function OrderChat({ orderId, counterpartyName, counterpartyIniti
                     <div
                       className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
                     >
-                      {formatDateTime(msg.time)}
+                      {msg.time && formatDateTime(msg.time)}
                     </div>
                   )}
                 </div>

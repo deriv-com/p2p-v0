@@ -7,7 +7,8 @@ import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getCurrencies } from "../api/api-ads"
+import { AdsAPI } from "@/services/api"
+import { useCurrencyData } from "@/hooks/use-currency-data"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -30,6 +31,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState("USD")
   const [forCurrency, setForCurrency] = useState("USD")
+  const { currencies: currencyList } = useCurrencyData()
   const [currencies, setCurrencies] = useState<string[]>([])
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
@@ -45,38 +47,9 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     return hasValues && hasNoErrors
   }
 
-  const updateTouchedBasedOnValues = () => {
-    setTouched({
-      totalAmount: !!totalAmount,
-      fixedRate: !!fixedRate,
-      minAmount: !!minAmount,
-      maxAmount: !!maxAmount,
-    })
-  }
-  
-  const formatToTwoDecimals = (value: string): string => {
-    if (!value) return value
-
-
-    const cleanValue = value.replace(/[^0-9.]/g, "")
-
-    
-    const parts = cleanValue.split(".")
-    if (parts.length > 2) {
-      return parts[0] + "." + parts.slice(1).join("")
-    }
-
-
-    if (parts.length === 2) {
-      return parts[0] + "." + parts[1].slice(0, 2)
-    }
-
-    return cleanValue
-  }
-
   useEffect(() => {
     const loadCurrencies = async () => {
-      const currencyList = await getCurrencies()
+      const currencyList = await AdsAPI.getCurrencies()
       setCurrencies(currencyList)
     }
     loadCurrencies()
@@ -91,10 +64,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
     }
   }, [initialData])
-
-  useEffect(() => {
-    updateTouchedBasedOnValues()
-  }, [totalAmount, fixedRate, minAmount, maxAmount])
 
   useEffect(() => {
     const errors: ValidationErrors = {}
@@ -207,6 +176,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       maxAmount: Number.parseFloat(maxAmount) || 0,
     }
 
+    setFormData(formData)
+
     onNext(formData)
   }
 
@@ -230,7 +201,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
   return (
     <div className="max-w-[800px] mx-auto">
-      <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-10">
+      <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
         {!isEditMode && (
           <div>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
@@ -261,9 +232,9 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                     <SelectValue>{forCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
+                    {currencyList.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        {currency.code}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -274,20 +245,20 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         )}
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Set amount and rate</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-grayscale-200 rounded-lg p-4">
             <div>
               <CurrencyInput
                 value={totalAmount}
                 onValueChange={(value) => {
-                  const formattedValue = formatToTwoDecimals(value)
-                  setTotalAmount(formattedValue)
+                  setTotalAmount(value)
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder="Total amount"
+                placeholder={type ==="sell"? "Sell quantity": "Buy quantity"}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
+                currency={buyCurrency}
               />
               {touched.totalAmount && formErrors.totalAmount && (
                 <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
@@ -296,11 +267,11 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <RateInput
+                  currency={forCurrency}
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
-                  const formattedValue = formatToTwoDecimals(value)
-                  setFixedRate(formattedValue)
+                  setFixedRate(value)
                   setTouched((prev) => ({ ...prev, fixedRate: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
@@ -314,35 +285,33 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         </div>
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-5">Transaction limit</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Transaction limit</h3>
+          <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div>
               <CurrencyInput
                 value={minAmount}
                 onValueChange={(value) => {
-                  const formattedValue = formatToTwoDecimals(value)
-                  setMinAmount(formattedValue)
+                  setMinAmount(value)
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, minAmount: true }))}
-                placeholder="Minimum order amount"
+                placeholder="Minimum order"
                 error={touched.minAmount && !!formErrors.minAmount}
               />
               {touched.minAmount && formErrors.minAmount && (
                 <p className="text-destructive text-xs mt-1">{formErrors.minAmount}</p>
               )}
             </div>
-
+            <div className="text-xl hidden md:block">~</div>
             <div>
               <CurrencyInput
                 value={maxAmount}
                 onValueChange={(value) => {
-                  const formattedValue = formatToTwoDecimals(value)
-                  setMaxAmount(formattedValue)
+                  setMaxAmount(value)
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, maxAmount: true }))}
-                placeholder="Maximum order amount"
+                placeholder="Maximum order"
                 error={touched.maxAmount && !!formErrors.maxAmount}
               />
               {touched.maxAmount && formErrors.maxAmount && (

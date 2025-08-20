@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Plus, Minus, RefreshCw } from "lucide-react"
+import { Minus, RefreshCw } from "lucide-react"
 import Image from "next/image"
 import WalletBottomSheet from "./wallet-bottom-sheet"
 import WalletSidebar from "./wallet-sidebar"
@@ -125,7 +125,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           <RefreshCw className={cn("h-4 w-4 text-gray-400", isRefreshing && "animate-spin")} />
         </Button>
       </div>
-      <p className="mt-1 text-sm font-normal text-muted-foreground text-center leading-[22px]">P2P Wallet</p>
+      <p className="mt-1 text-sm font-normal text-muted-foreground text-center leading-[22px]">Est total assets</p>
 
       <div className="mt-[50px] md:mt-12 flex w-full max-w-md justify-center md:justify-between gap-[50px] md:gap-0 px-4">
         <div className="flex flex-col items-center">
@@ -135,7 +135,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             aria-label="Deposit"
             onClick={handleDepositClick}
           >
-            <Plus className="h-6 w-6" />
+            <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
           </Button>
           <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">Deposit</span>
         </div>

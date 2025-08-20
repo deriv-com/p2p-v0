@@ -12,6 +12,7 @@ if (typeof window !== "undefined") {
 
 export const USER = {
   id: USER_ID,
+  advertsAreListed: USER_DATA?.adverts_are_listed,
   nickname: USER_DATA?.nickname,
   socketToken: SOCKET_TOKEN,
   userToken: USER_TOKEN

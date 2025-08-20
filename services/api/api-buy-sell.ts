@@ -33,7 +33,7 @@ export interface SearchParams {
   type?: string
   currency?: string
   account_currency: string
-  paymentMethod?: string
+  paymentMethod?: string[]
   amount?: number
   nickname?: string
   sortBy?: string
@@ -53,13 +53,20 @@ export interface PaymentMethod {
  */
 export async function getAdvertisements(params?: SearchParams): Promise<Advertisement[]> {
   try {
-    const queryParams = new URLSearchParams()
-
+   const queryParams = new URLSearchParams()
     if (params) {
       if (params.type) queryParams.append("advert_type", params.type)
       if (params.currency) queryParams.append("payment_currency", params.currency)
       if (params.account_currency) queryParams.append("account_currency", params.account_currency)
-      if (params.paymentMethod) queryParams.append("paymentMethod", params.paymentMethod)
+      if (params.paymentMethod) {
+        if (params.paymentMethod.length === 0) {
+          queryParams.append('payment_methods', JSON.stringify([]));
+        } else {
+          params.paymentMethod.forEach(method => {
+            queryParams.append('payment_methods[]', method);
+          });
+        }
+      }
       if (params.amount) queryParams.append("amount", params.amount.toString())
       if (params.nickname) queryParams.append("nickname", params.nickname)
       if (params.sortBy) queryParams.append("sort_by", params.sortBy)
@@ -70,6 +77,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     if (country_code) queryParams.append("country_code", country_code)
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
+   
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
@@ -272,7 +280,7 @@ export async function toggleFavouriteAdvertiser(
   isFavourite: boolean,
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.userFavourites}`
+    const url = isFavourite ? `${API.baseUrl}${API.endpoints.userFavourites}` : `${API.baseUrl}${API.endpoints.userFavourites}/${advertiserId}`
     const method = isFavourite ? "POST" : "DELETE"
 
     const headers = {
@@ -290,7 +298,7 @@ export async function toggleFavouriteAdvertiser(
       method,
       // credentials: "include",
       headers,
-      body,
+      ...(isFavourite && { body }),
     })
 
     if (!response.ok) {

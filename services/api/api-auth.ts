@@ -54,7 +54,6 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
     const response = await fetch(`${API.coreUrl}/verify`, {
-
       method: "POST",
       headers: {
         "X-Enable-Session": "true"
@@ -186,7 +185,6 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token: string): Promise<void> {
   try {
-
     const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
       method: "GET",
       credentials: "include",

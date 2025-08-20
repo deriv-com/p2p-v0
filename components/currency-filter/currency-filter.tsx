@@ -4,12 +4,14 @@ import type React from "react"
 
 import { useState, useMemo, useCallback } from "react"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import { cn } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
+import EmptyState from "@/components/empty-state"
 
 export function CurrencyFilter({
   currencies,
@@ -17,7 +19,6 @@ export function CurrencyFilter({
   onCurrencySelect,
   trigger,
   placeholder = "Search",
-  emptyMessage = "Currency is unavailable",
 }: CurrencyFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -89,15 +90,29 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
+          className="text-base pl-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 md:focus:border-black bg-grayscale-500 md:bg-transparent rounded-lg"
           autoComplete="off"
           autoFocus
         />
+        {searchQuery && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSearchQuery("")}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+          >
+            <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+          </Button>
+        )}
       </div>
 
       <div className="max-h-[85%] overflow-y-auto">
         {filteredCurrencies.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">{emptyMessage}</div>
+          <EmptyState
+                title={`${searchQuery} is unavailable`}
+                description="Select another currency"
+                redirectToAds={false}
+              /> 
         ) : (
           <div className="space-y-1">
             {filteredCurrencies.map((currency) => (
