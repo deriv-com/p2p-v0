@@ -135,7 +135,7 @@ export async function toggleRealNameVisibility(show: boolean): Promise<{ success
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
       method: "PUT",
-credentials: "include",
+      credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
