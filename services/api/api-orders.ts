@@ -243,7 +243,7 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
 
     const response = await fetch(url, {
       method: "POST",
-      credentials: "include",
+ credentials: "include",
       headers,
       body,
     })
@@ -285,7 +285,7 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
 
     const response = await fetch(url, {
       method: "POST",
-      credentials: "include",
+credentials: "include",
       headers,
       body,
     })
