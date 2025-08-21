@@ -172,7 +172,7 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
     })
 
