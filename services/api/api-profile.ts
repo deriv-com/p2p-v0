@@ -60,7 +60,7 @@ export interface PaymentMethod {
 export async function getUserProfile(): Promise<UserProfile> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
-credentials: "include",
+      credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
