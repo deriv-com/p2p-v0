@@ -50,12 +50,14 @@ export const WALLETS = {
 
 export const AUTH = {
   getAuthHeader: () => ({
+    Authorization: `Bearer ${USER_TOKEN}`,
     "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
     "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   }),
 
   getNotificationHeader: () => ({
+    Authorization: `Bearer ${USER_TOKEN}`,
     "Content-Type": "application/json",
   }),
 }

@@ -23,7 +23,7 @@ export default function ProfilePage() {
         const headers = AUTH.getAuthHeader()
 
         const response = await fetch(url, {
-          credentials: "include",
+          // credentials: "include",
           headers,
         })
 

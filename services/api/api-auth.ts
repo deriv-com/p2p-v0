@@ -140,10 +140,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
-      headers: {
-          "X-Data-Source": "live",
-          "X-Branch": "master"
-      }
     })
 
     if (!response.ok) {

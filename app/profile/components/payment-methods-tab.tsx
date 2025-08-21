@@ -54,7 +54,6 @@ export default function PaymentMethodsTab() {
       const headers = AUTH.getAuthHeader()
       const response = await fetch(url, {
         headers,
-        credentials: "include",
         cache: "no-store",
       })
 

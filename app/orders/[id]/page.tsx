@@ -1,7 +1,5 @@
 "use client"
 
-export const runtime = 'edge'
-
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { X, ChevronRight } from 'lucide-react'
@@ -351,24 +349,24 @@ export default function OrderDetailsPage() {
                       <ChevronRight className="h-4 w-4 ml-1" />
                     </button>
                   </div>
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                        <p className="font-bold">{counterpartyNickname}</p>
-                      </div>
-                      {isMobile && (
-                        <Button
-                          onClick={() => {
-                            setShowChat(true)
-                          }}
-                          className="text-slate-500 hover:text-slate-700"
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                        </Button>
-                      )}
-                    </div></>
+                  <div className="flex justify-between items-end">
+                    <div>
+                      <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                      <p className="font-bold">{counterpartyNickname}</p>
+                    </div>
+                    {isMobile && (
+                      <Button
+                        onClick={() => {
+                          setShowChat(true)
+                        }}
+                        className="text-slate-500 hover:text-slate-700"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                      </Button>
+                    )}
+                  </div></>
                   )}
                 </div>
                 {order.status !== "completed" && <div className="space-y-6 mt-4">
@@ -414,45 +412,45 @@ export default function OrderDetailsPage() {
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                      <Button
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                        onClick={() => setShowCancelConfirmation(true)}
-                      >
-                        Cancel order
-                      </Button>
-                      <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                        {isPaymentLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "I've paid"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                      onClick={() => setShowCancelConfirmation(true)}
+                    >
+                      Cancel order
+                    </Button>
+                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                      {isPaymentLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've paid"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {((order.type === "buy" &&
                   (order.status === "pending_release" || order.status === "timed_out") &&
                   order.advert.user.id == USER.id) ||
                   (order.type === "sell" &&
                     (order.status === "pending_release" || order.status === "timed_out") &&
                     order.user.id == USER.id)) && (
-                    <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
-                      <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                        {isConfirmLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "I've received payment"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                    <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                      {isConfirmLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've received payment"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
