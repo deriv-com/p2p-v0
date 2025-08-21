@@ -147,6 +147,7 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
     const response = await fetch(url, {
       method: "PATCH",
       headers,
+      credentials: "include",
       body,
     })
 
