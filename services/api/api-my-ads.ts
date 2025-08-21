@@ -136,7 +136,7 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-  }
+    }
     const payload = {
       adverts_are_listed: !hide,
     }
@@ -146,6 +146,7 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
 
     const response = await fetch(url, {
       method: "PATCH",
+      credentials: "include",
       headers,
       body,
     })
@@ -177,7 +178,7 @@ export async function getCurrencies(): Promise<string[]> {
 
     const response = await fetch(url, {
       headers,
-credentials: "include",
+      credentials: "include",
     });
     await response.text();
   } catch (error) {
@@ -205,7 +206,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
 
     const response = await fetch(url, {
       headers,
- credentials: "include",
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -291,7 +292,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-credentials: "include",
+      credentials: "include",
       body,
     })
 
@@ -349,7 +350,7 @@ export async function toggleAdActiveStatus(
     const response = await fetch(url, {
       method: "PATCH",
       headers,
- credentials: "include",
+      credentials: "include",
       body,
     })
 
@@ -399,7 +400,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     const response = await fetch(url, {
       method: "DELETE",
       headers,
- credentials: "include",
+      credentials: "include",
     })
 
     const responseText = await response.text()
@@ -448,7 +449,7 @@ export async function createAd(
     const response = await fetch(url, {
       method: "POST",
       headers,
- credentials: "include",
+      credentials: "include",
       body,
     })
 
@@ -553,7 +554,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-   credentials: "include",
+      credentials: "include",
       body,
     })
 
@@ -597,6 +598,7 @@ export async function getAdvert(id: string): Promise<MyAd> {
 
     const response = await fetch(url, {
       headers,
+      credentials: "include",
     })
 
     if (!response.ok) {
