@@ -400,7 +400,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     const response = await fetch(url, {
       method: "DELETE",
       headers,
- credentials: "include",
+      credentials: "include",
     })
 
     const responseText = await response.text()
