@@ -60,7 +60,7 @@ export interface PaymentMethod {
 export async function getUserProfile(): Promise<UserProfile> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}`, {
-      //credentials: "include",
+credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/business-hours`, {
       method: "PUT",
-      //credentials: "include",
+credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -110,7 +110,7 @@ export async function updateBusinessHours(data: BusinessHours): Promise<{ succes
 export async function getUserBalance(): Promise<{ balance: number; currency: string }> {
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/balance`, {
-      //credentials: "include",
+credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -135,7 +135,7 @@ export async function toggleRealNameVisibility(show: boolean): Promise<{ success
   try {
     const response = await fetch(`${API.baseUrl}${API.endpoints.profile}/settings/show-real-name`, {
       method: "PUT",
-      //credentials: "include",
+credentials: "include",
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
@@ -176,6 +176,7 @@ export const fetchUserStats = async (): Promise<UserStatsResponse> => {
 
     const response = await fetch(url, {
       headers,
+      credentials: "include",
       cache: "no-store",
     })
 
@@ -260,8 +261,8 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
   try {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
-      headers
-      //credentials: "include",
+      headers,
+credentials: "include",
     })
 
     if (!response.ok) {
@@ -298,7 +299,7 @@ export async function addPaymentMethod(method: string, fields: Record<string, an
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       method: "POST",
       headers,
-      // credentials: "include",
+  credentials: "include",
       body: JSON.stringify(requestBody),
     })
 
@@ -424,7 +425,7 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "DELETE",
       headers,
-      // credentials: "include",
+ credentials: "include",
     })
 
     if (!response.ok) {

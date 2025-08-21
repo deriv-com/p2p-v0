@@ -82,7 +82,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-      //credentials: "include" 
+          credentials: "include" 
     })
 
     if (!response.ok) {
@@ -123,7 +123,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-      //credentials: "include" 
+      credentials: "include" 
     })
 
     if (!response.ok) {
@@ -247,7 +247,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
 
     const response = await fetch(url, {
       headers,
-      // credentials: "include" 
+       credentials: "include" 
     })
 
     if (!response.ok) {
@@ -296,7 +296,7 @@ export async function toggleFavouriteAdvertiser(
 
     const response = await fetch(url, {
       method,
-      // credentials: "include",
+     credentials: "include",
       headers,
       ...(isFavourite && { body }),
     })
@@ -356,7 +356,7 @@ export async function toggleBlockAdvertiser(
 
     const response = await fetch(url, {
       method,
-      // credentials: "include",
+credentials: "include",
       headers,
       body,
     })
@@ -401,7 +401,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
 
     const response = await fetch(url, {
       headers,
-      //credentials: "include" 
+credentials: "include" 
     })
 
     if (!response.ok) {
