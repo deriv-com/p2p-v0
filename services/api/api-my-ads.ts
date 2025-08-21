@@ -597,6 +597,7 @@ export async function getAdvert(id: string): Promise<MyAd> {
 
     const response = await fetch(url, {
       headers,
+      credentials: "include"
     })
 
     if (!response.ok) {
