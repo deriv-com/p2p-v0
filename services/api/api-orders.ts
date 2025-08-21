@@ -75,7 +75,7 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
 
     const response = await fetch(url, {
       headers,
-credentials: "include"
+      credentials: "include"
     })
 
     if (!response.ok) {
