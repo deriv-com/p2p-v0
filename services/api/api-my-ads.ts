@@ -292,7 +292,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-credentials: "include",
+      credentials: "include",
       body,
     })
 
@@ -350,7 +350,7 @@ export async function toggleAdActiveStatus(
     const response = await fetch(url, {
       method: "PATCH",
       headers,
- credentials: "include",
+      credentials: "include",
       body,
     })
 
