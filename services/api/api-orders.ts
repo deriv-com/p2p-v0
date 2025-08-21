@@ -107,7 +107,7 @@ export async function getOrderById(id: string): Promise<Order> {
 
     const response = await fetch(url, {
       headers,
- credentials: "include" 
+      credentials: "include" 
     })
 
     if (!response.ok) {
@@ -139,7 +139,7 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
 
     const response = await fetch(url, {
       method: "POST",
-  credentials: "include",
+      credentials: "include",
       headers,
     })
 
