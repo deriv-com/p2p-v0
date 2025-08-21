@@ -62,7 +62,7 @@ export async function getTransactions(filters?: TransactionFilters): Promise<Tra
     }
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
-    const url = `https://staging-api.champion.trade/v1/payment/transaction${queryString}`
+    const url = `https://staging-api.champion.trade/v1/wallets/transaction${queryString}`
 
     const headers = {
       ...AUTH.getAuthHeader(),
