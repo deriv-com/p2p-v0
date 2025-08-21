@@ -45,7 +45,7 @@ export async function getTransactions(filters?: TransactionFilters): Promise<Tra
   try {
     const queryParams = new URLSearchParams()
 
-    // Add wallet_id from environment variable
+    
     const walletId = "7c9d042b-bbf4-4ba8-89a8-ed41fabb82b2"
     if (walletId) {
       queryParams.append("wallet_id", walletId)
