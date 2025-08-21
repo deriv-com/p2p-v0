@@ -262,7 +262,7 @@ export async function getUserPaymentMethods(): Promise<PaymentMethod[]> {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(`${API.baseUrl}/user-payment-methods`, {
       headers,
-credentials: "include",
+      credentials: "include",
     })
 
     if (!response.ok) {
