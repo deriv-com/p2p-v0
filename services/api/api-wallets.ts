@@ -62,7 +62,7 @@ export async function getTransactions(filters?: TransactionFilters): Promise<Tra
     }
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
-    const url = `https://api-core.deriv.com/v1/wallets/transactions${queryString}`
+    const url = `https://api-core.deriv.com/v1/payment/transactions${queryString}`
 
     const headers = {
       ...AUTH.getAuthHeader(),
