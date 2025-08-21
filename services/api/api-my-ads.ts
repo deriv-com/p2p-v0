@@ -554,7 +554,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     const response = await fetch(url, {
       method: "PATCH",
       headers,
-   credentials: "include",
+      credentials: "include",
       body,
     })
 
