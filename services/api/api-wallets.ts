@@ -11,6 +11,12 @@ export async function fetchTransactions() {
     },
   })
     .then((res) => res.json())
-    .then((data) => console.log("✅ Transactions:", data))
-    .catch((err) => console.error("❌ Error:", err))
+    .then((data) => {
+      console.log("✅ Transactions:", data)
+      return data
+    })
+    .catch((err) => {
+      console.error("❌ Error:", err)
+      throw err
+    })
 }
