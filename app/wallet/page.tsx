@@ -18,7 +18,7 @@ export default function WalletPage() {
               My Assets
             </TabsTrigger>
             <TabsTrigger value="transactions" className="w-full data-[state=active]:font-bold">
-              transactions
+        ransactions
             </TabsTrigger>
           </TabsList>
 
