@@ -357,6 +357,7 @@ export async function updatePaymentMethod(id: string, fields: Record<string, any
     const headers = AUTH.getAuthHeader();
     const response = await fetch(`${API.baseUrl}/user-payment-methods/${id}`, {
       method: "PATCH",
+      credentials: "include",
       headers,
       body: JSON.stringify(requestBody),
     });
