@@ -4,11 +4,18 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
+  const { isChatVisible } = useChatVisibilityStore()
 
-  if (pathname.startsWith("/orders/") || pathname.startsWith("/ads/create") || pathname.startsWith("/ads/edit")) {
+  if (
+    pathname.startsWith("/orders/") ||
+    pathname.startsWith("/ads/create") ||
+    pathname.startsWith("/ads/edit") ||
+    isChatVisible
+  ) {
     return null
   }
 

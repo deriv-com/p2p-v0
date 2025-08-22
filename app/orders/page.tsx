@@ -20,6 +20,7 @@ import OrderChat from "@/components/order-chat"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
+import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -37,6 +38,7 @@ function TimeRemainingDisplay({ expiresAt }) {
 export default function OrdersPage() {
   const router = useRouter()
   const { activeTab, setActiveTab } = useOrdersFilterStore()
+  const { setIsChatVisible } = useChatVisibilityStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -114,6 +116,7 @@ export default function OrdersPage() {
     if (isMobile) {
       setSelectedOrder(order)
       setShowChat(true)
+      setIsChatVisible(true)
 
       joinChannel("orders", order.id)
     } else {
@@ -126,38 +129,38 @@ export default function OrdersPage() {
   }
 
   const getOrderType = (order) => {
-    if(order.type === "buy") {
-      if(order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
+    if (order.type === "buy") {
+      if (order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
       else return <span className="text-destructive text-base">Sell</span>
     } else {
-      if(order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      if (order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
       else return <span className="text-secondary text-base">Buy</span>
     }
   }
 
   const getRecommendLabel = () => {
-    if(selectedOrder?.type === "sell") {
-      if(selectedOrder?.advert.user.id == USER.id) return "seller"
+    if (selectedOrder?.type === "sell") {
+      if (selectedOrder?.advert.user.id == USER.id) return "seller"
       return "buyer"
     } else {
-      if(selectedOrder?.advert.user.id == USER.id) return "buyer"
+      if (selectedOrder?.advert.user.id == USER.id) return "buyer"
       return "seller"
     }
   }
 
   const getPayReceiveLabel = (order) => {
-    const label = ""
-    if(order.type === "buy") {
-      if(order.user.id == USER.id) label = "You pay"
+    let label = ""
+    if (order.type === "buy") {
+      if (order.user.id == USER.id) label = "You pay"
       else label = "You receive"
-    } else { 
-      if(order.user.id == USER.id) label = "You receive"
+    } else {
+      if (order.user.id == USER.id) label = "You receive"
       else label = "You pay"
     }
 
-    return isMobile? label + ": "  : label
+    return isMobile ? label + ": " : label
   }
-  
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -207,10 +210,10 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-1 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
                   <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
-                      <div className="lg:font-bold">
-                        {order.payment_currency} {formatAmount(order.payment_amount)}
-                      </div>
-                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
+                    <div className="lg:font-bold">
+                      {order.payment_currency} {formatAmount(order.payment_amount)}
+                    </div>
+                    <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
                 <TableCell className="lg:py-4 px-4 align-top row-start-1">
