@@ -41,88 +41,44 @@ export default function OrderChat({
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [connectionStatus, setConnectionStatus] = useState<string>("connecting")
-  const [debugInfo, setDebugInfo] = useState<string>("")
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const maxLength = 300
 
-  const { isConnected, getChatHistory, subscribe, reconnect } = useWebSocketContext()
-
-  const isIOS = typeof navigator !== "undefined" && /iPad|iPhone|iPod/.test(navigator.userAgent)
-
-  useEffect(() => {
-    console.log("[v0] Chat component mounted, iOS detected:", isIOS)
-    console.log("[v0] Initial connection status:", isConnected)
-
-    setConnectionStatus(isConnected ? "connected" : "disconnected")
-    setDebugInfo(`iOS: ${isIOS}, Connected: ${isConnected}, Order: ${orderId}`)
-  }, [isConnected, isIOS, orderId])
+  const { isConnected, getChatHistory, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     const unsubscribe = subscribe((data) => {
-      console.log("[v0] WebSocket message received:", data)
-
       if (data && data.payload && data.payload.data) {
         if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
-          console.log("[v0] Chat history received, messages count:", data.payload.data.chat_history.length)
           setMessages(data.payload.data.chat_history)
         }
 
         if (data.payload.data.message || data.payload.data.attachment) {
           const newMessage = data.payload.data
-          console.log("[v0] New message received for order:", newMessage.order_id, "current order:", orderId)
-          if (newMessage.order_id == orderId) {
+          if(newMessage.order_id == orderId) {
             setMessages((prev) => {
-              return [...prev, newMessage]
+                return [...prev, newMessage]
             })
           }
         }
 
         setIsLoading(false)
-        setConnectionStatus("connected")
       } else {
-        console.log("[v0] Invalid message format received")
         setIsLoading(false)
       }
     })
 
     return unsubscribe
-  }, [subscribe, orderId])
+  }, [subscribe])
 
   useEffect(() => {
-    console.log("[v0] Connection status changed:", isConnected)
-
     if (isConnected) {
-      const delay = isIOS ? 500 : 100
       setTimeout(() => {
-        console.log("[v0] Requesting chat history after", delay, "ms delay")
         getChatHistory("orders", orderId)
-      }, delay)
-
-      setConnectionStatus("connected")
-    } else {
-      setConnectionStatus("disconnected")
-
-      if (isIOS && retryTimeoutRef.current === null) {
-        console.log("[v0] iOS detected, setting up auto-retry for WebSocket")
-        retryTimeoutRef.current = setTimeout(() => {
-          console.log("[v0] Attempting WebSocket reconnection for iOS")
-          reconnect()
-          retryTimeoutRef.current = null
-        }, 2000)
-      }
+      }, 100)
     }
-  }, [isConnected, getChatHistory, orderId, reconnect, isIOS])
-
-  useEffect(() => {
-    return () => {
-      if (retryTimeoutRef.current) {
-        clearTimeout(retryTimeoutRef.current)
-      }
-    }
-  }, [])
+  }, [isConnected, getChatHistory, orderId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -131,18 +87,15 @@ export default function OrderChat({
   const handleSendMessage = async () => {
     if (message.trim() === "" || isSending) return
 
-    console.log("[v0] Sending message:", message.substring(0, 50) + "...")
     setIsSending(true)
-    const messageToSend = message // Declare messageToSend variable
 
     try {
+      const messageToSend = message
       setMessage("")
 
       await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
-      console.log("[v0] Message sent successfully")
     } catch (error) {
-      console.log("[v0] Error sending message:", error)
-      setMessage(messageToSend)
+      console.log(error)
     } finally {
       setIsSending(false)
     }
@@ -160,26 +113,13 @@ export default function OrderChat({
     if (files && files.length > 0) {
       const file = files[0]
 
-      console.log("[v0] File selected:", file.name, "size:", file.size, "type:", file.type)
-
-      if (isIOS && file.size > 10 * 1024 * 1024) {
-        // 10MB limit for iOS
-        console.log("[v0] File too large for iOS:", file.size)
-        alert("File size too large. Please select a file smaller than 10MB.")
-        return
-      }
-
       setIsSending(true)
 
       try {
-        console.log("[v0] Converting file to base64...")
         const base64 = await fileToBase64(file)
-        console.log("[v0] File converted, sending...")
         await OrdersAPI.sendChatMessage(orderId, "", base64)
-        console.log("[v0] File sent successfully")
       } catch (error) {
-        console.error("[v0] Error sending file:", error)
-        alert("Failed to send file. Please try again.")
+        console.error("Error sending file:", error)
       } finally {
         setIsSending(false)
         if (fileInputRef.current) {
@@ -193,23 +133,8 @@ export default function OrderChat({
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.readAsDataURL(file)
-      reader.onload = () => {
-        console.log("[v0] FileReader onload completed")
-        resolve(reader.result as string)
-      }
-      reader.onerror = (error) => {
-        console.log("[v0] FileReader error:", error)
-        reject(error)
-      }
-      if (isIOS) {
-        setTimeout(() => {
-          if (reader.readyState === FileReader.LOADING) {
-            console.log("[v0] FileReader timeout on iOS")
-            reader.abort()
-            reject(new Error("File reading timeout"))
-          }
-        }, 30000) // 30 second timeout for iOS
-      }
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = (error) => reject(error)
     })
   }
 
@@ -231,13 +156,8 @@ export default function OrderChat({
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-sm text-slate-500">
-            {connectionStatus === "connected"
-              ? `Seen ${formatLastSeen(new Date())}`
-              : `Connection: ${connectionStatus}`}
-          </div>
+          <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
         </div>
-        {process.env.NODE_ENV === "development" && <div className="ml-auto text-xs text-gray-400">{debugInfo}</div>}
       </div>
       <div className="h-full overflow-auto">
         <div className="p-[16px] m-[16px] bg-orange-50 rounded-[16px]">
@@ -264,16 +184,6 @@ export default function OrderChat({
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-              <p className="mt-2 text-slate-600 ml-2">Loading chat... ({connectionStatus})</p>
-            </div>
-          ) : connectionStatus === "disconnected" ? (
-            <div className="flex flex-col justify-center items-center h-full">
-              <div className="text-center">
-                <p className="text-slate-600 mb-4">Connection lost. Trying to reconnect...</p>
-                <Button onClick={reconnect} variant="outline" size="sm">
-                  Retry Connection
-                </Button>
-              </div>
             </div>
           ) : (
             messages.map((msg) => (
@@ -323,8 +233,6 @@ export default function OrderChat({
         <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
           This conversation is closed.
         </div>
-      ) : connectionStatus === "disconnected" ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">Reconnecting to chat...</div>
       ) : (
         <div className="p-4 border-t">
           <div className="space-y-2">
@@ -334,18 +242,14 @@ export default function OrderChat({
                 onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter message"
-                disabled={isSending || connectionStatus !== "connected"}
+                disabled={isSending}
                 className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="sentences"
               />
               <Button
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
                 onClick={() => fileInputRef.current?.click()}
                 variant="ghost"
                 size="sm"
-                disabled={isSending || connectionStatus !== "connected"}
               >
                 <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
               </Button>
@@ -355,7 +259,6 @@ export default function OrderChat({
                 onChange={handleFileSelect}
                 className="hidden"
                 accept="image/*,application/pdf"
-                capture={isIOS ? "environment" : undefined}
               />
             </div>
             <div className="flex justify-between items-center">
