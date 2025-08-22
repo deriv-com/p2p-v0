@@ -15,7 +15,7 @@ export const USER = {
   advertsAreListed: USER_DATA?.adverts_are_listed,
   nickname: USER_DATA?.nickname,
   socketToken: SOCKET_TOKEN,
-  userToken: USER_TOKEN
+  userToken: USER_TOKEN,
 }
 
 export const API = {
@@ -34,6 +34,7 @@ export const API = {
     transactions: "/transactions",
     userFavourites: "/user-favourites",
     userBlocks: "/user-blocks",
+    walletsTransactions: "/wallets/transactions",
   },
 }
 
@@ -52,15 +53,13 @@ export const AUTH = {
   getAuthHeader: () => ({
     "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
     "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   }),
 
   getNotificationHeader: () => ({
     "Content-Type": "application/json",
   }),
 }
-
-
 
 export const APP_SETTINGS = {
   defaultCurrency: "USD",
