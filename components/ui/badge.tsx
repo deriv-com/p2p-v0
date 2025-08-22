@@ -30,11 +30,11 @@ const badgeVariants = cva(
         completed: "border-transparent bg-completed-light text-completed hover:bg-completed-light/80",
         cancelled: "border-transparent bg-cancelled-light text-cancelled hover:bg-cancelled-light/80",
         disputed: "border-transparent bg-disputed-light text-disputed hover:bg-disputed-light/80",
-        "wallet-processing":
+        processing:
           "flex h-6 justify-center items-center gap-2 border-transparent bg-walletBadge-processing-bg text-walletBadge-processing-text px-2.5 py-0.5",
-        "wallet-successful":
+        successful:
           "flex h-6 justify-center items-center gap-2 border-transparent bg-walletBadge-successful-bg text-walletBadge-successful-text px-2.5 py-0.5",
-        "wallet-failed":
+        failed:
           "flex h-6 justify-center items-center gap-2 border-transparent bg-walletBadge-failed-bg text-walletBadge-failed-text px-2.5 py-0.5",
       },
     },
