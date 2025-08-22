@@ -1,10 +1,10 @@
 "use client"
 
-export const runtime = 'edge'
+export const runtime = "edge"
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight } from 'lucide-react'
+import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -12,7 +12,14 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { useToast } from "@/hooks/use-toast"
-import { cn, formatAmount, formatStatus, getPaymentMethodColour, getStatusBadgeStyle, copyToClipboard } from "@/lib/utils"
+import {
+  cn,
+  formatAmount,
+  formatStatus,
+  getPaymentMethodColour,
+  getStatusBadgeStyle,
+  copyToClipboard,
+} from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { USER } from "@/lib/local-variables"
@@ -21,12 +28,14 @@ import { RatingSidebar } from "@/components/rating-filter"
 import { ComplaintForm } from "@/components/complaint"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { OrderDetails } from "@/components/order-details"
+import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 
 export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
   const { toast } = useToast()
+  const { setIsChatVisible } = useChatVisibilityStore()
 
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -160,7 +169,13 @@ export default function OrderDetailsPage() {
                     toast({
                       description: (
                         <div className="flex items-center gap-2">
-                          <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                          <Image
+                            src="/icons/success-checkmark.png"
+                            alt="Success"
+                            width={24}
+                            height={24}
+                            className="text-white"
+                          />
                           <span>The text has been copied to your clipboard.</span>
                         </div>
                       ),
@@ -253,7 +268,8 @@ export default function OrderDetailsPage() {
     )
   }
 
-  const orderType = order?.type === "buy" ? (order?.user.id == USER.id ? "Buy" : "Sell") : (order?.user.id == USER.id ? "Sell" : "Buy")
+  const orderType =
+    order?.type === "buy" ? (order?.user.id == USER.id ? "Buy" : "Sell") : order?.user.id == USER.id ? "Sell" : "Buy"
   const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel =
     order?.type === "sell"
@@ -291,6 +307,7 @@ export default function OrderDetailsPage() {
             isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
             onNavigateToOrderDetails={() => {
               setShowChat(false)
+              setIsChatVisible(false)
             }}
           />
         </div>
@@ -339,120 +356,128 @@ export default function OrderDetailsPage() {
                 <div className="p-4 border rounded-lg mb-[24px]">
                   {order.status === "completed" ? (
                     <OrderDetails order={order} setShowChat={setShowChat} />
-                  ) : (<><div className="flex justify-between items-start mb-4">
-                    <div>
-                      <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-                      <p className="font-bold">
-                        {order?.payment_currency} {formatAmount(order.payment_amount)}
-                      </p>
-                    </div>
-                    <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
-                      View order details
-                      <ChevronRight className="h-4 w-4 ml-1" />
-                    </button>
-                  </div>
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-                        <p className="font-bold">{counterpartyNickname}</p>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
+                          <p className="font-bold">
+                            {order?.payment_currency} {formatAmount(order.payment_amount)}
+                          </p>
+                        </div>
+                        <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
+                          View order details
+                          <ChevronRight className="h-4 w-4 ml-1" />
+                        </button>
                       </div>
-                      {isMobile && (
-                        <Button
-                          onClick={() => {
-                            setShowChat(true)
-                          }}
-                          className="text-slate-500 hover:text-slate-700"
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                        </Button>
-                      )}
-                    </div></>
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                          <p className="font-bold">{counterpartyNickname}</p>
+                        </div>
+                        {isMobile && (
+                          <Button
+                            onClick={() => {
+                              setShowChat(true)
+                              setIsChatVisible(true)
+                            }}
+                            className="text-slate-500 hover:text-slate-700"
+                            variant="ghost"
+                            size="sm"
+                          >
+                            <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                          </Button>
+                        )}
+                      </div>
+                    </>
                   )}
                 </div>
-                {order.status !== "completed" && <div className="space-y-6 mt-4">
-                  <div className="space-y-4">
-                    {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
-                    {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
-                    <div className="bg-orange-50 rounded-[16px] p-[16px]">
-                      <div className="flex items-start gap-2">
-                        <Image
-                          src="/icons/warning-icon-new.png"
-                          alt="Warning"
-                          height={24}
-                          width={24}
-                          className="-mt-[2px]"
-                        />
-                        <p className="text-sm text-grayscale-100">
-                          Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
-                        </p>
+                {order.status !== "completed" && (
+                  <div className="space-y-6 mt-4">
+                    <div className="space-y-4">
+                      {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
+                      {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
+                      <div className="bg-orange-50 rounded-[16px] p-[16px]">
+                        <div className="flex items-start gap-2">
+                          <Image
+                            src="/icons/warning-icon-new.png"
+                            alt="Warning"
+                            height={24}
+                            width={24}
+                            className="-mt-[2px]"
+                          />
+                          <p className="text-sm text-grayscale-100">
+                            Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
+                          </p>
+                        </div>
                       </div>
-                    </div>
 
-                    {order?.payment_method_details && order.payment_method_details.length > 0 && (
-                      <div className="bg-white border rounded-lg mt-6">
-                        <Accordion type="single" collapsible className="w-full">
-                          {order.payment_method_details.map((method, index) => (
-                            <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
-                              <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                                <div className="flex items-center gap-3">
-                                  <div className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}></div>
-                                  <span className="text-sm">{method.display_name}</span>
-                                </div>
-                              </AccordionTrigger>
-                              <AccordionContent className="px-4 pb-4">
-                                <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
-                              </AccordionContent>
-                            </AccordionItem>
-                          ))}
-                        </Accordion>
-                      </div>
-                    )}
+                      {order?.payment_method_details && order.payment_method_details.length > 0 && (
+                        <div className="bg-white border rounded-lg mt-6">
+                          <Accordion type="single" collapsible className="w-full">
+                            {order.payment_method_details.map((method, index) => (
+                              <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
+                                <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                                  <div className="flex items-center gap-3">
+                                    <div
+                                      className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
+                                    ></div>
+                                    <span className="text-sm">{method.display_name}</span>
+                                  </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="px-4 pb-4">
+                                  <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            ))}
+                          </Accordion>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>}
+                )}
 
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
-                    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                      <Button
-                        variant="outline"
-                        className="flex-1 bg-transparent"
-                        onClick={() => setShowCancelConfirmation(true)}
-                      >
-                        Cancel order
-                      </Button>
-                      <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                        {isPaymentLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "I've paid"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                      onClick={() => setShowCancelConfirmation(true)}
+                    >
+                      Cancel order
+                    </Button>
+                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
+                      {isPaymentLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've paid"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {((order.type === "buy" &&
                   (order.status === "pending_release" || order.status === "timed_out") &&
                   order.advert.user.id == USER.id) ||
                   (order.type === "sell" &&
                     (order.status === "pending_release" || order.status === "timed_out") &&
                     order.user.id == USER.id)) && (
-                    <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
-                      <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
-                        {isConfirmLoading ? (
-                          <>
-                            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                            Processing...
-                          </>
-                        ) : (
-                          "I've received payment"
-                        )}
-                      </Button>
-                    </div>
-                  )}
+                  <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                    <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                      {isConfirmLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've received payment"
+                      )}
+                    </Button>
+                  </div>
+                )}
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
