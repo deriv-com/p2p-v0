@@ -45,7 +45,7 @@ export const WALLETS = {
     user_id: USER_DATA?.external_user_id || "",
     operation: "DEPOSIT",
     currency: "USD",
-    brand_id: USER_DATA?.brand || "",
+    brand_id: USER_DATA?.brand_name || "",
   },
 }
 
