@@ -8,7 +8,6 @@ import { TransactionsTab } from "./components"
 
 export default function WalletPage() {
   const isMobile = useIsMobile()
-
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
@@ -19,7 +18,7 @@ export default function WalletPage() {
               My Assets
             </TabsTrigger>
             <TabsTrigger value="transactions" className="w-full data-[state=active]:font-bold">
-              Transactions
+        Transactions
             </TabsTrigger>
           </TabsList>
 

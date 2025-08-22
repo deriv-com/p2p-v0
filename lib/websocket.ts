@@ -38,9 +38,7 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = API.socketUrl
-        const socketToken = USER.socketToken
-        const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
-        this.socket = new WebSocket(url, protocols)
+        this.socket = new WebSocket(url, [USER.socketToken])
 
         this.socket.onopen = () => {
           this.reconnectAttempts = 0
@@ -101,7 +99,7 @@ export class WebSocketClient {
         channel,
       },
       payload: {
-        order_id: id,
+        order_id: id
       },
     }
     this.send(joinMessage)
