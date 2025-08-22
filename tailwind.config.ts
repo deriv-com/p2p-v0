@@ -91,7 +91,7 @@ const config: Config = {
           200: "#00000014",
           300: "#F8F9FA",
           400: "#CED4DA",
-          500: "#0000000a"
+          500: "#0000000a",
         },
         yellow: {
           50: "#A66C00",
@@ -157,6 +157,20 @@ const config: Config = {
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",
+        },
+        walletBadge: {
+          processing: {
+            text: "#FF9C13",
+            bg: "#FFF7E6",
+          },
+          successful: {
+            text: "#00C390",
+            bg: "#E6FFF9",
+          },
+          failed: {
+            text: "#C40000",
+            bg: "#FFE6E6",
+          },
         },
       },
       borderRadius: {
