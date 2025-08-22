@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
 import { ProcessingBadge, SuccessfulBadge, FailedBadge } from "@/app/wallet/components"
 import { Button } from "@/components/ui/button"
+import { Divider } from "@/components/ui/divider"
 
 interface Transaction {
   transaction_id: number
@@ -116,23 +117,24 @@ export default function TransactionsTab() {
             <h3 className="text-sm font-medium text-gray-500">{dateKey}</h3>
 
             <div className="space-y-3">
-              {dateTransactions.map((transaction) => (
-                <div
-                  key={transaction.transaction_id}
-                  className="flex items-center justify-between p-4 rounded-lg"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                      <span className="text-green-600 font-semibold text-lg">+</span>
+              {dateTransactions.map((transaction, index) => (
+                <div key={transaction.transaction_id}>
+                  <div className="flex items-center justify-between p-4 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                        <span className="text-green-600 font-semibold text-lg">+</span>
+                      </div>
+
+                      <div>
+                        <div className="font-medium text-gray-900">Deposit</div>
+                        <div className="text-green-600 font-semibold">+100.00 USD</div>
+                      </div>
                     </div>
 
-                    <div>
-                      <div className="font-medium text-gray-900">Deposit</div>
-                      <div className="text-green-600 font-semibold">+100.00 USD</div>
-                    </div>
+                    <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
                   </div>
 
-                  <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
+                  {index < dateTransactions.length - 1 && <Divider className="my-2" />}
                 </div>
               ))}
             </div>
