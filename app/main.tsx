@@ -8,6 +8,7 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
+import { preventSwipeNavigation } from "@/lib/utils"
 import "./globals.css"
 
 export default function Main({
@@ -19,6 +20,11 @@ export default function Main({
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
+
+  useEffect(() => {
+    const cleanup = preventSwipeNavigation()
+    return cleanup
+  }, [])
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
@@ -61,7 +67,7 @@ export default function Main({
       }
     }
   }, [pathname, router])
-  
+
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
   }
