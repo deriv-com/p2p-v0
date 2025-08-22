@@ -100,11 +100,12 @@ export default function TransactionsTab() {
             variant={activeFilter === filter ? "default" : "outline"}
             size="sm"
             onClick={() => setActiveFilter(filter)}
-            className={`rounded-full px-4 py-2 text-sm ${
-              activeFilter === filter
-                ? "bg-black text-white"
-                : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
+            className={`h-8 rounded-full px-4 text-sm font-normal ${
+              activeFilter === filter ? "bg-black text-white border-black" : "bg-white border-gray-200 hover:bg-gray-50"
             }`}
+            style={{
+              color: activeFilter === filter ? "white" : "#181C25B8",
+            }}
           >
             {filter}
           </Button>
