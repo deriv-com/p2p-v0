@@ -173,7 +173,6 @@ export default function TransactionsTab() {
             <div className="space-y-3">
               {dateTransactions.map((transaction, index) => {
                 const display = getTransactionDisplay(transaction)
-                console.log("[v0] Transaction display:", display)
 
                 return (
                   <div key={transaction.transaction_id}>
@@ -186,8 +185,7 @@ export default function TransactionsTab() {
                             width={32}
                             height={32}
                             className="w-8 h-8 object-contain"
-                            onLoad={() => console.log("[v0] Image loaded:", display.iconSrc)}
-                            onError={(e) => console.log("[v0] Image error:", display.iconSrc, e)}
+                      
                             priority={index < 3}
                           />
                         </div>
