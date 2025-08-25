@@ -33,11 +33,11 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
             )}
 
             {rating && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
-              <div className="flex items-center text-neutral-10">
-                {recommendation && <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />}
+              {recommendation && (<div className="flex items-center text-neutral-10">
+                <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
                  <span>{recommendation}</span>
                 <span>{recommendation ? "% (Recommended)" : "Not recommended yet"}</span>
-              </div>
+              </div>)}
             {joinDate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
             {joinDate && <div className="text-neutral-10">{joinDate}</div>}
