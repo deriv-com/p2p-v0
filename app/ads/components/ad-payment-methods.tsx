@@ -119,12 +119,15 @@ const AdPaymentMethods = () => {
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
             {paymentMethods.map((method) => {
               const isSelected = selectedMethods.includes(method.id)
+              const isDisabled = isMethodDisabled(method.id)
               const displayDetails = getMethodDisplayDetails(method)
 
               return (
                 <Card
                   key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                  className=`cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto ${
+                    isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   <CardContent className="p-2">
                     <div className="flex items-center justify-between mb-3">
