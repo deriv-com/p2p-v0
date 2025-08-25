@@ -12,7 +12,7 @@ export async function fetchTransactions() {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("✅ Transactions:", data)
+
       return data
     })
     .catch((err) => {
