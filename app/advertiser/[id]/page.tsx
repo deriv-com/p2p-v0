@@ -304,7 +304,7 @@ export default function AdvertiserProfilePage() {
                     <div className="flex items-center mt-1">
                       {profile?.recommend_average_lifetime ?
                         <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span> :
-                        <span className="font-bold text-base">Not recommended yet</span>
+                        <span className="font-bold text-base text-neutral-10">Not recommended yet</span>
                       }
                     </div>
                   </div>
