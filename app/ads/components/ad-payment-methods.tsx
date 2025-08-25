@@ -115,8 +115,7 @@ const AdPaymentMethods = () => {
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
         <p className="text-gray-600 mb-4">
-          You can select up to {MAX_PAYMENT_METHODS} payment methods. Once you reach the limit, other methods will be
-          disabled.
+          You can select up to {MAX_PAYMENT_METHODS} payment methods.
         </p>
 
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
