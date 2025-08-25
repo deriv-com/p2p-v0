@@ -1,4 +1,4 @@
-import { API, AUTH } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 
 export interface LoginRequest {
   email: string
@@ -41,7 +41,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
     const result = await response.json()
     const { data } = result
 
-    return data[0];
+    return data[0]
   } catch (error) {
     console.error("Login error:", error)
     throw new Error("Failed to login. Please try again.")
@@ -56,7 +56,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
     const response = await fetch(`${API.coreUrl}/verify`, {
       method: "POST",
       headers: {
-        "X-Enable-Session": "true"
+        "X-Enable-Session": "true",
       },
       credentials: "include",
       body: JSON.stringify(verificationData),
@@ -88,7 +88,7 @@ export async function getSession(): Promise<VerificationResponse> {
 
     if (!response.ok) {
       return {
-        errors: ["User not authenticated."]
+        errors: ["User not authenticated."],
       }
     }
 
@@ -97,7 +97,7 @@ export async function getSession(): Promise<VerificationResponse> {
   } catch (error) {
     console.error(error)
     return {
-      errors: ["User not authenticated."]
+      errors: ["User not authenticated."],
     }
   }
 }
@@ -116,7 +116,12 @@ export async function logout(): Promise<void> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
-    localStorage.removeItem("residence_country");
+    localStorage.removeItem("auth_token")
+    localStorage.removeItem("socket_token")
+    localStorage.removeItem("user_data")
+    localStorage.removeItem("user_id")
+    localStorage.removeItem("client_id")
+    localStorage.removeItem("residence_country")
     window.location.href = "/"
   } catch (error) {
     console.error(error)
@@ -141,9 +146,9 @@ export async function fetchUserIdAndStore(): Promise<void> {
       method: "GET",
       credentials: "include",
       headers: {
-          "X-Data-Source": "live",
-          "X-Branch": "master"
-      }
+        "X-Data-Source": "live",
+        "X-Branch": "master",
+      },
     })
 
     if (!response.ok) {
@@ -174,7 +179,7 @@ export async function getClientProfile(): Promise<void> {
     }
 
     const result = await response.json()
-    const { data } = result;
+    const { data } = result
 
     if (data[0].residence_country) {
       localStorage.setItem("residence_country", data[0].residence_country)
