@@ -13,6 +13,8 @@ const config: Config = {
     extend: {
       opacity: {
         24: "0.24",
+        48: "0.48",
+        96: "0.96",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -171,6 +173,13 @@ const config: Config = {
             text: "#C40000",
             bg: "#FFE6E6",
           },
+        },
+        transactionAmount: {
+          transfer: "#000000",
+          depositSuccess: "#00C390",
+          depositInProgress: "#000000",
+          withdrawalSuccess: "#E6190E",
+          withdrawalInProgress: "#000000",
         },
       },
       borderRadius: {

@@ -93,37 +93,49 @@ export default function TransactionsTab() {
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
+    const status = transaction.metadata.transaction_status
+
+    const getAmountColor = () => {
+      if (type === "Transfer") {
+        return "text-transactionAmount-transfer opacity-96"
+      } else if (type === "Deposit") {
+        return status === "completed"
+          ? "text-transactionAmount-depositSuccess"
+          : "text-transactionAmount-depositInProgress opacity-48"
+      } else if (type === "Withdraw") {
+        return status === "completed"
+          ? "text-transactionAmount-withdrawalSuccess"
+          : "text-transactionAmount-withdrawalInProgress opacity-48"
+      }
+      return "text-transactionAmount-depositSuccess" // fallback
+    }
 
     switch (type) {
       case "Deposit":
         return {
           iconSrc: "/icons/add-icon.png",
-          bgColor: "bg-green-100",
-          amountColor: "text-green-600",
+          amountColor: getAmountColor(),
           amountPrefix: "+",
           type: "Deposit",
         }
       case "Withdraw":
         return {
           iconSrc: "/icons/subtract-icon.png",
-          bgColor: "bg-red-100",
-          amountColor: "text-red-600",
+          amountColor: getAmountColor(),
           amountPrefix: "-",
           type: "Withdraw",
         }
       case "Transfer":
         return {
           iconSrc: "/icons/transfer-icon.png",
-          bgColor: "bg-blue-100",
-          amountColor: "text-blue-600",
+          amountColor: getAmountColor(),
           amountPrefix: "",
           type: "Transfer",
         }
       default:
         return {
           iconSrc: "/icons/add-icon.png",
-          bgColor: "bg-green-100",
-          amountColor: "text-green-600",
+          amountColor: getAmountColor(),
           amountPrefix: "+",
           type: "Deposit",
         }
@@ -190,7 +202,7 @@ export default function TransactionsTab() {
 
                         <div>
                           <div className="font-medium text-gray-900">{display.type}</div>
-                          <div className={`${display.amountColor} font-semibold`}>
+                          <div className={`${display.amountColor} text-base font-bold`}>
                             {display.amountPrefix}
                             {transaction.metadata.transaction_net_amount || "0.00"}{" "}
                             {transaction.metadata.transaction_currency || "USD"}
