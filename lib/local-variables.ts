@@ -2,12 +2,14 @@ let USER_DATA = null
 let USER_TOKEN = null
 let USER_ID = null
 let SOCKET_TOKEN = null
+let CLIENT_ID = null
 
 if (typeof window !== "undefined") {
   USER_TOKEN = localStorage.getItem("auth_token") ?? ""
   USER_DATA = JSON.parse(localStorage.getItem("user_data") ?? "{}")
   USER_ID = localStorage.getItem("user_id") ?? ""
   SOCKET_TOKEN = localStorage.getItem("socket_token") ?? ""
+  CLIENT_ID = localStorage.getItem("client_id") ?? ""
 }
 
 export const USER = {
@@ -15,7 +17,7 @@ export const USER = {
   advertsAreListed: USER_DATA?.adverts_are_listed,
   nickname: USER_DATA?.nickname,
   socketToken: SOCKET_TOKEN,
-  userToken: USER_TOKEN
+  userToken: USER_TOKEN,
 }
 
 export const API = {
@@ -41,7 +43,7 @@ export const WALLETS = {
   cashierUrl: process.env.NEXT_PUBLIC_CASHIER_URL,
   defaultParams: {
     wallet_id: USER_DATA?.balances?.find((b) => b.currency === "USD")?.wallet_id,
-    user_id: USER_DATA?.external_user_id || "",
+    user_id: CLIENT_ID || "",
     operation: "DEPOSIT",
     currency: "USD",
     brand_id: USER_DATA?.brand || "",
@@ -52,15 +54,13 @@ export const AUTH = {
   getAuthHeader: () => ({
     "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
     "X-Branch": process.env.NEXT_PUBLIC_BRANCH,
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   }),
 
   getNotificationHeader: () => ({
     "Content-Type": "application/json",
   }),
 }
-
-
 
 export const APP_SETTINGS = {
   defaultCurrency: "USD",
