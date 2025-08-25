@@ -13,9 +13,10 @@ interface UserInfoProps {
     phone: boolean
     email?: boolean
   }
+  isLoading?: boolean
 }
 
-export default function UserInfo({ username, rating, joinDate, isVerified, recommendation }: UserInfoProps) {
+export default function UserInfo({ username, rating, joinDate, isVerified, recommendation, isLoading }: UserInfoProps) {
   return (
     <div className="mb-8 w-fit max-w-3xl">
       <div className="flex items-start gap-4">
@@ -33,11 +34,17 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
             )}
 
             {rating && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
+
+            {!isLoading && (
               <div className="flex items-center text-neutral-10">
-                {recommendation && <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />}
-                 <span>{recommendation}</span>
-                <span className="text-neutral-7">{recommendation ? "% (Recommended)" : "Not recommended yet"}</span>
+                {recommendation && (
+                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
+                )}
+                <span>{recommendation}</span>
+                <span>{recommendation ? "% (Recommended)" : "Not recommended yet"}</span>
               </div>
+            )}
+
             {joinDate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
             {joinDate && <div className="text-neutral-10">{joinDate}</div>}

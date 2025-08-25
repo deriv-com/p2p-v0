@@ -75,10 +75,10 @@ export default function ProfilePage() {
               },
             },
             isVerified: {
-                id: true,
+              id: true,
               address: true,
               phone: true,
-            }
+            },
           }))
         } else {
           showWarningDialog({
@@ -112,6 +112,7 @@ export default function ProfilePage() {
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}
+              isLoading={isLoading}
             />
             <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
