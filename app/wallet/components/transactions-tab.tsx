@@ -113,7 +113,7 @@ export default function TransactionsTab() {
         }
       case "Transfer":
         return {
-          iconSrc: "/icons/add-icon.png",
+          iconSrc: "/icons/transfer-icon.png",
           bgColor: "bg-blue-100",
           amountColor: "text-blue-600",
           amountPrefix: "",
@@ -184,7 +184,6 @@ export default function TransactionsTab() {
                             width={32}
                             height={32}
                             className="w-8 h-8 object-contain"
-                      
                             priority={index < 3}
                           />
                         </div>
