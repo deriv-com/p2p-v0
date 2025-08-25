@@ -1,3 +1,2 @@
-import PaymentMethodsFilterComponent from "./payment-methods-filter"
-export { PaymentMethodsFilterComponent as PaymentMethodsFilter }
+export { default as PaymentMethodsFilter } from "./payment-methods-filter"
 export type { PaymentMethod } from "./payment-methods-filter"
