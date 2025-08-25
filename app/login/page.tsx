@@ -63,7 +63,7 @@ export default function LoginPage() {
         if (response.access_token) localStorage.setItem("auth_token", response.access_token)
 
         if (response.user?.id) {
-          localStorage.setItem("user_id", response.user.id)
+          localStorage.setItem("client_id", response.user.id)
         }
 
         await AuthAPI.fetchUserIdAndStore()
