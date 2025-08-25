@@ -8,12 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { Label } from "@/components/ui/label"
-
-export interface MarketFilterOptions {
-  fromFollowing: boolean
-}
+import type { MarketFilterOptions } from "./types"
 
 interface MarketFilterDropdownProps {
   activeTab?: string
@@ -44,9 +41,9 @@ export default function MarketFilterDropdown({
   const handleReset = () => {
     if (isMobile) {
       setSortBy("exchange_rate")
-      onApply({ fromFollowing: false }, "exchange_rate")
+      onApply({ withinBalance: false, fromFollowing: false, sortBy: "exchange_rate" }, "exchange_rate")
     } else {
-      onApply({ fromFollowing: false })
+      onApply({ withinBalance: false, fromFollowing: false, sortBy: "exchange_rate" })
     }
     setIsOpen(false)
   }
@@ -61,7 +58,7 @@ export default function MarketFilterDropdown({
     setIsOpen(open)
   }, [])
 
-  const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
+  const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean | string) => {
     setFilters((prev) => ({
       ...prev,
       [key]: value,
@@ -70,6 +67,10 @@ export default function MarketFilterDropdown({
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
+    setFilters((prev) => ({
+      ...prev,
+      sortBy: value,
+    }))
   }
 
   const FilterContent = () => (
@@ -80,6 +81,17 @@ export default function MarketFilterDropdown({
             <h4 className="text-sm font-bold mb-4">Ad types</h4>
           </div>
         )}
+        <div className="flex items-center space-x-3">
+          <Checkbox
+            id="within-balance"
+            checked={filters.withinBalance}
+            onCheckedChange={(checked) => handleFilterChange("withinBalance", checked as boolean)}
+            className="data-[state=checked]:bg-black border-black"
+          />
+          <label htmlFor="within-balance" className="text-sm text-gray-700 cursor-pointer">
+            Ads within my balance
+          </label>
+        </div>
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"
