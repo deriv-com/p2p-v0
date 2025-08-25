@@ -173,18 +173,25 @@ export default function TransactionsTab() {
             <div className="space-y-3">
               {dateTransactions.map((transaction, index) => {
                 const display = getTransactionDisplay(transaction)
+                console.log("[v0] Transaction display:", display)
+                console.log("[v0] Icon src:", display.iconSrc)
 
                 return (
                   <div key={transaction.transaction_id}>
                     <div className="flex items-center justify-between p-4 rounded-lg">
                       <div className="flex items-center gap-3">
-                        <Image
-                          src={display.iconSrc || "/placeholder.svg"}
-                          alt={`${display.type} icon`}
-                          width={32}
-                          height={32}
-                          className="w-8 h-8"
-                        />
+                        <div className="flex-shrink-0">
+                          <Image
+                            src={display.iconSrc || "/placeholder.svg"}
+                            alt={`${display.type} icon`}
+                            width={32}
+                            height={32}
+                            className="w-8 h-8 object-contain"
+                            onLoad={() => console.log("[v0] Image loaded:", display.iconSrc)}
+                            onError={(e) => console.log("[v0] Image error:", display.iconSrc, e)}
+                            priority={index < 3}
+                          />
+                        </div>
 
                         <div>
                           <div className="font-medium text-gray-900">{display.type}</div>
