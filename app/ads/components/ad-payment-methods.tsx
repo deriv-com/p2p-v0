@@ -27,6 +27,7 @@ const AdPaymentMethods = () => {
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert } = useAlertDialog()
+  const MAX_PAYMENT_METHODS = 3
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -49,7 +50,7 @@ const AdPaymentMethods = () => {
   }, [selectedMethods])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked && selectedMethods.length >= 3) {
+    if (checked && selectedMethods.length >= MAX_PAYMENT_METHODS) {
       return
     }
 
