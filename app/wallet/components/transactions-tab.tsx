@@ -178,15 +178,13 @@ export default function TransactionsTab() {
                   <div key={transaction.transaction_id}>
                     <div className="flex items-center justify-between p-4 rounded-lg">
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-full ${display.bgColor} flex items-center justify-center`}>
-                          <Image
-                            src={display.iconSrc || "/placeholder.svg"}
-                            alt={`${display.type} icon`}
-                            width={16}
-                            height={16}
-                            className="w-4 h-4"
-                          />
-                        </div>
+                        <Image
+                          src={display.iconSrc || "/placeholder.svg"}
+                          alt={`${display.type} icon`}
+                          width={32}
+                          height={32}
+                          className="w-8 h-8"
+                        />
 
                         <div>
                           <div className="font-medium text-gray-900">{display.type}</div>
