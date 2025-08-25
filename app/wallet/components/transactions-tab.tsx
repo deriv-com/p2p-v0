@@ -164,7 +164,7 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="p-4 space-y-6">
+    <div className="py-4 space-y-6">
       <div className="flex gap-2">
         {filters.map((filter) => (
           <Button
