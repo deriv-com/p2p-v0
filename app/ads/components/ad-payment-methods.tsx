@@ -58,6 +58,10 @@ const AdPaymentMethods = () => {
     setSelectedMethods(newSelection)
   }
 
+   const isMethodDisabled = (methodId: number) => {
+    return !selectedMethods.includes(methodId) && selectedMethods.length >= MAX_PAYMENT_METHODS
+  }
+
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
     try {
       setIsAddingMethod(true)
@@ -109,7 +113,7 @@ const AdPaymentMethods = () => {
     <>
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
-        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
+        <p className="text-gray-600 mb-4">You can select up to {MAX_PAYMENT_METHODS} payment methods</p>
 
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
