@@ -13,6 +13,8 @@ interface Transaction {
     transaction_status: string
     transaction_currency?: string
     transaction_net_amount?: string
+    source_wallet_id?: string
+    destination_wallet_id?: string
   }
 }
 
@@ -77,6 +79,61 @@ export default function TransactionsTab() {
     return groups
   }, {})
 
+  const getTransactionType = (transaction: Transaction) => {
+    const { source_wallet_id, destination_wallet_id } = transaction.metadata
+
+    if (source_wallet_id?.includes("system")) {
+      return "Deposit"
+    } else if (destination_wallet_id?.includes("system")) {
+      return "Withdraw"
+    } else {
+      return "Transfer"
+    }
+  }
+
+  const getTransactionDisplay = (transaction: Transaction) => {
+    const type = getTransactionType(transaction)
+
+    switch (type) {
+      case "Deposit":
+        return {
+          icon: "+",
+          iconColor: "text-green-600",
+          bgColor: "bg-green-100",
+          amountColor: "text-green-600",
+          amountPrefix: "+",
+          type: "Deposit",
+        }
+      case "Withdraw":
+        return {
+          icon: "−",
+          iconColor: "text-red-600",
+          bgColor: "bg-red-100",
+          amountColor: "text-red-600",
+          amountPrefix: "-",
+          type: "Withdraw",
+        }
+      case "Transfer":
+        return {
+          icon: "⇄",
+          iconColor: "text-blue-600",
+          bgColor: "bg-blue-100",
+          amountColor: "text-blue-600",
+          amountPrefix: "",
+          type: "Transfer",
+        }
+      default:
+        return {
+          icon: "+",
+          iconColor: "text-green-600",
+          bgColor: "bg-green-100",
+          amountColor: "text-green-600",
+          amountPrefix: "+",
+          type: "Deposit",
+        }
+    }
+  }
+
   if (loading) {
     return (
       <div className="p-4">
@@ -117,26 +174,30 @@ export default function TransactionsTab() {
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
 
             <div className="space-y-3">
-              {dateTransactions.map((transaction, index) => (
-                <div key={transaction.transaction_id}>
-                  <div className="flex items-center justify-between p-4 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
-                        <span className="text-green-600 font-semibold text-lg">+</span>
+              {dateTransactions.map((transaction, index) => {
+                const display = getTransactionDisplay(transaction)
+
+                return (
+                  <div key={transaction.transaction_id}>
+                    <div className="flex items-center justify-between p-4 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className={`w-8 h-8 rounded-full ${display.bgColor} flex items-center justify-center`}>
+                          <span className={`${display.iconColor} font-semibold text-lg`}>{display.icon}</span>
+                        </div>
+
+                        <div>
+                          <div className="font-medium text-gray-900">{display.type}</div>
+                          <div className={`${display.amountColor} font-semibold`}>{display.amountPrefix}100.00 USD</div>
+                        </div>
                       </div>
 
-                      <div>
-                        <div className="font-medium text-gray-900">Deposit</div>
-                        <div className="text-green-600 font-semibold">+100.00 USD</div>
-                      </div>
+                      <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
                     </div>
 
-                    <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
+                    {index < dateTransactions.length - 1 && <Divider className="my-2" />}
                   </div>
-
-                  {index < dateTransactions.length - 1 && <Divider className="my-2" />}
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         ))}
