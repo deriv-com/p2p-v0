@@ -70,15 +70,6 @@ export default function TransactionsTab() {
     return date.toLocaleDateString()
   }
 
-  const groupedTransactions = transactions.reduce((groups: { [key: string]: Transaction[] }, transaction) => {
-    const dateKey = formatDate(transaction.timestamp)
-    if (!groups[dateKey]) {
-      groups[dateKey] = []
-    }
-    groups[dateKey].push(transaction)
-    return groups
-  }, {})
-
   const getTransactionType = (transaction: Transaction) => {
     const { source_wallet_id, destination_wallet_id } = transaction.metadata
 
@@ -141,6 +132,22 @@ export default function TransactionsTab() {
         }
     }
   }
+
+  const filteredTransactions = transactions.filter((transaction) => {
+    if (activeFilter === "All") {
+      return true
+    }
+    return getTransactionType(transaction) === activeFilter
+  })
+
+  const groupedTransactions = filteredTransactions.reduce((groups: { [key: string]: Transaction[] }, transaction) => {
+    const dateKey = formatDate(transaction.timestamp)
+    if (!groups[dateKey]) {
+      groups[dateKey] = []
+    }
+    groups[dateKey].push(transaction)
+    return groups
+  }, {})
 
   if (loading) {
     return (
@@ -222,8 +229,10 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      {transactions.length === 0 && !loading && (
-        <div className="text-center py-8 text-gray-500">No transactions found</div>
+      {filteredTransactions.length === 0 && !loading && (
+        <div className="text-center py-8 text-gray-500">
+          {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+        </div>
       )}
     </div>
   )
