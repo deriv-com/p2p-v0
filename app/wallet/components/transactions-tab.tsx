@@ -37,7 +37,6 @@ export default function TransactionsTab() {
       try {
         setLoading(true)
         const data: TransactionsResponse = await fetchTransactions()
-        console.log("Transactions API response:", data)
         setTransactions(data.data.transactions || [])
       } catch (error) {
         console.error("Error loading transactions:", error)
