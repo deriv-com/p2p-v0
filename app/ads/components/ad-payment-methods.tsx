@@ -28,6 +28,8 @@ const AdPaymentMethods = () => {
   const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert } = useAlertDialog()
 
+  const MAX_PAYMENT_METHODS = 3
+
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
@@ -49,12 +51,16 @@ const AdPaymentMethods = () => {
   }, [selectedMethods])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked && selectedMethods.length >= 3) {
+    if (checked && selectedMethods.length >= MAX_PAYMENT_METHODS) {
       return
     }
 
     const newSelection = checked ? [...selectedMethods, methodId] : selectedMethods.filter((id) => id !== methodId)
     setSelectedMethods(newSelection)
+  }
+
+  const isMethodDisabled = (methodId: number) => {
+    return !selectedMethods.includes(methodId) && selectedMethods.length >= MAX_PAYMENT_METHODS
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -70,15 +76,15 @@ const AdPaymentMethods = () => {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+        if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
-        } 
+        }
         showAlert({
-            title,
-            description,
-            confirmText: "OK",
-            type: "warning"
+          title,
+          description,
+          confirmText: "OK",
+          type: "warning",
         })
       }
     } catch (error) {
@@ -108,18 +114,24 @@ const AdPaymentMethods = () => {
     <>
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
-        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
+        <p className="text-gray-600 mb-4">
+          You can select up to {MAX_PAYMENT_METHODS} payment methods. Once you reach the limit, other methods will be
+          disabled.
+        </p>
 
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
             {paymentMethods.map((method) => {
               const isSelected = selectedMethods.includes(method.id)
+              const isDisabled = isMethodDisabled(method.id)
               const displayDetails = getMethodDisplayDetails(method)
 
               return (
                 <Card
                   key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                  className={`cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto ${
+                    isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
                 >
                   <CardContent className="p-2">
                     <div className="flex items-center justify-between mb-3">
@@ -129,8 +141,9 @@ const AdPaymentMethods = () => {
                       </div>
                       <Checkbox
                         checked={isSelected}
+                        disabled={isDisabled}
                         onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px] disabled:opacity-50 disabled:cursor-not-allowed"
                       />
                     </div>
                     <div className="space-y-1">
@@ -163,8 +176,14 @@ const AdPaymentMethods = () => {
         </div>
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
+
+        {selectedMethods.length >= MAX_PAYMENT_METHODS && (
+          <p className="text-amber-600 text-sm mt-2 font-medium">
+            Maximum of {MAX_PAYMENT_METHODS} payment methods selected. Deselect a method to choose a different one.
+          </p>
+        )}
       </div>
-       {showAddPanel && (
+      {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}
           onAdd={handleAddPaymentMethod}
@@ -172,7 +191,6 @@ const AdPaymentMethods = () => {
         />
       )}
     </>
-   
   )
 }
 
