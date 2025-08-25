@@ -176,12 +176,6 @@ const AdPaymentMethods = () => {
         </div>
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
-
-        {selectedMethods.length >= MAX_PAYMENT_METHODS && (
-          <p className="text-amber-600 text-sm mt-2 font-medium">
-            Maximum of {MAX_PAYMENT_METHODS} payment methods selected. Deselect a method to choose a different one.
-          </p>
-        )}
       </div>
       {showAddPanel && (
         <AddPaymentMethodPanel
