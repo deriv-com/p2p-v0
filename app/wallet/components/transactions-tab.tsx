@@ -174,7 +174,6 @@ export default function TransactionsTab() {
               {dateTransactions.map((transaction, index) => {
                 const display = getTransactionDisplay(transaction)
                 console.log("[v0] Transaction display:", display)
-                console.log("[v0] Icon src:", display.iconSrc)
 
                 return (
                   <div key={transaction.transaction_id}>
