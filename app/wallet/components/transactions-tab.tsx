@@ -174,7 +174,7 @@ export default function TransactionsTab() {
             onClick={() => setActiveFilter(filter)}
             className={`h-8 rounded-full px-4 text-sm font-normal ${
               activeFilter === filter
-                ? "bg-black text-white border-black hover:bg-black" // Added hover:bg-black to keep active filter black on hover
+                ? "bg-black text-white border-black hover:bg-black" 
                 : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
             }`}
           >
