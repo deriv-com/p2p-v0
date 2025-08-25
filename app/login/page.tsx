@@ -23,7 +23,7 @@ export default function LoginPage() {
       const response = await AuthAPI.login({ email })
 
       if (response.code === "Success") {
-        setVerificationMessage(response.message);
+        setVerificationMessage(response.message)
         setStep("verification")
 
         const timer = setInterval(() => {
@@ -57,12 +57,14 @@ export default function LoginPage() {
         email,
       }
 
-      const response = await AuthAPI.verifyCode(verificationData);
+      const response = await AuthAPI.verifyCode(verificationData)
 
       if (response) {
+        if (response.access_token) localStorage.setItem("auth_token", response.access_token)
 
-        if (response.access_token)
-          localStorage.setItem("auth_token", response.access_token)
+        if (response.user?.id) {
+          localStorage.setItem("user_id", response.user.id)
+        }
 
         await AuthAPI.fetchUserIdAndStore()
         //await AuthAPI.getClientProfile()
@@ -117,9 +119,7 @@ export default function LoginPage() {
         <div className="max-w-md mx-auto">
           <h1 className="text-3xl font-bold text-black mb-6">Verification</h1>
 
-          <p className="text-gray-600 mb-8">
-            {verificationMessage}
-          </p>
+          <p className="text-gray-600 mb-8">{verificationMessage}</p>
           <div className="mb-8">
             <Input
               type="text"
@@ -140,11 +140,7 @@ export default function LoginPage() {
               </Button>
             )}
           </div>
-          <Button
-            className="w-full"
-            onClick={handleVerification}
-            disabled={verificationCode.length !== 6 || isLoading}
-          >
+          <Button className="w-full" onClick={handleVerification} disabled={verificationCode.length !== 6 || isLoading}>
             {isLoading ? "Verifying..." : "Verify"}
           </Button>
         </div>
@@ -158,22 +154,23 @@ export default function LoginPage() {
         <h1 className="text-4xl font-bold text-black mb-8">Welcome back!</h1>
         <div className="mb-6">
           <label className="block text-gray-600 mb-3">Email</label>
-          <Input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="name@email.com"
-          />
+          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@email.com" />
           {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
         </div>
-        <Button
-          onClick={handleLogin}
-          disabled={!email.trim() || isLoading}
-          className="w-full"
-        >
+        <Button onClick={handleLogin} disabled={!email.trim() || isLoading} className="w-full">
           {isLoading ? "Logging in..." : "Log in"}
         </Button>
-        <div className="mt-[2rem] text-center">Don’t have an account yet? <a className="text-primary" href="https://staging-app.champion.trade/champion" target="_blank" rel="noopener noreferrer">Sign up</a></div>
+        <div className="mt-[2rem] text-center">
+          Don’t have an account yet?{" "}
+          <a
+            className="text-primary"
+            href="https://staging-app.champion.trade/champion"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Sign up
+          </a>
+        </div>
       </div>
     </div>
   )
