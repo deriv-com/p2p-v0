@@ -98,7 +98,7 @@ export default function TransactionsTab() {
           ? "text-transactionAmount-withdrawalSuccess"
           : "text-transactionAmount-withdrawalInProgress opacity-48"
       }
-      return "text-transactionAmount-depositSuccess" // fallback
+      return "text-transactionAmount-depositSuccess"
     }
 
     switch (type) {
