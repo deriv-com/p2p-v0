@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
-import { CurrencyFilter } from "@/components/currency-filter"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import type { Currency } from "@/components/currency-filter/types"
 import jest from "jest" // Import jest to declare the variable
 
