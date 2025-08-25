@@ -5,6 +5,7 @@ import { fetchTransactions } from "@/services/api/api-wallets"
 import { ProcessingBadge, SuccessfulBadge, FailedBadge } from "@/app/wallet/components"
 import { Button } from "@/components/ui/button"
 import { Divider } from "@/components/ui/divider"
+import Image from "next/image"
 
 interface Transaction {
   transaction_id: number
@@ -97,8 +98,7 @@ export default function TransactionsTab() {
     switch (type) {
       case "Deposit":
         return {
-          icon: "+",
-          iconColor: "text-green-600",
+          iconSrc: "/icons/add-icon.png",
           bgColor: "bg-green-100",
           amountColor: "text-green-600",
           amountPrefix: "+",
@@ -106,8 +106,7 @@ export default function TransactionsTab() {
         }
       case "Withdraw":
         return {
-          icon: "−",
-          iconColor: "text-red-600",
+          iconSrc: "/icons/subtract-icon.png",
           bgColor: "bg-red-100",
           amountColor: "text-red-600",
           amountPrefix: "-",
@@ -115,8 +114,7 @@ export default function TransactionsTab() {
         }
       case "Transfer":
         return {
-          icon: "⇄",
-          iconColor: "text-blue-600",
+          iconSrc: "/icons/add-icon.png",
           bgColor: "bg-blue-100",
           amountColor: "text-blue-600",
           amountPrefix: "",
@@ -124,8 +122,7 @@ export default function TransactionsTab() {
         }
       default:
         return {
-          icon: "+",
-          iconColor: "text-green-600",
+          iconSrc: "/icons/add-icon.png",
           bgColor: "bg-green-100",
           amountColor: "text-green-600",
           amountPrefix: "+",
@@ -182,7 +179,13 @@ export default function TransactionsTab() {
                     <div className="flex items-center justify-between p-4 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className={`w-8 h-8 rounded-full ${display.bgColor} flex items-center justify-center`}>
-                          <span className={`${display.iconColor} font-semibold text-lg`}>{display.icon}</span>
+                          <Image
+                            src={display.iconSrc || "/placeholder.svg"}
+                            alt={`${display.type} icon`}
+                            width={16}
+                            height={16}
+                            className="w-4 h-4"
+                          />
                         </div>
 
                         <div>
