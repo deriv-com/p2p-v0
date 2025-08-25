@@ -201,7 +201,7 @@ export default function TransactionsTab() {
                         </div>
 
                         <div>
-                          <div className="font-medium text-gray-900">{display.type}</div>
+                          <div className="text-base font-normal text-gray-900">{display.type}</div>
                           <div className={`${display.amountColor} text-base font-bold`}>
                             {display.amountPrefix}
                             {transaction.metadata.transaction_net_amount || "0.00"}{" "}
