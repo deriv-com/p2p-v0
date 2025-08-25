@@ -188,7 +188,11 @@ export default function TransactionsTab() {
 
                         <div>
                           <div className="font-medium text-gray-900">{display.type}</div>
-                          <div className={`${display.amountColor} font-semibold`}>{display.amountPrefix}100.00 USD</div>
+                          <div className={`${display.amountColor} font-semibold`}>
+                            {display.amountPrefix}
+                            {transaction.metadata.transaction_net_amount || "0.00"}{" "}
+                            {transaction.metadata.transaction_currency || "USD"}
+                          </div>
                         </div>
                       </div>
 
