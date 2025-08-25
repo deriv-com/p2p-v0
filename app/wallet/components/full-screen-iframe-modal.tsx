@@ -53,7 +53,6 @@ export default function FullScreenIframeModal({ isOpen, onClose, operation = "DE
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "X-Branch": "staging",
           },
           body: JSON.stringify(requestParams),
         })
