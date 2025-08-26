@@ -6,7 +6,6 @@ import Image from "next/image"
 import WalletBottomSheet from "./wallet-bottom-sheet"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
-import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -27,7 +26,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
-  const isMobile = useIsMobile()
 
   const fetchBalance = async () => {
     try {
