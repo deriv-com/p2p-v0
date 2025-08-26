@@ -18,11 +18,11 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
 
   // TODO: Get from currencies API
   const currencies = [
-    { code: "USD", name: "US dollar", flag: "/icons/usd-flag.png" },
-    { code: "BTC", name: "Bitcoin", flag: "/icons/bitcoin-logo.png" },
-    { code: "ETH", name: "Ethereum", flag: "/icons/ethereum-logo.png" },
-    { code: "LTC", name: "Litecoin", flag: "/icons/litecoin-logo.png" },
-    { code: "USDC", name: "USD Coin", flag: "/icons/usdc-logo.png" },
+    { code: "USD", name: "US dollar", logo: "/icons/usd-flag.png" },
+    { code: "BTC", name: "Bitcoin", logo: "/icons/bitcoin-logo.png" },
+    { code: "ETH", name: "Ethereum", logo: "/icons/ethereum-logo.png" },
+    { code: "LTC", name: "Litecoin", logo: "/icons/litecoin-logo.png" },
+    { code: "USDC", name: "USD Coin", logo: "/icons/usdc-logo.png" },
   ]
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
@@ -66,8 +66,8 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <img
-                      src={currency.flag}
-                      alt={`${currency.name} Flag`}
+                      src={currency.logo}
+                      alt={`${currency.name}`}
                       className="w-full h-full object-cover"
                     />
                   </div>
