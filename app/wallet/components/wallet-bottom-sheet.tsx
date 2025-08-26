@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 interface WalletBottomSheetProps {
   isOpen: boolean
   onClose: () => void
-  onDirectDepositClick: (currency: string) => void // Added currency parameter
+  onDirectDepositClick: (currency: string) => void 
   operation?: "DEPOSIT" | "WITHDRAW"
 }
 
