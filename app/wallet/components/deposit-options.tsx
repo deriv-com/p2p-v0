@@ -79,7 +79,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
         </Select>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-2">
         <h2 className="text-base font-bold">Deposit with</h2>
       </div>
 
