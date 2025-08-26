@@ -52,7 +52,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
                 />
               </div>
               <SelectValue>
-                <span className="text-base font-medium text-black">
+                <span className="text-base">
                   {selectedCurrencyData.name} ({selectedCurrencyData.code})
                 </span>
               </SelectValue>
