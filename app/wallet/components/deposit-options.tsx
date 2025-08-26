@@ -1,9 +1,11 @@
 "use client"
 
 import type React from "react"
-import { ArrowLeftRight, Building2, ChevronDown } from "lucide-react"
+import { ArrowLeftRight, Building2 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface DepositOptionProps {
   onClose: () => void
@@ -13,6 +15,16 @@ interface DepositOptionProps {
 
 export default function DepositOptions({ onClose, onDirectDepositClick, operation = "DEPOSIT" }: DepositOptionProps) {
   const router = useRouter()
+  const [selectedCurrency, setSelectedCurrency] = useState("USD")
+
+  const currencies = [
+    { code: "USD", name: "US dollar", flag: "https://flagcdn.com/w40/us.png" },
+    { code: "EUR", name: "Euro", flag: "https://flagcdn.com/w40/eu.png" },
+    { code: "GBP", name: "British pound", flag: "https://flagcdn.com/w40/gb.png" },
+    { code: "JPY", name: "Japanese yen", flag: "https://flagcdn.com/w40/jp.png" },
+  ]
+
+  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -30,15 +42,42 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
     <>
       <div className="mb-6">
         <h2 className="text-xl font-bold text-black mb-4">Choose currency</h2>
-        <div className="flex items-center justify-between p-4 rounded-xl bg-accent border border-border cursor-pointer hover:bg-accent/80">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-              <img src="https://flagcdn.com/w40/us.png" alt="US Flag" className="w-full h-full object-cover" />
+        <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
+          <SelectTrigger className="w-full h-14 rounded-xl bg-accent border border-border hover:bg-accent/80">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                <img
+                  src={selectedCurrencyData.flag || "/placeholder.svg"}
+                  alt={`${selectedCurrencyData.name} Flag`}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <SelectValue>
+                <span className="text-base font-medium text-black">
+                  {selectedCurrencyData.name} ({selectedCurrencyData.code})
+                </span>
+              </SelectValue>
             </div>
-            <span className="text-base font-medium text-black">US dollar (USD)</span>
-          </div>
-          <ChevronDown className="w-5 h-5 text-muted-foreground" />
-        </div>
+          </SelectTrigger>
+          <SelectContent>
+            {currencies.map((currency) => (
+              <SelectItem key={currency.code} value={currency.code}>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <img
+                      src={currency.flag || "/placeholder.svg"}
+                      alt={`${currency.name} Flag`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <span>
+                    {currency.name} ({currency.code})
+                  </span>
+                </div>
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="mb-4">
