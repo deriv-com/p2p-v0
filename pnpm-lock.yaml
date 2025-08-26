@@ -120,7 +120,7 @@ importers:
         specifier: latest
         version: 1.1.1(@types/react-dom@19.0.0)(@types/react@19.0.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       cookie:
-        specifier: ^1.0.2
+        specifier: latest
         version: 1.0.2
       date-fns:
         specifier: 4.1.0
@@ -185,6 +185,9 @@ importers:
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.17(ts-node@10.9.1(@types/node@22.0.0)(typescript@5.0.2)))
+      undici:
+        specifier: latest
+        version: 7.15.0
       url:
         specifier: latest
         version: 0.11.4
