@@ -126,7 +126,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         </h1>
         <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
           <Image
-            src="/icons/refresh-icon.png"
+            src="/icons/undo-icon.png"
             alt="Refresh"
             width={16}
             height={16}
