@@ -86,7 +86,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
       <div className="space-y-3">
         <div
           className={cn(
-            "flex min-h-[56px] p-4 justify-center items-center gap-4 self-stretch",
+            "flex p-4 justify-center items-center gap-4 self-stretch",
             "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
           )}
           onClick={handleP2PTradingClick}
@@ -106,7 +106,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
 
         <div
           className={cn(
-            "flex min-h-[56px] p-4 justify-center items-center gap-4 self-stretch",
+            "flex p-4 justify-center items-center gap-4 self-stretch",
             "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
           )}
           onClick={handleDirectDepositClick}
