@@ -198,7 +198,7 @@ export default function TransactionsTab() {
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0">
                           <Image
-                            src={display.iconSrc || "/placeholder.svg"}
+                            src={display.iconSrc }
                             alt={`${display.type} icon`}
                             width={32}
                             height={32}
