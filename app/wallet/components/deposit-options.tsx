@@ -17,10 +17,11 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
 
   const currencies = [
-    { code: "USD", name: "US dollar", flag: "https://flagcdn.com/w40/us.png" },
-    { code: "EUR", name: "Euro", flag: "https://flagcdn.com/w40/eu.png" },
-    { code: "GBP", name: "British pound", flag: "https://flagcdn.com/w40/gb.png" },
-    { code: "JPY", name: "Japanese yen", flag: "https://flagcdn.com/w40/jp.png" },
+    { code: "USD", name: "US dollar", flag: "/icons/usd-flag.png" },
+    { code: "BTC", name: "Bitcoin", flag: "/icons/bitcoin-logo.png" },
+    { code: "ETH", name: "Ethereum", flag: "/icons/ethereum-logo.png" },
+    { code: "LTC", name: "Litecoin", flag: "/icons/litecoin-logo.png" },
+    { code: "USDC", name: "USD Coin", flag: "/icons/usdc-logo.png" },
   ]
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
