@@ -41,7 +41,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
   return (
     <>
       <div className="mb-6">
-        <h2 className="text-xl font-bold text-black mb-4">Choose currency</h2>
+        <h2 className="text-base font-bold text-black mb-4">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
           <SelectTrigger className="w-full h-14 rounded-xl bg-accent border border-border hover:bg-accent/80">
             <div className="flex items-center gap-3">
@@ -81,7 +81,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
       </div>
 
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-black">Deposit with</h2>
+        <h2 className="text-base font-bold text-black">Deposit with</h2>
       </div>
 
       <div className="space-y-3">
