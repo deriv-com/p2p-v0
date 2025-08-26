@@ -47,7 +47,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-2xl overflow-hidden flex-shrink-0">
                 <img
-                  src={selectedCurrencyData.flag || "/placeholder.svg"}
+                  src={selectedCurrencyData.flag}
                   alt={`${selectedCurrencyData.name} Flag`}
                   className="w-full h-full object-cover"
                 />
