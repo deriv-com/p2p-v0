@@ -27,7 +27,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [selectedCurrency, setSelectedCurrency] = useState("USD") // Added currency state
+  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const isMobile = useIsMobile()
 
   const fetchBalance = async () => {
@@ -93,19 +93,17 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   }
 
   const handleDirectDepositClick = (currency: string) => {
-    // Accept currency parameter
     setIsDepositSheetOpen(false)
     setIsDepositSidebarOpen(false)
-    setSelectedCurrency(currency) // Store selected currency
+    setSelectedCurrency(currency)
     setCurrentOperation("DEPOSIT")
     setIsIframeModalOpen(true)
   }
 
   const handleDirectWithdrawClick = (currency: string) => {
-    // Accept currency parameter
     setIsWithdrawSheetOpen(false)
     setIsWithdrawSidebarOpen(false)
-    setSelectedCurrency(currency) // Store selected currency
+    setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
   }
@@ -201,7 +199,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         operation={currentOperation}
-        currency={selectedCurrency} // Pass selected currency to modal
+        currency={selectedCurrency} 
       />
     </div>
   )
