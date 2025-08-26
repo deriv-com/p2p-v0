@@ -12,7 +12,7 @@ interface DepositOptionProps {
   onDirectDepositClick: () => void
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClic}: DepositOptionProps) {
+export default function DepositOptions({ onClose, onDirectDepositClick}: DepositOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
 
