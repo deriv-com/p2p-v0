@@ -92,7 +92,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
           onClick={handleP2PTradingClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-background rounded-full flex items-center justify-center">
-            <Image src="/icons/up-down-arrows.png" alt="Trade" className="w-6 h-6" />
+            <Image src="/icons/up-down-arrows.png" alt="Trade" />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">
@@ -112,7 +112,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
           onClick={handleDirectDepositClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-background rounded-full flex items-center justify-center">
-            <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
+            <Image src="/icons/bank-icon.png" alt="Bank" />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">
