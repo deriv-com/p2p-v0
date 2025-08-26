@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { Minus } from "lucide-react"
 import Image from "next/image"
-import WalletBottomSheet from "./wallet-bottom-sheet"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { cn } from "@/lib/utils"
