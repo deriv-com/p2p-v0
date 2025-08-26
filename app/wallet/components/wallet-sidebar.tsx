@@ -21,7 +21,7 @@ export default function WalletSidebar({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-end" onClick={onClose}>
-      <div className="bg-background h-full w-[400px] flex flex-col shadow-lg" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-background h-full w-full max-w-md flex flex-col shadow-lg" onClick={(e) => e.stopPropagation()}>
         <div className="flex justify-between items-center px-4 py-3 border-b">
           <h2 className="text-xl font-bold">{operation === "DEPOSIT" ? "Deposit" : "Withdraw"}</h2>
           <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
