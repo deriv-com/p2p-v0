@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Minus, RefreshCw } from "lucide-react"
+import { Minus } from "lucide-react"
 import Image from "next/image"
 import WalletBottomSheet from "./wallet-bottom-sheet"
 import WalletSidebar from "./wallet-sidebar"
@@ -125,7 +125,13 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${selectedCurrency}`}
         </h1>
         <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
-          <RefreshCw className={cn("h-4 w-4 text-gray-400", isRefreshing && "animate-spin")} />
+          <Image
+            src="/icons/refresh-icon.png"
+            alt="Refresh"
+            width={16}
+            height={16}
+            className={cn("text-gray-400", isRefreshing && "animate-spin")}
+          />
         </Button>
       </div>
       <p className="mt-1 text-sm font-normal text-muted-foreground text-center leading-[22px]">Est total assets</p>
@@ -163,7 +169,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             className="h-14 w-14 !rounded-full rounded-[9999px] aspect-square overflow-hidden flex-shrink-0 min-h-[56px] min-w-[56px] max-h-[56px] max-w-[56px] border-2 border-[#00080A] bg-white hover:bg-gray-50 transition-colors p-0"
             aria-label="Transfer"
           >
-            <RefreshCw className="h-5 w-5" />
+            <Image src="/icons/refresh-icon.png" alt="Transfer" width={20} height={20} />
           </Button>
           <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">Transfer</span>
         </div>
@@ -199,7 +205,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         operation={currentOperation}
-        currency={selectedCurrency} 
+        currency={selectedCurrency}
       />
     </div>
   )
