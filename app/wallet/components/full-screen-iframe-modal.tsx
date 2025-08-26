@@ -19,9 +19,15 @@ interface FullScreenIframeModalProps {
   isOpen: boolean
   onClose: () => void
   operation?: "DEPOSIT" | "WITHDRAW"
+  currency?: string
 }
 
-export default function FullScreenIframeModal({ isOpen, onClose, operation = "DEPOSIT" }: FullScreenIframeModalProps) {
+export default function FullScreenIframeModal({
+  isOpen,
+  onClose,
+  operation = "DEPOSIT",
+  currency = "USD",
+}: FullScreenIframeModalProps) {
   const router = useRouter()
   const [iframeUrl, setIframeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -45,6 +51,7 @@ export default function FullScreenIframeModal({ isOpen, onClose, operation = "DE
       const requestParams = {
         ...WALLETS.defaultParams,
         operation: operation === "DEPOSIT" ? "DEPOSIT" : "PAYOUT",
+        currency: currency,
       }
 
       try {
@@ -77,7 +84,7 @@ export default function FullScreenIframeModal({ isOpen, onClose, operation = "DE
     }
 
     fetchIframeUrl()
-  }, [isOpen, operation])
+  }, [isOpen, operation, currency])
 
   const handleIframeLoad = () => {
     setIframeLoaded(true)
