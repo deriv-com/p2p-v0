@@ -47,8 +47,8 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-2xl overflow-hidden flex-shrink-0">
                 <img
-                  src={selectedCurrencyData.flag || "/placeholder.svg"}
-                  alt={`${selectedCurrencyData.name} Flag`}
+                  src={selectedCurrencyData.logo}
+                  alt={selectedCurrencyData.name}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -65,8 +65,8 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <img
-                      src={currency.flag || "/placeholder.svg"}
-                      alt={`${currency.name} Flag`}
+                      src={currency.logo}
+                      alt={currency.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
