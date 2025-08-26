@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { Building2 } from "lucide-react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
@@ -115,7 +115,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
           onClick={handleDirectDepositClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-background rounded-full flex items-center justify-center">
-            <Building2 className="w-6 h-6 text-muted-foreground" />
+            <Image src="/icons/bank-icon.png" alt="Bank icon" width={24} height={24} className="w-6 h-6" />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">
