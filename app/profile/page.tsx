@@ -18,7 +18,6 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userId = USER.id
         const url = `${API.baseUrl}/users/me`
         const headers = AUTH.getAuthHeader()
 
