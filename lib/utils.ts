@@ -45,7 +45,7 @@ export function getPaymentMethodFields(
 }
 
 export function getPaymentMethodIcon(type: string): string {
-  return type === "ewallet" ? "/icons/ewallet-icon-new.png" : "/icons/bank-icon.png"
+  return type === "ewallet" ? "/icons/ewallet-icon-new.png" : "/icons/bank-transfericon.png"
 }
 
 export function getPaymentMethodColour(type: string): string {
