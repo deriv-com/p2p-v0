@@ -17,11 +17,11 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
   const [selectedCurrency, setSelectedCurrency] = useState("USD") 
 
   const currencies = [
-    { code: "USD", name: "US dollar", flag: "/icons/usd-flag.png" },
-    { code: "BTC", name: "Bitcoin", flag: "/icons/bitcoin-logo.png" },
-    { code: "ETH", name: "Ethereum", flag: "/icons/ethereum-logo.png" },
-    { code: "LTC", name: "Litecoin", flag: "/icons/litecoin-logo.png" },
-    { code: "USDC", name: "USD Coin", flag: "/icons/usdc-logo.png" },
+    { code: "USD", name: "US dollar", logo: "/icons/usd-flag.png" },
+    { code: "BTC", name: "Bitcoin", logo: "/icons/bitcoin-logo.png" },
+    { code: "ETH", name: "Ethereum", logo: "/icons/ethereum-logo.png" },
+    { code: "LTC", name: "Litecoin", fllogoag: "/icons/litecoin-logo.png" },
+    { code: "USDC", name: "USD Coin", logo: "/icons/usdc-logo.png" },
   ]
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
