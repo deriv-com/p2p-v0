@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
@@ -18,8 +18,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const userId = USER.id
-        const url = `${API.baseUrl}/users/${userId}`
+        const url = `${API.baseUrl}/users/me`
         const headers = AUTH.getAuthHeader()
 
         const response = await fetch(url, {
