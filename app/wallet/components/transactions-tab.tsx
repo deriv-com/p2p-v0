@@ -100,17 +100,13 @@ export default function TransactionsTab() {
 
     const getAmountColor = () => {
       if (type === "Transfer") {
-        return "text-transactionAmount-transfer opacity-96"
+        return "text-black opacity-96"
       } else if (type === "Deposit") {
-        return status === "completed"
-          ? "text-transactionAmount-depositSuccess"
-          : "text-transactionAmount-depositInProgress opacity-48"
+        return status === "completed" ? "text-success-icon" : "text-black opacity-48"
       } else if (type === "Withdraw") {
-        return status === "completed"
-          ? "text-transactionAmount-withdrawalSuccess"
-          : "text-transactionAmount-withdrawalInProgress opacity-48"
+        return status === "completed" ? "text-error-DEFAULT" : "text-black opacity-48"
       }
-      return "text-transactionAmount-depositSuccess"
+      return "text-success-icon"
     }
 
     switch (type) {
@@ -210,7 +206,7 @@ export default function TransactionsTab() {
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0">
                           <Image
-                            src={display.iconSrc}
+                            src={display.iconSrc || "/placeholder.svg"}
                             alt={`${display.type} icon`}
                             width={32}
                             height={32}

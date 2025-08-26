@@ -160,13 +160,6 @@ const config: Config = {
           bank: "#74B816",
           ewallet: "#1A79CB",
         },
-        transactionAmount: {
-          transfer: "#000000",
-          depositSuccess: "#00C390",
-          depositInProgress: "#000000",
-          withdrawalSuccess: "#E6190E",
-          withdrawalInProgress: "#000000",
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
