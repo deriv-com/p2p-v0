@@ -19,7 +19,7 @@ interface FullScreenIframeModalProps {
   isOpen: boolean
   onClose: () => void
   operation?: "DEPOSIT" | "WITHDRAW"
-  currency?: string // Added currency prop
+  currency?: string
 }
 
 export default function FullScreenIframeModal({
@@ -51,7 +51,7 @@ export default function FullScreenIframeModal({
       const requestParams = {
         ...WALLETS.defaultParams,
         operation: operation === "DEPOSIT" ? "DEPOSIT" : "PAYOUT",
-        currency: currency, // Use selected currency instead of default
+        currency: currency,
       }
 
       try {
@@ -84,7 +84,7 @@ export default function FullScreenIframeModal({
     }
 
     fetchIframeUrl()
-  }, [isOpen, operation, currency]) // Added currency to dependency array
+  }, [isOpen, operation, currency])
 
   const handleIframeLoad = () => {
     setIframeLoaded(true)
