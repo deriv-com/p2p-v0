@@ -126,7 +126,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         </h1>
         <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
           <Image
-            src="/icons/undo-icon.png"
+            src="/icons/refresh-icon.png"
             alt="Refresh"
             width={16}
             height={16}
@@ -169,7 +169,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
             className="h-14 w-14 !rounded-full rounded-[9999px] aspect-square overflow-hidden flex-shrink-0 min-h-[56px] min-w-[56px] max-h-[56px] max-w-[56px] border-2 border-[#00080A] bg-white hover:bg-gray-50 transition-colors p-0"
             aria-label="Transfer"
           >
-            <Image src="/icons/refresh-icon.png" alt="Transfer" width={20} height={20} />
+            <Image src="/icons/transfer-icon.png" alt="Transfer" width={20} height={20} />
           </Button>
           <span className="mt-2 text-sm font-normal text-[rgba(0,0,0,0.96)] text-center leading-[22px]">Transfer</span>
         </div>
