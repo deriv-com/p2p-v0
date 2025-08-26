@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { ArrowLeftRight, Building2 } from "lucide-react"
+import { Building2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
@@ -93,7 +93,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
           onClick={handleP2PTradingClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-background rounded-full flex items-center justify-center">
-            <ArrowLeftRight className="w-6 h-6 text-muted-foreground" />
+            <img src="/icons/up-down-arrows.png" alt="Up down arrows" className="w-6 h-6" />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">
