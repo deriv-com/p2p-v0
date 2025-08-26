@@ -52,19 +52,19 @@ export default function TransactionsTab() {
     switch (status) {
       case "pending":
         return (
-          <Badge variant="pending" className="h-6 rounded">
+          <Badge variant="pending-secondary" className="h-6 rounded">
             Processing
           </Badge>
         )
       case "completed":
         return (
-          <Badge variant="success-light" className="h-6 rounded">
+          <Badge variant="success-secondary" className="h-6 rounded">
             Successful
           </Badge>
         )
       default:
         return (
-          <Badge variant="error-light" className="h-6 rounded">
+          <Badge variant="error-secondary" className="h-6 rounded">
             Failed
           </Badge>
         )
