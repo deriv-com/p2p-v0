@@ -19,9 +19,7 @@ interface WalletBalanceProps {
 type OperationType = "DEPOSIT" | "WITHDRAW"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
-  const [isDepositSheetOpen, setIsDepositSheetOpen] = useState(false)
   const [isDepositSidebarOpen, setIsDepositSidebarOpen] = useState(false)
-  const [isWithdrawSheetOpen, setIsWithdrawSheetOpen] = useState(false)
   const [isWithdrawSidebarOpen, setIsWithdrawSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -86,7 +84,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   }
 
   const handleDirectDepositClick = (currency: string) => {
-    setIsDepositSheetOpen(false)
     setIsDepositSidebarOpen(false)
     setSelectedCurrency(currency)
     setCurrentOperation("DEPOSIT")
@@ -94,7 +91,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   }
 
   const handleDirectWithdrawClick = (currency: string) => {
-    setIsWithdrawSheetOpen(false)
     setIsWithdrawSidebarOpen(false)
     setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
