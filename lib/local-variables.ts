@@ -36,6 +36,7 @@ export const API = {
     transactions: "/transactions",
     userFavourites: "/user-favourites",
     userBlocks: "/user-blocks",
+    walletsTransactions: "/wallets/transactions",
   },
 }
 

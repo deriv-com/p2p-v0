@@ -13,6 +13,8 @@ const config: Config = {
     extend: {
       opacity: {
         24: "0.24",
+        48: "0.48",
+        96: "0.96",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -91,7 +93,7 @@ const config: Config = {
           200: "#00000014",
           300: "#F8F9FA",
           400: "#CED4DA",
-          500: "#0000000a"
+          500: "#0000000a",
         },
         yellow: {
           50: "#A66C00",
