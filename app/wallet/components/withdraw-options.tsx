@@ -97,7 +97,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Sell ${selectedCurrencyData.code} directly to other users on the P2P marketplace.`}
+              {`Trade ${selectedCurrencyData.code} directly to other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
