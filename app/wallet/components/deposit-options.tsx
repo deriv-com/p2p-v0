@@ -46,8 +46,8 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-2xl overflow-hidden flex-shrink-0">
-                <img
+              <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
+                <Image
                   src={selectedCurrencyData.logo}
                   alt={selectedCurrencyData.name}
                   className="w-full h-full object-cover"
@@ -65,7 +65,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
               <SelectItem key={currency.code} value={currency.code}>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <img
+                    <Image
                       src={currency.logo}
                       alt={`${currency.name}`}
                       className="w-full h-full object-cover"
