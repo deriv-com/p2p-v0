@@ -193,23 +193,10 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           </div>
         </div>
 
-        <WalletBottomSheet
-          isOpen={isDepositSheetOpen}
-          onClose={() => setIsDepositSheetOpen(false)}
-          onDirectDepositClick={handleDirectDepositClick}
-        />
-
         <WalletSidebar
           isOpen={isDepositSidebarOpen}
           onClose={() => setIsDepositSidebarOpen(false)}
           onDirectDepositClick={handleDirectDepositClick}
-        />
-
-        <WalletBottomSheet
-          isOpen={isWithdrawSheetOpen}
-          onClose={() => setIsWithdrawSheetOpen(false)}
-          onDirectDepositClick={handleDirectWithdrawClick}
-          operation="WITHDRAW"
         />
 
         <WalletSidebar
