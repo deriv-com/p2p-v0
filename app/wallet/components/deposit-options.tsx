@@ -99,7 +99,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
                 P2P Trading
             </h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-                Buy USD directly from other users on the P2P marketplace.
+                {`Buy ${selectedCurrencyData} directly from other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
