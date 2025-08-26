@@ -142,6 +142,8 @@ const config: Config = {
           DEFAULT: "#267d36",
           icon: "#008832",
           bg: "#edfaf3",
+          deposit: "#00C390",
+          withdraw: "#E6190E",
         },
         cancelled: {
           light: "rgba(156, 163, 175, 0.1)",
