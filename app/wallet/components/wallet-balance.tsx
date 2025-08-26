@@ -9,7 +9,7 @@ import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface WalletBalanceProps {
