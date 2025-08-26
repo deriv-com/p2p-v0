@@ -199,7 +199,7 @@ export async function getSocketToken(token: string): Promise<void> {
       credentials: "include",
       headers: {
         "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
-        "X-Branch": "development",
+        "X-Branch": "master",
         "Content-Type": "application/json",
       },
     })
