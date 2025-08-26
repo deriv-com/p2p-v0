@@ -45,7 +45,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, operatio
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
             <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+              <div className="w-8 h-8 rounded-2xl overflow-hidden flex-shrink-0">
                 <img
                   src={selectedCurrencyData.flag || "/placeholder.svg"}
                   alt={`${selectedCurrencyData.name} Flag`}
