@@ -160,20 +160,6 @@ const config: Config = {
           bank: "#74B816",
           ewallet: "#1A79CB",
         },
-        walletBadge: {
-          processing: {
-            text: "#FF9C13",
-            bg: "#FFF7E6",
-          },
-          successful: {
-            text: "#00C390",
-            bg: "#E6FFF9",
-          },
-          failed: {
-            text: "#C40000",
-            bg: "#FFE6E6",
-          },
-        },
         transactionAmount: {
           transfer: "#000000",
           depositSuccess: "#00C390",
