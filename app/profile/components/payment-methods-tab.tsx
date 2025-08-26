@@ -259,7 +259,7 @@ export default function PaymentMethodsTab() {
 
   const getBankIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center">
-      <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
+      <Image src="/icons/bank-transfer-icon.png" alt="Bank" width={24} height={24} />
     </div>
   )
 
