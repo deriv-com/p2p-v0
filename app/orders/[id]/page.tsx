@@ -207,7 +207,7 @@ export default function OrderDetailsPage() {
       stars.push(
         <Image
           key={i}
-          src={i <= rating ? "/icons/star-active.png" : "/icons/star-icon.png"}
+          src={i <= rating ? "/icons/star-active.png" : "/icons/star-custom.png"}
           alt={i <= rating ? "Filled star" : "Empty star"}
           width={32}
           height={32}
