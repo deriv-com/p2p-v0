@@ -16,6 +16,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
 
+  // TODO: Get from currencies API
   const currencies = [
     { code: "USD", name: "US dollar", flag: "/icons/usd-flag.png" },
     { code: "BTC", name: "Bitcoin", flag: "/icons/bitcoin-logo.png" },
