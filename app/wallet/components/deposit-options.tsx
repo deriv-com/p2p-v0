@@ -116,12 +116,10 @@ export default function DepositOptions({ onClose, onDirectDepositClic}: DepositO
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">
-              {operation === "DEPOSIT" ? "Direct deposit" : "Direct withdrawal"}
+              Direct deposit
             </h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {operation === "DEPOSIT"
-                ? "Deposit funds directly from your bank account, e-wallet, or other payment methods."
-                : "Withdraw funds directly to your bank account, e-wallet, or other payment methods."}
+                Deposit funds directly from your bank account, e-wallet, or other payment methods.
             </p>
           </div>
         </div>
