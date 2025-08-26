@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface DepositOptionProps {
   onClose: () => void
-  onDirectDepositClick: (currency: string) => void // Added currency parameter
+  onDirectDepositClick: (currency: string) => void
 }
 
 export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
