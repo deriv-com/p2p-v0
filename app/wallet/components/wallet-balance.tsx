@@ -77,20 +77,12 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
   const handleDepositClick = () => {
     setCurrentOperation("DEPOSIT")
-    if (isMobile) {
-      setIsDepositSheetOpen(true)
-    } else {
-      setIsDepositSidebarOpen(true)
-    }
+    setIsDepositSidebarOpen(true)
   }
 
   const handleWithdrawClick = () => {
     setCurrentOperation("WITHDRAW")
-    if (isMobile) {
-      setIsWithdrawSheetOpen(true)
-    } else {
-      setIsWithdrawSidebarOpen(true)
-    }
+    setIsWithdrawSidebarOpen(true)
   }
 
   const handleDirectDepositClick = (currency: string) => {
