@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
-import { ProcessingBadge, SuccessfulBadge, FailedBadge } from "@/app/wallet/components"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Divider } from "@/components/ui/divider"
 import Image from "next/image"
@@ -51,11 +51,23 @@ export default function TransactionsTab() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
-        return <ProcessingBadge />
+        return (
+          <Badge variant="pending" className="h-6 rounded">
+            Processing
+          </Badge>
+        )
       case "completed":
-        return <SuccessfulBadge />
+        return (
+          <Badge variant="success-light" className="h-6 rounded">
+            Successful
+          </Badge>
+        )
       default:
-        return <FailedBadge />
+        return (
+          <Badge variant="error-light" className="h-6 rounded">
+            Failed
+          </Badge>
+        )
     }
   }
 
@@ -174,7 +186,7 @@ export default function TransactionsTab() {
             onClick={() => setActiveFilter(filter)}
             className={`h-8 rounded-full px-4 text-sm font-normal ${
               activeFilter === filter
-                ? "bg-black text-white border-black hover:bg-black" 
+                ? "bg-black text-white border-black hover:bg-black"
                 : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
             }`}
           >
@@ -198,7 +210,7 @@ export default function TransactionsTab() {
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0">
                           <Image
-                            src={display.iconSrc }
+                            src={display.iconSrc || "/placeholder.svg"}
                             alt={`${display.type} icon`}
                             width={32}
                             height={32}
