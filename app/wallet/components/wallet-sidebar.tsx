@@ -1,5 +1,5 @@
 "use client"
-import { X } from "lucide-react"
+import Image from "next/image"
 import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
 import { Button } from "@/components/ui/button"
@@ -22,18 +22,10 @@ export default function WalletSidebar({
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex justify-end" onClick={onClose}>
       <div className="bg-background h-full w-[400px] flex flex-col shadow-lg" onClick={(e) => e.stopPropagation()}>
-        <div className="p-4 flex justify-between items-center border-b border-border">
-          <h2 className="overflow-hidden text-black truncate text-xl font-bold leading-[30px]">
-            {operation === "DEPOSIT" ? "Deposit" : "Withdraw"}
-          </h2>
-          <Button
-            onClick={onClose}
-            variant="ghost"
-            className="p-1 bg-white hover:bg-white text-black"
-            size="sm"
-            aria-label="Close"
-          >
-            <X className="h-4 w-4" />
+        <div className="flex justify-between items-center px-4 py-3 border-b">
+          <h2 className="text-xl font-bold">{operation === "DEPOSIT" ? "Deposit" : "Withdraw"}</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
 
