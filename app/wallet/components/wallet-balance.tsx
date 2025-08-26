@@ -27,6 +27,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [selectedCurrency, setSelectedCurrency] = useState("USD") // Added currency state
   const isMobile = useIsMobile()
 
   const fetchBalance = async () => {
@@ -52,7 +53,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
       if (responseData && responseData.data) {
         const data = responseData.data
-        const balance = data.balances?.find((b: any) => b.currency === "USD")?.amount
+        const balance = data.balances?.find((b: any) => b.currency === selectedCurrency)?.amount
         setBalance(balance ? Number.parseFloat(balance) : 0)
       }
 
@@ -67,7 +68,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
   useEffect(() => {
     fetchBalance()
-  }, [])
+  }, [selectedCurrency])
 
   const handleRefresh = () => {
     fetchBalance()
@@ -91,16 +92,20 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     }
   }
 
-  const handleDirectDepositClick = () => {
+  const handleDirectDepositClick = (currency: string) => {
+    // Accept currency parameter
     setIsDepositSheetOpen(false)
     setIsDepositSidebarOpen(false)
+    setSelectedCurrency(currency) // Store selected currency
     setCurrentOperation("DEPOSIT")
     setIsIframeModalOpen(true)
   }
 
-  const handleDirectWithdrawClick = () => {
+  const handleDirectWithdrawClick = (currency: string) => {
+    // Accept currency parameter
     setIsWithdrawSheetOpen(false)
     setIsWithdrawSidebarOpen(false)
+    setSelectedCurrency(currency) // Store selected currency
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
   }
@@ -119,7 +124,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
       <div className="flex items-center justify-center gap-2">
         <h1 className="text-[32px] font-black text-black text-center leading-normal">
-          {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} USD`}
+          {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${selectedCurrency}`}
         </h1>
         <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
           <RefreshCw className={cn("h-4 w-4 text-gray-400", isRefreshing && "animate-spin")} />
@@ -196,6 +201,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         operation={currentOperation}
+        currency={selectedCurrency} // Pass selected currency to modal
       />
     </div>
   )

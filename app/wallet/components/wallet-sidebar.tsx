@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 interface WalletSidebarProps {
   isOpen: boolean
   onClose: () => void
-  onDirectDepositClick: () => void
+  onDirectDepositClick: (currency: string) => void // Added currency parameter
   operation?: "DEPOSIT" | "WITHDRAW"
 }
 

@@ -9,10 +9,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface DepositOptionProps {
   onClose: () => void
-  onDirectDepositClick: () => void
+  onDirectDepositClick: (currency: string) => void // Added currency parameter
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClick}: DepositOptionProps) {
+export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
 
@@ -28,7 +28,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
   const handleDirectDepositClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectDepositClick()
+    onDirectDepositClick(selectedCurrency) // Pass selected currency
   }
 
   const handleP2PTradingClick = (e: React.MouseEvent) => {
@@ -95,11 +95,9 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
             <Image src="/icons/up-down-arrows.png" alt="Trade" />
           </div>
           <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">
-                P2P Trading
-            </h3>
+            <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-                {`Buy ${selectedCurrencyData} directly from other users on the P2P marketplace.`}
+              {`Buy ${selectedCurrencyData.name} directly from other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
@@ -115,11 +113,9 @@ export default function DepositOptions({ onClose, onDirectDepositClick}: Deposit
             <Image src="/icons/bank-icon.png" alt="Bank" />
           </div>
           <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">
-              Direct deposit
-            </h3>
+            <h3 className="text-base font-bold text-black leading-6 mb-1">Direct deposit</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-                Deposit funds directly from your bank account, e-wallet, or other payment methods.
+              Deposit funds directly from your bank account, e-wallet, or other payment methods.
             </p>
           </div>
         </div>
