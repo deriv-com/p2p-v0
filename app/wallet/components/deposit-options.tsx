@@ -10,10 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface DepositOptionProps {
   onClose: () => void
   onDirectDepositClick: () => void
-  operation?: "DEPOSIT" | "WITHDRAW"
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClick, operation = "DEPOSIT" }: DepositOptionProps) {
+export default function DepositOptions({ onClose, onDirectDepositClic}: DepositOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
 
