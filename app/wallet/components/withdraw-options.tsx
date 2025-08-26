@@ -9,12 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface WithdrawOptionProps {
   onClose: () => void
-  onDirectWithdrawClick: (currency: string) => void // Added currency parameter
+  onDirectWithdrawClick: (currency: string) => void 
 }
 
 export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: WithdrawOptionProps) {
   const router = useRouter()
-  const [selectedCurrency, setSelectedCurrency] = useState("USD") // Added currency state
+  const [selectedCurrency, setSelectedCurrency] = useState("USD") 
 
   const currencies = [
     { code: "USD", name: "US dollar", flag: "/icons/usd-flag.png" },
@@ -29,7 +29,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
   const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectWithdrawClick(selectedCurrency) // Pass selected currency
+    onDirectWithdrawClick(selectedCurrency) 
   }
 
   const handleMarketplaceClick = (e: React.MouseEvent) => {
