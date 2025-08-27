@@ -129,7 +129,7 @@ const AdPaymentMethods = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 ml-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className={`font-bold tex-sm ${isDisabled ? "text-gray-400" : "text-gray-700"}`}>
+                        <span className="font-bold tex-sm text-gray-700">
                           {getCategoryDisplayName(method.type)}
                         </span>
                       </div>
@@ -141,10 +141,10 @@ const AdPaymentMethods = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className={`text-sm tracking-wide ${isDisabled ? "text-gray-400" : "text-neutral-10"}`}>
+                      <div className="text-sm tracking-wide text-neutral-10">
                         {displayDetails.primary}
                       </div>
-                      <div className={`text-sm ${isDisabled ? "text-gray-300" : "text-neutral-7"}`}>
+                      <div className="text-sm text-neutral-7">
                         {displayDetails.secondary}
                       </div>
                     </div>
