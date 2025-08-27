@@ -102,7 +102,7 @@ export default function TransactionsTab() {
       if (type === "Transfer") {
         return "text-black opacity-96"
       } else if (type === "Deposit") {
-        return status === "completed" ? "text-completed-deposit" : "text-black opacity-48"
+        return status === "completed" ? "text-success-text-secondary" : "text-black opacity-48"
       } else if (type === "Withdraw") {
         return status === "completed" ? "text-completed-withdraw" : "text-black opacity-48"
       }

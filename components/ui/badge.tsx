@@ -21,7 +21,7 @@ const badgeVariants = cva(
         "error-light":
           "justify-center items-center rounded border-transparent bg-error-light text-xs font-bold leading-5 px-2 py-0.5 text-error-text",
         "error-secondary":
-          "justify-center items-center rounded border-transparent bg-error-secondary-bg text-xs font-bold leading-5 px-2 py-0.5 text-error-secondary-text",
+          "justify-center items-center rounded border-transparent bg-error-secondary-bg text-xs font-bold leading-5 px-2 py-0.5 text-error",
         warning: "border-transparent bg-warning-bg text-warning-icon hover:bg-warning-bg/80",
         buy: "border-transparent bg-buy text-white hover:bg-buy/80",
         sell: "border-transparent bg-sell text-white hover:bg-sell/80",
