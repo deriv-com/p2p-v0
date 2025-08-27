@@ -63,6 +63,13 @@ export default function PaymentMethodBottomSheet({
       setLocalSelectedMethods(selectedMethods)
       setInitialSelectedMethods(selectedMethods)
       setSearchQuery("")
+      setStartY(0)
+      setCurrentY(0)
+      setIsDragging(false)
+    } else {
+      setStartY(0)
+      setCurrentY(0)
+      setIsDragging(false)
     }
   }, [isOpen, selectedMethods])
 
@@ -110,6 +117,7 @@ export default function PaymentMethodBottomSheet({
 
   const handleTouchStart = (e: React.TouchEvent) => {
     setStartY(e.touches[0].clientY)
+    setCurrentY(e.touches[0].clientY)
     setIsDragging(true)
   }
 
@@ -125,6 +133,8 @@ export default function PaymentMethodBottomSheet({
         onClose()
       }
       setIsDragging(false)
+      setStartY(0)
+      setCurrentY(0)
     }
   }
 
