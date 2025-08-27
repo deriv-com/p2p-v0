@@ -88,10 +88,10 @@
   },
   "pnpm": {
     "overrides": {
-      "cookie@<0.7.0": "0.7.0",
-      "esbuild@<=0.24.2": "0.25.0",
-      "path-to-regexp@<8.0.0": "8.0.0",
-      "undici@<6.21.1": "6.21.1"
+      "cookie": "0.7.0",
+      "esbuild": "0.25.0",
+      "path-to-regexp": "8.0.0",
+      "undici": "6.21.1"
     }
   }
 }
