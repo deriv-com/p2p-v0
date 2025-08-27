@@ -140,8 +140,6 @@ const config: Config = {
           DEFAULT: "#f59e0b",
           icon: "#f59e0b",
           bg: "#fff8e7",
-          "bg-secondary": "#FFF7E6",
-          "text-secondary": "#FF9C13",
         },
         completed: {
           light: "rgba(0, 136, 50, 0.08)",
@@ -150,18 +148,6 @@ const config: Config = {
           bg: "#edfaf3",
           deposit: "#00C390",
           withdraw: "#E6190E",
-        },
-        "success-secondary": {
-          bg: "#E6FFF9",
-          text: "#00C390",
-        },
-        "error-secondary": {
-          bg: "#FFE6E6",
-          text: "#C40000",
-        },
-        "pending-secondary": {
-          bg: "#FFF7E6",
-          text: "#FF9C13",
         },
         cancelled: {
           light: "rgba(156, 163, 175, 0.1)",
