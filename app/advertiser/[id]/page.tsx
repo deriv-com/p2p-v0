@@ -310,7 +310,7 @@ export default function AdvertiserProfilePage() {
                   </div>
                   <div>
                     <div className="text-xs text-slate-500">Total orders</div>
-                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime}</div>
+                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime ?? 0}</div>
                   </div>
                 </div>
               </div>
