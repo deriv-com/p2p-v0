@@ -70,15 +70,15 @@ const AdPaymentMethods = () => {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+        if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
-        } 
+        }
         showAlert({
-            title,
-            description,
-            confirmText: "OK",
-            type: "warning"
+          title,
+          description,
+          confirmText: "OK",
+          type: "warning",
         })
       }
     } catch (error) {
@@ -114,28 +114,39 @@ const AdPaymentMethods = () => {
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
             {paymentMethods.map((method) => {
               const isSelected = selectedMethods.includes(method.id)
+              const isMaxReached = selectedMethods.length >= 3
+              const isDisabled = !isSelected && isMaxReached
               const displayDetails = getMethodDisplayDetails(method)
 
               return (
                 <Card
                   key={method.id}
-                  className="cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto"
+                  className={`cursor-pointer transition-all duration-200 bg-grayscale-300 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto ${
+                    isDisabled ? "opacity-50 cursor-not-allowed hover:shadow-none" : ""
+                  }`}
                 >
                   <CardContent className="p-2">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 ml-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                        <span className={`font-bold tex-sm ${isDisabled ? "text-gray-400" : "text-gray-700"}`}>
+                          {getCategoryDisplayName(method.type)}
+                        </span>
                       </div>
                       <Checkbox
                         checked={isSelected}
                         onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
+                        disabled={isDisabled}
                         className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="text-sm text-neutral-10 tracking-wide">{displayDetails.primary}</div>
-                      <div className="text-sm text-neutral-7">{displayDetails.secondary}</div>
+                      <div className={`text-sm tracking-wide ${isDisabled ? "text-gray-400" : "text-neutral-10"}`}>
+                        {displayDetails.primary}
+                      </div>
+                      <div className={`text-sm ${isDisabled ? "text-gray-300" : "text-neutral-7"}`}>
+                        {displayDetails.secondary}
+                      </div>
                     </div>
                   </CardContent>
                 </Card>
@@ -163,8 +174,12 @@ const AdPaymentMethods = () => {
         </div>
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
+
+        {selectedMethods.length >= 3 && (
+          <p className="text-amber-600 text-sm mt-2">Maximum of 3 payment methods reached</p>
+        )}
       </div>
-       {showAddPanel && (
+      {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}
           onAdd={handleAddPaymentMethod}
@@ -172,7 +187,6 @@ const AdPaymentMethods = () => {
         />
       )}
     </>
-   
   )
 }
 
