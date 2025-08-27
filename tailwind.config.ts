@@ -64,7 +64,6 @@ const config: Config = {
           DEFAULT: "#c40000",
           text: "#C40000",
           "bg-secondary": "#FFE6E6",
-          "text-secondary": "#C40000",
         },
         buy: {
           DEFAULT: "#29823b",
@@ -147,7 +146,6 @@ const config: Config = {
           DEFAULT: "#267d36",
           icon: "#008832",
           bg: "#edfaf3",
-          deposit: "#00C390",
           withdraw: "#E6190E",
         },
         cancelled: {
