@@ -104,7 +104,7 @@ export default function TransactionsTab() {
       } else if (type === "Deposit") {
         return status === "completed" ? "text-success-text-secondary" : "text-black opacity-48"
       } else if (type === "Withdraw") {
-        return status === "completed" ? "text-completed-withdraw" : "text-black opacity-48"
+        return status === "completed" ? "text-red-withdraw" : "text-black opacity-48"
       }
       return "text-success-icon"
     }

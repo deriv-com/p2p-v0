@@ -146,7 +146,6 @@ const config: Config = {
           DEFAULT: "#267d36",
           icon: "#008832",
           bg: "#edfaf3",
-          withdraw: "#E6190E",
         },
         cancelled: {
           light: "rgba(156, 163, 175, 0.1)",
@@ -164,6 +163,17 @@ const config: Config = {
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",
+        },
+        red: {
+          DEFAULT: "#dc2626",
+          50: "#fef2f2",
+          100: "#fee2e2",
+          500: "#ef4444",
+          600: "#dc2626",
+          700: "#b91c1c",
+          800: "#991b1b",
+          900: "#7f1d1d",
+          withdraw: "#E6190E",
         },
       },
       borderRadius: {
