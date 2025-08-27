@@ -10,6 +10,3 @@ export interface CurrencyFilterProps {
   selectedCurrency: string
   onCurrencySelect: (currencyCode: string) => void
   trigger: ReactNode
-  placeholder?: string
-  emptyMessage?: string
-}
