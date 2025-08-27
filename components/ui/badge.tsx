@@ -32,7 +32,7 @@ const badgeVariants = cva(
         info: "border-transparent bg-info-light text-info hover:bg-info-light/80",
         pending: "border-transparent bg-pending-light text-pending hover:bg-pending-light/80",
         "pending-secondary":
-          "justify-center items-center rounded border-transparent bg-pending-secondary-bg text-xs font-bold leading-5 px-2 py-0.5 text-pending-secondary-text",
+          "justify-center items-center rounded border-transparent bg-pending-bg-secondary text-xs font-bold leading-5 px-2 py-0.5 text-pending-text-secondary",
         completed: "border-transparent bg-completed-light text-completed hover:bg-completed-light/80",
         cancelled: "border-transparent bg-cancelled-light text-cancelled hover:bg-cancelled-light/80",
         disputed: "border-transparent bg-disputed-light text-disputed hover:bg-disputed-light/80",
