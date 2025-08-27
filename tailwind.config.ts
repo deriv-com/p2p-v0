@@ -168,14 +168,6 @@ const config: Config = {
           bank: "#74B816",
           ewallet: "#1A79CB",
         },
-        transaction: {
-          deposit: {
-            completed: "#00C390",
-          },
-          withdraw: {
-            completed: "#E6190E",
-          },
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
