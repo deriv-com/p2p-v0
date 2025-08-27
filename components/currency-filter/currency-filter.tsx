@@ -18,7 +18,9 @@ export function CurrencyFilter({
   selectedCurrency,
   onCurrencySelect,
   trigger,
-  placeholder = "Sear
+  placeholder = "Search",
+}: CurrencyFilterProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
 
