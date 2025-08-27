@@ -41,7 +41,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
     const result = await response.json()
     const { data } = result
 
-    return data[0]
+    return data
   } catch (error) {
     console.error("Login error:", error)
     throw new Error("Failed to login. Please try again.")
