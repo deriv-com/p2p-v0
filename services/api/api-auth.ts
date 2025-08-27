@@ -69,7 +69,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
     const result = await response.json()
     const { data } = result
 
-    return data[0]
+    return data
   } catch (error) {
     console.error("Verification error:", error)
     throw new Error("Failed to verify code. Please try again.")
