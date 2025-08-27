@@ -140,7 +140,6 @@ const config: Config = {
           DEFAULT: "#f59e0b",
           icon: "#f59e0b",
           bg: "#fff8e7",
-          "bg-secondary": "#FFF7E6",
           "text-secondary": "#FF9C13",
         },
         completed: {
