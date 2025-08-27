@@ -41,7 +41,7 @@ export function CurrencyFilter({
     }
     const selectedCurrencyItem = filtered.find((currency) => currency.code === selectedCurrency)
     const unselectedCurrencies = filtered.filter((currency) => currency.code !== selectedCurrency)
-
+    
     unselectedCurrencies.sort((a, b) => a.code.localeCompare(b.code))
 
     return selectedCurrencyItem ? [selectedCurrencyItem, ...unselectedCurrencies] : unselectedCurrencies
@@ -109,10 +109,10 @@ export function CurrencyFilter({
       <div className="max-h-[85%] overflow-y-auto">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
-            title={`${searchQuery} is unavailable`}
-            description="Select another currency"
-            redirectToAds={false}
-          />
+                title={`${searchQuery} is unavailable`}
+                description="Select another currency"
+                redirectToAds={false}
+              /> 
         ) : (
           <div className="space-y-1">
             {filteredCurrencies.map((currency) => (
