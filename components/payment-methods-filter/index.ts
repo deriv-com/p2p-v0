@@ -1,2 +1,5 @@
-export { default as PaymentMethodsFilter } from "./payment-methods-filter"
-export type { PaymentMethod } from "./payment-methods-filter"
+import PaymentMethodsFilter from "./payment-methods-filter"
+import type { PaymentMethod } from "./payment-methods-filter"
+
+export { PaymentMethodsFilter }
+export type { PaymentMethod }

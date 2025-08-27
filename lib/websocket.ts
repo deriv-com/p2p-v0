@@ -1,4 +1,4 @@
-import { API, USER } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 
 export interface WebSocketMessage {
   action: string
@@ -38,7 +38,7 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = API.socketUrl
-        this.socket = new WebSocket(url, [USER.socketToken])
+        this.socket = new WebSocket(url)
 
         this.socket.onopen = () => {
           this.reconnectAttempts = 0
@@ -99,7 +99,7 @@ export class WebSocketClient {
         channel,
       },
       payload: {
-        order_id: id
+        order_id: id,
       },
     }
     this.send(joinMessage)
