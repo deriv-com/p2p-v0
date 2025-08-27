@@ -145,6 +145,18 @@ const config: Config = {
           deposit: "#00C390",
           withdraw: "#E6190E",
         },
+        "success-secondary": {
+          bg: "#E6FFF9",
+          text: "#00C390",
+        },
+        "error-secondary": {
+          bg: "#FFE6E6",
+          text: "#C40000",
+        },
+        "pending-secondary": {
+          bg: "#FFF7E6",
+          text: "#FF9C13",
+        },
         cancelled: {
           light: "rgba(156, 163, 175, 0.1)",
           DEFAULT: "#6b7280",
