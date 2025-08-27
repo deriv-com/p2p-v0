@@ -151,6 +151,14 @@ const config: Config = {
           deposit: "#00C390",
           withdraw: "#E6190E",
         },
+        cancelled: {
+          light: "rgba(156, 163, 175, 0.1)",
+          DEFAULT: "#6b7280",
+        },
+        disputed: {
+          light: "rgba(239, 68, 68, 0.1)",
+          DEFAULT: "#ef4444",
+        },
         "default-button-text": "#002A33",
         paymentMethod: {
           bank: "#74B816",
