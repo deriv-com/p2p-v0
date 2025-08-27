@@ -151,13 +151,29 @@ const config: Config = {
           deposit: "#00C390",
           withdraw: "#E6190E",
         },
+        "success-secondary": {
+          bg: "#E6FFF9",
+          text: "#00C390",
+        },
+        "error-secondary": {
+          bg: "#FFE6E6",
+          text: "#C40000",
+        },
+        "pending-secondary": {
+          bg: "#FFF7E6",
+          text: "#FF9C13",
+        },
         cancelled: {
           light: "rgba(156, 163, 175, 0.1)",
           DEFAULT: "#6b7280",
+          icon: "#6b7280",
+          bg: "#f3f4f6",
         },
         disputed: {
-          light: "rgba(239, 68, 68, 0.1)",
-          DEFAULT: "#ef4444",
+          light: "rgba(230, 25, 14, 0.08)",
+          DEFAULT: "#c40000",
+          icon: "#c40000",
+          bg: "#fee2e2",
         },
         "default-button-text": "#002A33",
         paymentMethod: {
