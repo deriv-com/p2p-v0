@@ -129,7 +129,9 @@ const AdPaymentMethods = () => {
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 ml-2">
                         <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <span className="font-bold text-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                        <span className="font-bold tex-sm text-gray-700">
+                          {getCategoryDisplayName(method.type)}
+                        </span>
                       </div>
                       <Checkbox
                         checked={isSelected}
@@ -139,10 +141,10 @@ const AdPaymentMethods = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className={`text-sm tracking-wide ${isDisabled ? "text-gray-300" : "text-neutral-10"}`}>
+                      <div className="text-sm tracking-wide text-neutral-10">
                         {displayDetails.primary}
                       </div>
-                      <div className={`text-sm ${isDisabled ? "text-gray-300" : "text-neutral-7"}`}>
+                      <div className="text-sm text-neutral-7">
                         {displayDetails.secondary}
                       </div>
                     </div>
@@ -172,14 +174,6 @@ const AdPaymentMethods = () => {
         </div>
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
-        {selectedMethods.length >= 3 && (
-          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-            <p className="text-sm text-yellow-800">
-              You have reached the maximum limit of 3 payment methods. To select a different method, please deselect one
-              first.
-            </p>
-          </div>
-        )}
       </div>
       {showAddPanel && (
         <AddPaymentMethodPanel
