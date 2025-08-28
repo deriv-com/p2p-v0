@@ -48,7 +48,6 @@ export default function MarketFilterDropdown({
             onApply({ fromFollowing: false }, "exchange_rate")
     } else {
            onApply({ fromFollowing: false })
-
     }
     setIsOpen(false)
   }
