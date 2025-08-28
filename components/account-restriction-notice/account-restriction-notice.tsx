@@ -14,8 +14,8 @@ interface AccountRestrictionNoticeProps {
 const AccountRestrictionNotice = React.forwardRef<HTMLDivElement, AccountRestrictionNoticeProps>(
   ({ reason = "reason", cooldownTimer = "cool-down timer", className, ...props }, ref) => {
     return (
-      <Alert ref={ref} className={cn("bg-[#FFF8E7] border-[#FFE4B5] text-[#8B4513] mb-4", className)} {...props}>
-        <AlertCircle className="h-5 w-5 text-[#FF8C00]" />
+      <Alert ref={ref} variant="warning" className={cn("mb-4", className)} {...props}>
+        <AlertCircle className="h-5 w-5" />
         <div className="text-sm">
           Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
           {cooldownTimer}].

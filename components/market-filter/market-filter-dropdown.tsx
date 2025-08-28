@@ -10,11 +10,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Label } from "@/components/ui/label"
+import type { MarketFilterOptions } from "./types"
 
-export interface MarketFilterOptions {
-  fromFollowing: boolean
-  }
-  
 interface MarketFilterDropdownProps {
   activeTab?: string
   onApply: (filters: MarketFilterOptions, sortByValue?: string) => void
@@ -44,9 +41,9 @@ export default function MarketFilterDropdown({
   const handleReset = () => {
     if (isMobile) {
       setSortBy("exchange_rate")
-            onApply({ fromFollowing: false }, "exchange_rate")
+      onApply({ fromFollowing: false }, "exchange_rate")
     } else {
-           onApply({ fromFollowing: false })
+      onApply({ fromFollowing: false })
     }
     setIsOpen(false)
   }
@@ -79,7 +76,7 @@ export default function MarketFilterDropdown({
           <div className="mb-6">
             <h4 className="text-sm font-bold mb-4">Ad types</h4>
           </div>
-      )}
+        )}
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"

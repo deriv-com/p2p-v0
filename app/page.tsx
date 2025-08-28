@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { MarketFilterDropdown } from "@/components/market-filter"
+import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
+import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -158,7 +159,7 @@ export default function BuySellPage() {
     setCurrency(currencyCode)
   }
 
-  const handleFilterApply = (newFilters: typeof filterOptions, sortByValue?: string) => {
+  const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue?: string) => {
     setFilterOptions(newFilters)
     if (sortByValue) setSortBy(sortByValue)
   }
