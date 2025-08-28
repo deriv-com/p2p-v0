@@ -25,28 +25,6 @@ import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 
-interface AccountRestrictionNoticeProps {
-  reason?: string
-  cooldownTimer?: string
-  className?: string
-}
-
-const AccountRestrictionNotice = ({
-  reason = "reason",
-  cooldownTimer = "cool-down timer",
-  className,
-}: AccountRestrictionNoticeProps) => {
-  return (
-    <Alert variant="warning" className={`mb-4 ${className || ""}`}>
-      <AlertCircle className="h-5 w-5" />
-      <div className="text-sm">
-        Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
-        {cooldownTimer}].
-      </div>
-    </Alert>
-  )
-}
-
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
   const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
@@ -234,6 +212,15 @@ export default function BuySellPage() {
 
   return (
     <>
+    <div className="flex-shrink-0">
+          <Alert variant="warning" className="my-4">
+            <AlertCircle className="h-5 w-5" />
+            <div className="text-sm">
+              Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
+              {cooldownTimer}].
+            </div>
+          </Alert>
+        </div>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-screen overflow-hidden px-[24px]">
         <div className="flex-shrink-0">
@@ -364,11 +351,6 @@ export default function BuySellPage() {
             </div>
           </div>
         </div>
-
-        <div className="flex-shrink-0">
-          <AccountRestrictionNotice />
-        </div>
-
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
             {isLoading ? (
