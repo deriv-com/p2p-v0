@@ -56,11 +56,14 @@ const config: Config = {
           icon: "#008832",
           bg: "#edfaf3",
           text: "#007A22",
+          "bg-secondary": "#E6FFF9",
+          "text-secondary": "#00C390",
         },
         error: {
           light: "rgba(230, 25, 14, 0.08)",
           DEFAULT: "#c40000",
           text: "#C40000",
+          "bg-secondary": "#FFE6E6",
         },
         buy: {
           DEFAULT: "#29823b",
@@ -136,6 +139,7 @@ const config: Config = {
           DEFAULT: "#f59e0b",
           icon: "#f59e0b",
           bg: "#fff8e7",
+          "text-secondary": "#FF9C13",
         },
         completed: {
           light: "rgba(0, 136, 50, 0.08)",
@@ -159,6 +163,9 @@ const config: Config = {
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",
+        },
+        red: {
+          withdraw: "#E6190E",
         },
       },
       borderRadius: {

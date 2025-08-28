@@ -52,19 +52,19 @@ export default function TransactionsTab() {
     switch (status) {
       case "pending":
         return (
-          <Badge variant="pending" className="h-6 rounded">
+          <Badge variant="pending-secondary" className="h-6 rounded">
             Processing
           </Badge>
         )
       case "completed":
         return (
-          <Badge variant="success-light" className="h-6 rounded">
+          <Badge variant="success-secondary" className="h-6 rounded">
             Successful
           </Badge>
         )
       default:
         return (
-          <Badge variant="error-light" className="h-6 rounded">
+          <Badge variant="error-secondary" className="h-6 rounded">
             Failed
           </Badge>
         )
@@ -102,9 +102,9 @@ export default function TransactionsTab() {
       if (type === "Transfer") {
         return "text-black opacity-96"
       } else if (type === "Deposit") {
-        return status === "completed" ? "text-success-icon" : "text-black opacity-48"
+        return status === "completed" ? "text-success-text-secondary" : "text-black opacity-48"
       } else if (type === "Withdraw") {
-        return status === "completed" ? "text-error-DEFAULT" : "text-black opacity-48"
+        return status === "completed" ? "text-red-withdraw" : "text-black opacity-48"
       }
       return "text-success-icon"
     }
@@ -172,7 +172,7 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="py-4 space-y-6">
+    <div className="py-4 space-y-6 max-w-[560px] mx-auto">
       <div className="flex gap-2">
         {filters.map((filter) => (
           <Button
