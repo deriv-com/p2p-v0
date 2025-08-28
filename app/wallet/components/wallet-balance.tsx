@@ -17,9 +17,7 @@ interface WalletBalanceProps {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
-  const [isDepositSidebarOpen, setIsDepositSidebarOpen] = useState(false)
-  const [isWithdrawSidebarOpen, setIsWithdrawSidebarOpen] = useState(false)
-  const [isTransferSidebarOpen, setIsTransferSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [balance, setBalance] = useState(0)
@@ -73,31 +71,31 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
   const handleDepositClick = () => {
     setCurrentOperation("DEPOSIT")
-    setIsDepositSidebarOpen(true)
+    setIsSidebarOpen(true)
   }
 
   const handleWithdrawClick = () => {
     setCurrentOperation("WITHDRAW")
-    setIsWithdrawSidebarOpen(true)
+    setIsSidebarOpen(true)
+  }
+
+  const handleTransferClick = () => {
+    setCurrentOperation("TRANSFER")
+    setIsSidebarOpen(true)
   }
 
   const handleDirectDepositClick = (currency: string) => {
-    setIsDepositSidebarOpen(false)
+    setIsSidebarOpen(false)
     setSelectedCurrency(currency)
     setCurrentOperation("DEPOSIT")
     setIsIframeModalOpen(true)
   }
 
   const handleDirectWithdrawClick = (currency: string) => {
-    setIsWithdrawSidebarOpen(false)
+    setIsSidebarOpen(false)
     setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
-  }
-
-  const handleTransferClick = () => {
-    setCurrentOperation("TRANSFER")
-    setIsTransferSidebarOpen(true)
   }
 
   return (
@@ -186,23 +184,10 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         </div>
 
         <WalletSidebar
-          isOpen={isDepositSidebarOpen}
-          onClose={() => setIsDepositSidebarOpen(false)}
-          onDirectDepositClick={handleDirectDepositClick}
-        />
-
-        <WalletSidebar
-          isOpen={isWithdrawSidebarOpen}
-          onClose={() => setIsWithdrawSidebarOpen(false)}
-          onDirectDepositClick={handleDirectWithdrawClick}
-          operation="WITHDRAW"
-        />
-
-        <WalletSidebar
-          isOpen={isTransferSidebarOpen}
-          onClose={() => setIsTransferSidebarOpen(false)}
-          onDirectDepositClick={() => {}} // Not used for transfer
-          operation="TRANSFER"
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
+          operation={currentOperation}
         />
 
         <FullScreenIframeModal
