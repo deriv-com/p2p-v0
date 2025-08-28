@@ -30,7 +30,7 @@ export default function TransferOptions({ onClose, onSendClick, onReceiveClick }
 
       <div className="space-y-4">
         <div
-          className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+          className="flex items-center gap-4 cursor-pointer bg-[#F6F7F8] rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
           onClick={handleSendClick}
         >
           <Image src="/icons/arrow-up.png" alt="Send" width={48} height={48} className="w-12 h-12" />
@@ -40,7 +40,7 @@ export default function TransferOptions({ onClose, onSendClick, onReceiveClick }
         </div>
 
         <div
-          className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+          className="flex items-center gap-4 cursor-pointer bg-[#F6F7F8] rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
           onClick={handleReceiveClick}
         >
           <Image src="/icons/arrow-down.png" alt="Receive" width={48} height={48} className="w-12 h-12" />
