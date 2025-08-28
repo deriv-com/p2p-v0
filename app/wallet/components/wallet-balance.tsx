@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+
 import { useState, useEffect } from "react"
 import { Minus } from "lucide-react"
 import Image from "next/image"
@@ -7,18 +9,19 @@ import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface WalletBalanceProps {
   className?: string
 }
 
-type OperationType = "DEPOSIT" | "WITHDRAW"
+type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isDepositSidebarOpen, setIsDepositSidebarOpen] = useState(false)
   const [isWithdrawSidebarOpen, setIsWithdrawSidebarOpen] = useState(false)
+  const [isTransferSidebarOpen, setIsTransferSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [balance, setBalance] = useState(0)
@@ -92,6 +95,21 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
+  }
+
+  const handleTransferClick = () => {
+    setCurrentOperation("TRANSFER")
+    setIsTransferSidebarOpen(true)
+  }
+
+  const handleP2PTransferClick = () => {
+    console.log("P2P Transfer clicked")
+    // TODO: Implement P2P transfer logic
+  }
+
+  const handleAccountTransferClick = () => {
+    console.log("Account Transfer clicked")
+    // TODO: Implement account transfer logic
   }
 
   return (
@@ -169,6 +187,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
               size="icon"
               className="h-14 w-14 !rounded-full rounded-[9999px] aspect-square overflow-hidden flex-shrink-0 min-h-[56px] min-w-[56px] max-h-[56px] max-w-[56px] border-2 border-[#00080A] bg-white hover:bg-gray-50 transition-colors p-0"
               aria-label="Transfer"
+              onClick={handleTransferClick}
             >
               <Image src="/icons/exchange-icon.png" alt="Transfer" width={20} height={20} />
             </Button>
@@ -189,6 +208,15 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           onClose={() => setIsWithdrawSidebarOpen(false)}
           onDirectDepositClick={handleDirectWithdrawClick}
           operation="WITHDRAW"
+        />
+
+        <WalletSidebar
+          isOpen={isTransferSidebarOpen}
+          onClose={() => setIsTransferSidebarOpen(false)}
+          onDirectDepositClick={() => {}} // Not used for transfer
+          operation="TRANSFER"
+          onP2PTransferClick={handleP2PTransferClick}
+          onAccountTransferClick={handleAccountTransferClick}
         />
 
         <FullScreenIframeModal
