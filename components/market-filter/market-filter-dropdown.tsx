@@ -71,7 +71,7 @@ export default function MarketFilterDropdown({
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
-    setSortBy(valu
+    setSortBy(value)
   }
 
   const FilterContent = () => (
