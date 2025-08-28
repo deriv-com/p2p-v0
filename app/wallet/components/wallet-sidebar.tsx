@@ -2,7 +2,7 @@
 import Image from "next/image"
 import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
-import TransferOptions from "./transfer" // Updated import path from transfer-options to transfer
+import TransferOptions from "./transfer"
 import { Button } from "@/components/ui/button"
 
 interface WalletSidebarProps {
