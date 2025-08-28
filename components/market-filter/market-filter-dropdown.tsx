@@ -81,18 +81,7 @@ export default function MarketFilterDropdown({
           <div className="mb-6">
             <h4 className="text-sm font-bold mb-4">Ad types</h4>
           </div>
-        )}
-        <div className="flex items-center space-x-3">
-          <Checkbox
-            id="within-balance"
-            checked={filters.withinBalance}
-            onCheckedChange={(checked) => handleFilterChange("withinBalance", checked as boolean)}
-            className="data-[state=checked]:bg-black border-black"
-          />
-          <label htmlFor="within-balance" className="text-sm text-gray-700 cursor-pointer">
-            Show ads within my balance
-          </label>
-        </div>
+      )}
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"
