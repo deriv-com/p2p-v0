@@ -23,7 +23,6 @@ import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
-import { AlertCircle } from "lucide-react"
 
 interface TemporaryBanAlertProps {
   reason?: string
@@ -38,7 +37,12 @@ const TemporaryBanAlert = ({
 }: TemporaryBanAlertProps) => {
   return (
     <Alert variant="warning" className="my-4">
-      <AlertCircle className="h-5 w-5" />
+      <Image
+        src="/icons/warning-icon-new.png"
+        alt="Warning"
+        height={24}
+        width={24}
+      />
       <div className="text-sm">
         Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
         {cooldownTimer}].
