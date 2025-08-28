@@ -9,6 +9,7 @@ import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { usePaymentSelection } from "./payment-selection-context"
 
 interface PaymentMethod {
   id: number
@@ -22,7 +23,7 @@ interface PaymentMethod {
 
 const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const [selectedMethods, setSelectedMethods] = useState<number[]>([])
+  const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
   const [isLoading, setIsLoading] = useState(true)
   const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
@@ -44,17 +45,12 @@ const AdPaymentMethods = () => {
     fetchPaymentMethods()
   }, [])
 
-  useEffect(() => {
-    ;(window as any).adPaymentMethodIds = selectedMethods
-  }, [selectedMethods])
-
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked && selectedMethods.length >= 3) {
+    if (checked && selectedPaymentMethodIds.length >= 3) {
       return
     }
 
-    const newSelection = checked ? [...selectedMethods, methodId] : selectedMethods.filter((id) => id !== methodId)
-    setSelectedMethods(newSelection)
+    togglePaymentMethod(methodId)
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -70,15 +66,15 @@ const AdPaymentMethods = () => {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+        if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
-        } 
+        }
         showAlert({
-            title,
-            description,
-            confirmText: "OK",
-            type: "warning"
+          title,
+          description,
+          confirmText: "OK",
+          type: "warning",
         })
       }
     } catch (error) {
@@ -113,7 +109,7 @@ const AdPaymentMethods = () => {
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
             {paymentMethods.map((method) => {
-              const isSelected = selectedMethods.includes(method.id)
+              const isSelected = selectedPaymentMethodIds.includes(method.id)
               const displayDetails = getMethodDisplayDetails(method)
 
               return (
@@ -164,7 +160,7 @@ const AdPaymentMethods = () => {
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
-       {showAddPanel && (
+      {showAddPanel && (
         <AddPaymentMethodPanel
           onClose={() => setShowAddPanel(false)}
           onAdd={handleAddPaymentMethod}
@@ -172,7 +168,6 @@ const AdPaymentMethods = () => {
         />
       )}
     </>
-   
   )
 }
 

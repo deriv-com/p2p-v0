@@ -14,6 +14,7 @@ import OrderTimeLimitSelector from "./order-time-limit-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import CountrySelection from "./country-selection"
+import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -47,7 +48,7 @@ const getPageTitle = (mode: "create" | "edit", adType?: string) => {
   return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
 }
 
-export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
+function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
   const [currentStep, setCurrentStep] = useState(0)
@@ -56,7 +57,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const [hasSelectedPaymentMethods, setHasSelectedPaymentMethods] = useState(false)
+  const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
@@ -100,15 +101,16 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
                   .map((id: any) => Number(id))
                   .filter((id: number) => !isNaN(id))
 
-                if (typeof window !== "undefined") {
-                  ;(window as any).adPaymentMethodIds = paymentMethodIds
-                }
+                setSelectedPaymentMethodIds(paymentMethodIds)
               }
             }
 
             const formattedData = {
               ...data,
-              totalAmount: Number.parseFloat(data.available_amount) + Number.parseFloat(data.completed_order_amount) + Number.parseFloat(data.open_order_amount),
+              totalAmount:
+                Number.parseFloat(data.available_amount) +
+                Number.parseFloat(data.completed_order_amount) +
+                Number.parseFloat(data.open_order_amount),
               fixedRate: Number.parseFloat(data.exchange_rate),
               minAmount: data.minimum_order_amount,
               maxAmount: data.maximum_order_amount,
@@ -135,21 +137,9 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
 
       loadInitialData()
     }
-  }, [mode, adId])
+  }, [mode, adId, setSelectedPaymentMethodIds])
 
-  useEffect(() => {
-    const checkSelectedPaymentMethods = () => {
-      if (formData.type === "sell" && typeof window !== "undefined") {
-        const selectedIds = (window as any).adPaymentMethodIds || []
-        setHasSelectedPaymentMethods(selectedIds.length > 0)
-      }
-    }
-
-    checkSelectedPaymentMethods()
-    const interval = setInterval(checkSelectedPaymentMethods, 100)
-
-    return () => clearInterval(interval)
-  }, [formData.type])
+  const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
 
   useEffect(() => {
     const handleAdFormValidation = (e: any) => {
@@ -241,7 +231,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
     setIsSubmitting(true)
 
     try {
-      const selectedPaymentMethodIds = finalData.type === "sell" ? (window as any).adPaymentMethodIds || [] : []
+      const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
 
       if (mode === "create") {
         const payload = {
@@ -259,7 +249,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
+            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
         const result = await AdsAPI.createAd(payload)
@@ -281,7 +271,7 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
           description: finalData.instructions || "",
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIds }),
+            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
         const updateResult = await AdsAPI.updateAd(finalData.id, payload)
@@ -372,7 +362,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       return
     }
 
-    // Step 0: Validate and proceed to next step
     if (currentStep === 0) {
       if (!adFormValid) {
         return
@@ -382,7 +371,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       return
     }
 
-    // Step 1: Validate and proceed to next step
     if (currentStep === 1) {
       if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
         return
@@ -396,7 +384,6 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
       return
     }
 
-    // Step 2: Validate and submit the entire form
     if (currentStep === 2) {
       if (mode === "edit" && !adFormValid) {
         return
@@ -540,5 +527,13 @@ export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
         </div>
       </div>
     </form>
+  )
+}
+
+export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
+  return (
+    <PaymentSelectionProvider>
+      <MultiStepAdFormInner mode={mode} adId={adId} />
+    </PaymentSelectionProvider>
   )
 }
