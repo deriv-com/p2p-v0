@@ -31,8 +31,8 @@ interface TemporaryBanAlertProps {
 }
 
 const TemporaryBanAlert = ({
-  reason = "reason",
-  cooldownTimer = "cool-down timer",
+  reason,
+  cooldownTimer,
   className,
 }: TemporaryBanAlertProps) => {
   return (
@@ -44,8 +44,7 @@ const TemporaryBanAlert = ({
         width={24}
       />
       <div className="text-sm">
-        Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
-        {cooldownTimer}].
+        {`Your account is temporarily restricted due to ${reason}. Some actions will be unavailable until ${cooldownTimer}.`}
       </div>
     </Alert>
   )
