@@ -25,7 +25,7 @@ export default function Transfer({ onClose, onSendClick, onReceiveClick }: Trans
   return (
     <>
       <div>
-        <h2 className="text-black text-lg font-bold">Choose transfer type</h2>
+        <h2 className="text-black text-base font-bold">Choose transfer type</h2>
       </div>
 
       <div className="space-y-4">
@@ -37,7 +37,7 @@ export default function Transfer({ onClose, onSendClick, onReceiveClick }: Trans
             <Image src="/icons/arrow-up.png" alt="Send" width={24} height={24} className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-black text-lg font-bold">Send</h3>
+            <h3 className="text-black text-base font-bold">Send</h3>
           </div>
         </div>
 
@@ -49,7 +49,7 @@ export default function Transfer({ onClose, onSendClick, onReceiveClick }: Trans
             <Image src="/icons/arrow-down.png" alt="Receive" width={24} height={24} className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="text-black text-lg font-bold">Receive</h3>
+            <h3 className="text-black text-base font-bold">Receive</h3>
           </div>
         </div>
       </div>
