@@ -30,8 +30,8 @@ interface TemporaryBanAlertProps {
 }
 
 const TemporaryBanAlert = ({
-  reason,
-  cooldownTimer,
+  reason = "",
+  cooldownTimer = "",
 }: TemporaryBanAlertProps) => {
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
