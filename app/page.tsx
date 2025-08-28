@@ -13,7 +13,7 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CurrencyFilter } from "@/components/currency-filter"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
@@ -22,7 +22,7 @@ import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
-import { AccountRestrictionNotice } from "@/components/account-restriction-notice"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -343,7 +343,7 @@ export default function BuySellPage() {
         </div>
 
         <div className="flex-shrink-0">
-          <AccountRestrictionNotice />
+          <TemporaryBanAlert />
         </div>
 
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
