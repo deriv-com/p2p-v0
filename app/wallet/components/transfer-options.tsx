@@ -28,7 +28,7 @@ export default function TransferOptions({ onClose, onSendClick, onReceiveClick }
         <h2 className="text-black text-lg font-bold">Choose transfer type</h2>
       </div>
 
-      <div>
+      <div className="space-y-4">
         <div
           className="flex items-center gap-4 cursor-pointer bg-slate-75 rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
           onClick={handleSendClick}
