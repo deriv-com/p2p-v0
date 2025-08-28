@@ -24,7 +24,7 @@ export default function TransferOptions({ onClose, onSendClick, onReceiveClick }
 
   return (
     <>
-      <div className="mb-6">
+      <div>
         <h2 className="text-black text-lg font-bold">Choose transfer type</h2>
       </div>
 
