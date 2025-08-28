@@ -34,7 +34,7 @@ const TemporaryBanAlert = ({
   cooldownTimer,
 }: TemporaryBanAlertProps) => {
   return (
-    <Alert variant="warning" className="flex items-center gap-2 mb-6">
+    <Alert variant="warning" className="flex items-start gap-2 mb-6">
       <Image
         src="/icons/warning-icon-new.png"
         alt="Warning"
