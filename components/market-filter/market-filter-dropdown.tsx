@@ -10,7 +10,11 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Label } from "@/components/ui/label"
-import type { MarketFilterOptions } from "./types"
+
+export interface MarketFilterOptions {
+  fromFollowing: boolean
+}
+
 
 interface MarketFilterDropdownProps {
   activeTab?: string
