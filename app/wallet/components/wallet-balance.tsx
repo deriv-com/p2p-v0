@@ -102,16 +102,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     setIsTransferSidebarOpen(true)
   }
 
-  const handleP2PTransferClick = () => {
-    console.log("P2P Transfer clicked")
-    // TODO: Implement P2P transfer logic
-  }
-
-  const handleAccountTransferClick = () => {
-    console.log("Account Transfer clicked")
-    // TODO: Implement account transfer logic
-  }
-
   return (
     <TooltipProvider>
       <div className={cn("flex flex-col items-center justify-center py-8", className)}>
@@ -215,8 +205,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           onClose={() => setIsTransferSidebarOpen(false)}
           onDirectDepositClick={() => {}} // Not used for transfer
           operation="TRANSFER"
-          onP2PTransferClick={handleP2PTransferClick}
-          onAccountTransferClick={handleAccountTransferClick}
         />
 
         <FullScreenIframeModal
