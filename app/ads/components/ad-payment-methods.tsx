@@ -112,13 +112,13 @@ const AdPaymentMethods = () => {
               const isSelected = selectedPaymentMethodIds.includes(method.id)
               const displayDetails = getMethodDisplayDetails(method)
               const isMaxReached = selectedPaymentMethodIds.length >= 3
-              const shouldGreyOut = isMaxReached && !isSelected
+              const isDisabled = isMaxReached && !isSelected
 
               return (
                 <Card
                   key={method.id}
                   className={`cursor-pointer transition-all duration-200 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto ${
-                    shouldGreyOut ? "bg-gray-100 opacity-50 cursor-not-allowed" : "bg-grayscale-300"
+                    isDisabled ? "bg-gray-100 opacity-50 cursor-not-allowed" : "bg-grayscale-300"
                   }`}
                 >
                   <CardContent className="p-2">
@@ -126,27 +126,27 @@ const AdPaymentMethods = () => {
                       <div className="flex items-center gap-2 ml-2">
                         <div
                           className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3 ${
-                            shouldGreyOut ? "opacity-50" : ""
+                            isDisabled ? "opacity-50" : ""
                           }`}
                         />
-                        <span className={`font-bold tex-sm ${shouldGreyOut ? "text-gray-400" : "text-gray-700"}`}>
+                        <span className={`font-bold tex-sm ${isDisabled ? "text-gray-400" : "text-gray-700"}`}>
                           {getCategoryDisplayName(method.type)}
                         </span>
                       </div>
                       <Checkbox
                         checked={isSelected}
                         onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-                        disabled={shouldGreyOut}
+                        disabled={isDisabled}
                         className={`border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px] ${
-                          shouldGreyOut ? "opacity-50 cursor-not-allowed" : ""
+                          isDisabled ? "opacity-50 cursor-not-allowed" : ""
                         }`}
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className={`text-sm tracking-wide ${shouldGreyOut ? "text-gray-400" : "text-neutral-10"}`}>
+                      <div className={`text-sm tracking-wide ${isDisabled ? "text-gray-400" : "text-neutral-10"}`}>
                         {displayDetails.primary}
                       </div>
-                      <div className={`text-sm ${shouldGreyOut ? "text-gray-400" : "text-neutral-7"}`}>
+                      <div className={`text-sm ${isDisabled ? "text-gray-400" : "text-neutral-7"}`}>
                         {displayDetails.secondary}
                       </div>
                     </div>
