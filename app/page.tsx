@@ -13,7 +13,7 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
+import { CurrencyFilter } from "@/components/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
@@ -22,7 +22,30 @@ import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
-import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { Alert } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
+
+interface AccountRestrictionNoticeProps {
+  reason?: string
+  cooldownTimer?: string
+  className?: string
+}
+
+const AccountRestrictionNotice = ({
+  reason = "reason",
+  cooldownTimer = "cool-down timer",
+  className,
+}: AccountRestrictionNoticeProps) => {
+  return (
+    <Alert variant="warning" className={`mb-4 ${className || ""}`}>
+      <AlertCircle className="h-5 w-5" />
+      <div className="text-sm">
+        Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
+        {cooldownTimer}].
+      </div>
+    </Alert>
+  )
+}
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -343,7 +366,7 @@ export default function BuySellPage() {
         </div>
 
         <div className="flex-shrink-0">
-          <TemporaryBanAlert />
+          <AccountRestrictionNotice />
         </div>
 
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
