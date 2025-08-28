@@ -21,6 +21,7 @@ import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { AccountRestrictionNotice } from "@/components/account-restriction-notice"
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -80,7 +81,7 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
-        
+
         if (selectedPaymentMethods.length === 0) {
           setSelectedPaymentMethods(methods.map((method) => method.method))
         }
@@ -163,7 +164,11 @@ export default function BuySellPage() {
   }
 
   const getPaymentMethodsDisplayText = () => {
-    if (paymentMethods.length === 0 || selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
+    if (
+      paymentMethods.length === 0 ||
+      selectedPaymentMethods.length === 0 ||
+      selectedPaymentMethods.length === paymentMethods.length
+    ) {
       return "Payment (All)"
     }
 
@@ -334,6 +339,10 @@ export default function BuySellPage() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="flex-shrink-0">
+          <AccountRestrictionNotice />
         </div>
 
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
