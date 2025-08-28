@@ -129,7 +129,7 @@ const AdPaymentMethods = () => {
                             isDisabled ? "opacity-50" : ""
                           }`}
                         />
-                        <span className={`font-bold tex-sm ${isDisabled ? "text-gray-400" : "text-gray-700"}`}>
+                        <span className="font-bold tex-sm text-gray-700">
                           {getCategoryDisplayName(method.type)}
                         </span>
                       </div>
@@ -137,16 +137,14 @@ const AdPaymentMethods = () => {
                         checked={isSelected}
                         onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
                         disabled={isDisabled}
-                        className={`border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px] ${
-                          isDisabled ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
+                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className={`text-sm tracking-wide ${isDisabled ? "text-gray-400" : "text-neutral-10"}`}>
+                      <div className="text-sm tracking-wide text-neutral-10">
                         {displayDetails.primary}
                       </div>
-                      <div className={`text-sm ${isDisabled ? "text-gray-400" : "text-neutral-7"}`}>
+                      <div className="text-sm text-neutral-7">
                         {displayDetails.secondary}
                       </div>
                     </div>
