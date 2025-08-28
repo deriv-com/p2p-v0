@@ -44,7 +44,7 @@ export default function WalletSidebar({
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center px-4 py-3 border-b">
-          <h2 className="text-xl font-bold">{getTitle()}</h2>
+          <h2 className="text-lg font-bold">{getTitle()}</h2>
           <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
