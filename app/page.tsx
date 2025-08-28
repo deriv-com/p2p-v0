@@ -213,13 +213,13 @@ export default function BuySellPage() {
   return (
     <>
     <div className="flex-shrink-0">
-          <Alert variant="warning" className="my-4">
-            <AlertCircle className="h-5 w-5" />
-            <div className="text-sm">
-              Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
-              {cooldownTimer}].
-            </div>
-          </Alert>
+    <Alert variant="warning" className="my-4">
+      <AlertCircle className="h-5 w-5" />
+      <div className="text-sm">
+        Your account is temporarily restricted due to [{reason}]. Some actions will be unavailable until [
+        {cooldownTimer}].
+      </div>
+    </Alert>
         </div>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-screen overflow-hidden px-[24px]">
