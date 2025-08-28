@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 export interface MarketFilterOptions {
   fromFollowing: boolean
   }
+  
 interface MarketFilterDropdownProps {
   activeTab?: string
   onApply: (filters: MarketFilterOptions, sortByValue?: string) => void
