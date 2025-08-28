@@ -33,7 +33,9 @@ export default function Transfer({ onClose, onSendClick, onReceiveClick }: Trans
           className="flex items-center gap-4 cursor-pointer bg-slate-75 rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
           onClick={handleSendClick}
         >
-          <Image src="/icons/arrow-up.png" alt="Send" width={48} height={48} className="w-12 h-12" />
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+            <Image src="/icons/arrow-up.png" alt="Send" width={24} height={24} className="w-6 h-6" />
+          </div>
           <div>
             <h3 className="text-black text-lg font-bold">Send</h3>
           </div>
@@ -43,7 +45,9 @@ export default function Transfer({ onClose, onSendClick, onReceiveClick }: Trans
           className="flex items-center gap-4 cursor-pointer bg-slate-75 rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
           onClick={handleReceiveClick}
         >
-          <Image src="/icons/arrow-down.png" alt="Receive" width={48} height={48} className="w-12 h-12" />
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
+            <Image src="/icons/arrow-down.png" alt="Receive" width={24} height={24} className="w-6 h-6" />
+          </div>
           <div>
             <h3 className="text-black text-lg font-bold">Receive</h3>
           </div>
