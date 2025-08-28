@@ -34,7 +34,7 @@ export default function TransferOptions({ onClose, onSendClick, onReceiveClick }
           onClick={handleSendClick}
         >
           <Image src="/icons/arrow-up.png" alt="Send" width={48} height={48} className="w-12 h-12" />
-          <div className="pl-2">
+          <div>
             <h3 className="text-black text-lg font-bold">Send</h3>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default function TransferOptions({ onClose, onSendClick, onReceiveClick }
           onClick={handleReceiveClick}
         >
           <Image src="/icons/arrow-down.png" alt="Receive" width={48} height={48} className="w-12 h-12" />
-          <div className="pl-2">
+          <div>
             <h3 className="text-black text-lg font-bold">Receive</h3>
           </div>
         </div>
