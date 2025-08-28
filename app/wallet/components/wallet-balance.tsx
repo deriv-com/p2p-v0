@@ -1,7 +1,5 @@
 "use client"
 
-import { TooltipTrigger } from "@/components/ui/tooltip"
-
 import { useState, useEffect } from "react"
 import { Minus } from "lucide-react"
 import Image from "next/image"
@@ -9,7 +7,7 @@ import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { USER, API, AUTH } from "@/lib/local-variables"
 
 interface WalletBalanceProps {
