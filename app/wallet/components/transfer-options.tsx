@@ -1,70 +1,61 @@
 "use client"
 
 import type React from "react"
-import Image from "next/image"
-import { cn } from "@/lib/utils"
+import { ArrowUp, ArrowDown } from "lucide-react"
 
 interface TransferOptionsProps {
   onClose: () => void
-  onP2PTransferClick: () => void
-  onAccountTransferClick: () => void
+  onSendClick: () => void
+  onReceiveClick: () => void
 }
 
-export default function TransferOptions({ onClose, onP2PTransferClick, onAccountTransferClick }: TransferOptionsProps) {
-  const handleP2PTransferClick = (e: React.MouseEvent) => {
+export default function TransferOptions({ onClose, onSendClick, onReceiveClick }: TransferOptionsProps) {
+  const handleSendClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onP2PTransferClick()
+    onSendClick()
   }
 
-  const handleAccountTransferClick = (e: React.MouseEvent) => {
+  const handleReceiveClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onAccountTransferClick()
+    onReceiveClick()
   }
 
   return (
     <>
-      <div className="mb-2">
-        <h2 className="text-lg font-bold" style={{ fontSize: "18px", fontStyle: "normal", fontWeight: 700 }}>
-          Transfer with
+      <div className="mb-6">
+        <h2 className="text-black" style={{ fontSize: "18px", fontStyle: "normal", fontWeight: 700 }}>
+          Choose transfer type
         </h2>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-4">
         <div
-          className={cn(
-            "flex p-4 justify-center items-center gap-4 self-stretch",
-            "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
-          )}
-          onClick={handleP2PTransferClick}
+          className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+          onClick={handleSendClick}
         >
-          <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/up-down-arrows.png" alt="P2P Transfer" width={24} height={24} />
+          <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+            <ArrowUp className="w-6 h-6 text-white" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Transfer</h3>
-            <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              Transfer funds directly to other P2P users instantly and securely.
-            </p>
+          <div>
+            <h3 className="text-black" style={{ fontSize: "18px", fontStyle: "normal", fontWeight: 700 }}>
+              Send
+            </h3>
           </div>
         </div>
 
         <div
-          className={cn(
-            "flex p-4 justify-center items-center gap-4 self-stretch",
-            "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
-          )}
-          onClick={handleAccountTransferClick}
+          className="flex items-center gap-4 cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-colors"
+          onClick={handleReceiveClick}
         >
-          <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/exchange-icon.png" alt="Account Transfer" width={20} height={20} />
+          <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">
+            <ArrowDown className="w-6 h-6 text-white" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">Account Transfer</h3>
-            <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              Transfer funds between your different wallet accounts and currencies.
-            </p>
+          <div>
+            <h3 className="text-black" style={{ fontSize: "18px", fontStyle: "normal", fontWeight: 700 }}>
+              Receive
+            </h3>
           </div>
         </div>
       </div>
