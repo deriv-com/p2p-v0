@@ -21,7 +21,7 @@ export const USER = {
 }
 
 export const API = {
-  baseUrl: process.env.NEXT_PUBLIC_BASE_URL || (typeof window !== "undefined" ? window.location.origin : ""),
+  baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   coreUrl: process.env.NEXT_PUBLIC_CORE_URL,
   socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL,
   endpoints: {
@@ -37,7 +37,6 @@ export const API = {
     userFavourites: "/user-favourites",
     userBlocks: "/user-blocks",
     walletsTransactions: "/wallets/transactions",
-    settings: "/settings",
   },
 }
 
