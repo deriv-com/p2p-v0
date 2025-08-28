@@ -27,13 +27,11 @@ import { Alert } from "@/components/ui/alert"
 interface TemporaryBanAlertProps {
   reason?: string
   cooldownTimer?: string
-  className?: string
 }
 
 const TemporaryBanAlert = ({
   reason,
   cooldownTimer,
-  className,
 }: TemporaryBanAlertProps) => {
   return (
     <Alert variant="warning" className="my-4">
