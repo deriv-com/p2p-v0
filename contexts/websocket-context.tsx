@@ -34,12 +34,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
 
   useEffect(() => {
-    const socketToken = localStorage.getItem("socket_token")
-
-    if (!socketToken || socketToken.trim() === "") {
-      console.log("[v0] No socket token available, skipping WebSocket connection")
-      return
-    }
 
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
@@ -71,7 +65,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
-  }, []) // Empty dependency array - only run once on mount
+  }, [])
 
   const sendMessage = (message: WebSocketMessage) => {
     if (wsClientRef.current) {
