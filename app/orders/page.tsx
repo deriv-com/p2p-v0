@@ -62,7 +62,6 @@ export default function OrdersPage() {
     try {
       const filters: {
         is_open?: boolean
-        period?: string
         date_from?: string
         date_to?: string
       } = {}
