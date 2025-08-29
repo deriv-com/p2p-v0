@@ -40,7 +40,7 @@ export default function WalletSidebar({
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex items-end md:justify-end md:items-stretch" onClick={onClose}>
       <div
-        className="bg-background w-full max-h-[80vh] md:h-full md:max-w-md flex flex-col shadow-lg rounded-t-2xl md:rounded-none"
+        className="bg-background w-full md:h-full md:max-w-md flex flex-col shadow-lg rounded-t-2xl md:rounded-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center px-4 py-3 border-b">
