@@ -263,7 +263,7 @@ export default function OrderChat({
             </div>
             <div className="flex justify-between items-center">
               <div></div>
-              <div className="text-xs text-[##0000007A] mr-16px">
+              <div className="text-xs text-[#0000007A] mr-16px">
                 {message.length}/{maxLength}
               </div>
             </div>
