@@ -73,18 +73,7 @@ export default function OrdersPage() {
         filters.is_open = false
 
         if (dateFilter !== "all") {
-          switch (dateFilter) {
-            case "today":
-              filters.period = "today"
-              break
-            case "week":
-              filters.period = "week"
-              break
-            case "month":
-              filters.period = "month"
-              break
-            case "custom":
-              if (customDateRange.from) {
+          if (customDateRange.from) {
                 filters.date_from = startOfDay(customDateRange.from).toISOString()
                 if (customDateRange.to) {
                   filters.date_to = endOfDay(customDateRange.to).toISOString()
@@ -93,7 +82,6 @@ export default function OrdersPage() {
                 }
               }
               break
-          }
         }
       }
 
