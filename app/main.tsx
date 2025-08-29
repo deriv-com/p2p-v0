@@ -43,7 +43,7 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
-          AuthAPI.getSocketToken(response.access_token)
+          await AuthAPI.getSocketToken(response.access_token)
           router.push(pathname)
         }
       } catch (error) {
