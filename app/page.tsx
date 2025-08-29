@@ -34,7 +34,7 @@ const TemporaryBanAlert = ({
   const banUntil = formatDateTime(tempBanUntil)
   
   return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6">
+    <Alert variant="warning" className="flex items-start gap-2 mb-6 display-none">
       <Image
         src="/icons/warning-icon-new.png"
         alt="Warning"
@@ -237,6 +237,7 @@ export default function BuySellPage() {
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-screen overflow-hidden px-[24px]">
+        <TemporaryBanAlert />
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
