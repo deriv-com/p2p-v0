@@ -34,7 +34,7 @@ const TemporaryBanAlert = ({
   const banUntil = formatDateTime(tempBanUntil)
   
   return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6 display-none">
+    <Alert variant="warning" className="flex items-start gap-2 mb-6 hidden">
       <Image
         src="/icons/warning-icon-new.png"
         alt="Warning"
