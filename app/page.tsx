@@ -23,18 +23,24 @@ import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
-import { API, AUTH } from "@/lib/local-variables"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
 }
 
-const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
+const TemporaryBanAlert = ({
+  tempBanUntil = "",
+}: TemporaryBanAlertProps) => {
   const banUntil = formatDateTime(tempBanUntil)
-
+  
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
-      <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
+      <Image
+        src="/icons/warning-icon-new.png"
+        alt="Warning"
+        height={24}
+        width={24}
+      />
       <div className="text-sm mt-[2px]">
         {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
       </div>
@@ -74,50 +80,11 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const isMobile = useIsMobile()
 
-  const [userData, setUserData] = useState<any>(null)
-  const [isLoadingUser, setIsLoadingUser] = useState(true)
-
   const { currencies } = useCurrencyData()
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(`${API.baseUrl}/users/me`, {
-          method: "GET",
-          credentials: "include",
-          headers: AUTH.getAuthHeader(),
-        })
-
-        if (!response.ok) {
-          throw new Error(`Failed to fetch user data: ${response.statusText}`)
-        }
-
-        const result = await response.json()
-
-        if (result.errors && result.errors.length > 0) {
-          console.error("User data fetch errors:", result.errors)
-          return
-        }
-
-        if (result.data) {
-          setUserData(result.data)
-          // Store user data in localStorage for consistency with existing patterns
-          localStorage.setItem("user_data", JSON.stringify(result.data))
-          localStorage.setItem("user_id", result.data.id?.toString() || "")
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error)
-      } finally {
-        setIsLoadingUser(false)
-      }
-    }
-
-    fetchUserData()
-  }, [])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -132,6 +99,28 @@ export default function BuySellPage() {
     selectedAccountCurrency,
     paymentMethodsInitialized,
   ])
+
+  useEffect(() => {
+    const fetchPaymentMethods = async () => {
+      setIsLoadingPaymentMethods(true)
+      try {
+        const methods = await BuySellAPI.getPaymentMethods()
+        setPaymentMethods(methods)
+
+        if (selectedPaymentMethods.length === 0) {
+          setSelectedPaymentMethods(methods.map((method) => method.method))
+        }
+        setPaymentMethodsInitialized(true)
+      } catch (error) {
+        console.error("Error fetching payment methods:", error)
+        setPaymentMethodsInitialized(true)
+      } finally {
+        setIsLoadingPaymentMethods(false)
+      }
+    }
+
+    fetchPaymentMethods()
+  }, [selectedPaymentMethods.length, setSelectedPaymentMethods])
 
   const fetchAdverts = async () => {
     if (abortControllerRef.current) {
@@ -248,7 +237,6 @@ export default function BuySellPage() {
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-screen overflow-hidden px-[24px]">
-        <TemporaryBanAlert />
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
