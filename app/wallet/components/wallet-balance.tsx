@@ -14,11 +14,10 @@ interface WalletBalanceProps {
   className?: string
 }
 
-type OperationType = "DEPOSIT" | "WITHDRAW"
+type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
-  const [isDepositSidebarOpen, setIsDepositSidebarOpen] = useState(false)
-  const [isWithdrawSidebarOpen, setIsWithdrawSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [balance, setBalance] = useState(0)
@@ -72,23 +71,28 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
   const handleDepositClick = () => {
     setCurrentOperation("DEPOSIT")
-    setIsDepositSidebarOpen(true)
+    setIsSidebarOpen(true)
   }
 
   const handleWithdrawClick = () => {
     setCurrentOperation("WITHDRAW")
-    setIsWithdrawSidebarOpen(true)
+    setIsSidebarOpen(true)
+  }
+
+  const handleTransferClick = () => {
+    setCurrentOperation("TRANSFER")
+    setIsSidebarOpen(true)
   }
 
   const handleDirectDepositClick = (currency: string) => {
-    setIsDepositSidebarOpen(false)
+    setIsSidebarOpen(false)
     setSelectedCurrency(currency)
     setCurrentOperation("DEPOSIT")
     setIsIframeModalOpen(true)
   }
 
   const handleDirectWithdrawClick = (currency: string) => {
-    setIsWithdrawSidebarOpen(false)
+    setIsSidebarOpen(false)
     setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
@@ -169,6 +173,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
               size="icon"
               className="h-14 w-14 !rounded-full rounded-[9999px] aspect-square overflow-hidden flex-shrink-0 min-h-[56px] min-w-[56px] max-h-[56px] max-w-[56px] border-2 border-[#00080A] bg-white hover:bg-gray-50 transition-colors p-0"
               aria-label="Transfer"
+              onClick={handleTransferClick}
             >
               <Image src="/icons/exchange-icon.png" alt="Transfer" width={20} height={20} />
             </Button>
@@ -179,16 +184,10 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         </div>
 
         <WalletSidebar
-          isOpen={isDepositSidebarOpen}
-          onClose={() => setIsDepositSidebarOpen(false)}
-          onDirectDepositClick={handleDirectDepositClick}
-        />
-
-        <WalletSidebar
-          isOpen={isWithdrawSidebarOpen}
-          onClose={() => setIsWithdrawSidebarOpen(false)}
-          onDirectDepositClick={handleDirectWithdrawClick}
-          operation="WITHDRAW"
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
+          operation={currentOperation}
         />
 
         <FullScreenIframeModal
