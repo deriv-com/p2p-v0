@@ -40,7 +40,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
 
     const wsOptions: WebSocketOptions = {
-      onOpen: (socket) = {
+      onOpen: (socket) => {
         setIsConnected(true)
       },
       onMessage: (data, socket) => {
