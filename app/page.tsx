@@ -41,7 +41,7 @@ const TemporaryBanAlert = ({
         height={24}
         width={24}
       />
-      <div className="text-sm">
+      <div className="text-sm mt-[2px]">
         {`Your account is temporarily restricted due to ${reason}. Some actions will be unavailable until ${cooldownTimer}.`}
       </div>
     </Alert>
