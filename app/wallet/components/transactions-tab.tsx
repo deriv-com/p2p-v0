@@ -16,6 +16,7 @@ interface Transaction {
     transaction_net_amount?: string
     source_wallet_id?: string
     destination_wallet_id?: string
+    wallet_transaction_type?: string
   }
 }
 
@@ -83,14 +84,25 @@ export default function TransactionsTab() {
   }
 
   const getTransactionType = (transaction: Transaction) => {
-    const { source_wallet_id, destination_wallet_id } = transaction.metadata
+    const walletTransactionType = transaction.metadata.wallet_transaction_type
 
-    if (source_wallet_id?.includes("system")) {
-      return "Deposit"
-    } else if (destination_wallet_id?.includes("system")) {
-      return "Withdraw"
-    } else {
-      return "Transfer"
+    switch (walletTransactionType) {
+      case "transfer_cashier_to_wallet":
+        return "Deposit"
+      case "transfer_cashier_from_wallet":
+        return "Withdraw"
+      case "transfer_between_wallets":
+        return "Transfer"
+      default:
+        // Fallback to old logic if wallet_transaction_type is not available
+        const { source_wallet_id, destination_wallet_id } = transaction.metadata
+        if (source_wallet_id?.includes("system")) {
+          return "Deposit"
+        } else if (destination_wallet_id?.includes("system")) {
+          return "Withdraw"
+        } else {
+          return "Transfer"
+        }
     }
   }
 
