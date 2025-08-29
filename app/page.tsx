@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { MarketFilterDropdown } from "@/components/market-filter"
+import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
+import type { MarketFilterOptions } from "@/components/market-filter/types"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -15,12 +16,37 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CurrencyFilter } from "@/components/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
 import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
+import { Alert } from "@/components/ui/alert"
+
+interface TemporaryBanAlertProps {
+  tempBanUntil?: string
+}
+
+const TemporaryBanAlert = ({
+  tempBanUntil = "",
+}: TemporaryBanAlertProps) => {
+  const banUntil = formatDateTime(tempBanUntil)
+  
+  return (
+    <Alert variant="warning" className="flex items-start gap-2 mb-6 hidden">
+      <Image
+        src="/icons/warning-icon-new.png"
+        alt="Warning"
+        height={24}
+        width={24}
+      />
+      <div className="text-sm mt-[2px]">
+        {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
+      </div>
+    </Alert>
+  )
+}
 
 export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
@@ -80,7 +106,7 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
-        
+
         if (selectedPaymentMethods.length === 0) {
           setSelectedPaymentMethods(methods.map((method) => method.method))
         }
@@ -157,13 +183,17 @@ export default function BuySellPage() {
     setCurrency(currencyCode)
   }
 
-  const handleFilterApply = (newFilters: typeof filterOptions, sortByValue?: string) => {
+  const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue?: string) => {
     setFilterOptions(newFilters)
     if (sortByValue) setSortBy(sortByValue)
   }
 
   const getPaymentMethodsDisplayText = () => {
-    if (paymentMethods.length === 0 || selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
+    if (
+      paymentMethods.length === 0 ||
+      selectedPaymentMethods.length === 0 ||
+      selectedPaymentMethods.length === paymentMethods.length
+    ) {
       return "Payment (All)"
     }
 
@@ -207,6 +237,7 @@ export default function BuySellPage() {
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-screen overflow-hidden px-[24px]">
+        <TemporaryBanAlert />
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -335,7 +366,6 @@ export default function BuySellPage() {
             </div>
           </div>
         </div>
-
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
             {isLoading ? (
