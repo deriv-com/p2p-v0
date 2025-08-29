@@ -234,7 +234,7 @@ export default function OrderChat({
           This conversation is closed.
         </div>
       ) : (
-        <div className="p-4 border-t">
+        <div className="p-4 border-t bg-slate-75">
           <div className="space-y-2">
             <div className="relative">
               <Input
