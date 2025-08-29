@@ -35,29 +35,11 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [socketToken, setSocketToken] = useState<string | null>(null)
 
   useEffect(() => {
-    const checkSocketToken = () => {
       const token = localStorage.getItem("socket_token")
       if (token && token.trim() !== "") {
         setSocketToken(token)
       }
-    }
-
-    checkSocketToken()
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "socket_token" && e.newValue) {
-        setSocketToken(e.newValue)
-      }
-    }
-
-    window.addEventListener("storage", handleStorageChange)
     
-    const interval = setInterval(checkSocketToken, 1000)
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange)
-      clearInterval(interval)
-    }
   }, [])
 
   useEffect(() => {
