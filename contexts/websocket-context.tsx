@@ -32,15 +32,45 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [isConnected, setIsConnected] = useState(false)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
+  const [socketToken, setSocketToken] = useState<string | null>(null)
 
   useEffect(() => {
-    const socketToken = localStorage.getItem("socket_token")
-    if (!socketToken || socketToken.trim() === "") {
-        return
+    const checkSocketToken = () => {
+      const token = localStorage.getItem("socket_token")
+      if (token && token.trim() !== "") {
+        setSocketToken(token)
+      }
+    }
+
+    // Check immediately
+    checkSocketToken()
+
+    // Listen for storage changes (when token is set by other parts of the app)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "socket_token" && e.newValue) {
+        setSocketToken(e.newValue)
+      }
+    }
+
+    window.addEventListener("storage", handleStorageChange)
+
+    // Also check periodically in case the token is set in the same tab
+    const interval = setInterval(checkSocketToken, 1000)
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange)
+      clearInterval(interval)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!socketToken) {
+      return
     }
 
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
+        console.log("[v0] WebSocket connected successfully")
         setIsConnected(true)
       },
       onMessage: (data, socket) => {
@@ -48,6 +78,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: (event, socket) => {
+        console.log("[v0] WebSocket disconnected")
         setIsConnected(false)
       },
       onError: (error, socket) => {
@@ -67,7 +98,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
-  }, [])
+  }, [socketToken]) // Depend on socketToken instead of empty dependency array
 
   const sendMessage = (message: WebSocketMessage) => {
     if (wsClientRef.current) {
@@ -81,9 +112,9 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
   }
 
-  const leaveChannel = (channel: string) => {
+  const leaveChannel = (channel: string, id: number) => {
     if (wsClientRef.current) {
-      wsClientRef.current.leaveChannel(channel)
+      wsClientRef.current.leaveChannel(channel, id)
     }
   }
 
