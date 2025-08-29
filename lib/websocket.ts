@@ -99,7 +99,7 @@ export class WebSocketClient {
         channel,
       },
       payload: {
-        order_id: id
+        order_id: id,
       },
     }
     this.send(joinMessage)

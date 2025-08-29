@@ -209,7 +209,7 @@ export async function getSocketToken(token: string): Promise<void> {
     }
 
     const result = await response.json()
-    const socketToken = result?.data
+    const socketToken = result?.data.token
 
     if (socketToken) {
       localStorage.setItem("socket_token", socketToken.toString())

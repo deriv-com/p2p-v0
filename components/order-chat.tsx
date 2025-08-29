@@ -230,11 +230,11 @@ export default function OrderChat({
       </div>
 
       {isClosed ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-[#0000000A]">
+        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">
           This conversation is closed.
         </div>
       ) : (
-        <div className="p-4 border-t">
+        <div className="p-4 border-t bg-slate-75">
           <div className="space-y-2">
             <div className="relative">
               <Input
@@ -243,7 +243,7 @@ export default function OrderChat({
                 onKeyDown={handleKeyDown}
                 placeholder="Enter message"
                 disabled={isSending}
-                className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
               />
               <Button
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
@@ -263,7 +263,7 @@ export default function OrderChat({
             </div>
             <div className="flex justify-between items-center">
               <div></div>
-              <div className="text-xs text-[#0000003D] mr-16px">
+              <div className="text-xs text-[#0000007A] mr-16px">
                 {message.length}/{maxLength}
               </div>
             </div>

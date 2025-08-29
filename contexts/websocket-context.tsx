@@ -34,6 +34,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
 
   useEffect(() => {
+
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
         setIsConnected(true)
@@ -76,9 +77,9 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
   }
 
-  const leaveChannel = (channel: string) => {
+  const leaveChannel = (channel: string, id: number) => {
     if (wsClientRef.current) {
-      wsClientRef.current.leaveChannel(channel)
+      wsClientRef.current.leaveChannel(channel, id)
     }
   }
 
