@@ -37,7 +37,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
-        console.log("[v0] WebSocket connected successfully")
         setIsConnected(true)
       },
       onMessage: (data, socket) => {
@@ -45,7 +44,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: (event, socket) => {
-        console.log("[v0] WebSocket disconnected")
         setIsConnected(false)
       },
       onError: (error, socket) => {
