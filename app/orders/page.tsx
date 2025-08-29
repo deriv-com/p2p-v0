@@ -21,7 +21,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
-import { DateFilter } from "@/components/date-filter/date-filter"
+import { DateFilter } from "./components/date-filter"
 import { startOfDay, endOfDay } from "date-fns"
 
 function TimeRemainingDisplay({ expiresAt }) {

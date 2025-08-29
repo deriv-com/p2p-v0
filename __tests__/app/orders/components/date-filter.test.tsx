@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
-import { DateFilter } from "@/components/date-filter/date-filter"
+import { DateFilter } from "@/app/orders/components/date-filter"
 import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
 import jest from "jest" // Import jest to declare it
 
