@@ -94,15 +94,7 @@ export default function TransactionsTab() {
       case "transfer_between_wallets":
         return "Transfer"
       default:
-        // Fallback to old logic if wallet_transaction_type is not available
-        const { source_wallet_id, destination_wallet_id } = transaction.metadata
-        if (source_wallet_id?.includes("system")) {
-          return "Deposit"
-        } else if (destination_wallet_id?.includes("system")) {
-          return "Withdraw"
-        } else {
-          return "Transfer"
-        }
+        return "Transfer" // Default to Transfer if type is unknown
     }
   }
 
