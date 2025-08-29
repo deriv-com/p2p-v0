@@ -42,10 +42,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       }
     }
 
-    // Check immediately
     checkSocketToken()
 
-    // Listen for storage changes (when token is set by other parts of the app)
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === "socket_token" && e.newValue) {
         setSocketToken(e.newValue)
@@ -53,8 +51,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
 
     window.addEventListener("storage", handleStorageChange)
-
-    // Also check periodically in case the token is set in the same tab
+    
     const interval = setInterval(checkSocketToken, 1000)
 
     return () => {
