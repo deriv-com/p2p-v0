@@ -38,9 +38,9 @@ export default function WalletSidebar({
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex justify-end" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-end md:justify-end md:items-stretch" onClick={onClose}>
       <div
-        className="bg-background h-full w-full max-w-md flex flex-col shadow-lg"
+        className="bg-background w-full max-h-[80vh] md:h-full md:max-w-md flex flex-col shadow-lg rounded-t-2xl md:rounded-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center px-4 py-3 border-b">
@@ -50,7 +50,7 @@ export default function WalletSidebar({
           </Button>
         </div>
 
-        <div className="p-4 flex flex-col gap-4 overflow-y-auto">
+        <div className="p-4 flex flex-col gap-4 overflow-y-auto flex-1">
           {operation === "DEPOSIT" ? (
             <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} />
           ) : operation === "WITHDRAW" ? (
