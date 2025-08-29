@@ -25,13 +25,11 @@ import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 
 interface TemporaryBanAlertProps {
-  reason?: string
-  cooldownTimer?: string
+  tempBanUntil?: string
 }
 
 const TemporaryBanAlert = ({
-  reason = "",
-  cooldownTimer = "",
+  tempBanUntil = "",
 }: TemporaryBanAlertProps) => {
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
@@ -42,7 +40,7 @@ const TemporaryBanAlert = ({
         width={24}
       />
       <div className="text-sm mt-[2px]">
-        {`Your account is temporarily restricted due to ${reason}. Some actions will be unavailable until ${cooldownTimer}.`}
+        {`Your account is temporarily restricted. Some actions will be unavailable until ${tempBanUntil}.`}
       </div>
     </Alert>
   )
