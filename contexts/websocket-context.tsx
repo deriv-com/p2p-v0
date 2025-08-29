@@ -32,37 +32,12 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [isConnected, setIsConnected] = useState(false)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
-  const [socketToken, setSocketToken] = useState<string | null>(null)
 
   useEffect(() => {
-    const checkSocketToken = () => {
-      const token = localStorage.getItem("socket_token")
-      if (token && token.trim() !== "") {
-        setSocketToken(token)
-      }
-    }
+    const socketToken = localStorage.getItem("socket_token")
 
-    checkSocketToken()
-
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "socket_token" && e.newValue) {
-        setSocketToken(e.newValue)
-      }
-    }
-
-    window.addEventListener("storage", handleStorageChange)
-
-    // Also check periodically in case the token is set in the same tab
-    const interval = setInterval(checkSocketToken, 1000)
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange)
-      clearInterval(interval)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!socketToken) {
+    if (!socketToken || socketToken.trim() === "") {
+      console.log("[v0] No socket token available, skipping WebSocket connection")
       return
     }
 
@@ -96,7 +71,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
-  }, [socketToken]) // Depend on socketToken instead of empty dependency array
+  }, []) // Empty dependency array - only run once on mount
 
   const sendMessage = (message: WebSocketMessage) => {
     if (wsClientRef.current) {
