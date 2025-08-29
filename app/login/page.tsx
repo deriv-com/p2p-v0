@@ -67,6 +67,7 @@ export default function LoginPage() {
         }
 
         await AuthAPI.fetchUserIdAndStore()
+        await AuthAPI.getSocketToken(response.access_token)
         //await AuthAPI.getClientProfile()
 
         window.location.href = "/"
