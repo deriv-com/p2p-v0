@@ -195,7 +195,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)]">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
