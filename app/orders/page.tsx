@@ -63,6 +63,8 @@ export default function OrdersPage() {
       const filters: {
         is_open?: boolean
         period?: string
+        date_from?: string
+        date_to?: string
       } = {}
 
       if (activeTab === "active") {
@@ -82,24 +84,21 @@ export default function OrdersPage() {
               filters.period = "month"
               break
             case "custom":
+              if (customDateRange.from) {
+                filters.date_from = startOfDay(customDateRange.from).toISOString()
+                if (customDateRange.to) {
+                  filters.date_to = endOfDay(customDateRange.to).toISOString()
+                } else {
+                  filters.date_to = endOfDay(customDateRange.from).toISOString()
+                }
+              }
               break
           }
         }
       }
 
       const orders = await OrdersAPI.getOrders(filters)
-      let ordersArray = Array.isArray(orders.data) ? orders.data : []
-
-      if (activeTab === "past" && dateFilter === "custom" && customDateRange.from) {
-        const fromDate = startOfDay(customDateRange.from)
-        const toDate = customDateRange.to ? endOfDay(customDateRange.to) : endOfDay(customDateRange.from)
-
-        ordersArray = ordersArray.filter((order) => {
-          if (!order.created_at) return false
-          const orderDate = new Date(order.created_at)
-          return orderDate >= fromDate && orderDate <= toDate
-        })
-      }
+      const ordersArray = Array.isArray(orders.data) ? orders.data : []
 
       setOrders(ordersArray)
     } catch (err) {
