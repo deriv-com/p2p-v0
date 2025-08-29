@@ -32,10 +32,50 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [isConnected, setIsConnected] = useState(false)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
+  const [shouldConnect, setShouldConnect] = useState(false)
 
   useEffect(() => {
+    const checkSocketToken = () => {
+      const socketToken = localStorage.getItem("socket_token")
+      if (socketToken && socketToken.trim() !== "") {
+        setShouldConnect(true)
+        return true
+      }
+      return false
+    }
+
+    // Check immediately
+    if (checkSocketToken()) {
+      return
+    }
+
+    // If token not available, poll for it
+    const pollInterval = setInterval(() => {
+      if (checkSocketToken()) {
+        clearInterval(pollInterval)
+      }
+    }, 100) // Check every 100ms
+
+    // Clean up interval after 10 seconds to avoid infinite polling
+    const timeout = setTimeout(() => {
+      clearInterval(pollInterval)
+      console.warn("Socket token not available after 10 seconds, WebSocket connection will not be established")
+    }, 10000)
+
+    return () => {
+      clearInterval(pollInterval)
+      clearTimeout(timeout)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!shouldConnect) {
+      return
+    }
+
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
+        console.log("[v0] WebSocket connected successfully")
         setIsConnected(true)
       },
       onMessage: (data, socket) => {
@@ -43,6 +83,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: (event, socket) => {
+        console.log("[v0] WebSocket disconnected")
         setIsConnected(false)
       },
       onError: (error, socket) => {
@@ -53,6 +94,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const wsClient = new WebSocketClient(wsOptions)
     wsClientRef.current = wsClient
 
+    console.log("[v0] Attempting WebSocket connection with token available")
     wsClient.connect().catch((error) => {
       console.error("Failed to connect to WebSocket:", error)
     })
@@ -62,7 +104,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         wsClientRef.current.disconnect()
       }
     }
-  }, [])
+  }, [shouldConnect])
 
   const sendMessage = (message: WebSocketMessage) => {
     if (wsClientRef.current) {

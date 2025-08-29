@@ -38,11 +38,20 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = API.socketUrl
-        console.log(url)
-        console.log(USER.socketToken)
-        this.socket = new WebSocket(url, [USER.socketToken])
+        const socketToken = localStorage.getItem("socket_token") || USER.socketToken
+
+        if (!socketToken || socketToken.trim() === "") {
+          reject(new Error("Socket token is not available"))
+          return
+        }
+
+        console.log("[v0] Connecting to WebSocket with URL:", url)
+        console.log("[v0] Using socket token:", socketToken ? "***" + socketToken.slice(-4) : "null")
+
+        this.socket = new WebSocket(url, [socketToken])
 
         this.socket.onopen = () => {
+          console.log("[v0] WebSocket connection opened")
           this.reconnectAttempts = 0
           if (this.options.onOpen) {
             this.options.onOpen(this.socket!)
@@ -62,6 +71,7 @@ export class WebSocketClient {
         }
 
         this.socket.onerror = (event) => {
+          console.error("[v0] WebSocket error occurred:", event)
           if (this.options.onError) {
             this.options.onError(event, this.socket!)
           }
@@ -69,11 +79,13 @@ export class WebSocketClient {
         }
 
         this.socket.onclose = (event) => {
+          console.log("[v0] WebSocket connection closed:", event.code, event.reason)
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
           }
 
           if (this.options.autoReconnect && this.reconnectAttempts < (this.options.maxReconnectAttempts || 5)) {
+            console.log("[v0] Attempting to reconnect WebSocket...")
             this.reconnectTimeout = setTimeout(() => {
               this.reconnectAttempts++
               this.connect()
@@ -81,6 +93,7 @@ export class WebSocketClient {
           }
         }
       } catch (error) {
+        console.error("[v0] Error creating WebSocket connection:", error)
         reject(error)
       }
     })
@@ -101,7 +114,7 @@ export class WebSocketClient {
         channel,
       },
       payload: {
-        order_id: id
+        order_id: id,
       },
     }
     this.send(joinMessage)
