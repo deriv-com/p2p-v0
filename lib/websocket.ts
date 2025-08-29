@@ -38,6 +38,8 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = API.socketUrl
+        console.log(url)
+        console.log(USER.socketToken)
         this.socket = new WebSocket(url, [USER.socketToken])
 
         this.socket.onopen = () => {
