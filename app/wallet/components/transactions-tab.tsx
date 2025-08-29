@@ -86,13 +86,12 @@ export default function TransactionsTab() {
   const getTransactionType = (transaction: Transaction) => {
     const walletTransactionType = transaction.metadata.wallet_transaction_type
 
-    switch (walletTransactionType) {
-      case "transfer_cashier_to_wallet":
-        return "Deposit"
-      case "transfer_cashier_from_wallet":
-        return "Withdraw"
-      case "transfer_between_wallets":
-        return "Transfer"
+    if (walletTransactionType === "transfer_cashier_to_wallet") {
+      return "Deposit"
+    } else if (walletTransactionType === "transfer_cashier_from_wallet") {
+      return "Withdraw"
+    } else if (walletTransactionType === "transfer_between_wallets") {
+      return "Transfer"
     }
   }
 
