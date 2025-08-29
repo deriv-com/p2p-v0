@@ -36,13 +36,11 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   useEffect(() => {
     const socketToken = localStorage.getItem("socket_token")
     if (!socketToken || socketToken.trim() === "") {
-      console.log("Socket token not available, WebSocket connection will not be established")
-      return
+        return
     }
 
     const wsOptions: WebSocketOptions = {
-      onOpen: (socket) => {
-        console.log("WebSocket connected successfully")
+      onOpen: (socket) = {
         setIsConnected(true)
       },
       onMessage: (data, socket) => {
@@ -50,7 +48,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: (event, socket) => {
-        console.log("WebSocket disconnected")
         setIsConnected(false)
       },
       onError: (error, socket) => {
