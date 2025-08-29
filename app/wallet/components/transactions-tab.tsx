@@ -97,6 +97,7 @@ export default function TransactionsTab() {
         return "Transfer"
     }
   }
+  
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
@@ -195,7 +196,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="space-y-6 overflow-y-auto max-h-[calc(100vh-200px)]">
+      <div className="space-y-6">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
