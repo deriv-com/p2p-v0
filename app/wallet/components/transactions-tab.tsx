@@ -94,7 +94,7 @@ export default function TransactionsTab() {
       case "transfer_between_wallets":
         return "Transfer"
       default:
-        return "Transfer" // Default to Transfer if type is unknown
+        return "Transfer"
     }
   }
 
