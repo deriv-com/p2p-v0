@@ -243,7 +243,7 @@ export default function OrderChat({
                 onKeyDown={handleKeyDown}
                 placeholder="Enter message"
                 disabled={isSending}
-                className="w-full bg-[#0000000A] rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
+                className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
               />
               <Button
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
