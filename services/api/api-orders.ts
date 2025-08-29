@@ -75,6 +75,7 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
+      "X-Branch": "development"
     }
 
     const response = await fetch(url, {
