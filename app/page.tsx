@@ -16,7 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CurrencyFilter } from "@/components/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
-import { formatPaymentMethodName } from "@/lib/utils"
+import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
@@ -31,6 +31,8 @@ interface TemporaryBanAlertProps {
 const TemporaryBanAlert = ({
   tempBanUntil = "",
 }: TemporaryBanAlertProps) => {
+  const banUntil = formatDateTime(tempBanUntil)
+  
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
       <Image
@@ -40,7 +42,7 @@ const TemporaryBanAlert = ({
         width={24}
       />
       <div className="text-sm mt-[2px]">
-        {`Your account is temporarily restricted. Some actions will be unavailable until ${tempBanUntil}.`}
+        {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
       </div>
     </Alert>
   )
