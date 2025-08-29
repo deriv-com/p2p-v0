@@ -60,7 +60,6 @@ export class WebSocketClient {
         }
 
         this.socket.onerror = (event) => {
-          console.error("WebSocket error occurred:", event)
           if (this.options.onError) {
             this.options.onError(event, this.socket!)
           }
@@ -80,7 +79,6 @@ export class WebSocketClient {
           }
         }
       } catch (error) {
-        console.error("Error creating WebSocket connection:", error)
         reject(error)
       }
     })
