@@ -93,11 +93,8 @@ export default function TransactionsTab() {
         return "Withdraw"
       case "transfer_between_wallets":
         return "Transfer"
-      default:
-        return "Transfer"
     }
   }
-  
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
