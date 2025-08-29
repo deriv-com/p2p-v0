@@ -80,8 +80,7 @@ export default function OrdersPage() {
                 } else {
                   filters.date_to = endOfDay(customDateRange.from).toISOString()
                 }
-              }
-              break
+            }
         }
       }
 
