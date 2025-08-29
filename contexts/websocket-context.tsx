@@ -42,7 +42,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       }
     }
 
-    if(socketToken) return;
     checkSocketToken()
 
     const handleStorageChange = (e: StorageEvent) => {
