@@ -314,6 +314,7 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
+      "X-Branch": "development",
     }
 
     const response = await fetch(url, {
