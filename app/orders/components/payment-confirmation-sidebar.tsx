@@ -10,6 +10,7 @@ import { X } from "lucide-react"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
+import { Input } from "@/components/ui/input"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
