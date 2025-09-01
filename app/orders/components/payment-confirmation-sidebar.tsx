@@ -32,13 +32,11 @@ export const PaymentConfirmationSidebar = ({
   if (!order) return null
 
   const handleFileSelect = (file: File) => {
-    // Validate file type
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"]
     if (!allowedTypes.includes(file.type)) {
       return
     }
-
-    // Validate file size (5MB)
+    
     if (file.size > 5 * 1024 * 1024) {
       return
     }
