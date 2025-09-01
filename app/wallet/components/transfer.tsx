@@ -4,12 +4,11 @@ import type React from "react"
 import Image from "next/image"
 
 interface TransferProps {
-  onClose: () => void
   onSendClick: () => void
   onReceiveClick: () => void
 }
 
-export default function Transfer({ onClose, onSendClick, onReceiveClick }: TransferProps) {
+export default function Transfer({ onSendClick, onReceiveClick }: TransferProps) {
   const handleSendClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onSendClick()
