@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { ChevronLeft } from "lucide-react"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
@@ -114,9 +113,9 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 variant="outline"
                 size="sm"
                 onClick={handleTodayClick}
-                className="rounded-full border-gray-300 hover:bg-gray-50 bg-transparent"
+                className="rounded-full"
               >
-                <ChevronLeft className="h-3 w-3 mr-1" />
+                <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
                 Today
               </Button>
             </div>
@@ -157,14 +156,13 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <div className="relative">
           <DualMonthCalendar handleCustomRangeApply={handleCustomRange} selected={tempRange} onSelect={setTempRange} />
 
-          <div className="flex items-center justify-end p-4">
+          <div className="flex items-center justify-end p-6">
             <Button
               variant="outline"
-              size="sm"
               onClick={handleTodayClick}
-              className="rounded-full border-gray-300 hover:bg-gray-50 bg-transparent"
+              className="rounded-full"
             >
-              <ChevronLeft className="h-3 w-3 mr-1" />
+               <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
               Today
             </Button>
           </div>
