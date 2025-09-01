@@ -6,7 +6,7 @@ import WalletDisplay from "./wallet-display"
 import { fetchWalletsList } from "@/services/api/api-wallets"
 
 interface TransferScreenProps {
-  title: "Send to" | "Receive from"
+  transferType: "Send" | "Receive"
   onBack: () => void
   onClose: () => void
 }
@@ -21,7 +21,7 @@ const mockWallets = [
   },
 ]
 
-export default function TransferScreen({ title, onBack, onClose }: TransferScreenProps) {
+export default function TransferScreen({ transferType, onBack, onClose }: TransferScreenProps) {
   useEffect(() => {
     const loadWallets = async () => {
       try {
@@ -36,8 +36,10 @@ export default function TransferScreen({ title, onBack, onClose }: TransferScree
   }, [])
 
   const handleWalletClick = (walletId: string) => {
-    console.log(`Selected wallet: ${walletId} for ${title}`)
+    console.log(`Selected wallet: ${walletId} for ${transferType}`)
   }
+
+  const title = transferType === "Send" ? "Send to" : "Receive from"
 
   return (
     <div className="fixed inset-0 z-50 bg-white">
@@ -51,7 +53,9 @@ export default function TransferScreen({ title, onBack, onClose }: TransferScree
       </div>
 
       <div className="ml-6 mt-6">
-        <h1 className="text-black text-2xl font-bold">{title}</h1>
+        <h1 className="text-2xl font-black" style={{ color: "#00080A" }}>
+          {title}
+        </h1>
       </div>
 
       <div className="ml-6 mt-6">
