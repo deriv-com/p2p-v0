@@ -6,7 +6,6 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Alert } from "@/components/ui/alert"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { X } from "lucide-react"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
@@ -86,9 +85,6 @@ export const PaymentConfirmationSidebar = ({
           <SheetHeader className="p-6 pb-4">
             <div className="flex items-center justify-between">
               <SheetTitle className="text-xl font-bold">Confirm your payment</SheetTitle>
-              <Button variant="ghost" size="sm" onClick={onClose} className="h-6 w-6 p-0">
-                <X className="h-4 w-4" />
-              </Button>
             </div>
           </SheetHeader>
 
