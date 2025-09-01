@@ -71,8 +71,19 @@ export const PaymentConfirmationSidebar = ({
       onConfirm()
     } catch (error) {
       console.error("Error uploading file to chat:", error)
-  
+    }
   }
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes === 0) return "0 Bytes"
+    const k = 1024
+    const sizes = ["Bytes", "KB", "MB"]
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+  }
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null)
   }
 
   const currencySymbol = order.payment_currency
@@ -107,9 +118,22 @@ export const PaymentConfirmationSidebar = ({
               />
 
               {selectedFile ? (
-                <div className="space-y-2">
-                  <p className="font-medium text-green-700">{selectedFile.name}</p>
-                  <p className="text-xs text-green-600">File uploaded successfully</p>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full">
+                    <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="font-medium text-green-700 break-all">{selectedFile.name}</p>
+                    <p className="text-xs text-gray-500">
+                      {selectedFile.type.split("/")[1].toUpperCase()} • {formatFileSize(selectedFile.size)}
+                    </p>
+                    <p className="text-xs text-green-600">File uploaded successfully</p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={handleRemoveFile} className="text-xs bg-transparent">
+                    Change file
+                  </Button>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -136,13 +160,8 @@ export const PaymentConfirmationSidebar = ({
             </Alert>
           </div>
           <div className="p-6 pt-0">
-            <Button
-              variant="default"
-              onClick={handleSubmit}
-              disabled={!selectedFile || isLoading}
-              className="w-full"
-            >
-            {isLoading ? (
+            <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading} className="w-full">
+              {isLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
