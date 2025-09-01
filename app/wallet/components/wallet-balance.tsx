@@ -5,6 +5,7 @@ import { Minus } from "lucide-react"
 import Image from "next/image"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
+import TransferSelectWalletScreen from "./transfer-select-wallet-screen"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -20,6 +21,8 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
+  const [showTransferScreen, setShowTransferScreen] = useState(false)
+  const [transferType, setTransferType] = useState<"Send to" | "Receive from">("Send to")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -96,6 +99,37 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
+  }
+
+  const handleP2PTransferClick = () => {
+    setTransferType("Send to")
+    setIsSidebarOpen(false)
+    setShowTransferScreen(true)
+  }
+
+  const handleAccountTransferClick = () => {
+    setTransferType("Receive from")
+    setIsSidebarOpen(false)
+    setShowTransferScreen(true)
+  }
+
+  const handleTransferScreenBack = () => {
+    setShowTransferScreen(false)
+    setIsSidebarOpen(true)
+  }
+
+  const handleTransferScreenClose = () => {
+    setShowTransferScreen(false)
+  }
+
+  if (showTransferScreen) {
+    return (
+      <TransferSelectWalletScreen
+        title={transferType}
+        onBack={handleTransferScreenBack}
+        onClose={handleTransferScreenClose}
+      />
+    )
   }
 
   return (
@@ -188,6 +222,8 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           onClose={() => setIsSidebarOpen(false)}
           onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
           operation={currentOperation}
+          onP2PTransferClick={handleP2PTransferClick}
+          onAccountTransferClick={handleAccountTransferClick}
         />
 
         <FullScreenIframeModal

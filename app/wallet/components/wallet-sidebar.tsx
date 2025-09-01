@@ -2,7 +2,7 @@
 import Image from "next/image"
 import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
-import TransferOptions from "./transfer"
+import Transfer from "./transfer"
 import { Button } from "@/components/ui/button"
 
 interface WalletSidebarProps {
@@ -56,11 +56,7 @@ export default function WalletSidebar({
           ) : operation === "WITHDRAW" ? (
             <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} />
           ) : operation === "TRANSFER" ? (
-            <TransferOptions
-              onClose={onClose}
-              onP2PTransferClick={onP2PTransferClick}
-              onAccountTransferClick={onAccountTransferClick}
-            />
+            <Transfer onSendClick={onP2PTransferClick} onReceiveClick={onAccountTransferClick} />
           ) : (
             <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} />
           )}
