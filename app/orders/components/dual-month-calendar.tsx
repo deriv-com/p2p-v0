@@ -70,7 +70,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
             variant="ghost"
             size="sm"
             onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            className="p-0"
+            className="p-2"
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>)}
@@ -79,7 +79,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
             variant="ghost"
             size="sm"
             onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            className="p-0"
+            className="p-2"
           >
             <ChevronRight className="h-4 w-4" />
           </Button>)}
