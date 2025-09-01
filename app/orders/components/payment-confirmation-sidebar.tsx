@@ -82,7 +82,7 @@ export const PaymentConfirmationSidebar = ({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-md p-0">
         <div className="flex flex-col h-full">
-          <SheetHeader className="p-6 pb-4">
+          <SheetHeader className="p-6 pb-4 border-b">
             <div className="flex items-center justify-between">
               <SheetTitle className="text-xl font-bold">Confirm your payment</SheetTitle>
             </div>
