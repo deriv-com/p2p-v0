@@ -127,7 +127,7 @@ export const PaymentConfirmationSidebar = ({
                     <Upload className="w-full h-full text-gray-400" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Upload file</p>
+                    <p className="font-bold text-sm text-neutral-10">Upload file</p>
                     <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB).</p>
                   </div>
                   <label htmlFor="file-upload">
