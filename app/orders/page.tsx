@@ -22,13 +22,7 @@ import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { DateFilter } from "./components/date-filter"
-
-const formatDateToYYYYMMDD = (date: Date): string => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, "0")
-  const day = String(date.getDate()).padStart(2, "0")
-  return `${year}-${month}-${day}`
-}
+import { startOfDay, endOfDay } from "date-fns"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -79,13 +73,13 @@ export default function OrdersPage() {
 
         if (dateFilter !== "all") {
           if (customDateRange.from) {
-            filters.date_from = formatDateToYYYYMMDD(customDateRange.from)
-            if (customDateRange.to) {
-              filters.date_to = formatDateToYYYYMMDD(customDateRange.to)
-            } else {
-              filters.date_to = formatDateToYYYYMMDD(customDateRange.from)
+                filters.date_from = startOfDay(customDateRange.from).toISOString()
+                if (customDateRange.to) {
+                  filters.date_to = endOfDay(customDateRange.to).toISOString()
+                } else {
+                  filters.date_to = endOfDay(customDateRange.from).toISOString()
+                }
             }
-          }
         }
       }
 

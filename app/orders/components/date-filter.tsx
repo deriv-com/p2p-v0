@@ -2,73 +2,20 @@
 
 import * as React from "react"
 import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react"
+import {
+  format,
+  addMonths,
+  subMonths,
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  isSameMonth,
+  isSameDay,
+} from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { cn } from "@/lib/utils"
 import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
-
-const formatDate = (date: Date, formatStr: string): string => {
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-
-  if (formatStr === "MMM yyyy") {
-    return `${months[date.getMonth()]} ${date.getFullYear()}`
-  }
-  if (formatStr === "MMM dd") {
-    return `${months[date.getMonth()]} ${String(date.getDate()).padStart(2, "0")}`
-  }
-  if (formatStr === "MMM dd, yyyy") {
-    return `${months[date.getMonth()]} ${String(date.getDate()).padStart(2, "0")}, ${date.getFullYear()}`
-  }
-  if (formatStr === "d") {
-    return String(date.getDate())
-  }
-  return date.toDateString()
-}
-
-const addMonths = (date: Date, months: number): Date => {
-  const result = new Date(date)
-  result.setMonth(result.getMonth() + months)
-  return result
-}
-
-const subMonths = (date: Date, months: number): Date => {
-  const result = new Date(date)
-  result.setMonth(result.getMonth() - months)
-  return result
-}
-
-const startOfMonth = (date: Date): Date => {
-  return new Date(date.getFullYear(), date.getMonth(), 1)
-}
-
-const endOfMonth = (date: Date): Date => {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0)
-}
-
-const eachDayOfInterval = (interval: { start: Date; end: Date }): Date[] => {
-  const days: Date[] = []
-  const current = new Date(interval.start)
-
-  while (current <= interval.end) {
-    days.push(new Date(current))
-    current.setDate(current.getDate() + 1)
-  }
-
-  return days
-}
-
-const isSameMonth = (date1: Date, date2: Date): boolean => {
-  return date1.getMonth() === date2.getMonth() && date1.getFullYear() === date2.getFullYear()
-}
-
-const isSameDay = (date1: Date, date2: Date): boolean => {
-  return (
-    date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
-  )
-}
 
 interface DateFilterProps {
   value: DateFilterType
@@ -126,7 +73,7 @@ function DualMonthCalendar({
 
     return (
       <div className="flex-1">
-        <div className="text-center font-medium text-gray-900 mb-4">{formatDate(month, "MMM yyyy")}</div>
+        <div className="text-center font-medium text-gray-900 mb-4">{format(month, "MMM yyyy")}</div>
 
         {/* Day headers */}
         <div className="grid grid-cols-7 gap-1 mb-2">
@@ -160,7 +107,7 @@ function DualMonthCalendar({
                   !isSameMonth(date, month) && "text-gray-300",
                 )}
               >
-                {formatDate(date, "d")}
+                {format(date, "d")}
               </button>
             )
           })}
@@ -203,16 +150,16 @@ function DualMonthCalendar({
   )
 }
 
-export function DateFilter({ value, customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
+export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
 
   const getDisplayLabel = () => {
     if (customRange.from) {
       if (customRange.to) {
-        return `${formatDate(customRange.from, "MMM dd")} - ${formatDate(customRange.to, "MMM dd")}`
+        return `${format(customRange.from, "MMM dd")} - ${format(customRange.to, "MMM dd")}`
       }
-      return formatDate(customRange.from, "MMM dd, yyyy")
+      return format(customRange.from, "MMM dd, yyyy")
     }
     return "All time"
   }
