@@ -70,8 +70,7 @@ export const PaymentConfirmationSidebar = ({
       onConfirm()
     } catch (error) {
       console.error("Error uploading file to chat:", error)
-  
-  }
+    }
   }
 
   const currencySymbol = order.payment_currency
@@ -109,10 +108,9 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               ) : (
                 <div className="flex flex-col items-center">
-                <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
+                  <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
                   <label htmlFor="file-upload">
                     <Button variant="ghost" size="sm" className="flex flex-col mb-2 hover:bg-transparent" asChild>
-                    
                       <span>Upload file</span>
                     </Button>
                   </label>
@@ -120,21 +118,27 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               )}
             </div>
+
+            {selectedFile && (
+              <div className="bg-gray-50 border rounded-lg p-4">
+                <h4 className="font-medium text-sm mb-2">Uploaded File:</h4>
+                <div className="space-y-1">
+                  <p className="text-sm font-medium">{selectedFile.name}</p>
+                  <p className="text-xs text-gray-500">
+                    Type: {selectedFile.type} | Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
+                </div>
+              </div>
+            )}
+
             <Alert variant="warning" className="flex items-start gap-2 mb-6">
               <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-              <div>
-                Providing fraudulent documents will result in a permanent ban.
-              </div>
+              <div>Providing fraudulent documents will result in a permanent ban.</div>
             </Alert>
           </div>
           <div className="p-4 pt-0">
-            <Button
-              variant="default"
-              onClick={handleSubmit}
-              disabled={!selectedFile || isLoading}
-              className="w-full"
-            >
-            {isLoading ? (
+            <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading} className="w-full">
+              {isLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
