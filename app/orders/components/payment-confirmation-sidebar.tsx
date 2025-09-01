@@ -87,7 +87,6 @@ export const PaymentConfirmationSidebar = ({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full sm:max-w-md p-0">
         <div className="flex flex-col h-full">
-          {/* Header */}
           <SheetHeader className="p-6 pb-4">
             <div className="flex items-center justify-between">
               <SheetTitle className="text-xl font-bold">Confirm your payment</SheetTitle>
@@ -97,14 +96,11 @@ export const PaymentConfirmationSidebar = ({
             </div>
           </SheetHeader>
 
-          {/* Content */}
           <div className="flex-1 px-6 pb-6 space-y-6">
-            {/* Description */}
             <p className="text-sm text-gray-600">
               Ensure you've paid {currencySymbol} {amount} to {sellerName} and upload the receipt as proof of payment.
             </p>
 
-            {/* Upload Area */}
             <div
               className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
                 dragActive
@@ -150,8 +146,6 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               )}
             </div>
-
-            {/* Warning */}
             <Alert className="bg-orange-50 border-orange-200">
               <AlertTriangle className="h-4 w-4 text-orange-600" />
               <div className="text-sm text-orange-800">
@@ -159,8 +153,6 @@ export const PaymentConfirmationSidebar = ({
               </div>
             </Alert>
           </div>
-
-          {/* Footer */}
           <div className="p-6 pt-0">
             <Button
               onClick={handleSubmit}
