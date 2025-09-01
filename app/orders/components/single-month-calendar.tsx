@@ -57,7 +57,7 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
   const paddingDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
 
   return (
-    <div className="p-4">
+    <div>
       <div className="flex items-center justify-between mb-6">
         <Button
           variant="ghost"
