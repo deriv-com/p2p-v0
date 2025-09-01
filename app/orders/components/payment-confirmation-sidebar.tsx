@@ -114,8 +114,8 @@ export const PaymentConfirmationSidebar = ({
               ) : (
                 <div className="space-y-4">
                   <label htmlFor="file-upload">
+                    <Image src="/icons/upload-icon.svg" alt="Upload" width={48} height={48} className="text-gray-400" />
                     <Button variant="ghost" asChild>
-                      <Image src="/icons/upload-icon.svg" alt="Upload" width={48} height={48} className="text-gray-400" />
                       <span>Upload file</span>
                     </Button>
                   </label>
