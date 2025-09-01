@@ -101,13 +101,13 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     setIsIframeModalOpen(true)
   }
 
-  const handleP2PTransferClick = () => {
+  const handleSendTransferClick = () => {
     setTransferType("Send")
     setIsSidebarOpen(false)
     setShowTransferScreen(true)
   }
 
-  const handleAccountTransferClick = () => {
+  const handleReceiveTransferClick = () => {
     setTransferType("Receive")
     setIsSidebarOpen(false)
     setShowTransferScreen(true)
@@ -222,8 +222,8 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           onClose={() => setIsSidebarOpen(false)}
           onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
           operation={currentOperation}
-          onP2PTransferClick={handleP2PTransferClick}
-          onAccountTransferClick={handleAccountTransferClick}
+          onP2PTransferClick={handleSendTransferClick}
+          onAccountTransferClick={handleReceiveTransferClick}
         />
 
         <FullScreenIframeModal
