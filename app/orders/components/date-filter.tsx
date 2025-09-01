@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { SingleMonthCalendar } from "./single-month-calendar"
@@ -17,36 +18,6 @@ interface DateFilterProps {
   onValueChange: (value: DateFilterType) => void
   onCustomRangeChange: (range: DateRange) => void
   className?: string
-}
-
-function MobileBottomSheet({
-  isOpen,
-  onClose,
-  children,
-}: {
-  isOpen: boolean
-  onClose: () => void
-  children: React.ReactNode
-}) {
-  React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = "unset"
-    }
-    return () => {
-      document.body.style.overflow = "unset"
-    }
-  }, [isOpen])
-
-  if (!isOpen) return null
-
-  return (
-    <div className="fixed inset-0 z-50 lg:hidden">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
-      <div className="fixed bottom-0 left-0 right-0 bg-white rounded-t-lg max-h-[80vh] overflow-y-auto">{children}</div>
-    </div>
-  )
 }
 
 export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
@@ -101,10 +72,11 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
 
   if (isMobile) {
     return (
-      <>
-        <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => setIsOpen(true)} className={className} />
-
-        <MobileBottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetTrigger asChild>
+          <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => {}} className={className} />
+        </SheetTrigger>
+        <SheetContent side="bottom" className="h-auto max-h-[80vh]">
           <div className="bg-white">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
@@ -128,8 +100,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               </div>
             </div>
           </div>
-        </MobileBottomSheet>
-      </>
+        </SheetContent>
+      </Sheet>
     )
   }
 
