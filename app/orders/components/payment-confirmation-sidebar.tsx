@@ -105,7 +105,7 @@ export const PaymentConfirmationSidebar = ({
                   ? "border-blue-400 bg-blue-50"
                   : selectedFile
                     ? "border-green-400 bg-green-50"
-                    : "border-gray-30"
+                    : "border-slate-500"
               }`}
               onDrop={handleDrop}
               onDragOver={handleDragOver}
