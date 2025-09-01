@@ -108,7 +108,22 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
+        
+        <Button
+          variant="outline"
+          className={cn(
+            "w-full rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
+            className,
+          )}
+        >
+          <div className="flex items-center justify-between w-full">
+            <div className="flex items-center gap-2">
+              <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
+              <span>{getDisplayLabel()}</span>
+            </div>
+            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+          </div>
+        </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <div className="relative">
