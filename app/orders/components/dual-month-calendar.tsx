@@ -19,9 +19,10 @@ import type { DateRange } from "@/stores/orders-filter-store"
 interface DualMonthCalendarProps {
   selected: DateRange
   onSelect: (range: DateRange) => void
+  handleCustomRangeApply?: () => void
 }
 
-export function DualMonthCalendar({ selected, onSelect }: DualMonthCalendarProps) {
+export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }: DualMonthCalendarProps) {
   const [currentMonth, setCurrentMonth] = React.useState(new Date())
   const nextMonth = addMonths(currentMonth, 1)
 
@@ -29,10 +30,14 @@ export function DualMonthCalendar({ selected, onSelect }: DualMonthCalendarProps
     if (!selected.from || (selected.from && selected.to)) {
       onSelect({ from: date, to: undefined })
     } else if (selected.from && !selected.to) {
-      if (date < selected.from) {
-        onSelect({ from: date, to: selected.from })
-      } else {
-        onSelect({ from: selected.from, to: date })
+      const newRange = date < selected.from ? { from: date, to: selected.from } : { from: selected.from, to: date }
+
+      onSelect(newRange)
+
+      if (handleCustomRangeApply) {
+        setTimeout(() => {
+          handleCustomRangeApply()
+        }, 0)
       }
     }
   }

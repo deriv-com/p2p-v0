@@ -10,7 +10,6 @@ import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { SingleMonthCalendar } from "./single-month-calendar"
 import { DualMonthCalendar } from "./dual-month-calendar"
-import { DateFilterTrigger } from "./date-filter-trigger"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 
