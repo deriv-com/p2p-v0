@@ -114,7 +114,7 @@ export const PaymentConfirmationSidebar = ({
                       size="sm"
                       onClick={handleRemoveFile}
                     >
-                      <X className="h-4 w-4" />
+                      <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
                     </Button>
                   </div>
                 </div>
