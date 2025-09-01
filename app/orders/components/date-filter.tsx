@@ -115,7 +115,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 onClick={handleTodayClick}
                 className="rounded-full"
               >
-                <Image src="/icons/calendar-arrow.png" alt="Calendar" width={16} height={16} />
+                <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
                 Today
               </Button>
             </div>
