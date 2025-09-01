@@ -169,7 +169,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   const handleTodayClick = () => {
     const today = new Date()
     const normalizedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    const range = { from: normalizedToday}
+    const range = { from: normalizedToday, to: normalizedToday }
     setTempRange(range)
     onCustomRangeChange(range)
     onValueChange("custom")
