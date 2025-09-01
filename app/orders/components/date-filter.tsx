@@ -144,7 +144,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <div className="relative">
           <DualMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
-          <div className="flex items-center justify-between p-4">
+          <div className="flex items-center justify-end p-4">
             <Button
               variant="outline"
               size="sm"
