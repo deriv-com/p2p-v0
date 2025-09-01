@@ -1,7 +1,9 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import WalletDisplay from "./wallet-display"
+import { fetchWalletsList } from "@/services/api/api-wallets"
 
 interface TransferScreenProps {
   title: "Send to" | "Receive from"
@@ -42,6 +44,22 @@ const mockWallets = [
 ]
 
 export default function TransferScreen({ title, onBack, onClose }: TransferScreenProps) {
+  const [walletsData, setWalletsData] = useState(null)
+
+  useEffect(() => {
+    const loadWallets = async () => {
+      try {
+        const response = await fetchWalletsList()
+        console.log("[v0] Wallets API response:", response)
+        setWalletsData(response)
+      } catch (error) {
+        console.error("[v0] Error fetching wallets:", error)
+      }
+    }
+
+    loadWallets()
+  }, [])
+
   const handleWalletClick = (walletId: string) => {
     // TODO: Handle wallet selection for transfer
     console.log(`Selected wallet: ${walletId} for ${title}`)
