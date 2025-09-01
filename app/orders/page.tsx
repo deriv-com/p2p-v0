@@ -21,6 +21,8 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { DateFilter } from "./components/date-filter"
+import { format, startOfDay, endOfDay } from "date-fns"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -37,7 +39,8 @@ function TimeRemainingDisplay({ expiresAt }) {
 
 export default function OrdersPage() {
   const router = useRouter()
-  const { activeTab, setActiveTab } = useOrdersFilterStore()
+  const { activeTab, setActiveTab, dateFilter, customDateRange, setDateFilter, setCustomDateRange } =
+    useOrdersFilterStore()
   const { setIsChatVisible } = useChatVisibilityStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -51,7 +54,7 @@ export default function OrdersPage() {
 
   useEffect(() => {
     fetchOrders()
-  }, [activeTab])
+  }, [activeTab, dateFilter, customDateRange])
 
   const fetchOrders = async () => {
     setIsLoading(true)
@@ -59,17 +62,30 @@ export default function OrdersPage() {
     try {
       const filters: {
         is_open?: boolean
+        date_from?: string
+        date_to?: string
       } = {}
 
       if (activeTab === "active") {
         filters.is_open = true
       } else {
         filters.is_open = false
+
+        if (dateFilter !== "all") {
+          if (customDateRange.from) {
+                filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
+                if (customDateRange.to) {
+                  filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
+                } else {
+                  filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
+                }
+            }
+        }
       }
 
       const orders = await OrdersAPI.getOrders(filters)
-
       const ordersArray = Array.isArray(orders.data) ? orders.data : []
+
       setOrders(ordersArray)
     } catch (err) {
       console.error("Error fetching orders:", err)
@@ -302,7 +318,7 @@ export default function OrdersPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
-          <div className="mb-6">
+          <div className="flex flex-col md:flex-row mb-6 justify-between gap-4">
             <Tabs className="w-full md:w-[330px] md:min-w-[330px]" value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
                 <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
@@ -313,6 +329,17 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+            {activeTab === "past" && (
+              <div>
+                <DateFilter
+                  value={dateFilter}
+                  customRange={customDateRange}
+                  onValueChange={setDateFilter}
+                  onCustomRangeChange={setCustomDateRange}
+                  className="w-full md:w-[330px]"
+                />
+              </div>
+            )}
           </div>
         </div>
         <div className="flex-1 pb-4">
