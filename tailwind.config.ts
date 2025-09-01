@@ -97,6 +97,7 @@ const config: Config = {
           300: "#F8F9FA",
           400: "#CED4DA",
           500: "#0000000a",
+          600: "#EFF3F5",
         },
         yellow: {
           50: "#A66C00",
@@ -127,9 +128,6 @@ const config: Config = {
           1400: "#000000",
           1500: "#F5F5F5",
           1600: "#333333",
-        },
-        grey: {
-          25: "#EFF3F5",
         },
         teal: {
           700: "#00CCCC",

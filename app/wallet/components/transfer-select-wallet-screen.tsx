@@ -20,7 +20,7 @@ interface ProcessedWallet {
 }
 
 const WalletShimmer = () => (
-  <div className="bg-grey-25 rounded-lg px-6 py-4 animate-pulse">
+  <div className="bg-grayscale-600 rounded-lg px-6 py-4 animate-pulse">
     <div className="flex items-center space-x-3">
       <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
       <div className="flex-1">
