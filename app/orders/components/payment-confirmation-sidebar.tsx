@@ -113,18 +113,14 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <div className="w-12 h-12 mx-auto">
-                    <Image src="/icons/upload-icon.svg" alt="Upload" width={48} height={48} className="text-gray-400" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-sm text-neutral-10">Upload file</p>
+                    <label htmlFor="file-upload">
+                      <Button variant="ghost" className="cursor-pointer bg-transparent" asChild>
+                        <Image src="/icons/upload-icon.svg" alt="Upload" width={48} height={48} className="text-gray-400" />
+                        <span>Upload file</span>
+                      </Button>
+                    </label>
                     <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB).</p>
-                  </div>
-                  <label htmlFor="file-upload">
-                    <Button variant="outline" className="cursor-pointer bg-transparent" asChild>
-                      <span>Choose file</span>
-                    </Button>
-                  </label>
+             
                 </div>
               )}
             </div>
