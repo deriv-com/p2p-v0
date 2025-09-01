@@ -65,15 +65,12 @@ function DualMonthCalendar({
     const monthEnd = endOfMonth(month)
     const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
 
-    // Get the first day of the week for the month
     const firstDayOfWeek = monthStart.getDay()
-    const paddingDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1 // Monday = 0
+    const paddingDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1 
 
     return (
       <div className="flex-1">
         <div className="text-center font-medium text-gray-900 mb-4">{format(month, "MMM yyyy")}</div>
-
-        {/* Day headers */}
         <div className="grid grid-cols-7 gap-1 mb-2">
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
             <div key={day} className="text-center text-sm text-gray-400 font-normal py-2">
@@ -81,15 +78,10 @@ function DualMonthCalendar({
             </div>
           ))}
         </div>
-
-        {/* Calendar grid */}
         <div className="grid grid-cols-7 gap-1">
-          {/* Empty cells for padding */}
           {Array.from({ length: paddingDays }).map((_, index) => (
             <div key={`padding-${index}`} className="h-10" />
           ))}
-
-          {/* Date cells */}
           {days.map((date) => {
             const isSelected = isDateSelected(date)
             const inRange = isDateInRange(date)
