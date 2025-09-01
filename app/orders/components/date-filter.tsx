@@ -37,10 +37,8 @@ function DualMonthCalendar({
 
   const handleDateClick = (date: Date) => {
     if (!selected.from || (selected.from && selected.to)) {
-      // Start new selection
       onSelect({ from: date, to: undefined })
     } else if (selected.from && !selected.to) {
-      // Complete the range
       if (date < selected.from) {
         onSelect({ from: date, to: selected.from })
       } else {
