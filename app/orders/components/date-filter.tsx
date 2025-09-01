@@ -187,7 +187,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Image src="/icons/calendar.png" alt="Calendar" width={16} height={16} className="text-gray-500" />
+              <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
               <span>{getDisplayLabel()}</span>
             </div>
             <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
