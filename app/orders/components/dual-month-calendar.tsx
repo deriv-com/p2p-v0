@@ -85,9 +85,10 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
               <Button
                 key={date.toISOString()}
                 variant="ghost"
+                size="sm"
                 onClick={() => handleDateClick(date)}
                 className={cn(
-                  "h-10 w-10 text-sm font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
+                  "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
                   isSelected && "bg-black text-white hover:bg-black",
                   inRange && "bg-gray-100",
                   !isSameMonth(date, month) && "text-gray-300",
