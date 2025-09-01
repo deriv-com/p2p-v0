@@ -80,11 +80,8 @@ export const PaymentConfirmationSidebar = ({
 
             <div
               className="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-slate-500"
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
             >
-              <input
+              <Input
                 type="file"
                 accept=".jpeg,.jpg,.png,.pdf"
                 onChange={handleFileInput}
