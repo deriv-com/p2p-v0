@@ -111,10 +111,9 @@ export const PaymentConfirmationSidebar = ({
                   <div className="flex items-center justify-between bg-gray-50 p-3 rounded-md">
                     <p className="font-medium text-sm">{selectedFile.name}</p>
                     <Button
-                      variant="ghost"
+                      variant="black"
                       size="sm"
                       onClick={handleRemoveFile}
-                      className="h-6 w-6 p-0 hover:bg-gray-200"
                     >
                       <X className="h-4 w-4" />
                     </Button>
