@@ -100,13 +100,7 @@ export const PaymentConfirmationSidebar = ({
             </p>
 
             <div
-              className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                dragActive
-                  ? "border-blue-400 bg-blue-50"
-                  : selectedFile
-                    ? "border-green-400 bg-green-50"
-                    : "border-slate-500"
-              }`}
+              className="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-slate-500"
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
