@@ -11,7 +11,6 @@ import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
-import { X } from "lucide-react"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
