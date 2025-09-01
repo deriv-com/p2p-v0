@@ -13,7 +13,7 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CurrencyFilter } from "@/components/currency-filter"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
@@ -28,19 +28,12 @@ interface TemporaryBanAlertProps {
   tempBanUntil?: string
 }
 
-const TemporaryBanAlert = ({
-  tempBanUntil = "",
-}: TemporaryBanAlertProps) => {
+const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
   const banUntil = formatDateTime(tempBanUntil)
-  
+
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6 hidden">
-      <Image
-        src="/icons/warning-icon-new.png"
-        alt="Warning"
-        height={24}
-        width={24}
-      />
+      <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
       <div className="text-sm mt-[2px]">
         {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
       </div>
