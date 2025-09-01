@@ -116,7 +116,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 onClick={handleTodayClick}
                 className="rounded-full"
               >
-                <ChevronLeft className="h-3 w-3 mr-1" />
+                <Image src="/icons/calendar-arrow.png" alt="Calendar" width={16} height={16} />
                 Today
               </Button>
             </div>
@@ -163,7 +163,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               onClick={handleTodayClick}
               className="rounded-full"
             >
-              <ChevronLeft className="h-3 w-3 mr-1" />
+               <Image src="/icons/calendar-arrow.png" alt="Calendar" width={24} height={24} />
               Today
             </Button>
           </div>
