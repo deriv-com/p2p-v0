@@ -144,9 +144,9 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   const getDisplayLabel = () => {
     if (customRange.from) {
       if (customRange.to) {
-        return `${format(customRange.from, "MMM dd")} - ${format(customRange.to, "MMM dd")}`
+        return `${format(customRange.from, "dd/mm/yyyy")} to ${format(customRange.to, "dd/mm/yyyy")}`
       }
-      return format(customRange.from, "MMM dd, yyyy")
+      return format(customRange.from, "dd/mm/yyyy")
     }
     return "All time"
   }
