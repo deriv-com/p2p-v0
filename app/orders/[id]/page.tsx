@@ -29,6 +29,7 @@ import { ComplaintForm } from "@/components/complaint"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { PaymentConfirmationSidebar } from "@/components/payment-confirmation-sidebar"
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -48,6 +49,7 @@ export default function OrderDetailsPage() {
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState(false)
+  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
@@ -99,6 +101,7 @@ export default function OrderDetailsPage() {
       const result = await OrdersAPI.payOrder(orderId)
       if (result.errors.length == 0) {
         fetchOrderDetails()
+        setShowPaymentConfirmation(false)
       }
     } catch (err) {
       console.error("Error marking payment as sent:", err)
@@ -254,6 +257,10 @@ export default function OrderDetailsPage() {
       if (intervalId) clearInterval(intervalId)
     }
   }, [order])
+
+  const handleShowPaymentConfirmation = () => {
+    setShowPaymentConfirmation(true)
+  }
 
   if (error) {
     return (
@@ -447,15 +454,8 @@ export default function OrderDetailsPage() {
                     >
                       Cancel order
                     </Button>
-                    <Button className="flex-1" onClick={handlePayOrder} disabled={isPaymentLoading}>
-                      {isPaymentLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "I've paid"
-                      )}
+                    <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
+                      I've paid
                     </Button>
                   </div>
                 )}
@@ -591,6 +591,13 @@ export default function OrderDetailsPage() {
         recommendLabel={`Would you recommend this ${counterpartyLabel.toLowerCase()}?`}
       />
       <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
+      <PaymentConfirmationSidebar
+        isOpen={showPaymentConfirmation}
+        onClose={() => setShowPaymentConfirmation(false)}
+        onConfirm={handlePayOrder}
+        order={order}
+        isLoading={isPaymentLoading}
+      />
     </div>
   )
 }
