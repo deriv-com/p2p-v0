@@ -119,7 +119,7 @@ export const PaymentConfirmationSidebar = ({
                       <span>Upload file</span>
                     </Button>
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB).</p>
+                  <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB)</p>
                 </div>
               )}
             </div>
