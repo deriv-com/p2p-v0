@@ -318,7 +318,7 @@ export default function OrdersPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
-          <div className="flex mb-6 justify-between">
+          <div className="flex flex-col md:flex-row mb-6 justify-between gap-4">
             <Tabs className="w-full md:w-[330px] md:min-w-[330px]" value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
                 <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
