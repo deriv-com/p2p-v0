@@ -111,7 +111,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <div className="bg-white relative">
+        <div className="relative">
           <DualMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
           <div className="flex items-center justify-between p-4">
