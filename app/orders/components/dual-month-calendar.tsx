@@ -28,12 +28,9 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
 
   const handleDateClick = (date: Date) => {
     if (!selected.from || (selected.from && selected.to)) {
-      if(selected.from && selected.to) {
-        onSelect({ from: selected.from, to: selected.to })
-        handleCustomRangeApply(selected.from, selected.to)
-      } else {
+
         onSelect({ from: date, to: undefined })
-      }
+
     } else if (selected.from && !selected.to) {
       if (date < selected.from) {
         onSelect({ from: date, to: selected.from })
