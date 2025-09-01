@@ -74,7 +74,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => {}} className={className} />
+          <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
         </SheetTrigger>
         <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
           <div className="bg-white">
@@ -124,6 +124,14 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               <ChevronLeft className="h-3 w-3 mr-1" />
               Today
             </Button>
+            <div className="flex gap-2">
+              <Button variant="outline" onClick={handleReset} className="bg-transparent">
+                Reset
+              </Button>
+              <Button variant="black" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
+                Confirm
+              </Button>
+            </div>
           </div>
         </div>
       </PopoverContent>
