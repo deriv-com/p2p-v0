@@ -80,7 +80,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           <div className="bg-white">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
-            <div className="flex items-center justify-between p-4">
+            <div className="flex items-center justify-end p-4">
               <Button
                 variant="outline"
                 size="sm"
@@ -90,15 +90,15 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 <ChevronLeft className="h-3 w-3 mr-1" />
                 Today
               </Button>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" onClick={handleReset}>
+            </div>
+            <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={handleReset}>
                   Reset
                 </Button>
-                <Button size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
-                  Apply
+                <Button variant="outline" size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
+                  Confirm
                 </Button>
               </div>
-            </div>
           </div>
         </SheetContent>
       </Sheet>
