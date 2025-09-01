@@ -25,7 +25,7 @@ interface PaymentMethodsFilterProps {
   trigger: React.ReactElement
 }
 
-export default function PaymentMethodsFilter({
+export function PaymentMethodsFilter({
   paymentMethods,
   selectedMethods,
   onSelectionChange,
@@ -265,3 +265,5 @@ export default function PaymentMethodsFilter({
     </Popover>
   )
 }
+
+export default PaymentMethodsFilter

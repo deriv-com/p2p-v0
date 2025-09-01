@@ -38,7 +38,8 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = API.socketUrl
-        this.socket = new WebSocket(url, [USER.socketToken])
+        const socketToken = USER.socketToken?.trim()
+        this.socket = socketToken ? new WebSocket(url, [socketToken]) : new WebSocket(url)
 
         this.socket.onopen = () => {
           this.reconnectAttempts = 0
