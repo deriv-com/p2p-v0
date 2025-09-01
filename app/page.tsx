@@ -20,7 +20,7 @@ import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
-import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
+import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 
