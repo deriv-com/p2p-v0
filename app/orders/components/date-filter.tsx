@@ -12,6 +12,7 @@ import { SingleMonthCalendar } from "./single-month-calendar"
 import { DualMonthCalendar } from "./dual-month-calendar"
 import { DateFilterTrigger } from "./date-filter-trigger"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 interface DateFilterProps {
   value: DateFilterType
