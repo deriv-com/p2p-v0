@@ -123,27 +123,6 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
 
   return (
     <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-          className="h-8 w-8 p-0"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
-
-        <div className="flex-1" />
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-          className="h-8 w-8 p-0"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-      </div>
       <div className="flex gap-8">
         {renderMonth(currentMonth, true, false)}
         {renderMonth(nextMonth, false, true)}
