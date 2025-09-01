@@ -146,7 +146,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       if (customRange.to) {
         return `${format(customRange.from, "dd/MM/yyyy")} to ${format(customRange.to, "dd/MM/yyyy")}`
       }
-      return format(customRange.from, "dd/mm/yyyy")
+      return format(customRange.from, "dd/MM/yyyy")
     }
     return "All time"
   }
@@ -179,9 +179,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          size="sm"
           className={cn(
-            "w-full justify-between border border-gray-200 rounded-lg",
+            "w-full rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
             className,
           )}
         >
