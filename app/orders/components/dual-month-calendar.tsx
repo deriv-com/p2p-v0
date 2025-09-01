@@ -30,17 +30,18 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
     if (!selected.from || (selected.from && selected.to)) {
       if(selected.from && selected.to) {
         onSelect({ from: selected.from, to: selected.to })
-        handleCustomRangeApply()
+        handleCustomRangeApply(selected.from, selected.to)
       } else {
         onSelect({ from: date, to: undefined })
       }
     } else if (selected.from && !selected.to) {
       if (date < selected.from) {
         onSelect({ from: date, to: selected.from })
+        handleCustomRangeApply(date, selected.from)
       } else {
         onSelect({ from: selected.from, to: date })
+        handleCustomRangeApply(selected.from, date)
       }
-      handleCustomRangeApply()
     }
   }
 
