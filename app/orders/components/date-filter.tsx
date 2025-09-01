@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import {
   format,
   addMonths,
@@ -67,7 +67,7 @@ function DualMonthCalendar({
     const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
 
     const firstDayOfWeek = monthStart.getDay()
-    const paddingDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1 
+    const paddingDays = firstDayOfWeek === 0 ? 6 : firstDayOfWeek - 1
 
     return (
       <div className="flex-1">
@@ -187,7 +187,13 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CalendarIcon className="h-4 w-4 text-gray-500" />
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cISugWQXAdVpSlZB51L0ZFyc9PuE4b.png"
+                alt="Calendar"
+                width={16}
+                height={16}
+                className="text-gray-500"
+              />
               <span>{getDisplayLabel()}</span>
             </div>
             <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
