@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import WalletDisplay from "./wallet-display"
 import { fetchWalletsList } from "@/services/api/api-wallets"
@@ -11,22 +11,40 @@ interface TransferScreenProps {
   onClose: () => void
 }
 
-const mockWallets = [
-  {
-    id: "usd",
-    name: "USD Wallet",
-    amount: "0.00",
-    currency: "USD",
-    icon: "/icons/usd-flag.png",
-  },
-]
+interface ProcessedWallet {
+  id: string
+  name: string
+  amount: string
+  currency: string
+  icon: string
+}
 
 export default function TransferScreen({ transferType, onBack, onClose }: TransferScreenProps) {
+  const [wallets, setWallets] = useState<ProcessedWallet[]>([])
+
   useEffect(() => {
     const loadWallets = async () => {
       try {
         const response = await fetchWalletsList()
         console.log("[v0] Wallets API response:", response)
+
+        if (response?.data?.wallets) {
+          const processedWallets: ProcessedWallet[] = []
+
+          response.data.wallets.forEach((wallet: any) => {
+            wallet.balances.forEach((balance: any) => {
+              processedWallets.push({
+                id: `${wallet.wallet_id}-${balance.currency}`,
+                name: `${balance.currency} Wallet`,
+                amount: balance.balance,
+                currency: balance.currency,
+                icon: "/icons/usd-flag.png",
+              })
+            })
+          })
+
+          setWallets(processedWallets)
+        }
       } catch (error) {
         console.error("[v0] Error fetching wallets:", error)
       }
@@ -61,7 +79,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
       </div>
 
       <div className="mt-2 px-6 space-y-2">
-        {mockWallets.map((wallet) => (
+        {wallets.map((wallet) => (
           <WalletDisplay
             key={wallet.id}
             name={wallet.name}
