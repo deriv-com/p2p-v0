@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { Alert } from "@/components/ui/alert"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
@@ -28,7 +28,6 @@ export const PaymentConfirmationSidebar = ({
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [filePreviewUrl, setFilePreviewUrl] = useState<string | null>(null)
 
   if (!order) return null
 
@@ -43,8 +42,6 @@ export const PaymentConfirmationSidebar = ({
     }
 
     setSelectedFile(file)
-    const previewUrl = URL.createObjectURL(file)
-    setFilePreviewUrl(previewUrl)
   }
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,7 +70,8 @@ export const PaymentConfirmationSidebar = ({
       onConfirm()
     } catch (error) {
       console.error("Error uploading file to chat:", error)
-    }
+  
+  }
   }
 
   const currencySymbol = order.payment_currency
@@ -106,14 +104,14 @@ export const PaymentConfirmationSidebar = ({
 
               {selectedFile ? (
                 <div className="space-y-2">
-                  <p className="font-medium text-green-700">{selectedFile.name}</p>
-                  <p className="text-xs text-green-600">File uploaded successfully</p>
+                  <p className="font-medium">{selectedFile.name}</p>
                 </div>
               ) : (
                 <div className="flex flex-col items-center">
-                  <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
+                <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
                   <label htmlFor="file-upload">
                     <Button variant="ghost" size="sm" className="flex flex-col mb-2 hover:bg-transparent" asChild>
+                    
                       <span>Upload file</span>
                     </Button>
                   </label>
@@ -121,53 +119,21 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               )}
             </div>
-
-            {selectedFile && (
-              <div className="bg-gray-50 border rounded-lg p-4">
-                <h4 className="font-medium text-sm mb-2">Uploaded File:</h4>
-                <div className="space-y-3">
-                  <div className="space-y-1">
-                    <p className="text-sm font-medium">{selectedFile.name}</p>
-                    <p className="text-xs text-gray-500">
-                      Type: {selectedFile.type} | Size: {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
-                    </p>
-                  </div>
-
-                  {filePreviewUrl && (
-                    <div className="mt-3">
-                      {selectedFile.type.startsWith("image/") ? (
-                        <div className="border rounded-lg overflow-hidden">
-                          <img
-                            src={filePreviewUrl || "/placeholder.svg"}
-                            alt="File preview"
-                            className="w-full h-32 object-cover"
-                          />
-                        </div>
-                      ) : selectedFile.type === "application/pdf" ? (
-                        <div className="border rounded-lg p-4 bg-red-50 flex items-center gap-2">
-                          <div className="w-8 h-8 bg-red-100 rounded flex items-center justify-center">
-                            <span className="text-xs font-bold text-red-600">PDF</span>
-                          </div>
-                          <span className="text-sm text-gray-700">PDF file ready for upload</span>
-                        </div>
-                      ) : null}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
             <Alert variant="warning" className="flex items-start gap-2 mb-6">
               <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
               <div>
-                <AlertTitle>Warning</AlertTitle>
-                <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
+                Providing fraudulent documents will result in a permanent ban.
               </div>
             </Alert>
           </div>
           <div className="p-4 pt-0">
-            <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading} className="w-full">
-              {isLoading ? (
+            <Button
+              variant="default"
+              onClick={handleSubmit}
+              disabled={!selectedFile || isLoading}
+              className="w-full"
+            >
+            {isLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
