@@ -60,7 +60,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
         <h2 className="text-black/[0.96] text-base font-normal">Wallet</h2>
       </div>
 
-      <div className="mt-2 px-4 space-y-2">
+      <div className="mt-2 px-6 space-y-2">
         {mockWallets.map((wallet) => (
           <WalletDisplay
             key={wallet.id}
