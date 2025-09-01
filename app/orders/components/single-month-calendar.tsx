@@ -9,6 +9,7 @@ import {
   startOfMonth,
   endOfMonth,
   eachDayOfInterval,
+  isSameMonth,
   isSameDay,
 } from "date-fns"
 import { Button } from "@/components/ui/button"
@@ -105,6 +106,7 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
                   "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
                   isSelected && "bg-black text-white hover:bg-black hover:text-white",
                   inRange && "bg-gray-100 hover:text-white text-grayscale-600",
+                  !isSameMonth(date, currentMonth) && "text-gray-300",
                 )}
             >
               {format(date, "d")}
