@@ -155,7 +155,7 @@ export function DateFilter({value, customRange, onValueChange, onCustomRangeChan
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
 
   const getDisplayLabel = () => {
-  console.log()
+  console.log(value)
     if (customRange.from) {
       if (customRange.to) {
         return `${format(customRange.from, "MMM dd")} - ${format(customRange.to, "MMM dd")}`
