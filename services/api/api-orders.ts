@@ -31,8 +31,9 @@ export interface Order {
 export interface OrderFilters {
   status?: "Pending" | "Completed" | "Cancelled" | "Disputed"
   type?: "Buy" | "Sell"
-  period?: "today" | "week" | "month" | "all"
   is_open?: boolean
+  date_from?: string
+  date_to?: string
 }
 
 export interface Value {
@@ -62,8 +63,9 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
     if (filters) {
       if (filters.status) queryParams.append("status", filters.status)
       if (filters.type) queryParams.append("type", filters.type)
-      if (filters.period) queryParams.append("period", filters.period)
       if (filters.is_open !== undefined) queryParams.append("is_open", filters.is_open.toString())
+      if (filters.date_from) queryParams.append("date_from", filters.date_from)
+      if (filters.date_to) queryParams.append("date_to", filters.date_to)
     }
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
@@ -71,11 +73,12 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
+      "X-Branch": "development"
     }
 
     const response = await fetch(url, {
       headers,
-credentials: "include"
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -107,7 +110,7 @@ export async function getOrderById(id: string): Promise<Order> {
 
     const response = await fetch(url, {
       headers,
- credentials: "include" 
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -139,7 +142,7 @@ export async function markPaymentAsSent(orderId: string): Promise<{ success: boo
 
     const response = await fetch(url, {
       method: "POST",
-  credentials: "include",
+      credentials: "include",
       headers,
     })
 
@@ -172,7 +175,7 @@ export async function releasePayment(orderId: string): Promise<{ success: boolea
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
     })
 
@@ -205,7 +208,7 @@ export async function cancelOrder(orderId: string): Promise<{ success: boolean }
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
     })
 
@@ -237,13 +240,13 @@ export async function disputeOrder(orderId: string, reason: string): Promise<{ s
     }
     const body = JSON.stringify({
       data: {
-          reason,
+        reason,
       },
     })
 
     const response = await fetch(url, {
       method: "POST",
- credentials: "include",
+      credentials: "include",
       headers,
       body,
     })
@@ -285,7 +288,7 @@ export async function createOrder(advertId: number, amount: number, paymentMetho
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
       body,
     })
@@ -315,7 +318,7 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
     })
 
@@ -357,7 +360,7 @@ export async function reviewOrder(
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
       body,
     })
@@ -391,7 +394,7 @@ export async function completeOrder(orderId: string): Promise<{ success: boolean
 
     const response = await fetch(url, {
       method: "POST",
-credentials: "include",
+      credentials: "include",
       headers,
     })
 
@@ -441,7 +444,7 @@ export async function sendChatMessage(
 
     const response = await fetch(url, {
       method: "POST",
- credentials: "include",
+      credentials: "include",
       headers,
       body,
     })
@@ -465,13 +468,13 @@ export async function sendChatMessage(
       success: true,
       message: data.data ||
         data.message || {
-        id: Date.now().toString(),
-        orderId,
-        senderId: 0,
-        content: message,
-        time,
-        isRead: false,
-      },
+          id: Date.now().toString(),
+          orderId,
+          senderId: 0,
+          content: message,
+          time,
+          isRead: false,
+        },
     }
   } catch (error) {
     throw error

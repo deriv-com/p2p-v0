@@ -97,6 +97,7 @@ const config: Config = {
           300: "#F8F9FA",
           400: "#CED4DA",
           500: "#0000000a",
+          600: "#000000b8",
         },
         yellow: {
           50: "#A66C00",
