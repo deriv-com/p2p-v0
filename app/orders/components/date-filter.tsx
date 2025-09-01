@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface DateFilterProps {
   value: DateFilterType
@@ -272,16 +273,7 @@ function DualMonthCalendar({
 export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
-  const [isMobile, setIsMobile] = React.useState(false)
-
-  React.useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024)
-    }
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
+  const isMobile = useIsMobile()
 
   const getDisplayLabel = () => {
     if (customRange.from) {
