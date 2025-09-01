@@ -67,7 +67,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
     loadWallets()
   }, [])
 
-  const handleWalletClick = (walletId: string) => {}
+  const handleWalletClick = () => {}
 
   const title = transferType === "Send" ? "Send to" : "Receive from"
 
@@ -106,7 +106,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
               amount={wallet.amount}
               currency={wallet.currency}
               icon={wallet.icon}
-              onClick={() => handleWalletClick(wallet.id)}
+              onClick={() => handleWalletClick()}
             />
           ))
         )}
