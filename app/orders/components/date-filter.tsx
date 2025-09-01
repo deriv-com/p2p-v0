@@ -11,6 +11,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { SingleMonthCalendar } from "./single-month-calendar"
 import { DualMonthCalendar } from "./dual-month-calendar"
 import { DateFilterTrigger } from "./date-filter-trigger"
+import Image from "next/image"
 
 interface DateFilterProps {
   value: DateFilterType
