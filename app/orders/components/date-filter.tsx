@@ -91,7 +91,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 Today
               </Button>
             </div>
-            <div className="flex gap-2 p-4">
+            <div className="flex gap-2">
               <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
                 Reset
               </Button>
