@@ -53,9 +53,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
       </div>
 
       <div className="ml-6 mt-6">
-        <h1 className="text-2xl font-black" style={{ color: "#00080A" }}>
-          {title}
-        </h1>
+        <h1 className="text-2xl font-black text-[#00080A]">{title}</h1>
       </div>
 
       <div className="ml-6 mt-6">
