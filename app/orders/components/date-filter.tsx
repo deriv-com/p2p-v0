@@ -22,7 +22,7 @@ interface DateFilterProps {
 }
 
 export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
-  const [isOpen, setIsOpen] = React.useState(true)
+  const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
   const isMobile = useIsMobile()
 
