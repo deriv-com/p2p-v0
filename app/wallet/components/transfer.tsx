@@ -1,7 +1,9 @@
 "use client"
 
 import type React from "react"
+import { useState } from "react"
 import Image from "next/image"
+import TransferScreen from "./transfer-screen"
 
 interface TransferProps {
   onClose: () => void
@@ -10,16 +12,32 @@ interface TransferProps {
 }
 
 export default function Transfer({ onClose, onSendClick, onReceiveClick }: TransferProps) {
+  const [showTransferScreen, setShowTransferScreen] = useState(false)
+  const [transferType, setTransferType] = useState<"Send to" | "Receive from">("Send to")
+
   const handleSendClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    onClose()
-    onSendClick()
+    setTransferType("Send to")
+    setShowTransferScreen(true)
   }
 
   const handleReceiveClick = (e: React.MouseEvent) => {
     e.stopPropagation()
+    setTransferType("Receive from")
+    setShowTransferScreen(true)
+  }
+
+  const handleBackToTransfer = () => {
+    setShowTransferScreen(false)
+  }
+
+  const handleCloseTransfer = () => {
+    setShowTransferScreen(false)
     onClose()
-    onReceiveClick()
+  }
+
+  if (showTransferScreen) {
+    return <TransferScreen title={transferType} onBack={handleBackToTransfer} onClose={handleCloseTransfer} />
   }
 
   return (
