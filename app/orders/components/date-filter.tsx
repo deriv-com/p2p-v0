@@ -95,7 +95,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 <Button variant="outline" size="sm" onClick={handleReset}>
                   Reset
                 </Button>
-                <Button variant="outline" size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
+                <Button variant="black" size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
                   Confirm
                 </Button>
               </div>
