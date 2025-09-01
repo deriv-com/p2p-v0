@@ -149,12 +149,7 @@ export const PaymentConfirmationSidebar = ({
               disabled={!selectedFile || isLoading || isUploadingToChat}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
-              {isUploadingToChat ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                  Uploading receipt...
-                </>
-              ) : isLoading ? (
+            {isLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
