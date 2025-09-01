@@ -64,8 +64,6 @@ export const PaymentConfirmationSidebar = ({
   const handleSubmit = async () => {
     if (!selectedFile) return
 
-    setIsUploadingToChat(true)
-
     try {
       const base64 = await fileToBase64(selectedFile)
       await OrdersAPI.sendChatMessage(order.id, "", base64)
