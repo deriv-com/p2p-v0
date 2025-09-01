@@ -76,7 +76,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <SheetTrigger asChild>
           <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => {}} className={className} />
         </SheetTrigger>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh]">
+        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
           <div className="bg-white">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
