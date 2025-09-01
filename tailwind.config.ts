@@ -97,14 +97,14 @@ const config: Config = {
           300: "#F8F9FA",
           400: "#CED4DA",
           500: "#0000000a",
-          600: "#EFF3F5",
+          600: "#000000b8",
         },
         yellow: {
           50: "#A66C00",
           100: "#FFF7E6",
         },
         orange: {
-          50: "#ff9c1314",
+        50: "#ff9c1314",
         },
         green: {
           50: "#EAF3EB",
@@ -132,14 +132,45 @@ const config: Config = {
         teal: {
           700: "#00CCCC",
         },
-        red: {
-          withdraw: "#E6190E",
+        info: {
+          light: "rgba(55, 124, 252, 0.1)",
+          DEFAULT: "#377cfc",
+          icon: "#377cfc",
+          bg: "#e6f0ff",
         },
+        pending: {
+          light: "rgba(245, 158, 11, 0.1)",
+          DEFAULT: "#f59e0b",
+          icon: "#f59e0b",
+          bg: "#fff8e7",
+          "text-secondary": "#FF9C13",
+        },
+        completed: {
+          light: "rgba(0, 136, 50, 0.08)",
+          DEFAULT: "#267d36",
+          icon: "#008832",
+          bg: "#edfaf3",
+        },
+        cancelled: {
+          light: "rgba(156, 163, 175, 0.1)",
+          DEFAULT: "#6b7280",
+          icon: "#6b7280",
+          bg: "#f3f4f6",
+        },
+        disputed: {
+          light: "rgba(230, 25, 14, 0.08)",
+          DEFAULT: "#c40000",
+          icon: "#c40000",
+          bg: "#fee2e2",
+        },
+        "default-button-text": "#002A33",
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",
         },
-        "default-button-text": "#002A33",
+        red: {
+          withdraw: "#E6190E",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
