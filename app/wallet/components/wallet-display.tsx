@@ -25,7 +25,7 @@ export default function WalletDisplay({
       {/* Wallet Icon */}
       <div className="w-8 h-8 flex-shrink-0">
         <Image
-          src={icon || "/placeholder.svg"}
+          src={icon}
           alt={name}
           width={32}
           height={32}
