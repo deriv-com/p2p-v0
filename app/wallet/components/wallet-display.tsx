@@ -17,7 +17,7 @@ export default function WalletDisplay({ name, amount, currency, icon, onClick }:
       onClick={onClick}
     >
       <div className="w-8 h-8 flex-shrink-0">
-        <Image src={icon || "/placeholder.svg"} alt={name} width={32} height={32} className="rounded-full" />
+        <Image src={icon} alt={name} width={32} height={32} className="rounded-full" />
       </div>
 
       <div className="flex-1 ml-4">
