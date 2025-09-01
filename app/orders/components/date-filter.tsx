@@ -192,8 +192,9 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       <PopoverTrigger asChild>
         <Button
           variant="outline"
+          size="sm"
           className={cn(
-            "w-full justify-between bg-white border border-gray-200 rounded-lg px-4 py-3 text-left font-normal",
+            "w-full justify-between border border-gray-200 rounded-lg",
             className,
           )}
         >
