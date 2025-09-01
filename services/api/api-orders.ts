@@ -434,7 +434,7 @@ export async function sendChatMessage(
     if (attachment) {
       body = JSON.stringify({
         attachment,
-        is_proof_of_transfer: isPOT,
+        is_proof_of_transfer: isPOT ?? false,
       })
     } else {
       body = JSON.stringify({
