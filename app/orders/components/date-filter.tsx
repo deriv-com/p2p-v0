@@ -110,7 +110,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        
         <Button
           variant="outline"
           className={cn(
