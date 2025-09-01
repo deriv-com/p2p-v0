@@ -115,9 +115,6 @@ export const PaymentConfirmationSidebar = ({
 
               {selectedFile ? (
                 <div className="space-y-2">
-                  <div className="w-12 h-12 mx-auto bg-green-100 rounded-full flex items-center justify-center">
-                    <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} />
-                  </div>
                   <p className="font-medium text-green-700">{selectedFile.name}</p>
                   <p className="text-xs text-green-600">File uploaded successfully</p>
                 </div>
