@@ -20,8 +20,8 @@ export default function WalletDisplay({ name, amount, currency, icon, onClick }:
         <Image src={icon || "/placeholder.svg"} alt={name} width={32} height={32} className="rounded-full" />
       </div>
       <div className="flex-1">
-        <h3 className="text-black text-base font-medium">{name}</h3>
-        <p className="text-gray-600 text-sm">
+        <h3 className="text-black/[0.72] text-base font-normal">{name}</h3>
+        <p className="text-black/[0.48] text-sm font-normal">
           {amount} {currency}
         </p>
       </div>

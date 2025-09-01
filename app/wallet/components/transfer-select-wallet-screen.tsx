@@ -55,7 +55,7 @@ export default function TransferScreen({ title, onBack, onClose }: TransferScree
       </div>
 
       <div className="ml-6 mt-6">
-        <h2 className="text-black text-base font-normal">Wallet</h2>
+        <h2 className="text-black/[0.96] text-base font-normal">Wallet</h2>
       </div>
 
       <div className="mt-2 px-4 space-y-2">
