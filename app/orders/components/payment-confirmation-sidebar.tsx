@@ -137,9 +137,10 @@ export const PaymentConfirmationSidebar = ({
           </div>
           <div className="p-6 pt-0">
             <Button
+              variant="default"
               onClick={handleSubmit}
               disabled={!selectedFile || isLoading}
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white"
+              className="w-full"
             >
             {isLoading ? (
                 <>
