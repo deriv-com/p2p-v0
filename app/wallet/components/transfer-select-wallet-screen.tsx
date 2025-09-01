@@ -60,10 +60,10 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
   return (
     <div className="fixed inset-0 z-50 bg-white">
       <div className="flex justify-between items-center p-4">
-        <Button variant="ghost" size="sm" onClick={onBack} className="w-8 h-8" aria-label="Go back">
+        <Button variant="ghost" size="sm" onClick={onBack} aria-label="Go back">
           <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
         </Button>
-        <Button variant="ghost" size="sm" onClick={onClose} className="w-8 h-8" aria-label="Close">
+        <Button variant="ghost" size="sm" onClick={onClose} aria-label="Close">
           <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
         </Button>
       </div>
