@@ -39,7 +39,6 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
     const loadWallets = async () => {
       try {
         const response = await fetchWalletsList()
-        console.log("[v0] Wallets API response:", response)
 
         if (response?.data?.wallets) {
           const processedWallets: ProcessedWallet[] = []
@@ -59,7 +58,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
           setWallets(processedWallets)
         }
       } catch (error) {
-        console.error("[v0] Error fetching wallets:", error)
+        console.error("Error fetching wallets:", error)
       } finally {
         setLoading(false)
       }
@@ -68,9 +67,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
     loadWallets()
   }, [])
 
-  const handleWalletClick = (walletId: string) => {
-    console.log(`Selected wallet: ${walletId} for ${transferType}`)
-  }
+  const handleWalletClick = (walletId: string) => {}
 
   const title = transferType === "Send" ? "Send to" : "Receive from"
 
