@@ -70,7 +70,7 @@ function DualMonthCalendar({
 
     return (
       <div className="flex-1">
-        <div className="text-center font-medium text-gray-900 mb-4">{format(month, "MMM yyyy")}</div>
+        <div className="text-center text-grayscale-600 mb-4">{format(month, "MMM yyyy")}</div>
         <div className="grid grid-cols-7 gap-1 mb-2">
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
             <div key={day} className="text-center text-sm text-gray-400 font-normal py-2">
