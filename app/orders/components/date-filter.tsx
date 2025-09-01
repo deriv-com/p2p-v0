@@ -5,12 +5,11 @@ import { ChevronLeft } from "lucide-react"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { cn } from "@/lib/utils"
-import Image from "next/image"
 import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { SingleMonthCalendar } from "./single-month-calendar"
 import { DualMonthCalendar } from "./dual-month-calendar"
+import { DateFilterTrigger } from "./date-filter-trigger"
 
 interface DateFilterProps {
   value: DateFilterType
@@ -103,22 +102,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   if (isMobile) {
     return (
       <>
-        <Button
-          variant="outline"
-          onClick={() => setIsOpen(true)}
-          className={cn(
-            "w-full rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
-            className,
-          )}
-        >
-          <div className="flex items-center justify-between w-full">
-            <div className="flex items-center gap-2">
-              <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
-              <span>{getDisplayLabel()}</span>
-            </div>
-            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-          </div>
-        </Button>
+        <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => setIsOpen(true)} className={className} />
 
         <MobileBottomSheet isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <div className="bg-white">
@@ -152,21 +136,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={cn(
-            "w-full rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
-            className,
-          )}
-        >
-          <div className="flex items-center justify-between w-full">
-            <div className="flex items-center gap-2">
-              <Image src="/icons/calendar.png" alt="Calendar" width={24} height={24} className="text-gray-500" />
-              <span>{getDisplayLabel()}</span>
-            </div>
-            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-          </div>
-        </Button>
+        <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => {}} className={className} />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <div className="bg-white">
