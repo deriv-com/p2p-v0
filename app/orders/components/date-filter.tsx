@@ -92,10 +92,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               </Button>
             </div>
             <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={handleReset}>
+                <Button variant="outline" onClick={handleReset}>
                   Reset
                 </Button>
-                <Button variant="black" size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
+                <Button variant="black" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
                   Confirm
                 </Button>
               </div>
