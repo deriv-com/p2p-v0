@@ -27,6 +27,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
   const nextMonth = addMonths(currentMonth, 1)
 
   const handleDateClick = (date: Date) => {
+  console.log(date)
     if (!selected.from || (selected.from && selected.to)) {
 
         onSelect({ from: date, to: undefined })
