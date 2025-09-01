@@ -31,7 +31,6 @@ export interface Order {
 export interface OrderFilters {
   status?: "Pending" | "Completed" | "Cancelled" | "Disputed"
   type?: "Buy" | "Sell"
-  period?: "today" | "week" | "month" | "all"
   is_open?: boolean
   date_from?: string
   date_to?: string
