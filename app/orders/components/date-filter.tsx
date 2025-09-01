@@ -92,13 +92,13 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               </Button>
             </div>
             <div className="flex gap-2 p-4">
-                <Button variant="outline" onClick={handleReset} className="flex-1">
-                  Reset
-                </Button>
-                <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
-                  Confirm
-                </Button>
-              </div>
+              <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
+                Reset
+              </Button>
+              <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
+                Confirm
+              </Button>
+            </div>
           </div>
         </SheetContent>
       </Sheet>
@@ -108,7 +108,13 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <DateFilterTrigger displayLabel={getDisplayLabel()} onClick={() => {setIsOpen(true)}} className={className} />
+        <DateFilterTrigger
+          displayLabel={getDisplayLabel()}
+          onClick={() => {
+            setIsOpen(true)
+          }}
+          className={className}
+        />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <div className="bg-white">
@@ -123,6 +129,14 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
             >
               <ChevronLeft className="h-3 w-3 mr-1" />
               Today
+            </Button>
+          </div>
+          <div className="flex gap-2 p-4">
+            <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
+              Reset
+            </Button>
+            <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
+              Confirm
             </Button>
           </div>
         </div>
