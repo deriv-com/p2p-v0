@@ -131,14 +131,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               Today
             </Button>
           </div>
-          <div className="flex gap-2 p-4">
-            <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
-              Reset
-            </Button>
-            <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
-              Confirm
-            </Button>
-          </div>
         </div>
       </PopoverContent>
     </Popover>
