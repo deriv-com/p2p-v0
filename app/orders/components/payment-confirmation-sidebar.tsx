@@ -138,8 +138,8 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               )}
             </div>
-            <Alert className="bg-orange-50 border-orange-200">
-              <AlertTriangle className="h-4 w-4 text-orange-600" />
+            <Alert variant="warning">
+              <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
               <div className="text-sm text-orange-800">
                 Providing fraudulent documents will result in a permanent ban.
               </div>
