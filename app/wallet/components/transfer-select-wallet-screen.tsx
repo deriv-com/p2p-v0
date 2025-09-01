@@ -20,27 +20,6 @@ const mockWallets = [
     currency: "USD",
     icon: "/icons/usd-flag.png",
   },
-  {
-    id: "btc",
-    name: "BTC Wallet",
-    amount: "0.00000000",
-    currency: "BTC",
-    icon: "/icons/btc-icon.png",
-  },
-  {
-    id: "eth",
-    name: "ETH Wallet",
-    amount: "0.000000",
-    currency: "ETH",
-    icon: "/icons/eth-icon.png",
-  },
-  {
-    id: "ltc",
-    name: "LTC Wallet",
-    amount: "0.00000000",
-    currency: "LTC",
-    icon: "/icons/ltc-icon.png",
-  },
 ]
 
 export default function TransferScreen({ title, onBack, onClose }: TransferScreenProps) {
