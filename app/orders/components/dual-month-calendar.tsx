@@ -73,12 +73,11 @@ export default function OrdersPage() {
 
         if (dateFilter !== "all") {
           if (customDateRange.from) {
-                filters.date_from = format(startOfDay(customDateRange.from), 'yyyy-MM-dd');
+                filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
                 if (customDateRange.to) {
-                filters.date_from = format(startOfDay(customDateRange.from), 'yyyy-MM-dd');
-                  filters.date_to = endOfDay(customDateRange.to).toISOString().split('T')[0]
+                  filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
                 } else {
-                  filters.date_to = endOfDay(customDateRange.from).toISOString().split('T')[0]
+                  filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
                 }
             }
         }
