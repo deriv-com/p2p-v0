@@ -100,6 +100,7 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
             <Button
               key={date.toISOString()}
               size="sm"
+              variant="ghost"
               onClick={() => handleDateClick(date)}
               className={cn(
                 "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
