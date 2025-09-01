@@ -22,7 +22,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [showTransferScreen, setShowTransferScreen] = useState(false)
-  const [transferType, setTransferType] = useState<"Send to" | "Receive from">("Send to")
+  const [transferType, setTransferType] = useState<"Send" | "Receive">("Send")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -102,13 +102,13 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   }
 
   const handleP2PTransferClick = () => {
-    setTransferType("Send to")
+    setTransferType("Send")
     setIsSidebarOpen(false)
     setShowTransferScreen(true)
   }
 
   const handleAccountTransferClick = () => {
-    setTransferType("Receive from")
+    setTransferType("Receive")
     setIsSidebarOpen(false)
     setShowTransferScreen(true)
   }
@@ -125,7 +125,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   if (showTransferScreen) {
     return (
       <TransferSelectWalletScreen
-        title={transferType}
+        transferType={transferType}
         onBack={handleTransferScreenBack}
         onClose={handleTransferScreenClose}
       />
