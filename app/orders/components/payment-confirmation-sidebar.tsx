@@ -67,19 +67,14 @@ export const PaymentConfirmationSidebar = ({
     setIsUploadingToChat(true)
 
     try {
-      // Send file to chat first
       const base64 = await fileToBase64(selectedFile)
       await OrdersAPI.sendChatMessage(order.id, "", base64)
 
-      // Only call onConfirm after successful file upload to chat
       onConfirm()
     } catch (error) {
       console.error("Error uploading file to chat:", error)
-      // Still call onConfirm even if chat upload fails to not block the payment flow
-      onConfirm()
-    } finally {
-      setIsUploadingToChat(false)
-    }
+  
+  }
   }
 
   const currencySymbol = order.payment_currency
