@@ -108,7 +108,7 @@ export const PaymentConfirmationSidebar = ({
                   <p className="text-xs text-green-600">File uploaded successfully</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="flex flex-col items-center">
                 <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
                   <label htmlFor="file-upload">
                     <Button variant="ghost" size="sm" className="flex flex-col mb-2 hover:bg-transparent" asChild>
