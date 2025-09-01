@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import WalletDisplay from "./wallet-display"
 import { fetchWalletsList } from "@/services/api/api-wallets"
+import { Button } from "@/components/ui/button"
 
 interface TransferScreenProps {
   transferType: "Send" | "Receive"
@@ -59,12 +60,12 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
   return (
     <div className="fixed inset-0 z-50 bg-white">
       <div className="flex justify-between items-center p-4">
-        <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Go back">
+        <Button variant="ghost" size="icon" onClick={onBack} className="w-8 h-8" aria-label="Go back">
           <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-        </button>
-        <button onClick={onClose} className="w-8 h-8 flex items-center justify-center" aria-label="Close">
+        </Button>
+        <Button variant="ghost" size="icon" onClick={onClose} className="w-8 h-8" aria-label="Close">
           <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-        </button>
+        </Button>
       </div>
 
       <div className="ml-6 mt-6">
