@@ -20,7 +20,7 @@ export async function fetchTransactions() {
     })
 }
 
-export async function walletTransfers() {
+export async function fetchWalletsList() {
   const url = `${API.coreUrl}/wallets`
 
   return fetch(url, {
