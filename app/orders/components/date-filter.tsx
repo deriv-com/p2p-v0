@@ -108,7 +108,6 @@ function DualMonthCalendar({
 
   return (
     <div className="p-4">
-      {/* Navigation header */}
       <div className="flex items-center justify-between mb-6">
         <Button
           variant="ghost"
@@ -130,8 +129,6 @@ function DualMonthCalendar({
           <ChevronRight className="h-4 w-4" />
         </Button>
       </div>
-
-      {/* Dual month view */}
       <div className="flex gap-8">
         {renderMonth(currentMonth)}
         {renderMonth(nextMonth)}
