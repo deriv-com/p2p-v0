@@ -11,6 +11,7 @@ import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
 import { Input } from "@/components/ui/input"
+import { OrdersAPI } from "@/services/api"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
@@ -28,6 +29,7 @@ export const PaymentConfirmationSidebar = ({
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isUploadingToChat, setIsUploadingToChat] = useState(false)
 
   if (!order) return null
 
@@ -51,9 +53,33 @@ export const PaymentConfirmationSidebar = ({
     }
   }
 
-  const handleSubmit = () => {
-    if (selectedFile) {
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = (error) => reject(error)
+    })
+  }
+
+  const handleSubmit = async () => {
+    if (!selectedFile) return
+
+    setIsUploadingToChat(true)
+
+    try {
+      // Send file to chat first
+      const base64 = await fileToBase64(selectedFile)
+      await OrdersAPI.sendChatMessage(order.id, "", base64)
+
+      // Only call onConfirm after successful file upload to chat
       onConfirm()
+    } catch (error) {
+      console.error("Error uploading file to chat:", error)
+      // Still call onConfirm even if chat upload fails to not block the payment flow
+      onConfirm()
+    } finally {
+      setIsUploadingToChat(false)
     }
   }
 
@@ -79,9 +105,7 @@ export const PaymentConfirmationSidebar = ({
               Ensure you've paid {currencySymbol} {amount} to {sellerName} and upload the receipt as proof of payment.
             </p>
 
-            <div
-              className="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-slate-500"
-            >
+            <div className="border-2 border-dashed rounded-lg p-8 text-center transition-colors border-slate-500">
               <Input
                 type="file"
                 accept=".jpeg,.jpg,.png,.pdf"
@@ -122,10 +146,15 @@ export const PaymentConfirmationSidebar = ({
           <div className="p-6 pt-0">
             <Button
               onClick={handleSubmit}
-              disabled={!selectedFile || isLoading}
+              disabled={!selectedFile || isLoading || isUploadingToChat}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
-              {isLoading ? (
+              {isUploadingToChat ? (
+                <>
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                  Uploading receipt...
+                </>
+              ) : isLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
