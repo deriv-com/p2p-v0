@@ -49,7 +49,7 @@ export default function OrderDetailsPage() {
   const [showRatingSidebar, setShowRatingSidebar] = useState(false)
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState(false)
-  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
+  const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(true)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
