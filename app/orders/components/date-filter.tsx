@@ -187,6 +187,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           <div className="flex items-center gap-2">
             <CalendarIcon className="h-4 w-4 text-gray-500" />
             <span>{getDisplayLabel()}</span>
+            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
           </div>
         </Button>
       </PopoverTrigger>
