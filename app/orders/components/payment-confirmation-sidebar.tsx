@@ -29,7 +29,6 @@ export const PaymentConfirmationSidebar = ({
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [isUploadingToChat, setIsUploadingToChat] = useState(false)
 
   if (!order) return null
 
@@ -146,7 +145,7 @@ export const PaymentConfirmationSidebar = ({
           <div className="p-6 pt-0">
             <Button
               onClick={handleSubmit}
-              disabled={!selectedFile || isLoading || isUploadingToChat}
+              disabled={!selectedFile || isLoading}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white"
             >
             {isLoading ? (
