@@ -98,13 +98,14 @@ const config: Config = {
           400: "#CED4DA",
           500: "#0000000a",
           600: "#000000b8",
+          700: "#EFF3F5",
         },
         yellow: {
           50: "#A66C00",
           100: "#FFF7E6",
         },
         orange: {
-        50: "#ff9c1314",
+          50: "#ff9c1314",
         },
         green: {
           50: "#EAF3EB",
