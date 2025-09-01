@@ -421,6 +421,7 @@ export async function sendChatMessage(
   orderId: string,
   message: string,
   attachment?: string | null,
+  is_proof_of_transfer: boolean,
 ): Promise<{ success: boolean; message: ChatMessage }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/chat`
