@@ -78,7 +78,7 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
           <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
         </button>
         <button onClick={onClose} className="w-8 h-8 flex items-center justify-center" aria-label="Close">
-          <Image src="/icons/close-circle.png" alt="Close" width={32} height={32} />
+          <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
         </button>
       </div>
 
