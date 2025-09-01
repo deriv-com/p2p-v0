@@ -77,10 +77,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
         </SheetTrigger>
         <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
-          <div className="bg-white">
+          <div className="bg-white p-4">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
-            <div className="flex items-center justify-end p-4">
+            <div className="flex items-center justify-end py-4">
               <Button
                 variant="outline"
                 size="sm"
@@ -91,7 +91,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
                 Today
               </Button>
             </div>
-            <div className="flex gap-2">
+
+            <div className="flex gap-2 pt-2">
               <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
                 Reset
               </Button>
@@ -111,10 +112,10 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <div className="relative">
+        <div className="relative p-4">
           <DualMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
-          <div className="flex items-center justify-between p-4">
+          <div className="flex items-center justify-between py-4">
             <Button
               variant="outline"
               size="sm"
@@ -123,6 +124,15 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
             >
               <ChevronLeft className="h-3 w-3 mr-1" />
               Today
+            </Button>
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
+              Reset
+            </Button>
+            <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
+              Confirm
             </Button>
           </div>
         </div>
