@@ -82,8 +82,9 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
             const inRange = isDateInRange(date)
 
             return (
-              <button
+              <Button
                 key={date.toISOString()}
+                variant="ghost"
                 onClick={() => handleDateClick(date)}
                 className={cn(
                   "h-10 w-10 text-sm font-normal rounded-md hover:bg-gray-100 transition-colors",
@@ -93,7 +94,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
                 )}
               >
                 {format(date, "d")}
-              </button>
+              </Button>
             )
           })}
         </div>
