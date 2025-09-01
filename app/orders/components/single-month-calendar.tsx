@@ -103,11 +103,11 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
               variant="ghost"
               onClick={() => handleDateClick(date)}
               className={cn(
-                "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
-                isSelected && "bg-black text-white hover:bg-black",
-                inRange && "bg-gray-100",
-                !isSameMonth(date, currentMonth) && "text-gray-300",
-              )}
+                  "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
+                  isSelected && "bg-black text-white hover:bg-black hover:text-white",
+                  inRange && "bg-gray-100 hover:text-white text-grayscale-600",
+                  !isSameMonth(date, month) && "text-gray-300",
+                )}
             >
               {format(date, "d")}
             </Button>
