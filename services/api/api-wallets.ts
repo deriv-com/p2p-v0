@@ -19,3 +19,23 @@ export async function fetchTransactions() {
       throw err
     })
 }
+
+export async function walletTransfers() {
+  const url = `${API.coreUrl}/wallets`
+
+  return fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      ...AUTH.getAuthHeader(),
+    },
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      return data
+    })
+    .catch((err) => {
+      console.error("❌ Error:", err)
+      throw err
+    })
+}
