@@ -22,7 +22,7 @@ import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { DateFilter } from "./components/date-filter"
-import { startOfDay, endOfDay } from "date-fns"
+import { format, startOfDay, endOfDay } from "date-fns"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
