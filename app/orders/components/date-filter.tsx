@@ -153,14 +153,23 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   }
 
   const handleCustomRangeApply = () => {
-    onCustomRangeChange(tempRange)
+    const normalizedRange = {
+      from: tempRange.from
+        ? new Date(tempRange.from.getFullYear(), tempRange.from.getMonth(), tempRange.from.getDate())
+        : undefined,
+      to: tempRange.to
+        ? new Date(tempRange.to.getFullYear(), tempRange.to.getMonth(), tempRange.to.getDate())
+        : undefined,
+    }
+    onCustomRangeChange(normalizedRange)
     onValueChange("custom")
     setIsOpen(false)
   }
 
   const handleTodayClick = () => {
     const today = new Date()
-    const range = { from: today, to: today }
+    const normalizedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
+    const range = { from: normalizedToday, to: normalizedToday }
     setTempRange(range)
     onCustomRangeChange(range)
     onValueChange("custom")
