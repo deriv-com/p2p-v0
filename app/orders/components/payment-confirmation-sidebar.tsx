@@ -6,7 +6,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Alert } from "@/components/ui/alert"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { X, Upload } from "lucide-react"
+import { X } from "lucide-react"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
@@ -36,7 +36,7 @@ export const PaymentConfirmationSidebar = ({
     if (!allowedTypes.includes(file.type)) {
       return
     }
-    
+
     if (file.size > 5 * 1024 * 1024) {
       return
     }
@@ -124,7 +124,7 @@ export const PaymentConfirmationSidebar = ({
               ) : (
                 <div className="space-y-4">
                   <div className="w-12 h-12 mx-auto">
-                    <Upload className="w-full h-full text-gray-400" />
+                    <Image src="/icons/upload-icon.svg" alt="Upload" width={48} height={48} className="text-gray-400" />
                   </div>
                   <div>
                     <p className="font-bold text-sm text-neutral-10">Upload file</p>
