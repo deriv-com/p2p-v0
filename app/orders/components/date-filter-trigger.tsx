@@ -5,11 +5,10 @@ import Image from "next/image"
 
 interface DateFilterTriggerProps {
   displayLabel: string
-  onClick: () => void
   className?: string
 }
 
-export function DateFilterTrigger({ displayLabel, onClick, className }: DateFilterTriggerProps) {
+export function DateFilterTrigger({ displayLabel, className }: DateFilterTriggerProps) {
   return (
     <Button
       variant="outline"
