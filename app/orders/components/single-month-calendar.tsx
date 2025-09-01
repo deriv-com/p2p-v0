@@ -97,18 +97,19 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
           const inRange = isDateInRange(date)
 
           return (
-            <button
+            <Button
               key={date.toISOString()}
+              size="sm"
               onClick={() => handleDateClick(date)}
               className={cn(
-                "h-10 w-10 text-sm font-normal rounded-md hover:bg-gray-100 transition-colors",
+                "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
                 isSelected && "bg-black text-white hover:bg-black",
                 inRange && "bg-gray-100",
                 !isSameMonth(date, currentMonth) && "text-gray-300",
               )}
             >
               {format(date, "d")}
-            </button>
+            </Button>
           )
         })}
       </div>
