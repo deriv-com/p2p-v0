@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { CalendarIcon, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react"
+import { CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react"
 import {
   format,
   addMonths,
@@ -24,14 +24,6 @@ interface DateFilterProps {
   onCustomRangeChange: (range: DateRange) => void
   className?: string
 }
-
-const dateFilterOptions = [
-  { value: "all" as const, label: "All time" },
-  { value: "today" as const, label: "Today" },
-  { value: "week" as const, label: "Past 7 days" },
-  { value: "month" as const, label: "Past 30 days" },
-  { value: "custom" as const, label: "Custom range" },
-]
 
 function DualMonthCalendar({
   selected,
@@ -160,34 +152,21 @@ function DualMonthCalendar({
 
 export function DateFilter({ value, customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [showCalendar, setShowCalendar] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
 
   const getDisplayLabel = () => {
-    const option = dateFilterOptions.find((opt) => opt.value === value)
-    if (value === "custom" && customRange.from) {
+    if (customRange.from) {
       if (customRange.to) {
         return `${format(customRange.from, "MMM dd")} - ${format(customRange.to, "MMM dd")}`
       }
       return format(customRange.from, "MMM dd, yyyy")
     }
-    return option?.label || "All time"
-  }
-
-  const handleOptionSelect = (filterValue: DateFilterType) => {
-    if (filterValue === "custom") {
-      setShowCalendar(true)
-      return
-    }
-
-    onValueChange(filterValue)
-    setIsOpen(false)
+    return "All time"
   }
 
   const handleCustomRangeApply = () => {
     onCustomRangeChange(tempRange)
     onValueChange("custom")
-    setShowCalendar(false)
     setIsOpen(false)
   }
 
@@ -197,7 +176,14 @@ export function DateFilter({ value, customRange, onValueChange, onCustomRangeCha
     setTempRange(range)
     onCustomRangeChange(range)
     onValueChange("custom")
-    setShowCalendar(false)
+    setIsOpen(false)
+  }
+
+  const handleReset = () => {
+    const resetRange = { from: undefined, to: undefined }
+    setTempRange(resetRange)
+    onCustomRangeChange(resetRange)
+    onValueChange("all")
     setIsOpen(false)
   }
 
@@ -215,64 +201,36 @@ export function DateFilter({ value, customRange, onValueChange, onCustomRangeCha
             <CalendarIcon className="h-4 w-4 text-gray-500" />
             <span>{getDisplayLabel()}</span>
           </div>
-          <ChevronDown className="h-4 w-4 text-gray-500" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        {!showCalendar ? (
-          <div className="p-2">
-            {dateFilterOptions.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => handleOptionSelect(option.value)}
-                className={cn(
-                  "w-full text-left px-3 py-2 rounded-md hover:bg-gray-100 transition-colors",
-                  value === option.value && "bg-gray-100 font-medium",
-                )}
-              >
-                {option.label}
-              </button>
-            ))}
+        <div className="bg-white">
+          <div className="flex items-center justify-between p-4 border-b">
+            <h3 className="font-medium">Select date range</h3>
           </div>
-        ) : (
-          <div className="bg-white">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-medium">Select date range</h3>
-              <Button variant="ghost" size="sm" onClick={() => setShowCalendar(false)}>
-                Back
+
+          <DualMonthCalendar selected={tempRange} onSelect={setTempRange} />
+
+          <div className="flex items-center justify-between p-4 border-t">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleTodayClick}
+              className="rounded-full border-gray-300 hover:bg-gray-50 bg-transparent"
+            >
+              <ChevronLeft className="h-3 w-3 mr-1" />
+              Today
+            </Button>
+            <div className="flex gap-2">
+              <Button variant="ghost" size="sm" onClick={handleReset}>
+                Reset
+              </Button>
+              <Button size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
+                Apply
               </Button>
             </div>
-
-            <DualMonthCalendar selected={tempRange} onSelect={setTempRange} />
-
-            <div className="flex items-center justify-between p-4 border-t">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleTodayClick}
-                className="rounded-full border-gray-300 hover:bg-gray-50 bg-transparent"
-              >
-                <ChevronLeft className="h-3 w-3 mr-1" />
-                Today
-              </Button>
-              <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setTempRange({ from: undefined, to: undefined })
-                    setShowCalendar(false)
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button size="sm" onClick={handleCustomRangeApply} disabled={!tempRange.from}>
-                  Apply
-                </Button>
-              </div>
-            </div>
           </div>
-        )}
+        </div>
       </PopoverContent>
     </Popover>
   )
