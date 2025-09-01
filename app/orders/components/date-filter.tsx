@@ -108,13 +108,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <DateFilterTrigger
-          displayLabel={getDisplayLabel()}
-          onClick={() => {
-            setIsOpen(true)
-          }}
-          className={className}
-        />
+        <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <div className="bg-white">
