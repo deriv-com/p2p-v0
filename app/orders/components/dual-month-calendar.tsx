@@ -74,7 +74,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>)}
-          <div className="text-center text-grayscale-600 mb-4">{format(month, "MMM yyyy")}</div>
+          <div className="text-center text-grayscale-600 mb-4 m-auto">{format(month, "MMM yyyy")}</div>
           {isNextVisible && (<Button
             variant="ghost"
             size="sm"
