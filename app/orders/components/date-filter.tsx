@@ -160,9 +160,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           <div className="flex items-center justify-end p-4">
             <Button
               variant="outline"
-              size="sm"
               onClick={handleTodayClick}
-              className="rounded-full border-gray-300 hover:bg-gray-50 bg-transparent"
+              className="rounded-full"
             >
               <ChevronLeft className="h-3 w-3 mr-1" />
               Today
