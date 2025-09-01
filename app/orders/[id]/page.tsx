@@ -29,7 +29,7 @@ import { ComplaintForm } from "@/components/complaint"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
-import { PaymentConfirmationSidebar } from "@/components/payment-confirmation-sidebar"
+import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 
 export default function OrderDetailsPage() {
   const params = useParams()
