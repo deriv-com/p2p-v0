@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert"
+import { Alert } from "@/components/ui/alert"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
