@@ -150,12 +150,11 @@ function DualMonthCalendar({
   )
 }
 
-export function DateFilter({value, customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
+export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
   const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
 
   const getDisplayLabel = () => {
-  console.log(value)
     if (customRange.from) {
       if (customRange.to) {
         return `${format(customRange.from, "MMM dd")} - ${format(customRange.to, "MMM dd")}`
