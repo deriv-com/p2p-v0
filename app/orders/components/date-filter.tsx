@@ -111,7 +111,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <DateFilterTrigger displayLabel={getDisplayLabel()} className={className} />
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <div className="bg-white">
+        <div className="bg-white relative">
           <DualMonthCalendar selected={tempRange} onSelect={setTempRange} />
 
           <div className="flex items-center justify-between p-4">
@@ -123,14 +123,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
             >
               <ChevronLeft className="h-3 w-3 mr-1" />
               Today
-            </Button>
-          </div>
-          <div className="flex gap-2 p-4 pt-0">
-            <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
-              Reset
-            </Button>
-            <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
-              Confirm
             </Button>
           </div>
         </div>
