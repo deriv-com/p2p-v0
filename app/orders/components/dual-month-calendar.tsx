@@ -36,8 +36,6 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
         onSelect({ from: selected.from, to: date })
       }
       handleCustomRangeApply()
-    } else {
-      handleCustomRangeApply()
     }
   }
 
