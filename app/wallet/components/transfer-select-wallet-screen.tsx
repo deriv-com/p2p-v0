@@ -19,21 +19,8 @@ interface ProcessedWallet {
   icon: string
 }
 
-const WalletShimmer = () => (
-  <div className="bg-grayscale-700 rounded-lg px-6 py-4 animate-pulse">
-    <div className="flex items-center space-x-3">
-      <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-      <div className="flex-1">
-        <div className="h-4 bg-gray-300 rounded w-24 mb-2"></div>
-        <div className="h-3 bg-gray-300 rounded w-16"></div>
-      </div>
-    </div>
-  </div>
-)
-
 export default function TransferScreen({ transferType, onBack, onClose }: TransferScreenProps) {
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const loadWallets = async () => {
@@ -59,8 +46,6 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
         }
       } catch (error) {
         console.error("Error fetching wallets:", error)
-      } finally {
-        setLoading(false)
       }
     }
 
@@ -91,25 +76,16 @@ export default function TransferScreen({ transferType, onBack, onClose }: Transf
       </div>
 
       <div className="mt-2 px-6 space-y-2">
-        {loading ? (
-          <>
-            <WalletShimmer />
-            <WalletShimmer />
-            <WalletShimmer />
-            <WalletShimmer />
-          </>
-        ) : (
-          wallets.map((wallet) => (
-            <WalletDisplay
-              key={wallet.id}
-              name={wallet.name}
-              amount={wallet.amount}
-              currency={wallet.currency}
-              icon={wallet.icon}
-              onClick={() => handleWalletClick()}
-            />
-          ))
-        )}
+        {wallets.map((wallet) => (
+          <WalletDisplay
+            key={wallet.id}
+            name={wallet.name}
+            amount={wallet.amount}
+            currency={wallet.currency}
+            icon={wallet.icon}
+            onClick={() => handleWalletClick()}
+          />
+        ))}
       </div>
     </div>
   )
