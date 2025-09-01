@@ -53,8 +53,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
     setIsOpen(false)
   }
 
-  const handleCustomRange = (fromDate, toDate) => {
-   console.log(fromDate)
+  const handleCustomRange = (fromDate, toDate) = {
     const normalizedRange = {
       from: fromDate
         ? new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate())
