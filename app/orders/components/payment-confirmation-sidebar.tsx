@@ -88,7 +88,7 @@ export const PaymentConfirmationSidebar = ({
             </div>
           </SheetHeader>
 
-          <div className="flex-1 px-4 pb-4 space-y-6">
+          <div className="flex-1 p-4 space-y-6">
             <p className="text-sm text-gray-600">
               Ensure you've paid {currencySymbol} {amount} to {sellerName} and upload the receipt as proof of payment.
             </p>
