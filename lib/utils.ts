@@ -368,3 +368,13 @@ export function preventSwipeNavigation(): () => void {
     document.body.style.overscrollBehaviorX = "auto"
   }
 }
+
+export const currencyLogoMapper = {
+  USD: "/icons/usd-flag.png",
+  BTC: "/icons/bitcoin-logo.png",
+  ETH: "/icons/ethereum-logo.png",
+  LTC: "/icons/litecoin-logo.png",
+  USDC: "/icons/usdc-logo.png",
+  eUSDT: "/icons/eusdt-logo.png",
+  tUSDT: "/icons/eusdt-logo.png",
+}

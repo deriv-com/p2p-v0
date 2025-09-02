@@ -39,3 +39,22 @@ export async function fetchWalletsList() {
       throw err
     })
 }
+
+export async function getCurrencies(): Promise<any> {
+  try {
+    const url = `${API.coreUrl}/core/business/config/currencies`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers,
+      credentials: "include",
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log("Error fetching currencies:", error)
+    return null
+  }
+}
