@@ -17,6 +17,14 @@ interface Currency {
   logo: string
 }
 
+const currencyLogoMapper = {
+  USD: "/icons/usd-flag.png",
+  BTC: "/icons/bitcoin-logo.png",
+  ETH: "/icons/ethereum-logo.png",
+  LTC: "/icons/litecoin-logo.png",
+  USDC: "/icons/usdc-logo.png",
+}
+
 export default function Transfer({ onSendClick, onReceiveClick }: TransferProps) {
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -29,7 +37,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
           const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
             code,
             name: data.label,
-            logo: "/icons/usd-flag.png",
+            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper] || "/icons/usd-flag.png",
           }))
           setCurrencies(currencyList)
         }
@@ -62,7 +70,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
-                  src="/icons/usd-flag.png"
+                  src={selectedCurrencyData?.logo || "/icons/usd-flag.png"}
                   alt={selectedCurrencyData?.name || "Currency"}
                   width={24}
                   height={24}
@@ -82,7 +90,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <Image
-                      src="/icons/usd-flag.png"
+                      src={currency.logo || "/placeholder.svg"}
                       alt={currency.name}
                       width={24}
                       height={24}
