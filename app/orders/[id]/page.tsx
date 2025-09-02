@@ -594,7 +594,7 @@ export default function OrderDetailsPage() {
       <PaymentConfirmationSidebar
         isOpen={showPaymentConfirmation}
         onClose={() => setShowPaymentConfirmation(false)}
-        onConfirm={handlePayOrder}
+        //onConfirm={handlePayOrder}
         order={order}
         isLoading={isPaymentLoading}
       />
