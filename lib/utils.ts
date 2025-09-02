@@ -376,5 +376,5 @@ export const currencyLogoMapper = {
   LTC: "/icons/litecoin-logo.png",
   USDC: "/icons/usdc-logo.png",
   eUSDT: "/icons/eusdt-logo.png",
-  tUSDT: "/icons/tusdt-logo.png",
+  tUSDT: "/icons/eusdt-logo.png",
 }
