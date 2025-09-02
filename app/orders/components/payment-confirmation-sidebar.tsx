@@ -28,16 +28,20 @@ export const PaymentConfirmationSidebar = ({
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [fileError, setFileError] = useState<string | null>(null)
 
   if (!order) return null
 
   const handleFileSelect = (file: File) => {
+    setFileError(null)
+
     const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "application/pdf"]
     if (!allowedTypes.includes(file.type)) {
       return
     }
 
     if (file.size > 5 * 1024 * 1024) {
+      setFileError("File must be 5MB or smaller.")
       return
     }
 
@@ -75,6 +79,7 @@ export const PaymentConfirmationSidebar = ({
 
   const handleRemoveFile = () => {
     setSelectedFile(null)
+    setFileError(null)
   }
 
   const currencySymbol = order.payment_currency
@@ -109,11 +114,7 @@ export const PaymentConfirmationSidebar = ({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between bg-gray-50 p-3 rounded-md">
                     <p className="font-medium text-sm">{selectedFile.name}</p>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleRemoveFile}
-                    >
+                    <Button variant="ghost" size="sm" onClick={handleRemoveFile}>
                       <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
                     </Button>
                   </div>
@@ -121,7 +122,13 @@ export const PaymentConfirmationSidebar = ({
               ) : (
                 <div className="flex flex-col items-center">
                   <label htmlFor="file-upload" className="flex flex-col items-center">
-                    <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400 cursor-pointer" />
+                    <Image
+                      src="/icons/upload-icon.png"
+                      alt="Upload"
+                      width={48}
+                      height={48}
+                      className="text-gray-400 cursor-pointer"
+                    />
                     <Button variant="ghost" size="sm" className="flex flex-col mb-2 hover:bg-transparent" asChild>
                       <span>Upload file</span>
                     </Button>
@@ -130,6 +137,13 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               )}
             </div>
+
+            {fileError && (
+              <Alert variant="destructive" className="flex items-start gap-2">
+                <div>{fileError}</div>
+              </Alert>
+            )}
+
             <Alert variant="warning" className="flex items-start gap-2 mb-6">
               <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
               <div>Providing fraudulent documents will result in a permanent ban.</div>
