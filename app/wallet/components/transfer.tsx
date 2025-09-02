@@ -73,7 +73,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
                   src={selectedCurrencyData?.logo || "/icons/usd-flag.png"}
-                  alt={selectedCurrencyData?.name || "Currency"}
+                  alt={selectedCurrencyData?.name }
                   width={24}
                   height={24}
                   className="w-full h-full object-cover"
