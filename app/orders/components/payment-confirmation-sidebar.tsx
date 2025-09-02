@@ -111,7 +111,7 @@ export const PaymentConfirmationSidebar = ({
                   <div className="flex items-center justify-between bg-gray-50 p-3 rounded-md">
                     <p className="font-medium text-sm">{selectedFile.name}</p>
                     <Button
-                      variant="black"
+                      variant="ghost"
                       size="sm"
                       onClick={handleRemoveFile}
                     >
