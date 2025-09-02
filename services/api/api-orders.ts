@@ -429,6 +429,7 @@ export async function sendChatMessage(
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
+      "X-Branch": "development"
     }
 
     let body = ""
