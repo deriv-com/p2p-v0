@@ -1,11 +1,9 @@
 "use client"
 import Image from "next/image"
-import { useEffect } from "react"
 import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
 import Transfer from "./transfer"
 import { Button } from "@/components/ui/button"
-import { getCurrencies } from "@/services/api/api-wallets"
 
 interface WalletSidebarProps {
   isOpen: boolean
@@ -24,18 +22,6 @@ export default function WalletSidebar({
   onP2PTransferClick = () => {},
   onAccountTransferClick = () => {},
 }: WalletSidebarProps) {
-  useEffect(() => {
-    if (isOpen) {
-      getCurrencies()
-        .then(() => {
-          // API call completed successfully
-        })
-        .catch((error) => {
-          console.error("Failed to fetch currencies:", error)
-        })
-    }
-  }, [isOpen])
-
   if (!isOpen) return null
 
   const getTitle = () => {
