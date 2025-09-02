@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
 import Transfer from "./transfer"
@@ -16,16 +16,6 @@ interface WalletSidebarProps {
   onAccountTransferClick?: () => void
 }
 
-interface CurrencyData {
-  [key: string]: {
-    label: string
-    currency: {
-      enabled: boolean
-    }
-    type: string
-  }
-}
-
 export default function WalletSidebar({
   isOpen,
   onClose,
@@ -34,21 +24,19 @@ export default function WalletSidebar({
   onP2PTransferClick = () => {},
   onAccountTransferClick = () => {},
 }: WalletSidebarProps) {
-  const [currenciesData, setCurrenciesData] = useState<CurrencyData>({})
-
   useEffect(() => {
     if (isOpen) {
       getCurrencies()
         .then((currencies) => {
-          if (currencies && typeof currencies === "object" && "data" in currencies) {
-            setCurrenciesData((currencies as any).data)
-          }
+          console.log("Currencies response:", currencies)
         })
         .catch((error) => {
           console.error("Error calling getCurrencies:", error)
         })
     }
   }, [isOpen])
+
+  if (!isOpen) return null
 
   const getTitle = () => {
     switch (operation) {
@@ -82,11 +70,7 @@ export default function WalletSidebar({
           ) : operation === "WITHDRAW" ? (
             <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} />
           ) : operation === "TRANSFER" ? (
-            <Transfer
-              onSendClick={onP2PTransferClick}
-              onReceiveClick={onAccountTransferClick}
-              currenciesData={currenciesData}
-            />
+            <Transfer onSendClick={onP2PTransferClick} onReceiveClick={onAccountTransferClick} />
           ) : (
             <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} />
           )}

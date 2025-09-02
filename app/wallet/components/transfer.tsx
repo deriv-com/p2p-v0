@@ -1,48 +1,45 @@
 "use client"
 
 import type React from "react"
-
 import Image from "next/image"
-import { useState, useMemo } from "react"
+import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
-interface CurrencyData {
-  [key: string]: {
-    label: string
-    currency: {
-      enabled: boolean
-    }
-    type: string
-  }
-}
+import { getCurrencies } from "@/services/api/api-wallets"
 
 interface TransferProps {
   onSendClick: () => void
   onReceiveClick: () => void
-  currenciesData?: CurrencyData
 }
 
-export default function Transfer({ onSendClick, onReceiveClick, currenciesData = {} }: TransferProps) {
-  const currencies = useMemo(() => {
-    return Object.entries(currenciesData).map(([code, data]) => ({
-      code,
-      name: data.label,
-      logo: "/icons/usd-flag.png",
-    }))
-  }, [currenciesData])
+interface Currency {
+  code: string
+  name: string
+  logo: string
+}
 
-  const [selectedCurrency, setSelectedCurrency] = useState(() => {
-    if (currencies.length > 0) {
-      return currencies[0].code
-    }
-    return "USD"
-  })
+export default function Transfer({ onSendClick, onReceiveClick }: TransferProps) {
+  const [selectedCurrency, setSelectedCurrency] = useState("USD")
+  const [currencies, setCurrencies] = useState<Currency[]>([])
 
-  useMemo(() => {
-    if (currencies.length > 0 && !currencies.find((c) => c.code === selectedCurrency)) {
-      setSelectedCurrency(currencies[0].code)
+  useEffect(() => {
+    const fetchCurrenciesData = async () => {
+      try {
+        const response = await getCurrencies()
+        if (response?.data) {
+          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
+            code,
+            name: data.label,
+            logo: "/icons/usd-flag.png",
+          }))
+          setCurrencies(currencyList)
+        }
+      } catch (error) {
+        console.error("Error fetching currencies:", error)
+      }
     }
-  }, [currencies, selectedCurrency])
+
+    fetchCurrenciesData()
+  }, [])
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 

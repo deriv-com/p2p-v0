@@ -40,7 +40,7 @@ export async function fetchWalletsList() {
     })
 }
 
-export async function getCurrencies(): Promise<string[]> {
+export async function getCurrencies(): Promise<any> {
   try {
     const url = `${API.coreUrl}${API.endpoints.configCurrencies}`
     const headers = AUTH.getAuthHeader()
@@ -51,11 +51,10 @@ export async function getCurrencies(): Promise<string[]> {
       credentials: "include",
     })
 
-    await response.text()
+    const data = await response.json()
+    return data
   } catch (error) {
     console.log("Error fetching currencies:", error)
+    return null
   }
-
-  // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
 }
