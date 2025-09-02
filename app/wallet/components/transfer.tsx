@@ -79,7 +79,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
         </Select>
       </div>
 
-      <div className="mt-2">
+      <div>
         <h2 className="text-black text-base font-bold">Choose transfer type</h2>
       </div>
 
