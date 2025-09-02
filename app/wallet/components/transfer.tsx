@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getCurrencies } from "@/services/api/api-wallets"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface TransferProps {
   onSendClick: () => void
@@ -15,16 +16,6 @@ interface Currency {
   code: string
   name: string
   logo: string
-}
-
-const currencyLogoMapper = {
-  USD: "/icons/usd-flag.png",
-  BTC: "/icons/bitcoin-logo.png",
-  ETH: "/icons/ethereum-logo.png",
-  LTC: "/icons/litecoin-logo.png",
-  USDC: "/icons/usdc-logo.png",
-  eUSDT: "/icons/eusdt-logo.png",
-  tUSDT: "/icons/tusdt-logo.png",
 }
 
 export default function Transfer({ onSendClick, onReceiveClick }: TransferProps) {
@@ -68,26 +59,24 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
       <div>
         <h2 className="text-base font-bold mb-2">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-    
-            <SelectTrigger className="w-full h-14 rounded-xl border border-border">
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                  <Image
-                    src={selectedCurrencyData?.logo || "/placeholder.svg"}
-                    alt={selectedCurrencyData?.name}
-                    width={24}
-                    height={24}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <SelectValue>
-                  <span className="text-base">
-                    {selectedCurrencyData?.name} ({selectedCurrencyData?.code})
-                  </span>
-                </SelectValue>
+          <SelectTrigger className="w-full h-14 rounded-xl border border-border">
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
+                <Image
+                  src={selectedCurrencyData?.logo || "/placeholder.svg"}
+                  alt={selectedCurrencyData?.name}
+                  width={24}
+                  height={24}
+                  className="w-full h-full object-cover"
+                />
               </div>
-            </SelectTrigger>
-          ) 
+              <SelectValue>
+                <span className="text-base">
+                  {selectedCurrencyData?.name} ({selectedCurrencyData?.code})
+                </span>
+              </SelectValue>
+            </div>
+          </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
               <SelectItem key={currency.code} value={currency.code}>
