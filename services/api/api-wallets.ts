@@ -46,6 +46,7 @@ export async function getCurrencies(): Promise<string[]> {
     const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
+      method: "POST",
       headers,
       credentials: "include",
     })
