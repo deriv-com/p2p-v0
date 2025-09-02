@@ -27,7 +27,7 @@ export default function Transfer({ onSendClick, onReceiveClick, currenciesData =
     return Object.entries(currenciesData).map(([code, data]) => ({
       code,
       name: data.label,
-      logo: "/icons/usd-flag.png", // Using USD flag for all as requested
+      logo: "/icons/usd-flag.png",
     }))
   }, [currenciesData])
 
@@ -38,7 +38,6 @@ export default function Transfer({ onSendClick, onReceiveClick, currenciesData =
     return "USD"
   })
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useMemo(() => {
     if (currencies.length > 0 && !currencies.find((c) => c.code === selectedCurrency)) {
       setSelectedCurrency(currencies[0].code)
@@ -66,7 +65,7 @@ export default function Transfer({ onSendClick, onReceiveClick, currenciesData =
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
-                  src={selectedCurrencyData?.logo || "/icons/usd-flag.png"}
+                  src="/icons/usd-flag.png"
                   alt={selectedCurrencyData?.name || "Currency"}
                   width={24}
                   height={24}
@@ -86,7 +85,7 @@ export default function Transfer({ onSendClick, onReceiveClick, currenciesData =
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <Image
-                      src={currency.logo || "/placeholder.svg"}
+                      src="/icons/usd-flag.png"
                       alt={currency.name}
                       width={24}
                       height={24}
