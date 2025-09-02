@@ -35,7 +35,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
 
   return (
     <>
-      <div className="mb-2">
+      <div>
         <h2 className="text-base font-bold mb-4">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
