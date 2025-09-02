@@ -83,7 +83,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <Image
-                      src={currency.logo || "/placeholder.svg"}
+                      src={currency.logo}
                       alt={currency.name}
                       width={24}
                       height={24}
