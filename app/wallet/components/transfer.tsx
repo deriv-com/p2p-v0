@@ -23,6 +23,8 @@ const currencyLogoMapper = {
   ETH: "/icons/ethereum-logo.png",
   LTC: "/icons/litecoin-logo.png",
   USDC: "/icons/usdc-logo.png",
+  eUSDT: "/icons/eusdt-logo.png",
+  tUSDT: "/icons/tusdt-logo.png",
 }
 
 export default function Transfer({ onSendClick, onReceiveClick }: TransferProps) {
