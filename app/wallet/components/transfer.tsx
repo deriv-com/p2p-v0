@@ -86,7 +86,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
               </SelectValue>
             </div>
           </SelectTrigger>
-          {currencies.length > 0 && (
+          {currencies.length > 0 ? (
             <SelectContent>
               {currencies.map((currency) => (
                 <SelectItem key={currency.code} value={currency.code}>
@@ -107,6 +107,8 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                 </SelectItem>
               ))}
             </SelectContent>
+          ) : (
+            <div></div>
           )}
         </Select>
       </div>
