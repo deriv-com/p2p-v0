@@ -102,6 +102,16 @@ export default function OrderDetailsPage() {
       if (result.errors.length == 0) {
         fetchOrderDetails()
         setShowPaymentConfirmation(false)
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Proof of transfer submitted</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
       }
     } catch (err) {
       console.error("Error marking payment as sent:", err)
