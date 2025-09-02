@@ -139,9 +139,7 @@ export const PaymentConfirmationSidebar = ({
             </div>
 
             {fileError && (
-              <Alert variant="destructive" className="flex items-start gap-2">
-                <div>{fileError}</div>
-              </Alert>
+              <div className="color-error">{fileError}</div>
             )}
 
             <Alert variant="warning" className="flex items-start gap-2 mb-6">
