@@ -79,8 +79,8 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
         </Select>
       </div>
 
-      <div>
-        <h2 className="text-black text-base font-bold">Choose transfer type</h2>
+      <div className="mt-0">
+        <h2 className="text-black text-base font-bold m-0">Choose transfer type</h2>
       </div>
 
       <div className="space-y-2">
