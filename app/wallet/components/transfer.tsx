@@ -1,25 +1,49 @@
 "use client"
 
 import type React from "react"
+
 import Image from "next/image"
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+interface CurrencyData {
+  [key: string]: {
+    label: string
+    currency: {
+      enabled: boolean
+    }
+    type: string
+  }
+}
 
 interface TransferProps {
   onSendClick: () => void
   onReceiveClick: () => void
+  currenciesData?: CurrencyData
 }
 
-export default function Transfer({ onSendClick, onReceiveClick }: TransferProps) {
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
+export default function Transfer({ onSendClick, onReceiveClick, currenciesData = {} }: TransferProps) {
+  const currencies = useMemo(() => {
+    return Object.entries(currenciesData).map(([code, data]) => ({
+      code,
+      name: data.label,
+      logo: "/icons/usd-flag.png", // Using USD flag for all as requested
+    }))
+  }, [currenciesData])
 
-  const currencies = [
-    { code: "USD", name: "US dollar", logo: "/icons/usd-flag.png" },
-    { code: "BTC", name: "Bitcoin", logo: "/icons/bitcoin-logo.png" },
-    { code: "ETH", name: "Ethereum", logo: "/icons/ethereum-logo.png" },
-    { code: "LTC", name: "Litecoin", logo: "/icons/litecoin-logo.png" },
-    { code: "USDC", name: "USD Coin", logo: "/icons/usdc-logo.png" },
-  ]
+  const [selectedCurrency, setSelectedCurrency] = useState(() => {
+    if (currencies.length > 0) {
+      return currencies[0].code
+    }
+    return "USD"
+  })
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useMemo(() => {
+    if (currencies.length > 0 && !currencies.find((c) => c.code === selectedCurrency)) {
+      setSelectedCurrency(currencies[0].code)
+    }
+  }, [currencies, selectedCurrency])
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
@@ -42,8 +66,8 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
-                  src={selectedCurrencyData.logo || "/placeholder.svg"}
-                  alt={selectedCurrencyData.name}
+                  src={selectedCurrencyData?.logo || "/icons/usd-flag.png"}
+                  alt={selectedCurrencyData?.name || "Currency"}
                   width={24}
                   height={24}
                   className="w-full h-full object-cover"
@@ -51,7 +75,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
               </div>
               <SelectValue>
                 <span className="text-base">
-                  {selectedCurrencyData.name} ({selectedCurrencyData.code})
+                  {selectedCurrencyData?.name} ({selectedCurrencyData?.code})
                 </span>
               </SelectValue>
             </div>
