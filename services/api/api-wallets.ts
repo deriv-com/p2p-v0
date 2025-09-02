@@ -42,7 +42,7 @@ export async function fetchWalletsList() {
 
 export async function getCurrencies(): Promise<string[]> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`
+    const url = `${API.coreUrl}${API.endpoints.configCurrencies}`
     const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
