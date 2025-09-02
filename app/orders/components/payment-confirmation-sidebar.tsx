@@ -11,6 +11,7 @@ import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
+import { cn } from "@/lib/utils"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
