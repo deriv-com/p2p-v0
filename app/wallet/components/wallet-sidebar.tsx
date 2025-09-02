@@ -27,8 +27,8 @@ export default function WalletSidebar({
   useEffect(() => {
     if (isOpen) {
       getCurrencies()
-        .then((currencies) => {
-          console.log("Currencies response:", currencies)
+        .then(() => {
+          // API call completed successfully
         })
         .catch((error) => {
           console.error("Failed to fetch currencies:", error)
