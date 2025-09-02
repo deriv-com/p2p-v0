@@ -103,7 +103,7 @@ export const PaymentConfirmationSidebar = ({
             </p>
 
             <div className={cn("border border-dashed rounded-sm p-8 text-center transition-colors border-slate-500", 
-            fileError: "border-red")}>
+            fileError: "border-error")}>
               <Input
                 type="file"
                 accept=".jpeg,.jpg,.png,.pdf"
