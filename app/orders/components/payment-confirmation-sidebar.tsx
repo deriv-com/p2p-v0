@@ -65,6 +65,7 @@ export const PaymentConfirmationSidebar = ({
 
     try {
       const base64 = await fileToBase64(selectedFile)
+      console.log(base64)
       await OrdersAPI.sendChatMessage(order.id, "", base64, true)
 
       if (!selectedFile) onConfirm()
