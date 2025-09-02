@@ -102,7 +102,8 @@ export const PaymentConfirmationSidebar = ({
               Ensure you've paid {currencySymbol} {amount} to {sellerName} and upload the receipt as proof of payment.
             </p>
 
-            <div className="border border-dashed rounded-sm p-8 text-center transition-colors border-slate-500">
+            <div className={cn("border border-dashed rounded-sm p-8 text-center transition-colors border-slate-500", 
+            fileError: "border-red")}>
               <Input
                 type="file"
                 accept=".jpeg,.jpg,.png,.pdf"
