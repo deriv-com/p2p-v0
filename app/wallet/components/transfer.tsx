@@ -30,7 +30,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
           const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
             code,
             name: data.label,
-            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper] || "/icons/usd-flag.png",
+            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
           }))
           setCurrencies(currencyList)
         }
