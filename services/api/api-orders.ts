@@ -453,6 +453,8 @@ export async function sendChatMessage(
       body,
     })
 
+    
+
     if (!response.ok) {
       throw new Error(`Error sending message: ${response.statusText}`)
     }
