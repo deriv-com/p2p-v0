@@ -68,7 +68,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
       <div>
         <h2 className="text-base font-bold mb-2">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-          {currencies.length > 0 ? (
+    
             <SelectTrigger className="w-full h-14 rounded-xl border border-border">
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
