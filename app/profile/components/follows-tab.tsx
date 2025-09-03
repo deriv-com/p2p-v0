@@ -5,17 +5,7 @@ import type React from "react"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
-import { useIsMobile } from "@/components/ui/use-mobile"
-import { X } from "lucide-react"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
@@ -30,9 +20,7 @@ export default function FollowsTab() {
   const [following, setFollowing] = useState<FollowUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [showUnfollowDialog, setShowUnfollowDialog] = useState(false)
-  const [selectedUser, setSelectedUser] = useState<FollowUser | null>(null)
-  const isMobile = useIsMobile()
+  const { showAlert } = useAlertDialog()
 
   useEffect(() => {
     const fetchFollowing = async () => {
@@ -65,23 +53,17 @@ export default function FollowsTab() {
   }, [])
 
   const handleUnfollow = (user: FollowUser) => {
-    setSelectedUser(user)
-    setShowUnfollowDialog(true)
-  }
-
-  const handleConfirmUnfollow = () => {
-    if (selectedUser) {
-      console.log(`Unfollowing user: ${selectedUser.nickname} (${selectedUser.user_id})`)
-      // TODO: Add actual unfollow API call here
-      setFollowing((prev) => prev.filter((user) => user.user_id !== selectedUser.user_id))
-    }
-    setShowUnfollowDialog(false)
-    setSelectedUser(null)
-  }
-
-  const handleCancelUnfollow = () => {
-    setShowUnfollowDialog(false)
-    setSelectedUser(null)
+    showAlert({
+      title: `Unfollow ${user.nickname}?`,
+      description: "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
+      confirmText: "Unfollow",
+      cancelText: "Cancel",
+      variant: "destructive",
+      onConfirm: () => {
+        console.log(`Unfollowing user: ${user.nickname} (${user.user_id})`)
+        setFollowing((prev) => prev.filter((u) => u.user_id !== user.user_id))
+      },
+    })
   }
 
   const UserCard = ({ user }: { user: FollowUser }) => (
@@ -104,63 +86,6 @@ export default function FollowsTab() {
       </Button>
     </div>
   )
-
-  const UnfollowConfirmationDialog = () => {
-    if (!selectedUser) return null
-
-    const title = `Unfollow ${selectedUser.nickname}?`
-    const description = "You're about to unfollow this user. You'll lose quick access to their profile and active ads."
-
-    if (isMobile) {
-      return (
-        <Sheet open={showUnfollowDialog} onOpenChange={setShowUnfollowDialog}>
-          <SheetContent side="bottom" className="rounded-t-[32px] p-6">
-            <SheetHeader className="text-left mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <SheetTitle className="text-xl font-bold">{title}</SheetTitle>
-                <Button variant="ghost" size="sm" onClick={handleCancelUnfollow} className="p-1 h-auto">
-                  <X className="h-5 w-5" />
-                </Button>
-              </div>
-              <SheetDescription className="text-gray-600 text-base">{description}</SheetDescription>
-            </SheetHeader>
-            <div className="flex flex-col gap-3">
-              <Button onClick={handleConfirmUnfollow} variant="black" className="w-full rounded-full">
-                Unfollow
-              </Button>
-              <Button onClick={handleCancelUnfollow} variant="outline" className="w-full rounded-full bg-transparent">
-                Cancel
-              </Button>
-            </div>
-          </SheetContent>
-        </Sheet>
-      )
-    }
-
-    return (
-      <Dialog open={showUnfollowDialog} onOpenChange={setShowUnfollowDialog}>
-        <DialogContent className="sm:max-w-md rounded-[32px] p-6">
-          <DialogHeader className="text-left mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
-              <Button variant="ghost" size="sm" onClick={handleCancelUnfollow} className="p-1 h-auto">
-                <X className="h-5 w-5" />
-              </Button>
-            </div>
-            <DialogDescription className="text-gray-600 text-base">{description}</DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex flex-col gap-3 sm:flex-col">
-            <Button onClick={handleConfirmUnfollow} variant="black" className="w-full rounded-full">
-              Unfollow
-            </Button>
-            <Button onClick={handleCancelUnfollow} variant="outline" className="w-full rounded-full bg-transparent">
-              Cancel
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    )
-  }
 
   return (
     <div className="space-y-4">
@@ -209,8 +134,6 @@ export default function FollowsTab() {
           />
         )}
       </div>
-
-      <UnfollowConfirmationDialog />
     </div>
   )
 }
