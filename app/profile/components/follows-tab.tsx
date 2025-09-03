@@ -94,12 +94,10 @@ export default function FollowsTab() {
     </div>
   )
 
-  const followingCount = following.length
-
   return (
     <div className="space-y-4">
       <div className="border-b border-gray-200 pb-3">
-        <h3 className="text-base font-normal">Following ({followingCount})</h3>
+        <h3 className="text-base font-normal">Following ({following?.length})</h3>
       </div>
 
       <div className="flex items-center justify-between gap-4">
