@@ -118,7 +118,7 @@ export default function FollowsTab() {
           filteredFollowing.map((user) => <UserCard key={user.id} user={user} />)
         ) : (
           <EmptyState
-            title={searchQuery ? "No users found matching your search." : "You're not following anyone yet."}
+            title={searchQuery ? "No matching name" : "Not following anyone yet"}
             redirectToAds={false}
           />
         )}
