@@ -233,7 +233,7 @@ export default function AdvertiserProfilePage() {
                               size="sm"
                               className={cn(
                                 "text-xs",
-                                isFollowing ? "bg-[#00D0FF] hover:bg-[#00D0FF] text-[#000]" : "border-slate-300",
+                                isFollowing ? "bg-primary hover:bg-primary-hover" : "border-slate-300",
                               )}
                               disabled={isFollowLoading}
                             >

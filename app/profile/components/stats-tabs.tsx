@@ -3,6 +3,7 @@ import { useState } from "react"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
 import FollowsTab from "./follows-tab"
+import BlockedTab from "./blocked-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
@@ -27,12 +28,14 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
   const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
+  const [showBlockedSidebar, setShowBlockedSidebar] = useState(false)
   const { toast } = useToast()
 
   const tabs = [
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
     { id: "follows", label: "Follows" },
+    { id: "blocked", label: "Blocked" },
   ]
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -178,6 +181,34 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             )}
             <Divider />
             <div
+              onClick={() => {
+                setShowBlockedSidebar(true)
+              }}
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <span className="text-sm font-normal text-gray-900">Blocked</span>
+              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+            </div>
+            {showBlockedSidebar && (
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+                <div className="flex items-center gap-4 px-4 py-3 border-b">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowBlockedSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                  <h2 className="text-xl font-bold">Blocked</h2>
+                </div>
+                <div className="m-4 flex-1 overflow-auto">
+                  <BlockedTab />
+                </div>
+              </div>
+            )}
+            <Divider />
+            <div
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900"
               onClick={() => AuthAPI.logout()}
             >
@@ -249,6 +280,12 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             <TabsContent value="follows" className="mt-4">
               <div className="relative rounded-lg border p-4">
                 <FollowsTab />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="blocked" className="mt-4">
+              <div className="relative rounded-lg border p-4">
+                <BlockedTab />
               </div>
             </TabsContent>
 

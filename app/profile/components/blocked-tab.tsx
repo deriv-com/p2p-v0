@@ -6,64 +6,64 @@ import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { getFavouriteUsers } from "@/services/api/api-profile"
-import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
+import { getBlockedUsers } from "@/services/api/api-profile"
+import { toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useToast } from "@/hooks/use-toast"
 
-interface FollowUser {
+interface BlockedUser {
   nickname: string
   user_id: number
 }
 
-export default function FollowsTab() {
+export default function BlockedTab() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [following, setFollowing] = useState<FollowUser[]>([])
+  const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
-  const fetchFollowing = useCallback(async () => {
+  const fetchBlockedUsers = useCallback(async () => {
     try {
       setIsLoading(true)
       setError(null)
-      const data = await getFavouriteUsers()
-      setFollowing(data)
+      const data = await getBlockedUsers()
+      setBlockedUsers(data)
     } catch (err) {
-      console.error("Failed to fetch favourite users:", err)
-      setError("Failed to load following list")
-      setFollowing([])
+      console.error("Failed to fetch blocked users:", err)
+      setError("Failed to load blocked users list")
+      setBlockedUsers([])
     } finally {
       setIsLoading(false)
     }
   }, [])
 
   useEffect(() => {
-    fetchFollowing()
-  }, [fetchFollowing])
+    fetchBlockedUsers()
+  }, [fetchBlockedUsers])
 
-  const filteredFollowing = useMemo(() => {
-    if (!searchQuery.trim()) return following
+  const filteredBlockedUsers = useMemo(() => {
+    if (!searchQuery.trim()) return blockedUsers
 
-    return following.filter((user) => user.nickname.toLowerCase().includes(searchQuery.toLowerCase()))
-  }, [following, searchQuery])
+    return blockedUsers.filter((user) => user.nickname.toLowerCase().includes(searchQuery.toLowerCase()))
+  }, [blockedUsers, searchQuery])
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     setSearchQuery(value)
   }, [])
 
-  const handleUnfollow = (user: FollowUser) => {
+  const handleUnblock = (user: BlockedUser) => {
     showAlert({
-      title: `Unfollow ${user.nickname}?`,
-      description: "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
-      confirmText: "Unfollow",
+      title: `Unblock ${user.nickname}?`,
+      description: "You'll be able to see their ads and they can place orders on yours again.",
+      confirmText: "Unblock",
       cancelText: "Cancel",
       onConfirm: async () => {
         try {
-          const result = await toggleFavouriteAdvertiser(user.user_id, false)
+          const result = await toggleBlockAdvertiser(user.user_id, false)
 
           if (result.success) {
             toast({
@@ -76,22 +76,22 @@ export default function FollowsTab() {
                     height={24}
                     className="text-white"
                   />
-                  <span>{`${user.nickname} unfollowed.`}</span>
+                  <span>{`${user.nickname} unblocked.`}</span>
                 </div>
               ),
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-              await fetchFollowing()
+            await fetchBlockedUsers()
           }
         } catch (error) {
-          console.error("Error unfollowing user:", error)
+          console.error("Error unblocking user:", error)
         }
       },
     })
   }
 
-  const UserCard = ({ user }: { user: FollowUser }) => (
+  const UserCard = ({ user }: { user: BlockedUser }) => (
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-3">
         <div className="relative">
@@ -104,10 +104,10 @@ export default function FollowsTab() {
       <Button
         variant="outline"
         size="sm"
-        onClick={() => handleUnfollow(user)}
+        onClick={() => handleUnblock(user)}
         className="rounded-full px-4 py-1 text-sm"
       >
-        Unfollow
+        Unblock
       </Button>
     </div>
   )
@@ -149,12 +149,12 @@ export default function FollowsTab() {
           <div className="py-8 text-center text-gray-500">Loading...</div>
         ) : error ? (
           <div className="py-8 text-center text-red-500">{error}</div>
-        ) : filteredFollowing.length > 0 ? (
-          filteredFollowing.map((user) => <UserCard key={user.user_id} user={user} />)
+        ) : filteredBlockedUsers.length > 0 ? (
+          filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
         ) : (
           <EmptyState
-            title={searchQuery ? "No matching name" : "Not following anyone yet"}
-            description={searchQuery ? "" : "Start following users to see them here."}
+            title={searchQuery ? "No matching name" : "No blocked users"}
+            description={searchQuery ? "" : "Users you block will appear here."}
             redirectToAds={false}
           />
         )}
