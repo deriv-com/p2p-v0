@@ -25,7 +25,7 @@ export default function MobileFooterNav() {
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname === "/" || pathname.startsWith("/advertiser"),
+            "text-black font-bold": pathname === "/" || pathname.startsWith("/advertiser"),
             "text-slate-700": !(pathname === "/" || pathname.startsWith("/advertiser")),
           })}
         >
@@ -44,7 +44,7 @@ export default function MobileFooterNav() {
         <Link
           href="/orders"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname.startsWith("/orders"),
+            "text-black font-bold": pathname.startsWith("/orders"),
             "text-slate-700": !pathname.startsWith("/orders"),
           })}
         >
@@ -63,7 +63,7 @@ export default function MobileFooterNav() {
         <Link
           href="/ads"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname.startsWith("/ads"),
+            "text-black font-bold": pathname.startsWith("/ads"),
             "text-slate-700": !pathname.startsWith("/ads"),
           })}
         >
@@ -82,7 +82,7 @@ export default function MobileFooterNav() {
         <Link
           href="/wallet"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname.startsWith("/wallet"),
+            "text-black font-bold": pathname.startsWith("/wallet"),
             "text-slate-700": !pathname.startsWith("/wallet"),
           })}
         >
@@ -101,7 +101,7 @@ export default function MobileFooterNav() {
         <Link
           href="/profile"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname.startsWith("/profile"),
+            "text-black font-bold": pathname.startsWith("/profile"),
             "text-slate-700": !pathname.startsWith("/profile"),
           })}
         >
