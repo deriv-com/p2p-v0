@@ -8,11 +8,7 @@ import { X, Search, Info } from "lucide-react"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 
 interface FollowUser {
-  id: string
   username: string
-  activeAds: number
-  status: "online" | "offline"
-  lastSeen?: string
 }
 
 export default function FollowsTab() {
@@ -28,7 +24,7 @@ export default function FollowsTab() {
         setIsLoading(true)
         setError(null)
         const data = await getFavouriteUsers()
-        setFollowing(transformedData)
+        setFollowing(data)
       } catch (err) {
         console.error("Failed to fetch favourite users:", err)
         setError("Failed to load following list")
