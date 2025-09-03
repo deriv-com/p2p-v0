@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { X, Search } from "lucide-react"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 import Image from "next/image"
 
@@ -39,10 +38,6 @@ export default function FollowsTab() {
 
   const handleUnfollow = (userId: string, nickname: string) => {
     console.log(`Unfollowing user: ${nickname} (${userId})`)
-  }
-
-  const clearSearch = () => {
-    setSearchQuery("")
   }
 
   const filterUsers = (value: string) => {
