@@ -46,15 +46,11 @@ export default function FollowsTab() {
     setSearchQuery("")
   }
 
-  const filterUsers = (users: FollowUser[]) => {
-    let filtered = users
+  const filterUsers = (value: string) => {
+    let filtered = following
 
-    if (searchQuery.trim()) {
-      filtered = filtered.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()))
-    }
-
-    if (activeOnly) {
-      filtered = filtered.filter((user) => user.status === "online")
+    if (value) {
+      filtered = filtered.filter((user) => user.username.toLowerCase().includes(value.toLowerCase()))
     }
 
     return filtered
@@ -94,10 +90,11 @@ export default function FollowsTab() {
     </div>
   )
 
+
   return (
     <div className="space-y-4">
       <div className="border-b border-gray-200 pb-3">
-        <h3 className="text-base font-normal">Following ({following?.length})</h3>
+        <h3 className="text-base font-normal">Following ({following.length})</h3>
       </div>
 
       <div className="flex items-center justify-between gap-4">
@@ -107,7 +104,7 @@ export default function FollowsTab() {
             type="text"
             placeholder="Search"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => filterUsers(e.target.value)}
             className="pl-10 pr-10 rounded-full border-gray-300"
           />
           {searchQuery && (
