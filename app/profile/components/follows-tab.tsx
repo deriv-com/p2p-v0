@@ -8,7 +8,8 @@ import { getFavouriteUsers } from "@/services/api/api-profile"
 import Image from "next/image"
 
 interface FollowUser {
-  nickname: string
+  nickname: string,
+  user_id: id
 }
 
 export default function FollowsTab() {
