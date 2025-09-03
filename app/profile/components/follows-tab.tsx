@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getFavouriteUsers } from "@/services/api/api-profile"
@@ -45,6 +45,11 @@ export default function FollowsTab() {
     )
   }, [following, searchQuery])
 
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchQuery(value)
+  }, [])
+
   const handleUnfollow = (userId: string, nickname: string) => {
     console.log(`Unfollowing user: ${nickname} (${userId})`)
   }
@@ -85,7 +90,7 @@ export default function FollowsTab() {
               <Input
                 placeholder="Search"
                 value={searchQuery}
-                onChange={filterUsers}
+                onChange={handleSearchChange}
                 className="pl-10 pr-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 md:focus:border-black bg-grayscale-500 md:bg-transparent rounded-lg"
                 autoComplete="off"
                 autoFocus
