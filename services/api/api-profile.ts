@@ -449,3 +449,26 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
     }
   }
 }
+
+export async function getFavouriteUsers(): Promise<[]> {
+  try {
+    const headers = {
+        ...AUTH.getAuthHeader(),
+        "Content-Type": "application/json",
+        "X-Branch": "development",
+    }
+    const response = await fetch(`${API.baseUrl}/user-favourites`, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error fetching advertisers: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data || []
+  } catch (error) {
+    throw error
+  }
+}
