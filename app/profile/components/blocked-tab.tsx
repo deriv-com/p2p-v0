@@ -115,7 +115,7 @@ export default function BlockedTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
-        <div className="relative">
+        <div className="relative w-full md:w-xs">
           <Image
             src="/icons/search-icon-custom.png"
             alt="Search"
@@ -127,7 +127,7 @@ export default function BlockedTab() {
             placeholder="Search"
             value={searchQuery}
             onChange={handleSearchChange}
-            className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg w-full md:w-xs"
+            className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
             autoComplete="off"
             autoFocus
           />
