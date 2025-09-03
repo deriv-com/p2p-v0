@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFavouriteUsers } from "@/services/api/api-profile"
+import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useToast } from "@/hooks/use-toast"
@@ -60,18 +61,43 @@ export default function FollowsTab() {
       description: "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
       confirmText: "Unfollow",
       cancelText: "Cancel",
-      onConfirm: () => {
-        toast({
-          description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                <span>{`${user.nickname} unfollowed.`}</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+      onConfirm: async () => {
+        try {
+          const result = await toggleFavouriteAdvertiser(user.user_id, false)
+
+          if (result.success) {
+            setFollowing((prev) => prev.filter((u) => u.user_id !== user.user_id))
+            toast({
+              description: (
+                <div className="flex items-center gap-2">
+                  <Image
+                    src="/icons/success-checkmark.png"
+                    alt="Success"
+                    width={24}
+                    height={24}
+                    className="text-white"
+                  />
+                  <span>{`${user.nickname} unfollowed.`}</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
+            })
+          } else {
+            toast({
+              description: `Failed to unfollow ${user.nickname}. Please try again.`,
+              className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
+            })
+          }
+        } catch (error) {
+          console.error("Error unfollowing user:", error)
+          toast({
+            description: `Failed to unfollow ${user.nickname}. Please try again.`,
+            className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
             duration: 2500,
           })
-        setFollowing((prev) => prev.filter((u) => u.user_id !== user.user_id))
+        }
       },
     })
   }
