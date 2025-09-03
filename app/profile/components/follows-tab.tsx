@@ -9,6 +9,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
+import { useToast } from "@/hooks/use-toast"
 
 interface FollowUser {
   nickname: string
@@ -21,6 +22,7 @@ export default function FollowsTab() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { showAlert } = useAlertDialog()
+  const { toast } = useToast()
 
   useEffect(() => {
     const fetchFollowing = async () => {
