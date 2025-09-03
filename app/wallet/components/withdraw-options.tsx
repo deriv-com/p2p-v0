@@ -70,7 +70,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                 <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                   {selectedCurrencyData.logo && (
                     <Image
-                      src={selectedCurrencyData.logo || "/placeholder.svg"}
+                      src={selectedCurrencyData.logo}
                       alt={selectedCurrencyData.name}
                       width={24}
                       height={24}
