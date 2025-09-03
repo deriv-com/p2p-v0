@@ -79,10 +79,6 @@ export default function FollowsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="border-b border-gray-200 pb-3">
-        <h3 className="text-base font-normal">Following ({following.length})</h3>
-      </div>
-
       <div className="flex items-center justify-between gap-4">
         <div className="relative flex-1 max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
