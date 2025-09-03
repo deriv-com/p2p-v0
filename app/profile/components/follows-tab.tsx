@@ -82,7 +82,7 @@ export default function FollowsTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-             await fetchFollowing()
+              await fetchFollowing()
           }
         } catch (error) {
           console.error("Error unfollowing user:", error)
