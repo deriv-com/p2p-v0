@@ -2,6 +2,7 @@
 import { useState } from "react"
 import StatsGrid from "./stats-grid"
 import PaymentMethodsTab from "./payment-methods-tab"
+import FollowsTab from "./follows-tab"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { Divider } from "@/components/ui/divider"
@@ -19,17 +20,19 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showAlert} = useAlertDialog()
+  const { showAlert } = useAlertDialog()
   const [showAddPaymentMethodPanel, setShowAddPaymentMethodPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
   const [showPaymentMethodsSidebar, setShowPaymentMethodsSidebar] = useState(false)
+  const [showFollowsSidebar, setShowFollowsSidebar] = useState(false)
   const { toast } = useToast()
 
   const tabs = [
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
+    { id: "follows", label: "Follows" },
   ]
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -43,29 +46,29 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
         toast({
           description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                <span>Payment method added.</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Payment method added.</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
 
         setRefreshKey((prev) => prev + 1)
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
+        if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
-        } 
+        }
         showAlert({
-            title,
-            description,
-            confirmText: "OK",
-            type: "warning"
+          title,
+          description,
+          confirmText: "OK",
+          type: "warning",
         })
       }
     } catch (error) {
@@ -81,54 +84,104 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
         {isMobile ? (
           <div className="mx-[-24px]">
             <Divider />
-            <div onClick={() => { setShowStatsSidebar(true) }}
-            className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors">
+            <div
+              onClick={() => {
+                setShowStatsSidebar(true)
+              }}
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
               <span className="text-sm font-normal text-gray-900">Stats</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             {showStatsSidebar && (
-            <div
-                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
-              >
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3 border-b">
-                  <Button variant="ghost" size="sm" onClick={() => setShowStatsSidebar(false)} className="bg-grayscale-300 px-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowStatsSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
                     <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
                   </Button>
                   <h2 className="text-xl font-bold">Stats</h2>
                 </div>
                 <div className="m-4">
-                   <StatsGrid stats={stats} />
+                  <StatsGrid stats={stats} />
                 </div>
               </div>
-              )}
+            )}
             <Divider />
-            <div onClick={() => { setShowPaymentMethodsSidebar(true) }}
+            <div
+              onClick={() => {
+                setShowPaymentMethodsSidebar(true)
+              }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <span className="text-sm font-normal text-gray-900">Payment methods</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
-             {showPaymentMethodsSidebar && (<div
-                className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full"
-              >
+            {showPaymentMethodsSidebar && (
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
                 <div className="flex items-center gap-4 px-4 py-3 border-b">
-                  <Button variant="ghost" size="sm" onClick={() => setShowPaymentMethodsSidebar(false)} className="bg-grayscale-300 px-1">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowPaymentMethodsSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
                     <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
                   </Button>
                   <h2 className="text-xl font-bold">Payment methods</h2>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                   <PaymentMethodsTab key={refreshKey} />
+                  <PaymentMethodsTab key={refreshKey} />
                 </div>
                 <div className="p-4">
-                  <Button onClick={() => setShowAddPaymentMethodPanel(true)} variant="outline" className="w-full rounded-full">
+                  <Button
+                    onClick={() => setShowAddPaymentMethodPanel(true)}
+                    variant="outline"
+                    className="w-full rounded-full"
+                  >
                     Add payment method
                   </Button>
                 </div>
-              </div>)}
+              </div>
+            )}
             <Divider />
-            <div className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900" onClick={() => AuthAPI.logout()}>
-                Logout
+            <div
+              onClick={() => {
+                setShowFollowsSidebar(true)
+              }}
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            >
+              <span className="text-sm font-normal text-gray-900">Follows</span>
+              <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
+            </div>
+            {showFollowsSidebar && (
+              <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
+                <div className="flex items-center gap-4 px-4 py-3 border-b">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowFollowsSidebar(false)}
+                    className="bg-grayscale-300 px-1"
+                  >
+                    <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
+                  </Button>
+                  <h2 className="text-xl font-bold">Follows</h2>
+                </div>
+                <div className="m-4 flex-1 overflow-auto">
+                  <FollowsTab />
+                </div>
+              </div>
+            )}
+            <Divider />
+            <div
+              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900"
+              onClick={() => AuthAPI.logout()}
+            >
+              Logout
             </div>
             <Divider />
           </div>
@@ -190,6 +243,12 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <PaymentMethodsTab key={refreshKey} />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="follows" className="mt-4">
+              <div className="relative rounded-lg border p-4">
+                <FollowsTab />
               </div>
             </TabsContent>
 
