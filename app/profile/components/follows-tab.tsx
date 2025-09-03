@@ -38,7 +38,6 @@ export default function FollowsTab() {
   }, [])
 
   const handleUnfollow = (userId: string, username: string) => {
-    // TODO: Implement unfollow functionality
     console.log(`Unfollowing user: ${username} (${userId})`)
   }
 
