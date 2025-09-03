@@ -58,7 +58,7 @@ export default function FollowsTab() {
       description: "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
       confirmText: "Unfollow",
       cancelText: "Cancel",
-      variant: "destructive",
+      variant: "black",
       onConfirm: () => {
         console.log(`Unfollowing user: ${user.nickname} (${user.user_id})`)
         setFollowing((prev) => prev.filter((u) => u.user_id !== user.user_id))
