@@ -77,7 +77,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                   <span className="text-base">{selectedCurrencyData.name}</span>
                 </SelectValue>
               </div>
-            ) : null}
+            ) :  <div></div>}
           </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
