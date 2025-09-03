@@ -83,7 +83,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                 </SelectValue>
               </div>
             ) : (
-              <div className="flex items-center gap-3 h-6 bg-transparent"></div>
+              <div></div>
             )}
           </SelectTrigger>
           <SelectContent>

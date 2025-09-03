@@ -83,7 +83,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                 </SelectValue>
               </div>
             ) : (
-              <div className="flex items-center gap-3 h-6 bg-transparent"></div>
+              <div></div>
             )}
           </SelectTrigger>
           <SelectContent>

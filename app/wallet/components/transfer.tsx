@@ -78,7 +78,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                 </SelectValue>
               </div>
             ) : (
-              <div className="flex items-center gap-3 h-6 bg-transparent"></div>
+              <div></div>
             )}
           </SelectTrigger>
           <SelectContent>
