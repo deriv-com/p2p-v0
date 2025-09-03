@@ -62,7 +62,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
             {selectedCurrencyData ? (
               <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                   {selectedCurrencyData.logo && (
                     <Image
                       src={selectedCurrencyData.logo || "/placeholder.svg"}
@@ -78,10 +78,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                 </SelectValue>
               </div>
             ) : (
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-2xl bg-gray-200 animate-pulse flex-shrink-0"></div>
-                <div className="h-4 bg-gray-200 rounded animate-pulse flex-1"></div>
-              </div>
+              <div className="flex items-center gap-3 h-6 bg-transparent"></div>
             )}
           </SelectTrigger>
           <SelectContent>
