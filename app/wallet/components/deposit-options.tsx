@@ -118,7 +118,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
           onClick={handleMarketplaceClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
+            <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
