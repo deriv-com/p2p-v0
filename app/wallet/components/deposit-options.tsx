@@ -3,34 +3,54 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { getCurrencies } from "@/services/api/api-wallets"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface DepositOptionProps {
   onClose: () => void
   onDirectDepositClick: (currency: string) => void
 }
 
+interface Currency {
+  code: string
+  name: string
+  logo: string
+}
+
 export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
+  const [currencies, setCurrencies] = useState<Currency[]>([])
 
-  // TODO: Get from currencies API
-  const currencies = [
-    { code: "USD", name: "US dollar", logo: "/icons/usd-flag.png" },
-    { code: "BTC", name: "Bitcoin", logo: "/icons/bitcoin-logo.png" },
-    { code: "ETH", name: "Ethereum", logo: "/icons/ethereum-logo.png" },
-    { code: "LTC", name: "Litecoin", logo: "/icons/litecoin-logo.png" },
-    { code: "USDC", name: "USD Coin", logo: "/icons/usdc-logo.png" },
-  ]
+  useEffect(() => {
+    const fetchCurrenciesData = async () => {
+      try {
+        const response = await getCurrencies()
+        if (response?.data) {
+          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
+            code,
+            name: data.label,
+            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+          }))
+          setCurrencies(currencyList)
+        }
+      } catch (error) {
+        console.error("Error fetching currencies:", error)
+      }
+    }
+
+    fetchCurrenciesData()
+  }, [])
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectDepositClick(selectedCurrency) // Pass selected currency
+    onDirectDepositClick(selectedCurrency)
   }
 
   const handleP2PTradingClick = (e: React.MouseEvent) => {
@@ -48,7 +68,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
-                  src={selectedCurrencyData.logo}
+                  src={selectedCurrencyData.logo || "/placeholder.svg"}
                   alt={selectedCurrencyData.name}
                   className="w-full h-full object-cover"
                 />
@@ -66,7 +86,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <Image
-                      src={currency.logo}
+                      src={currency.logo || "/placeholder.svg"}
                       alt={`${currency.name}`}
                       className="w-full h-full object-cover"
                     />
