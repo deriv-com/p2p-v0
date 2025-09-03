@@ -77,7 +77,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
               </div>
               <SelectValue>
                 <span className="text-base">
-                  {selectedCurrencyData.name} ({selectedCurrencyData.code})
+                  {selectedCurrencyData?.name} ({selectedCurrencyData?.code})
                 </span>
               </SelectValue>
             </div>
@@ -118,12 +118,12 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
           onClick={handleMarketplaceClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/up-down-arrows.png" alt="Trade" />
+            <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Trade ${selectedCurrencyData.code} directly to other users on the P2P marketplace.`}
+              {`Trade ${selectedCurrencyData?.code} directly to other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
@@ -136,7 +136,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
           onClick={handleDirectWithdrawClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/bank-icon.png" alt="Bank" />
+            <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">Direct withdrawal</h3>
