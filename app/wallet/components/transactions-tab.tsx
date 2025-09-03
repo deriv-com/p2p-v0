@@ -192,7 +192,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-6">
+      <div className="space-y-6">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
@@ -208,7 +208,7 @@ export default function TransactionsTab() {
                         <div className="flex-shrink-0">
                           {display.iconSrc && (
                             <Image
-                              src={display.iconSrc }
+                              src={display.iconSrc || "/placeholder.svg"}
                               alt={`${display.type} icon`}
                               width={32}
                               height={32}
