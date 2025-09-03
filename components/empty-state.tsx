@@ -27,7 +27,7 @@ export default function EmptyState({
             {title && <p className="text-lg text-neutral-10 mt-[24px] font-bold">{title}</p>}
             {description && <p className="text-base text-neutral-7 mb-[10px] mt-[8px]">{description}</p>}
             {redirectToAds && <Button onClick={() => router.push("/ads/create")} className="mt-[24px]">
-                <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} />
+          
                 Create ad
             </Button>
             }
