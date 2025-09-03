@@ -78,24 +78,33 @@ export default function FollowsTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-          <Input
-            type="text"
-            placeholder="Search"
-            value={searchQuery}
-            onChange={(e) => filterUsers(e.target.value)}
-            className="pl-10 pr-10 rounded-full border-gray-300"
-          />
-          {searchQuery && (
-            <button
-              onClick={clearSearch}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-            >
-              <X className="w-4 h-4" />
-            </button>
-          )}
-        </div>
+        <div className="relative mb-4">
+              <Image
+                src="/icons/search-icon-custom.png"
+                alt="Search"
+                width={24}
+                height={24}
+                className="absolute left-3 top-1/2 transform -translate-y-1/2"
+              />
+              <Input
+                placeholder="Search"
+                value={searchQuery}
+                onChange={filterUsers}
+                className="pl-10 pr-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 md:focus:border-black bg-grayscale-500 md:bg-transparent rounded-lg"
+                autoComplete="off"
+                autoFocus
+              />
+              {searchQuery && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+                >
+                  <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+                </Button>
+              )}
+            </div>
       </div>
 
       <div className="space-y-0 divide-y divide-gray-100">
