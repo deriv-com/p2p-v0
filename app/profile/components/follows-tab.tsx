@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getFavouriteUsers } from "@/services/api/api-profile"
@@ -36,18 +36,17 @@ export default function FollowsTab() {
     fetchFollowing()
   }, [])
 
+  const filteredFollowing = useMemo(() => {
+    if (!searchQuery.trim()) return following
+
+    return following.filter(
+      (user) =>
+        user.nickname.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+  }, [following, searchQuery])
+
   const handleUnfollow = (userId: string, nickname: string) => {
     console.log(`Unfollowing user: ${nickname} (${userId})`)
-  }
-
-  const filterUsers = (value: string) => {
-    let filtered = following
-
-    if (value) {
-      filtered = filtered.filter((user) => user.nickname?.toLowerCase().includes(value.toLowerCase()))
-    }
-
-    return filtered
   }
 
   const UserCard = ({ user }: { user: FollowUser }) => (
