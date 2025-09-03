@@ -65,22 +65,24 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
         <h2 className="text-base font-bold mb-4">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                {selectedCurrencyData?.logo && (
-                  <Image
-                    src={selectedCurrencyData.logo || "/placeholder.svg"}
-                    alt={selectedCurrencyData?.name}
-                    width={24}
-                    height={24}
-                    className="w-full h-full object-cover"
-                  />
-                )}
+            {selectedCurrencyData ? (
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
+                  {selectedCurrencyData.logo && (
+                    <Image
+                      src={selectedCurrencyData.logo || "/placeholder.svg"}
+                      alt={selectedCurrencyData.name}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <SelectValue>
+                  <span className="text-base">{selectedCurrencyData.name}</span>
+                </SelectValue>
               </div>
-              <SelectValue>
-                <span className="text-base">{selectedCurrencyData?.name}</span>
-              </SelectValue>
-            </div>
+            ) : null}
           </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
