@@ -9,9 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { getCurrencies } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
 
-interface DepositOptionProps {
+interface WithdrawOptionProps {
   onClose: () => void
-  onDirectDepositClick: (currency: string) => void
+  onDirectWithdrawClick: (currency: string) => void
 }
 
 interface Currency {
@@ -20,7 +20,7 @@ interface Currency {
   logo: string
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
+export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: WithdrawOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -47,13 +47,13 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
-  const handleDirectDepositClick = (e: React.MouseEvent) => {
+  const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectDepositClick(selectedCurrency)
+    onDirectWithdrawClick(selectedCurrency)
   }
 
-  const handleP2PTradingClick = (e: React.MouseEvent) => {
+  const handleMarketplaceClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
     router.push("/")
@@ -70,7 +70,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                 <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                   {selectedCurrencyData.logo && (
                     <Image
-                      src={selectedCurrencyData.logo}
+                      src={selectedCurrencyData.logo || "/placeholder.svg"}
                       alt={selectedCurrencyData.name}
                       width={24}
                       height={24}
@@ -82,9 +82,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                   <span className="text-base">{selectedCurrencyData.name}</span>
                 </SelectValue>
               </div>
-            ) : (
-              <div></div>
-            )}
+            ) : null}
           </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
@@ -93,7 +91,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     {currency.logo && (
                       <Image
-                        src={currency.logo}
+                        src={currency.logo || "/placeholder.svg"}
                         alt={currency.name}
                         width={24}
                         height={24}
@@ -110,7 +108,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
       </div>
 
       <div className="mb-2">
-        <h2 className="text-base font-bold">Deposit with</h2>
+        <h2 className="text-base font-bold">Withdraw with</h2>
       </div>
 
       <div className="space-y-3">
@@ -119,7 +117,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
             "flex p-4 justify-center items-center gap-4 self-stretch",
             "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
           )}
-          onClick={handleP2PTradingClick}
+          onClick={handleMarketplaceClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
             <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
@@ -127,7 +125,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Buy ${selectedCurrencyData?.name} directly from other users on the P2P marketplace.`}
+              {`Trade ${selectedCurrencyData?.code} directly to other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
@@ -137,15 +135,15 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
             "flex p-4 justify-center items-center gap-4 self-stretch",
             "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
           )}
-          onClick={handleDirectDepositClick}
+          onClick={handleDirectWithdrawClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
             <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
           </div>
           <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">Direct deposit</h3>
+            <h3 className="text-base font-bold text-black leading-6 mb-1">Direct withdrawal</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              Deposit funds directly from your bank account, e-wallet, or other payment methods.
+              Withdraw funds directly to your bank account, e-wallet, or other payment methods.
             </p>
           </div>
         </div>
