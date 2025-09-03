@@ -95,7 +95,6 @@ export default function FollowsTab() {
   )
 
   const followingCount = following.length
-  const filteredFollowing = filterUsers(following)
 
   return (
     <div className="space-y-4">
@@ -135,8 +134,8 @@ export default function FollowsTab() {
           <div className="py-8 text-center text-gray-500">Loading...</div>
         ) : error ? (
           <div className="py-8 text-center text-red-500">{error}</div>
-        ) : filteredFollowing.length > 0 ? (
-          filteredFollowing.map((user) => <UserCard key={user.id} user={user} />)
+        ) : following.length > 0 ? (
+          following.map((user) => <UserCard key={user.id} user={user} />)
         ) : (
           <div className="py-8 text-center text-gray-500">
             {searchQuery ? "No users found matching your search." : "You're not following anyone yet."}
