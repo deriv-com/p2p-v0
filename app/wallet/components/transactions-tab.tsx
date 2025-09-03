@@ -173,8 +173,8 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="py-4 space-y-6 max-w-[560px] mx-auto h-full flex flex-col">
-      <div className="flex gap-2 flex-shrink-0">
+    <div className="py-4 space-y-6 max-w-[560px] mx-auto">
+      <div className="flex gap-2">
         {filters.map((filter) => (
           <Button
             key={filter}
@@ -192,7 +192,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="flex-1 overflow-y-auto space-y-6">
+      <div className="max-h-[calc(100vh-200px)] overflow-y-auto space-y-6">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
@@ -206,14 +206,16 @@ export default function TransactionsTab() {
                     <div className="flex items-center justify-between p-4 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0">
-                          <Image
-                            src={display.iconSrc || "/placeholder.svg"}
-                            alt={`${display.type} icon`}
-                            width={32}
-                            height={32}
-                            className="w-8 h-8 object-contain"
-                            priority={index < 3}
-                          />
+                          {display.iconSrc && (
+                            <Image
+                              src={display.iconSrc || "/placeholder.svg"}
+                              alt={`${display.type} icon`}
+                              width={32}
+                              height={32}
+                              className="w-8 h-8 object-contain"
+                              priority={index < 3}
+                            />
+                          )}
                         </div>
 
                         <div>
