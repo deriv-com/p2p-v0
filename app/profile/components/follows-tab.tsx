@@ -83,20 +83,9 @@ export default function FollowsTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-          } else {
-            toast({
-              description: `Failed to unfollow ${user.nickname}. Please try again.`,
-              className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
-              duration: 2500,
-            })
           }
         } catch (error) {
           console.error("Error unfollowing user:", error)
-          toast({
-            description: `Failed to unfollow ${user.nickname}. Please try again.`,
-            className: "bg-red-500 text-white border-red-500 h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
         }
       },
     })
