@@ -99,7 +99,7 @@ export default function BlockedTab() {
             {user.nickname?.charAt(0).toUpperCase()}
           </div>
         </div>
-        <div className="font-medium text-gray-900">{user.nickname}</div>
+        <div className="text-gray-900">{user.nickname}</div>
       </div>
       <Button
         variant="outline"
