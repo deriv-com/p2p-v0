@@ -9,7 +9,7 @@ import Image from "next/image"
 
 interface FollowUser {
   nickname: string,
-  user_id: id
+  user_id: number,
 }
 
 export default function FollowsTab() {
