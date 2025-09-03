@@ -24,10 +24,12 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [hideIcon, setHideIcon] = useState(false)
 
   useEffect(() => {
     const fetchCurrenciesData = async () => {
       try {
+        setHideIcon(true)
         const response = await getCurrencies()
         if (response?.data) {
           const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
@@ -39,6 +41,8 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
         }
       } catch (error) {
         console.error("Error fetching currencies:", error)
+      } finally {
+        setHideIcon(false)
       }
     }
 
@@ -64,7 +68,9 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
       <div className="mb-6">
         <h2 className="text-base font-bold mb-4">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-          <SelectTrigger className="w-full h-14 rounded-xl border border-border">
+          <SelectTrigger
+            className={`w-full h-14 rounded-xl border border-border ${hideIcon ? "[&>svg:last-child]:hidden" : ""}`}
+          >
             {selectedCurrencyData ? (
               <div className="flex items-center gap-3">
                 <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
