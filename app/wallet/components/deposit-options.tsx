@@ -68,7 +68,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
-                  src={selectedCurrencyData?.logo }
+                  src={selectedCurrencyData?.logo || "/placeholder.svg"}
                   alt={selectedCurrencyData?.name || "Currency"}
                   width={24}
                   height={24}
@@ -88,7 +88,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <Image
-                      src={currency.logo}
+                      src={currency.logo || "/placeholder.svg"}
                       alt={`${currency.name}`}
                       width={24}
                       height={24}
@@ -123,7 +123,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Buy ${selectedCurrencyData.name} directly from other users on the P2P marketplace.`}
+              {`Buy ${selectedCurrencyData?.name || "currency"} directly from other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
