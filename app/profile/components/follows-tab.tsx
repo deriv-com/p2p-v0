@@ -38,6 +38,7 @@ export default function FollowsTab() {
   }, [])
 
   const handleUnfollow = (userId: string, username: string) => {
+    // TODO: Implement unfollow functionality
     console.log(`Unfollowing user: ${username} (${userId})`)
   }
 
@@ -49,7 +50,7 @@ export default function FollowsTab() {
     let filtered = following
 
     if (value) {
-      filtered = filtered.filter((user) => user.username.toLowerCase().includes(value.toLowerCase()))
+      filtered = filtered.filter((user) => user.username?.toLowerCase().includes(value.toLowerCase()))
     }
 
     return filtered
