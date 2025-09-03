@@ -35,7 +35,7 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={cn({
-              "filter-to-primary": pathname === "/" || pathname.startsWith("/advertiser"),
+              "filter-to-black": pathname === "/" || pathname.startsWith("/advertiser"),
               "brightness-50 opacity-70": !(pathname === "/" || pathname.startsWith("/advertiser")),
             })}
           />
@@ -54,7 +54,7 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={cn({
-              "filter-to-primary": pathname.startsWith("/orders"),
+              "filter-to-black": pathname.startsWith("/orders"),
               "brightness-50 opacity-70": !pathname.startsWith("/orders"),
             })}
           />
@@ -73,7 +73,7 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={cn({
-              "filter-to-primary": pathname.startsWith("/ads"),
+              "filter-to-black": pathname.startsWith("/ads"),
               "brightness-50 opacity-70": !pathname.startsWith("/ads"),
             })}
           />
@@ -92,7 +92,7 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={cn({
-              "filter-to-primary": pathname.startsWith("/wallet"),
+              "filter-to-black": pathname.startsWith("/wallet"),
               "brightness-50 opacity-70": !pathname.startsWith("/wallet"),
             })}
           />
@@ -111,7 +111,7 @@ export default function MobileFooterNav() {
             width={20}
             height={20}
             className={cn({
-              "filter-to-primary": pathname.startsWith("/profile"),
+              "filter-to-black": pathname.startsWith("/profile"),
               "brightness-50 opacity-70": !pathname.startsWith("/profile"),
             })}
           />
