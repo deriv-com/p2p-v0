@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { X, Search } from "lucide-react"
 import { getFavouriteUsers } from "@/services/api/api-profile"
+import Image from "next/image"
 
 interface FollowUser {
   nickname: string
