@@ -66,17 +66,7 @@ export default function FollowsTab() {
             <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
           )}
         </div>
-        <div>
-          <div className="font-medium text-gray-900">{user.nickname}</div>
-          <div className="text-sm text-gray-500">
-            {user.activeAds} active ads
-            {user.status === "online" ? (
-              <span className="ml-2">Online</span>
-            ) : (
-              <span className="ml-2">Last seen {user.lastSeen}</span>
-            )}
-          </div>
-        </div>
+        <div className="font-medium text-gray-900">{user.nickname}</div>
       </div>
       <Button
         variant="outline"
