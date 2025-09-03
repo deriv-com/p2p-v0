@@ -39,7 +39,7 @@ export default function FollowsTab() {
       } catch (err) {
         console.error("Failed to fetch favourite users:", err)
         setError("Failed to load following list")
-        setFollowing([]) // Fallback to empty array
+        setFollowing([])
       } finally {
         setIsLoading(false)
       }
