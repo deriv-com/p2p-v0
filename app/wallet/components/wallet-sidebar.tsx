@@ -5,6 +5,12 @@ import WithdrawOptions from "./withdraw-options"
 import Transfer from "./transfer"
 import { Button } from "@/components/ui/button"
 
+interface Currency {
+  code: string
+  name: string
+  logo: string
+}
+
 interface WalletSidebarProps {
   isOpen: boolean
   onClose: () => void
@@ -12,6 +18,7 @@ interface WalletSidebarProps {
   operation?: "DEPOSIT" | "WITHDRAW" | "TRANSFER"
   onP2PTransferClick?: () => void
   onAccountTransferClick?: () => void
+  currencies: Currency[]
 }
 
 export default function WalletSidebar({
@@ -21,6 +28,7 @@ export default function WalletSidebar({
   operation = "DEPOSIT",
   onP2PTransferClick = () => {},
   onAccountTransferClick = () => {},
+  currencies,
 }: WalletSidebarProps) {
   if (!isOpen) return null
 
@@ -52,13 +60,17 @@ export default function WalletSidebar({
 
         <div className="p-4 flex flex-col gap-4 overflow-y-auto flex-1">
           {operation === "DEPOSIT" ? (
-            <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} />
+            <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
           ) : operation === "WITHDRAW" ? (
-            <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} />
+            <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} currencies={currencies} />
           ) : operation === "TRANSFER" ? (
-            <Transfer onSendClick={onP2PTransferClick} onReceiveClick={onAccountTransferClick} />
+            <Transfer
+              onSendClick={onP2PTransferClick}
+              onReceiveClick={onAccountTransferClick}
+              currencies={currencies}
+            />
           ) : (
-            <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} />
+            <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
           )}
         </div>
       </div>

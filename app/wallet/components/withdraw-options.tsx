@@ -3,15 +3,14 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { getCurrencies } from "@/services/api/api-wallets"
-import { currencyLogoMapper } from "@/lib/utils"
 
 interface WithdrawOptionProps {
   onClose: () => void
   onDirectWithdrawClick: (currency: string) => void
+  currencies: Currency[]
 }
 
 interface Currency {
@@ -20,30 +19,9 @@ interface Currency {
   logo: string
 }
 
-export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: WithdrawOptionProps) {
+export default function WithdrawOptions({ onClose, onDirectWithdrawClick, currencies }: WithdrawOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
-  const [currencies, setCurrencies] = useState<Currency[]>([])
-
-  useEffect(() => {
-    const fetchCurrenciesData = async () => {
-      try {
-        const response = await getCurrencies()
-        if (response?.data) {
-          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
-            code,
-            name: data.label,
-            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
-          }))
-          setCurrencies(currencyList)
-        }
-      } catch (error) {
-        console.error("Error fetching currencies:", error)
-      }
-    }
-
-    fetchCurrenciesData()
-  }, [])
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
@@ -70,7 +48,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                 <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                   {selectedCurrencyData.logo && (
                     <Image
-                      src={selectedCurrencyData.logo}
+                      src={selectedCurrencyData.logo || "/placeholder.svg"}
                       alt={selectedCurrencyData.name}
                       width={24}
                       height={24}
@@ -82,7 +60,9 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                   <span className="text-base">{selectedCurrencyData.name}</span>
                 </SelectValue>
               </div>
-            ) :  <div></div>}
+            ) : (
+              <div></div>
+            )}
           </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
@@ -91,7 +71,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     {currency.logo && (
                       <Image
-                        src={currency.logo}
+                        src={currency.logo || "/placeholder.svg"}
                         alt={currency.name}
                         width={24}
                         height={24}

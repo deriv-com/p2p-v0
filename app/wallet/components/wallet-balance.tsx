@@ -10,9 +10,17 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { getCurrencies } from "@/services/api/api-wallets"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface WalletBalanceProps {
   className?: string
+}
+
+interface Currency {
+  code: string
+  name: string
+  logo: string
 }
 
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
@@ -27,6 +35,23 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
+  const [currencies, setCurrencies] = useState<Currency[]>([])
+
+  const fetchCurrencies = async () => {
+    try {
+      const response = await getCurrencies()
+      if (response?.data) {
+        const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
+          code,
+          name: data.label,
+          logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+        }))
+        setCurrencies(currencyList)
+      }
+    } catch (error) {
+      console.error("Error fetching currencies:", error)
+    }
+  }
 
   const fetchBalance = async () => {
     try {
@@ -66,6 +91,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
   useEffect(() => {
     fetchBalance()
+    fetchCurrencies()
   }, [selectedCurrency])
 
   const handleRefresh = () => {
@@ -224,6 +250,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
           operation={currentOperation}
           onP2PTransferClick={handleSendTransferClick}
           onAccountTransferClick={handleReceiveTransferClick}
+          currencies={currencies}
         />
 
         <FullScreenIframeModal
