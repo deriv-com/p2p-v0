@@ -62,9 +62,6 @@ export default function FollowsTab() {
           <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
             {user.nickname?.charAt(0).toUpperCase()}
           </div>
-          {user.status === "online" && (
-            <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-          )}
         </div>
         <div className="font-medium text-gray-900">{user.nickname}</div>
       </div>
