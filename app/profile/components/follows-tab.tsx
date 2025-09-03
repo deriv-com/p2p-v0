@@ -80,7 +80,7 @@ export default function FollowsTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
-        <div className="relative mb-4">
+        <div className="relative">
               <Image
                 src="/icons/search-icon-custom.png"
                 alt="Search"
