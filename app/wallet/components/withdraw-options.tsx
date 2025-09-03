@@ -67,13 +67,15 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                <Image
-                  src={selectedCurrencyData?.logo || "/placeholder.svg"}
-                  alt={selectedCurrencyData?.name}
-                  width={24}
-                  height={24}
-                  className="w-full h-full object-cover"
-                />
+                {selectedCurrencyData?.logo && (
+                  <Image
+                    src={selectedCurrencyData.logo || "/placeholder.svg"}
+                    alt={selectedCurrencyData?.name}
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
               <SelectValue>
                 <span className="text-base">{selectedCurrencyData?.name}</span>
@@ -85,13 +87,15 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
               <SelectItem key={currency.code} value={currency.code}>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={currency.logo || "/placeholder.svg"}
-                      alt={currency.name}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
+                    {currency.logo && (
+                      <Image
+                        src={currency.logo || "/placeholder.svg"}
+                        alt={currency.name}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
                   <span>{currency.name}</span>
                 </div>
