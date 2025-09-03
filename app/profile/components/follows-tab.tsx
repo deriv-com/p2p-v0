@@ -8,7 +8,7 @@ import { X, Search, Info } from "lucide-react"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 
 interface FollowUser {
-  username: string
+  nickname: string
 }
 
 export default function FollowsTab() {
@@ -37,8 +37,8 @@ export default function FollowsTab() {
     fetchFollowing()
   }, [])
 
-  const handleUnfollow = (userId: string, username: string) => {
-    console.log(`Unfollowing user: ${username} (${userId})`)
+  const handleUnfollow = (userId: string, nickname: string) => {
+    console.log(`Unfollowing user: ${nickname} (${userId})`)
   }
 
   const clearSearch = () => {
@@ -49,7 +49,7 @@ export default function FollowsTab() {
     let filtered = following
 
     if (value) {
-      filtered = filtered.filter((user) => user.username?.toLowerCase().includes(value.toLowerCase()))
+      filtered = filtered.filter((user) => user.nickname?.toLowerCase().includes(value.toLowerCase()))
     }
 
     return filtered
@@ -60,14 +60,14 @@ export default function FollowsTab() {
       <div className="flex items-center gap-3">
         <div className="relative">
           <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
-            {user.username?.charAt(0).toUpperCase()}
+            {user.nickname?.charAt(0).toUpperCase()}
           </div>
           {user.status === "online" && (
             <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
           )}
         </div>
         <div>
-          <div className="font-medium text-gray-900">{user.username}</div>
+          <div className="font-medium text-gray-900">{user.nickname}</div>
           <div className="text-sm text-gray-500">
             {user.activeAds} active ads
             {user.status === "online" ? (
@@ -81,7 +81,7 @@ export default function FollowsTab() {
       <Button
         variant="outline"
         size="sm"
-        onClick={() => handleUnfollow(user.id, user.username)}
+        onClick={() => handleUnfollow(user.id, user.nickname)}
         className="rounded-full px-4 py-1 text-sm"
       >
         Unfollow
