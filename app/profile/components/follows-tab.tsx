@@ -65,7 +65,7 @@ export default function FollowsTab() {
           description: (
               <div className="flex items-center gap-2">
                 <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                <span>User unfollowed.</span>
+                <span>{`${user.nickname} unfollowed.`}</span>
               </div>
             ),
             className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -100,7 +100,7 @@ export default function FollowsTab() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between gap-4">
-        <div className="relative">
+        <div className="relative mb-4">
           <Image
             src="/icons/search-icon-custom.png"
             alt="Search"
