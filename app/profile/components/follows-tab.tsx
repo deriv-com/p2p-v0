@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
-import { X, Search, Info } from "lucide-react"
+import { X, Search } from "lucide-react"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 
 interface FollowUser {
@@ -101,12 +101,6 @@ export default function FollowsTab() {
               <X className="w-4 h-4" />
             </button>
           )}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Switch checked={activeOnly} onCheckedChange={setActiveOnly} className="data-[state=checked]:bg-gray-400" />
-          <span className="text-sm text-gray-600">Active only</span>
-          <Info className="w-4 h-4 text-gray-400" />
         </div>
       </div>
 
