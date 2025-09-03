@@ -452,7 +452,11 @@ export async function deletePaymentMethod(id: string): Promise<PaymentMethodResp
 
 export async function getFavouriteUsers(): Promise<[]> {
   try {
-    const headers = AUTH.getAuthHeader()
+    const headers: {
+        ...AUTH.getAuthHeader(),
+        "Content-Type": "application/json",
+        "X-Branch": "development"
+      },
     const response = await fetch(`${API.baseUrl}/user-favourites`, {
       headers,
       credentials: "include",
