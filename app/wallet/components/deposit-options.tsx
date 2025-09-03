@@ -53,7 +53,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
     onDirectDepositClick(selectedCurrency)
   }
 
-  const handleMarketplaceClick = (e: React.MouseEvent) => {
+  const handleP2PTradingClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
     router.push("/")
@@ -115,7 +115,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
             "flex p-4 justify-center items-center gap-4 self-stretch",
             "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
           )}
-          onClick={handleMarketplaceClick}
+          onClick={handleP2PTradingClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
             <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
