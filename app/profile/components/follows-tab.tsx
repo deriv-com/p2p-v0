@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { getFavouriteUsers } from "@/services/api/api-profile"
 import Image from "next/image"
+import EmptyState from "@/components/empty-state"
 
 interface FollowUser {
   nickname: string,
@@ -116,9 +117,10 @@ export default function FollowsTab() {
         ) : filteredFollowing.length > 0 ? (
           filteredFollowing.map((user) => <UserCard key={user.id} user={user} />)
         ) : (
-          <div className="py-8 text-center text-gray-500">
-            {searchQuery ? "No users found matching your search." : "You're not following anyone yet."}
-          </div>
+          <EmptyState
+            title={searchQuery ? "No users found matching your search." : "You're not following anyone yet."}
+            redirectToAds={false}
+          />
         )}
       </div>
     </div>
