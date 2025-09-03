@@ -65,7 +65,7 @@ export default function Transfer({ onSendClick, onReceiveClick }: TransferProps)
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                   {selectedCurrencyData.logo && (
                     <Image
-                      src={selectedCurrencyData.logo || "/placeholder.svg"}
+                      src={selectedCurrencyData.logo }
                       alt={selectedCurrencyData.name}
                       width={24}
                       height={24}
