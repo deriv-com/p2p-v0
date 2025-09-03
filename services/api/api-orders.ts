@@ -314,6 +314,7 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
+      "X-Branch": "development",
     }
 
     const response = await fetch(url, {
@@ -421,18 +422,23 @@ export async function sendChatMessage(
   orderId: string,
   message: string,
   attachment?: string | null,
+  isPOT?: boolean,
 ): Promise<{ success: boolean; message: ChatMessage }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/chat`
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
+      "X-Branch": "development",
     }
 
     let body = ""
     if (attachment) {
       body = JSON.stringify({
         attachment,
+        data: {
+            is_proof_of_transfer: isPOT,
+        }
       })
     } else {
       body = JSON.stringify({
@@ -448,6 +454,8 @@ export async function sendChatMessage(
       headers,
       body,
     })
+
+    
 
     if (!response.ok) {
       throw new Error(`Error sending message: ${response.statusText}`)
