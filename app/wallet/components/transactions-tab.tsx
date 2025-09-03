@@ -173,8 +173,8 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="py-4 space-y-6 max-w-[560px] mx-auto">
-      <div className="flex gap-2">
+    <div className="py-4 space-y-6 max-w-[560px] mx-auto h-full flex flex-col">
+      <div className="flex gap-2 flex-shrink-0">
         {filters.map((filter) => (
           <Button
             key={filter}
@@ -192,7 +192,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="space-y-6">
+      <div className="flex-1 overflow-y-auto space-y-6">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
@@ -236,13 +236,13 @@ export default function TransactionsTab() {
             </div>
           </div>
         ))}
-      </div>
 
-      {filteredTransactions.length === 0 && !loading && (
-        <div className="text-center py-8 text-gray-500">
-          {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
-        </div>
-      )}
+        {filteredTransactions.length === 0 && !loading && (
+          <div className="text-center py-8 text-gray-500">
+            {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

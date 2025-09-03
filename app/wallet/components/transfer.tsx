@@ -43,7 +43,7 @@ export default function Transfer({ onSendClick, onReceiveClick, currencies }: Tr
                 <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                   {selectedCurrencyData.logo && (
                     <Image
-                      src={selectedCurrencyData.logo}
+                      src={selectedCurrencyData.logo || "/placeholder.svg"}
                       alt={selectedCurrencyData.name}
                       width={24}
                       height={24}
@@ -66,7 +66,7 @@ export default function Transfer({ onSendClick, onReceiveClick, currencies }: Tr
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     {currency.logo && (
                       <Image
-                        src={currency.logo}
+                        src={currency.logo || "/placeholder.svg"}
                         alt={currency.name}
                         width={24}
                         height={24}
