@@ -25,24 +25,24 @@ export default function FollowsTab() {
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
-  useEffect(() => {
-    const fetchFollowing = async () => {
-      try {
-        setIsLoading(true)
-        setError(null)
-        const data = await getFavouriteUsers()
-        setFollowing(data)
-      } catch (err) {
-        console.error("Failed to fetch favourite users:", err)
-        setError("Failed to load following list")
-        setFollowing([])
-      } finally {
-        setIsLoading(false)
-      }
+  const fetchFollowing = useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+      const data = await getFavouriteUsers()
+      setFollowing(data)
+    } catch (err) {
+      console.error("Failed to fetch favourite users:", err)
+      setError("Failed to load following list")
+      setFollowing([])
+    } finally {
+      setIsLoading(false)
     }
-
-    fetchFollowing()
   }, [])
+
+  useEffect(() => {
+    fetchFollowing()
+  }, [fetchFollowing])
 
   const filteredFollowing = useMemo(() => {
     if (!searchQuery.trim()) return following
@@ -66,7 +66,7 @@ export default function FollowsTab() {
           const result = await toggleFavouriteAdvertiser(user.user_id, false)
 
           if (result.success) {
-            setFollowing((prev) => prev.filter((u) => u.user_id !== user.user_id))
+            await fetchFollowing()
             toast({
               description: (
                 <div className="flex items-center gap-2">
