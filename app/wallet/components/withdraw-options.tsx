@@ -82,7 +82,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                   <span className="text-base">{selectedCurrencyData.name}</span>
                 </SelectValue>
               </div>
-            ) : null}
+            ) :  <div></div>}
           </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
