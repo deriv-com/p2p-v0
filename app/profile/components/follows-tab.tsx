@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { X, Search, Info } from "lucide-react"
+import { getFavouriteUsers } from "@/services/api/api-profile"
 
 interface FollowUser {
   id: string
@@ -14,26 +15,38 @@ interface FollowUser {
   lastSeen?: string
 }
 
-// Mock data - replace with actual API data
-const mockFollowing: FollowUser[] = [
-  {
-    id: "1",
-    username: "Brad_user",
-    activeAds: 2,
-    status: "online",
-  },
-  {
-    id: "2",
-    username: "Bradley-cooper",
-    activeAds: 10,
-    status: "offline",
-    lastSeen: "2 min ago",
-  },
-]
-
 export default function FollowsTab() {
   const [searchQuery, setSearchQuery] = useState("Brad")
   const [activeOnly, setActiveOnly] = useState(false)
+  const [following, setFollowing] = useState<FollowUser[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchFollowing = async () => {
+      try {
+        setIsLoading(true)
+        setError(null)
+        const data = await getFavouriteUsers()
+        const transformedData: FollowUser[] = data.map((user: any) => ({
+          id: user.id?.toString() || Math.random().toString(),
+          username: user.nickname || user.username || "Unknown User",
+          activeAds: user.active_ads || user.activeAds || 0,
+          status: user.is_online ? "online" : "offline",
+          lastSeen: user.last_seen || user.lastSeen,
+        }))
+        setFollowing(transformedData)
+      } catch (err) {
+        console.error("Failed to fetch favourite users:", err)
+        setError("Failed to load following list")
+        setFollowing([]) // Fallback to empty array
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchFollowing()
+  }, [])
 
   const handleUnfollow = (userId: string, username: string) => {
     // TODO: Implement unfollow functionality
@@ -47,12 +60,10 @@ export default function FollowsTab() {
   const filterUsers = (users: FollowUser[]) => {
     let filtered = users
 
-    // Filter by search query
     if (searchQuery.trim()) {
       filtered = filtered.filter((user) => user.username.toLowerCase().includes(searchQuery.toLowerCase()))
     }
 
-    // Filter by active only
     if (activeOnly) {
       filtered = filtered.filter((user) => user.status === "online")
     }
@@ -94,8 +105,8 @@ export default function FollowsTab() {
     </div>
   )
 
-  const followingCount = mockFollowing.length
-  const filteredFollowing = filterUsers(mockFollowing)
+  const followingCount = following.length
+  const filteredFollowing = filterUsers(following)
 
   return (
     <div className="space-y-4">
@@ -131,7 +142,11 @@ export default function FollowsTab() {
       </div>
 
       <div className="space-y-0 divide-y divide-gray-100">
-        {filteredFollowing.length > 0 ? (
+        {isLoading ? (
+          <div className="py-8 text-center text-gray-500">Loading...</div>
+        ) : error ? (
+          <div className="py-8 text-center text-red-500">{error}</div>
+        ) : filteredFollowing.length > 0 ? (
           filteredFollowing.map((user) => <UserCard key={user.id} user={user} />)
         ) : (
           <div className="py-8 text-center text-gray-500">
