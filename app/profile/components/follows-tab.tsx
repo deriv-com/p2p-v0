@@ -28,13 +28,6 @@ export default function FollowsTab() {
         setIsLoading(true)
         setError(null)
         const data = await getFavouriteUsers()
-        const transformedData: FollowUser[] = data.map((user: any) => ({
-          id: user.id?.toString() || Math.random().toString(),
-          username: user.nickname || user.username || "Unknown User",
-          activeAds: user.active_ads || user.activeAds || 0,
-          status: user.is_online ? "online" : "offline",
-          lastSeen: user.last_seen || user.lastSeen,
-        }))
         setFollowing(transformedData)
       } catch (err) {
         console.error("Failed to fetch favourite users:", err)
