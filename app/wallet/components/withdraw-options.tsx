@@ -68,14 +68,16 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
             <div className="flex items-center gap-3">
               <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
                 <Image
-                  src={selectedCurrencyData.logo || "/placeholder.svg"}
-                  alt={selectedCurrencyData.name}
+                  src={selectedCurrencyData?.logo || "/placeholder.svg"}
+                  alt={selectedCurrencyData?.name || "Currency"}
+                  width={24}
+                  height={24}
                   className="w-full h-full object-cover"
                 />
               </div>
               <SelectValue>
                 <span className="text-base">
-                  {selectedCurrencyData.name} ({selectedCurrencyData.code})
+                  {selectedCurrencyData?.name} ({selectedCurrencyData?.code})
                 </span>
               </SelectValue>
             </div>
@@ -88,6 +90,8 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
                     <Image
                       src={currency.logo || "/placeholder.svg"}
                       alt={currency.name}
+                      width={24}
+                      height={24}
                       className="w-full h-full object-cover"
                     />
                   </div>
@@ -119,7 +123,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Trade ${selectedCurrencyData.code} directly to other users on the P2P marketplace.`}
+              {`Trade ${selectedCurrencyData?.code} directly to other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
