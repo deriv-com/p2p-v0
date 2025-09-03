@@ -13,7 +13,6 @@ interface FollowUser {
 
 export default function FollowsTab() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [activeOnly, setActiveOnly] = useState(false)
   const [following, setFollowing] = useState<FollowUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
