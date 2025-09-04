@@ -108,6 +108,20 @@ export default function TransactionDetailsPage() {
     return formatTransactionType(sourceWalletType) // fallback
   }
 
+  const getToWalletName = (transaction: Transaction) => {
+    const destinationWalletType = transaction.metadata.destination_wallet_type
+    const transactionCurrency = transaction.metadata.transaction_currency
+
+    if (destinationWalletType === "main") {
+      return "Trading Wallet"
+    } else if (destinationWalletType === "system") {
+      return `${transactionCurrency} Wallet`
+    } else if (destinationWalletType === "p2p") {
+      return "P2P Wallet"
+    }
+    return formatTransactionType(destinationWalletType) // fallback
+  }
+
   const transactionFields = [
     { label: "Transaction ID", value: transaction?.transaction_id?.toString() },
     {
@@ -124,10 +138,9 @@ export default function TransactionDetailsPage() {
     },
     {
       label: "To",
-      value:
-        transaction?.metadata?.payout_method && transaction?.metadata?.destination_client_id
-          ? `${transaction.metadata.payout_method}\n${transaction.metadata.destination_client_id}`
-          : "",
+      value: transaction?.metadata?.destination_wallet_type
+        ? `${getToWalletName(transaction)}\n${transaction?.metadata?.destination_wallet_id || ""}`
+        : "",
     },
     {
       label: "Withdrawn amount",
