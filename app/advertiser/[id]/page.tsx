@@ -1,6 +1,6 @@
 "use client"
 
-export const runtime = 'edge'
+export const runtime = "edge"
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
@@ -144,7 +144,6 @@ export default function AdvertiserProfilePage() {
       } else {
         console.error("Failed to toggle block status:", result.message)
       }
-
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
@@ -275,11 +274,14 @@ export default function AdvertiserProfilePage() {
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
                     <div className="flex items-center mt-[5.27px]">
-                      {profile?.rating_average_lifetime && <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />}
-                      {profile?.rating_average_lifetime ?
-                        <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span> :
+                      {profile?.rating_average_lifetime && (
+                        <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                      )}
+                      {profile?.rating_average_lifetime ? (
+                        <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span>
+                      ) : (
                         <span className="font-bold text-base">Not rated yet</span>
-                      }
+                      )}
                     </div>
                   </div>
                   <div>
@@ -302,10 +304,11 @@ export default function AdvertiserProfilePage() {
                       </Tooltip>
                     </div>
                     <div className="flex items-center mt-1">
-                      {profile?.recommend_average_lifetime ?
-                        <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span> :
+                      {profile?.recommend_average_lifetime ? (
+                        <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span>
+                      ) : (
                         <span className="font-bold text-base">Not recommended yet</span>
-                      }
+                      )}
                     </div>
                   </div>
                   <div>
@@ -441,9 +444,9 @@ export default function AdvertiserProfilePage() {
                                   {ad.payment_currency}{" "}
                                   {ad.exchange_rate
                                     ? ad.exchange_rate.toLocaleString(undefined, {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    })
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      })
                                     : ""}
                                 </div>
                                 {ad.exchange_rate_type === "floating" && (
@@ -464,10 +467,11 @@ export default function AdvertiserProfilePage() {
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
                                       <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                          ? "bg-paymentMethod-bank"
-                                          : "bg-paymentMethod-ewallet"
-                                          }`}
+                                        className={`h-2 w-2 rounded-full mr-2 ${
+                                          method.toLowerCase().includes("bank")
+                                            ? "bg-paymentMethod-bank"
+                                            : "bg-paymentMethod-ewallet"
+                                        }`}
                                       ></div>
                                       <span className="text-xs">{formatPaymentMethodName(method)}</span>
                                     </div>

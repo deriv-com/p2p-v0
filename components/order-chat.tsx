@@ -56,9 +56,9 @@ export default function OrderChat({
 
         if (data.payload.data.message || data.payload.data.attachment) {
           const newMessage = data.payload.data
-          if(newMessage.order_id == orderId) {
+          if (newMessage.order_id == orderId) {
             setMessages((prev) => {
-                return [...prev, newMessage]
+              return [...prev, newMessage]
             })
           }
         }
