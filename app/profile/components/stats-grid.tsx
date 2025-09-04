@@ -96,13 +96,13 @@ export default function StatsGrid({ stats }) {
                 />
                 <StatCard
                   title="Avg. pay time"
-                  value={stats.statistics_30day?.buy_time_average ? `${stats.statistics_30day.buy_time_average}s` : "-"}
+                  value={stats.statistics_30day?.buy_time_average ? `${stats.statistics_30day.buy_time_average} mins` : "-"}
                 />
                 <StatCard
                   title="Avg. release time"
                   value={
                     stats.statistics_30day?.release_time_average
-                      ? `${stats.statistics_30day.release_time_average}s`
+                      ? `${stats.statistics_30day.release_time_average} mins`
                       : "-"
                   }
                 />
@@ -170,7 +170,7 @@ export default function StatsGrid({ stats }) {
             />
             <StatCard
               title="Avg. pay time"
-              value={stats.statistics_30day?.buy_time_average ? `${stats.statistics_30day.buy_time_average}s` : "-"}
+              value={stats.statistics_30day?.buy_time_average ? `${stats.statistics_30day.buy_time_average} mins` : "-"}
             />
           </div>
 
@@ -180,7 +180,7 @@ export default function StatsGrid({ stats }) {
             <StatCard
               title="Avg. release time"
               value={
-                stats.statistics_30day?.release_time_average ? `${stats.statistics_30day.release_time_average}s` : "-"
+                stats.statistics_30day?.release_time_average ? `${stats.statistics_30day.release_time_average} mins` : "-"
               }
             />
           </div>
