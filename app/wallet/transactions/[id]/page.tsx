@@ -82,13 +82,23 @@ export default function TransactionDetailsPage() {
     return `${numAmount.toFixed(2)} ${currency}`
   }
 
+  const getTransactionType = (transaction: Transaction) => {
+    const walletTransactionType = transaction.metadata.wallet_transaction_type
+    if (walletTransactionType === "transfer_cashier_to_wallet") {
+      return "Deposit"
+    } else if (walletTransactionType === "transfer_cashier_from_wallet") {
+      return "Withdraw"
+    } else if (walletTransactionType === "transfer_between_wallets") {
+      return "Transfer"
+    }
+    return formatTransactionType(walletTransactionType) // fallback to formatted version
+  }
+
   const transactionFields = [
     { label: "Transaction ID", value: transaction?.transaction_id?.toString() },
     {
       label: "Transaction type",
-      value: transaction?.metadata?.wallet_transaction_type
-        ? formatTransactionType(transaction.metadata.wallet_transaction_type)
-        : "",
+      value: transaction ? getTransactionType(transaction) : "",
     },
     { label: "Date", value: transaction?.timestamp ? formatDate(transaction.timestamp) : "" },
     { label: "Time", value: transaction?.timestamp ? formatTime(transaction.timestamp) : "" },
