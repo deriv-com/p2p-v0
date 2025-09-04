@@ -206,7 +206,7 @@ export default function AdvertiserProfilePage() {
 
     if (duration == 1) return "1 min"
 
-    return duration.toFixed(2).toString() + " mins"
+    return duration.toString() + " mins"
   }
 
   const CURRENT_USER = USER
