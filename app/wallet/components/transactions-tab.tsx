@@ -11,11 +11,21 @@ interface Transaction {
   transaction_id: number
   timestamp: string
   metadata: {
-    transaction_status: string
-    transaction_currency?: string
-    transaction_net_amount?: string
-    source_wallet_id?: string
+    brand_name?: string
+    description?: string
+    destination_client_id?: string
     destination_wallet_id?: string
+    destination_wallet_type?: string
+    is_reversible?: string
+    payout_method?: string
+    requester_platform?: string
+    source_client_id?: string
+    source_wallet_id?: string
+    source_wallet_type?: string
+    transaction_currency?: string
+    transaction_gross_amount?: string
+    transaction_net_amount?: string
+    transaction_status: string
     wallet_transaction_type?: string
   }
 }
@@ -208,7 +218,7 @@ export default function TransactionsTab() {
                         <div className="flex-shrink-0">
                           {display.iconSrc && (
                             <Image
-                              src={display.iconSrc}
+                              src={display.iconSrc || "/placeholder.svg"}
                               alt={`${display.type} icon`}
                               width={32}
                               height={32}
