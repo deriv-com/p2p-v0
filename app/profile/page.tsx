@@ -22,7 +22,7 @@ export default function ProfilePage() {
        const headers = {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
-        "X-Branch": "development",
+        "X-Branch": "development"
       },
 
         const response = await fetch(url, {
