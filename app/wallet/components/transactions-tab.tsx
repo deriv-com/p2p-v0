@@ -42,7 +42,6 @@ export default function TransactionsTab() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   const filters = ["All", "Deposit", "Withdraw", "Transfer"]
 
