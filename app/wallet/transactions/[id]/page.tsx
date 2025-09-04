@@ -38,7 +38,6 @@ export default function TransactionDetailsPage() {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Parse transaction data from URL parameters
     const urlParams = new URLSearchParams(window.location.search)
     const transactionData = urlParams.get("data")
 
@@ -91,7 +90,7 @@ export default function TransactionDetailsPage() {
     } else if (walletTransactionType === "transfer_between_wallets") {
       return "Transfer"
     }
-    return formatTransactionType(walletTransactionType) // fallback to formatted version
+    return formatTransactionType(walletTransactionType)
   }
 
   const getFromWalletName = (transaction: Transaction) => {
@@ -105,7 +104,7 @@ export default function TransactionDetailsPage() {
     } else if (sourceWalletType === "p2p") {
       return "P2P Wallet"
     }
-    return formatTransactionType(sourceWalletType) // fallback
+    return formatTransactionType(sourceWalletType)
   }
 
   const getToWalletName = (transaction: Transaction) => {
@@ -119,7 +118,7 @@ export default function TransactionDetailsPage() {
     } else if (destinationWalletType === "p2p") {
       return "P2P Wallet"
     }
-    return formatTransactionType(destinationWalletType) // fallback
+    return formatTransactionType(destinationWalletType)
   }
 
   const transactionFields = [
@@ -149,7 +148,7 @@ export default function TransactionDetailsPage() {
           ? formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
           : "",
     },
-  ].filter((field) => field.value) // Only show fields with values
+  ].filter((field) => field.value)
 
   if (isLoading) {
     return (
@@ -165,14 +164,12 @@ export default function TransactionDetailsPage() {
       <Navigation isBackBtnVisible={true} redirectUrl="/wallet" title="" />
 
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
-        {/* Header with close button */}
         <div className="flex justify-end pt-10">
           <Button variant="ghost" size="sm" onClick={() => window.history.back()} className="p-2">
             <X className="h-6 w-6" />
           </Button>
         </div>
 
-        {/* Transaction details title */}
         <div className="pt-10 pb-6">
           <h1
             style={{
@@ -186,7 +183,6 @@ export default function TransactionDetailsPage() {
           </h1>
         </div>
 
-        {/* Transaction fields */}
         <div className="space-y-0">
           {transactionFields.map((field, index) => (
             <div key={index} className="py-2">
