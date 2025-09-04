@@ -66,6 +66,7 @@ export async function getUserProfile(): Promise<UserProfile> {
       headers: {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
+        "X-Branch": "development"
       },
     })
 
