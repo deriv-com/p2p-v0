@@ -244,6 +244,8 @@ export default function TransactionsTab() {
             {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
           </div>
         )}
+
+        <div className="h-16 p-4"></div>
       </div>
     </div>
   )
