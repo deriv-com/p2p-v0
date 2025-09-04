@@ -19,7 +19,7 @@ export default function ProfilePage() {
     const fetchUserData = async () => {
       try {
         const url = `${API.baseUrl}/users/me`
-       const headers: {
+       const headers = {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
         "X-Branch": "development",
