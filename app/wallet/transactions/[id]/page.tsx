@@ -94,6 +94,20 @@ export default function TransactionDetailsPage() {
     return formatTransactionType(walletTransactionType) // fallback to formatted version
   }
 
+  const getFromWalletName = (transaction: Transaction) => {
+    const sourceWalletType = transaction.metadata.source_wallet_type
+    const transactionCurrency = transaction.metadata.transaction_currency
+
+    if (sourceWalletType === "main") {
+      return "Trading Wallet"
+    } else if (sourceWalletType === "system") {
+      return `${transactionCurrency} Wallet`
+    } else if (sourceWalletType === "p2p") {
+      return "P2P Wallet"
+    }
+    return formatTransactionType(sourceWalletType) // fallback
+  }
+
   const transactionFields = [
     { label: "Transaction ID", value: transaction?.transaction_id?.toString() },
     {
@@ -105,7 +119,7 @@ export default function TransactionDetailsPage() {
     {
       label: "From",
       value: transaction?.metadata?.source_wallet_type
-        ? `${formatTransactionType(transaction.metadata.source_wallet_type)} Wallet\n${transaction?.metadata?.source_wallet_id || ""}`
+        ? `${getFromWalletName(transaction)}\n${transaction?.metadata?.source_wallet_id || ""}`
         : "",
     },
     {
