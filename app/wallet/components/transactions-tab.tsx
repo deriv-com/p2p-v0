@@ -11,22 +11,22 @@ interface Transaction {
   transaction_id: number
   timestamp: string
   metadata: {
-    brand_name?: string
-    description?: string
-    destination_client_id?: string
-    destination_wallet_id?: string
-    destination_wallet_type?: string
-    is_reversible?: string
-    payout_method?: string
-    requester_platform?: string
-    source_client_id?: string
-    source_wallet_id?: string
-    source_wallet_type?: string
-    transaction_currency?: string
-    transaction_gross_amount?: string
-    transaction_net_amount?: string
+    brand_name: string
+    description: string
+    destination_client_id: string
+    destination_wallet_id: string
+    destination_wallet_type: string
+    is_reversible: string
+    payout_method: string
+    requester_platform: string
+    source_client_id: string
+    source_wallet_id: string
+    source_wallet_type: string
+    transaction_currency: string
+    transaction_gross_amount: string
+    transaction_net_amount: string
     transaction_status: string
-    wallet_transaction_type?: string
+    wallet_transaction_type: string
   }
 }
 
@@ -232,8 +232,7 @@ export default function TransactionsTab() {
                           <div className="text-base font-normal text-gray-900">{display.type}</div>
                           <div className={`${display.amountColor} text-base font-bold`}>
                             {display.amountPrefix}
-                            {transaction.metadata.transaction_net_amount || "0.00"}{" "}
-                            {transaction.metadata.transaction_currency || "USD"}
+                            {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
                           </div>
                         </div>
                       </div>
