@@ -1,6 +1,6 @@
 "use client"
 
-export const runtime = 'edge'
+export const runtime = "edge"
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
@@ -33,20 +33,37 @@ interface AdvertiserProfile {
   is_favourite: boolean
   temp_ban_until: number | null
   trade_band: string
-  order_count_lifetime: number
-  order_amount_lifetime: string
-  partner_count_lifetime: number
-  rating_average_lifetime: number
-  recommend_average_lifetime: number
-  recommend_count_lifetime: number
-  buy_amount_30day: string
-  buy_count_30day: number
-  buy_time_average_30day: number
-  sell_amount_30day: string
-  sell_count_30day: number
-  release_time_average_30day: number
-  rating_average_30day: number
-  completion_average_30day: number
+  statistics_30day: {
+    completion_amount_buy: string
+    completion_amount_sell: string
+    completion_amount_all: string
+    completion_count_buy: number
+    completion_count_sell: number
+    completion_count_all: number
+    completion_rate_buy: number
+    completion_rate_sell: number
+    completion_rate_all: number
+    buy_time_average: number
+    release_time_average: number
+    rating_average: number
+  }
+  statistics_lifetime: {
+    completion_amount_buy: string
+    completion_amount_sell: string
+    completion_amount_all: string
+    completion_count_buy: number
+    completion_count_sell: number
+    completion_count_all: number
+    completion_rate_buy: number
+    completion_rate_sell: number
+    completion_rate_all: number
+    buy_time_average: number
+    release_time_average: number
+    rating_average: number
+    recommend_average: number
+    recommend_count: number
+    partner_count: number
+  }
 }
 
 export default function AdvertiserProfilePage() {
@@ -144,7 +161,6 @@ export default function AdvertiserProfilePage() {
       } else {
         console.error("Failed to toggle block status:", result.message)
       }
-
     } catch (error) {
       console.error("Error toggling block status:", error)
     } finally {
@@ -275,11 +291,14 @@ export default function AdvertiserProfilePage() {
                   <div>
                     <div className="text-xs text-slate-500">Rating</div>
                     <div className="flex items-center mt-[5.27px]">
-                      {profile?.rating_average_lifetime && <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />}
-                      {profile?.rating_average_lifetime ?
-                        <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span> :
+                      {profile?.statistics_lifetime?.rating_average && (
+                        <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                      )}
+                      {profile?.statistics_lifetime?.rating_average ? (
+                        <span className="font-bold text-base">{profile?.statistics_lifetime.rating_average}/5</span>
+                      ) : (
                         <span className="font-bold text-base">Not rated yet</span>
-                      }
+                      )}
                     </div>
                   </div>
                   <div>
@@ -296,21 +315,24 @@ export default function AdvertiserProfilePage() {
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">Recommended by {profile?.recommend_count_lifetime} traders</p>
+                          <p className="opacity-[0.72]">
+                            Recommended by {profile?.statistics_lifetime?.recommend_count} traders
+                          </p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
                     </div>
                     <div className="flex items-center mt-1">
-                      {profile?.recommend_average_lifetime ?
-                        <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span> :
+                      {profile?.statistics_lifetime?.recommend_average ? (
+                        <span className="font-bold text-base">{profile?.statistics_lifetime.recommend_average}%</span>
+                      ) : (
                         <span className="font-bold text-base">Not recommended yet</span>
-                      }
+                      )}
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-slate-500">Total orders</div>
-                    <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime}</div>
+                    <div className="font-bold text-lg mt-1">{profile?.statistics_lifetime?.completion_count_all}</div>
                   </div>
                 </div>
               </div>
@@ -320,13 +342,17 @@ export default function AdvertiserProfilePage() {
             <div>
               <div className="text-xs text-slate-500">Buy completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.buy_count_30day ? `${profile?.completion_average_30day}% ${profile?.buy_count_30day}` : "-"}
+                {profile?.statistics_30day?.completion_count_buy
+                  ? `${profile?.statistics_30day.completion_rate_buy}% ${profile?.statistics_30day.completion_count_buy}`
+                  : "-"}
               </div>
             </div>
             <div>
               <div className="text-xs text-slate-500">Sell completion (30d)</div>
               <div className="font-bold mt-1">
-                {profile?.sell_count_30day ? `${profile?.completion_average_30day}% ${profile?.sell_count_30day}` : "-"}
+                {profile?.statistics_30day?.completion_count_sell
+                  ? `${profile?.statistics_30day.completion_rate_sell}% ${profile?.statistics_30day.completion_count_sell}`
+                  : "-"}
               </div>
             </div>
             <div>
@@ -348,15 +374,15 @@ export default function AdvertiserProfilePage() {
                   </TooltipContent>
                 </Tooltip>
               </div>
-              <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
+              <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.statistics_30day?.completion_amount_buy || "0") + Number.parseFloat(profile?.statistics_30day?.completion_amount_sell || "0")).toFixed(2)}`}</div>
             </div>
             <div>
               <div className="text-xs text-slate-500">Avg. pay time (30d)</div>
-              <div className="font-bold mt-1">{getDuration(profile?.buy_time_average_30day)}</div>
+              <div className="font-bold mt-1">{getDuration(profile?.statistics_30day?.buy_time_average)}</div>
             </div>
             <div>
               <div className="text-xs text-slate-500">Avg. release time (30d)</div>
-              <div className="font-bold mt-1">{getDuration(profile?.release_time_average_30day)}</div>
+              <div className="font-bold mt-1">{getDuration(profile?.statistics_30day?.release_time_average)}</div>
             </div>
             <div>
               <div>
@@ -378,7 +404,7 @@ export default function AdvertiserProfilePage() {
                     </TooltipContent>
                   </Tooltip>
                 </div>
-                <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
+                <div className="font-bold mt-1">{profile?.statistics_lifetime?.partner_count}</div>
               </div>
             </div>
           </div>
@@ -441,9 +467,9 @@ export default function AdvertiserProfilePage() {
                                   {ad.payment_currency}{" "}
                                   {ad.exchange_rate
                                     ? ad.exchange_rate.toLocaleString(undefined, {
-                                      minimumFractionDigits: 2,
-                                      maximumFractionDigits: 2,
-                                    })
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                      })
                                     : ""}
                                 </div>
                                 {ad.exchange_rate_type === "floating" && (
@@ -464,10 +490,11 @@ export default function AdvertiserProfilePage() {
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
                                       <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${method.toLowerCase().includes("bank")
-                                          ? "bg-paymentMethod-bank"
-                                          : "bg-paymentMethod-ewallet"
-                                          }`}
+                                        className={`h-2 w-2 rounded-full mr-2 ${
+                                          method.toLowerCase().includes("bank")
+                                            ? "bg-paymentMethod-bank"
+                                            : "bg-paymentMethod-ewallet"
+                                        }`}
                                       ></div>
                                       <span className="text-xs">{formatPaymentMethodName(method)}</span>
                                     </div>
