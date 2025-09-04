@@ -200,19 +200,19 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
 
-        if(response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
+        if (response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
           description = "A payment method with the same values already exists. Add a new one."
-        } 
+        }
         showAlert({
-            title,
-            description,
-            confirmText: "OK",
-            type: "warning"
+          title,
+          description,
+          confirmText: "OK",
+          type: "warning",
         })
       }
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
       setIsAddingPaymentMethod(false)
     }
