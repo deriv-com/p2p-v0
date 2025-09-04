@@ -23,7 +23,7 @@ export default function ProfilePage() {
         ...AUTH.getAuthHeader(),
         "Content-Type": "application/json",
         "X-Branch": "development"
-      },
+          }
 
         const response = await fetch(url, {
           credentials: "include",
