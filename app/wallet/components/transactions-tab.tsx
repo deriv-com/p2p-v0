@@ -192,7 +192,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="space-y-6 h-full overflow-y-scroll">
+      <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
