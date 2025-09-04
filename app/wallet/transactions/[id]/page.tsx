@@ -149,40 +149,6 @@ export default function TransactionDetailsPage() {
           </h1>
         </div>
 
-        {/* Status indicator section */}
-        <div className="mb-6">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center">
-              <div
-                className={`w-4 h-4 rounded-full border-2 mr-2 ${
-                  transaction?.metadata?.transaction_status === "processing"
-                    ? "border-orange-500 bg-orange-500"
-                    : "border-gray-300"
-                }`}
-              >
-                {transaction?.metadata?.transaction_status === "processing" && (
-                  <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
-                )}
-              </div>
-              <span className="text-sm">Processing</span>
-            </div>
-            <div className="flex items-center">
-              <div
-                className={`w-4 h-4 rounded-full border-2 mr-2 ${
-                  transaction?.metadata?.transaction_status === "successful"
-                    ? "border-green-500 bg-green-500"
-                    : "border-gray-300"
-                }`}
-              >
-                {transaction?.metadata?.transaction_status === "successful" && (
-                  <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
-                )}
-              </div>
-              <span className="text-sm">Successful</span>
-            </div>
-          </div>
-        </div>
-
         {/* Transaction fields */}
         <div className="space-y-0">
           {transactionFields.map((field, index) => (
