@@ -10,27 +10,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 interface DepositOptionProps {
   onClose: () => void
   onDirectDepositClick: (currency: string) => void
+  currencies: Currency[]
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
+interface Currency {
+  code: string
+  name: string
+  logo: string
+}
+
+export default function DepositOptions({ onClose, onDirectDepositClick, currencies }: DepositOptionProps) {
   const router = useRouter()
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
-
-  // TODO: Get from currencies API
-  const currencies = [
-    { code: "USD", name: "US dollar", logo: "/icons/usd-flag.png" },
-    { code: "BTC", name: "Bitcoin", logo: "/icons/bitcoin-logo.png" },
-    { code: "ETH", name: "Ethereum", logo: "/icons/ethereum-logo.png" },
-    { code: "LTC", name: "Litecoin", logo: "/icons/litecoin-logo.png" },
-    { code: "USDC", name: "USD Coin", logo: "/icons/usdc-logo.png" },
-  ]
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectDepositClick(selectedCurrency) // Pass selected currency
+    onDirectDepositClick(selectedCurrency)
   }
 
   const handleP2PTradingClick = (e: React.MouseEvent) => {
@@ -45,35 +43,43 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
         <h2 className="text-base font-bold mb-4">Choose currency</h2>
         <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
           <SelectTrigger className="w-full h-14 rounded-xl border border-border">
-            <div className="flex items-center gap-3">
-              <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                <Image
-                  src={selectedCurrencyData.logo}
-                  alt={selectedCurrencyData.name}
-                  className="w-full h-full object-cover"
-                />
+            {selectedCurrencyData ? (
+              <div className="flex items-center gap-3">
+                <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
+                  {selectedCurrencyData.logo && (
+                    <Image
+                      src={selectedCurrencyData.logo }
+                      alt={selectedCurrencyData.name}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+                <SelectValue>
+                  <span className="text-base">{selectedCurrencyData.name}</span>
+                </SelectValue>
               </div>
-              <SelectValue>
-                <span className="text-base">
-                  {selectedCurrencyData.name} ({selectedCurrencyData.code})
-                </span>
-              </SelectValue>
-            </div>
+            ) : (
+              <div></div>
+            )}
           </SelectTrigger>
           <SelectContent>
             {currencies.map((currency) => (
               <SelectItem key={currency.code} value={currency.code}>
                 <div className="flex items-center gap-3">
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={currency.logo}
-                      alt={`${currency.name}`}
-                      className="w-full h-full object-cover"
-                    />
+                    {currency.logo && (
+                      <Image
+                        src={currency.logo }
+                        alt={currency.name}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
-                  <span>
-                    {currency.name} ({currency.code})
-                  </span>
+                  <span>{currency.name}</span>
                 </div>
               </SelectItem>
             ))}
@@ -94,12 +100,12 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
           onClick={handleP2PTradingClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/up-down-arrows.png" alt="Trade" />
+            <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
             <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Buy ${selectedCurrencyData.name} directly from other users on the P2P marketplace.`}
+              {`Buy ${selectedCurrencyData?.name} directly from other users on the P2P marketplace.`}
             </p>
           </div>
         </div>
@@ -112,7 +118,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
           onClick={handleDirectDepositClick}
         >
           <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/bank-icon.png" alt="Bank" />
+            <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
           </div>
           <div className="flex-1">
             <h3 className="text-base font-bold text-black leading-6 mb-1">Direct deposit</h3>

@@ -173,7 +173,7 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="py-4 space-y-6 max-w-[560px] mx-auto">
+    <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
       <div className="flex gap-2">
         {filters.map((filter) => (
           <Button
@@ -192,7 +192,7 @@ export default function TransactionsTab() {
         ))}
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll">
         {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
           <div key={dateKey} className="space-y-4">
             <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
@@ -206,14 +206,16 @@ export default function TransactionsTab() {
                     <div className="flex items-center justify-between p-4 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0">
-                          <Image
-                            src={display.iconSrc || "/placeholder.svg"}
-                            alt={`${display.type} icon`}
-                            width={32}
-                            height={32}
-                            className="w-8 h-8 object-contain"
-                            priority={index < 3}
-                          />
+                          {display.iconSrc && (
+                            <Image
+                              src={display.iconSrc}
+                              alt={`${display.type} icon`}
+                              width={32}
+                              height={32}
+                              className="w-8 h-8 object-contain"
+                              priority={index < 3}
+                            />
+                          )}
                         </div>
 
                         <div>
@@ -236,13 +238,15 @@ export default function TransactionsTab() {
             </div>
           </div>
         ))}
-      </div>
 
-      {filteredTransactions.length === 0 && !loading && (
-        <div className="text-center py-8 text-gray-500">
-          {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
-        </div>
-      )}
+        {filteredTransactions.length > 0 && <div className="p-4 h-16"></div>}
+
+        {filteredTransactions.length === 0 && !loading && (
+          <div className="text-center py-8 text-gray-500">
+            {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+          </div>
+        )}
+      </div>
     </div>
   )
 }
