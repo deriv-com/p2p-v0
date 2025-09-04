@@ -56,7 +56,7 @@ export default function TransactionDetailsPage() {
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
     return date.toLocaleDateString("en-GB", {
-      day: "2-digit",
+      day: "numeric",
       month: "long",
       year: "numeric",
     })
@@ -64,12 +64,13 @@ export default function TransactionDetailsPage() {
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp)
-    return date.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      timeZoneName: "short",
-    })
+    return (
+      date.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+      }) + " GMT"
+    )
   }
 
   const formatTransactionType = (type: string) => {
@@ -93,34 +94,24 @@ export default function TransactionDetailsPage() {
     { label: "Time", value: transaction?.timestamp ? formatTime(transaction.timestamp) : "" },
     {
       label: "From",
-      value: `${transaction?.metadata?.source_wallet_type || ""} Wallet\n${transaction?.metadata?.source_wallet_id || ""}`,
+      value: transaction?.metadata?.source_wallet_type
+        ? `${formatTransactionType(transaction.metadata.source_wallet_type)} Wallet\n${transaction?.metadata?.source_wallet_id || ""}`
+        : "",
     },
     {
       label: "To",
-      value: `${transaction?.metadata?.destination_wallet_type || ""} Wallet\n${transaction?.metadata?.destination_wallet_id || ""}`,
-    },
-    {
-      label: "Transferred amount",
       value:
-        transaction?.metadata?.transaction_gross_amount && transaction?.metadata?.transaction_currency
-          ? formatAmount(transaction.metadata.transaction_gross_amount, transaction.metadata.transaction_currency)
+        transaction?.metadata?.payout_method && transaction?.metadata?.destination_client_id
+          ? `${transaction.metadata.payout_method}\n${transaction.metadata.destination_client_id}`
           : "",
     },
     {
-      label: "Amount received",
+      label: "Withdrawn amount",
       value:
         transaction?.metadata?.transaction_net_amount && transaction?.metadata?.transaction_currency
           ? formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
           : "",
     },
-    { label: "Brand name", value: transaction?.metadata?.brand_name },
-    { label: "Description", value: transaction?.metadata?.description },
-    { label: "Destination client ID", value: transaction?.metadata?.destination_client_id },
-    { label: "Is reversible", value: transaction?.metadata?.is_reversible },
-    { label: "Payout method", value: transaction?.metadata?.payout_method },
-    { label: "Requester platform", value: transaction?.metadata?.requester_platform },
-    { label: "Source client ID", value: transaction?.metadata?.source_client_id },
-    { label: "Transaction status", value: transaction?.metadata?.transaction_status },
   ].filter((field) => field.value) // Only show fields with values
 
   if (isLoading) {
@@ -138,25 +129,59 @@ export default function TransactionDetailsPage() {
 
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         {/* Header with close button */}
-        <div className="flex justify-between items-center pt-10 pb-10">
-          <div></div>
+        <div className="flex justify-end pt-10">
           <Button variant="ghost" size="sm" onClick={() => window.history.back()} className="p-2">
             <X className="h-6 w-6" />
           </Button>
         </div>
 
         {/* Transaction details title */}
-        <h1
-          className="mb-6"
-          style={{
-            color: "#00080A",
-            fontSize: "24px",
-            fontWeight: "800",
-            fontStyle: "normal",
-          }}
-        >
-          Transaction details
-        </h1>
+        <div className="pt-10 pb-6">
+          <h1
+            style={{
+              color: "#00080A",
+              fontSize: "24px",
+              fontWeight: "800",
+              fontStyle: "normal",
+            }}
+          >
+            Transaction details
+          </h1>
+        </div>
+
+        {/* Status indicator section */}
+        <div className="mb-6">
+          <div className="flex items-center space-x-4">
+            <div className="flex items-center">
+              <div
+                className={`w-4 h-4 rounded-full border-2 mr-2 ${
+                  transaction?.metadata?.transaction_status === "processing"
+                    ? "border-orange-500 bg-orange-500"
+                    : "border-gray-300"
+                }`}
+              >
+                {transaction?.metadata?.transaction_status === "processing" && (
+                  <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                )}
+              </div>
+              <span className="text-sm">Processing</span>
+            </div>
+            <div className="flex items-center">
+              <div
+                className={`w-4 h-4 rounded-full border-2 mr-2 ${
+                  transaction?.metadata?.transaction_status === "successful"
+                    ? "border-green-500 bg-green-500"
+                    : "border-gray-300"
+                }`}
+              >
+                {transaction?.metadata?.transaction_status === "successful" && (
+                  <div className="w-2 h-2 bg-white rounded-full m-0.5"></div>
+                )}
+              </div>
+              <span className="text-sm">Successful</span>
+            </div>
+          </div>
+        </div>
 
         {/* Transaction fields */}
         <div className="space-y-0">
