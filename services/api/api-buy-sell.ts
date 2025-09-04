@@ -120,11 +120,13 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
   try {
     // First try to get user data from the users endpoint
     const url = `${API.baseUrl}${API.endpoints.advertisers}/${id}`
-    const headers = AUTH.getAuthHeader()
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "X-Branch": "development",
+    }
     const response = await fetch(url, {
       headers,
       credentials: "include",
-      "X-Branch": "development",
     })
 
     if (!response.ok) {
