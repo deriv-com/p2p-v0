@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { fetchTransactions } from "@/services/api/api-wallets"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -37,6 +38,7 @@ interface TransactionsResponse {
 }
 
 export default function TransactionsTab() {
+  const router = useRouter()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
@@ -168,6 +170,11 @@ export default function TransactionsTab() {
     return groups
   }, {})
 
+  const handleTransactionClick = (transaction: Transaction) => {
+    const transactionData = encodeURIComponent(JSON.stringify(transaction))
+    router.push(`/wallet/transactions/${transaction.transaction_id}?data=${transactionData}`)
+  }
+
   if (loading) {
     return (
       <div className="p-4">
@@ -213,7 +220,10 @@ export default function TransactionsTab() {
 
                 return (
                   <div key={transaction.transaction_id}>
-                    <div className="flex items-center justify-between p-4 rounded-lg">
+                    <div
+                      className="flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => handleTransactionClick(transaction)}
+                    >
                       <div className="flex items-center gap-3">
                         <div className="flex-shrink-0">
                           {display.iconSrc && (
