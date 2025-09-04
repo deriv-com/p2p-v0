@@ -239,13 +239,13 @@ export default function TransactionsTab() {
           </div>
         ))}
 
+        {filteredTransactions.length > 0 && <div className="p-4 h-16"></div>}
+
         {filteredTransactions.length === 0 && !loading && (
           <div className="text-center py-8 text-gray-500">
             {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
           </div>
         )}
-
-        <div className="h-16 p-4"></div>
       </div>
     </div>
   )
