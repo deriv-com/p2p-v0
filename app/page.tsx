@@ -7,19 +7,19 @@ import { Button } from "@/components/ui/button"
 import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
-import { MarketFilterDropdown } from "@/components/market-filter"
+import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CurrencyFilter } from "@/components/currency-filter"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatPaymentMethodName } from "@/lib/utils"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
-import { PaymentMethodsFilter } from "@/components/payment-methods-filter"
+import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 
 export default function BuySellPage() {
@@ -80,7 +80,7 @@ export default function BuySellPage() {
       try {
         const methods = await BuySellAPI.getPaymentMethods()
         setPaymentMethods(methods)
-        
+
         if (selectedPaymentMethods.length === 0) {
           setSelectedPaymentMethods(methods.map((method) => method.method))
         }
@@ -163,7 +163,11 @@ export default function BuySellPage() {
   }
 
   const getPaymentMethodsDisplayText = () => {
-    if (paymentMethods.length === 0 || selectedPaymentMethods.length === 0 || selectedPaymentMethods.length === paymentMethods.length) {
+    if (
+      paymentMethods.length === 0 ||
+      selectedPaymentMethods.length === 0 ||
+      selectedPaymentMethods.length === paymentMethods.length
+    ) {
       return "Payment (All)"
     }
 
