@@ -1,9 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
-import { X } from "lucide-react"
-import Navigation from "@/components/navigation"
+import { useParams, useRouter } from "next/navigation"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
@@ -32,6 +31,7 @@ interface Transaction {
 
 export default function TransactionDetailsPage() {
   const params = useParams()
+  const router = useRouter()
   const transactionId = params.id as string
   const isMobile = useIsMobile()
   const [transaction, setTransaction] = useState<Transaction | null>(null)
@@ -161,12 +161,10 @@ export default function TransactionDetailsPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navigation isBackBtnVisible={true} redirectUrl="/wallet" title="" />
-
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-10">
-          <Button variant="ghost" size="sm" onClick={() => window.history.back()} className="p-2">
-            <X className="h-6 w-6" />
+          <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="p-2">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
 
