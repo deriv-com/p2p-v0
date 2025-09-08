@@ -217,6 +217,8 @@ export default function TransactionDetailsPage() {
             </div>
           ))}
         </div>
+
+        {isMobile && <div className="h-[150px]" />}
       </div>
     </div>
   )
