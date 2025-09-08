@@ -203,9 +203,7 @@ export default function TransactionsTab() {
               size="sm"
               onClick={() => setActiveFilter(filter)}
               className={`h-8 rounded-full px-4 text-sm font-normal ${
-                activeFilter === filter
-                  ? "" // No override needed, black variant handles this
-                  : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
+                activeFilter === filter ? "" : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
               }`}
             >
               {filter}
