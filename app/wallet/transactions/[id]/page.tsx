@@ -139,13 +139,13 @@ export default function TransactionDetailsPage() {
     {
       label: "From",
       value: transaction?.metadata?.source_wallet_type
-        ? `${getFromWalletName(transaction)}\n${extractFirstUUID(transaction?.metadata?.source_wallet_id || "") || transaction?.metadata?.source_wallet_id || ""}`
+        ? `${getFromWalletName(transaction)}\n${extractFirstUUID(transaction.metadata.source_wallet_id) || transaction.metadata.source_wallet_id}`
         : "",
     },
     {
       label: "To",
       value: transaction?.metadata?.destination_wallet_type
-        ? `${getToWalletName(transaction)}\n${extractFirstUUID(transaction?.metadata?.destination_wallet_id || "") || transaction?.metadata?.destination_wallet_id || ""}`
+        ? `${getToWalletName(transaction)}\n${extractFirstUUID(transaction.metadata.destination_wallet_id) || transaction.metadata.destination_wallet_id}`
         : "",
     },
     {
