@@ -1,7 +1,4 @@
 "use client"
-
-import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -29,13 +26,13 @@ interface Transaction {
   }
 }
 
-export default function TransactionDetailsPage() {
-  const params = useParams()
-  const router = useRouter()
-  const transactionId = params.id as string
+interface TransactionDetailsProps {
+  transaction: Transaction | null
+  onClose: () => void
+}
+
+export default function TransactionDetails({ transaction, onClose }: TransactionDetailsProps) {
   const isMobile = useIsMobile()
-  const [transaction, setTransaction] = useState<Transaction | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
 
   const UUID = /[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}/
 
@@ -43,21 +40,6 @@ export default function TransactionDetailsPage() {
     const m = str.match(UUID)
     return m ? m[0] : null
   }
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search)
-    const transactionData = urlParams.get("data")
-
-    if (transactionData) {
-      try {
-        const parsedTransaction = JSON.parse(decodeURIComponent(transactionData))
-        setTransaction(parsedTransaction)
-      } catch (error) {
-        console.error("Error parsing transaction data:", error)
-      }
-    }
-    setIsLoading(false)
-  }, [transactionId])
 
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
@@ -157,20 +139,15 @@ export default function TransactionDetailsPage() {
     },
   ].filter((field) => field.value)
 
-  if (isLoading) {
-    return (
-      <div className="text-center py-12">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">Loading transaction details...</p>
-      </div>
-    )
+  if (!transaction) {
+    return null
   }
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] overflow-y-auto">
+    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] overflow-y-auto z-50">
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-4 md:pt-10">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="px-0">
+          <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} />
           </Button>
         </div>
