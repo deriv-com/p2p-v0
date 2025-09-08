@@ -169,7 +169,7 @@ export default function TransactionDetailsPage() {
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] overflow-y-auto">
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
-        <div className="flex justify-end pt-10">
+        <div className="flex justify-end pt-4 md:pt-10">
           <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="p-2">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} />
           </Button>
