@@ -176,43 +176,14 @@ export default function TransactionDetailsPage() {
         </div>
 
         <div className="pt-10 pb-6">
-          <h1
-            style={{
-              color: "#00080A",
-              fontSize: "24px",
-              fontWeight: "800",
-              fontStyle: "normal",
-            }}
-          >
-            Transaction details
-          </h1>
+          <h1 className="text-slate-900 text-2xl font-extrabold">Transaction details</h1>
         </div>
 
         <div className="space-y-0">
           {transactionFields.map((field, index) => (
             <div key={index} className="py-2">
-              <div
-                className="mb-1"
-                style={{
-                  color: "rgba(0, 0, 0, 0.48)",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  fontStyle: "normal",
-                }}
-              >
-                {field.label}
-              </div>
-              <div
-                className="mb-4 whitespace-pre-line"
-                style={{
-                  color: "rgba(0, 0, 0, 0.96)",
-                  fontSize: "16px",
-                  fontWeight: "400",
-                  fontStyle: "normal",
-                }}
-              >
-                {field.value}
-              </div>
+              <div className="mb-1 text-black/48 text-base font-normal">{field.label}</div>
+              <div className="mb-4 whitespace-pre-line text-black/96 text-base font-normal">{field.value}</div>
               {index < transactionFields.length - 1 && <div className="border-b border-gray-200"></div>}
             </div>
           ))}
