@@ -164,7 +164,7 @@ export default function TransactionDetailsPage() {
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-10">
           <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="p-2">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={24} height={24} />
+            <Image src="/icons/close-circle-secondary.png" alt="Close" />
           </Button>
         </div>
 
