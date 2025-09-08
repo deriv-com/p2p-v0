@@ -37,6 +37,13 @@ export default function TransactionDetailsPage() {
   const [transaction, setTransaction] = useState<Transaction | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  const UUID = /[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}/
+
+  function extractFirstUUID(str: string) {
+    const m = str.match(UUID)
+    return m ? m[0] : null
+  }
+
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const transactionData = urlParams.get("data")
@@ -132,13 +139,13 @@ export default function TransactionDetailsPage() {
     {
       label: "From",
       value: transaction?.metadata?.source_wallet_type
-        ? `${getFromWalletName(transaction)}\n${transaction?.metadata?.source_wallet_id || ""}`
+        ? `${getFromWalletName(transaction)}\n${extractFirstUUID(transaction?.metadata?.source_wallet_id || "") || transaction?.metadata?.source_wallet_id || ""}`
         : "",
     },
     {
       label: "To",
       value: transaction?.metadata?.destination_wallet_type
-        ? `${getToWalletName(transaction)}\n${transaction?.metadata?.destination_wallet_id || ""}`
+        ? `${getToWalletName(transaction)}\n${extractFirstUUID(transaction?.metadata?.destination_wallet_id || "") || transaction?.metadata?.destination_wallet_id || ""}`
         : "",
     },
     {
