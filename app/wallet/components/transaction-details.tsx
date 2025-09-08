@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
@@ -185,7 +184,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-4 md:pt-10">
           <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+            <img src="/icons/close-circle-secondary.png" alt="Close" width="32" height="32" />
           </Button>
         </div>
 
@@ -198,7 +197,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             {/* Step 1 */}
             <div className="flex items-center mb-2">
               <div
-                className={`w-5 h-5 rounded-sm border-2 ${stepperState.step1.border} ${stepperState.step1.bg}`}
+                className={`w-5 h-5 rounded-full border-2 ${stepperState.step1.border} ${stepperState.step1.bg}`}
               ></div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step1.text}`}>Processed</span>
             </div>
@@ -209,7 +208,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             {/* Step 2 */}
             <div className="flex items-center">
               <div
-                className={`w-5 h-5 rounded-sm border-2 ${stepperState.step2.border} ${stepperState.step2.bg}`}
+                className={`w-5 h-5 rounded-full border-2 ${stepperState.step2.border} ${stepperState.step2.bg}`}
               ></div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step2.text}`}>Successful</span>
             </div>
