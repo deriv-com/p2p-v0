@@ -155,8 +155,8 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         }
       case "completed":
         return {
-          step1: { color: "bg-[#00C390]", text: "text-[#00C390]" },
-          step2: { color: "bg-[#00C390]", text: "text-[#00C390]" },
+          step1: { color: "bg-[#00C390]", text: "text-black" },
+          step2: { color: "bg-[#00C390]", text: "text-black" },
           connector: "bg-[#00C390]",
         }
       case "reverted":
