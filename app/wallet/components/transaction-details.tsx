@@ -184,7 +184,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-4 md:pt-10">
           <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
-            <img src="/icons/close-circle-secondary.png" alt="Close" width="32" height="32" />
+            <img src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
 
