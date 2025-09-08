@@ -1,5 +1,4 @@
 "use client"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
@@ -143,32 +142,32 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     switch (status) {
       case "pending":
         return {
-          step1: { border: "border-black", text: "text-black" },
-          step2: { border: "border-[#0000003D]", text: "text-[#0000003D]" },
+          step1: { border: "border-black", bg: "bg-white", text: "text-black" },
+          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
         }
       case "released":
         return {
-          step1: { border: "border-black", text: "text-black" },
-          step2: { border: "border-[#0000003D]", text: "text-[#0000003D]" },
+          step1: { border: "border-black", bg: "bg-white", text: "text-black" },
+          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
         }
       case "completed":
         return {
-          step1: { border: "bg-[#00C390]", text: "text-black" },
-          step2: { border: "bg-[#00C390]", text: "text-black" },
+          step1: { border: "border-[#00C390]", bg: "bg-[#00C390]", text: "text-black" },
+          step2: { border: "border-[#00C390]", bg: "bg-[#00C390]", text: "text-black" },
           connector: "bg-[#00C390]",
         }
       case "reverted":
         return {
-          step1: { border: "border-[#0000003D]", text: "text-[#0000003D]" },
-          step2: { border: "border-[#0000003D]", text: "text-[#0000003D]" },
+          step1: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
+          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
         }
       default:
         return {
-          step1: { border: "border-[#0000003D]", text: "text-[#0000003D]" },
-          step2: { border: "border-[#0000003D]", text: "text-[#0000003D]" },
+          step1: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
+          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
         }
     }
@@ -185,7 +184,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-4 md:pt-10">
           <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+            <img src="/icons/close-circle-secondary.png" alt="Close" width="32" height="32" />
           </Button>
         </div>
 
@@ -198,11 +197,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             {/* Step 1 */}
             <div className="flex items-center mb-2">
               <div
-                className={`w-5 h-5 rounded-sm border-2 bg-white ${
-                  transaction.metadata.transaction_status === "completed"
-                    ? stepperState.step1.border
-                    : `${stepperState.step1.border} bg-white`
-                }`}
+                className={`w-5 h-5 rounded-sm border-2 ${stepperState.step1.border} ${stepperState.step1.bg}`}
               ></div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step1.text}`}>Processed</span>
             </div>
@@ -213,11 +208,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             {/* Step 2 */}
             <div className="flex items-center">
               <div
-                className={`w-5 h-5 rounded-sm border-2 bg-white ${
-                  transaction.metadata.transaction_status === "completed"
-                    ? stepperState.step2.border
-                    : `${stepperState.step2.border} bg-white`
-                }`}
+                className={`w-5 h-5 rounded-sm border-2 ${stepperState.step2.border} ${stepperState.step2.bg}`}
               ></div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step2.text}`}>Successful</span>
             </div>
