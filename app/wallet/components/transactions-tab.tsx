@@ -211,7 +211,7 @@ export default function TransactionsTab() {
           ))}
         </div>
 
-        <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll">
+        <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
           {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
             <div key={dateKey} className="space-y-4">
               <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
@@ -230,7 +230,7 @@ export default function TransactionsTab() {
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={32}
                                 height={32}
@@ -259,8 +259,6 @@ export default function TransactionsTab() {
               </div>
             </div>
           ))}
-
-          {filteredTransactions.length > 0 && <div className="p-4 h-16"></div>}
 
           {filteredTransactions.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
