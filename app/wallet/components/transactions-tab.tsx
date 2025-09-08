@@ -1,12 +1,12 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { fetchTransactions } from "@/services/api/api-wallets"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Divider } from "@/components/ui/divider"
 import Image from "next/image"
+import TransactionDetails from "./transaction-details"
 
 interface Transaction {
   transaction_id: number
@@ -38,10 +38,10 @@ interface TransactionsResponse {
 }
 
 export default function TransactionsTab() {
-  const router = useRouter()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   const filters = ["All", "Deposit", "Withdraw", "Transfer"]
 
@@ -171,8 +171,11 @@ export default function TransactionsTab() {
   }, {})
 
   const handleTransactionClick = (transaction: Transaction) => {
-    const transactionData = encodeURIComponent(JSON.stringify(transaction))
-    router.push(`/wallet/transactions/${transaction.transaction_id}?data=${transactionData}`)
+    setSelectedTransaction(transaction)
+  }
+
+  const handleCloseTransactionDetails = () => {
+    setSelectedTransaction(null)
   }
 
   if (loading) {
@@ -190,82 +193,88 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
-      <div className="flex gap-2">
-        {filters.map((filter) => (
-          <Button
-            key={filter}
-            variant={activeFilter === filter ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveFilter(filter)}
-            className={`h-8 rounded-full px-4 text-sm font-normal ${
-              activeFilter === filter
-                ? "bg-black text-white border-black hover:bg-black"
-                : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
-            }`}
-          >
-            {filter}
-          </Button>
-        ))}
-      </div>
+    <>
+      <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
+        <div className="flex gap-2">
+          {filters.map((filter) => (
+            <Button
+              key={filter}
+              variant={activeFilter === filter ? "default" : "outline"}
+              size="sm"
+              onClick={() => setActiveFilter(filter)}
+              className={`h-8 rounded-full px-4 text-sm font-normal ${
+                activeFilter === filter
+                  ? "bg-black text-white border-black hover:bg-black"
+                  : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
+              }`}
+            >
+              {filter}
+            </Button>
+          ))}
+        </div>
 
-      <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll">
-        {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
-          <div key={dateKey} className="space-y-4">
-            <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
+        <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll">
+          {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
+            <div key={dateKey} className="space-y-4">
+              <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
 
-            <div className="space-y-3">
-              {dateTransactions.map((transaction, index) => {
-                const display = getTransactionDisplay(transaction)
+              <div className="space-y-3">
+                {dateTransactions.map((transaction, index) => {
+                  const display = getTransactionDisplay(transaction)
 
-                return (
-                  <div key={transaction.transaction_id}>
-                    <div
-                      className="flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => handleTransactionClick(transaction)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex-shrink-0">
-                          {display.iconSrc && (
-                            <Image
-                              src={display.iconSrc }
-                              alt={`${display.type} icon`}
-                              width={32}
-                              height={32}
-                              className="w-8 h-8 object-contain"
-                              priority={index < 3}
-                            />
-                          )}
-                        </div>
+                  return (
+                    <div key={transaction.transaction_id}>
+                      <div
+                        className="flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={() => handleTransactionClick(transaction)}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="flex-shrink-0">
+                            {display.iconSrc && (
+                              <Image
+                                src={display.iconSrc || "/placeholder.svg"}
+                                alt={`${display.type} icon`}
+                                width={32}
+                                height={32}
+                                className="w-8 h-8 object-contain"
+                                priority={index < 3}
+                              />
+                            )}
+                          </div>
 
-                        <div>
-                          <div className="text-base font-normal text-gray-900">{display.type}</div>
-                          <div className={`${display.amountColor} text-base font-bold`}>
-                            {display.amountPrefix}
-                            {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
+                          <div>
+                            <div className="text-base font-normal text-gray-900">{display.type}</div>
+                            <div className={`${display.amountColor} text-base font-bold`}>
+                              {display.amountPrefix}
+                              {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
+                            </div>
                           </div>
                         </div>
+
+                        <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
                       </div>
 
-                      <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
+                      {index < dateTransactions.length - 1 && <Divider className="my-2" />}
                     </div>
-
-                    {index < dateTransactions.length - 1 && <Divider className="my-2" />}
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {filteredTransactions.length > 0 && <div className="p-4 h-16"></div>}
+          {filteredTransactions.length > 0 && <div className="p-4 h-16"></div>}
 
-        {filteredTransactions.length === 0 && !loading && (
-          <div className="text-center py-8 text-gray-500">
-            {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
-          </div>
-        )}
+          {filteredTransactions.length === 0 && !loading && (
+            <div className="text-center py-8 text-gray-500">
+              {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      {selectedTransaction && (
+        <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+      )}
+    </>
   )
 }
