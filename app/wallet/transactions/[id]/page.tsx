@@ -167,7 +167,7 @@ export default function TransactionDetailsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-10">
           <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="p-2">
