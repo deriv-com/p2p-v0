@@ -139,9 +139,46 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     },
   ].filter((field) => field.value)
 
+  const getStepperState = (status: string) => {
+    switch (status) {
+      case "pending":
+        return {
+          step1: { color: "bg-black", text: "text-black" },
+          step2: { color: "bg-[#0000003D]", text: "text-[#0000003D]" },
+          connector: "bg-[#0000003D]",
+        }
+      case "released":
+        return {
+          step1: { color: "bg-black", text: "text-black" },
+          step2: { color: "bg-[#0000003D]", text: "text-[#0000003D]" },
+          connector: "bg-[#0000003D]",
+        }
+      case "completed":
+        return {
+          step1: { color: "bg-[#00C390]", text: "text-[#00C390]" },
+          step2: { color: "bg-[#00C390]", text: "text-[#00C390]" },
+          connector: "bg-[#00C390]",
+        }
+      case "reverted":
+        return {
+          step1: { color: "bg-[#0000003D]", text: "text-[#0000003D]" },
+          step2: { color: "bg-[#0000003D]", text: "text-[#0000003D]" },
+          connector: "bg-[#0000003D]",
+        }
+      default:
+        return {
+          step1: { color: "bg-[#0000003D]", text: "text-[#0000003D]" },
+          step2: { color: "bg-[#0000003D]", text: "text-[#0000003D]" },
+          connector: "bg-[#0000003D]",
+        }
+    }
+  }
+
   if (!transaction) {
     return null
   }
+
+  const stepperState = getStepperState(transaction.metadata.transaction_status)
 
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] overflow-y-auto z-50">
@@ -154,6 +191,25 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
         <div className="pt-10 pb-6">
           <h1 className="text-slate-900 text-2xl font-extrabold ml-2">Transaction details</h1>
+        </div>
+
+        <div className="px-2 pb-6">
+          <div className="flex items-center">
+            {/* Step 1 */}
+            <div className="flex items-center">
+              <div className={`w-5 h-5 rounded-full ${stepperState.step1.color}`}></div>
+              <span className={`ml-2 text-sm font-bold ${stepperState.step1.text}`}>Processed</span>
+            </div>
+
+            {/* Connector */}
+            <div className={`w-2 h-0.5 mx-2 ${stepperState.connector}`}></div>
+
+            {/* Step 2 */}
+            <div className="flex items-center">
+              <div className={`w-5 h-5 rounded-full ${stepperState.step2.color}`}></div>
+              <span className={`ml-2 text-sm font-bold ${stepperState.step2.text}`}>Successful</span>
+            </div>
+          </div>
         </div>
 
         <div className="space-y-0">
