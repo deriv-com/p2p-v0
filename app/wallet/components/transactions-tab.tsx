@@ -199,12 +199,12 @@ export default function TransactionsTab() {
           {filters.map((filter) => (
             <Button
               key={filter}
-              variant={activeFilter === filter ? "default" : "outline"}
+              variant={activeFilter === filter ? "black" : "outline"}
               size="sm"
               onClick={() => setActiveFilter(filter)}
               className={`h-8 rounded-full px-4 text-sm font-normal ${
                 activeFilter === filter
-                  ? "bg-black text-white border-black hover:bg-black"
+                  ? "" // No override needed, black variant handles this
                   : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
               }`}
             >
@@ -232,7 +232,7 @@ export default function TransactionsTab() {
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={32}
                                 height={32}
