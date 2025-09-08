@@ -170,13 +170,13 @@ export default function TransactionDetailsPage() {
     <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] overflow-y-auto">
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-4 md:pt-10">
-          <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="">
+          <Button variant="ghost" size="sm" onClick={() => router.push("/wallet")} className="px-0">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} />
           </Button>
         </div>
 
         <div className="pt-10 pb-6">
-          <h1 className="text-slate-900 text-2xl font-extrabold">Transaction details</h1>
+          <h1 className="text-slate-900 text-2xl font-extrabold ml-2">Transaction details</h1>
         </div>
 
         <div className="space-y-0">
