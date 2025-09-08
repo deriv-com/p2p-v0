@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { useIsMobile } from "@/hooks/use-mobile"source_wallet_id
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface Transaction {
   transaction_id: number
