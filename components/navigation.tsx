@@ -2,8 +2,7 @@
 
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import Image from "next/image"
-import { NovuNotifications } from "@/components/novu-notifications"
+import Image from "next/Image"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
@@ -23,12 +22,6 @@ export default function Navigation({
 }: NavigationProps) {
   const router = useRouter()
 
-  const shouldShowNotifications = () => {
-    if (title === "P2P") return true
-
-    return false
-  }
-
   const getHeaderComponent = () => {
     if (isBackBtnVisible) {
       if (onBack && onClose) {
@@ -47,7 +40,6 @@ export default function Navigation({
         )
       } else {
         return (
-          <div className="flex w-full justify-between items-center">
             <div className="flex gap-4 items-center">
               <Button
                 variant="ghost"
@@ -59,12 +51,6 @@ export default function Navigation({
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
-            {shouldShowNotifications() && (
-              <div className="text-slate-600 hover:text-slate-700">
-                <NovuNotifications />
-              </div>
-            )}
-          </div>
         )
       }
     }
