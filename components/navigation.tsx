@@ -1,8 +1,9 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { NovuNotifications } from "@/components/novu-notifications"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
@@ -13,8 +14,30 @@ interface NavigationProps {
   title: string
 }
 
-export default function Navigation({ isBackBtnVisible = true, onBack, onClose, redirectUrl = "/", title }: NavigationProps) {
+export default function Navigation({
+  isBackBtnVisible = true,
+  onBack,
+  onClose,
+  redirectUrl = "/",
+  title,
+}: NavigationProps) {
   const router = useRouter()
+  const pathname = usePathname()
+
+  const shouldShowNotifications = () => {
+    // Market page
+    if (pathname === "/" || pathname.startsWith("/advertiser")) return true
+    // Orders page
+    if (pathname.startsWith("/orders")) return true
+    // My ads page
+    if (pathname.startsWith("/ads")) return true
+    // Wallet page
+    if (pathname.startsWith("/wallet")) return true
+    // Profile page
+    if (pathname.startsWith("/profile")) return true
+
+    return false
+  }
 
   const getHeaderComponent = () => {
     if (isBackBtnVisible) {
@@ -27,37 +50,73 @@ export default function Navigation({ isBackBtnVisible = true, onBack, onClose, r
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
-            <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-            </Button>
+            <div className="flex items-center gap-2">
+              {shouldShowNotifications() && (
+                <div className="text-slate-600 hover:text-slate-700">
+                  <NovuNotifications />
+                </div>
+              )}
+              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+                <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+              </Button>
+            </div>
           </div>
         )
       } else {
-        return (<div className="flex gap-4 items-center">
-          <Button variant="ghost" onClick={() => router.push(redirectUrl)} size="sm" className="bg-grayscale-300 px-1">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
-          </Button>
-          <h1 className="text-xl font-bold">{title}</h1>
-        </div>)
+        return (
+          <div className="flex w-full justify-between items-center">
+            <div className="flex gap-4 items-center">
+              <Button
+                variant="ghost"
+                onClick={() => router.push(redirectUrl)}
+                size="sm"
+                className="bg-grayscale-300 px-1"
+              >
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+              </Button>
+              <h1 className="text-xl font-bold">{title}</h1>
+            </div>
+            {shouldShowNotifications() && (
+              <div className="text-slate-600 hover:text-slate-700">
+                <NovuNotifications />
+              </div>
+            )}
+          </div>
+        )
       }
     }
 
-    return (<>
-      <h1 className="text-xl font-bold">{title}</h1>
-      <Button variant="ghost" onClick={() => {
-        if (onClose) { onClose() }
-        else { router.push(redirectUrl) }
-      }} size="sm" className="bg-grayscale-300 px-1">
-        <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-      </Button>
-    </>)
+    return (
+      <div className="flex w-full justify-between items-center">
+        <h1 className="text-xl font-bold">{title}</h1>
+        <div className="flex items-center gap-2">
+          {shouldShowNotifications() && (
+            <div className="text-slate-600 hover:text-slate-700">
+              <NovuNotifications />
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            onClick={() => {
+              if (onClose) {
+                onClose()
+              } else {
+                router.push(redirectUrl)
+              }
+            }}
+            size="sm"
+            className="bg-grayscale-300 px-1"
+          >
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   return (
     <div className="mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]">
-      <div className="flex items-center justify-between md:px-0">
-        {getHeaderComponent()}
-      </div>
+      <div className="flex items-center justify-between md:px-0">{getHeaderComponent()}</div>
     </div>
   )
 }
