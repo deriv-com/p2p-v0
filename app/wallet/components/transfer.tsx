@@ -168,7 +168,7 @@ export default function Transfer({ currencies }: TransferProps) {
 
           <div
             className="flex items-center gap-4 cursor-pointer bg-slate-75 rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
-            onClick={handleReceiveClick}
+            onClick={ setTransferType("Send")}
           >
             <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
               <Image src="/icons/arrow-down.png" alt="Receive" width={23} height={22} />
