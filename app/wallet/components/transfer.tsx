@@ -82,13 +82,13 @@ export default function Transfer({ currencies }: TransferProps) {
   const handleSendClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     setTransferType("Send")
-    setStep("selectWallet")
+    toSelectWallet()
   }
 
   const handleReceiveClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     setTransferType("Receive")
-    setStep("selectWallet")
+    toSelectWallet()
   }
 
   const handleWalletClick = (wallet: ProcessedWallet) => {
