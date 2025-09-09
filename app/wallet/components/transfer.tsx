@@ -104,7 +104,6 @@ export default function Transfer({ currencies }: TransferProps) {
   }
 
   const handleWalletClick = (wallet: ProcessedWallet) => {
-    setSelectedWallet(wallet)
 
     const p2pWallet = wallets.find((w) => w.type?.toLowerCase() === "p2p")
 
