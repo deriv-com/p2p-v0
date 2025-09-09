@@ -61,7 +61,7 @@ export default function Transfer({ currencies }: TransferProps) {
               wallet.balances.forEach((balance: any) => {
                 processedWallets.push({
                   id: `${wallet.wallet_id}-${balance.currency}`,
-                  name: `${balance.currency} Wallet`,
+                  name: (wallet.type || '').toLowerCase() === 'p2p' ? 'P2P Wallet' : ${balance.currency} Wallet,
                   amount: balance.balance,
                   currency: balance.currency,
                   icon: "/icons/usd-flag.png",
