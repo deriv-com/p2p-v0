@@ -402,11 +402,11 @@ export default function Transfer({ currencies }: TransferProps) {
     const transferText =
       transferType === "Send"
         ? `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
-        : `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
+        : `${transferAmount} USD received from your ${sourceWalletData?.name}.`
 
     return (
-      <div className="flex flex-col h-full items-center justify-center px-6">
-        <div className="flex flex-col items-center text-center mb-8">
+      <div className="flex flex-col h-full px-6">
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
             <Image src="/icons/success.png" alt="Success" width={64} height={64} />
           </div>
@@ -416,7 +416,7 @@ export default function Transfer({ currencies }: TransferProps) {
           <p className="text-black/72 text-center text-base font-normal">{transferText}</p>
         </div>
 
-        <div className="mt-auto w-full">
+        <div className="w-full">
           <Button
             onClick={handleDoneClick}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
