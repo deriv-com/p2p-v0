@@ -1,6 +1,6 @@
 "use client"
 
-import { useRouter, usePathname } from "next/navigation"
+import { useRoute } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { NovuNotifications } from "@/components/novu-notifications"
@@ -22,19 +22,9 @@ export default function Navigation({
   title,
 }: NavigationProps) {
   const router = useRouter()
-  const pathname = usePathname()
 
   const shouldShowNotifications = () => {
-    // Market page
-    if (pathname === "/" || pathname.startsWith("/advertiser")) return true
-    // Orders page
-    if (pathname.startsWith("/orders")) return true
-    // My ads page
-    if (pathname.startsWith("/ads")) return true
-    // Wallet page
-    if (pathname.startsWith("/wallet")) return true
-    // Profile page
-    if (pathname.startsWith("/profile")) return true
+    if (title === "P2P") return true
 
     return false
   }
