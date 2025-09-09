@@ -127,16 +127,8 @@ export default function Transfer({ currencies }: TransferProps) {
     toConfirm()
   }
 
-  const getFilteredWallets = () => {
-    if (transferType === "Send") {
-      // Show wallets that are not p2p type
-      return wallets.filter((wallet) => wallet.type?.toLowerCase() !== "p2p")
-    } else if (transferType === "Receive") {
-      // Show wallets that are p2p type
-      return wallets.filter((wallet) => wallet.type?.toLowerCase() === "p2p")
-    }
-    return wallets
-  }
+const getFilteredWallets = () =>
+wallets.filter(wallet => (wallet.type ?? '').toLowerCase() !== 'p2p');
 
   if (step === "chooseType") {
     return (
