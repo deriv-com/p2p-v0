@@ -5,6 +5,7 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import WalletDisplay from "./wallet-display"
 import { fetchWalletsList } from "@/services/api/api-wallets"
 
@@ -262,8 +263,8 @@ export default function Transfer({ currencies }: TransferProps) {
 
   if (step === "enterAmount") {
     return (
-      <>
-        <div className="flex justify-between items-center mb-4">
+      <div className="px-6">
+        <div className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
@@ -272,20 +273,53 @@ export default function Transfer({ currencies }: TransferProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col items-center justify-center flex-1">
-          <h1 className="text-2xl font-black text-[#00080A] mb-4 text-center">Enter transfer amount (TBD)</h1>
-          <p className="text-gray-600 mb-8 text-center">Selected wallet: {selectedWallet?.name}</p>
+        <h1 className="text-2xl font-black text-black mb-6">Amount</h1>
 
-          <div className="w-full mt-auto">
-            <Button
-              onClick={handleTransferClick}
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
-            >
-              Transfer
-            </Button>
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base font-normal text-black/48">From</span>
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-bold">P2P</span>
+              </div>
+              <span className="text-base font-normal text-black">{sourceWalletData?.name}</span>
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base font-normal text-black/48">To</span>
+            <div className="flex items-center gap-2">
+              <Image src="/icons/usd-flag.png" alt="USD" width={24} height={24} className="rounded-full" />
+              <span className="text-base font-normal text-black">{destinationWalletData?.name}</span>
+            </div>
+          </div>
+
+          <div className="h-px bg-gray-200 mb-6"></div>
+        </div>
+
+        <div className="mb-6">
+          <div className="relative">
+            <Input
+              type="number"
+              placeholder="Amount"
+              value={transferAmount || ""}
+              onChange={(e) => setTransferAmount(e.target.value)}
+              className="h-12 px-4 border border-black/8 rounded-sm text-base"
+            />
+            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
           </div>
         </div>
-      </>
+
+        <div className="mt-auto">
+          <Button
+            onClick={handleTransferClick}
+            disabled={!transferAmount || transferAmount.trim() === ""}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+          >
+            Transfer
+          </Button>
+        </div>
+      </div>
     )
   }
 
