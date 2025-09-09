@@ -253,7 +253,7 @@ export default function Transfer({ currencies }: TransferProps) {
     return (
       <div className="flex flex-col h-full">
         <div className="flex justify-between items-center mb-6">
-          <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
+          <Button variant="ghost" size="sm" className="px-0"onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
           <Button variant="ghost" size="sm" onClick={() => setStep("chooseType")} aria-label="Close">
