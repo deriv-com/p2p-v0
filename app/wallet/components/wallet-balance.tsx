@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+
 import { useState, useEffect } from "react"
 import { Minus } from "lucide-react"
 import Image from "next/image"
@@ -7,7 +9,7 @@ import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { USER, API, AUTH } from "@/lib/local-variables"
 import { getCurrencies } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
@@ -28,7 +30,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
-  const [transferType, setTransferType] = useState<"Send" | "Receive">("Send")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -125,13 +126,9 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     setIsIframeModalOpen(true)
   }
 
-  const handleSendTransferClick = () => {
-    setTransferType("Send")
-  }
+  const handleSendTransferClick = () => {}
 
-  const handleReceiveTransferClick = () => {
-    setTransferType("Receive")
-  }
+  const handleReceiveTransferClick = () => {}
 
   return (
     <TooltipProvider>
