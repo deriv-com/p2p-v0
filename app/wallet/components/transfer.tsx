@@ -269,7 +269,7 @@ export default function Transfer({ currencies }: TransferProps) {
             <span className="text-base font-normal text-black/96">{sourceWalletData?.name}</span>
           </div>
 
-<div className="h-px bg-gray-200 mb-6"></div>
+          <div className="h-px bg-gray-200 mb-6"></div>
 
           <div className="flex justify-between items-center mb-4">
             <span className="text-base font-normal text-black/48">To</span>
@@ -308,8 +308,8 @@ export default function Transfer({ currencies }: TransferProps) {
 
   if (step === "confirm") {
     return (
-      <>
-        <div className="flex justify-between items-center mb-4">
+      <div className="flex flex-col h-full">
+        <div className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
@@ -318,13 +318,46 @@ export default function Transfer({ currencies }: TransferProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col items-center justify-center flex-1">
-          <h1 className="text-2xl font-black text-[#00080A] mb-4 text-center">Confirm transfer (TBD)</h1>
-          <p className="text-gray-600 text-center">Transfer type: {transferType}</p>
-          <p className="text-gray-600 text-center">From: {sourceWalletData?.name}</p>
-          <p className="text-gray-600 text-center">To: {destinationWalletData?.name}</p>
+        <h1 className="text-2xl font-black text-black mb-6">Confirm the transfer</h1>
+
+        <div className="mb-6">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base font-normal text-black/48">From</span>
+            <span className="text-base font-normal text-black/96">{sourceWalletData?.name}</span>
+          </div>
+
+          <div className="h-px bg-gray-200 mb-6"></div>
+
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base font-normal text-black/48">To</span>
+            <span className="text-base font-normal text-black/96">{destinationWalletData?.name}</span>
+          </div>
+
+          <div className="h-px bg-gray-200 mb-6"></div>
+
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-base font-normal text-black/48">
+              {transferType === "Send" ? "You're transferring" : "You'll receive"}
+            </span>
+            <span className="text-base font-normal text-black/96">{transferAmount} USD</span>
+          </div>
+
+          <div className="h-px bg-gray-200 mb-6"></div>
         </div>
-      </>
+
+        <div className="flex-1"></div>
+        <div className="mt-auto">
+          <Button
+            onClick={() => {
+              // Handle confirm logic here
+              console.log("Transfer confirmed")
+            }}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
     )
   }
 
