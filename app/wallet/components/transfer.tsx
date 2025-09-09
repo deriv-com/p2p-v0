@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import WalletDisplay from "./wallet-display"
-import { fetchWalletsList } from "@/services/api/api-wallets"
+import { fetchWalletsList, walletTransfer } from "@/services/api/api-wallets"
 
 interface TransferProps {
   currencies: Currency[]
@@ -124,6 +124,41 @@ export default function Transfer({ currencies }: TransferProps) {
 
   const handleTransferClick = () => {
     toConfirm()
+  }
+
+  const handleConfirmTransfer = async () => {
+    if (!transferAmount || !sourceWalletData || !destinationWalletData) {
+      console.error("Missing required transfer data")
+      return
+    }
+
+    try {
+      const requestId = crypto.randomUUID()
+
+      const transferParams = {
+        net_amount: transferAmount,
+        currency: "USD",
+        destination_wallet_id: destinationWalletData.id,
+        request_id: requestId,
+        source_wallet_id: sourceWalletData.id,
+      }
+
+      const result = await walletTransfer(transferParams)
+
+      if (result) {
+        console.log("Transfer successful:", result)
+        // Reset form or navigate to success screen
+        setStep("chooseType")
+        setTransferAmount(null)
+        setSourceWalletData(null)
+        setDestinationWalletData(null)
+        setTransferType(null)
+      } else {
+        console.error("Transfer failed")
+      }
+    } catch (error) {
+      console.error("Error during transfer:", error)
+    }
   }
 
   const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
@@ -348,10 +383,7 @@ export default function Transfer({ currencies }: TransferProps) {
         <div className="flex-1"></div>
         <div className="mt-auto">
           <Button
-            onClick={() => {
-              // Handle confirm logic here
-              console.log("Transfer confirmed")
-            }}
+            onClick={handleConfirmTransfer}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
           >
             Confirm
