@@ -28,7 +28,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
-  const [transferType, setTransferType] = useState<"Send" | "Receive">("Send")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isRefreshing, setIsRefreshing] = useState(false)
