@@ -21,7 +21,6 @@ interface Currency {
 
 interface ProcessedWallet {
   id: string
-  originalWalletId: string
   name: string
   amount: string
   currency: string
@@ -70,8 +69,7 @@ export default function Transfer({ currencies }: TransferProps) {
             response.data.wallets.forEach((wallet: any) => {
               wallet.balances.forEach((balance: any) => {
                 processedWallets.push({
-                  id: `${wallet.wallet_id}-${balance.currency}`,
-                  originalWalletId: wallet.wallet_id,
+                  id: wallet.wallet_id,
                   name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `${balance.currency} Wallet`,
                   amount: balance.balance,
                   currency: balance.currency,
@@ -108,14 +106,14 @@ export default function Transfer({ currencies }: TransferProps) {
     const p2pWallet = wallets.find((w) => w.type?.toLowerCase() === "p2p")
 
     if (transferType === "Send") {
-      setDestinationWalletData({ id: wallet.originalWalletId, name: wallet.name })
+      setDestinationWalletData({ id: wallet.id, name: wallet.name })
       if (p2pWallet) {
-        setSourceWalletData({ id: p2pWallet.originalWalletId, name: p2pWallet.name })
+        setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name })
       }
     } else if (transferType === "Receive") {
-      setSourceWalletData({ id: wallet.originalWalletId, name: wallet.name })
+      setSourceWalletData({ id: wallet.id, name: wallet.name })
       if (p2pWallet) {
-        setDestinationWalletData({ id: p2pWallet.originalWalletId, name: p2pWallet.name })
+        setDestinationWalletData({ id: p2pWallet.id, name: p2pWallet.name })
       }
     }
 
