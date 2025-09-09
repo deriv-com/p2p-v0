@@ -158,7 +158,7 @@ export default function Transfer({ currencies }: TransferProps) {
   }
 
   const handleDoneClick = () => {
-    setStep("chooseType")
+
     setTransferAmount(null)
     setSourceWalletData(null)
     setDestinationWalletData(null)
