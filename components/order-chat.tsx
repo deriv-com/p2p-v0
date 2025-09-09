@@ -190,7 +190,7 @@ export default function OrderChat({
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                 <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
-                    <div className={`${msg.sender_is_self ? "bg-primary" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
+                    <div className={`${msg.sender_is_self ? "bg-blue-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
                       <div
                         className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
                       >
@@ -203,7 +203,7 @@ export default function OrderChat({
                   {msg.message && (
                     <div className="flex items-center">
                       <div
-                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-blue-200 opacity-50" : "bg-primary") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
+                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-blue-200 opacity-50" : "bg-blue-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
                       >
                         {msg.message}
                       </div>
