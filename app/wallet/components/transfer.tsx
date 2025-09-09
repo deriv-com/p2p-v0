@@ -268,7 +268,9 @@ export default function Transfer({ currencies }: TransferProps) {
             <span className="text-base font-normal text-black/48">From</span>
             <span className="text-base font-normal text-black/96">{sourceWalletData?.name}</span>
           </div>
+
 <div className="h-px bg-gray-200 mb-6"></div>
+
           <div className="flex justify-between items-center mb-4">
             <span className="text-base font-normal text-black/48">To</span>
             <span className="text-base font-normal text-black/96">{destinationWalletData?.name}</span>
