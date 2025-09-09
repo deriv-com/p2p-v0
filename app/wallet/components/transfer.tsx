@@ -27,6 +27,11 @@ interface ProcessedWallet {
   type: string
 }
 
+interface WalletData {
+  id: string
+  name: string
+}
+
 type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm"
 type TransferType = "Send" | "Receive" | null
 
@@ -36,6 +41,10 @@ export default function Transfer({ currencies }: TransferProps) {
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [selectedWallet, setSelectedWallet] = useState<ProcessedWallet | null>(null)
+
+  const [transferAmount, setTransferAmount] = useState<string | null>(null)
+  const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
+  const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
 
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
@@ -61,7 +70,7 @@ export default function Transfer({ currencies }: TransferProps) {
               wallet.balances.forEach((balance: any) => {
                 processedWallets.push({
                   id: `${wallet.wallet_id}-${balance.currency}`,
-                  name: (wallet.type || '').toLowerCase() === 'p2p' ? 'P2P Wallet' : ${balance.currency} Wallet,
+                  name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `${balance.currency} Wallet`,
                   amount: balance.balance,
                   currency: balance.currency,
                   icon: "/icons/usd-flag.png",
@@ -95,11 +104,39 @@ export default function Transfer({ currencies }: TransferProps) {
 
   const handleWalletClick = (wallet: ProcessedWallet) => {
     setSelectedWallet(wallet)
+
+    const p2pWallet = wallets.find((w) => w.type?.toLowerCase() === "p2p")
+
+    if (transferType === "Send") {
+      // Selected wallet becomes destination, p2p wallet becomes source
+      setDestinationWalletData({ id: wallet.id, name: wallet.name })
+      if (p2pWallet) {
+        setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name })
+      }
+    } else if (transferType === "Receive") {
+      // Selected wallet becomes source, p2p wallet becomes destination
+      setSourceWalletData({ id: wallet.id, name: wallet.name })
+      if (p2pWallet) {
+        setDestinationWalletData({ id: p2pWallet.id, name: p2pWallet.name })
+      }
+    }
+
     toEnterAmount()
   }
 
   const handleTransferClick = () => {
     toConfirm()
+  }
+
+  const getFilteredWallets = () => {
+    if (transferType === "Send") {
+      // Show wallets that are not p2p type
+      return wallets.filter((wallet) => wallet.type?.toLowerCase() !== "p2p")
+    } else if (transferType === "Receive") {
+      // Show wallets that are p2p type
+      return wallets.filter((wallet) => wallet.type?.toLowerCase() === "p2p")
+    }
+    return wallets
   }
 
   if (step === "chooseType") {
@@ -186,6 +223,7 @@ export default function Transfer({ currencies }: TransferProps) {
 
   if (step === "selectWallet") {
     const title = transferType === "Send" ? "Send to" : "Receive from"
+    const filteredWallets = getFilteredWallets()
 
     return (
       <>
@@ -207,7 +245,7 @@ export default function Transfer({ currencies }: TransferProps) {
         </div>
 
         <div className="space-y-2">
-          {wallets.map((wallet) => (
+          {filteredWallets.map((wallet) => (
             <WalletDisplay
               key={wallet.id}
               name={wallet.name}
@@ -266,7 +304,8 @@ export default function Transfer({ currencies }: TransferProps) {
         <div className="flex flex-col items-center justify-center flex-1">
           <h1 className="text-2xl font-black text-[#00080A] mb-4 text-center">Confirm transfer (TBD)</h1>
           <p className="text-gray-600 text-center">Transfer type: {transferType}</p>
-          <p className="text-gray-600 text-center">Wallet: {selectedWallet?.name}</p>
+          <p className="text-gray-600 text-center">From: {sourceWalletData?.name}</p>
+          <p className="text-gray-600 text-center">To: {destinationWalletData?.name}</p>
         </div>
       </>
     )
