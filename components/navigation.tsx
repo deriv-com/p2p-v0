@@ -1,6 +1,6 @@
 "use client"
 
-import { useRoute } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { NovuNotifications } from "@/components/novu-notifications"
