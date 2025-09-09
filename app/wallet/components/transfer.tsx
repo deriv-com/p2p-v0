@@ -103,7 +103,6 @@ export default function Transfer({ currencies }: TransferProps) {
   }
 
   const handleWalletClick = (wallet: ProcessedWallet) => {
-
     const p2pWallet = wallets.find((w) => w.type?.toLowerCase() === "p2p")
 
     if (transferType === "Send") {
@@ -127,8 +126,7 @@ export default function Transfer({ currencies }: TransferProps) {
     toConfirm()
   }
 
-const getFilteredWallets = () =>
-wallets.filter(wallet => (wallet.type ?? '').toLowerCase() !== 'p2p');
+  const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
 
   if (step === "chooseType") {
     return (
@@ -253,7 +251,7 @@ wallets.filter(wallet => (wallet.type ?? '').toLowerCase() !== 'p2p');
 
   if (step === "enterAmount") {
     return (
-      <div className="">
+      <div className="flex flex-col h-full">
         <div className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
@@ -268,20 +266,12 @@ wallets.filter(wallet => (wallet.type ?? '').toLowerCase() !== 'p2p');
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
             <span className="text-base font-normal text-black/48">From</span>
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">P2P</span>
-              </div>
-              <span className="text-base font-normal text-black">{sourceWalletData?.name}</span>
-            </div>
+            <span className="text-base font-normal text-black/96">{sourceWalletData?.name}</span>
           </div>
 
           <div className="flex justify-between items-center mb-4">
             <span className="text-base font-normal text-black/48">To</span>
-            <div className="flex items-center gap-2">
-              <Image src="/icons/usd-flag.png" alt="USD" width={24} height={24} className="rounded-full" />
-              <span className="text-base font-normal text-black">{destinationWalletData?.name}</span>
-            </div>
+            <span className="text-base font-normal text-black/96">{destinationWalletData?.name}</span>
           </div>
 
           <div className="h-px bg-gray-200 mb-6"></div>
@@ -300,6 +290,7 @@ wallets.filter(wallet => (wallet.type ?? '').toLowerCase() !== 'p2p');
           </div>
         </div>
 
+        <div className="flex-1"></div>
         <div className="mt-auto">
           <Button
             onClick={handleTransferClick}
