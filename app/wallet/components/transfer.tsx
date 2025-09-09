@@ -186,8 +186,8 @@ export default function Transfer({ currencies }: TransferProps) {
     const title = transferType === "Send" ? "Send to" : "Receive from"
 
     return (
-      <div className="fixed inset-0 z-50 bg-white">
-        <div className="flex justify-between items-center p-4">
+      <>
+        <div className="flex justify-between items-center mb-4">
           <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
@@ -196,15 +196,15 @@ export default function Transfer({ currencies }: TransferProps) {
           </Button>
         </div>
 
-        <div className="ml-6 mt-6">
+        <div className="mb-6">
           <h1 className="text-2xl font-black text-[#00080A]">{title}</h1>
         </div>
 
-        <div className="ml-6 mt-6">
+        <div className="mb-4">
           <h2 className="text-black/[0.96] text-base font-normal">Wallet</h2>
         </div>
 
-        <div className="mt-2 px-6 space-y-2">
+        <div className="space-y-2">
           {wallets.map((wallet) => (
             <WalletDisplay
               key={wallet.id}
@@ -216,14 +216,14 @@ export default function Transfer({ currencies }: TransferProps) {
             />
           ))}
         </div>
-      </div>
+      </>
     )
   }
 
   if (step === "enterAmount") {
     return (
-      <div className="fixed inset-0 z-50 bg-white">
-        <div className="flex justify-between items-center p-4">
+      <>
+        <div className="flex justify-between items-center mb-4">
           <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
@@ -232,11 +232,11 @@ export default function Transfer({ currencies }: TransferProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col items-center justify-center h-full px-6">
-          <h1 className="text-2xl font-black text-[#00080A] mb-4">Enter transfer amount (TBD)</h1>
-          <p className="text-gray-600 mb-8">Selected wallet: {selectedWallet?.name}</p>
+        <div className="flex flex-col items-center justify-center flex-1">
+          <h1 className="text-2xl font-black text-[#00080A] mb-4 text-center">Enter transfer amount (TBD)</h1>
+          <p className="text-gray-600 mb-8 text-center">Selected wallet: {selectedWallet?.name}</p>
 
-          <div className="fixed bottom-6 left-6 right-6">
+          <div className="w-full mt-auto">
             <Button
               onClick={handleTransferClick}
               className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
@@ -245,14 +245,14 @@ export default function Transfer({ currencies }: TransferProps) {
             </Button>
           </div>
         </div>
-      </div>
+      </>
     )
   }
 
   if (step === "confirm") {
     return (
-      <div className="fixed inset-0 z-50 bg-white">
-        <div className="flex justify-between items-center p-4">
+      <>
+        <div className="flex justify-between items-center mb-4">
           <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
@@ -261,12 +261,12 @@ export default function Transfer({ currencies }: TransferProps) {
           </Button>
         </div>
 
-        <div className="flex flex-col items-center justify-center h-full px-6">
-          <h1 className="text-2xl font-black text-[#00080A] mb-4">Confirm transfer (TBD)</h1>
-          <p className="text-gray-600">Transfer type: {transferType}</p>
-          <p className="text-gray-600">Wallet: {selectedWallet?.name}</p>
+        <div className="flex flex-col items-center justify-center flex-1">
+          <h1 className="text-2xl font-black text-[#00080A] mb-4 text-center">Confirm transfer (TBD)</h1>
+          <p className="text-gray-600 text-center">Transfer type: {transferType}</p>
+          <p className="text-gray-600 text-center">Wallet: {selectedWallet?.name}</p>
         </div>
-      </div>
+      </>
     )
   }
 

@@ -5,7 +5,6 @@ import { Minus } from "lucide-react"
 import Image from "next/image"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
-import TransferSelectWalletScreen from "./transfer-select-wallet-screen"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -29,7 +28,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
-  const [showTransferScreen, setShowTransferScreen] = useState(false)
   const [transferType, setTransferType] = useState<"Send" | "Receive">("Send")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
@@ -129,33 +127,10 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
   const handleSendTransferClick = () => {
     setTransferType("Send")
-    setIsSidebarOpen(false)
-    setShowTransferScreen(true)
   }
 
   const handleReceiveTransferClick = () => {
     setTransferType("Receive")
-    setIsSidebarOpen(false)
-    setShowTransferScreen(true)
-  }
-
-  const handleTransferScreenBack = () => {
-    setShowTransferScreen(false)
-    setIsSidebarOpen(true)
-  }
-
-  const handleTransferScreenClose = () => {
-    setShowTransferScreen(false)
-  }
-
-  if (showTransferScreen) {
-    return (
-      <TransferSelectWalletScreen
-        transferType={transferType}
-        onBack={handleTransferScreenBack}
-        onClose={handleTransferScreenClose}
-      />
-    )
   }
 
   return (
