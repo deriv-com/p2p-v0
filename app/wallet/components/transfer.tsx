@@ -41,7 +41,6 @@ export default function Transfer({ currencies }: TransferProps) {
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
-  const [selectedWallet, setSelectedWallet] = useState<ProcessedWallet | null>(null)
 
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
