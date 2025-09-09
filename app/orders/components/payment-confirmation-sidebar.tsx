@@ -144,7 +144,7 @@ export const PaymentConfirmationSidebar = ({
             {fileError && <div className="text-error text-xs">{fileError}</div>}
 
             <Alert variant="warning">
-              <TriangleAlert className="h-4 w-4" />
+              <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
               <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
             </Alert>
           </div>
