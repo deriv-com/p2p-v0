@@ -12,7 +12,6 @@ import type { Order } from "@/services/api/api-orders"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
 import { cn } from "@/lib/utils"
-import { TriangleAlert } from "lucide-react"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
