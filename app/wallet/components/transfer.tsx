@@ -3,6 +3,7 @@
 import type React from "react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,10 +34,11 @@ interface WalletData {
   name: string
 }
 
-type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm"
+type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm" | "success"
 type TransferType = "Send" | "Receive" | null
 
 export default function Transfer({ currencies }: TransferProps) {
+  const router = useRouter()
   const [step, setStep] = useState<TransferStep>("chooseType")
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
@@ -51,6 +53,7 @@ export default function Transfer({ currencies }: TransferProps) {
   const toSelectWallet = () => setStep("selectWallet")
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => setStep("confirm")
+  const toSuccess = () => setStep("success")
   const goBack = () => {
     if (step === "selectWallet") setStep("chooseType")
     else if (step === "enterAmount") setStep("selectWallet")
@@ -143,19 +146,24 @@ export default function Transfer({ currencies }: TransferProps) {
 
       const result = await walletTransfer(transferParams)
 
-      if (result) {
+      if (result?.data?.message === "Transaction completed successfully.") {
         console.log("Transfer successful:", result)
-        setStep("chooseType")
-        setTransferAmount(null)
-        setSourceWalletData(null)
-        setDestinationWalletData(null)
-        setTransferType(null)
+        toSuccess()
       } else {
         console.error("Transfer failed")
       }
     } catch (error) {
       console.error("Error during transfer:", error)
     }
+  }
+
+  const handleDoneClick = () => {
+    setStep("chooseType")
+    setTransferAmount(null)
+    setSourceWalletData(null)
+    setDestinationWalletData(null)
+    setTransferType(null)
+    router.push("/wallet")
   }
 
   const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
@@ -384,6 +392,36 @@ export default function Transfer({ currencies }: TransferProps) {
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
           >
             Confirm
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (step === "success") {
+    const transferText =
+      transferType === "Send"
+        ? `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
+        : `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
+
+    return (
+      <div className="flex flex-col h-full items-center justify-center px-6">
+        <div className="flex flex-col items-center text-center mb-8">
+          <div className="mb-6">
+            <Image src="/icons/success.png" alt="Success" width={64} height={64} />
+          </div>
+
+          <h1 className="text-[#00080A] text-center text-xl font-bold mb-4">Transfer successful</h1>
+
+          <p className="text-black/72 text-center text-base font-normal">{transferText}</p>
+        </div>
+
+        <div className="mt-auto w-full">
+          <Button
+            onClick={handleDoneClick}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+          >
+            Done
           </Button>
         </div>
       </div>
