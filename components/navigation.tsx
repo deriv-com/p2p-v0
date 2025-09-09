@@ -56,7 +56,7 @@ export default function Navigation({
     }
 
     return (
-      <div className="flex w-full justify-between items-center">
+      <>
         <h1 className="text-xl font-bold">{title}</h1>
           <Button
             variant="ghost"
@@ -72,7 +72,7 @@ export default function Navigation({
           >
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
-      </div>
+      </>
     )
   }
 
