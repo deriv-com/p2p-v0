@@ -261,7 +261,7 @@ export default function Transfer({ currencies }: TransferProps) {
 
   if (step === "enterAmount") {
     return (
-      <div className="px-6">
+      <div className="">
         <div className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="sm" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
