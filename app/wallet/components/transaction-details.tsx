@@ -145,30 +145,35 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
           step1: { border: "border-black", bg: "bg-white", text: "text-black" },
           step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
+          showTick: false,
         }
       case "released":
         return {
           step1: { border: "border-black", bg: "bg-white", text: "text-black" },
           step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
+          showTick: false,
         }
       case "completed":
         return {
           step1: { border: "border-[#00C390]", bg: "bg-[#00C390]", text: "text-black" },
           step2: { border: "border-[#00C390]", bg: "bg-[#00C390]", text: "text-black" },
           connector: "bg-[#00C390]",
+          showTick: true,
         }
       case "reverted":
         return {
           step1: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
+          showTick: false,
         }
       default:
         return {
           step1: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
           connector: "bg-[#0000003D]",
+          showTick: false,
         }
     }
   }
@@ -197,8 +202,10 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             {/* Step 1 */}
             <div className="flex items-center mb-2">
               <div
-                className={`w-5 h-5 rounded-full border-2 ${stepperState.step1.border} ${stepperState.step1.bg}`}
-              ></div>
+                className={`w-5 h-5 rounded-full border-2 ${stepperState.step1.border} ${stepperState.step1.bg} relative flex items-center justify-center`}
+              >
+                {stepperState.showTick && <img src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
+              </div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step1.text}`}>Processed</span>
             </div>
 
@@ -208,8 +215,10 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             {/* Step 2 */}
             <div className="flex items-center">
               <div
-                className={`w-5 h-5 rounded-full border-2 ${stepperState.step2.border} ${stepperState.step2.bg}`}
-              ></div>
+                className={`w-5 h-5 rounded-full border-2 ${stepperState.step2.border} ${stepperState.step2.bg} relative flex items-center justify-center`}
+              >
+                {stepperState.showTick && <img src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
+              </div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step2.text}`}>Successful</span>
             </div>
           </div>
