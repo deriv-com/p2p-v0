@@ -24,6 +24,7 @@ interface ProcessedWallet {
   amount: string
   currency: string
   icon: string
+  type: string
 }
 
 type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm"
