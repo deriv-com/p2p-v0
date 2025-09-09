@@ -2,9 +2,9 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
-import { Alert } from "@/components/ui/alert"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
@@ -12,6 +12,7 @@ import type { Order } from "@/services/api/api-orders"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
 import { cn } from "@/lib/utils"
+import { TriangleAlert } from "lucide-react"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
@@ -30,6 +31,7 @@ export const PaymentConfirmationSidebar = ({
 }: PaymentConfirmationSidebarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [fileError, setFileError] = useState<string | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   if (!order) return null
 
@@ -81,6 +83,9 @@ export const PaymentConfirmationSidebar = ({
   const handleRemoveFile = () => {
     setSelectedFile(null)
     setFileError(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
   }
 
   const currencySymbol = order.payment_currency
@@ -102,9 +107,14 @@ export const PaymentConfirmationSidebar = ({
               Ensure you've paid {currencySymbol} {amount} to {sellerName} and upload the receipt as proof of payment.
             </p>
 
-            <div className={cn("border border-dashed rounded-sm p-8 text-center transition-colors ", 
-            fileError? "border-error" : "border-slate-500")}>
+            <div
+              className={cn(
+                "border border-dashed rounded-sm p-8 text-center transition-colors ",
+                fileError ? "border-error" : "border-slate-500",
+              )}
+            >
               <Input
+                ref={fileInputRef}
                 type="file"
                 accept=".jpeg,.jpg,.png,.pdf"
                 onChange={handleFileInput}
@@ -123,30 +133,20 @@ export const PaymentConfirmationSidebar = ({
                 </div>
               ) : (
                 <div className="flex flex-col items-center">
-                  <label htmlFor="file-upload" className="flex flex-col items-center">
-                    <Image
-                      src="/icons/upload-icon.png"
-                      alt="Upload"
-                      width={48}
-                      height={48}
-                      className="text-gray-400 cursor-pointer"
-                    />
-                    <Button variant="ghost" size="sm" className="flex flex-col mb-2 hover:bg-transparent" asChild>
-                      <span>Upload file</span>
-                    </Button>
+                  <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer">
+                    <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
+                    <span className="mt-2 text-sm font-medium text-gray-700 hover:text-gray-900">Upload file</span>
                   </label>
                   <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB)</p>
                 </div>
               )}
             </div>
 
-            {fileError && (
-              <div className="text-error text-xs">{fileError}</div>
-            )}
+            {fileError && <div className="text-error text-xs">{fileError}</div>}
 
-            <Alert variant="warning" className="flex items-start gap-2 mb-6">
-              <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-              <div>Providing fraudulent documents will result in a permanent ban.</div>
+            <Alert variant="warning">
+              <TriangleAlert className="h-4 w-4" />
+              <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
             </Alert>
           </div>
           <div className="p-4 pt-0">
