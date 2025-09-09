@@ -52,7 +52,7 @@ export default function WalletSidebar({
         onClick={(e) => e.stopPropagation()}
       >
         {operation === "TRANSFER" ? (
-          <Transfer onSendClick={onP2PTransferClick} onReceiveClick={onAccountTransferClick} currencies={currencies} />
+          <div className="p-4"> <Transfer onSendClick={onP2PTransferClick} onReceiveClick={onAccountTransferClick} currencies={currencies} /> </div>
         ) : (
           <>
             <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
