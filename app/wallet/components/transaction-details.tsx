@@ -197,7 +197,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
           <h1 className="text-slate-900 text-2xl font-extrabold ml-2">Transaction details</h1>
         </div>
 
-        <div className="px-2 pb-6">
+        <div className="px-2 pt-8 pb-8">
           <div className="flex flex-col">
             {/* Step 1 */}
             <div className="flex items-center mb-2">
