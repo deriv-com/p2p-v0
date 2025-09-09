@@ -125,7 +125,6 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
   }
 
   const handleSendTransferClick = () => {
-    setTransferType("Send")
   }
 
   const handleReceiveTransferClick = () => {
