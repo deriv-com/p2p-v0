@@ -15,7 +15,7 @@ export default function WalletPage() {
         <Tabs defaultValue="assets" className="w-full flex flex-col justify-center items-center">
           <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
             <TabsTrigger value="assets" className="w-full data-[state=active]:font-bold">
-              My Assets
+              My Wallet
             </TabsTrigger>
             <TabsTrigger value="transactions" className="w-full data-[state=active]:font-bold">
         Transactions
