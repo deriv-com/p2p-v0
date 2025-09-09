@@ -134,7 +134,7 @@ export const PaymentConfirmationSidebar = ({
                 <div className="flex flex-col items-center">
                   <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer">
                     <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
-                    <span className="mt-2 text-sm font-medium text-gray-700 hover:text-gray-900">Upload file</span>
+                    <span className="my-2 text-sm font-medium text-gray-700 hover:text-gray-900">Upload file</span>
                   </label>
                   <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB)</p>
                 </div>
