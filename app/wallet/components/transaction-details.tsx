@@ -199,7 +199,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
             </div>
 
             {/* Connector */}
-            <div className={`w-0.5 h-2 ml-2.5 ${stepperState.connector}`}></div>
+            <div className={`w-0.5 h-2 ml-2 mb-2 ${stepperState.connector}`}></div>
 
             {/* Step 2 */}
             <div className="flex items-center">
