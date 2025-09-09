@@ -71,8 +71,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
-      const minLimit = Number.parseFloat(ad.minimum_order_amount) || 0
-      const maxLimit = Number.parseFloat(ad.actual_maximum_order_amount) || 0
+      const minLimit = ad.minimum_order_amount || "0.00"
+      const maxLimit = ad.actual_maximum_order_amount || "0.00"
 
       if (numAmount < minLimit || numAmount > maxLimit) {
         setValidationError(`Order limit: ${ad.account_currency} ${minLimit} - ${maxLimit}`)
