@@ -64,6 +64,7 @@ export default function Transfer({ currencies }: TransferProps) {
                   amount: balance.balance,
                   currency: balance.currency,
                   icon: "/icons/usd-flag.png",
+                  type: wallet.type
                 })
               })
             })
