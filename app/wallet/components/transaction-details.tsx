@@ -33,13 +33,6 @@ interface TransactionDetailsProps {
 export default function TransactionDetails({ transaction, onClose }: TransactionDetailsProps) {
   const isMobile = useIsMobile()
 
-  const UUID = /[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}/
-
-  function extractFirstUUID(str: string) {
-    const m = str.match(UUID)
-    return m ? m[0] : null
-  }
-
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
     return date.toLocaleDateString("en-GB", {
@@ -119,15 +112,11 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     { label: "Time", value: transaction?.timestamp ? formatTime(transaction.timestamp) : "" },
     {
       label: "From",
-      value: transaction?.metadata?.source_wallet_type
-        ? `${getFromWalletName(transaction)}\n${extractFirstUUID(transaction.metadata.source_wallet_id)}`
-        : "",
+      value: transaction?.metadata?.source_wallet_type ? getFromWalletName(transaction) : "",
     },
     {
       label: "To",
-      value: transaction?.metadata?.destination_wallet_type
-        ? `${getToWalletName(transaction)}\n${extractFirstUUID(transaction.metadata.destination_wallet_id)}`
-        : "",
+      value: transaction?.metadata?.destination_wallet_type ? getToWalletName(transaction) : "",
     },
     {
       label: "Withdrawn amount",
