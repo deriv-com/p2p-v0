@@ -6,17 +6,28 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Divider } from "@/components/ui/divider"
 import Image from "next/image"
+import TransactionDetails from "./transaction-details"
 
 interface Transaction {
   transaction_id: number
   timestamp: string
   metadata: {
+    brand_name: string
+    description: string
+    destination_client_id: string
+    destination_wallet_id: string
+    destination_wallet_type: string
+    is_reversible: string
+    payout_method: string
+    requester_platform: string
+    source_client_id: string
+    source_wallet_id: string
+    source_wallet_type: string
+    transaction_currency: string
+    transaction_gross_amount: string
+    transaction_net_amount: string
     transaction_status: string
-    transaction_currency?: string
-    transaction_net_amount?: string
-    source_wallet_id?: string
-    destination_wallet_id?: string
-    wallet_transaction_type?: string
+    wallet_transaction_type: string
   }
 }
 
@@ -30,6 +41,7 @@ export default function TransactionsTab() {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   const filters = ["All", "Deposit", "Withdraw", "Transfer"]
 
@@ -158,6 +170,14 @@ export default function TransactionsTab() {
     return groups
   }, {})
 
+  const handleTransactionClick = (transaction: Transaction) => {
+    setSelectedTransaction(transaction)
+  }
+
+  const handleCloseTransactionDetails = () => {
+    setSelectedTransaction(null)
+  }
+
   if (loading) {
     return (
       <div className="p-4">
@@ -173,80 +193,84 @@ export default function TransactionsTab() {
   }
 
   return (
-    <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
-      <div className="flex gap-2">
-        {filters.map((filter) => (
-          <Button
-            key={filter}
-            variant={activeFilter === filter ? "default" : "outline"}
-            size="sm"
-            onClick={() => setActiveFilter(filter)}
-            className={`h-8 rounded-full px-4 text-sm font-normal ${
-              activeFilter === filter
-                ? "bg-black text-white border-black hover:bg-black"
-                : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
-            }`}
-          >
-            {filter}
-          </Button>
-        ))}
-      </div>
+    <>
+      <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
+        <div className="flex gap-2">
+          {filters.map((filter) => (
+            <Button
+              key={filter}
+              variant={activeFilter === filter ? "black" : "outline"}
+              size="sm"
+              onClick={() => setActiveFilter(filter)}
+              className={`h-8 rounded-full px-4 text-sm font-normal ${
+                activeFilter === filter ? "" : "bg-white border-gray-200 hover:bg-gray-50 text-slate-600"
+              }`}
+            >
+              {filter}
+            </Button>
+          ))}
+        </div>
 
-      <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll">
-        {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
-          <div key={dateKey} className="space-y-4">
-            <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
+        <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
+          {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
+            <div key={dateKey} className="space-y-4">
+              <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
 
-            <div className="space-y-3">
-              {dateTransactions.map((transaction, index) => {
-                const display = getTransactionDisplay(transaction)
+              <div className="space-y-3">
+                {dateTransactions.map((transaction, index) => {
+                  const display = getTransactionDisplay(transaction)
 
-                return (
-                  <div key={transaction.transaction_id}>
-                    <div className="flex items-center justify-between p-4 rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <div className="flex-shrink-0">
-                          {display.iconSrc && (
-                            <Image
-                              src={display.iconSrc}
-                              alt={`${display.type} icon`}
-                              width={32}
-                              height={32}
-                              className="w-8 h-8 object-contain"
-                              priority={index < 3}
-                            />
-                          )}
-                        </div>
+                  return (
+                    <div key={transaction.transaction_id}>
+                      <div
+                        className="flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={() => handleTransactionClick(transaction)}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="flex-shrink-0">
+                            {display.iconSrc && (
+                              <Image
+                                src={display.iconSrc }
+                                alt={`${display.type} icon`}
+                                width={32}
+                                height={32}
+                                className="w-8 h-8 object-contain"
+                                priority={index < 3}
+                              />
+                            )}
+                          </div>
 
-                        <div>
-                          <div className="text-base font-normal text-gray-900">{display.type}</div>
-                          <div className={`${display.amountColor} text-base font-bold`}>
-                            {display.amountPrefix}
-                            {transaction.metadata.transaction_net_amount || "0.00"}{" "}
-                            {transaction.metadata.transaction_currency || "USD"}
+                          <div>
+                            <div className="text-base font-normal text-gray-900">{display.type}</div>
+                            <div className={`${display.amountColor} text-base font-bold`}>
+                              {display.amountPrefix}
+                              {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
+                            </div>
                           </div>
                         </div>
+
+                        <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
                       </div>
 
-                      <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
+                      {index < dateTransactions.length - 1 && <Divider className="my-2" />}
                     </div>
-
-                    {index < dateTransactions.length - 1 && <Divider className="my-2" />}
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
 
-        {filteredTransactions.length > 0 && <div className="p-4 h-16"></div>}
-
-        {filteredTransactions.length === 0 && !loading && (
-          <div className="text-center py-8 text-gray-500">
-            {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
-          </div>
-        )}
+          {filteredTransactions.length === 0 && !loading && (
+            <div className="text-center py-8 text-gray-500">
+              {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+
+      {selectedTransaction && (
+        <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+      )}
+    </>
   )
 }
