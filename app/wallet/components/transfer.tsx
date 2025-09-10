@@ -40,7 +40,6 @@ type TransferType = "Send" | "Receive" | null
 export default function Transfer({ currencies, onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [transferType, setTransferType] = useState<TransferType>(null)
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [fetchedCurrencies, setFetchedCurrencies] = useState<Currency[]>([])
 
@@ -48,7 +47,6 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
 
-  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
   const toSelectWallet = () => setStep("selectWallet")
   const toEnterAmount = () => setStep("enterAmount")
