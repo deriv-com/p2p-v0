@@ -3,7 +3,6 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import WalletDisplay from "./wallet-display"
 import { fetchWalletsList, walletTransfer, getCurrencies } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
 
@@ -229,29 +228,6 @@ export default function Transfer({ onClose }: TransferProps) {
             ))}
           </div>
         </div>
-
-        <div className="mb-6">
-          <h1 className="text-2xl font-black text-[#00080A]">Select Wallet</h1>
-        </div>
-
-        <div>
-          <h2 className="text-black/[0.96] text-base font-normal">Wallet</h2>
-        </div>
-
-        <div className="space-y-2">
-          {wallets
-            .filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
-            .map((wallet) => (
-              <WalletDisplay
-                key={wallet.id}
-                name={wallet.name}
-                amount={wallet.amount}
-                currency={wallet.currency}
-                icon={wallet.icon}
-                onClick={() => handleFromWalletSelect(wallet)}
-              />
-            ))}
-        </div>
       </>
     )
   }
@@ -266,98 +242,100 @@ export default function Transfer({ onClose }: TransferProps) {
           </Button>
         </div>
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col px-6">
           <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6">Transfer</h1>
 
-          <div className="space-y-4 mb-6">
+          <div className="relative mb-6">
             {/* From Wallet */}
-            <div className="relative">
-              <div
-                className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer"
-                onClick={() => setShowFromDropdown(!showFromDropdown)}
-              >
-                <div className="flex-1">
-                  <div className="text-black/48 text-base font-normal mb-1">From</div>
-                  <div className="text-[#181C25] text-base font-bold">{sourceWalletData?.name || "Select wallet"}</div>
-                  <div className="text-black/72 text-sm font-normal">{getSourceWalletAmount()}</div>
-                </div>
-                <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
+            <div
+              className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+              onClick={() => setShowFromDropdown(!showFromDropdown)}
+            >
+              <div className="flex-1">
+                <div className="text-black/48 text-base font-normal mb-1">From</div>
+                <div className="text-[#181C25] text-base font-bold">{sourceWalletData?.name || "Select wallet"}</div>
+                <div className="text-black/72 text-sm font-normal">{getSourceWalletAmount()}</div>
               </div>
-
-              {/* From Wallet Dropdown */}
-              {showFromDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                  {wallets.map((wallet) => (
-                    <div
-                      key={wallet.id}
-                      className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                      onClick={() => handleFromWalletSelect(wallet)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden">
-                          <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
-                          <div className="text-black/72 text-sm">
-                            {wallet.amount} {wallet.currency}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
             </div>
 
-            {/* Interchange Button */}
-            <div className="flex justify-center">
-              <Button variant="ghost" size="sm" onClick={handleInterchange} className="p-2">
-                <Image src="/icons/interchange.png" alt="Interchange" width={24} height={24} />
+            <div className="h-2"></div>
+
+            {/* To Wallet */}
+            <div
+              className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+              onClick={() => setShowToDropdown(!showToDropdown)}
+            >
+              <div className="flex-1">
+                <div className="text-black/48 text-base font-normal mb-1">To</div>
+                <div className="text-[#181C25] text-base font-bold">{destinationWalletData?.name || "Select"}</div>
+                {destinationWalletData && (
+                  <div className="text-black/72 text-sm font-normal">{getDestinationWalletAmount()}</div>
+                )}
+              </div>
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
+            </div>
+
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleInterchange}
+                className="p-0 bg-white rounded-full shadow-sm"
+              >
+                <Image src="/icons/button-switch.png" alt="Switch" width={48} height={48} />
               </Button>
             </div>
 
-            {/* To Wallet */}
-            <div className="relative">
-              <div
-                className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer"
-                onClick={() => setShowToDropdown(!showToDropdown)}
-              >
-                <div className="flex-1">
-                  <div className="text-black/48 text-base font-normal mb-1">To</div>
-                  <div className="text-[#181C25] text-base font-bold">{destinationWalletData?.name || "Select"}</div>
-                  {destinationWalletData && (
-                    <div className="text-black/72 text-sm font-normal">{getDestinationWalletAmount()}</div>
-                  )}
-                </div>
-                <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
-              </div>
-
-              {/* To Wallet Dropdown */}
-              {showToDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
-                  {wallets.map((wallet) => (
-                    <div
-                      key={wallet.id}
-                      className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-                      onClick={() => handleToWalletSelect(wallet)}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full overflow-hidden">
-                          <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
-                        </div>
-                        <div className="flex-1">
-                          <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
-                          <div className="text-black/72 text-sm">
-                            {wallet.amount} {wallet.currency}
-                          </div>
+            {/* From Wallet Dropdown */}
+            {showFromDropdown && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
+                {wallets.map((wallet) => (
+                  <div
+                    key={wallet.id}
+                    className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    onClick={() => handleFromWalletSelect(wallet)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full overflow-hidden">
+                        <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
+                        <div className="text-black/72 text-sm">
+                          {wallet.amount} {wallet.currency}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-            </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* To Wallet Dropdown */}
+            {showToDropdown && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
+                {wallets.map((wallet) => (
+                  <div
+                    key={wallet.id}
+                    className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    onClick={() => handleToWalletSelect(wallet)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full overflow-hidden">
+                        <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
+                      </div>
+                      <div className="flex-1">
+                        <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
+                        <div className="text-black/72 text-sm">
+                          {wallet.amount} {wallet.currency}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="mb-6">
