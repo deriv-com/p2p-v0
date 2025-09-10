@@ -185,7 +185,11 @@ export default function Transfer({ onClose }: TransferProps) {
     if (destinationWalletData) {
       const destinationWallet = wallets.find((w) => w.id === destinationWalletData.id)
       if (destinationWallet?.type?.toLowerCase() === "p2p") {
+        // If destination is P2P, source can only be non-P2P
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
+      } else {
+        // If destination is non-P2P, source can only be P2P
+        return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
       }
     }
     return wallets
@@ -195,7 +199,11 @@ export default function Transfer({ onClose }: TransferProps) {
     if (sourceWalletData) {
       const sourceWallet = wallets.find((w) => w.id === sourceWalletData.id)
       if (sourceWallet?.type?.toLowerCase() === "p2p") {
+        // If source is P2P, destination can only be non-P2P
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
+      } else {
+        // If source is non-P2P, destination can only be P2P
+        return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
       }
     }
     return wallets
