@@ -58,3 +58,32 @@ export async function getCurrencies(): Promise<any> {
     return null
   }
 }
+
+export async function walletTransfer(params: {
+  net_amount: string
+  currency: string
+  destination_wallet_id: string
+  request_id: string
+  source_wallet_id: string
+}): Promise<any> {
+  try {
+    const url = `${API.coreUrl}/wallets/transfers`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        ...headers,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(params),
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log("Error performing wallet transfer:", error)
+    return null
+  }
+}
