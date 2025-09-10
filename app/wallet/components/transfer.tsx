@@ -35,7 +35,7 @@ type TransferType = "Send" | "Receive" | null
 
 export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
-  const [transferType, setTransferType] = useState<TransferType>(null)
+
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [showFromDropdown, setShowFromDropdown] = useState(false)
