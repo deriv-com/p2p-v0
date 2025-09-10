@@ -43,7 +43,7 @@ export default function Sidebar() {
                   prefetch
                   href={item.href}
                   className={cn(
-                    "flex items-center gap-3 rounded-md p-4 text-sm",
+                    "flex items-center gap-3 rounded-md py-4 text-sm",
                     isActive
                       ? "text-primary"
                       : "text-slate-600 hover:text-primary",
