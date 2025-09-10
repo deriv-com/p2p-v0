@@ -3,11 +3,11 @@
 import type React from "react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import WalletDisplay from "./wallet-display"
-import { fetchWalletsList, walletTransfer } from "@/services/api/api-wallets"
+import { fetchWalletsList, walletTransfer, getCurrencies } from "@/services/api/api-wallets"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface TransferProps {
   currencies: Currency[]
@@ -34,14 +34,15 @@ interface WalletData {
   name: string
 }
 
-type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm" | "success"
+type TransferStep = "chooseCurrency" | "selectWallet" | "enterAmount" | "confirm" | "success"
 type TransferType = "Send" | "Receive" | null
 
 export default function Transfer({ currencies, onClose }: TransferProps) {
-  const [step, setStep] = useState<TransferStep>("chooseType")
+  const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
+  const [fetchedCurrencies, setFetchedCurrencies] = useState<Currency[]>([])
 
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
@@ -54,10 +55,30 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   const toConfirm = () => setStep("confirm")
   const toSuccess = () => setStep("success")
   const goBack = () => {
-    if (step === "selectWallet") setStep("chooseType")
+    if (step === "selectWallet") setStep("chooseCurrency")
     else if (step === "enterAmount") setStep("selectWallet")
     else if (step === "confirm") setStep("enterAmount")
   }
+
+  useEffect(() => {
+    const loadCurrencies = async () => {
+      try {
+        const response = await getCurrencies()
+        if (response?.data) {
+          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
+            code,
+            name: data.label,
+            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+          }))
+          setFetchedCurrencies(currencyList)
+        }
+      } catch (error) {
+        console.error("Error fetching currencies:", error)
+      }
+    }
+
+    loadCurrencies()
+  }, [])
 
   useEffect(() => {
     if (step === "selectWallet") {
@@ -157,7 +178,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   }
 
   const handleDoneClick = () => {
-    setStep("chooseType")
+    setStep("chooseCurrency")
     setTransferAmount(null)
     setSourceWalletData(null)
     setDestinationWalletData(null)
@@ -168,12 +189,20 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
 
   const getTitle = () => {
-    if (step === "chooseType") return "Transfer"
+    if (step === "chooseCurrency") return "Transfer"
     if (step === "success") return "Transfer to P2P"
     return ""
   }
 
-  if (step === "chooseType") {
+  const handleCurrencySelect = (currency: Currency) => {
+    setSelectedCurrency(currency.code)
+    // For now, we'll proceed to selectWallet step with Send type
+    // This can be modified later to show transfer type selection
+    setTransferType("Send")
+    toSelectWallet()
+  }
+
+  if (step === "chooseCurrency") {
     return (
       <>
         <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
@@ -183,79 +212,36 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
           </Button>
         </div>
 
-        <div>
-          <h2 className="text-base font-bold mb-2">Choose currency</h2>
-          <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-            <SelectTrigger className="w-full h-14 rounded-xl border border-border">
-              {selectedCurrencyData ? (
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                    {selectedCurrencyData.logo && (
-                      <Image
-                        src={selectedCurrencyData.logo || "/placeholder.svg"}
-                        alt={selectedCurrencyData.name}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <SelectValue>
-                    <span className="text-base">{selectedCurrencyData.name}</span>
-                  </SelectValue>
-                </div>
-              ) : (
-                <div></div>
-              )}
-            </SelectTrigger>
-            <SelectContent>
-              {currencies.map((currency) => (
-                <SelectItem key={currency.code} value={currency.code}>
+        <div className="px-6">
+          <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-2">Transfer</h1>
+
+          <p className="text-black/72 text-base font-normal mb-6">Choose which currency you would like to transfer.</p>
+
+          <div className="space-y-0">
+            {fetchedCurrencies.map((currency, index) => (
+              <div key={currency.code}>
+                <div
+                  className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
+                  onClick={() => handleCurrencySelect(currency)}
+                >
                   <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                       {currency.logo && (
                         <Image
                           src={currency.logo || "/placeholder.svg"}
                           alt={currency.name}
-                          width={24}
-                          height={24}
+                          width={32}
+                          height={32}
                           className="w-full h-full object-cover"
                         />
                       )}
                     </div>
-                    <span>{currency.name}</span>
+                    <span className="text-[#181C25] text-base font-normal">{currency.name}</span>
                   </div>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <h2 className="text-black text-base font-bold m-0">Choose transfer type</h2>
-
-        <div className="space-y-2">
-          <div
-            className="flex items-center gap-4 cursor-pointer bg-slate-75 rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
-            onClick={handleSendClick}
-          >
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-              <Image src="/icons/arrow-up.png" alt="Send" width={23} height={22} />
-            </div>
-            <div>
-              <h3 className="text-black text-base font-bold">Send</h3>
-            </div>
-          </div>
-
-          <div
-            className="flex items-center gap-4 cursor-pointer bg-slate-75 rounded-2xl min-h-[56px] p-4 w-full transition-colors hover:bg-gray-200"
-            onClick={handleReceiveClick}
-          >
-            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center">
-              <Image src="/icons/arrow-down.png" alt="Receive" width={23} height={22} />
-            </div>
-            <div>
-              <h3 className="text-black text-base font-bold">Receive</h3>
-            </div>
+                </div>
+                {index < fetchedCurrencies.length - 1 && <div className="h-px bg-gray-200"></div>}
+              </div>
+            ))}
           </div>
         </div>
       </>
@@ -272,7 +258,13 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={() => setStep("chooseType")} aria-label="Close">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="px-0"
+            onClick={() => setStep("chooseCurrency")}
+            aria-label="Close"
+          >
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
@@ -308,7 +300,13 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={() => setStep("chooseType")} aria-label="Close">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="px-0"
+            onClick={() => setStep("chooseCurrency")}
+            aria-label="Close"
+          >
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
@@ -365,7 +363,13 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={() => setStep("chooseType")} aria-label="Close">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="px-0"
+            onClick={() => setStep("chooseCurrency")}
+            aria-label="Close"
+          >
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
