@@ -57,6 +57,11 @@ export default function Sidebar() {
               </li>
             )
           })}
+          <li key="">
+          <Button size="sm" onClick={() => AuthAPI.logout()}>
+            Logout
+          </Button>
+          </li>
         </ul>
       </nav>
 
@@ -65,9 +70,7 @@ export default function Sidebar() {
           <div className="text-slate-600 hover:text-slate-700">
             <NovuNotifications />
           </div>
-          <Button size="sm" onClick={() => AuthAPI.logout()}>
-            Logout
-          </Button>
+          
         </div>
       </div>
     </div>
