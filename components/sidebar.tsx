@@ -69,13 +69,6 @@ export default function Sidebar() {
           </li>
         </ul>
       </nav>
-
-      <div className="px-4 pb-6 border-t border-slate-200 pt-4">
-        <div className="flex items-center justify-between">
-          
-          
-        </div>
-      </div>
     </div>
   )
 }
