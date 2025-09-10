@@ -211,8 +211,8 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image
                           src={currency.logo || "/placeholder.svg"}
                           alt={currency.name}
-                          width={32}
-                          height={32}
+                          width={24}
+                          height={24}
                           className="w-full h-full object-cover"
                         />
                       )}
