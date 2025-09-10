@@ -395,7 +395,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </Button>
         </div>
 
-        <h1 className="text-2xl font-black text-black mb-6">Confirm the transfer</h1>
+        <h1 className="text-2xl font-black text-black mb-6">Confirm transfer</h1>
 
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
