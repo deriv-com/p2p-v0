@@ -39,7 +39,7 @@ type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm" | 
 type TransferType = "Send" | "Receive" | null
 
 export default function Transfer({ currencies, onClose }: TransferProps) {
-  const router = useRouter()
+
   const [step, setStep] = useState<TransferStep>("chooseType")
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
