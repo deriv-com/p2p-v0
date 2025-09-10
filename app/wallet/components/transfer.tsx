@@ -1,6 +1,4 @@
 "use client"
-
-import type React from "react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -10,7 +8,6 @@ import { fetchWalletsList, walletTransfer, getCurrencies } from "@/services/api/
 import { currencyLogoMapper } from "@/lib/utils"
 
 interface TransferProps {
-  currencies: Currency[]
   onClose: () => void
 }
 
@@ -34,10 +31,10 @@ interface WalletData {
   name: string
 }
 
-type TransferStep = "chooseCurrency" | "selectWallet" | "enterAmount" | "confirm" | "success"
+type TransferStep = "chooseCurrency" | "enterAmount" | "confirm" | "success"
 type TransferType = "Send" | "Receive" | null
 
-export default function Transfer({ currencies, onClose }: TransferProps) {
+export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
@@ -47,14 +44,11 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
 
-
-  const toSelectWallet = () => setStep("selectWallet")
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => setStep("confirm")
   const toSuccess = () => setStep("success")
   const goBack = () => {
-    if (step === "selectWallet") setStep("chooseCurrency")
-    else if (step === "enterAmount") setStep("selectWallet")
+    if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "confirm") setStep("enterAmount")
   }
 
@@ -75,60 +69,41 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
       }
     }
 
-    loadCurrencies()
-  }, [])
+    const loadWallets = async () => {
+      try {
+        const response = await fetchWalletsList()
 
-  useEffect(() => {
-    if (step === "selectWallet") {
-      const loadWallets = async () => {
-        try {
-          const response = await fetchWalletsList()
+        if (response?.data?.wallets) {
+          const processedWallets: ProcessedWallet[] = []
 
-          if (response?.data?.wallets) {
-            const processedWallets: ProcessedWallet[] = []
-
-            response.data.wallets.forEach((wallet: any) => {
-              wallet.balances.forEach((balance: any) => {
-                processedWallets.push({
-                  id: wallet.wallet_id,
-                  name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `${balance.currency} Wallet`,
-                  amount: balance.balance,
-                  currency: balance.currency,
-                  icon: "/icons/usd-flag.png",
-                  type: wallet.type,
-                })
+          response.data.wallets.forEach((wallet: any) => {
+            wallet.balances.forEach((balance: any) => {
+              processedWallets.push({
+                id: wallet.wallet_id,
+                name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `${balance.currency} Wallet`,
+                amount: balance.balance,
+                currency: balance.currency,
+                icon: "/icons/usd-flag.png",
+                type: wallet.type,
               })
             })
+          })
 
-            setWallets(processedWallets)
+          setWallets(processedWallets)
+
+          const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
+          if (p2pWallet) {
+            setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name })
           }
-        } catch (error) {
-          console.error("Error fetching wallets:", error)
         }
-      }
-
-      loadWallets()
-    }
-  }, [step])
-
-
-  const handleWalletClick = (wallet: ProcessedWallet) => {
-    const p2pWallet = wallets.find((w) => w.type?.toLowerCase() === "p2p")
-
-    if (transferType === "Send") {
-      setDestinationWalletData({ id: wallet.id, name: wallet.name })
-      if (p2pWallet) {
-        setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name })
-      }
-    } else if (transferType === "Receive") {
-      setSourceWalletData({ id: wallet.id, name: wallet.name })
-      if (p2pWallet) {
-        setDestinationWalletData({ id: p2pWallet.id, name: p2pWallet.name })
+      } catch (error) {
+        console.error("Error fetching wallets:", error)
       }
     }
 
-    toEnterAmount()
-  }
+    loadCurrencies()
+    loadWallets()
+  }, [])
 
   const handleTransferClick = () => {
     toConfirm()
@@ -173,21 +148,23 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
     onClose()
   }
 
-  const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
-
   const getTitle = () => {
     if (step === "chooseCurrency") return "Transfer"
     if (step === "success") return "Transfer to P2P"
     return ""
   }
 
-  const handleCurrencySelect = (currency: Currency) => {
-  
-    // For now, we'll proceed to selectWallet step with Send type
-    // This can be modified later to show transfer type selection
+  const handleCurrencySelect = () => {
     setTransferType("Send")
-    toSelectWallet()
+    toEnterAmount()
   }
+
+  const handleWalletClick = (wallet: ProcessedWallet) => {
+    setDestinationWalletData({ id: wallet.id, name: wallet.name })
+    toEnterAmount()
+  }
+
+  const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
 
   if (step === "chooseCurrency") {
     return (
@@ -209,7 +186,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
               <div key={currency.code}>
                 <div
                   className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => handleCurrencySelect(currency)}
+                  onClick={() => handleCurrencySelect()}
                 >
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
@@ -231,33 +208,9 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
             ))}
           </div>
         </div>
-      </>
-    )
-  }
-
-  if (step === "selectWallet") {
-    const title = transferType === "Send" ? "Send to" : "Receive from"
-    const filteredWallets = getFilteredWallets()
-
-    return (
-      <>
-        <div className="flex justify-between items-center mb-4">
-          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-0"
-            onClick={() => setStep("chooseCurrency")}
-            aria-label="Close"
-          >
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-          </Button>
-        </div>
 
         <div className="mb-6">
-          <h1 className="text-2xl font-black text-[#00080A]">{title}</h1>
+          <h1 className="text-2xl font-black text-[#00080A]">Select Wallet</h1>
         </div>
 
         <div>
@@ -265,7 +218,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
         </div>
 
         <div className="space-y-2">
-          {filteredWallets.map((wallet) => (
+          {getFilteredWallets().map((wallet) => (
             <WalletDisplay
               key={wallet.id}
               name={wallet.name}
@@ -402,10 +355,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText =
-      transferType === "Send"
-        ? `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
-        : `${transferAmount} USD received from your ${sourceWalletData?.name}.`
+    const transferText = `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
 
     return (
       <div className="flex flex-col h-full">
