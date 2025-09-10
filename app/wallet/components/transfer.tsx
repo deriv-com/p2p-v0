@@ -349,7 +349,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
           <div className="flex-1"></div>
 
-          <div className="mt-auto pb-6 px-6">
+          <div className="mt-auto ">
             <Button
               onClick={handleTransferClick}
               disabled={!transferAmount || transferAmount.trim() === "" || !sourceWalletData || !destinationWalletData}
