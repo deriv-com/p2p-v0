@@ -45,8 +45,8 @@ export default function Sidebar() {
                   className={cn(
                     "flex items-center gap-3 rounded-md p-4 text-sm",
                     isActive
-                      ? "bg-slate-100 text-slate-900 font-bold"
-                      : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+                      ? "text-primary font-bold"
+                      : "text-slate-600 hover:text-primary",
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
