@@ -414,7 +414,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
         : `${transferAmount} USD received from your ${sourceWalletData?.name}.`
 
     return (
-      <div className="flex flex-col h-full px-6">
+      <div className="flex flex-col h-ful">
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
             <Image src="/icons/success.png" alt="Success" width={64} height={64} />
