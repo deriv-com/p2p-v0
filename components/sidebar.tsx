@@ -64,7 +64,7 @@ export default function Sidebar() {
           </li>
         </ul>
       </nav>
-      <div className="flex flex-row items-center gap-4 p-6">
+      <div className="flex flex-row items-center gap-4 p-4">
         <Avatar className="h-8 w-8">
           <Image src="/icons/default-user-icon.png" alt="User avatar" width={64} height={64} />
         </Avatar>
