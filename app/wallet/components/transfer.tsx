@@ -184,7 +184,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
   }
 
   const handleCurrencySelect = (currency: Currency) => {
-    setSelectedCurrency(currency.code)
+  
     // For now, we'll proceed to selectWallet step with Send type
     // This can be modified later to show transfer type selection
     setTransferType("Send")
