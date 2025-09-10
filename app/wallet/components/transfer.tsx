@@ -273,7 +273,7 @@ export default function Transfer({ onClose }: TransferProps) {
             {/* From Wallet */}
             <div className="relative">
               <div
-                className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+                className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer"
                 onClick={() => setShowFromDropdown(!showFromDropdown)}
               >
                 <div className="flex-1">
