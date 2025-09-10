@@ -193,7 +193,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </Button>
         </div>
 
-        <div className="px-6">
+        <div className="px-2">
           <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-2">Transfer</h1>
 
           <p className="text-black/72 text-base font-normal mb-6">Choose which currency you would like to transfer.</p>
