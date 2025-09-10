@@ -252,7 +252,7 @@ export default function BuySellPage() {
 
                 <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full scrollbar-hide">
                   <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
-                    <SelectTrigger className="rounded-md px-3">
+                    <SelectTrigger className="rounded-md px-3" disabled>
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
