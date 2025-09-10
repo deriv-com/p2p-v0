@@ -184,24 +184,13 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "chooseCurrency") {
     return (
       <>
-       <div className="flex justify-end items-center mb-6">
-  <Button
-    variant="ghost"
-    size="sm"
-    className="px-0"
-    onClick={onClose}
-    aria-label="Close"
-  >
-    <Image
-      src="/icons/close-circle-secondary.png"
-      alt="Close"
-      width={32}
-      height={32}
-    />
-  </Button>
-</div>
+        <div className="flex justify-end items-center mb-6">
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+          </Button>
+        </div>
         <div className="px-2">
-          <h1 className="text-[#181C25] text-xl font-extrabold  mb-2">Transfer</h1>
+          <h1 className="text-[#181C25] text-xl font-extrabold mb-2">Transfer</h1>
 
           <p className="text-black/72 text-base font-normal mb-6">Choose which currency you would like to transfer.</p>
 
@@ -272,7 +261,9 @@ export default function Transfer({ onClose }: TransferProps) {
             >
               <div className="flex-1">
                 <div className="text-black/48 text-base font-normal mb-1">To</div>
-                <div className="text-[#181C25] text-base font-bold">{destinationWalletData?.name || "Select"}</div>
+                <div className="text-[#181C25] text-base font-bold">
+                  {destinationWalletData?.name || <span className="text-black/24 text-base font-normal">Select</span>}
+                </div>
                 {destinationWalletData && (
                   <div className="text-black/72 text-sm font-normal">{getDestinationWalletAmount()}</div>
                 )}
@@ -292,11 +283,11 @@ export default function Transfer({ onClose }: TransferProps) {
             </div>
 
             {showFromDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
+              <div className="absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
                 {wallets.map((wallet) => (
                   <div
                     key={wallet.id}
-                    className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    className="p-4 hover:bg-gray-50 cursor-pointer"
                     onClick={() => handleFromWalletSelect(wallet)}
                   >
                     <div className="flex items-center gap-3">
@@ -316,11 +307,11 @@ export default function Transfer({ onClose }: TransferProps) {
             )}
 
             {showToDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
+              <div className="absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
                 {wallets.map((wallet) => (
                   <div
                     key={wallet.id}
-                    className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                    className="p-4 hover:bg-gray-50 cursor-pointer"
                     onClick={() => handleToWalletSelect(wallet)}
                   >
                     <div className="flex items-center gap-3">
@@ -341,7 +332,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </div>
 
           <div className="mb-6 px-2">
-            <h2 className="text-[#181C25] text-xl font-extrabold mb-4">Amount</h2>
+            <h2 className="text-[#181C25] text-base font-normal mb-4">Amount</h2>
             <div className="relative">
               <Input
                 type="number"
