@@ -209,26 +209,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </div>
         </div>
 
-        <div className="mb-6">
-          <h1 className="text-2xl font-black text-[#00080A]">Select Wallet</h1>
-        </div>
-
-        <div>
-          <h2 className="text-black/[0.96] text-base font-normal">Wallet</h2>
-        </div>
-
-        <div className="space-y-2">
-          {getFilteredWallets().map((wallet) => (
-            <WalletDisplay
-              key={wallet.id}
-              name={wallet.name}
-              amount={wallet.amount}
-              currency={wallet.currency}
-              icon={wallet.icon}
-              onClick={() => handleWalletClick(wallet)}
-            />
-          ))}
-        </div>
+      
       </>
     )
   }
