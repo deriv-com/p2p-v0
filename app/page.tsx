@@ -234,9 +234,9 @@ export default function BuySellPage() {
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-full flex flex-col-reverse md:flex-row items-start md:items-center gap-[16px] md:gap-[24px]">
+              <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px]">
                 <Tabs
-                  className="w-full md:w-[230px] md:min-w-[230px]"
+                  className="w-full md:w-[230px] md:min-w-[230px] flex-1 md:flex-none"
                   value={activeTab}
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
                 >
@@ -250,22 +250,23 @@ export default function BuySellPage() {
                   </TabsList>
                 </Tabs>
 
-                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full scrollbar-hide">
-                  {CURRENCY_FILTERS.map((currencyFilter) => (
-                    <Button
-                      key={currencyFilter}
-                      variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedAccountCurrency(currencyFilter)}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        selectedAccountCurrency === currencyFilter
-                          ? "bg-black text-white hover:bg-gray-800"
-                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      {currencyFilter}
-                    </Button>
-                  ))}
+                <div>
+                  <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
+                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px]" disabled>
+                      <SelectValue placeholder="Select currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CURRENCY_FILTERS.map((currencyFilter) => (
+                        <SelectItem
+                          key={currencyFilter}
+                          value={currencyFilter}
+                          className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
+                        >
+                          {currencyFilter}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>

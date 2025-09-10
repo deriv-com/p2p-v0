@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
+import Image from "next/image"
 
 interface Transaction {
   transaction_id: number
@@ -178,7 +179,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
         <div className="flex justify-end pt-4 md:pt-10">
           <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
-            <img src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
 
@@ -193,7 +194,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
               <div
                 className={`w-5 h-5 rounded-full border-2 ${stepperState.step1.border} ${stepperState.step1.bg} relative flex items-center justify-center`}
               >
-                {stepperState.showTick && <img src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
+                {stepperState.showTick && <Image src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
               </div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step1.text}`}>Processed</span>
             </div>
@@ -206,7 +207,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
               <div
                 className={`w-5 h-5 rounded-full border-2 ${stepperState.step2.border} ${stepperState.step2.bg} relative flex items-center justify-center`}
               >
-                {stepperState.showTick && <img src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
+                {stepperState.showTick && <Image src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
               </div>
               <span className={`ml-2 text-sm font-bold ${stepperState.step2.text}`}>Successful</span>
             </div>
