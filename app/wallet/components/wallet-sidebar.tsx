@@ -53,7 +53,7 @@ export default function WalletSidebar({
       >
    {operation !== "TRANSFER" ? (
 
-<div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b"> <h2 className="text-lg font-bold">{getTitle()}</h2> <Button onClick={onClose} variant="ghost" size="sm" className="px-1"> <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} /> </Button> </div> ) : null}
+<div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b"> <h2 className="text-lg font-bold">{getTitle()}</h2> <Button onClick={onClose} variant="ghost" size="sm" className="px-1"> <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} /> </Button> </div> ): null}
 
         <div className="p-4 flex flex-col gap-4 overflow-y-auto flex-1">
           {operation === "DEPOSIT" ? (
