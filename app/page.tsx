@@ -250,7 +250,7 @@ export default function BuySellPage() {
                   </TabsList>
                 </Tabs>
 
-                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full scrollbar-hide">
+                <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto scrollbar-hide">
                   <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
                     <SelectTrigger className="rounded-md px-3" disabled>
                       <SelectValue placeholder="Select currency" />
