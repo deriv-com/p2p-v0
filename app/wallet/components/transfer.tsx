@@ -149,13 +149,6 @@ export default function Transfer({ onClose }: TransferProps) {
     setTransferType(null)
     onClose()
   }
-
-  const getTitle = () => {
-    if (step === "chooseCurrency") return "Transfer"
-    if (step === "success") return "Transfer to P2P"
-    return ""
-  }
-
   const handleCurrencySelect = () => {
     setTransferType("Send")
     toEnterAmount()
