@@ -149,7 +149,7 @@ export default function Transfer({ onClose }: TransferProps) {
     setTransferType(null)
     onClose()
   }
-  
+
   const handleCurrencySelect = () => {
     setTransferType("Send")
     toEnterAmount()
@@ -257,7 +257,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
             </div>
 
-            <div className="h-8"></div>
+            <div className="h-2"></div>
 
             <div
               className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer h-[100px]"
