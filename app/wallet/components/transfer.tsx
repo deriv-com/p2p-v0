@@ -51,6 +51,7 @@ export default function Transfer({ onClose }: TransferProps) {
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "confirm") setStep("enterAmount")
+    else if (step === "chooseCurrency") onClose()
   }
 
   useEffect(() => {
@@ -189,10 +190,12 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "chooseCurrency") {
     return (
       <>
-        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
-          <h2 className="text-lg font-bold">{getTitle()}</h2>
-          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
+            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
 
@@ -235,20 +238,21 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "enterAmount") {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
-          <h2 className="text-lg font-bold">Transfer</h2>
-          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
+            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
 
-        <div className="flex-1 flex flex-col px-6">
-          <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6">Transfer</h1>
+        <div className="flex-1 flex flex-col">
+          <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6 px-6">Transfer</h1>
 
-          <div className="relative mb-6">
-            {/* From Wallet */}
+          <div className="relative mb-6 px-6">
             <div
-              className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+              className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer h-[100px]"
               onClick={() => setShowFromDropdown(!showFromDropdown)}
             >
               <div className="flex-1">
@@ -259,11 +263,10 @@ export default function Transfer({ onClose }: TransferProps) {
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
             </div>
 
-            <div className="h-2"></div>
+            <div className="h-8"></div>
 
-            {/* To Wallet */}
             <div
-              className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+              className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer h-[100px]"
               onClick={() => setShowToDropdown(!showToDropdown)}
             >
               <div className="flex-1">
@@ -287,7 +290,6 @@ export default function Transfer({ onClose }: TransferProps) {
               </Button>
             </div>
 
-            {/* From Wallet Dropdown */}
             {showFromDropdown && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
                 {wallets.map((wallet) => (
@@ -312,7 +314,6 @@ export default function Transfer({ onClose }: TransferProps) {
               </div>
             )}
 
-            {/* To Wallet Dropdown */}
             {showToDropdown && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-20 max-h-60 overflow-y-auto">
                 {wallets.map((wallet) => (
@@ -338,7 +339,7 @@ export default function Transfer({ onClose }: TransferProps) {
             )}
           </div>
 
-          <div className="mb-6">
+          <div className="mb-6 px-6">
             <h2 className="text-[#181C25] text-xl font-extrabold mb-4">Amount</h2>
             <div className="relative">
               <Input
@@ -354,7 +355,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
           <div className="flex-1"></div>
 
-          <div className="mt-auto pb-6">
+          <div className="mt-auto pb-6 px-6">
             <Button
               onClick={handleTransferClick}
               disabled={!transferAmount || transferAmount.trim() === "" || !sourceWalletData || !destinationWalletData}
@@ -375,13 +376,7 @@ export default function Transfer({ onClose }: TransferProps) {
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-0"
-            onClick={() => setStep("chooseCurrency")}
-            aria-label="Close"
-          >
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
@@ -431,10 +426,12 @@ export default function Transfer({ onClose }: TransferProps) {
 
     return (
       <div className="flex flex-col h-full">
-        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
-          <h2 className="text-lg font-bold">{getTitle()}</h2>
-          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
+            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
 
