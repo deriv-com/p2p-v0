@@ -31,7 +31,7 @@ interface WalletData {
 }
 
 type TransferStep = "chooseCurrency" | "enterAmount" | "confirm" | "success"
-type TransferType = "Send" | "Receive" | null
+
 
 export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
