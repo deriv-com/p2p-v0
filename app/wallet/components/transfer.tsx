@@ -244,7 +244,7 @@ export default function Transfer({ onClose }: TransferProps) {
         <div className="flex-1 flex flex-col">
           <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6 px-2">Transfer</h1>
 
-          <div className="relative mb-6 px-6">
+          <div className="relative mb-6 px-2">
             <div
               className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer h-[100px]"
               onClick={() => setShowFromDropdown(!showFromDropdown)}
