@@ -238,7 +238,7 @@ export default function Transfer({ onClose }: TransferProps) {
         </div>
 
         <div className="flex-1 flex flex-col">
-          <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6 px-2">Transfer</h1>
+          <h1 className="text-[#181C25] text-xl font-extrabold mt-6 mb-6 px-2">Transfer</h1>
 
           <div className="relative mb-6 px-2">
             <div
