@@ -169,7 +169,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
 
   const getTitle = () => {
     if (step === "chooseType") return "Transfer"
-    if (step === "success") return "Transfer successful"
+    if (step === "success") return "Transfer to P2P"
     return ""
   }
 
