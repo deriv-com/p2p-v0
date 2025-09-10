@@ -266,7 +266,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </Button>
         </div>
 
-        <div className="px-6 flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col">
           <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6">Transfer</h1>
 
           <div className="space-y-4 mb-6">
