@@ -113,17 +113,6 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
     }
   }, [step])
 
-  const handleSendClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setTransferType("Send")
-    toSelectWallet()
-  }
-
-  const handleReceiveClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    setTransferType("Receive")
-    toSelectWallet()
-  }
 
   const handleWalletClick = (wallet: ProcessedWallet) => {
     const p2pWallet = wallets.find((w) => w.type?.toLowerCase() === "p2p")
