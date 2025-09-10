@@ -38,7 +38,6 @@ type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm" | 
 type TransferType = "Send" | "Receive" | null
 
 export default function Transfer({ currencies, onClose }: TransferProps) {
-
   const [step, setStep] = useState<TransferStep>("chooseType")
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
@@ -168,15 +167,19 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
 
   const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
 
+  const getTitle = () => {
+    if (step === "chooseType") return "Transfer"
+    if (step === "success") return "Transfer successful"
+    return ""
+  }
+
   if (step === "chooseType") {
     return (
       <>
-        <div className="flex justify-between items-center mb-4">
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-          </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
+          <h2 className="text-lg font-bold">{getTitle()}</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
 
@@ -415,6 +418,13 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
 
     return (
       <div className="flex flex-col h-full">
+        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
+          <h2 className="text-lg font-bold">{getTitle()}</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
             <Image src="/icons/success.png" alt="Success" width={64} height={64} />
