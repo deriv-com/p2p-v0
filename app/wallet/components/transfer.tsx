@@ -414,7 +414,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
           <div className="flex justify-between items-center mb-4">
             <span className="text-base font-normal text-black/48">
-              {"Amount"}
+              {transferType === "Send" ? "You're transferring" : "You'll receive"}
             </span>
             <span className="text-base font-normal text-black/96">{transferAmount} USD</span>
           </div>
