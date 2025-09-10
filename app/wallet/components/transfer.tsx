@@ -184,15 +184,22 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "chooseCurrency") {
     return (
       <>
-        <div className="flex justify-between items-center mb-6">
-          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-          </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-          </Button>
-        </div>
-
+       <div className="flex justify-end items-center mb-6">
+  <Button
+    variant="ghost"
+    size="sm"
+    className="px-0"
+    onClick={onClose}
+    aria-label="Close"
+  >
+    <Image
+      src="/icons/close-circle-secondary.png"
+      alt="Close"
+      width={32}
+      height={32}
+    />
+  </Button>
+</div>
         <div className="px-2">
           <h1 className="text-[#181C25] text-xl font-extrabold  mb-2">Transfer</h1>
 
