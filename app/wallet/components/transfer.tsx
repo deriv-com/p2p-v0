@@ -12,6 +12,7 @@ import { fetchWalletsList, walletTransfer } from "@/services/api/api-wallets"
 
 interface TransferProps {
   currencies: Currency[]
+  onClose: () => void
 }
 
 interface Currency {
@@ -37,7 +38,7 @@ interface WalletData {
 type TransferStep = "chooseType" | "selectWallet" | "enterAmount" | "confirm" | "success"
 type TransferType = "Send" | "Receive" | null
 
-export default function Transfer({ currencies }: TransferProps) {
+export default function Transfer({ currencies, onClose }: TransferProps) {
   const router = useRouter()
   const [step, setStep] = useState<TransferStep>("chooseType")
   const [transferType, setTransferType] = useState<TransferType>(null)
@@ -163,7 +164,7 @@ export default function Transfer({ currencies }: TransferProps) {
     setSourceWalletData(null)
     setDestinationWalletData(null)
     setTransferType(null)
-    router.push("/wallet")
+    onClose()
   }
 
   const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
@@ -171,6 +172,15 @@ export default function Transfer({ currencies }: TransferProps) {
   if (step === "chooseType") {
     return (
       <>
+        <div className="flex justify-between items-center mb-4">
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Go back">
+            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+          </Button>
+        </div>
+
         <div>
           <h2 className="text-base font-bold mb-2">Choose currency</h2>
           <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
