@@ -58,9 +58,9 @@ export default function Sidebar() {
             )
           })}
           <li key="logout">
-          <Button size="sm" onClick={() => AuthAPI.logout()}>
-            Logout
-          </Button>
+            <Button className="m-4" size="sm" onClick={() => AuthAPI.logout()}>
+              Logout
+            </Button>
           </li>
         </ul>
       </nav>
