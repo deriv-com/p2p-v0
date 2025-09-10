@@ -251,21 +251,22 @@ export default function BuySellPage() {
                 </Tabs>
 
                 <div className="flex gap-[8px] flex-nowrap lg:flex-wrap overflow-auto w-full scrollbar-hide">
-                  {CURRENCY_FILTERS.map((currencyFilter) => (
-                    <Button
-                      key={currencyFilter}
-                      variant={selectedAccountCurrency === currencyFilter ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => setSelectedAccountCurrency(currencyFilter)}
-                      className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-                        selectedAccountCurrency === currencyFilter
-                          ? "bg-black text-white hover:bg-gray-800"
-                          : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
-                      }`}
-                    >
-                      {currencyFilter}
-                    </Button>
-                  ))}
+                  <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
+                    <SelectTrigger className="w-[180px] rounded-full px-4 py-2 text-sm font-medium">
+                      <SelectValue placeholder="Select currency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {CURRENCY_FILTERS.map((currencyFilter) => (
+                        <SelectItem
+                          key={currencyFilter}
+                          value={currencyFilter}
+                          className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
+                        >
+                          {currencyFilter}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
             </div>
