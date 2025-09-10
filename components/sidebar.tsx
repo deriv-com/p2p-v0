@@ -24,10 +24,15 @@ export default function Sidebar() {
   return (
     <div className="hidden md:flex w-[295px] flex-col border-r border-slate-200 mr-[8px]">
       <div className="flex flex-row items-center p-6 gap-4">
+        <div>
         <Avatar className="h-8 w-8">
           <Image src="/icons/default-user-icon.png" alt="User avatar" width={64} height={64} />
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
+        </div>
+        <div className="text-slate-600 hover:text-slate-700">
+          <NovuNotifications />
+        </div>
       </div>
       <nav className="flex-1 px-4">
         <ul>
@@ -67,9 +72,7 @@ export default function Sidebar() {
 
       <div className="px-4 pb-6 border-t border-slate-200 pt-4">
         <div className="flex items-center justify-between">
-          <div className="text-slate-600 hover:text-slate-700">
-            <NovuNotifications />
-          </div>
+          
           
         </div>
       </div>
