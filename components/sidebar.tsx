@@ -23,7 +23,7 @@ export default function Sidebar() {
 
   return (
     <div className="hidden md:flex w-[295px] flex-col border-r border-slate-200 mr-[8px]">
-      <div className="flex flex-row items-center gap-4 p-6">
+      <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-logo.png" alt="User avatar" width={64} height={64} />
         <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
