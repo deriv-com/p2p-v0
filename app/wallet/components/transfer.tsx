@@ -146,7 +146,7 @@ export default function Transfer({ onClose }: TransferProps) {
     setTransferAmount(null)
     setSourceWalletData(null)
     setDestinationWalletData(null)
-    setTransferType(null)
+  
     onClose()
   }
 
