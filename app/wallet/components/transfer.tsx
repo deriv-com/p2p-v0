@@ -38,7 +38,9 @@ export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [transferType, setTransferType] = useState<TransferType>(null)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
-  const [fetchedCurrencies, setFetchedCurrencies] = useState<Currency[]>([])
+  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [showFromDropdown, setShowFromDropdown] = useState(false)
+  const [showToDropdown, setShowToDropdown] = useState(false)
 
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
@@ -62,7 +64,7 @@ export default function Transfer({ onClose }: TransferProps) {
             name: data.label,
             logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
           }))
-          setFetchedCurrencies(currencyList)
+          setCurrencies(currencyList)
         }
       } catch (error) {
         console.error("Error fetching currencies:", error)
@@ -159,12 +161,31 @@ export default function Transfer({ onClose }: TransferProps) {
     toEnterAmount()
   }
 
-  const handleWalletClick = (wallet: ProcessedWallet) => {
-    setDestinationWalletData({ id: wallet.id, name: wallet.name })
-    toEnterAmount()
+  const handleFromWalletSelect = (wallet: ProcessedWallet) => {
+    setSourceWalletData({ id: wallet.id, name: wallet.name })
+    setShowFromDropdown(false)
   }
 
-  const getFilteredWallets = () => wallets.filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
+  const handleToWalletSelect = (wallet: ProcessedWallet) => {
+    setDestinationWalletData({ id: wallet.id, name: wallet.name })
+    setShowToDropdown(false)
+  }
+
+  const handleInterchange = () => {
+    const tempSource = sourceWalletData
+    setSourceWalletData(destinationWalletData)
+    setDestinationWalletData(tempSource)
+  }
+
+  const getSourceWalletAmount = () => {
+    const wallet = wallets.find((w) => w.id === sourceWalletData?.id)
+    return wallet ? `${wallet.amount} ${wallet.currency}` : ""
+  }
+
+  const getDestinationWalletAmount = () => {
+    const wallet = wallets.find((w) => w.id === destinationWalletData?.id)
+    return wallet ? `${wallet.amount} ${wallet.currency}` : ""
+  }
 
   if (step === "chooseCurrency") {
     return (
@@ -182,7 +203,7 @@ export default function Transfer({ onClose }: TransferProps) {
           <p className="text-black/72 text-base font-normal mb-6">Choose which currency you would like to transfer.</p>
 
           <div className="space-y-0">
-            {fetchedCurrencies.map((currency, index) => (
+            {currencies.map((currency, index) => (
               <div key={currency.code}>
                 <div
                   className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
@@ -203,7 +224,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <span className="text-[#181C25] text-base font-normal">{currency.name}</span>
                   </div>
                 </div>
-                {index < fetchedCurrencies.length - 1 && <div className="h-px bg-gray-200"></div>}
+                {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
               </div>
             ))}
           </div>
@@ -218,16 +239,18 @@ export default function Transfer({ onClose }: TransferProps) {
         </div>
 
         <div className="space-y-2">
-          {getFilteredWallets().map((wallet) => (
-            <WalletDisplay
-              key={wallet.id}
-              name={wallet.name}
-              amount={wallet.amount}
-              currency={wallet.currency}
-              icon={wallet.icon}
-              onClick={() => handleWalletClick(wallet)}
-            />
-          ))}
+          {wallets
+            .filter((wallet) => (wallet.type ?? "").toLowerCase() !== "p2p")
+            .map((wallet) => (
+              <WalletDisplay
+                key={wallet.id}
+                name={wallet.name}
+                amount={wallet.amount}
+                currency={wallet.currency}
+                icon={wallet.icon}
+                onClick={() => handleFromWalletSelect(wallet)}
+              />
+            ))}
         </div>
       </>
     )
@@ -236,61 +259,132 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "enterAmount") {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex justify-between items-center mb-6">
-          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-0"
-            onClick={() => setStep("chooseCurrency")}
-            aria-label="Close"
-          >
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
+          <h2 className="text-lg font-bold">Transfer</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
 
-        <h1 className="text-2xl font-black text-black mb-6">Amount</h1>
+        <div className="px-6 flex-1 flex flex-col">
+          <h1 className="text-[#181C25] text-xl font-extrabold mt-10 mb-6">Transfer</h1>
 
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-base font-normal text-black/48">From</span>
-            <span className="text-base font-normal text-black/96">{sourceWalletData?.name}</span>
+          <div className="space-y-4 mb-6">
+            {/* From Wallet */}
+            <div className="relative">
+              <div
+                className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+                onClick={() => setShowFromDropdown(!showFromDropdown)}
+              >
+                <div className="flex-1">
+                  <div className="text-black/48 text-base font-normal mb-1">From</div>
+                  <div className="text-[#181C25] text-base font-bold">{sourceWalletData?.name || "Select wallet"}</div>
+                  <div className="text-black/72 text-sm font-normal">{getSourceWalletAmount()}</div>
+                </div>
+                <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
+              </div>
+
+              {/* From Wallet Dropdown */}
+              {showFromDropdown && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                  {wallets.map((wallet) => (
+                    <div
+                      key={wallet.id}
+                      className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                      onClick={() => handleFromWalletSelect(wallet)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full overflow-hidden">
+                          <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
+                          <div className="text-black/72 text-sm">
+                            {wallet.amount} {wallet.currency}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Interchange Button */}
+            <div className="flex justify-center">
+              <Button variant="ghost" size="sm" onClick={handleInterchange} className="p-2">
+                <Image src="/icons/interchange.png" alt="Interchange" width={24} height={24} />
+              </Button>
+            </div>
+
+            {/* To Wallet */}
+            <div className="relative">
+              <div
+                className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-black/4 cursor-pointer"
+                onClick={() => setShowToDropdown(!showToDropdown)}
+              >
+                <div className="flex-1">
+                  <div className="text-black/48 text-base font-normal mb-1">To</div>
+                  <div className="text-[#181C25] text-base font-bold">{destinationWalletData?.name || "Select"}</div>
+                  {destinationWalletData && (
+                    <div className="text-black/72 text-sm font-normal">{getDestinationWalletAmount()}</div>
+                  )}
+                </div>
+                <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
+              </div>
+
+              {/* To Wallet Dropdown */}
+              {showToDropdown && (
+                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 max-h-60 overflow-y-auto">
+                  {wallets.map((wallet) => (
+                    <div
+                      key={wallet.id}
+                      className="p-4 hover:bg-gray-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+                      onClick={() => handleToWalletSelect(wallet)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full overflow-hidden">
+                          <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
+                          <div className="text-black/72 text-sm">
+                            {wallet.amount} {wallet.currency}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="h-px bg-gray-200 mb-6"></div>
-
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-base font-normal text-black/48">To</span>
-            <span className="text-base font-normal text-black/96">{destinationWalletData?.name}</span>
+          <div className="mb-6">
+            <h2 className="text-[#181C25] text-xl font-extrabold mb-4">Amount</h2>
+            <div className="relative">
+              <Input
+                type="number"
+                placeholder="0.00"
+                value={transferAmount || ""}
+                onChange={(e) => setTransferAmount(e.target.value)}
+                className="h-12 px-4 border border-black/8 rounded-sm text-base"
+              />
+              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
+            </div>
           </div>
 
-          <div className="h-px bg-gray-200 mb-6"></div>
-        </div>
+          <div className="flex-1"></div>
 
-        <div className="mb-6">
-          <div className="relative">
-            <Input
-              type="number"
-              placeholder="Amount"
-              value={transferAmount || ""}
-              onChange={(e) => setTransferAmount(e.target.value)}
-              className="h-12 px-4 border border-black/8 rounded-sm text-base"
-            />
-            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
+          <div className="mt-auto pb-6">
+            <Button
+              onClick={handleTransferClick}
+              disabled={!transferAmount || transferAmount.trim() === "" || !sourceWalletData || !destinationWalletData}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+            >
+              Transfer
+            </Button>
           </div>
-        </div>
-
-        <div className="flex-1"></div>
-        <div className="mt-auto">
-          <Button
-            onClick={handleTransferClick}
-            disabled={!transferAmount || transferAmount.trim() === ""}
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-          >
-            Transfer
-          </Button>
         </div>
       </div>
     )
