@@ -150,7 +150,7 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const handleCurrencySelect = () => {
-    setTransferType("Send")
+    
     toEnterAmount()
   }
 
