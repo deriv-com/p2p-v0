@@ -181,6 +181,26 @@ export default function Transfer({ onClose }: TransferProps) {
     return wallet ? `${wallet.amount} ${wallet.currency}` : ""
   }
 
+  const getFilteredWalletsForFrom = () => {
+    if (destinationWalletData) {
+      const destinationWallet = wallets.find((w) => w.id === destinationWalletData.id)
+      if (destinationWallet?.type?.toLowerCase() === "p2p") {
+        return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
+      }
+    }
+    return wallets
+  }
+
+  const getFilteredWalletsForTo = () => {
+    if (sourceWalletData) {
+      const sourceWallet = wallets.find((w) => w.id === sourceWalletData.id)
+      if (sourceWallet?.type?.toLowerCase() === "p2p") {
+        return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
+      }
+    }
+    return wallets
+  }
+
   if (step === "chooseCurrency") {
     return (
       <>
@@ -284,7 +304,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
             {showFromDropdown && (
               <div className="absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
-                {wallets.map((wallet) => (
+                {getFilteredWalletsForFrom().map((wallet) => (
                   <div
                     key={wallet.id}
                     className="p-4 hover:bg-gray-50 cursor-pointer"
@@ -295,10 +315,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
                       </div>
                       <div className="flex-1">
-                        <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
-                        <div className="text-black/72 text-sm">
-                          {wallet.amount} {wallet.currency}
-                        </div>
+                        <div className="text-black/72 text-base font-normal">{wallet.name}</div>
                       </div>
                     </div>
                   </div>
@@ -308,7 +325,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
             {showToDropdown && (
               <div className="absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
-                {wallets.map((wallet) => (
+                {getFilteredWalletsForTo().map((wallet) => (
                   <div
                     key={wallet.id}
                     className="p-4 hover:bg-gray-50 cursor-pointer"
@@ -319,10 +336,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
                       </div>
                       <div className="flex-1">
-                        <div className="text-[#181C25] text-base font-bold">{wallet.name}</div>
-                        <div className="text-black/72 text-sm">
-                          {wallet.amount} {wallet.currency}
-                        </div>
+                        <div className="text-black/72 text-base font-normal">{wallet.name}</div>
                       </div>
                     </div>
                   </div>
