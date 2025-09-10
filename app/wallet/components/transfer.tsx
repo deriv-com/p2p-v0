@@ -278,7 +278,7 @@ export default function Transfer({ currencies, onClose }: TransferProps) {
           <h1 className="text-2xl font-black text-[#00080A]">{title}</h1>
         </div>
 
-        <di>
+        <div>
           <h2 className="text-black/[0.96] text-base font-normal">Wallet</h2>
         </div>
 
