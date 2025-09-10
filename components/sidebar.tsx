@@ -45,13 +45,19 @@ export default function Sidebar() {
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-md py-4 text-sm",
-                    isActive
-                      ? "text-primary"
-                      : "hover:text-primary",
+                    isActive ? "text-primary" : "hover:text-primary",
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                    <Image src={item.icon} alt={item.name} width={20} height={20} />
+                    <Image
+                      src={item.icon || "/placeholder.svg"}
+                      alt={item.name}
+                      width={20}
+                      height={20}
+                      className={cn(
+                        isActive && "brightness-0 saturate-100 hue-rotate-[204deg] sepia-[100%] saturate-[200%]",
+                      )}
+                    />
                   </div>
                   {item.name}
                 </Link>
