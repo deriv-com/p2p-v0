@@ -434,34 +434,53 @@ export default function Transfer({ onClose }: TransferProps) {
     const transferText = `${transferAmount} USD transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
-      <div
-        className="absolute inset-0 flex flex-col h-full p-6"
-        style={{
-          background:
-            "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
-        }}
+     <div
+  className="absolute inset-0 flex flex-col h-full p-6"
+  style={{
+    background:
+      "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
+  }}
+>
+  <div className="flex-1 flex flex-col items-center justify-center text-center">
+    <div className="mb-6">
+      <Image
+        src="/icons/success-transfer.png"
+        alt="Success"
+        width={256}
+        height={256}
+      />
+    </div>
+
+    <h1 className="text-white text-center text-xl font-bold mb-4">
+      Transfer successful
+    </h1>
+
+    <p className="text-white text-center text-base font-normal">
+      {transferText}
+    </p>
+
+    {/* Button for web screens */}
+    <div className="hidden md:block mt-6">
+      <Button
+        onClick={handleDoneClick}
+        className="w-[276px] h-12 px-7 flex justify-center items-center gap-2"
       >
-      
+        Got it
+      </Button>
+    </div>
+  </div>
 
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <div className="mb-6">
-            <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
-          </div>
+  {/* Button for mobile screens */}
+  <div className="block md:hidden w-full">
+    <Button
+      onClick={handleDoneClick}
+      className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+    >
+      Got it
+    </Button>
+  </div>
+</div>
 
-          <h1 className="text-white text-center text-xl font-bold mb-4">Transfer successful</h1>
-
-          <p className="text-white text-center text-base font-normal">{transferText}</p>
-        </div>
-
-        <div className="w-full">
-          <Button
-            onClick={handleDoneClick}
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-          >
-            Got it
-          </Button>
-        </div>
-      </div>
     )
   }
 
