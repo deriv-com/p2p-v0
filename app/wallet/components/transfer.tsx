@@ -375,7 +375,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 placeholder="0.00"
                 value={transferAmount || ""}
                 onChange={(e) => setTransferAmount(e.target.value)}
-                className="h-12 px-4 border border-black/8 rounded-sm text-base"
+                className="h-12 px-4 border border-black/8 rounded-lg text-base"
               />
               <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
             </div>
