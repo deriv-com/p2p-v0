@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { fetchWalletsList, walletTransfer, getCurrencies } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
+import WalletDisplay from "@/components/wallet-display"
 
 interface TransferProps {
   onClose: () => void
@@ -38,6 +39,8 @@ export default function Transfer({ onClose }: TransferProps) {
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [showFromDropdown, setShowFromDropdown] = useState(false)
   const [showToDropdown, setShowToDropdown] = useState(false)
+  const [showMobileFromSheet, setShowMobileFromSheet] = useState(false)
+  const [showMobileToSheet, setShowMobileToSheet] = useState(false)
 
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
@@ -155,11 +158,13 @@ export default function Transfer({ onClose }: TransferProps) {
   const handleFromWalletSelect = (wallet: ProcessedWallet) => {
     setSourceWalletData({ id: wallet.id, name: wallet.name })
     setShowFromDropdown(false)
+    setShowMobileFromSheet(false)
   }
 
   const handleToWalletSelect = (wallet: ProcessedWallet) => {
     setDestinationWalletData({ id: wallet.id, name: wallet.name })
     setShowToDropdown(false)
+    setShowMobileToSheet(false)
   }
 
   const handleInterchange = () => {
@@ -268,7 +273,13 @@ export default function Transfer({ onClose }: TransferProps) {
           <div className="relative mb-6 px-2">
             <div
               className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer h-[100px]"
-              onClick={() => setShowFromDropdown(!showFromDropdown)}
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  setShowMobileFromSheet(true)
+                } else {
+                  setShowFromDropdown(!showFromDropdown)
+                }
+              }}
             >
               <div className="flex-1">
                 <div className="text-black/48 text-base font-normal mb-1">From</div>
@@ -282,7 +293,13 @@ export default function Transfer({ onClose }: TransferProps) {
 
             <div
               className="p-4 px-6 flex items-center gap-4 rounded-2xl bg-grayscale-500 cursor-pointer h-[100px]"
-              onClick={() => setShowToDropdown(!showToDropdown)}
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  setShowMobileToSheet(true)
+                } else {
+                  setShowToDropdown(!showToDropdown)
+                }
+              }}
             >
               <div className="flex-1">
                 <div className="text-black/48 text-base font-normal mb-1">To</div>
@@ -308,7 +325,7 @@ export default function Transfer({ onClose }: TransferProps) {
             </div>
 
             {showFromDropdown && (
-              <div className="absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
+              <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
                 {getFilteredWalletsForFrom().map((wallet) => (
                   <div
                     key={wallet.id}
@@ -329,7 +346,7 @@ export default function Transfer({ onClose }: TransferProps) {
             )}
 
             {showToDropdown && (
-              <div className="absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
+              <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] border border-black/4 z-20 max-h-60 overflow-y-auto">
                 {getFilteredWalletsForTo().map((wallet) => (
                   <div
                     key={wallet.id}
@@ -376,87 +393,121 @@ export default function Transfer({ onClose }: TransferProps) {
             </Button>
           </div>
         </div>
+
+        {showMobileFromSheet && (
+          <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
+            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+              <div className="p-6">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+                </div>
+                <h2 className="text-[#181C25] text-xl font-extrabold mb-6">From</h2>
+                <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+                  {getFilteredWalletsForFrom().map((wallet) => (
+                    <div
+                      key={wallet.id}
+                      className={`cursor-pointer ${sourceWalletData?.id === wallet.id ? "border border-black" : ""}`}
+                      onClick={() => {
+                        handleFromWalletSelect(wallet)
+                        setShowMobileFromSheet(false)
+                      }}
+                    >
+                      <WalletDisplay
+                        name={wallet.name}
+                        amount={`${wallet.amount} ${wallet.currency}`}
+                        icon={wallet.icon}
+                        isSelected={sourceWalletData?.id === wallet.id}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {showMobileToSheet && (
+          <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
+            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+              <div className="p-6">
+                <div className="flex justify-center mb-4">
+                  <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+                </div>
+                <h2 className="text-[#181C25] text-xl font-extrabold mb-6">To</h2>
+                <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+                  {getFilteredWalletsForTo().map((wallet) => (
+                    <div
+                      key={wallet.id}
+                      className={`cursor-pointer ${
+                        destinationWalletData?.id === wallet.id ? "border border-black" : ""
+                      }`}
+                      onClick={() => {
+                        handleToWalletSelect(wallet)
+                        setShowMobileToSheet(false)
+                      }}
+                    >
+                      <WalletDisplay
+                        name={wallet.name}
+                        amount={`${wallet.amount} ${wallet.currency}`}
+                        icon={wallet.icon}
+                        isSelected={destinationWalletData?.id === wallet.id}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     )
   }
 
   if (step === "confirm") {
     return (
-  <div className="flex flex-col h-full">
-  {/* Header */}
-  <div className="flex justify-between items-center mb-10">
-    <Button
-      variant="ghost"
-      size="sm"
-      className="px-0"
-      onClick={goBack}
-      aria-label="Go back"
-    >
-      <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-    </Button>
-    <Button
-      variant="ghost"
-      size="sm"
-      className="px-0"
-      onClick={onClose}
-      aria-label="Close"
-    >
-      <Image
-        src="/icons/close-circle-secondary.png"
-        alt="Close"
-        width={32}
-        height={32}
-      />
-    </Button>
-  </div>
+      <div className="flex flex-col h-full">
+        <div className="flex justify-between items-center mb-10">
+          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
+            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+          </Button>
+        </div>
 
-  {/* Title */}
-  <h1 className="text-2xl font-black text-black mb-10">Confirm transfer</h1>
+        <h1 className="text-2xl font-black text-black mb-10">Confirm transfer</h1>
 
-  {/* Transfer details */}
-  <div className="mb-6">
-    {/* From */}
-    <div className="mb-4">
-      <span className="block text-base font-normal text-black/48">From</span>
-      <span className="block text-base font-normal text-black/96">
-        {sourceWalletData?.name}
-      </span>
-    </div>
-    <div className="h-px bg-gray-200 mb-4"></div>
+        <div className="mb-6">
+          <div className="mb-4">
+            <span className="block text-base font-normal text-black/48">From</span>
+            <span className="block text-base font-normal text-black/96">{sourceWalletData?.name}</span>
+          </div>
+          <div className="h-px bg-gray-200 mb-4"></div>
 
-    {/* To */}
-    <div className="mb-4">
-      <span className="block text-base font-normal text-black/48">To</span>
-      <span className="block text-base font-normal text-black/96">
-        {destinationWalletData?.name}
-      </span>
-    </div>
-    <div className="h-px bg-gray-200 mb-4"></div>
+          <div className="mb-4">
+            <span className="block text-base font-normal text-black/48">To</span>
+            <span className="block text-base font-normal text-black/96">{destinationWalletData?.name}</span>
+          </div>
+          <div className="h-px bg-gray-200 mb-4"></div>
 
-    {/* Amount */}
-    <div className="mb-4">
-      <span className="block text-base font-normal text-black/48">Amount</span>
-      <span className="block text-base font-normal text-black/96">
-        {transferAmount} USD
-      </span>
-    </div>
-    <div className="h-px bg-gray-200 mb-4"></div>
-  </div>
+          <div className="mb-4">
+            <span className="block text-base font-normal text-black/48">Amount</span>
+            <span className="block text-base font-normal text-black/96">{transferAmount} USD</span>
+          </div>
+          <div className="h-px bg-gray-200 mb-4"></div>
+        </div>
 
-  {/* Spacer */}
-  <div className="flex-1"></div>
+        <div className="flex-1"></div>
 
-  {/* Confirm button */}
-  <div className="mt-auto">
-    <Button
-      onClick={handleConfirmTransfer}
-      className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-    >
-      Confirm
-    </Button>
-  </div>
-</div>
-
+        <div className="mt-auto">
+          <Button
+            onClick={handleConfirmTransfer}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
     )
   }
 
@@ -464,53 +515,38 @@ export default function Transfer({ onClose }: TransferProps) {
     const transferText = `${transferAmount} USD transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
-     <div
-  className="absolute inset-0 flex flex-col h-full p-6"
-  style={{
-    background:
-      "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
-  }}
->
-  <div className="flex-1 flex flex-col items-center justify-center text-center">
-    <div className="mb-6">
-      <Image
-        src="/icons/success-transfer.png"
-        alt="Success"
-        width={256}
-        height={256}
-      />
-    </div>
-
-    <h1 className="text-white text-center text-xl font-bold mb-4">
-      Transfer successful
-    </h1>
-
-    <p className="text-white text-center text-base font-normal">
-      {transferText}
-    </p>
-
-    {/* Button for web screens */}
-    <div className="hidden md:block mt-6">
-      <Button
-        onClick={handleDoneClick}
-        className="w-[276px] h-12 px-7 flex justify-center items-center gap-2"
+      <div
+        className="absolute inset-0 flex flex-col h-full p-6"
+        style={{
+          background:
+            "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
+        }}
       >
-        Got it
-      </Button>
-    </div>
-  </div>
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
+          <div className="mb-6">
+            <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
+          </div>
 
-  {/* Button for mobile screens */}
-  <div className="block md:hidden w-full">
-    <Button
-      onClick={handleDoneClick}
-      className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-    >
-      Got it
-    </Button>
-  </div>
-</div>
+          <h1 className="text-white text-center text-xl font-bold mb-4">Transfer successful</h1>
 
+          <p className="text-white text-center text-base font-normal">{transferText}</p>
+
+          <div className="hidden md:block mt-6">
+            <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+              Got it
+            </Button>
+          </div>
+        </div>
+
+        <div className="block md:hidden w-full">
+          <Button
+            onClick={handleDoneClick}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+          >
+            Got it
+          </Button>
+        </div>
+      </div>
     )
   }
 
