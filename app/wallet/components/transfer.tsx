@@ -351,7 +351,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </div>
 
           <div className="mb-6 px-2">
-            <h2 className="text-[#181C25] text-base font-normal mb-4">Amount</h2>
+            <h2 className="text-[#181C25] text-base font-normal mb-2">Amount</h2>
             <div className="relative">
               <Input
                 type="number"
