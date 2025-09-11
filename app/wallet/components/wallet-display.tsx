@@ -32,7 +32,7 @@ export default function WalletDisplay({ name, amount, currency, icon, onClick, i
 
       <div className="ml-4">
         <div
-          className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+          className={`w-2 h-2 rounded-full border-2 flex items-center justify-center ${
             isSelected ? "border-black bg-black" : "border-gray-300"
           }`}
         >
