@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { fetchWalletsList, walletTransfer, getCurrencies } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
-import WalletDisplay from "@/components/wallet-display"
+import WalletDisplay from "./wallet-display"
 
 interface TransferProps {
   onClose: () => void
@@ -414,9 +414,11 @@ export default function Transfer({ onClose }: TransferProps) {
                     >
                       <WalletDisplay
                         name={wallet.name}
-                        amount={`${wallet.amount} ${wallet.currency}`}
+                        amount={`${wallet.amount}`}
+                        currency={wallet.currency}
                         icon={wallet.icon}
                         isSelected={sourceWalletData?.id === wallet.id}
+                        onClick={() => {}}
                       />
                     </div>
                   ))}
@@ -448,9 +450,11 @@ export default function Transfer({ onClose }: TransferProps) {
                     >
                       <WalletDisplay
                         name={wallet.name}
-                        amount={`${wallet.amount} ${wallet.currency}`}
+                        amount={`${wallet.amount}`}
+                        currency={wallet.currency}
                         icon={wallet.icon}
                         isSelected={destinationWalletData?.id === wallet.id}
+                        onClick={() => {}}
                       />
                     </div>
                   ))}
