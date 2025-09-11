@@ -215,7 +215,7 @@ export default function Transfer({ onClose }: TransferProps) {
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full overflow-hidden">
-                <Image src={wallet.ico} alt={wallet.name} width={32} height={32} />
+                <Image src={wallet.icon} alt={wallet.name} width={32} height={32} />
               </div>
               <div className="flex-1">
                 <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
