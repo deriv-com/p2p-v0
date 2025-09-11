@@ -286,7 +286,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="text-[#181C25] text-base font-bold">{sourceWalletData?.name || "Select wallet"}</div>
                 <div className="text-black/72 text-sm font-normal">{getSourceWalletAmount()}</div>
               </div>
-              <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
 
             <div className="h-2"></div>
@@ -310,7 +310,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   <div className="text-black/72 text-sm font-normal">{getDestinationWalletAmount()}</div>
                 )}
               </div>
-              <Image src="/icons/chevron-down.png" alt="Dropdown" width={16} height={16} />
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
 
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
