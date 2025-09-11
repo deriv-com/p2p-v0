@@ -137,6 +137,50 @@ const config: Config = {
           1500: "#F5F5F5",
           1600: "#333333",
         },
+                transfer: {
+          "text-primary": "#181C25",
+          "text-secondary": "rgba(0, 0, 0, 0.72)",
+          "text-muted": "rgba(0, 0, 0, 0.48)",
+          "text-placeholder": "rgba(0, 0, 0, 0.24)",
+          "bg-card": "rgba(0, 0, 0, 0.04)",
+          "border-light": "rgba(0, 0, 0, 0.04)",
+        },
+        teal: {
+          700: "#00CCCC",
+        },
+        info: {
+          light: "rgba(55, 124, 252, 0.1)",
+          DEFAULT: "#377cfc",
+          icon: "#377cfc",
+          bg: "#e6f0ff",
+        },
+        pending: {
+          light: "rgba(245, 158, 11, 0.1)",
+          DEFAULT: "#f59e0b",
+          icon: "#f59e0b",
+          bg: "#fff8e7",
+          "text-secondary": "#FF9C13",
+        },
+        completed: {
+          light: "rgba(0, 136, 50, 0.08)",
+          DEFAULT: "#267d36",
+          icon: "#008832",
+          bg: "#edfaf3",
+        },
+        cancelled: {
+          light: "rgba(156, 163, 175, 0.1)",
+          DEFAULT: "#6b7280",
+          icon: "#6b7280",
+          bg: "#f3f4f6",
+        },
+        disputed: {
+          light: "rgba(230, 25, 14, 0.08)",
+          DEFAULT: "#c40000",
+          icon: "#c40000",
+          bg: "#fee2e2",
+        },
+        "default-button-text": "#002A33",
+
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",
