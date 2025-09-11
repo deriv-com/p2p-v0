@@ -220,11 +220,9 @@ export default function Transfer({ onClose }: TransferProps) {
           </Button>
         </div>
         <div className="px-2">
-          <h1 style={{ color: "#181C25" }} className="text-xl font-extrabold mb-2">
-            Transfer
-          </h1>
+          <h1 className="text-transfer-text-primary text-xl font-extrabold mb-2">Transfer</h1>
 
-          <p style={{ color: "rgba(0, 0, 0, 0.72)" }} className="text-base font-normal mb-6">
+          <p className="text-transfer-text-secondary text-base font-normal mb-6">
             Choose which currency you would like to transfer.
           </p>
 
@@ -247,9 +245,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         />
                       )}
                     </div>
-                    <span style={{ color: "#181C25" }} className="text-base font-normal">
-                      {currency.name}
-                    </span>
+                    <span className="text-transfer-text-primary text-base font-normal">{currency.name}</span>
                   </div>
                 </div>
                 {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
@@ -274,14 +270,11 @@ export default function Transfer({ onClose }: TransferProps) {
         </div>
 
         <div className="flex-1 flex flex-col">
-          <h1 style={{ color: "#181C25" }} className="text-xl font-extrabold mt-6 mb-6 px-2">
-            Transfer
-          </h1>
+          <h1 className="text-transfer-text-primary text-xl font-extrabold mt-6 mb-6 px-2">Transfer</h1>
 
           <div className="relative mb-6 px-2">
             <div
-              style={{ background: "rgba(0, 0, 0, 0.04)" }}
-              className="p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
+              className="bg-transfer-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setShowMobileFromSheet(true)
@@ -291,15 +284,11 @@ export default function Transfer({ onClose }: TransferProps) {
               }}
             >
               <div className="flex-1">
-                <div style={{ color: "rgba(0, 0, 0, 0.48)" }} className="text-base font-normal mb-1">
-                  From
-                </div>
-                <div style={{ color: "#181C25" }} className="text-base font-bold">
+                <div className="text-transfer-text-muted text-base font-normal mb-1">From</div>
+                <div className="text-transfer-text-primary text-base font-bold">
                   {sourceWalletData?.name || "Select wallet"}
                 </div>
-                <div style={{ color: "rgba(0, 0, 0, 0.72)" }} className="text-sm font-normal">
-                  {getSourceWalletAmount()}
-                </div>
+                <div className="text-transfer-text-secondary text-sm font-normal">{getSourceWalletAmount()}</div>
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
@@ -307,8 +296,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="h-2"></div>
 
             <div
-              style={{ background: "rgba(0, 0, 0, 0.04)" }}
-              className="p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
+              className="bg-transfer-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setShowMobileToSheet(true)
@@ -318,20 +306,14 @@ export default function Transfer({ onClose }: TransferProps) {
               }}
             >
               <div className="flex-1">
-                <div style={{ color: "rgba(0, 0, 0, 0.48)" }} className="text-base font-normal mb-1">
-                  To
-                </div>
-                <div style={{ color: "#181C25" }} className="text-base font-bold">
+                <div className="text-transfer-text-muted text-base font-normal mb-1">To</div>
+                <div className="text-transfer-text-primary text-base font-bold">
                   {destinationWalletData?.name || (
-                    <span style={{ color: "rgba(0, 0, 0, 0.24)" }} className="text-base font-normal">
-                      Select
-                    </span>
+                    <span className="text-transfer-text-placeholder text-base font-normal">Select</span>
                   )}
                 </div>
                 {destinationWalletData && (
-                  <div style={{ color: "rgba(0, 0, 0, 0.72)" }} className="text-sm font-normal">
-                    {getDestinationWalletAmount()}
-                  </div>
+                  <div className="text-transfer-text-secondary text-sm font-normal">{getDestinationWalletAmount()}</div>
                 )}
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
@@ -349,10 +331,7 @@ export default function Transfer({ onClose }: TransferProps) {
             </div>
 
             {showFromDropdown && (
-              <div
-                style={{ border: "1px solid rgba(0, 0, 0, 0.04)" }}
-                className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto"
-              >
+              <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-transfer-border-light">
                 {getFilteredWalletsForFrom().map((wallet) => (
                   <div
                     key={wallet.id}
@@ -364,9 +343,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
                       </div>
                       <div className="flex-1">
-                        <div style={{ color: "rgba(0, 0, 0, 0.72)" }} className="text-base font-normal">
-                          {wallet.name}
-                        </div>
+                        <div className="text-transfer-text-secondary text-base font-normal">{wallet.name}</div>
                       </div>
                     </div>
                   </div>
@@ -375,10 +352,7 @@ export default function Transfer({ onClose }: TransferProps) {
             )}
 
             {showToDropdown && (
-              <div
-                style={{ border: "1px solid rgba(0, 0, 0, 0.04)" }}
-                className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto"
-              >
+              <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-transfer-border-light">
                 {getFilteredWalletsForTo().map((wallet) => (
                   <div
                     key={wallet.id}
@@ -390,9 +364,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
                       </div>
                       <div className="flex-1">
-                        <div style={{ color: "rgba(0, 0, 0, 0.72)" }} className="text-base font-normal">
-                          {wallet.name}
-                        </div>
+                        <div className="text-transfer-text-secondary text-base font-normal">{wallet.name}</div>
                       </div>
                     </div>
                   </div>
@@ -402,9 +374,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </div>
 
           <div className="mb-6 px-2">
-            <h2 style={{ color: "#181C25" }} className="text-base font-normal mb-2">
-              Amount
-            </h2>
+            <h2 className="text-transfer-text-primary text-base font-normal mb-2">Amount</h2>
             <div className="relative">
               <Input
                 type="number"
@@ -437,9 +407,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex justify-center mb-4">
                   <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
                 </div>
-                <h2 style={{ color: "#181C25" }} className="text-xl font-extrabold mb-6 text-center">
-                  From
-                </h2>
+                <h2 className="text-transfer-text-primary text-xl font-extrabold mb-6 text-center">From</h2>
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   {getFilteredWalletsForFrom().map((wallet) => (
                     <div
@@ -473,9 +441,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex justify-center mb-4">
                   <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
                 </div>
-                <h2 style={{ color: "#181C25" }} className="text-xl font-extrabold mb-6 text-center">
-                  To
-                </h2>
+                <h2 className="text-transfer-text-primary text-xl font-extrabold mb-6 text-center">To</h2>
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   {getFilteredWalletsForTo().map((wallet) => (
                     <div
