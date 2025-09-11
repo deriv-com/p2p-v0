@@ -144,12 +144,11 @@ export default function Transfer({ onClose }: TransferProps) {
     setTransferAmount(null)
     setSourceWalletData(null)
     setDestinationWalletData(null)
-  
+
     onClose()
   }
 
   const handleCurrencySelect = () => {
-    
     toEnterAmount()
   }
 
@@ -411,9 +410,7 @@ export default function Transfer({ onClose }: TransferProps) {
           <div className="h-px bg-gray-200 mb-6"></div>
 
           <div className="flex justify-between items-center mb-4">
-            <span className="text-base font-normal text-black/48">
-              {"Amount"}
-            </span>
+            <span className="text-base font-normal text-black/48">{"Amount"}</span>
             <span className="text-base font-normal text-black/96">{transferAmount} USD</span>
           </div>
 
@@ -434,10 +431,16 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText = `${transferAmount} USD transferred to your ${destinationWalletData?.name}.`
+    const transferText = `${transferAmount} USD transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
-      <div className="flex flex-col h-full">
+      <div
+        className="flex flex-col h-full"
+        style={{
+          background:
+            "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
+        }}
+      >
         <div className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
@@ -449,12 +452,12 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
-            <Image src="/icons/success.png" alt="Success" width={64} height={64} />
+            <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
           </div>
 
-          <h1 className="text-[#00080A] text-center text-xl font-bold mb-4">Transfer successful</h1>
+          <h1 className="text-white text-center text-xl font-bold mb-4">Transfer successful</h1>
 
-          <p className="text-black/72 text-center text-base font-normal">{transferText}</p>
+          <p className="text-white text-center text-base font-normal">{transferText}</p>
         </div>
 
         <div className="w-full">
@@ -462,7 +465,7 @@ export default function Transfer({ onClose }: TransferProps) {
             onClick={handleDoneClick}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
           >
-            Done
+            Got it
           </Button>
         </div>
       </div>
