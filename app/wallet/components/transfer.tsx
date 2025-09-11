@@ -401,7 +401,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex justify-center mb-4">
                   <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
                 </div>
-                <h2 className="text-[#181C25] text-xl font-extrabold mb-6">From</h2>
+                <h2 className="text-[#181C25] text-xl font-extrabold mb-6 text-center">From</h2>
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   {getFilteredWalletsForFrom().map((wallet) => (
                     <div
