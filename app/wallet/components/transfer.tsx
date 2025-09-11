@@ -435,7 +435,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
     return (
       <div
-        className="flex flex-col h-full"
+        className="absolute inset-0 flex flex-col h-full p-6"
         style={{
           background:
             "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
