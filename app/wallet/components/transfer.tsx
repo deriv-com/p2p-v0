@@ -384,7 +384,7 @@ export default function Transfer({ onClose }: TransferProps) {
     return (
   <div className="flex flex-col h-full">
   {/* Header */}
-  <div className="flex justify-between items-center mb-6">
+  <div className="flex justify-between items-center mb-10">
     <Button
       variant="ghost"
       size="sm"
