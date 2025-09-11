@@ -440,9 +440,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {getFilteredWalletsForTo().map((wallet) => (
                     <div
                       key={wallet.id}
-                      className={`cursor-pointer ${
-                        destinationWalletData?.id === wallet.id ? "border border-black" : ""
-                      }`}
+                      className="cursor-pointer"
                       onClick={() => {
                         handleToWalletSelect(wallet)
                         setShowMobileToSheet(false)
