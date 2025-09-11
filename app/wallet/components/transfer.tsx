@@ -187,10 +187,8 @@ export default function Transfer({ onClose }: TransferProps) {
     if (destinationWalletData) {
       const destinationWallet = wallets.find((w) => w.id === destinationWalletData.id)
       if (destinationWallet?.type?.toLowerCase() === "p2p") {
-        // If destination is P2P, source can only be non-P2P
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
       } else {
-        // If destination is non-P2P, source can only be P2P
         return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
       }
     }
@@ -201,10 +199,8 @@ export default function Transfer({ onClose }: TransferProps) {
     if (sourceWalletData) {
       const sourceWallet = wallets.find((w) => w.id === sourceWalletData.id)
       if (sourceWallet?.type?.toLowerCase() === "p2p") {
-        // If source is P2P, destination can only be non-P2P
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
       } else {
-        // If source is non-P2P, destination can only be P2P
         return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
       }
     }
@@ -409,7 +405,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex justify-center mb-4">
                   <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
                 </div>
-                <h2 className="text-grayscale-text-primary text-xl font-bold mb-6 text-center">From</h2>
+                <h2 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">From</h2>
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   {getFilteredWalletsForFrom().map((wallet) => (
                     <div
@@ -443,7 +439,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex justify-center mb-4">
                   <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
                 </div>
-                <h2 className="text-grayscale-text-primary text-xl font-bold mb-6 text-center">To</h2>
+                <h2 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">To</h2>
                 <div className="space-y-4 max-h-[60vh] overflow-y-auto">
                   {getFilteredWalletsForTo().map((wallet) => (
                     <div

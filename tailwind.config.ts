@@ -107,6 +107,16 @@ const config: Config = {
           "bg-card": "rgba(0, 0, 0, 0.04)",
           "border-light": "rgba(0, 0, 0, 0.04)",
         },
+        yellow: {
+          50: "#A66C00",
+          100: "#FFF7E6",
+        },
+        orange: {
+          50: "#ff9c1314",
+        },
+        green: {
+          50: "#EAF3EB",
+        },
         slate: {
           50: "#f8fafc",
           75: "#F6F7F8",
@@ -126,6 +136,10 @@ const config: Config = {
           1400: "#000000",
           1500: "#F5F5F5",
           1600: "#333333",
+        },
+        paymentMethod: {
+          bank: "#74B816",
+          ewallet: "#1A79CB",
         },
         red: {
           withdraw: "#E6190E",
