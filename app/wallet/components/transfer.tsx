@@ -411,7 +411,7 @@ export default function Transfer({ onClose }: TransferProps) {
   </div>
 
   {/* Title */}
-  <h1 className="text-2xl font-black text-black mb-6">Confirm transfer</h1>
+  <h1 className="text-2xl font-black text-black mb-10">Confirm transfer</h1>
 
   {/* Transfer details */}
   <div className="mb-6">
