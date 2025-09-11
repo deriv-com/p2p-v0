@@ -406,7 +406,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {getFilteredWalletsForFrom().map((wallet) => (
                     <div
                       key={wallet.id}
-                      className={`cursor-pointer ${sourceWalletData?.id === wallet.id ? "border border-black" : ""}`}
+                      className="cursor-pointer"
                       onClick={() => {
                         handleFromWalletSelect(wallet)
                         setShowMobileFromSheet(false)
