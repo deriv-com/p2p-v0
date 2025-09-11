@@ -382,51 +382,81 @@ export default function Transfer({ onClose }: TransferProps) {
 
   if (step === "confirm") {
     return (
-      <div className="flex flex-col h-full">
-        <div className="flex justify-between items-center mb-6">
-          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-          </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-          </Button>
-        </div>
+  <div className="flex flex-col h-full">
+  {/* Header */}
+  <div className="flex justify-between items-center mb-6">
+    <Button
+      variant="ghost"
+      size="sm"
+      className="px-0"
+      onClick={goBack}
+      aria-label="Go back"
+    >
+      <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+    </Button>
+    <Button
+      variant="ghost"
+      size="sm"
+      className="px-0"
+      onClick={onClose}
+      aria-label="Close"
+    >
+      <Image
+        src="/icons/close-circle-secondary.png"
+        alt="Close"
+        width={32}
+        height={32}
+      />
+    </Button>
+  </div>
 
-        <h1 className="text-2xl font-black text-black mb-6">Confirm transfer</h1>
+  {/* Title */}
+  <h1 className="text-2xl font-black text-black mb-6">Confirm transfer</h1>
 
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-base font-normal text-black/48">From</span>
-            <span className="text-base font-normal text-black/96">{sourceWalletData?.name}</span>
-          </div>
+  {/* Transfer details */}
+  <div className="mb-6">
+    {/* From */}
+    <div className="mb-4">
+      <span className="block text-base font-normal text-black/48">From</span>
+      <span className="block text-base font-normal text-black/96">
+        {sourceWalletData?.name}
+      </span>
+    </div>
+    <div className="h-px bg-gray-200 mb-6"></div>
 
-          <div className="h-px bg-gray-200 mb-6"></div>
+    {/* To */}
+    <div className="mb-4">
+      <span className="block text-base font-normal text-black/48">To</span>
+      <span className="block text-base font-normal text-black/96">
+        {destinationWalletData?.name}
+      </span>
+    </div>
+    <div className="h-px bg-gray-200 mb-6"></div>
 
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-base font-normal text-black/48">To</span>
-            <span className="text-base font-normal text-black/96">{destinationWalletData?.name}</span>
-          </div>
+    {/* Amount */}
+    <div className="mb-4">
+      <span className="block text-base font-normal text-black/48">Amount</span>
+      <span className="block text-base font-normal text-black/96">
+        {transferAmount} USD
+      </span>
+    </div>
+    <div className="h-px bg-gray-200 mb-6"></div>
+  </div>
 
-          <div className="h-px bg-gray-200 mb-6"></div>
+  {/* Spacer */}
+  <div className="flex-1"></div>
 
-          <div className="flex justify-between items-center mb-4">
-            <span className="text-base font-normal text-black/48">{"Amount"}</span>
-            <span className="text-base font-normal text-black/96">{transferAmount} USD</span>
-          </div>
+  {/* Confirm button */}
+  <div className="mt-auto">
+    <Button
+      onClick={handleConfirmTransfer}
+      className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+    >
+      Confirm
+    </Button>
+  </div>
+</div>
 
-          <div className="h-px bg-gray-200 mb-6"></div>
-        </div>
-
-        <div className="flex-1"></div>
-        <div className="mt-auto">
-          <Button
-            onClick={handleConfirmTransfer}
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-          >
-            Confirm
-          </Button>
-        </div>
-      </div>
     )
   }
 
