@@ -422,7 +422,7 @@ export default function Transfer({ onClose }: TransferProps) {
         {sourceWalletData?.name}
       </span>
     </div>
-    <div className="h-px bg-gray-200 mb-6"></div>
+    <div className="h-px bg-gray-200 mb-4"></div>
 
     {/* To */}
     <div className="mb-4">
@@ -431,7 +431,7 @@ export default function Transfer({ onClose }: TransferProps) {
         {destinationWalletData?.name}
       </span>
     </div>
-    <div className="h-px bg-gray-200 mb-6"></div>
+    <div className="h-px bg-gray-200 mb-4"></div>
 
     {/* Amount */}
     <div className="mb-4">
@@ -440,7 +440,7 @@ export default function Transfer({ onClose }: TransferProps) {
         {transferAmount} USD
       </span>
     </div>
-    <div className="h-px bg-gray-200 mb-6"></div>
+    <div className="h-px bg-gray-200 mb-4"></div>
   </div>
 
   {/* Spacer */}
