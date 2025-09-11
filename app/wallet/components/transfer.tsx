@@ -32,15 +32,14 @@ interface WalletData {
 }
 
 type TransferStep = "chooseCurrency" | "enterAmount" | "confirm" | "success"
+type WalletSelectorType = "from" | "to" | null
 
 export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
-  const [showFromDropdown, setShowFromDropdown] = useState(false)
-  const [showToDropdown, setShowToDropdown] = useState(false)
-  const [showMobileFromSheet, setShowMobileFromSheet] = useState(false)
-  const [showMobileToSheet, setShowMobileToSheet] = useState(false)
+  const [showDropdown, setShowDropdown] = useState<WalletSelectorType>(null)
+  const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
 
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
@@ -155,16 +154,14 @@ export default function Transfer({ onClose }: TransferProps) {
     toEnterAmount()
   }
 
-  const handleFromWalletSelect = (wallet: ProcessedWallet) => {
-    setSourceWalletData({ id: wallet.id, name: wallet.name })
-    setShowFromDropdown(false)
-    setShowMobileFromSheet(false)
-  }
-
-  const handleToWalletSelect = (wallet: ProcessedWallet) => {
-    setDestinationWalletData({ id: wallet.id, name: wallet.name })
-    setShowToDropdown(false)
-    setShowMobileToSheet(false)
+  const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
+    if (type === "from") {
+      setSourceWalletData({ id: wallet.id, name: wallet.name })
+    } else if (type === "to") {
+      setDestinationWalletData({ id: wallet.id, name: wallet.name })
+    }
+    setShowDropdown(null)
+    setShowMobileSheet(null)
   }
 
   const handleInterchange = () => {
@@ -183,8 +180,8 @@ export default function Transfer({ onClose }: TransferProps) {
     return wallet ? `${wallet.amount} ${wallet.currency}` : ""
   }
 
-  const getFilteredWalletsForFrom = () => {
-    if (destinationWalletData) {
+  const getFilteredWallets = (type: WalletSelectorType) => {
+    if (type === "from" && destinationWalletData) {
       const destinationWallet = wallets.find((w) => w.id === destinationWalletData.id)
       if (destinationWallet?.type?.toLowerCase() === "p2p") {
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
@@ -192,11 +189,8 @@ export default function Transfer({ onClose }: TransferProps) {
         return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
       }
     }
-    return wallets
-  }
 
-  const getFilteredWalletsForTo = () => {
-    if (sourceWalletData) {
+    if (type === "to" && sourceWalletData) {
       const sourceWallet = wallets.find((w) => w.id === sourceWalletData.id)
       if (sourceWallet?.type?.toLowerCase() === "p2p") {
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
@@ -204,7 +198,74 @@ export default function Transfer({ onClose }: TransferProps) {
         return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
       }
     }
+
     return wallets
+  }
+
+  const renderDropdown = (type: WalletSelectorType) => {
+    if (showDropdown !== type) return null
+
+    return (
+      <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-grayscale-border-light">
+        {getFilteredWallets(type).map((wallet) => (
+          <div
+            key={wallet.id}
+            className="p-4 hover:bg-gray-50 cursor-pointer"
+            onClick={() => handleWalletSelect(wallet, type)}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden">
+                <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
+              </div>
+              <div className="flex-1">
+                <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }
+
+  const renderMobileSheet = (type: WalletSelectorType) => {
+    if (showMobileSheet !== type) return null
+
+    const title = type === "from" ? "From" : "To"
+    const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
+        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+          <div className="p-6">
+            <div className="flex justify-center mb-4">
+              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+            </div>
+            <h2 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">{title}</h2>
+            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+              {getFilteredWallets(type).map((wallet) => (
+                <div
+                  key={wallet.id}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleWalletSelect(wallet, type)
+                    setShowMobileSheet(null)
+                  }}
+                >
+                  <WalletDisplay
+                    name={wallet.name}
+                    amount={`${wallet.amount}`}
+                    currency={wallet.currency}
+                    icon={wallet.icon}
+                    isSelected={selectedWalletId === wallet.id}
+                    onClick={() => {}}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   if (step === "chooseCurrency") {
@@ -273,9 +334,9 @@ export default function Transfer({ onClose }: TransferProps) {
               className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
                 if (window.innerWidth < 768) {
-                  setShowMobileFromSheet(true)
+                  setShowMobileSheet("from")
                 } else {
-                  setShowFromDropdown(!showFromDropdown)
+                  setShowDropdown(showDropdown === "from" ? null : "from")
                 }
               }}
             >
@@ -295,9 +356,9 @@ export default function Transfer({ onClose }: TransferProps) {
               className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
                 if (window.innerWidth < 768) {
-                  setShowMobileToSheet(true)
+                  setShowMobileSheet("to")
                 } else {
-                  setShowToDropdown(!showToDropdown)
+                  setShowDropdown(showDropdown === "to" ? null : "to")
                 }
               }}
             >
@@ -328,47 +389,8 @@ export default function Transfer({ onClose }: TransferProps) {
               </Button>
             </div>
 
-            {showFromDropdown && (
-              <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-grayscale-border-light">
-                {getFilteredWalletsForFrom().map((wallet) => (
-                  <div
-                    key={wallet.id}
-                    className="p-4 hover:bg-gray-50 cursor-pointer"
-                    onClick={() => handleFromWalletSelect(wallet)}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden">
-                        <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {showToDropdown && (
-              <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-grayscale-border-light">
-                {getFilteredWalletsForTo().map((wallet) => (
-                  <div
-                    key={wallet.id}
-                    className="p-4 hover:bg-gray-50 cursor-pointer"
-                    onClick={() => handleToWalletSelect(wallet)}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden">
-                        <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
-                      </div>
-                      <div className="flex-1">
-                        <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            {renderDropdown("from")}
+            {renderDropdown("to")}
           </div>
 
           <div className="mb-6 px-2">
@@ -398,73 +420,8 @@ export default function Transfer({ onClose }: TransferProps) {
           </div>
         </div>
 
-        {showMobileFromSheet && (
-          <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
-              <div className="p-6">
-                <div className="flex justify-center mb-4">
-                  <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
-                </div>
-                <h2 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">From</h2>
-                <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-                  {getFilteredWalletsForFrom().map((wallet) => (
-                    <div
-                      key={wallet.id}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        handleFromWalletSelect(wallet)
-                        setShowMobileFromSheet(false)
-                      }}
-                    >
-                      <WalletDisplay
-                        name={wallet.name}
-                        amount={`${wallet.amount}`}
-                        currency={wallet.currency}
-                        icon={wallet.icon}
-                        isSelected={sourceWalletData?.id === wallet.id}
-                        onClick={() => {}}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {showMobileToSheet && (
-          <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-            <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
-              <div className="p-6">
-                <div className="flex justify-center mb-4">
-                  <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
-                </div>
-                <h2 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">To</h2>
-                <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-                  {getFilteredWalletsForTo().map((wallet) => (
-                    <div
-                      key={wallet.id}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        handleToWalletSelect(wallet)
-                        setShowMobileToSheet(false)
-                      }}
-                    >
-                      <WalletDisplay
-                        name={wallet.name}
-                        amount={`${wallet.amount}`}
-                        currency={wallet.currency}
-                        icon={wallet.icon}
-                        isSelected={destinationWalletData?.id === wallet.id}
-                        onClick={() => {}}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        {renderMobileSheet("from")}
+        {renderMobileSheet("to")}
       </div>
     )
   }
