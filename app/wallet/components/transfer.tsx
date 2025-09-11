@@ -441,14 +441,7 @@ export default function Transfer({ onClose }: TransferProps) {
             "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), var(--semantic-color-slate-solid-surface-static-high, #181C25)",
         }}
       >
-        <div className="flex justify-between items-center mb-6">
-          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-          </Button>
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-          </Button>
-        </div>
+      
 
         <div className="flex-1 flex flex-col items-center justify-center text-center">
           <div className="mb-6">
