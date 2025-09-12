@@ -359,35 +359,45 @@ export default function Transfer({ onClose }: TransferProps) {
 
           <div className="relative mb-6 px-2">
             <div
-              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
-              onClick={() => {
-                if (window.innerWidth < 768) {
-                  setShowMobileSheet("from")
-                } else {
-                  setShowDropdown(showDropdown === "from" ? null : "from")
-                }
-              }}
-            >
-              {sourceWalletData && (
-                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                  <Image
-                    src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                    alt={sourceWalletData.currency}
-                    width={24}
-                    height={24}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              <div className="flex-1">
-                <div className="text-grayscale-text-muted text-base font-normal mb-1">From</div>
-                <div className="text-grayscale-text-primary text-base font-bold">
-                  {sourceWalletData?.name || "Select wallet"}
-                </div>
-                <div className="text-grayscale-text-secondary text-sm font-normal">{getSourceWalletAmount()}</div>
-              </div>
-              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
-            </div>
+  className="bg-grayscale-bg-card p-4 px-6 flex items-center justify-between rounded-2xl cursor-pointer h-[100px]"
+  onClick={() => {
+    if (window.innerWidth < 768) {
+      setShowMobileSheet("from")
+    } else {
+      setShowDropdown(showDropdown === "from" ? null : "from")
+    }
+  }}
+>
+  {/* Left column: Label + Currency */}
+  <div className="flex flex-col items-start gap-2">
+    <div className="text-grayscale-text-muted text-base font-normal">From</div>
+    {sourceWalletData && (
+      <div className="w-6 h-6 rounded-full overflow-hidden">
+        <Image
+          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+          alt={sourceWalletData.currency}
+          width={24}
+          height={24}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    )}
+  </div>
+
+  {/* Right column: Wallet name + Amount */}
+  <div className="flex flex-col items-end flex-1 mr-4">
+    <div className="text-grayscale-text-primary text-base font-bold">
+      {sourceWalletData?.name || "Select wallet"}
+    </div>
+    <div className="text-grayscale-text-secondary text-sm font-normal">
+      {getSourceWalletAmount()}
+    </div>
+  </div>
+
+  {/* Chevron */}
+  <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
+</div>
+
 
             <div className="h-2"></div>
 
