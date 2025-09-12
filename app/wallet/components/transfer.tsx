@@ -506,7 +506,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <h1 className="text-2xl font-black text-black mb-10 px-2">Confirm transfer</h1>
 
-        <div className="mb-6">
+        <div className="mb-6 px-2">
           <div className="mb-4">
             <span className="block text-base font-normal text-gray-500 mb-1">From</span>
             <div className="flex items-center gap-3">
