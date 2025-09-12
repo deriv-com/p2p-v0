@@ -371,7 +371,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="flex flex-col items-start gap-1">
                 <div className="text-grayscale-text-muted text-base font-normal">From</div>
                 {sourceWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-3 mt-2">
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-3 mt-1">
                     <Image
                       src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
@@ -406,7 +406,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="flex flex-col items-start gap-1">
                 <div className="text-grayscale-text-muted text-base font-normal">To</div>
                 {destinationWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-3 mt-2">
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-3 mt-1">
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
