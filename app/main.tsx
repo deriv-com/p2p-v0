@@ -62,12 +62,12 @@ export default function Main({
   }, [pathname, router])
 
   if (pathname === "/login") {
-    return <div className="container mx-auto overflow-hidden max-w-[1232px]">{children}</div>
+    return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
   }
 
   return (
     <WebSocketProvider>
-      <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative">
+      <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-7xl">
         {isHeaderVisible && <Sidebar />}
         <div className="flex-1">
           <div className="container mx-auto">{children}</div>
