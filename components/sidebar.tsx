@@ -72,7 +72,7 @@ export default function Sidebar() {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8 bg-black items-center justify-center text-white">
+        <Avatar className="h-8 w-8 bg-black items-center justify-center text-slate-1200">
           {USER.nickname.charAt(0).toUpperCase()}
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
