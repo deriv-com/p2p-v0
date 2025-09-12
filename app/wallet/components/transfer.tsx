@@ -233,7 +233,7 @@ export default function Transfer({ onClose }: TransferProps) {
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                <Image src={wallet.icon} alt={wallet.name} width={24} height={24} />
+                <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={24} height={24} />
               </div>
               <div className="flex-1 flex items-center">
                 <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
@@ -520,7 +520,7 @@ export default function Transfer({ onClose }: TransferProps) {
               {sourceWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                   <Image
-                    src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                    src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                     alt={sourceWalletData.currency}
                     width={24}
                     height={24}
