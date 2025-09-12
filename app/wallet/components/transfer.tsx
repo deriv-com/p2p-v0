@@ -29,6 +29,7 @@ interface ProcessedWallet {
 interface WalletData {
   id: string
   name: string
+  currency: string
 }
 
 type TransferStep = "chooseCurrency" | "enterAmount" | "confirm" | "success"
@@ -95,7 +96,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
           if (p2pWallet) {
-            setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name })
+            setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name, currency: p2pWallet.currency })
           }
         }
       } catch (error) {
@@ -156,9 +157,9 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
     if (type === "from") {
-      setSourceWalletData({ id: wallet.id, name: wallet.name })
+      setSourceWalletData({ id: wallet.id, name: wallet.name, currency: wallet.currency })
     } else if (type === "to") {
-      setDestinationWalletData({ id: wallet.id, name: wallet.name })
+      setDestinationWalletData({ id: wallet.id, name: wallet.name, currency: wallet.currency })
     }
     setShowDropdown(null)
     setShowMobileSheet(null)
@@ -288,6 +289,13 @@ export default function Transfer({ onClose }: TransferProps) {
     )
   }
 
+  const getCurrencyImage = (walletName: string, currency: string) => {
+    if (walletName === "P2P Wallet") {
+      return "/icons/p2p-logo.png"
+    }
+    return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
+  }
+
   if (step === "chooseCurrency") {
     return (
       <>
@@ -360,6 +368,17 @@ export default function Transfer({ onClose }: TransferProps) {
                 }
               }}
             >
+              {sourceWalletData && (
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                    alt={sourceWalletData.currency}
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <div className="flex-1">
                 <div className="text-grayscale-text-muted text-base font-normal mb-1">From</div>
                 <div className="text-grayscale-text-primary text-base font-bold">
@@ -382,6 +401,19 @@ export default function Transfer({ onClose }: TransferProps) {
                 }
               }}
             >
+              {destinationWalletData && (
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={
+                      getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) || "/placeholder.svg"
+                    }
+                    alt={destinationWalletData.currency}
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <div className="flex-1">
                 <div className="text-grayscale-text-muted text-base font-normal mb-1">To</div>
                 <div className="text-grayscale-text-primary text-base font-bold">
@@ -475,13 +507,41 @@ export default function Transfer({ onClose }: TransferProps) {
         <div className="mb-6">
           <div className="mb-4">
             <span className="block text-base font-normal text-gray-400">From</span>
-            <span className="block text-base font-normal text-slate-800">{sourceWalletData?.name}</span>
+            <div className="flex items-center gap-3">
+              {sourceWalletData && (
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                    alt={sourceWalletData.currency}
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <span className="block text-base font-normal text-slate-800">{sourceWalletData?.name}</span>
+            </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
             <span className="block text-base font-normal text-gray-400">To</span>
-            <span className="block text-base font-normal text-slate-800">{destinationWalletData?.name}</span>
+            <div className="flex items-center gap-3">
+              {destinationWalletData && (
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={
+                      getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) || "/placeholder.svg"
+                    }
+                    alt={destinationWalletData.currency}
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <span className="block text-base font-normal text-slate-800">{destinationWalletData?.name}</span>
+            </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
 
