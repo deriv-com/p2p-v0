@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
+
 import { cn } from "@/lib/utils"
 
 const inputVariants = cva(
@@ -29,9 +30,7 @@ const inputVariants = cva(
 
 const VALID_VARIANTS = ["default", "secondary", "tertiary", "floating", "floatingCurrency"]
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof inputVariants> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> {
   label?: string
   required?: boolean
   currency?: string
@@ -67,12 +66,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       }
     }, [props.value, props.defaultValue])
 
-    // extra styles for number inputs (hide arrows)
-    const numberStyles =
-      type === "number"
-        ? "[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-        : ""
-
     if ((variant === "floating" || variant === "floatingCurrency") && label) {
       const shouldFloatLabel = isFocused || hasValue
 
@@ -80,7 +73,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         <div className="relative">
           <input
             type={type}
-            className={cn(inputVariants({ variant: computedVariant }), numberStyles, className)}
+            className={cn(inputVariants({ variant: computedVariant }), className)}
             ref={ref}
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -108,17 +101,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     }
 
     return (
-      <input
-        type={type}
-        className={cn(inputVariants({ variant: computedVariant }), numberStyles, className)}
-        ref={ref}
-        {...props}
-      />
+      <input type={type} className={cn(inputVariants({ variant: computedVariant }), className)} ref={ref} {...props} />
     )
   },
 )
-
 Input.displayName = "Input"
 
 export { Input, inputVariants }
-}
