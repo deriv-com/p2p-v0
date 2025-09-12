@@ -516,7 +516,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <div className="mb-6">
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-400">From</span>
+            <span className="block text-base font-normal text-gray-400 mb-1 mb-1">From</span>
             <div className="flex items-center gap-3">
               {sourceWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
@@ -535,7 +535,7 @@ export default function Transfer({ onClose }: TransferProps) {
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-400">To</span>
+            <span className="block text-base font-normal text-gray-400 mb-1 mb-1">To</span>
             <div className="flex items-center gap-3">
               {destinationWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
@@ -556,7 +556,7 @@ export default function Transfer({ onClose }: TransferProps) {
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-400">Amount</span>
+            <span className="block text-base font-normal text-gray-40 mb-1">Amount</span>
             <span className="block text-base font-normal text-slate-800">
               {formatBalance(transferAmount || "0")} USD
             </span>
