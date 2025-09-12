@@ -101,11 +101,11 @@ const config: Config = {
           600: "#000000b8",
           700: "#EFF3F5",
           "text-primary": "#181C25",
-          "text-secondary": "rgba(0, 0, 0, 0.72)",
-          "text-muted": "rgba(0, 0, 0, 0.48)",
-          "text-placeholder": "rgba(0, 0, 0, 0.24)",
-          "bg-card": "rgba(0, 0, 0, 0.04)",
-          "border-light": "rgba(0, 0, 0, 0.04)",
+          "text-secondary": "#000000B8",
+          "text-muted": "#0000007A",
+          "text-placeholder": "#0000003D",
+          "bg-card": "#0000000A",
+          "border-light": "#0000000A",
         },
         yellow: {
           50: "#A66C00",
@@ -137,7 +137,7 @@ const config: Config = {
           1500: "#F5F5F5",
           1600: "#333333",
         },
-              
+
         teal: {
           700: "#00CCCC",
         },

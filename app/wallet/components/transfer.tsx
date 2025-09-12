@@ -384,7 +384,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="flex-1 mt-6">
                 {sourceWalletData && (
                   <>
-                    <div className="text-grayscale-text-primary text-base font-bold">{sourceWalletData.name}</div>
+                    <div className="text-slate-1200 text-base font-bold">{sourceWalletData.name}</div>
                     <div className="text-grayscale-text-secondary text-sm font-normal">{getSourceWalletAmount()}</div>
                   </>
                 )}
@@ -413,6 +413,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -428,7 +429,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="flex-1 mt-6">
                 {destinationWalletData && (
                   <>
-                    <div className="text-grayscale-text-primary text-base font-bold">{destinationWalletData.name}</div>
+                    <div className="text-slate-1200 text-base font-bold">{destinationWalletData.name}</div>
                     <div className="text-grayscale-text-secondary text-sm font-normal">
                       {getDestinationWalletAmount()}
                     </div>
@@ -514,7 +515,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <div className="mb-6">
           <div className="mb-4">
-            <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
+            <span className="block text-base font-normal text-gray-500 mb-1">From</span>
             <div className="flex items-center gap-3">
               {sourceWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
@@ -527,13 +528,13 @@ export default function Transfer({ onClose }: TransferProps) {
                   />
                 </div>
               )}
-              <span className="block text-base font-normal text-grayscale-text-primary">{sourceWalletData?.name}</span>
+              <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
             </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
-            <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
+            <span className="block text-base font-normal text-gray-500 mb-1">To</span>
             <div className="flex items-center gap-3">
               {destinationWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
@@ -548,16 +549,14 @@ export default function Transfer({ onClose }: TransferProps) {
                   />
                 </div>
               )}
-              <span className="block text-base font-normal text-grayscale-text-primary">
-                {destinationWalletData?.name}
-              </span>
+              <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
             </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
-            <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-            <span className="block text-base font-normal text-grayscale-text-primary">
+            <span className="block text-base font-normal text-gray-500 mb-1">Amount</span>
+            <span className="block text-base font-normal text-slate-1200">
               {formatBalance(transferAmount || "0")} USD
             </span>
           </div>
