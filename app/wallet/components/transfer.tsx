@@ -406,7 +406,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="flex flex-col items-start gap-1">
                 <div className="text-grayscale-text-muted text-base font-normal">To</div>
                 {destinationWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-2 mt-2">
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
