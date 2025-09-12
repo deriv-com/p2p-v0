@@ -83,3 +83,14 @@ jobs:
                 output_dir: .vercel/output/static
                 directory: dist
                 cname_url: staging-p2p.champion.trade
+
+            - name: Publish to Cloudflare Pages
+              uses: "deriv-com/shared-actions/.github/actions/publish_to_pages_branch@master"
+              with:
+                CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+                CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+                project_name: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+                branch_name: staging
+                output_dir: .vercel/output/static
+                directory: dist
+                cname_url: staging-dp2p.deriv.com
