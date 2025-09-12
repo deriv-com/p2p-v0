@@ -516,7 +516,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <div className="mb-6">
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-400 mb-1 ">From</span>
+            <span className="block text-base font-normal text-gray-400 mb-1">From</span>
             <div className="flex items-center gap-3">
               {sourceWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
