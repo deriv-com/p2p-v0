@@ -359,7 +359,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
           <div className="relative mb-6 px-2">
             <div
-              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
+              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setShowMobileSheet("from")
@@ -394,7 +394,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="h-2"></div>
 
             <div
-              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
+              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setShowMobileSheet("to")
