@@ -290,8 +290,7 @@ export default function Transfer({ onClose }: TransferProps) {
     if (walletName === "P2P Wallet") {
       return "/icons/p2p-logo.png"
     }
-    return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
-  }
+    return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] }
 
   if (step === "chooseCurrency") {
     return (
