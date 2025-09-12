@@ -370,8 +370,8 @@ export default function Transfer({ onClose }: TransferProps) {
             >
               <div className="flex flex-col items-start gap-1">
                 <div className="text-grayscale-text-muted text-base font-normal">From</div>
-                {sourceWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-3 mt-1">
+                {sourceWalletData ? (
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
@@ -380,13 +380,17 @@ export default function Transfer({ onClose }: TransferProps) {
                       className="w-full h-full object-cover"
                     />
                   </div>
+                ) : (
+                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
                 )}
               </div>
               <div className="flex-1 mt-6">
-                <div className="text-grayscale-text-primary text-base font-bold">
-                  {sourceWalletData?.name || "Select wallet"}
-                </div>
-                <div className="text-grayscale-text-secondary text-sm font-normal">{getSourceWalletAmount()}</div>
+                {sourceWalletData && (
+                  <>
+                    <div className="text-grayscale-text-primary text-base font-bold">{sourceWalletData.name}</div>
+                    <div className="text-grayscale-text-secondary text-sm font-normal">{getSourceWalletAmount()}</div>
+                  </>
+                )}
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
@@ -405,11 +409,12 @@ export default function Transfer({ onClose }: TransferProps) {
             >
               <div className="flex flex-col items-start gap-1">
                 <div className="text-grayscale-text-muted text-base font-normal">To</div>
-                {destinationWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0  mb-3 mt-1">
+                {destinationWalletData ? (
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -418,18 +423,18 @@ export default function Transfer({ onClose }: TransferProps) {
                       className="w-full h-full object-cover"
                     />
                   </div>
+                ) : (
+                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
                 )}
               </div>
               <div className="flex-1 mt-6">
-                <div className="text-grayscale-text-primary text-base font-bold">
-                  {destinationWalletData?.name || (
-                    <span className="text-grayscale-text-placeholder text-base font-normal">Select</span>
-                  )}
-                </div>
                 {destinationWalletData && (
-                  <div className="text-grayscale-text-secondary text-sm font-normal">
-                    {getDestinationWalletAmount()}
-                  </div>
+                  <>
+                    <div className="text-grayscale-text-primary text-base font-bold">{destinationWalletData.name}</div>
+                    <div className="text-grayscale-text-secondary text-sm font-normal">
+                      {getDestinationWalletAmount()}
+                    </div>
+                  </>
                 )}
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
