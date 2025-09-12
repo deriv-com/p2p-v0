@@ -220,33 +220,30 @@ export default function Transfer({ onClose }: TransferProps) {
     return wallets
   }
 
-const renderDropdown = (type: WalletSelectorType) => {
-  if (showDropdown !== type) return null
+  const renderDropdown = (type: WalletSelectorType) => {
+    if (showDropdown !== type) return null
 
-  return (
-    <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-grayscale-border-light">
-      {getFilteredWallets(type).map((wallet) => (
-        <div
-          key={wallet.id}
-          className="p-4 hover:bg-gray-50 cursor-pointer"
-          onClick={() => handleWalletSelect(wallet, type)}
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-              <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={24} height={24} />
-            </div>
-            <div className="flex-1 flex items-center">
-              <div className="text-grayscale-text-secondary text-base font-normal">
-                {wallet.name}
+    return (
+      <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-grayscale-border-light">
+        {getFilteredWallets(type).map((wallet) => (
+          <div
+            key={wallet.id}
+            className="p-4 hover:bg-gray-50 cursor-pointer"
+            onClick={() => handleWalletSelect(wallet, type)}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={24} height={24} />
+              </div>
+              <div className="flex-1 flex items-center">
+                <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
+        ))}
+      </div>
+    )
+  }
 
   const renderMobileSheet = (type: WalletSelectorType) => {
     if (showMobileSheet !== type) return null
@@ -415,6 +412,7 @@ const renderDropdown = (type: WalletSelectorType) => {
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                         "/placeholder.svg" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -516,7 +514,7 @@ const renderDropdown = (type: WalletSelectorType) => {
 
         <div className="mb-6">
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-400 mb-1">From</span>
+            <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
             <div className="flex items-center gap-3">
               {sourceWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
@@ -529,13 +527,13 @@ const renderDropdown = (type: WalletSelectorType) => {
                   />
                 </div>
               )}
-              <span className="block text-base font-normal text-slate-800">{sourceWalletData?.name}</span>
+              <span className="block text-base font-normal text-grayscale-text-primary">{sourceWalletData?.name}</span>
             </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-400 mb-1">To</span>
+            <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
             <div className="flex items-center gap-3">
               {destinationWalletData && (
                 <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
@@ -550,14 +548,16 @@ const renderDropdown = (type: WalletSelectorType) => {
                   />
                 </div>
               )}
-              <span className="block text-base font-normal text-slate-800">{destinationWalletData?.name}</span>
+              <span className="block text-base font-normal text-grayscale-text-primary">
+                {destinationWalletData?.name}
+              </span>
             </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
 
           <div className="mb-4">
-            <span className="block text-base font-normal text-gray-40 mb-1">Amount</span>
-            <span className="block text-base font-normal text-slate-800">
+            <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
+            <span className="block text-base font-normal text-grayscale-text-primary">
               {formatBalance(transferAmount || "0")} USD
             </span>
           </div>
@@ -594,7 +594,7 @@ const renderDropdown = (type: WalletSelectorType) => {
             <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
           </div>
 
-          <h1 className="text-white text-center text-xl font-bold mb-4">Transfer successful</h1>
+          <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
 
           <p className="text-white text-center text-base font-normal">{transferText}</p>
 
