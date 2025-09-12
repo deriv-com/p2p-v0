@@ -368,7 +368,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 }
               }}
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">From</div>
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
@@ -407,7 +407,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 }
               }}
             >
-              <div className="flex flex-col items-start gap-1">
+              <div className="flex flex-col items-start gap-1 w-10 w-10 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">To</div>
                 {destinationWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
