@@ -170,14 +170,31 @@ export default function Transfer({ onClose }: TransferProps) {
     setDestinationWalletData(tempSource)
   }
 
+  const formatBalance = (amount: string): string => {
+    const num = Number.parseFloat(amount)
+    if (isNaN(num)) return "0.00"
+    return num.toFixed(2)
+  }
+
+  const getSourceWalletBalance = (): number => {
+    const wallet = wallets.find((w) => w.id === sourceWalletData?.id)
+    return wallet ? Number.parseFloat(wallet.amount) : 0
+  }
+
+  const isAmountValid = (amount: string): boolean => {
+    const numAmount = Number.parseFloat(amount)
+    const sourceBalance = getSourceWalletBalance()
+    return !isNaN(numAmount) && numAmount > 0 && numAmount <= sourceBalance
+  }
+
   const getSourceWalletAmount = () => {
     const wallet = wallets.find((w) => w.id === sourceWalletData?.id)
-    return wallet ? `${wallet.amount} ${wallet.currency}` : ""
+    return wallet ? `${formatBalance(wallet.amount)} ${wallet.currency}` : ""
   }
 
   const getDestinationWalletAmount = () => {
     const wallet = wallets.find((w) => w.id === destinationWalletData?.id)
-    return wallet ? `${wallet.amount} ${wallet.currency}` : ""
+    return wallet ? `${formatBalance(wallet.amount)} ${wallet.currency}` : ""
   }
 
   const getFilteredWallets = (type: WalletSelectorType) => {
@@ -215,10 +232,13 @@ export default function Transfer({ onClose }: TransferProps) {
           >
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full overflow-hidden">
-                <Image src={wallet.icon} alt={wallet.name} width={32} height={32} />
+                <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={32} height={32} />
               </div>
               <div className="flex-1">
                 <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
+                <div className="text-grayscale-text-muted text-sm font-normal">
+                  {formatBalance(wallet.amount)} {wallet.currency}
+                </div>
               </div>
             </div>
           </div>
@@ -253,7 +273,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={`${wallet.amount}`}
+                    amount={formatBalance(wallet.amount)}
                     currency={wallet.currency}
                     icon={wallet.icon}
                     isSelected={selectedWalletId === wallet.id}
@@ -294,7 +314,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                       {currency.logo && (
                         <Image
-                          src={currency.logo}
+                          src={currency.logo || "/placeholder.svg"}
                           alt={currency.name}
                           width={24}
                           height={24}
@@ -402,9 +422,15 @@ export default function Transfer({ onClose }: TransferProps) {
                 value={transferAmount || ""}
                 onChange={(e) => setTransferAmount(e.target.value)}
                 className="h-12 px-4 border border-gray-200 rounded-lg text-base"
+                max={getSourceWalletBalance()}
               />
               <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
             </div>
+            {transferAmount && !isAmountValid(transferAmount) && (
+              <p className="text-red-500 text-sm mt-1">
+                Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())} USD)
+              </p>
+            )}
           </div>
 
           <div className="flex-1"></div>
@@ -412,7 +438,13 @@ export default function Transfer({ onClose }: TransferProps) {
           <div className="mt-auto ">
             <Button
               onClick={handleTransferClick}
-              disabled={!transferAmount || transferAmount.trim() === "" || !sourceWalletData || !destinationWalletData}
+              disabled={
+                !transferAmount ||
+                transferAmount.trim() === "" ||
+                !sourceWalletData ||
+                !destinationWalletData ||
+                !isAmountValid(transferAmount)
+              }
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
             >
               Transfer
@@ -455,7 +487,9 @@ export default function Transfer({ onClose }: TransferProps) {
 
           <div className="mb-4">
             <span className="block text-base font-normal text-gray-400">Amount</span>
-            <span className="block text-base font-normal text-slate-800">{transferAmount} USD</span>
+            <span className="block text-base font-normal text-slate-800">
+              {formatBalance(transferAmount || "0")} USD
+            </span>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
         </div>
@@ -475,7 +509,7 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText = `${transferAmount} USD transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+    const transferText = `${formatBalance(transferAmount || "0")} USD transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
       <div
