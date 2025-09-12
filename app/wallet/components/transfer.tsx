@@ -342,38 +342,34 @@ export default function Transfer({ onClose }: TransferProps) {
     )
   }
 
-  if (step === "enterAmount"){
-  return (
-    <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center mb-6">
-        <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-          <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-        </Button>
-        <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-          <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-        </Button>
-      </div>
+  if (step === "enterAmount") {
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex justify-between items-center mb-6">
+          <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
+            <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+          </Button>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+          </Button>
+        </div>
 
-      <div className="flex-1 flex flex-col">
-        <h1 className="text-grayscale-text-primary text-xl font-extrabold mt-6 mb-6 px-2">Transfer</h1>
+        <div className="flex-1 flex flex-col">
+          <h1 className="text-grayscale-text-primary text-xl font-extrabold mt-6 mb-6 px-2">Transfer</h1>
 
-        <div className="relative mb-6 px-2">
-          {/* FROM block */}
-          <div
-            className="bg-grayscale-bg-card p-4 px-6 flex justify-between items-center rounded-2xl cursor-pointer h-[100px]"
-            onClick={() => {
-              if (window.innerWidth < 768) {
-                setShowMobileSheet("from")
-              } else {
-                setShowDropdown(showDropdown === "from" ? null : "from")
-              }
-            }}
-          >
-            {/* Left column */}
-            <div className="flex flex-col items-start gap-2">
-              <div className="text-grayscale-text-muted text-base font-normal">From</div>
+          <div className="relative mb-6 px-2">
+            <div
+              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  setShowMobileSheet("from")
+                } else {
+                  setShowDropdown(showDropdown === "from" ? null : "from")
+                }
+              }}
+            >
               {sourceWalletData && (
-                <div className="w-6 h-6 rounded-full overflow-hidden">
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                   <Image
                     src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                     alt={sourceWalletData.currency}
@@ -383,43 +379,33 @@ export default function Transfer({ onClose }: TransferProps) {
                   />
                 </div>
               )}
+              <div className="flex-1">
+                <div className="text-grayscale-text-muted text-base font-normal mb-1">From</div>
+                <div className="text-grayscale-text-primary text-base font-bold">
+                  {sourceWalletData?.name || "Select wallet"}
+                </div>
+                <div className="text-grayscale-text-secondary text-sm font-normal">{getSourceWalletAmount()}</div>
+              </div>
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
 
-            {/* Right column */}
-            <div className="flex flex-col items-end">
-              <div className="text-grayscale-text-primary text-base font-bold">
-                {sourceWalletData?.name || "Select wallet"}
-              </div>
-              <div className="text-grayscale-text-secondary text-sm font-normal">
-                {getSourceWalletAmount()}
-              </div>
-            </div>
+            <div className="h-2"></div>
 
-            <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
-          </div>
-
-          <div className="h-2"></div>
-
-          {/* TO block */}
-          <div
-            className="bg-grayscale-bg-card p-4 px-6 flex justify-between items-center rounded-2xl cursor-pointer h-[100px]"
-            onClick={() => {
-              if (window.innerWidth < 768) {
-                setShowMobileSheet("to")
-              } else {
-                setShowDropdown(showDropdown === "to" ? null : "to")
-              }
-            }}
-          >
-            {/* Left column */}
-            <div className="flex flex-col items-start gap-2">
-              <div className="text-grayscale-text-muted text-base font-normal">To</div>
+            <div
+              className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-4 rounded-2xl cursor-pointer h-[100px]"
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  setShowMobileSheet("to")
+                } else {
+                  setShowDropdown(showDropdown === "to" ? null : "to")
+                }
+              }}
+            >
               {destinationWalletData && (
-                <div className="w-6 h-6 rounded-full overflow-hidden">
+                <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                   <Image
                     src={
-                      getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                      "/placeholder.svg"
+                      getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) || "/placeholder.svg"
                     }
                     alt={destinationWalletData.currency}
                     width={24}
@@ -428,88 +414,81 @@ export default function Transfer({ onClose }: TransferProps) {
                   />
                 </div>
               )}
-            </div>
-
-            {/* Right column */}
-            <div className="flex flex-col items-end">
-              <div className="text-grayscale-text-primary text-base font-bold">
-                {destinationWalletData?.name || (
-                  <span className="text-grayscale-text-placeholder text-base font-normal">Select</span>
+              <div className="flex-1">
+                <div className="text-grayscale-text-muted text-base font-normal mb-1">To</div>
+                <div className="text-grayscale-text-primary text-base font-bold">
+                  {destinationWalletData?.name || (
+                    <span className="text-grayscale-text-placeholder text-base font-normal">Select</span>
+                  )}
+                </div>
+                {destinationWalletData && (
+                  <div className="text-grayscale-text-secondary text-sm font-normal">
+                    {getDestinationWalletAmount()}
+                  </div>
                 )}
               </div>
-              {destinationWalletData && (
-                <div className="text-grayscale-text-secondary text-sm font-normal">
-                  {getDestinationWalletAmount()}
-                </div>
-              )}
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
 
-            <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleInterchange}
+                className="p-0 bg-white rounded-full shadow-sm"
+              >
+                <Image src="/icons/button-switch.png" alt="Switch" width={48} height={48} />
+              </Button>
+            </div>
+
+            {renderDropdown("from")}
+            {renderDropdown("to")}
           </div>
 
-          {/* Switch button */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+          <div className="mb-6 px-2">
+            <h2 className="text-grayscale-text-primary text-base font-normal mb-2">Amount</h2>
+            <div className="relative">
+              <Input
+                type="number"
+                placeholder="0.00"
+                value={transferAmount || ""}
+                onChange={(e) => setTransferAmount(e.target.value)}
+                className="h-12 px-4 border border-gray-200 rounded-lg text-base appearance-none"
+                max={getSourceWalletBalance()}
+              />
+              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
+            </div>
+            {transferAmount && !isAmountValid(transferAmount) && (
+              <p className="text-red-500 text-sm mt-1">
+                Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())} USD)
+              </p>
+            )}
+          </div>
+
+          <div className="flex-1"></div>
+
+          <div className="mt-auto ">
             <Button
-              variant="ghost"
-              size="sm"
-              onClick={handleInterchange}
-              className="p-0 bg-white rounded-full shadow-sm"
+              onClick={handleTransferClick}
+              disabled={
+                !transferAmount ||
+                transferAmount.trim() === "" ||
+                !sourceWalletData ||
+                !destinationWalletData ||
+                !isAmountValid(transferAmount)
+              }
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
             >
-              <Image src="/icons/button-switch.png" alt="Switch" width={48} height={48} />
+              Transfer
             </Button>
           </div>
-
-          {renderDropdown("from")}
-          {renderDropdown("to")}
         </div>
 
-        {/* Amount input */}
-        <div className="mb-6 px-2">
-          <h2 className="text-grayscale-text-primary text-base font-normal mb-2">Amount</h2>
-          <div className="relative">
-            <Input
-              type="number"
-              placeholder="0.00"
-              value={transferAmount || ""}
-              onChange={(e) => setTransferAmount(e.target.value)}
-              className="h-12 px-4 border border-gray-200 rounded-lg text-base appearance-none"
-              max={getSourceWalletBalance()}
-            />
-            <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">USD</span>
-          </div>
-          {transferAmount && !isAmountValid(transferAmount) && (
-            <p className="text-red-500 text-sm mt-1">
-              Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())} USD)
-            </p>
-          )}
-        </div>
-
-        <div className="flex-1"></div>
-
-        {/* Transfer button */}
-        <div className="mt-auto">
-          <Button
-            onClick={handleTransferClick}
-            disabled={
-              !transferAmount ||
-              transferAmount.trim() === "" ||
-              !sourceWalletData ||
-              !destinationWalletData ||
-              !isAmountValid(transferAmount)
-            }
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-          >
-            Transfer
-          </Button>
-        </div>
+        {renderMobileSheet("from")}
+        {renderMobileSheet("to")}
       </div>
-
-      {renderMobileSheet("from")}
-      {renderMobileSheet("to")}
-    </div>
-  )
-}
-
+    )
+  }
 
   if (step === "confirm") {
     return (
