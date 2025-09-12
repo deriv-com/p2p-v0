@@ -420,7 +420,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   </div>
                 )}
               </div>
-              <div className="flex-1">
+              <div className="flex-1 mt-6">
                 <div className="text-grayscale-text-primary text-base font-bold">
                   {destinationWalletData?.name || (
                     <span className="text-grayscale-text-placeholder text-base font-normal">Select</span>
