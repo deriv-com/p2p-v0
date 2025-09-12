@@ -233,7 +233,7 @@ const renderDropdown = (type: WalletSelectorType) => {
         >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-              <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={24} height={32} />
+              <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={24} height={24} />
             </div>
             <div className="flex-1 flex items-center">
               <div className="text-grayscale-text-secondary text-base font-normal">
