@@ -461,7 +461,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
   if (step === "enterAmount") {
     return (
-      <div className="absolute inset-0 flex flex-col h-full p-4">
+      <div className="absolute inset-0 flex flex-col h-full p-4 md:p-6">
         <div className="flex justify-between items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
           <Button variant="ghost" size="sm" className="px-0 md:hidden" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
