@@ -291,7 +291,7 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
           <Image src="/icons/close-circle-secondary.png" alt="Close" width={48} height={48} />
         </Button>
 
-        {/* Content with 32px padding */}
+    
         <div className="p-8">
           <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6">{title}</h2>
 
