@@ -644,7 +644,7 @@ export default function Transfer({ onClose }: TransferProps) {
   Confirm transfer
 </h1>
 
-              <div className="mb-6">
+              <div className="mb-6 px-4">
                 <div className="mb-4">
                   <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
                   <div className="flex items-center gap-3">
