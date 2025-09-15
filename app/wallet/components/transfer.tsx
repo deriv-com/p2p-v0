@@ -242,7 +242,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h2 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">{title}</h2>
+            <h2 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
