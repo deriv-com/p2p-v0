@@ -230,30 +230,6 @@ export default function Transfer({ onClose }: TransferProps) {
     return wallets
   }
 
-  const renderDropdown = (type: WalletSelectorType) => {
-    if (showDropdown !== type) return null
-
-    return (
-      <div className="hidden md:block absolute top-full left-2 right-2 mt-2 bg-white rounded-lg shadow-[0_16px_24px_4px_rgba(0,0,0,0.04),0_16px_24px_4px_rgba(0,0,0,0.02)] z-20 max-h-60 overflow-y-auto border border-grayscale-border-light">
-        {getFilteredWallets(type).map((wallet) => (
-          <div
-            key={wallet.id}
-            className="p-4 hover:bg-gray-50 cursor-pointer"
-            onClick={() => handleWalletSelect(wallet, type)}
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                <Image src={wallet.icon || "/placeholder.svg"} alt={wallet.name} width={24} height={24} />
-              </div>
-              <div className="flex-1 flex items-center">
-                <div className="text-grayscale-text-secondary text-base font-normal">{wallet.name}</div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
 
   const renderMobileSheet = (type: WalletSelectorType) => {
     if (showMobileSheet !== type) return null
