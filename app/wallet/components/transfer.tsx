@@ -238,7 +238,7 @@ export default function Transfer({ onClose }: TransferProps) {
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
         <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
-          <div className="p-6">
+          <div className="p-4">
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
