@@ -318,96 +318,97 @@ export default function Transfer({ onClose }: TransferProps) {
     )
   }
 
-  const renderDesktopConfirmPopup = () => {
-    if (!showDesktopConfirmPopup) return null
+const renderDesktopConfirmPopup = () => {
+  if (!showDesktopConfirmPopup) return null
 
-    return (
-      <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
-        <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden">
-          <div className="p-8">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-grayscale-text-primary text-xl font-extrabold">Confirm transfer</h2>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="px-0"
-                onClick={() => setShowDesktopConfirmPopup(false)}
-                aria-label="Close"
-              >
-                <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
-              </Button>
-            </div>
-            <div className="mb-6">
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-                <div className="flex items-center gap-3">
-                  {sourceWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                        alt={sourceWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
-                </div>
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
+      <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden relative">
+        
+        {/* Close button positioned absolutely */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="p-4 min-w-0 absolute top-4 right-4"
+          onClick={() => setShowDesktopConfirmPopup(false)}
+          aria-label="Close"
+        >
+          <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
+        </Button>
+
+        {/* Content with 32px padding */}
+        <div className="p-8">
+          <h2 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">
+            Confirm transfer
+          </h2>
+
+          <div className="mb-6">
+            <div className="mb-4">
+              <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
+              <div className="flex items-center gap-3">
+                {sourceWalletData && (
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                      alt={sourceWalletData.currency}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-                <div className="flex items-center gap-3">
-                  {destinationWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
-                          "/placeholder.svg" ||
-                          "/placeholder.svg" ||
-                          "/placeholder.svg"
-                        }
-                        alt={destinationWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
-                </div>
-              </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-                <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} USD
-                </span>
-              </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
             </div>
-            <div className="space-y-3 mt-6">
-              <Button
-                onClick={handleConfirmTransfer}
-                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-              >
-                Confirm
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => setShowDesktopConfirmPopup(false)}
-                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-              >
-                Back
-              </Button>
+            <div className="h-px bg-gray-200 mb-4"></div>
+            <div className="mb-4">
+              <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
+              <div className="flex items-center gap-3">
+                {destinationWalletData && (
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) || "/placeholder.svg"}
+                      alt={destinationWalletData.currency}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+              </div>
             </div>
+            <div className="h-px bg-gray-200 mb-4"></div>
+            <div className="mb-4">
+              <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
+              <span className="block text-base font-normal text-slate-1200">
+                {formatBalance(transferAmount || "0")} USD
+              </span>
+            </div>
+            <div className="h-px bg-gray-200 mb-4"></div>
+          </div>
+
+          <div className="space-y-3 mt-6">
+            <Button
+              onClick={handleConfirmTransfer}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+            >
+              Confirm
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowDesktopConfirmPopup(false)}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+            >
+              Back
+            </Button>
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
+
 
   const renderMobileConfirmSheet = () => {
     if (!showMobileConfirmSheet) return null
