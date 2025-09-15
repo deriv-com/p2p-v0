@@ -430,7 +430,9 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
           <div className="px-2">
-            <h1 className="text-grayscale-text-primary text-xl font-extrabold mb-2">Transfer</h1>
+            <h1 className="text-grayscale-text-primary text-xl md:text-4xl font-extrabold mb-2">
+  Transfer
+</h1>
 
             <p className="text-grayscale-text-secondary text-base font-normal mb-6">
               Choose which currency you would like to transfer.
