@@ -324,7 +324,7 @@ export default function Transfer({ onClose }: TransferProps) {
     return (
       <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
         <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden">
-          <div className="p-6">
+          <div className="p-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-grayscale-text-primary text-xl font-extrabold">Confirm transfer</h2>
               <Button
