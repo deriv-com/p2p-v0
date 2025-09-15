@@ -39,7 +39,6 @@ export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
-  const [showDropdown, setShowDropdown] = useState<WalletSelectorType>(null)
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
   const [showDesktopConfirmPopup, setShowDesktopConfirmPopup] = useState(false)
