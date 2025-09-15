@@ -495,52 +495,55 @@ const renderDesktopConfirmPopup = () => {
     return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
   }
 
-  if (step === "chooseCurrency") {
-    return (
-      <div className="absolute inset-0 flex flex-col h-full p-4">
-        <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
-          <div className="md:w-8 md:h-8"></div>
-          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-          </Button>
-        </div>
-        <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-          <div className="px-2">
-            <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
-            <p className="text-grayscale-text-secondary text-base font-normal mb-6">
-              Choose which currency you would like to transfer.
-            </p>
-            <div className="space-y-0">
-              {currencies.map((currency, index) => (
-                <div key={currency.code}>
-                  <div
-                    className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
-                    onClick={() => handleCurrencySelect()}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                        {currency.logo && (
-                          <Image
-                            src={currency.logo || "/placeholder.svg"}
-                            alt={currency.name}
-                            width={24}
-                            height={24}
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                      </div>
-                      <span className="text-grayscale-text-primary text-base font-normal">{currency.name}</span>
+ if (step === "chooseCurrency") {
+  return (
+    <div className="absolute inset-0 flex flex-col h-full p-4">
+      <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
+        <div className="md:w-8 md:h-8"></div>
+        <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+          <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+        </Button>
+      </div>
+
+      <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
+        <div className="px-2 flex-1 overflow-y-auto">
+          <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
+          <p className="text-grayscale-text-secondary text-base font-normal mb-6">
+            Choose which currency you would like to transfer.
+          </p>
+
+          <div className="space-y-0">
+            {currencies.map((currency, index) => (
+              <div key={currency.code}>
+                <div
+                  className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
+                  onClick={() => handleCurrencySelect(currency)}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                      {currency.logo && (
+                        <Image
+                          src={currency.logo || "/placeholder.svg"}
+                          alt={currency.name}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                     </div>
+                    <span className="text-grayscale-text-primary text-base font-normal">{currency.name}</span>
                   </div>
-                  {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
                 </div>
-              ))}
-            </div>
+                {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
+
 
   if (step === "enterAmount") {
     return (
