@@ -367,6 +367,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -421,7 +422,7 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "chooseCurrency") {
     return (
       <div className="absolute inset-0 flex flex-col h-full p-4">
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
           <div className="md:w-8 md:h-8"></div>
           <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
@@ -430,9 +431,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
           <div className="px-2">
-            <h1 className="text-grayscale-text-primary text-xl md:text-4xl font-extrabold mb-2">
-              Transfer
-            </h1>
+            <h1 className="text-grayscale-text-primary text-xl md:text-4xl font-extrabold mb-2">Transfer</h1>
 
             <p className="text-grayscale-text-secondary text-base font-normal mb-6">
               Choose which currency you would like to transfer.
@@ -473,7 +472,7 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "enterAmount") {
     return (
       <div className="absolute inset-0 flex flex-col h-full p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
           <Button variant="ghost" size="sm" className="px-0 md:hidden" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
@@ -543,6 +542,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -646,7 +646,7 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "confirm") {
     return (
       <div className="absolute inset-0 flex flex-col h-full p-6 md:hidden">
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
           <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
             <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
           </Button>
