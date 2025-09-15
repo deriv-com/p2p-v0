@@ -60,7 +60,6 @@ if (operation === "TRANSFER") {
   )
 }
 
-  // Sidebar mode for deposit/withdraw
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex md:justify-end md:items-stretch" onClick={onClose}>
       <div
