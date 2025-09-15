@@ -438,7 +438,7 @@ export default function Transfer({ onClose }: TransferProps) {
               Choose which currency you would like to transfer.
             </p>
 
-            <div className="space-y-0">
+            <div className="space-y-0 px-2">
               {currencies.map((currency, index) => (
                 <div key={currency.code}>
                   <div
