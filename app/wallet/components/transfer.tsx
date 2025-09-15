@@ -49,9 +49,12 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => {
+    console.log("[v0] toConfirm called, window width:", window.innerWidth)
     if (window.innerWidth >= 768) {
+      console.log("[v0] Setting desktop popup")
       setShowDesktopConfirmPopup(true)
     } else {
+      console.log("[v0] Setting mobile confirm step")
       setStep("confirm")
     }
   }
@@ -116,6 +119,8 @@ export default function Transfer({ onClose }: TransferProps) {
   }, [])
 
   const handleTransferClick = () => {
+    console.log("[v0] Transfer button clicked")
+    console.log("[v0] Window width:", window.innerWidth)
     toConfirm()
   }
 
@@ -364,6 +369,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                           "/placeholder.svg" ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -530,6 +536,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                         "/placeholder.svg" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -627,72 +634,78 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "confirm") {
     return (
       <>
-        <div className="absolute inset-0 flex flex-col h-full p-6 md:hidden">
-          <div className="flex justify-between items-center mb-10">
-            <Button variant="ghost" size="sm" className="px-0" onClick={goBack} aria-label="Go back">
-              <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
-            </Button>
-            <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-              <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-            </Button>
-          </div>
-          <h1 className="text-2xl font-black text-black mb-10 px-2">Confirm transfer</h1>
-          <div className="mb-6 px-2">
-            <div className="mb-4">
-              <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-              <div className="flex items-center gap-3">
-                {sourceWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                      alt={sourceWalletData.currency}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
+        <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
+          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+            <div className="p-6">
+              <div className="flex justify-center mb-4">
+                <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+              </div>
+              <h1 className="text-grayscale-text-primary text-xl font-extrabold mb-6 text-center">Confirm transfer</h1>
+              <div className="mb-6">
+                <div className="mb-4">
+                  <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
+                  <div className="flex items-center gap-3">
+                    {sourceWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                          alt={sourceWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
                   </div>
-                )}
-                <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                </div>
+                <div className="h-px bg-gray-200 mb-4"></div>
+                <div className="mb-4">
+                  <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
+                  <div className="flex items-center gap-3">
+                    {destinationWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
+                            "/placeholder.svg"
+                          }
+                          alt={destinationWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                  </div>
+                </div>
+                <div className="h-px bg-gray-200 mb-4"></div>
+                <div className="mb-4">
+                  <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
+                  <span className="block text-base font-normal text-slate-1200">
+                    {formatBalance(transferAmount || "0")} USD
+                  </span>
+                </div>
+                <div className="h-px bg-gray-200 mb-4"></div>
+              </div>
+              <div className="space-y-3">
+                <Button
+                  onClick={handleConfirmTransfer}
+                  className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+                >
+                  Confirm
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setStep("enterAmount")}
+                  className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+                >
+                  Back
+                </Button>
               </div>
             </div>
-            <div className="h-px bg-gray-200 mb-4"></div>
-            <div className="mb-4">
-              <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-              <div className="flex items-center gap-3">
-                {destinationWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg"
-                      }
-                      alt={destinationWalletData.currency}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
-              </div>
-            </div>
-            <div className="h-px bg-gray-200 mb-4"></div>
-            <div className="mb-4">
-              <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-              <span className="block text-base font-normal text-slate-1200">
-                {formatBalance(transferAmount || "0")} USD
-              </span>
-            </div>
-            <div className="h-px bg-gray-200 mb-4"></div>
-          </div>
-          <div className="flex-1"></div>
-          <div className="mt-auto">
-            <Button
-              onClick={handleConfirmTransfer}
-              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-            >
-              Confirm
-            </Button>
           </div>
         </div>
         {renderDesktopConfirmPopup()}
