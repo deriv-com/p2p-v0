@@ -284,7 +284,7 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
         <Button
           variant="ghost"
           size="default"
-          className="absolute top-4 right-4"
+          className="absolute top-4 right-4 min-w-0"
           onClick={() => setShowDesktopWalletPopup(null)}
           aria-label="Close"
         >
