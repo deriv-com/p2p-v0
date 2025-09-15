@@ -270,55 +270,58 @@ export default function Transfer({ onClose }: TransferProps) {
     )
   }
 
-  const renderDesktopWalletPopup = (type: WalletSelectorType) => {
-    if (showDesktopWalletPopup !== type) return null
+const renderDesktopWalletPopup = (type: WalletSelectorType) => {
+  if (showDesktopWalletPopup !== type) return null
 
-    const title = type === "from" ? "From" : "To"
-    const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
+  const title = type === "from" ? "From" : "To"
+  const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
 
-    return (
-      <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
-        <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden">
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-grayscale-text-primary text-[24px] font-extrabold">{title}</h2>
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
+      <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden relative">
+        
+        {/* Close button stays outside padded content */}
+        <Button
+          variant="ghost"
+          size="sm"
+          className="p-4 absolute top-4 right-4"
+          onClick={() => setShowDesktopWalletPopup(null)}
+          aria-label="Close"
+        >
+          <Image src="/icons/close-circle-secondary.png" alt="Close" width={48} height={48} />
+        </Button>
 
-              <Button
-                variant="ghost"
-                size="sm"
-                className="px-0"
-                onClick={() => setShowDesktopWalletPopup(null)}
-                aria-label="Close"
+        {/* Content with 32px padding */}
+        <div className="p-8">
+          <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6">{title}</h2>
+
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            {getFilteredWallets(type).map((wallet) => (
+              <div
+                key={wallet.id}
+                className="cursor-pointer"
+                onClick={() => {
+                  handleWalletSelect(wallet, type)
+                  setShowDesktopWalletPopup(null)
+                }}
               >
-                <Image src="/icons/close-circle-secondary.png" alt="Close" width={48} height={48} />
-              </Button>
-            </div>
-            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-              {getFilteredWallets(type).map((wallet) => (
-                <div
-                  key={wallet.id}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    handleWalletSelect(wallet, type)
-                    setShowDesktopWalletPopup(null)
-                  }}
-                >
-                  <WalletDisplay
-                    name={wallet.name}
-                    amount={formatBalance(wallet.amount)}
-                    currency={wallet.currency}
-                    icon={wallet.icon}
-                    isSelected={selectedWalletId === wallet.id}
-                    onClick={() => {}}
-                  />
-                </div>
-              ))}
-            </div>
+                <WalletDisplay
+                  name={wallet.name}
+                  amount={formatBalance(wallet.amount)}
+                  currency={wallet.currency}
+                  icon={wallet.icon}
+                  isSelected={selectedWalletId === wallet.id}
+                  onClick={() => {}}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
-    )
-  }
+    </div>
+  )
+}
+
 
   const renderDesktopConfirmPopup = () => {
     if (!showDesktopConfirmPopup) return null
