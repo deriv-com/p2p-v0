@@ -421,7 +421,7 @@ export default function Transfer({ onClose }: TransferProps) {
   if (step === "chooseCurrency") {
     return (
       <div className="absolute inset-0 flex flex-col h-full p-6">
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex justify-between items-center mb-10">
           <div className="md:w-8 md:h-8"></div>
           <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
