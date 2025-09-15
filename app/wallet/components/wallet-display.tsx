@@ -7,7 +7,6 @@ interface WalletDisplayProps {
   name: string
   amount: string
   currency: string
-  icon: string
   onClick?: () => void
   isSelected?: boolean
 }
@@ -19,7 +18,7 @@ const getCurrencyImage = (walletName: string, currency: string) => {
   return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
 }
 
-export default function WalletDisplay({ name, amount, currency, icon, onClick, isSelected }: WalletDisplayProps) {
+export default function WalletDisplay({ name, amount, currency, onClick, isSelected }: WalletDisplayProps) {
   return (
     <div
       className={`min-h-[56px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-700 cursor-pointer hover:bg-gray-100 transition-colors ${
