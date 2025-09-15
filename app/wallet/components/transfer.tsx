@@ -338,9 +338,9 @@ const renderDesktopConfirmPopup = () => {
 
         {/* Content with 32px padding */}
         <div className="p-8">
-          <h2 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">
-            Confirm transfer
-          </h2>
+          <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6 text-left">
+  Confirm transfer
+</h2>
 
           <div className="mb-6">
             <div className="mb-4">
