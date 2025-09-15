@@ -32,7 +32,7 @@ interface WalletData {
   currency: string
 }
 
-type TransferStep = "chooseCurrency" | "enterAmount" | "confirm" | "success"
+type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
 export default function Transfer({ onClose }: TransferProps) {
@@ -41,6 +41,7 @@ export default function Transfer({ onClose }: TransferProps) {
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
+  const [showMobileConfirmSheet, setShowMobileConfirmSheet] = useState(false)
   const [showDesktopConfirmPopup, setShowDesktopConfirmPopup] = useState(false)
 
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
@@ -49,19 +50,15 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => {
-    console.log("[v0] toConfirm called, window width:", window.innerWidth)
     if (window.innerWidth >= 768) {
-      console.log("[v0] Setting desktop popup")
       setShowDesktopConfirmPopup(true)
     } else {
-      console.log("[v0] Setting mobile confirm step")
-      setStep("confirm")
+      setShowMobileConfirmSheet(true)
     }
   }
   const toSuccess = () => setStep("success")
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
-    else if (step === "confirm") setStep("enterAmount")
     else if (step === "chooseCurrency") onClose()
   }
 
@@ -119,8 +116,6 @@ export default function Transfer({ onClose }: TransferProps) {
   }, [])
 
   const handleTransferClick = () => {
-    console.log("[v0] Transfer button clicked")
-    console.log("[v0] Window width:", window.innerWidth)
     toConfirm()
   }
 
@@ -146,6 +141,7 @@ export default function Transfer({ onClose }: TransferProps) {
       if (result?.data?.message === "Transaction completed successfully.") {
         console.log("Transfer successful:", result)
         setShowDesktopConfirmPopup(false)
+        setShowMobileConfirmSheet(false)
         toSuccess()
       } else {
         console.error("Transfer failed")
@@ -370,6 +366,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -401,6 +398,90 @@ export default function Transfer({ onClose }: TransferProps) {
               <Button
                 variant="outline"
                 onClick={() => setShowDesktopConfirmPopup(false)}
+                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+              >
+                Back
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const renderMobileConfirmSheet = () => {
+    if (!showMobileConfirmSheet) return null
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
+        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+          <div className="p-4">
+            <div className="flex justify-center mb-4">
+              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+            </div>
+            <h1 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">
+              Confirm transfer
+            </h1>
+
+            <div className="mb-6 px-4">
+              <div className="mb-4">
+                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
+                <div className="flex items-center gap-3">
+                  {sourceWalletData && (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      <Image
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                        alt={sourceWalletData.currency}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                </div>
+              </div>
+              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="mb-4">
+                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
+                <div className="flex items-center gap-3">
+                  {destinationWalletData && (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      <Image
+                        src={
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
+                          "/placeholder.svg"
+                        }
+                        alt={destinationWalletData.currency}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                </div>
+              </div>
+              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="mb-4">
+                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
+                <span className="block text-base font-normal text-slate-1200">
+                  {formatBalance(transferAmount || "0")} USD
+                </span>
+              </div>
+              <div className="h-px bg-gray-200 mb-4"></div>
+            </div>
+            <div className="space-y-3">
+              <Button
+                onClick={handleConfirmTransfer}
+                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+              >
+                Confirm
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowMobileConfirmSheet(false)}
                 className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
               >
                 Back
@@ -536,7 +617,6 @@ export default function Transfer({ onClose }: TransferProps) {
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                         "/placeholder.svg" ||
-                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -627,86 +707,9 @@ export default function Transfer({ onClose }: TransferProps) {
         {renderMobileSheet("to")}
         {renderDesktopWalletPopup("from")}
         {renderDesktopWalletPopup("to")}
-      </div>
-    )
-  }
-
-  if (step === "confirm") {
-    return (
-      <>
-        <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-          <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
-            <div className="p-4">
-              <div className="flex justify-center mb-4">
-                <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
-              </div>
-             <h1 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">
-  Confirm transfer
-</h1>
-
-              <div className="mb-6 px-4">
-                <div className="mb-4">
-                  <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-                  <div className="flex items-center gap-3">
-                    {sourceWalletData && (
-                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                          alt={sourceWalletData.currency}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
-                  </div>
-                </div>
-                <div className="h-px bg-gray-200 mb-4"></div>
-                <div className="mb-4">
-                  <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-                  <div className="flex items-center gap-3">
-                    {destinationWalletData && (
-                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg"
-                          }
-                          alt={destinationWalletData.currency}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
-                  </div>
-                </div>
-                <div className="h-px bg-gray-200 mb-4"></div>
-                <div className="mb-4">
-                  <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-                  <span className="block text-base font-normal text-slate-1200">
-                    {formatBalance(transferAmount || "0")} USD
-                  </span>
-                </div>
-                <div className="h-px bg-gray-200 mb-4"></div>
-              </div>
-              <div className="space-y-3">
-                <Button
-                  onClick={handleConfirmTransfer}
-                  className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-                >
-                  Confirm
-                </Button>
-          
-              </div>
-            </div>
-          </div>
-        </div>
+        {renderMobileConfirmSheet()}
         {renderDesktopConfirmPopup()}
-      </>
+      </div>
     )
   }
 
