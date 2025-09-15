@@ -15,8 +15,7 @@ const getCurrencyImage = (walletName: string, currency: string) => {
   if (walletName === "P2P Wallet") {
     return "/icons/p2p-logo.png"
   }
-  return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
-}
+  return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] }
 
 export default function WalletDisplay({ name, amount, currency, onClick, isSelected }: WalletDisplayProps) {
   return (
