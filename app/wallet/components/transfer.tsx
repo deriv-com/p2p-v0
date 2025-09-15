@@ -325,7 +325,7 @@ const renderDesktopConfirmPopup = () => {
     <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
       <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden relative">
         
-        {/* Close button positioned absolutely */}
+    
         <Button
           variant="ghost"
           size="default"
