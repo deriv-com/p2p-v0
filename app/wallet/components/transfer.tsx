@@ -230,7 +230,6 @@ export default function Transfer({ onClose }: TransferProps) {
     return wallets
   }
 
-
   const renderMobileSheet = (type: WalletSelectorType) => {
     if (showMobileSheet !== type) return null
 
