@@ -25,7 +25,7 @@ export default function Sidebar() {
   return (
     <div className="hidden md:flex w-[295px] flex-col border-r border-slate-200 mr-[8px]">
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-logo.png" alt="User avatar" width={64} height={64} />
+        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
         <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
         </div>
@@ -65,15 +65,15 @@ export default function Sidebar() {
             )
           })}
           <li key="logout">
-            <Button className="m-4" size="sm" onClick={() => AuthAPI.logout()}>
+            <Button className="my-4" size="sm" onClick={() => AuthAPI.logout()}>
               Logout
             </Button>
           </li>
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8">
-          <Image src="/icons/default-user-icon.png" alt="User avatar" width={64} height={64} />
+        <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
+          {USER.nickname?.charAt(0).toUpperCase()}
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
       </div>
