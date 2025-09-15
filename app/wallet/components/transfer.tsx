@@ -349,7 +349,7 @@ const renderDesktopConfirmPopup = () => {
                 {sourceWalletData && (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
