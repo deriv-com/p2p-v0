@@ -329,7 +329,7 @@ const renderDesktopConfirmPopup = () => {
         <Button
           variant="ghost"
           size="sm"
-          className="p-4 min-w-0 absolute top-4 right-4"
+          className="p-4 min-w-0 absolute top-4 right-4 h-0 px-0"
           onClick={() => setShowDesktopConfirmPopup(false)}
           aria-label="Close"
         >
