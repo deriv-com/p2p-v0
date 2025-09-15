@@ -281,7 +281,8 @@ export default function Transfer({ onClose }: TransferProps) {
         <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden">
           <div className="p-6">
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-grayscale-text-primary text-xl font-extrabold">{title}</h2>
+              <h2 className="text-grayscale-text-primary text-[24px] font-extrabold">{title}</h2>
+
               <Button
                 variant="ghost"
                 size="sm"
