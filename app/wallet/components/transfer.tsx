@@ -270,58 +270,52 @@ export default function Transfer({ onClose }: TransferProps) {
     )
   }
 
-const renderDesktopWalletPopup = (type: WalletSelectorType) => {
-  if (showDesktopWalletPopup !== type) return null
+  const renderDesktopWalletPopup = (type: WalletSelectorType) => {
+    if (showDesktopWalletPopup !== type) return null
 
-  const title = type === "from" ? "From" : "To"
-  const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
+    const title = type === "from" ? "From" : "To"
+    const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
 
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
-      <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden relative">
-        
-    
-        <Button
-          variant="ghost"
-          size="default"
-          className="absolute top-4 right-4 min-w-0 px-0"
-          onClick={() => setShowDesktopWalletPopup(null)}
-          aria-label="Close"
-        >
-          <Image src="/icons/close-circle-secondary.png" alt="Close" width={48} height={48} />
-        </Button>
-
-    
-        <div className="p-8">
-          <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6">{title}</h2>
-
-          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-            {getFilteredWallets(type).map((wallet) => (
-              <div
-                key={wallet.id}
-                className="cursor-pointer"
-                onClick={() => {
-                  handleWalletSelect(wallet, type)
-                  setShowDesktopWalletPopup(null)
-                }}
-              >
-                <WalletDisplay
-                  name={wallet.name}
-                  amount={formatBalance(wallet.amount)}
-                  currency={wallet.currency}
-                  icon={wallet.icon}
-                  isSelected={selectedWalletId === wallet.id}
-                  onClick={() => {}}
-                />
-              </div>
-            ))}
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
+        <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden relative">
+          <Button
+            variant="ghost"
+            size="default"
+            className="absolute top-4 right-4 min-w-0 px-0"
+            onClick={() => setShowDesktopWalletPopup(null)}
+            aria-label="Close"
+          >
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
+          </Button>
+          <div className="p-8">
+            <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6">{title}</h2>
+            <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+              {getFilteredWallets(type).map((wallet) => (
+                <div
+                  key={wallet.id}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    handleWalletSelect(wallet, type)
+                    setShowDesktopWalletPopup(null)
+                  }}
+                >
+                  <WalletDisplay
+                    name={wallet.name}
+                    amount={formatBalance(wallet.amount)}
+                    currency={wallet.currency}
+                    icon={getCurrencyImage(wallet.name, wallet.currency) || "/placeholder.svg"}
+                    isSelected={selectedWalletId === wallet.id}
+                    onClick={() => {}}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
+    )
+  }
 
   const renderDesktopConfirmPopup = () => {
     if (!showDesktopConfirmPopup) return null
@@ -342,7 +336,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
                 <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
               </Button>
             </div>
-
             <div className="mb-6">
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
@@ -362,7 +355,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
                 </div>
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
-
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
                 <div className="flex items-center gap-3">
@@ -371,7 +363,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -385,7 +376,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
                 </div>
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
-
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
                 <span className="block text-base font-normal text-slate-1200">
@@ -394,7 +384,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
             </div>
-
             <div className="space-y-3">
               <Button
                 onClick={handleConfirmTransfer}
@@ -432,15 +421,12 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
-
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
           <div className="px-2">
             <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
-
             <p className="text-grayscale-text-secondary text-base font-normal mb-6">
               Choose which currency you would like to transfer.
             </p>
-
             <div className="space-y-0">
               {currencies.map((currency, index) => (
                 <div key={currency.code}>
@@ -485,13 +471,8 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
-
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-          <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">
-  Transfer
-</h1>
-
-
+          <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">Transfer</h1>
           <div className="relative mb-6 px-2">
             <div
               className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
@@ -529,9 +510,7 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
-
             <div className="h-2"></div>
-
             <div
               className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
               onClick={() => {
@@ -574,7 +553,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
               </div>
               <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
             </div>
-
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
               <Button
                 variant="ghost"
@@ -586,7 +564,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
               </Button>
             </div>
           </div>
-
           <div className="mb-6 px-2 relative">
             <h2 className="text-grayscale-text-primary text-base font-normal mb-2">Amount</h2>
             <div className="relative">
@@ -605,7 +582,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
                 Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())} USD)
               </p>
             )}
-
             <div className="hidden md:block absolute top-full right-0 mt-6">
               <Button
                 onClick={handleTransferClick}
@@ -622,9 +598,7 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
               </Button>
             </div>
           </div>
-
           <div className="flex-1"></div>
-
           <div className="mt-auto md:hidden">
             <Button
               onClick={handleTransferClick}
@@ -641,7 +615,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
             </Button>
           </div>
         </div>
-
         {renderMobileSheet("from")}
         {renderMobileSheet("to")}
         {renderDesktopWalletPopup("from")}
@@ -661,9 +634,7 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
-
         <h1 className="text-2xl font-black text-black mb-10 px-2">Confirm transfer</h1>
-
         <div className="mb-6 px-2">
           <div className="mb-4">
             <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
@@ -683,7 +654,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
             </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
-
           <div className="mb-4">
             <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
             <div className="flex items-center gap-3">
@@ -704,7 +674,6 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
             </div>
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
-
           <div className="mb-4">
             <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
             <span className="block text-base font-normal text-slate-1200">
@@ -713,9 +682,7 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
           </div>
           <div className="h-px bg-gray-200 mb-4"></div>
         </div>
-
         <div className="flex-1"></div>
-
         <div className="mt-auto">
           <Button
             onClick={handleConfirmTransfer}
@@ -743,18 +710,14 @@ const renderDesktopWalletPopup = (type: WalletSelectorType) => {
           <div className="mb-6">
             <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
           </div>
-
           <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
-
           <p className="text-white text-center text-base font-normal">{transferText}</p>
-
           <div className="hidden md:block mt-6">
             <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
               Got it
             </Button>
           </div>
         </div>
-
         <div className="block md:hidden w-full">
           <Button
             onClick={handleDoneClick}

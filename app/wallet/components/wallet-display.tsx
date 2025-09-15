@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface WalletDisplayProps {
   name: string
@@ -9,6 +10,13 @@ interface WalletDisplayProps {
   icon: string
   onClick?: () => void
   isSelected?: boolean
+}
+
+const getCurrencyImage = (walletName: string, currency: string) => {
+  if (walletName === "P2P Wallet") {
+    return "/icons/p2p-logo.png"
+  }
+  return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
 }
 
 export default function WalletDisplay({ name, amount, currency, icon, onClick, isSelected }: WalletDisplayProps) {
@@ -20,7 +28,13 @@ export default function WalletDisplay({ name, amount, currency, icon, onClick, i
       onClick={onClick}
     >
       <div className="w-8 h-8 flex-shrink-0">
-        <Image src={icon } alt={name} width={32} height={32} className="rounded-full" />
+        <Image
+          src={getCurrencyImage(name, currency) || "/placeholder.svg"}
+          alt={name}
+          width={32}
+          height={32}
+          className="rounded-full"
+        />
       </div>
 
       <div className="flex-1 ml-4">
