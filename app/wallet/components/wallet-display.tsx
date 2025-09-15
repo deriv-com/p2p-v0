@@ -28,7 +28,7 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
     >
       <div className="w-8 h-8 flex-shrink-0">
         <Image
-          src={getCurrencyImage(name, currency) || "/placeholder.svg"}
+          src={getCurrencyImage(name, currency)}
           alt={name}
           width={32}
           height={32}
