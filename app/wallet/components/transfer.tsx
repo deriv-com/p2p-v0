@@ -290,7 +290,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 onClick={() => setShowDesktopWalletPopup(null)}
                 aria-label="Close"
               >
-                <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+                <Image src="/icons/close-circle-secondary.png" alt="Close" width={48} height={48} />
               </Button>
             </div>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
