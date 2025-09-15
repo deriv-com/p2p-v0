@@ -473,7 +473,7 @@ const renderDesktopConfirmPopup = () => {
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
             </div>
-            <div className="space-y-3">
+            <div className="space-y-3 pb-4">
               <Button
                 onClick={handleConfirmTransfer}
                 className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
