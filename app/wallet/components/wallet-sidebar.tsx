@@ -45,35 +45,51 @@ export default function WalletSidebar({
     }
   }
 
+  if (operation === "TRANSFER") {
+    // Fullscreen mode for transfer
+    return (
+      <div className="fixed inset-0 z-50 bg-background flex flex-col" onClick={onClose}>
+        <div className="flex justify-between items-center px-4 py-3 border-b">
+          <h2 className="text-lg font-bold">{getTitle()}</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+        <div className="p-4 flex-1 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <Transfer
+            onSendClick={onP2PTransferClick}
+            onReceiveClick={onAccountTransferClick}
+            currencies={currencies}
+            onClose={onClose}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // Sidebar mode for deposit/withdraw
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex md:justify-end md:items-stretch" onClick={onClose}>
       <div
         className="bg-background w-full h-full md:max-w-md flex flex-col shadow-lg md:rounded-none"
         onClick={(e) => e.stopPropagation()}
       >
-        {operation !== "TRANSFER" ? (
-          <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
-            <h2 className="text-lg font-bold">{getTitle()}</h2>
-            <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
-              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-            </Button>
-          </div>
-        ) : null}
+        <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
+          <h2 className="text-lg font-bold">{getTitle()}</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
 
         <div className="p-4 flex flex-col gap-4 overflow-y-auto flex-1">
           {operation === "DEPOSIT" ? (
             <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
-          ) : operation === "WITHDRAW" ? (
-            <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} currencies={currencies} />
-          ) : operation === "TRANSFER" ? (
-            <Transfer
-              onSendClick={onP2PTransferClick}
-              onReceiveClick={onAccountTransferClick}
-              currencies={currencies}
-              onClose={onClose}
-            />
           ) : (
-            <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
+            <WithdrawOptions
+              onClose={onClose}
+              onDirectWithdrawClick={onDirectDepositClick}
+              currencies={currencies}
+            />
           )}
         </div>
       </div>
