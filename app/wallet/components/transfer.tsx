@@ -169,7 +169,7 @@ export default function Transfer({ onClose }: TransferProps) {
     } else if (type === "to") {
       setDestinationWalletData({ id: wallet.id, name: wallet.name, currency: wallet.currency })
     }
-    setShowDropdown(null)
+
     setShowMobileSheet(null)
     setShowDesktopWalletPopup(null)
   }
