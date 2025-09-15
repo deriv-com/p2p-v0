@@ -305,7 +305,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     name={wallet.name}
                     amount={formatBalance(wallet.amount)}
                     currency={wallet.currency}
-                    icon={getCurrencyImage(wallet.name, wallet.currency) || "/placeholder.svg"}
+                    icon={getCurrencyImage(wallet.name, wallet.currency) }
                     isSelected={selectedWalletId === wallet.id}
                     onClick={() => {}}
                   />
