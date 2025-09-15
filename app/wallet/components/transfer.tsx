@@ -333,7 +333,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 onClick={() => setShowDesktopConfirmPopup(false)}
                 aria-label="Close"
               >
-                <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+                <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
               </Button>
             </div>
             <div className="mb-6">
@@ -528,6 +528,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
