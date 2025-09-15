@@ -45,27 +45,20 @@ export default function WalletSidebar({
     }
   }
 
-  if (operation === "TRANSFER") {
-    // Fullscreen mode for transfer
-    return (
-      <div className="fixed inset-0 z-50 bg-background flex flex-col" onClick={onClose}>
-        <div className="flex justify-between items-center px-4 py-3 border-b">
-          <h2 className="text-lg font-bold">{getTitle()}</h2>
-          <Button onClick={onClose} variant="ghost" size="sm" className="px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
-        <div className="p-4 flex-1 overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-          <Transfer
-            onSendClick={onP2PTransferClick}
-            onReceiveClick={onAccountTransferClick}
-            currencies={currencies}
-            onClose={onClose}
-          />
-        </div>
+if (operation === "TRANSFER") {
+  return (
+    <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
+      <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
+        <Transfer
+          onSendClick={onP2PTransferClick}
+          onReceiveClick={onAccountTransferClick}
+          currencies={currencies}
+          onClose={onClose}
+        />
       </div>
-    )
-  }
+    </div>
+  )
+}
 
   // Sidebar mode for deposit/withdraw
   return (
