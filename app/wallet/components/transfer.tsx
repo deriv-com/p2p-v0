@@ -246,8 +246,11 @@ export default function Transfer({ onClose }: TransferProps) {
     const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+      <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileSheet(null)}>
+        <div
+          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="p-4">
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
@@ -287,8 +290,14 @@ export default function Transfer({ onClose }: TransferProps) {
     const selectedWalletId = type === "from" ? sourceWalletData?.id : destinationWalletData?.id
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
-        <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden relative">
+      <div
+        className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center"
+        onClick={() => setShowDesktopWalletPopup(null)}
+      >
+        <div
+          className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] max-h-[80vh] overflow-hidden relative"
+          onClick={(e) => e.stopPropagation()}
+        >
           <Button
             variant="ghost"
             size="default"
@@ -331,8 +340,14 @@ export default function Transfer({ onClose }: TransferProps) {
     if (!showDesktopConfirmPopup) return null
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
-        <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden relative">
+      <div
+        className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center"
+        onClick={() => setShowDesktopConfirmPopup(false)}
+      >
+        <div
+          className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden relative"
+          onClick={(e) => e.stopPropagation()}
+        >
           <Button
             variant="ghost"
             size="default"
@@ -371,6 +386,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
@@ -418,8 +434,11 @@ export default function Transfer({ onClose }: TransferProps) {
     if (!showMobileConfirmSheet) return null
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+      <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
+        <div
+          className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
           <div className="p-4">
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
@@ -452,6 +471,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
@@ -611,6 +631,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
