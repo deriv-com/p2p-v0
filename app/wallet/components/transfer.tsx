@@ -371,6 +371,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -451,6 +452,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -530,7 +532,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <span className="text-slate-1200 text-base font-normal">{currency.name}</span>
                     </div>
                   </div>
-                  {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
+                  {index < currencies.length - 1 && <div className="h-px bg-gray-200 ml-11"></div>}
                 </div>
               ))}
             </div>
@@ -609,6 +611,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
