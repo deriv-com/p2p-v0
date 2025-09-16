@@ -15,19 +15,20 @@ const getCurrencyImage = (walletName: string, currency: string) => {
   if (walletName === "P2P Wallet") {
     return "/icons/p2p-logo.png"
   }
-  return currencyLogoMapper[currency as keyof typeof currencyLogoMapper] }
+  return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
+}
 
 export default function WalletDisplay({ name, amount, currency, onClick, isSelected }: WalletDisplayProps) {
   return (
     <div
-      className={`min-h-[56px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-bg-card cursor-pointer hover:bg-gray-100 transition-colors ${
+      className={`min-h-[56px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-500 cursor-pointer hover:bg-gray-100 transition-colors ${
         isSelected ? "border border-black" : "border border-black/[0.04]"
       }`}
       onClick={onClick}
     >
       <div className="w-8 h-8 flex-shrink-0">
         <Image
-          src={getCurrencyImage(name, currency)}
+          src={getCurrencyImage(name, currency) || "/placeholder.svg"}
           alt={name}
           width={32}
           height={32}
@@ -36,8 +37,8 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
       </div>
 
       <div className="flex-1 ml-4">
-        <h3 className="text-black/[0.72] text-base font-normal">{name}</h3>
-        <p className="text-black/[0.48] text-sm font-normal">
+        <h3 className="text-grayscale-600 text-base font-normal">{name}</h3>
+        <p className="text-grayscale-text-muted text-sm font-normal">
           {amount} {currency}
         </p>
       </div>
