@@ -523,7 +523,7 @@ export default function Transfer({ onClose }: TransferProps) {
                             alt={currency.name}
                             width={24}
                             height={24}
-                            className="w-full h-full object-cover"
+                            className="object-cover"
                           />
                         )}
                       </div>
