@@ -584,7 +584,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
