@@ -100,7 +100,6 @@ const config: Config = {
           500: "#0000000a",
           600: "#000000b8",
           700: "#EFF3F5",
-          "text-primary": "#181C25",
           "text-muted": "#0000007A",
           "text-placeholder": "#0000003D",
         },

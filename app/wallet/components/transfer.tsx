@@ -160,7 +160,7 @@ export default function Transfer({ onClose }: TransferProps) {
     onClose()
   }
 
-  const handleCurrencySelect = () => {
+  const handleCurrencySelect = (currency: Currency) => {
     toEnterAmount()
   }
 
@@ -243,7 +243,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h2 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">{title}</h2>
+            <h2 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
@@ -290,7 +290,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6">{title}</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
@@ -334,7 +334,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6 text-left">Confirm transfer</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6 text-left">Confirm transfer</h2>
             <div className="mb-6">
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
@@ -362,6 +362,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
@@ -415,9 +416,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">
-              Confirm transfer
-            </h1>
+            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">Confirm transfer</h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
@@ -445,6 +444,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
@@ -499,7 +499,7 @@ export default function Transfer({ onClose }: TransferProps) {
         </div>
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
           <div className="px-2 flex-1 overflow-y-auto">
-            <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
+            <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
             <p className="text-grayscale-600 text-base font-normal mb-6">
               Choose which currency you would like to transfer.
             </p>
@@ -522,7 +522,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           />
                         )}
                       </div>
-                      <span className="text-grayscale-text-primary text-base font-normal">{currency.name}</span>
+                      <span className="text-slate-1200 text-base font-normal">{currency.name}</span>
                     </div>
                   </div>
                   {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
@@ -548,7 +548,7 @@ export default function Transfer({ onClose }: TransferProps) {
           </Button>
         </div>
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-          <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">Transfer</h1>
+          <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">Transfer</h1>
           <div className="relative mb-6 px-2">
             <div
               className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
@@ -605,6 +605,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                         "/placeholder.svg" ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -639,7 +640,7 @@ export default function Transfer({ onClose }: TransferProps) {
             </div>
           </div>
           <div className="mb-6 px-2 relative">
-            <h2 className="text-grayscale-text-primary text-base font-normal mb-2">Amount</h2>
+            <h2 className="text-slate-1200 text-base font-normal mb-2">Amount</h2>
             <div className="relative">
               <Input
                 type="number"
