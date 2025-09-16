@@ -97,6 +97,8 @@ const config: Config = {
           200: "#00000014",
           300: "#F8F9FA",
           400: "#CED4DA",
+          500: "#0000000a",
+          600: "#000000b8",
           700: "#EFF3F5",
           "text-primary": "#181C25",
           "text-muted": "#0000007A",
