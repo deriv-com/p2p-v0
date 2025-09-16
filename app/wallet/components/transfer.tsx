@@ -160,7 +160,7 @@ export default function Transfer({ onClose }: TransferProps) {
     onClose()
   }
 
-  const handleCurrencySelect = () => {
+  const handleCurrencySelect = (currency: Currency) => {
     toEnterAmount()
   }
 
@@ -243,7 +243,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-4">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h2 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">{title}</h2>
+            <h2 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
@@ -290,7 +290,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6">{title}</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
@@ -305,7 +305,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     name={wallet.name}
                     amount={formatBalance(wallet.amount)}
                     currency={wallet.currency}
-                    icon={getCurrencyImage(wallet.name, wallet.currency) }
+                    icon={getCurrencyImage(wallet.name, wallet.currency)}
                     isSelected={selectedWalletId === wallet.id}
                     onClick={() => {}}
                   />
@@ -318,120 +318,31 @@ export default function Transfer({ onClose }: TransferProps) {
     )
   }
 
-const renderDesktopConfirmPopup = () => {
-  if (!showDesktopConfirmPopup) return null
-
-  return (
-    <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
-      <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden relative">
-        
-    
-        <Button
-          variant="ghost"
-          size="default"
-          className="p-4 min-w-0 absolute top-4 right-4 h-0 px-0"
-          onClick={() => setShowDesktopConfirmPopup(false)}
-          aria-label="Close"
-        >
-          <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
-        </Button>
-
-    
-        <div className="p-8">
-          <h2 className="text-grayscale-text-primary text-[24px] font-extrabold mb-6 text-left">
-  Confirm transfer
-</h2>
-
-          <div className="mb-6">
-            <div className="mb-4">
-              <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-              <div className="flex items-center gap-3">
-                {sourceWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
-                      alt={sourceWalletData.currency}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
-              </div>
-            </div>
-            <div className="h-px bg-gray-200 mb-4"></div>
-            <div className="mb-4">
-              <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-              <div className="flex items-center gap-3">
-                {destinationWalletData && (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    <Image
-                      src={getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
-                      alt={destinationWalletData.currency}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                )}
-                <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
-              </div>
-            </div>
-            <div className="h-px bg-gray-200 mb-4"></div>
-            <div className="mb-4">
-              <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-              <span className="block text-base font-normal text-slate-1200">
-                {formatBalance(transferAmount || "0")} USD
-              </span>
-            </div>
-            <div className="h-px bg-gray-200 mb-4"></div>
-          </div>
-
-          <div className="space-y-3 mt-6">
-            <Button
-              onClick={handleConfirmTransfer}
-              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-            >
-              Confirm
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => setShowDesktopConfirmPopup(false)}
-              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-            >
-              Back
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-
-  const renderMobileConfirmSheet = () => {
-    if (!showMobileConfirmSheet) return null
+  const renderDesktopConfirmPopup = () => {
+    if (!showDesktopConfirmPopup) return null
 
     return (
-      <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
-        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
-          <div className="p-4">
-            <div className="flex justify-center mb-4">
-              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
-            </div>
-            <h1 className="text-grayscale-text-primary text-[20px] font-extrabold mb-6 text-center">
-              Confirm transfer
-            </h1>
-
-            <div className="mb-6 px-4">
+      <div className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center">
+        <div className="bg-white rounded-[32px] w-[512px] min-w-[512px] max-w-[512px] overflow-hidden relative">
+          <Button
+            variant="ghost"
+            size="default"
+            className="p-4 min-w-0 absolute top-4 right-4 h-0 px-0"
+            onClick={() => setShowDesktopConfirmPopup(false)}
+            aria-label="Close"
+          >
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
+          </Button>
+          <div className="p-8">
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6 text-left">Confirm transfer</h2>
+            <div className="mb-6">
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
                 <div className="flex items-center gap-3">
                   {sourceWalletData && (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -450,7 +361,89 @@ const renderDesktopConfirmPopup = () => {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
+                        alt={destinationWalletData.currency}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                </div>
+              </div>
+              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="mb-4">
+                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
+                <span className="block text-base font-normal text-slate-1200">
+                  {formatBalance(transferAmount || "0")} USD
+                </span>
+              </div>
+              <div className="h-px bg-gray-200 mb-4"></div>
+            </div>
+            <div className="space-y-3 mt-6">
+              <Button
+                onClick={handleConfirmTransfer}
+                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+              >
+                Confirm
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => setShowDesktopConfirmPopup(false)}
+                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+              >
+                Back
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const renderMobileConfirmSheet = () => {
+    if (!showMobileConfirmSheet) return null
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 md:hidden">
+        <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden">
+          <div className="p-4">
+            <div className="flex justify-center mb-4">
+              <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
+            </div>
+            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">Confirm transfer</h1>
+            <div className="mb-6 px-4">
+              <div className="mb-4">
+                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
+                <div className="flex items-center gap-3">
+                  {sourceWalletData && (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      <Image
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                        alt={sourceWalletData.currency}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
+                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                </div>
+              </div>
+              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="mb-4">
+                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
+                <div className="flex items-center gap-3">
+                  {destinationWalletData && (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                      <Image
+                        src={
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -477,7 +470,6 @@ const renderDesktopConfirmPopup = () => {
               >
                 Confirm
               </Button>
-          
             </div>
           </div>
         </div>
@@ -492,55 +484,52 @@ const renderDesktopConfirmPopup = () => {
     return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
   }
 
- if (step === "chooseCurrency") {
-  return (
-    <div className="absolute inset-0 flex flex-col h-full p-4">
-      <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
-        <div className="md:w-8 md:h-8"></div>
-        <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
-          <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-        </Button>
-      </div>
-
-      <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-        <div className="px-2 flex-1 overflow-y-auto">
-          <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
-          <p className="text-grayscale-text-secondary text-base font-normal mb-6">
-            Choose which currency you would like to transfer.
-          </p>
-
-          <div className="space-y-0">
-            {currencies.map((currency, index) => (
-              <div key={currency.code}>
-                <div
-                  className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => handleCurrencySelect(currency)}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
-                      {currency.logo && (
-                        <Image
-                          src={currency.logo }
-                          alt={currency.name}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
+  if (step === "chooseCurrency") {
+    return (
+      <div className="absolute inset-0 flex flex-col h-full p-4">
+        <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
+          <div className="md:w-8 md:h-8"></div>
+          <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
+            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+          </Button>
+        </div>
+        <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
+          <div className="px-2 flex-1 overflow-y-auto">
+            <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
+            <p className="text-grayscale-text-secondary text-base font-normal mb-6">
+              Choose which currency you would like to transfer.
+            </p>
+            <div className="space-y-0">
+              {currencies.map((currency, index) => (
+                <div key={currency.code}>
+                  <div
+                    className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={() => handleCurrencySelect(currency)}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
+                        {currency.logo && (
+                          <Image
+                            src={currency.logo || "/placeholder.svg"}
+                            alt={currency.name}
+                            width={24}
+                            height={24}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                      </div>
+                      <span className="text-slate-1200 text-base font-normal">{currency.name}</span>
                     </div>
-                    <span className="text-grayscale-text-primary text-base font-normal">{currency.name}</span>
                   </div>
+                  {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
                 </div>
-                {index < currencies.length - 1 && <div className="h-px bg-gray-200"></div>}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
+    )
+  }
 
   if (step === "enterAmount") {
     return (
@@ -555,7 +544,7 @@ const renderDesktopConfirmPopup = () => {
           </Button>
         </div>
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-          <h1 className="text-grayscale-text-primary text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">Transfer</h1>
+          <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">Transfer</h1>
           <div className="relative mb-6 px-2">
             <div
               className="bg-grayscale-bg-card p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
@@ -572,7 +561,7 @@ const renderDesktopConfirmPopup = () => {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -610,7 +599,9 @@ const renderDesktopConfirmPopup = () => {
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
@@ -645,7 +636,7 @@ const renderDesktopConfirmPopup = () => {
             </div>
           </div>
           <div className="mb-6 px-2 relative">
-            <h2 className="text-grayscale-text-primary text-base font-normal mb-2">Amount</h2>
+            <h2 className="text-slate-1200 text-base font-normal mb-2">Amount</h2>
             <div className="relative">
               <Input
                 type="number"
