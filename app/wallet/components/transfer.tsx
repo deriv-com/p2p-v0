@@ -18,9 +18,9 @@ interface Currency {
 }
 
 interface ProcessedWallet {
-  id: string
+  wallet_id: string
   name: string
-  amount: string
+  balance: string
   currency: string
   icon: string
   type: string
@@ -89,9 +89,9 @@ export default function Transfer({ onClose }: TransferProps) {
           response.data.wallets.forEach((wallet: any) => {
             wallet.balances.forEach((balance: any) => {
               processedWallets.push({
-                id: wallet.wallet_id,
+                wallet_id: wallet.wallet_id,
                 name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `${balance.currency} Wallet`,
-                amount: balance.balance,
+                balance: balance.balance,
                 currency: balance.currency,
                 icon: "/icons/usd-flag.png",
                 type: wallet.type,
@@ -103,7 +103,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
           if (p2pWallet) {
-            setSourceWalletData({ id: p2pWallet.id, name: p2pWallet.name, currency: p2pWallet.currency })
+            setSourceWalletData({ id: p2pWallet.wallet_id, name: p2pWallet.name, currency: p2pWallet.currency })
           }
         }
       } catch (error) {
@@ -138,13 +138,13 @@ export default function Transfer({ onClose }: TransferProps) {
 
       const result = await walletTransfer(transferParams)
 
-      if (result?.data?.message === "Transaction completed successfully.") {
+      if (!result?.data?.errors || result.data.errors.length === 0) {
         console.log("Transfer successful:", result)
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
         toSuccess()
       } else {
-        console.error("Transfer failed")
+        console.error("Transfer failed with errors:", result.data.errors)
       }
     } catch (error) {
       console.error("Error during transfer:", error)
@@ -166,9 +166,9 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
     if (type === "from") {
-      setSourceWalletData({ id: wallet.id, name: wallet.name, currency: wallet.currency })
+      setSourceWalletData({ id: wallet.wallet_id, name: wallet.name, currency: wallet.currency })
     } else if (type === "to") {
-      setDestinationWalletData({ id: wallet.id, name: wallet.name, currency: wallet.currency })
+      setDestinationWalletData({ id: wallet.wallet_id, name: wallet.name, currency: wallet.currency })
     }
 
     setShowMobileSheet(null)
@@ -188,8 +188,8 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const getSourceWalletBalance = (): number => {
-    const wallet = wallets.find((w) => w.id === sourceWalletData?.id)
-    return wallet ? Number.parseFloat(wallet.amount) : 0
+    const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
+    return wallet ? Number.parseFloat(wallet.balance) : 0
   }
 
   const isAmountValid = (amount: string): boolean => {
@@ -199,18 +199,18 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const getSourceWalletAmount = () => {
-    const wallet = wallets.find((w) => w.id === sourceWalletData?.id)
-    return wallet ? `${formatBalance(wallet.amount)} ${wallet.currency}` : ""
+    const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
+    return wallet ? `${formatBalance(wallet.balance)} ${wallet.currency}` : ""
   }
 
   const getDestinationWalletAmount = () => {
-    const wallet = wallets.find((w) => w.id === destinationWalletData?.id)
-    return wallet ? `${formatBalance(wallet.amount)} ${wallet.currency}` : ""
+    const wallet = wallets.find((w) => w.wallet_id === destinationWalletData?.id)
+    return wallet ? `${formatBalance(wallet.balance)} ${wallet.currency}` : ""
   }
 
   const getFilteredWallets = (type: WalletSelectorType) => {
     if (type === "from" && destinationWalletData) {
-      const destinationWallet = wallets.find((w) => w.id === destinationWalletData.id)
+      const destinationWallet = wallets.find((w) => w.wallet_id === destinationWalletData.id)
       if (destinationWallet?.type?.toLowerCase() === "p2p") {
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
       } else {
@@ -219,7 +219,7 @@ export default function Transfer({ onClose }: TransferProps) {
     }
 
     if (type === "to" && sourceWalletData) {
-      const sourceWallet = wallets.find((w) => w.id === sourceWalletData.id)
+      const sourceWallet = wallets.find((w) => w.wallet_id === sourceWalletData.id)
       if (sourceWallet?.type?.toLowerCase() === "p2p") {
         return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
       } else {
@@ -247,7 +247,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
-                  key={wallet.id}
+                  key={wallet.wallet_id}
                   className="cursor-pointer"
                   onClick={() => {
                     handleWalletSelect(wallet, type)
@@ -256,10 +256,10 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={formatBalance(wallet.amount)}
+                    amount={formatBalance(wallet.balance)}
                     currency={wallet.currency}
                     icon={wallet.icon}
-                    isSelected={selectedWalletId === wallet.id}
+                    isSelected={selectedWalletId === wallet.wallet_id}
                     onClick={() => {}}
                   />
                 </div>
@@ -294,7 +294,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {getFilteredWallets(type).map((wallet) => (
                 <div
-                  key={wallet.id}
+                  key={wallet.wallet_id}
                   className="cursor-pointer"
                   onClick={() => {
                     handleWalletSelect(wallet, type)
@@ -303,10 +303,10 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={formatBalance(wallet.amount)}
+                    amount={formatBalance(wallet.balance)}
                     currency={wallet.currency}
                     icon={getCurrencyImage(wallet.name, wallet.currency)}
-                    isSelected={selectedWalletId === wallet.id}
+                    isSelected={selectedWalletId === wallet.wallet_id}
                     onClick={() => {}}
                   />
                 </div>
@@ -342,7 +342,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {sourceWalletData && (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -361,7 +361,9 @@ export default function Transfer({ onClose }: TransferProps) {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -420,7 +422,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {sourceWalletData && (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -439,7 +441,9 @@ export default function Transfer({ onClose }: TransferProps) {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -506,7 +510,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0">
                         {currency.logo && (
                           <Image
-                            src={currency.logo }
+                            src={currency.logo || "/placeholder.svg"}
                             alt={currency.name}
                             width={24}
                             height={24}
@@ -557,7 +561,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -595,7 +599,9 @@ export default function Transfer({ onClose }: TransferProps) {
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
