@@ -510,7 +510,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
   if (step === "chooseCurrency") {
     return (
-      <div className="absolute inset-0 flex flex-col h-full pt-4 pr-0 pl-4 pb-0">
+      <div className="absolute inset-0 flex flex-col h-full pt-4 md:pt-[20px] pr-0 pl-4 pb-0">
         <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
           <div className="md:w-8 md:h-8"></div>
           <Button variant="ghost" size="sm" className="px-0 pr-4 md:pr-0" onClick={onClose} aria-label="Close">
@@ -519,7 +519,7 @@ export default function Transfer({ onClose }: TransferProps) {
         </div>
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col min-h-0">
           <div className="px-2 flex-shrink-0">
-            <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
+            <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2 md:mb-[10px]">Transfer</h1>
             <p className="text-grayscale-600 text-base font-normal mb-6">
               Choose which currency you would like to transfer.
             </p>
@@ -625,12 +625,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg"
-                      }
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
