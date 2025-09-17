@@ -37,7 +37,7 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
       </div>
 
       <div className="flex-1 ml-4">
-        <h3 className="text-slate-600 text-base font-normal">{name}</h3>
+        <h3 className="text-slate-1200 text-base font-normal">{name}</h3>
         <p className="text-grayscale-text-muted text-sm font-normal">
           {amount} {currency}
         </p>
