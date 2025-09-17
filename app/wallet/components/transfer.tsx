@@ -529,7 +529,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={() => handleCurrencySelect(currency)}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                       <div className="w-6 rounded-full overflow-hidden flex-shrink-0">
                         {currency.logo && (
                           <Image
