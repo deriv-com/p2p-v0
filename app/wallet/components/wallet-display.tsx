@@ -21,7 +21,7 @@ const getCurrencyImage = (walletName: string, currency: string) => {
 export default function WalletDisplay({ name, amount, currency, onClick, isSelected }: WalletDisplayProps) {
   return (
     <div
-      className={`min-h-[56px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-500 cursor-pointer hover:bg-gray-100 transition-colors ${
+      className={`h-[76px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-500 cursor-pointer hover:bg-gray-100 transition-colors ${
         isSelected ? "border border-black" : ""
       }`}
       onClick={onClick}
