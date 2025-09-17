@@ -443,7 +443,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
             <h1 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">Confirm transfer</h1>
-            <div className="mb-6 px-4">
+            <div className="mb-8 px-4">
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
                 <div className="flex items-center gap-3">
