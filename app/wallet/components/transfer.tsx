@@ -435,7 +435,7 @@ export default function Transfer({ onClose }: TransferProps) {
           className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="pt-2 px-4 pb-4">
+          <div className="pt-2 px-4 pb-8">
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
