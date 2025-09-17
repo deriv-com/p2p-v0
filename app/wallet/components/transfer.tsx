@@ -530,7 +530,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     onClick={() => handleCurrencySelect(currency)}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-8rounded-full overflow-hidden flex-shrink-0">
+                      <div className="w-6 rounded-full overflow-hidden flex-shrink-0">
                         {currency.logo && (
                           <Image
                             src={currency.logo }
