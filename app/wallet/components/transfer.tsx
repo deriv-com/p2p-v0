@@ -405,7 +405,7 @@ export default function Transfer({ onClose }: TransferProps) {
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
             </div>
-            <div className="space-y-3 mt-12">
+            <div className="space-y-2 mt-12">
               <Button
                 onClick={handleConfirmTransfer}
                 className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
