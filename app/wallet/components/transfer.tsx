@@ -665,7 +665,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 placeholder="0.00"
                 value={transferAmount || ""}
                 onChange={(e) => setTransferAmount(e.target.value)}
-                className="h-12 px-4 border border-gray-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
+                className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
                 max={getSourceWalletBalance()}
               />
               <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">
