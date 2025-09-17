@@ -49,7 +49,7 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
             isSelected ? "border-black bg-black" : "border-grayscale-text-muted"
           }`}
         >
-          {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+          {isSelected && <div className="w-[0.4rem] h-[0.4rem] bg-white rounded-full" />}
         </div>
       </div>
     </div>
