@@ -386,6 +386,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -469,6 +470,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -520,13 +522,15 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
           </Button>
         </div>
-        <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-          <div className="px-2">
+        <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col min-h-0">
+          <div className="px-2 flex-shrink-0">
             <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2">Transfer</h1>
             <p className="text-grayscale-600 text-base font-normal mb-6">
               Choose which currency you would like to transfer.
             </p>
-            <div className="space-y-0 max-h-[60vh] overflow-y-auto">
+          </div>
+          <div className="px-2 flex-1 min-h-0">
+            <div className="space-y-0 h-full overflow-y-auto">
               {currencies.map((currency, index) => (
                 <div key={currency.code}>
                   <div
@@ -627,6 +631,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
