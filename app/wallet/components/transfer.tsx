@@ -387,6 +387,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                           "/placeholder.svg" ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -438,51 +439,46 @@ export default function Transfer({ onClose }: TransferProps) {
           className="absolute bottom-0 left-0 right-0 bg-white rounded-t-2xl max-h-[80vh] overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="p-4">
-            <div className="flex justify-center mb-4">
+          <div className="pt-2 px-4 pb-4">
+            <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
             <h1 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">Confirm transfer</h1>
             <div className="mb-8 px-4">
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
+              {sourceWalletData && (
                 <div className="flex items-center gap-3">
-                  {sourceWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                        alt={sourceWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                      alt={sourceWalletData.currency}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
                 </div>
-              </div>
+              )}
               <div className="h-px bg-gray-200 mb-4"></div>
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
+              {destinationWalletData && (
                 <div className="flex items-center gap-3">
-                  {destinationWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
-                          "/placeholder.svg"
-                        }
-                        alt={destinationWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
+                        "/placeholder.svg" ||
+                        "/placeholder.svg"
+                      }
+                      alt={destinationWalletData.currency}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
                 </div>
-              </div>
+              )}
               <div className="h-px bg-gray-200 mb-4"></div>
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
@@ -631,6 +627,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
