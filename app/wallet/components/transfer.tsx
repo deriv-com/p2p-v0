@@ -509,7 +509,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
   if (step === "chooseCurrency") {
     return (
-      <div className="absolute inset-0 flex flex-col h-full pl-4 pr-0 md:pr-4 pt-4 pb-4">
+      <div className="absolute inset-0 flex flex-col h-full p-4">
         <div className="flex justify-between items-center mb-10 md:max-w-[608px] md:mx-auto md:w-full">
           <div className="md:w-8 md:h-8"></div>
           <Button variant="ghost" size="sm" className="px-0" onClick={onClose} aria-label="Close">
