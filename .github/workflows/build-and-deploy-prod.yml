@@ -6,7 +6,7 @@ permissions:
 on:
     push:
       tags:
-      - production_*
+      - production_v*
 
 concurrency:
     group: cloudflare-pages-build-production
