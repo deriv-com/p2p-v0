@@ -552,7 +552,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <span className="text-slate-1200 text-base font-normal">{currency.name}</span>
                     </div>
                   </div>
-                  {index < currencies.length - 1 && <div className="h-px bg-gray-200 ml-11"></div>}
+                  {index < currencies.length - 1 && <div className="h-px bg-grayscale-200 ml-11"></div>}
                 </div>
               ))}
             </div>
