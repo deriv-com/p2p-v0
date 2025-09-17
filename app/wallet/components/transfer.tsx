@@ -377,7 +377,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="h-px bg-grayscale-200 mb-4"></div>
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
                 <div className="flex items-center gap-3">
