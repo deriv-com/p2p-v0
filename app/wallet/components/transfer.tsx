@@ -99,7 +99,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
             processedWallets.push({
               wallet_id: wallet.wallet_id,
-              name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `${selectedCurrency.code} Wallet`,
+              name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `Trading Wallet`,
               balance: balanceValue,
               currency: selectedCurrency.code,
               icon: "/icons/usd-flag.png",
