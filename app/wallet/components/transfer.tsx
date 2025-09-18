@@ -745,7 +745,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
           </div>
           <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
-          <p className="text-white text-center text-base font-normal">{transferText}</p>
+          <p className="text-white/70 text-center text-base font-normal">{transferText}</p>
           <div className="hidden md:flex gap-2 mt-6">
             <Button className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10">
               View details
