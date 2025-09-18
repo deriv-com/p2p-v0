@@ -38,6 +38,9 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
+            - name: Debug TypeScript version
+              run: pnpm exec tsc --version
+
             - name: Build
               run: pnpm run build && pnpm run postbuild
               env:
