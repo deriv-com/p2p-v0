@@ -10,7 +10,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@cloudflare/next-on-pages": "^1.13.14",
     "@eslint/eslintrc": "latest",
     "@hookform/resolvers": "^3.9.1",
     "@novu/nextjs": "latest",
@@ -77,6 +76,7 @@
     "zustand": "latest"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.14",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
