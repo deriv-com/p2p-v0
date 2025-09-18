@@ -27,6 +27,7 @@ interface ProcessedWallet {
 }
 
 interface WalletData {
+
   id: string
   name: string
   currency: string
@@ -386,7 +387,6 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -470,7 +470,6 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -631,7 +630,6 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -734,7 +732,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
     return (
       <div
-        className="absolute inset-0 flex flex-col h-full p-6 pb-4"
+        className="absolute inset-0 flex flex-col h-full p-6"
         style={{
           background:
             "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), #181C25",
@@ -745,8 +743,8 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
           </div>
           <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
-          <p className="text-white/70 text-center text-base font-normal">{transferText}</p>
-          <div className="hidden md:flex gap-2 mt-6">
+          <p className="text-white text-center text-base font-normal">{transferText}</p>
+          <div className="hidden md:flex gap-4 mt-6">
             <Button className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10">
               View details
             </Button>
@@ -755,7 +753,7 @@ export default function Transfer({ onClose }: TransferProps) {
             </Button>
           </div>
         </div>
-        <div className="block md:hidden w-full space-y-2">
+        <div className="block md:hidden w-full space-y-3">
           <Button
             onClick={handleDoneClick}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
