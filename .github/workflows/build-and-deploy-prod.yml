@@ -38,6 +38,9 @@ jobs:
             - name: Install dependencies
               run: pnpm install
 
+            - name: Install TypeScript
+              run: npm install typescript@latest --save-dev
+
             - name: Build
               run: pnpm run build
               env:
