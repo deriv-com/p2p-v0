@@ -73,7 +73,6 @@ export async function getOrders(filters?: OrderFilters): Promise<Order[]> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-      "X-Branch": "development"
     }
 
     const response = await fetch(url, {
@@ -314,7 +313,6 @@ export async function payOrder(orderId: string): Promise<{ success: boolean }> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-      "X-Branch": "development",
     }
 
     const response = await fetch(url, {
@@ -429,7 +427,6 @@ export async function sendChatMessage(
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-      "X-Branch": "development",
     }
 
     let body = ""
@@ -437,7 +434,7 @@ export async function sendChatMessage(
       body = JSON.stringify({
         attachment,
         data: {
-            is_proof_of_transfer: isPOT,
+          is_proof_of_transfer: isPOT,
         }
       })
     } else {
@@ -455,7 +452,7 @@ export async function sendChatMessage(
       body,
     })
 
-    
+
 
     if (!response.ok) {
       throw new Error(`Error sending message: ${response.statusText}`)
@@ -476,13 +473,13 @@ export async function sendChatMessage(
       success: true,
       message: data.data ||
         data.message || {
-          id: Date.now().toString(),
-          orderId,
-          senderId: 0,
-          content: message,
-          time,
-          isRead: false,
-        },
+        id: Date.now().toString(),
+        orderId,
+        senderId: 0,
+        content: message,
+        time,
+        isRead: false,
+      },
     }
   } catch (error) {
     throw error

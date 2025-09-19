@@ -447,7 +447,6 @@ export async function getFavouriteUsers(): Promise<[]> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-      "X-Branch": "development",
     }
     const response = await fetch(`${API.baseUrl}/user-favourites`, {
       headers,
@@ -470,7 +469,6 @@ export async function getBlockedUsers(): Promise<[]> {
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
-      "X-Branch": "development",
     }
     const response = await fetch(`${API.baseUrl}/user-blocks`, {
       headers,
