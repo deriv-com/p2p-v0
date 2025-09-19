@@ -20,6 +20,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 
@@ -318,30 +319,22 @@ export default function OrdersPage() {
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
           <div className="flex flex-col md:flex-row mb-6 justify-between gap-4">
-            <div className="w-full md:w-[330px] md:min-w-[330px] bg-black h-12 rounded-full p-1 flex">
-              <button
-                onClick={() => handleTabChange("active")}
-                className={`flex-1 text-sm font-normal rounded-full transition-colors relative ${
-                  activeTab === "active" ? "text-white" : "text-gray-400"
-                }`}
-              >
-                Active
-                {activeTab === "active" && (
-                  <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-red-500 rounded-full" />
-                )}
-              </button>
-              <button
-                onClick={() => handleTabChange("past")}
-                className={`flex-1 text-sm font-normal rounded-full transition-colors relative ${
-                  activeTab === "past" ? "text-white" : "text-gray-400"
-                }`}
-              >
-                Past
-                {activeTab === "past" && (
-                  <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-red-500 rounded-full" />
-                )}
-              </button>
-            </div>
+            <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full md:w-[330px] md:min-w-[330px]">
+              <TabsList className="bg-black h-12 rounded-full p-1 w-full">
+                <TabsTrigger
+                  value="active"
+                  className="flex-1 text-sm font-normal rounded-full transition-colors data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=active]:bg-transparent data-[state=inactive]:bg-transparent data-[state=active]:shadow-none hover:bg-transparent border-b-2 border-transparent data-[state=active]:border-red-500"
+                >
+                  Active
+                </TabsTrigger>
+                <TabsTrigger
+                  value="past"
+                  className="flex-1 text-sm font-normal rounded-full transition-colors data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=active]:bg-transparent data-[state=inactive]:bg-transparent data-[state=active]:shadow-none hover:bg-transparent border-b-2 border-transparent data-[state=active]:border-red-500"
+                >
+                  Past
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
             {activeTab === "past" && (
               <div>
                 <DateFilter

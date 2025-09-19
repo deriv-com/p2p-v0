@@ -7,7 +7,7 @@ import { USER } from "@/lib/local-variables"
 import { Avatar } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { NovuNotifications } from "./novu-notifications"
+// import { NovuNotifications } from "./novu-notifications"
 import * as AuthAPI from "@/services/api/api-auth"
 
 export default function Sidebar() {
@@ -25,10 +25,10 @@ export default function Sidebar() {
   return (
     <div className="hidden md:flex w-[295px] flex-col border-r border-slate-200 mr-[8px]">
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
-        <div className="text-slate-600 hover:text-slate-700">
+        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} height={64} />
+        {/* <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
-        </div>
+        </div> */}
       </div>
       <nav className="flex-1 px-4">
         <ul>
@@ -50,7 +50,7 @@ export default function Sidebar() {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     <Image
-                      src={item.icon}
+                      src={item.icon || "/placeholder.svg"}
                       alt={item.name}
                       width={20}
                       height={20}
