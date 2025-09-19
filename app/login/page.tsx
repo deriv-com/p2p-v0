@@ -164,7 +164,7 @@ export default function LoginPage() {
           Don’t have an account yet?{" "}
           <a
             className="text-primary"
-            href="https://staging-app.champion.trade/champion"
+            href="https://home.deriv.com/dashboard"
             target="_blank"
             rel="noopener noreferrer"
           >
