@@ -320,7 +320,7 @@ export default function OrdersPage() {
         <div className="flex-shrink-0">
           <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full md:w-[330px] md:min-w-[330px]">
-              <TabsList className="bg-black h-12 rounded-full p-1 w-full">
+              <TabsList className="w-full bg-transparent">
                 <TabsTrigger
                   value="active"
                   className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
