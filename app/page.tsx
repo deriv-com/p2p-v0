@@ -236,7 +236,7 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
                 <Tabs
-                  className="w-full md:w-[230px] md:min-w-[230px] flex-1 md:flex-none"
+                  className="flex-1 md:flex-none"
                   value={activeTab}
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
                 >
