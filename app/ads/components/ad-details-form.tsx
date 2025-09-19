@@ -202,47 +202,17 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   return (
     <div className="max-w-[800px] mx-auto">
       <form id="ad-details-form" onSubmit={handleSubmit} className="space-y-6">
-        {!isEditMode && (
+       {!isEditMode && (
           <div>
-            <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-              <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">
-                  {type === "buy" ? "Buy currency" : "Sell currency"}
-                </label>
-                <Select value={buyCurrency} onValueChange={setBuyCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg" disabled>
-                    <SelectValue>{buyCurrency}</SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currencies.map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">For</label>
-                <Select value={forCurrency} onValueChange={setForCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg">
-                    <SelectValue>{forCurrency}</SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    {currencyList.map((currency) => (
-                      <SelectItem key={currency.code} value={currency.code}>
-                        {currency.code}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+            <TradeTypeSelector
+              value={type}
+              onChange={setType}
+              isEditMode={isEditMode}
+            />
           </div>
         )}
+
+        
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
