@@ -240,7 +240,7 @@ export default function BuySellPage() {
                   value={activeTab}
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
                 >
-                  <TabsList className="w-full md:min-w-[230px]">
+                  <TabsList className="w-full md:min-w-[230px] bg-transparent">
                     <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
                       Buy
                     </TabsTrigger>
@@ -252,7 +252,7 @@ export default function BuySellPage() {
 
                 <div>
                   <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
-                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px]" disabled>
+                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px] hidden" disabled>
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
