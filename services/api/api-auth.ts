@@ -145,10 +145,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
-      headers: {
-        "X-Data-Source": "live",
-        "X-Branch": "master",
-      },
     })
 
     if (!response.ok) {
@@ -198,8 +194,6 @@ export async function getSocketToken(token: string): Promise<void> {
       method: "GET",
       credentials: "include",
       headers: {
-        "X-Data-Source": process.env.NEXT_PUBLIC_DATA_SOURCE,
-        "X-Branch": "master",
         "Content-Type": "application/json",
       },
     })
