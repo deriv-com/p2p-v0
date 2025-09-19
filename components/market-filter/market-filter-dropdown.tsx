@@ -159,7 +159,12 @@ export default function MarketFilterDropdown({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild><div className="relative w-fit">
+            {trigger}
+            {hasActiveFilters && (
+              <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
+            )}
+          </div></PopoverTrigger>
       <PopoverContent className="w-fit h-fit p-2" align="start">
         <FilterContent />
       </PopoverContent>
