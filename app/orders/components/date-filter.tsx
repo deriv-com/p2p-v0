@@ -138,6 +138,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       <PopoverTrigger asChild>
         <Button
           variant="outline"
+          size="sm"
           className={cn(
           "rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
             className,
