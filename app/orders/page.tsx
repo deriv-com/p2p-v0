@@ -317,7 +317,7 @@ export default function OrdersPage() {
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-3">
-        <div className="flex-shrink-0">
+        <div className="flex flex-col">
           <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full bg-transparent">
