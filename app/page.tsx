@@ -278,7 +278,7 @@ export default function BuySellPage() {
                         className="border border-input bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl focus:border-black text-white"
                       >
                         <span>{currency}</span>
-                        <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                        <Image src="/icons/chevron-down-white.png" alt="Arrow" width={24} height={24} className="ml-2" />
                       </Button>
                     }
                   />
