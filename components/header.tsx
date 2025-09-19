@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-// import { NovuNotifications } from "./novu-notifications"
+import { NovuNotifications } from "./novu-notifications"
 import { Button } from "@/components/ui/button"
 import * as AuthAPI from "@/services/api/api-auth"
 
@@ -46,9 +46,9 @@ export default function Header() {
         </nav>
       </div>
       <div className="h-12 flex items-center space-x-4">
-        {/* <div className="text-slate-600 hover:text-slate-700">
+        <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
-        </div> */}
+        </div>
         <Button size="sm" onClick={() => AuthAPI.logout()}>
           Logout
         </Button>
