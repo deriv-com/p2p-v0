@@ -192,7 +192,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   if (ads.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16">
-        <div className="bg-gray-100 rounded-full p-6 mb-6">
+        <div className="mb-6">
           <Image src="/icons/search-icon.png" alt="Search" width={48} height={48} className="text-gray-400" />
         </div>
         <h2 className="text-xl font-semibold mb-2">You have no ads</h2>
