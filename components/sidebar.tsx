@@ -4,10 +4,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { USER } from "@/lib/local-variables"
-import { Avatar } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { NovuNotifications } from "./novu-notifications"
+// import { NovuNotifications } from "./novu-notifications"
 import * as AuthAPI from "@/services/api/api-auth"
 
 export default function Sidebar() {
@@ -25,10 +25,8 @@ export default function Sidebar() {
   return (
     <div className="hidden md:flex w-[295px] flex-col border-r border-slate-200 mr-[8px]">
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
-        <div className="text-slate-600 hover:text-slate-700">
-          <NovuNotifications />
-        </div> 
+        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} height={64} />
+        <div className="text-slate-600 hover:text-slate-700">{/* <NovuNotifications /> */}</div>
       </div>
       <nav className="flex-1 px-4">
         <ul>
@@ -50,7 +48,7 @@ export default function Sidebar() {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     <Image
-                      src={item.icon}
+                      src={item.icon || "/placeholder.svg"}
                       alt={item.name}
                       width={20}
                       height={20}
@@ -72,8 +70,10 @@ export default function Sidebar() {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
-          {USER.nickname?.charAt(0).toUpperCase()}
+        <Avatar className="h-8 w-8">
+          <AvatarFallback className="bg-grayscale-500 text-slate-1200 font-bold">
+            {USER.nickname?.charAt(0).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
       </div>

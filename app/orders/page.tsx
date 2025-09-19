@@ -195,12 +195,12 @@ export default function OrdersPage() {
           <TableBody className="bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] flex-col border rounded-sm mb-[16px] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] md:grid-cols-[2fr_1fr] flex-col border rounded-sm mb-[16px] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
                 {activeTab === "past" && (
-                  <TableCell className="py-0  px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                  <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
@@ -337,13 +337,13 @@ export default function OrdersPage() {
             </Tabs>
           </div>
           <div className="my-4">
-          {activeTab === "past" && (    
-                <DateFilter
-                  value={dateFilter}
-                  customRange={customDateRange}
-                  onValueChange={setDateFilter}
-                  onCustomRangeChange={setCustomDateRange}
-                />
+            {activeTab === "past" && (
+              <DateFilter
+                value={dateFilter}
+                customRange={customDateRange}
+                onValueChange={setDateFilter}
+                onCustomRangeChange={setCustomDateRange}
+              />
             )}
           </div>
         </div>
