@@ -140,7 +140,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           variant="outline"
           size="sm"
           className={cn(
-          "rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
+          "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
             className,
           )}
         >
