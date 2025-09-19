@@ -200,11 +200,11 @@ export default function OrdersPage() {
                 onClick={() => navigateToOrderDetails(order.id)}
               >
                 {activeTab === "past" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                  <TableCell className="py-0  px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2 col-span-full">
+                <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
                   <div>
                     <div className="flex flex-row justify-between">
                       <div className="font-bold">
