@@ -318,7 +318,7 @@ export default function OrdersPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
-          <div className="flex flex-col md:flex-row mb-6 justify-between gap-4">
+          <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full md:w-[330px] md:min-w-[330px]">
               <TabsList className="bg-black h-12 rounded-full p-1 w-full">
                 <TabsTrigger
@@ -335,7 +335,8 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            {activeTab === "past" && (
+          </div>
+          {activeTab === "past" && (
               <div>
                 <DateFilter
                   value={dateFilter}
@@ -346,7 +347,6 @@ export default function OrdersPage() {
                 />
               </div>
             )}
-          </div>
         </div>
         <div className="flex-1 pb-4">
           {isLoading ? (
