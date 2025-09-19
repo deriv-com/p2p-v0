@@ -229,7 +229,7 @@ export default function BuySellPage() {
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-      <div className="flex flex-col h-screen overflow-hidden px-[24px]">
+      <div className="flex flex-col h-screen overflow-hidden px-3">
         <TemporaryBanAlert />
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
