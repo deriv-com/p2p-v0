@@ -241,10 +241,10 @@ export default function BuySellPage() {
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
                 >
                   <TabsList className="w-full md:min-w-[230px] bg-transparent">
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+                    <TabsTrigger className="w-full data-[state=active]:font-bold data-[state=active]:bg-transparent" value="sell">
                       Buy
                     </TabsTrigger>
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+                    <TabsTrigger className="w-full data-[state=active]:font-bold data-[state=active]:bg-transparent" value="buy">
                       Sell
                     </TabsTrigger>
                   </TabsList>
