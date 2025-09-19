@@ -187,7 +187,7 @@ export default function BuySellPage() {
       selectedPaymentMethods.length === 0 ||
       selectedPaymentMethods.length === paymentMethods.length
     ) {
-      return "Payment (All)"
+      return "Payment method (All)"
     }
 
     if (selectedPaymentMethods.length === 1) {
