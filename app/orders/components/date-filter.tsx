@@ -90,8 +90,9 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <SheetTrigger asChild>
           <Button
             variant="outline"
+            size="sm"
             className={cn(
-              "w-full rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
+              "w-full rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
               className,
             )}
           >
@@ -138,8 +139,9 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       <PopoverTrigger asChild>
         <Button
           variant="outline"
+          size="sm"
           className={cn(
-            "w-full rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black",
+          "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
             className,
           )}
         >
@@ -152,7 +154,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="end">
+      <PopoverContent className="w-auto p-0" align="start">
         <div className="relative">
           <DualMonthCalendar handleCustomRangeApply={handleCustomRange} selected={tempRange} onSelect={setTempRange} />
 

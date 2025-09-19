@@ -9,7 +9,6 @@ import { USER } from "@/lib/local-variables"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
@@ -21,6 +20,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 
@@ -73,13 +73,13 @@ export default function OrdersPage() {
 
         if (dateFilter !== "all") {
           if (customDateRange.from) {
-                filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
-                if (customDateRange.to) {
-                  filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
-                } else {
-                  filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
-                }
+            filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
+            if (customDateRange.to) {
+              filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
+            } else {
+              filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
             }
+          }
         }
       }
 
@@ -181,7 +181,7 @@ export default function OrdersPage() {
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
         <Table>
-          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white shadow-sm">
+          <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
@@ -192,21 +192,21 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+          <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] md:gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] border rounded-sm mb-[16px] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
                 {activeTab === "past" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                  <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
                   </TableCell>
                 )}
-                <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2 col-span-full">
+                <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
                   <div>
-                    <div className="flex flex-row lg:flex-col justify-between">
+                    <div className="flex flex-row justify-between">
                       <div className="font-bold">
                         {getOrderType(order)}
                         <span className="text-base">
@@ -216,23 +216,17 @@ export default function OrdersPage() {
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
-                    {!isMobile && (
-                      <div className="mt-[4px] text-slate-600 text-xs">
-                        Counterparty:{" "}
-                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}{" "}
-                      </div>
-                    )}
                   </div>
                 </TableCell>
-                <TableCell className="py-1 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
+                <TableCell className="py px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
-                    <div className="lg:font-bold">
+                    <div>
                       {order.payment_currency} {formatAmount(order.payment_amount)}
                     </div>
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="lg:py-4 px-4 align-top row-start-1">
+                <TableCell className="px-4 align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
@@ -240,14 +234,14 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                  <TableCell className="px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release") && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                     )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 flex justify-end items-center lg:justify-start">
+                  <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
@@ -261,13 +255,11 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
+                <TableCell className="px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
-                    {isMobile && (
                       <div className="text-xs">
                         {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
-                      </div>
-                    )}
+                      </div>     
                     <div className="flex items-center gap-2">
                       <Button
                         onClick={(e) => {
@@ -316,29 +308,34 @@ export default function OrdersPage() {
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-      <div className="flex flex-col h-full px-[24px]">
-        <div className="flex-shrink-0">
-          <div className="flex flex-col md:flex-row mb-6 justify-between gap-4">
-            <Tabs className="w-full md:w-[330px] md:min-w-[330px]" value={activeTab} onValueChange={handleTabChange}>
-              <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
-                <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
-                  Active orders
+      <div className="flex flex-col h-full px-3">
+        <div className="flex flex-col">
+          <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
+            <Tabs value={activeTab} onValueChange={handleTabChange}>
+              <TabsList className="w-full bg-transparent">
+                <TabsTrigger
+                  value="active"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                >
+                  Active
                 </TabsTrigger>
-                <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
-                  Past orders
+                <TabsTrigger
+                  value="past"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                >
+                  Past
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+          </div>
+          <div className="my-4">
             {activeTab === "past" && (
-              <div>
-                <DateFilter
-                  value={dateFilter}
-                  customRange={customDateRange}
-                  onValueChange={setDateFilter}
-                  onCustomRangeChange={setCustomDateRange}
-                  className="w-full md:w-[330px]"
-                />
-              </div>
+              <DateFilter
+                value={dateFilter}
+                customRange={customDateRange}
+                onValueChange={setDateFilter}
+                onCustomRangeChange={setCustomDateRange}
+              />
             )}
           </div>
         </div>
