@@ -71,7 +71,7 @@ export const APP_SETTINGS = {
 }
 
 export const NOTIFICATIONS = {
-  applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
+  applicationId: process.env.TEMP_NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
   subscriberHashUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
 }
 
