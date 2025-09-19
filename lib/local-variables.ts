@@ -58,6 +58,8 @@ export const AUTH = {
 
   getNotificationHeader: () => ({
     "Content-Type": "application/json",
+    "X-Branch": "master",
+    "X-Data-Source": "live"
   }),
 }
 
