@@ -224,7 +224,7 @@ export default function OrdersPage() {
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="py-1 lg:py-4 px-4 align-top text-xs lg:text-base row-start-3">
+                <TableCell className="py-1 lg:py-4 px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
                     <div className="lg:font-bold">
                       {order.payment_currency} {formatAmount(order.payment_amount)}
