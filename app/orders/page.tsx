@@ -323,13 +323,13 @@ export default function OrdersPage() {
               <TabsList className="bg-black h-12 rounded-full p-1 w-full">
                 <TabsTrigger
                   value="active"
-                  className="flex-1 text-sm font-normal rounded-full transition-colors data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=active]:bg-transparent data-[state=inactive]:bg-transparent data-[state=active]:shadow-none hover:bg-transparent border-b-2 border-transparent data-[state=active]:border-red-500"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
                 >
                   Active
                 </TabsTrigger>
                 <TabsTrigger
                   value="past"
-                  className="flex-1 text-sm font-normal rounded-full transition-colors data-[state=active]:text-white data-[state=inactive]:text-gray-400 data-[state=active]:bg-transparent data-[state=inactive]:bg-transparent data-[state=active]:shadow-none hover:bg-transparent border-b-2 border-transparent data-[state=active]:border-red-500"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
                 >
                   Past
                 </TabsTrigger>
