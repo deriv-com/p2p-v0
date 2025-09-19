@@ -267,26 +267,25 @@ export default function BuySellPage() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <CurrencyFilter
+                    currencies={currencies}
+                    selectedCurrency={currency}
+                    onCurrencySelect={handleCurrencySelect}
+                    trigger={
+                      <Button
+                        variant="outline"
+                        className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
+                      >
+                        <span>{currency}</span>
+                        <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                      </Button>
+                    }
+                  />
                 </div>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
-              <CurrencyFilter
-                currencies={currencies}
-                selectedCurrency={currency}
-                onCurrencySelect={handleCurrencySelect}
-                trigger={
-                  <Button
-                    variant="outline"
-                    className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
-                  >
-                    <span>{currency}</span>
-                    <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                  </Button>
-                }
-              />
-
               <div className="flex-1 md:block md:flex-none max-w-[calc(100%-158px)] md:max-w-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
