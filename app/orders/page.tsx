@@ -180,7 +180,7 @@ export default function OrdersPage() {
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
-        <Table>
+        <Table className="lg:[&_tr:last-child]:border-1">
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
