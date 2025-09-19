@@ -9,7 +9,6 @@ import { USER } from "@/lib/local-variables"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
@@ -73,13 +72,13 @@ export default function OrdersPage() {
 
         if (dateFilter !== "all") {
           if (customDateRange.from) {
-                filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
-                if (customDateRange.to) {
-                  filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
-                } else {
-                  filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
-                }
+            filters.date_from = format(startOfDay(customDateRange.from), "yyyy-MM-dd")
+            if (customDateRange.to) {
+              filters.date_to = format(endOfDay(customDateRange.to), "yyyy-MM-dd")
+            } else {
+              filters.date_to = format(endOfDay(customDateRange.from), "yyyy-MM-dd")
             }
+          }
         }
       }
 
@@ -319,16 +318,30 @@ export default function OrdersPage() {
       <div className="flex flex-col h-full px-[24px]">
         <div className="flex-shrink-0">
           <div className="flex flex-col md:flex-row mb-6 justify-between gap-4">
-            <Tabs className="w-full md:w-[330px] md:min-w-[330px]" value={activeTab} onValueChange={handleTabChange}>
-              <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
-                <TabsTrigger className="w-full data-[state=active]:font-bold" value="active">
-                  Active orders
-                </TabsTrigger>
-                <TabsTrigger className="w-full data-[state=active]:font-bold" value="past">
-                  Past orders
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+            <div className="w-full md:w-[330px] md:min-w-[330px] bg-black h-12 rounded-full p-1 flex">
+              <button
+                onClick={() => handleTabChange("active")}
+                className={`flex-1 text-sm font-normal rounded-full transition-colors relative ${
+                  activeTab === "active" ? "text-white" : "text-gray-400"
+                }`}
+              >
+                Active
+                {activeTab === "active" && (
+                  <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-red-500 rounded-full" />
+                )}
+              </button>
+              <button
+                onClick={() => handleTabChange("past")}
+                className={`flex-1 text-sm font-normal rounded-full transition-colors relative ${
+                  activeTab === "past" ? "text-white" : "text-gray-400"
+                }`}
+              >
+                Past
+                {activeTab === "past" && (
+                  <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-8 h-0.5 bg-red-500 rounded-full" />
+                )}
+              </button>
+            </div>
             {activeTab === "past" && (
               <div>
                 <DateFilter
