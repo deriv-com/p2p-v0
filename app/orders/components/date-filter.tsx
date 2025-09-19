@@ -153,7 +153,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           </div>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="end">
+      <PopoverContent className="w-auto p-0" align="start">
         <div className="relative">
           <DualMonthCalendar handleCustomRangeApply={handleCustomRange} selected={tempRange} onSelect={setTempRange} />
 
