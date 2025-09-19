@@ -135,7 +135,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
       <div className={cn("flex flex-col items-center justify-center py-8", className)}>
         <div className="mb-6 h-14 w-14">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/design-mode-images/image%282%29-VuJxtpx5Hl76alOItpRGjiScw3tJHw.png"
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/design-mode-images/image%282%29-Gt4nJNOlRpmgrvdYTlXUJC1ljQPADW.png"
             alt="P2P Logo"
             width={56}
             height={56}
