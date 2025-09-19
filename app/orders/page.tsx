@@ -343,7 +343,6 @@ export default function OrdersPage() {
                   customRange={customDateRange}
                   onValueChange={setDateFilter}
                   onCustomRangeChange={setCustomDateRange}
-                  className="w-full md:w-[330px]"
                 />
               </div>
             )}
