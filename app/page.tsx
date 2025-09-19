@@ -458,12 +458,6 @@ export default function BuySellPage() {
                             <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
                               ad.actual_maximum_order_amount || "N/A"
                             }`}</div>
-                            <div className="flex items-center text-xs text-slate-500 mt-1">
-                              <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
-                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
-                                <span>{ad.order_expiry_period} min</span>
-                              </div>
-                            </div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                             <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
