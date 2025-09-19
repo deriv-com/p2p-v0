@@ -336,16 +336,17 @@ export default function OrdersPage() {
               </TabsList>
             </Tabs>
           </div>
+          <div className="my-4">
           {activeTab === "past" && (
-              <div className="my-4">
+              
                 <DateFilter
                   value={dateFilter}
                   customRange={customDateRange}
                   onValueChange={setDateFilter}
                   onCustomRangeChange={setCustomDateRange}
                 />
-              </div>
             )}
+          </div>
         </div>
         <div className="flex-1 pb-4">
           {isLoading ? (
