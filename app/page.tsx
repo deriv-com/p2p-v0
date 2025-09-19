@@ -317,16 +317,10 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
+                      size="sm"
+                      className="rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black min-w-fit rounded-3xl"
                     >
-                      {isMobile ? (
-                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
-                      ) : (
-                        <>
-                          <span>Filter by</span>
-                          <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                        </>
-                      )}
+                      <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
                     </Button>
                   }
                 />
