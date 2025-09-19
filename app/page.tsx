@@ -274,7 +274,7 @@ export default function BuySellPage() {
                     trigger={
                       <Button
                         variant="outline"
-                        className="border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 bg-transparent rounded-3xl focus:border-black"
+                        className="border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 bg-transparent rounded-3xl focus:border-black text-white"
                       >
                         <span>{currency}</span>
                         <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
