@@ -261,7 +261,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="lg:py-4 px-4 align-top row-start-4 col-span-full">
+                <TableCell className="px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     {isMobile && (
                       <div className="text-xs">
