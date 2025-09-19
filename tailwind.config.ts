@@ -100,6 +100,8 @@ const config: Config = {
           500: "#0000000a",
           600: "#000000b8",
           700: "#EFF3F5",
+          "text-muted": "#0000007A",
+          "text-placeholder": "#0000003D",
         },
         yellow: {
           50: "#A66C00",
@@ -131,6 +133,7 @@ const config: Config = {
           1500: "#F5F5F5",
           1600: "#333333",
         },
+
         teal: {
           700: "#00CCCC",
         },
@@ -166,6 +169,7 @@ const config: Config = {
           bg: "#fee2e2",
         },
         "default-button-text": "#002A33",
+
         paymentMethod: {
           bank: "#74B816",
           ewallet: "#1A79CB",

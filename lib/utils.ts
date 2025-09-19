@@ -377,4 +377,6 @@ export const currencyLogoMapper = {
   USDC: "/icons/usdc-logo.png",
   eUSDT: "/icons/eusdt-logo.png",
   tUSDT: "/icons/eusdt-logo.png",
+  BNB: "/icons/bnb-logo.png",
+  AED: "/icons/aed-logo.png",
 }

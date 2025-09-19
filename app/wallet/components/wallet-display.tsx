@@ -1,30 +1,56 @@
 "use client"
 
 import Image from "next/image"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface WalletDisplayProps {
   name: string
   amount: string
   currency: string
-  icon: string
   onClick?: () => void
+  isSelected?: boolean
 }
 
-export default function WalletDisplay({ name, amount, currency, icon, onClick }: WalletDisplayProps) {
+const getCurrencyImage = (walletName: string, currency: string) => {
+  if (walletName === "P2P Wallet") {
+    return "/icons/p2p-logo.png"
+  }
+  return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
+}
+
+export default function WalletDisplay({ name, amount, currency, onClick, isSelected }: WalletDisplayProps) {
   return (
     <div
-      className="min-h-[56px] px-4 py-2 flex items-center self-stretch rounded-lg border border-black/[0.04] bg-grayscale-700 cursor-pointer hover:bg-gray-100 transition-colors"
+      className={`h-[76px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-500 cursor-pointer hover:bg-gray-100 transition-colors ${
+        isSelected ? "border border-black" : ""
+      }`}
       onClick={onClick}
     >
       <div className="w-8 h-8 flex-shrink-0">
-        <Image src={icon} alt={name} width={32} height={32} className="rounded-full" />
+        <Image
+          src={getCurrencyImage(name, currency) }
+          alt={name}
+          width={32}
+          height={32}
+          className="rounded-full"
+        />
       </div>
 
       <div className="flex-1 ml-4">
-        <h3 className="text-black/[0.72] text-base font-normal">{name}</h3>
-        <p className="text-black/[0.48] text-sm font-normal">
+        <h3 className="text-slate-1200 text-base font-normal">{name}</h3>
+        <p className="text-grayscale-text-muted text-sm font-normal">
           {amount} {currency}
         </p>
+      </div>
+
+      <div className="ml-4">
+        <div
+          className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+            isSelected ? "border-black bg-black" : "border-grayscale-text-muted"
+          }`}
+        >
+          {isSelected && <div className="w-[0.4rem] h-[0.4rem] bg-white rounded-full" />}
+        </div>
       </div>
     </div>
   )

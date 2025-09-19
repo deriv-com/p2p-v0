@@ -45,10 +45,25 @@ export default function WalletSidebar({
     }
   }
 
+if (operation === "TRANSFER") {
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end md:justify-end md:items-stretch" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
+      <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
+        <Transfer
+          onSendClick={onP2PTransferClick}
+          onReceiveClick={onAccountTransferClick}
+          currencies={currencies}
+          onClose={onClose}
+        />
+      </div>
+    </div>
+  )
+}
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/50 flex md:justify-end md:items-stretch" onClick={onClose}>
       <div
-        className="bg-background w-full md:h-full md:max-w-md flex flex-col shadow-lg rounded-t-2xl md:rounded-none"
+        className="bg-background w-full h-full md:max-w-md flex flex-col shadow-lg md:rounded-none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center px-4 pb-3 md:py-3 mt-9 md:mt-0 md:border-b">
@@ -61,16 +76,12 @@ export default function WalletSidebar({
         <div className="p-4 flex flex-col gap-4 overflow-y-auto flex-1">
           {operation === "DEPOSIT" ? (
             <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
-          ) : operation === "WITHDRAW" ? (
-            <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} currencies={currencies} />
-          ) : operation === "TRANSFER" ? (
-            <Transfer
-              onSendClick={onP2PTransferClick}
-              onReceiveClick={onAccountTransferClick}
+          ) : (
+            <WithdrawOptions
+              onClose={onClose}
+              onDirectWithdrawClick={onDirectDepositClick}
               currencies={currencies}
             />
-          ) : (
-            <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
           )}
         </div>
       </div>
