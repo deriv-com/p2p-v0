@@ -224,7 +224,7 @@ export default function OrdersPage() {
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="py-1 px-4 align-top text-xs row-start-3">
+                <TableCell className="py px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
                     <div>
                       {order.payment_currency} {formatAmount(order.payment_amount)}
@@ -240,14 +240,14 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="lg:py-4 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                  <TableCell className="px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release") && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                     )}
                   </TableCell>
                 )}
                 {activeTab === "past" && (
-                  <TableCell className="py-0 lg:py-4 px-4 align-top row-start-1 flex justify-end items-center lg:justify-start">
+                  <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center lg:justify-start">
                     {order.rating > 0 && (
                       <div className="flex">
                         <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
