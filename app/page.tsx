@@ -294,6 +294,7 @@ export default function BuySellPage() {
                   isLoading={isLoadingPaymentMethods}
                   trigger={
                     <Button
+                      variant="outline"
                       size="sm"
                       className="rounded-md border border-input font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
                     >
