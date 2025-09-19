@@ -1,4 +1,4 @@
-import { API, USER } from "@/lib/local-variables"
+import { API } from "@/lib/local-variables"
 
 export interface WebSocketMessage {
   action: string

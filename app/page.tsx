@@ -187,7 +187,7 @@ export default function BuySellPage() {
       selectedPaymentMethods.length === 0 ||
       selectedPaymentMethods.length === paymentMethods.length
     ) {
-      return "Payment (All)"
+      return "Payment method (All)"
     }
 
     if (selectedPaymentMethods.length === 1) {
@@ -229,22 +229,21 @@ export default function BuySellPage() {
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
-      <div className="flex flex-col h-screen overflow-hidden px-[24px]">
+      <div className="flex flex-col h-screen overflow-hidden px-3">
         <TemporaryBanAlert />
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px]">
+              <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
                 <Tabs
-                  className="w-full md:w-[230px] md:min-w-[230px] flex-1 md:flex-none"
                   value={activeTab}
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
                 >
-                  <TabsList className="w-full md:min-w-[230px]">
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+                  <TabsList className="w-full bg-transparent">
+                    <TabsTrigger className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary" value="sell">
                       Buy
                     </TabsTrigger>
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+                    <TabsTrigger className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary" value="buy">
                       Sell
                     </TabsTrigger>
                   </TabsList>
@@ -252,7 +251,7 @@ export default function BuySellPage() {
 
                 <div>
                   <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
-                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px]" disabled>
+                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px] hidden" disabled>
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -267,27 +266,27 @@ export default function BuySellPage() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <CurrencyFilter
+                    currencies={currencies}
+                    selectedCurrency={currency}
+                    onCurrencySelect={handleCurrencySelect}
+                    trigger={
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="border border-input bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl focus:border-black text-white"
+                      >
+                        <span>{currency}</span>
+                        <Image src="/icons/chevron-down-white.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                      </Button>
+                    }
+                  />
                 </div>
               </div>
             </div>
 
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
-              <CurrencyFilter
-                currencies={currencies}
-                selectedCurrency={currency}
-                onCurrencySelect={handleCurrencySelect}
-                trigger={
-                  <Button
-                    variant="outline"
-                    className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black"
-                  >
-                    <span>{currency}</span>
-                    <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                  </Button>
-                }
-              />
-
-              <div className="flex-1 md:block md:flex-none max-w-[calc(100%-158px)] md:max-w-none">
+              <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
                   selectedMethods={selectedPaymentMethods}
@@ -296,7 +295,8 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input font-normal w-full min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] justify-between hover:bg-transparent lg:max-w-[195px] px-3 bg-transparent"
+                      size="sm"
+                      className="rounded-md border border-input font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
@@ -317,16 +317,10 @@ export default function BuySellPage() {
                   trigger={
                     <Button
                       variant="outline"
-                      className="rounded-md border border-input bg-background font-normal min-h-[32px] h-[32px] lg:min-h-[40px] lg:h-[40px] px-3 hover:bg-transparent focus:border-black min-w-fit"
+                      size="sm"
+                      className="rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black min-w-fit rounded-3xl"
                     >
-                      {isMobile ? (
-                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
-                      ) : (
-                        <>
-                          <span>Filter by</span>
-                          <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-                        </>
-                      )}
+                      <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
                     </Button>
                   }
                 />
@@ -442,26 +436,27 @@ export default function BuySellPage() {
                                 </div>
                               )}
                             </div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                            <div className="font-bold text-base">
-                              {ad.payment_currency}{" "}
-                              {ad.exchange_rate
-                                ? ad.exchange_rate.toLocaleString(undefined, {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })
-                                : "N/A"}
-                            </div>
-                            <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
-                              ad.actual_maximum_order_amount || "N/A"
-                            }`}</div>
                             <div className="flex items-center text-xs text-slate-500 mt-1">
                               <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
                                 <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
                                 <span>{ad.order_expiry_period} min</span>
                               </div>
                             </div>
+                          </TableCell>
+                          <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                            <div className="font-bold text-base flex items-center">
+                              {ad.payment_currency}{" "}
+                              {ad.exchange_rate
+                                ? ad.exchange_rate.toLocaleString(undefined, {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2,
+                                  })
+                                : ""}
+                                <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
+                            </div>
+                            <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                              ad.actual_maximum_order_amount || "N/A"
+                            }`}</div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                             <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
