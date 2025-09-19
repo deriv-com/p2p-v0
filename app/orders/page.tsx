@@ -181,7 +181,7 @@ export default function OrdersPage() {
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
         <Table>
-          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white shadow-sm">
+          <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
               {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
               <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
@@ -192,10 +192,10 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+          <TableBody className="bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] flex-col border rounded-sm mb-[16px] cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
