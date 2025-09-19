@@ -206,7 +206,7 @@ export default function OrdersPage() {
                 )}
                 <TableCell className="py-0 lg:py-4 px-4 align-top row-start-2 col-span-full">
                   <div>
-                    <div className="flex flex-row lg:flex-col justify-between">
+                    <div className="flex flex-row justify-between">
                       <div className="font-bold">
                         {getOrderType(order)}
                         <span className="text-base">
