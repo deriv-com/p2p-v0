@@ -11,16 +11,16 @@ interface TradeTypeSelectorProps {
 export function TradeTypeSelector({ value, onChange, isEditMode = false }: TradeTypeSelectorProps) {
   return (
     <Tabs
-        className="w-full md:w-[250px] md:min-w-[270px]"
+        className="w-full md:w-[272px]"
         defaultValue={value}
         onValueChange={(type) => !isEditMode && onChange(type)}
       >
         <TabsList className="w-full md:min-w-[270px]">
           <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
-            I want to buy
+            Buy USD
           </TabsTrigger>
           <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
-            I want to sell
+            Sell USD
           </TabsTrigger>
         </TabsList>
       </Tabs>
