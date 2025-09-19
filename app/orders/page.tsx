@@ -224,7 +224,7 @@ export default function OrdersPage() {
                     )}
                   </div>
                 </TableCell>
-                <TableCell className="py-1 lg:py-4 px-4 align-top text-xs row-start-3">
+                <TableCell className="py-1 px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
                     <div>
                       {order.payment_currency} {formatAmount(order.payment_amount)}
@@ -232,7 +232,7 @@ export default function OrdersPage() {
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="lg:py-4 px-4 align-top row-start-1">
+                <TableCell className="px-4 align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
