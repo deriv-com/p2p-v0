@@ -522,7 +522,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
             <div className="hidden md:block"></div>
           )}
 
-          <div className="hidden md:flex justify-end mt-8">
+          <div className="hidden md:flex justify-end mt-8 px-6">
             <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
               {getButtonText(isSubmitting, currentStep, mode)}
             </Button>
