@@ -53,8 +53,6 @@ export const WALLETS = {
 
 export const AUTH = {
   getAuthHeader: () => ({
-    "X-Branch": "master",
-    "X-Data-Source": "live",
     "Content-Type": "application/json",
   }),
 
