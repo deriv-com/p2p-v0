@@ -337,7 +337,7 @@ export default function OrdersPage() {
             </Tabs>
           </div>
           {activeTab === "past" && (
-              <div>
+              <div className="my-4">
                 <DateFilter
                   value={dateFilter}
                   customRange={customDateRange}
