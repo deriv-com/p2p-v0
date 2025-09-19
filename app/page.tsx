@@ -444,7 +444,7 @@ export default function BuySellPage() {
                             </div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                            <div className="font-bold text-base">
+                            <div className="font-bold text-base flex items-center">
                               {ad.payment_currency}{" "}
                               {ad.exchange_rate
                                 ? ad.exchange_rate.toLocaleString(undefined, {
