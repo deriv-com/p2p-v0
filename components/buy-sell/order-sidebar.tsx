@@ -248,7 +248,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         onClick={handleClose}
       />
       <div
-        className={`relative w-full max-w-md bg-white h-full transform transition-transform duration-300 ease-in-out ${
+        className={`relative w-full bg-white h-full transform transition-transform duration-300 ease-in-out ${
           isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
         }`}
       >
