@@ -381,7 +381,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         }
                       }}
                       currency={ad.account_currency}
-                      placeholder="0.00"
+                      label="Amount"
                     />
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
