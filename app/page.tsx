@@ -476,7 +476,7 @@ export default function BuySellPage() {
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="p-2 lg:p-4 text-right align-top row-start-3 whitespace-nowrap">
+                          <TableCell className="p-2 lg:p-4 text-right align-middle row-start-3 whitespace-nowrap">
                             {USER.id != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
