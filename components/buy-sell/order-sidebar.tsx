@@ -466,7 +466,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </p>
                 </div>
 
-                <div className="mt-auto p-4">
+                <div className="mt-auto p-4 flex justify-end">
                   <Button
                     className="w-full md:w-auto"
                     variant="primary"
