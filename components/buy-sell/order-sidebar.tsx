@@ -382,7 +382,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       }}
                       variant="floatingCurrency"
                       currency={ad.account_currency}
-                      placeholder=""
+                      placeholder="0.00"
                     />
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
@@ -415,7 +415,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
                 <div className="mx-4 mt-4 text-sm">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Exchange rate ({ad.account_currency} 1)</span>
+                    <span className="text-slate-500">Exchange rate</span>
                     <span className="text-slate-1400">
                       {ad.payment_currency}{" "}
                       {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
