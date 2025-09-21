@@ -438,7 +438,7 @@ export default function BuySellPage() {
                             </div>
                             <div className="flex items-center text-xs text-slate-500 mt-1">
                               <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
-                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
                                 <span>{ad.order_expiry_period} min</span>
                               </div>
                             </div>
