@@ -109,7 +109,7 @@ const RatingContent = ({
       </div>
     </div>
     <div className="p-4">
-      <Button variant="black" onClick={onSubmit} disabled={rating === 0} className="w-full disabled:opacity-[0.24]">
+      <Button onClick={onSubmit} disabled={rating === 0} className="w-full disabled:opacity-[0.24]">
         Submit
       </Button>
     </div>
