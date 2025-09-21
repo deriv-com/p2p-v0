@@ -254,7 +254,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       >
         {ad && (
           <div className="flex flex-col h-full max-w-xl mx-auto">
-            <div className="flex items-center justify-between px-4 py-3 border-b">
+            <div className="flex items-center justify-between px-4 py-3 ">
               {showPaymentSelection ? (
                 <>
                   <div className="flex items-center">
