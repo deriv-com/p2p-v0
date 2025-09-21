@@ -167,14 +167,14 @@ export default function OrdersPage() {
   const getPayReceiveLabel = (order) => {
     let label = ""
     if (order.type === "buy") {
-      if (order.user.id == USER.id) label = "You pay"
-      else label = "You receive"
+      if (order.user.id == USER.id) label = "You pay: "
+      else label = "You receive: "
     } else {
-      if (order.user.id == USER.id) label = "You receive"
-      else label = "You pay"
+      if (order.user.id == USER.id) label = "You receive: "
+      else label = "You pay: "
     }
 
-    return isMobile ? label + ": " : label
+    return label
   }
 
   const DesktopOrderTable = () => (
@@ -219,7 +219,7 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 <TableCell className="py px-4 align-top text-xs row-start-3">
-                  <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
+                  <div className="flex flex-row-reverse justify-end gap-[4px]">
                     <div>
                       {order.payment_currency} {formatAmount(order.payment_amount)}
                     </div>
