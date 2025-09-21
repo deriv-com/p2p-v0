@@ -422,6 +422,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
+                      <span> /{ad.account_currency}</span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
