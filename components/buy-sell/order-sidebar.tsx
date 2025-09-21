@@ -280,6 +280,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
             {showPaymentSelection ? (
               <div className="flex flex-col h-full overflow-y-auto">
+                <h2 className="text-xl font-bold">{title}</h2>
                 <div className="flex-1 p-4 space-y-4">
                   {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
                   {isLoadingPaymentMethods ? (
