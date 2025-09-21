@@ -234,7 +234,7 @@ export default function PaymentMethodsFilter({
           >
             Reset
           </Button>
-          <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
+          <Button onClick={handleApply} className="flex-1" size={isMobile ? "default" : "sm"}>
             Apply
           </Button>
         </div>
