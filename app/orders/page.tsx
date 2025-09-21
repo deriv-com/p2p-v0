@@ -195,7 +195,7 @@ export default function OrdersPage() {
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] md:gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-sm mb-[16px] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] border rounded-sm cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
