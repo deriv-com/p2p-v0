@@ -469,7 +469,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
                 <div className="mt-auto p-4">
                   <Button
-                    className="w-full"
+                    className="w-full md:w-auto"
                     variant="primary"
                     onClick={handleSubmit}
                     disabled={
