@@ -380,6 +380,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           e.preventDefault()
                         }
                       }}
+                      variant="floatingCurrency"
                       currency={ad.account_currency}
                       label="Amount"
                     />
