@@ -22,7 +22,6 @@ export default function Main({
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
-
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 
