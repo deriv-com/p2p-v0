@@ -20,7 +20,8 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
           </Button>
       </div>
 
-      <div className="flex-1 px-3">
+      <div className="flex-1 px-3
+        <h1 className="text-xl font-bold">Previous orders</h1>
         <div className="mt-8 bg-white rounded-lg p-4">
           <iframe
             src="https://staging-p2p.deriv.com/"
