@@ -144,10 +144,6 @@ export default function OrdersPage() {
     setActiveTab(value as "active" | "past")
   }
 
-  const handlePreviousOrdersClick = () => {
-    setIsPreviousOrdersModalOpen(true)
-  }
-
   const getOrderType = (order) => {
     if (order.type === "buy") {
       if (order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
