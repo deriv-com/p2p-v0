@@ -24,7 +24,7 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
         <h1 className="text-xl font-bold">Previous orders</h1>
         <div className="mt-8 bg-white rounded-lg p-4">
           <iframe
-            src="https://staging-p2p.deriv.com/"
+            src="https://staging-p2p.deriv.com/orders"
             className="w-full h-96 border-0 rounded-lg"
             title="Previous Orders"
             sandbox="allow-same-origin allow-scripts allow-forms"
