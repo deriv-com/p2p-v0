@@ -196,6 +196,7 @@ export async function getSocketToken(token: string): Promise<void> {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        AUTH.getAuthHeader()
       },
     })
 
