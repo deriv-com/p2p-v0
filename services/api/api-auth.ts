@@ -145,6 +145,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
+      headers: AUTH.getAuthHeader()
     })
 
     if (!response.ok) {
