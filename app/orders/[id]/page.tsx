@@ -470,7 +470,7 @@ export default function OrderDetailsPage() {
                   </div>
                 )}
                 {((order.type === "buy" &&
-                  (order.status === "pending_release" || order.status === "timed_out") &&
+                  (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
                   order.advert.user.id == USER.id) ||
                   (order.type === "sell" &&
                     (order.status === "pending_release" || order.status === "timed_out") &&

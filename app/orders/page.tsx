@@ -257,9 +257,9 @@ export default function OrdersPage() {
                 )}
                 <TableCell className="px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
-                      <div className="text-xs">
-                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
-                      </div>     
+                    <div className="text-xs">
+                      {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
+                    </div>
                     <div className="flex items-center gap-2">
                       <Button
                         onClick={(e) => {
