@@ -67,7 +67,7 @@ export default function Main({
 
   return (
     <WebSocketProvider>
-      <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative">
+      <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar />}
         <div className="flex-1">
           <div className="container mx-auto">{children}</div>
