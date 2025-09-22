@@ -34,20 +34,16 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
-        console.log("[v0] Fetching session data...")
         const response = await AuthAPI.getSession()
-        console.log("[v0] Session response:", response)
 
         if (abortController.signal.aborted) {
           return
         }
 
         if (response?.errors && !isPublic) {
-          console.log("[v0] Session has errors, redirecting to login")
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
-          console.log("[v0] Session valid, fetching user data...")
           if (!response?.errors) {
             await AuthAPI.fetchUserIdAndStore()
           }
