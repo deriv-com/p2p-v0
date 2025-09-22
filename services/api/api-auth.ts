@@ -1,4 +1,4 @@
-import { API } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 
 export interface LoginRequest {
   email: string
@@ -145,6 +145,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
+      headers: AUTH.getAuthHeader()
     })
 
     if (!response.ok) {
@@ -195,6 +196,7 @@ export async function getSocketToken(token: string): Promise<void> {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        ...AUTH.getAuthHeader()
       },
     })
 
