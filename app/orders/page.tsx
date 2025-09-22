@@ -384,8 +384,7 @@ export default function OrdersPage() {
           orderId={selectedOrderId}
           onSubmit={handleRatingSubmit}
           recommendLabel={`Would you recommend this ${getRecommendLabel()}?`}
-        />
-        <PreviousOrdersModal isOpen={isPreviousOrdersModalOpen} onClose={() => setIsPreviousOrdersModalOpen(false)} />
+        
       </div>
     </>
   )
