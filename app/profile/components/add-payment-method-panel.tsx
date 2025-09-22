@@ -338,7 +338,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
           type="submit"
           onClick={handleSubmit}
           disabled={isLoading || !selectedMethod || !isFormValid()}
-          variant="black"
           className="w-full"
         >
           {isLoading ? "Adding..." : "Add"}

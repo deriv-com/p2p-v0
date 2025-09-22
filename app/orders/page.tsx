@@ -167,14 +167,14 @@ export default function OrdersPage() {
   const getPayReceiveLabel = (order) => {
     let label = ""
     if (order.type === "buy") {
-      if (order.user.id == USER.id) label = "You pay"
-      else label = "You receive"
+      if (order.user.id == USER.id) label = "You pay: "
+      else label = "You receive: "
     } else {
-      if (order.user.id == USER.id) label = "You receive"
-      else label = "You pay"
+      if (order.user.id == USER.id) label = "You receive: "
+      else label = "You pay: "
     }
 
-    return isMobile ? label + ": " : label
+    return label
   }
 
   const DesktopOrderTable = () => (
@@ -192,10 +192,10 @@ export default function OrdersPage() {
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] md:gap-4 bg-white font-normal text-sm">
+          <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-sm mb-[16px] cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] border rounded-sm cursor-pointer"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
@@ -219,7 +219,7 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 <TableCell className="py px-4 align-top text-xs row-start-3">
-                  <div className="flex flex-row-reverse justify-end md:flex-col md:justify-start gap-[4px]">
+                  <div className="flex flex-row-reverse justify-end gap-[4px]">
                     <div>
                       {order.payment_currency} {formatAmount(order.payment_amount)}
                     </div>
@@ -310,7 +310,7 @@ export default function OrdersPage() {
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-3">
         <div className="flex flex-col">
-          <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
+          <div className="w-full h-[80px] flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full bg-transparent">
                 <TabsTrigger

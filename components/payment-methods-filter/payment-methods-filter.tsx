@@ -125,7 +125,7 @@ export default function PaymentMethodsFilter({
   const getMethodButtonClass = (methodId: string) => {
     const isSelected = tempSelectedMethods.includes(methodId)
     return `rounded-full text-grayscale-100 font-normal ${
-      isSelected ? "bg-grayscale-200" : "border-color-grayscale-200"
+      isSelected ? "hover:bg-slate-1200 bg-slate-1200 text-white" : "border-color-grayscale-200"
     }`
   }
 
@@ -234,7 +234,7 @@ export default function PaymentMethodsFilter({
           >
             Reset
           </Button>
-          <Button onClick={handleApply} className="flex-1" variant="black" size={isMobile ? "default" : "sm"}>
+          <Button onClick={handleApply} className="flex-1" size={isMobile ? "default" : "sm"}>
             Apply
           </Button>
         </div>

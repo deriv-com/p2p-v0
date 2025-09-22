@@ -248,13 +248,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         onClick={handleClose}
       />
       <div
-        className={`relative w-full max-w-md bg-white h-full transform transition-transform duration-300 ease-in-out ${
+        className={`relative w-full bg-white h-full transform transition-transform duration-300 ease-in-out ${
           isOpen && isAnimating ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {ad && (
-          <div className="flex flex-col h-full">
-            <div className="flex items-center justify-between px-4 py-3 border-b">
+          <div className="flex flex-col h-full max-w-xl mx-auto">
+            <div className="flex items-center justify-end px-4 py-3">
               {showPaymentSelection ? (
                 <>
                   <div className="flex items-center">
@@ -271,7 +271,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                 </>
               ) : (
                 <>
-                  <h2 className="text-xl font-bold">{title}</h2>
                   <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
                     <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
                   </Button>
@@ -366,13 +365,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               </div>
             ) : (
               <div className="flex flex-col h-full overflow-y-auto">
-                <div className="p-4 bg-[#0000000a] m-4 rounded-lg">
+                <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
+                <div className="p-4">
                   <div className="mb-2">
                     <Input
                       value={amount}
                       onChange={handleAmountChange}
                       type="number"
-                      label="Enter amount"
                       className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
                       step="any"
                       inputMode="decimal"
@@ -383,6 +382,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       }}
                       variant="floatingCurrency"
                       currency={ad.account_currency}
+                      label="Amount"
                     />
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
@@ -415,13 +415,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
                 <div className="mx-4 mt-4 text-sm">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Exchange rate ({ad.account_currency} 1)</span>
+                    <span className="text-slate-500">Exchange rate</span>
                     <span className="text-slate-1400">
                       {ad.payment_currency}{" "}
                       {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
+                      <span> /{ad.account_currency}</span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
@@ -466,9 +467,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </p>
                 </div>
 
-                <div className="mt-auto p-4">
+                <div className="mt-auto p-4 flex justify-end">
                   <Button
-                    className="w-full"
+                    className="w-full md:w-auto"
                     variant="primary"
                     onClick={handleSubmit}
                     disabled={

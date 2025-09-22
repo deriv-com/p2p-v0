@@ -234,7 +234,7 @@ export default function BuySellPage() {
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-full flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-3xl justify-between">
+              <div className="w-full h-[80px] flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
                 <Tabs
                   value={activeTab}
                   onValueChange={(value) => setActiveTab(value as "buy" | "sell")}
@@ -438,7 +438,7 @@ export default function BuySellPage() {
                             </div>
                             <div className="flex items-center text-xs text-slate-500 mt-1">
                               <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
-                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
                                 <span>{ad.order_expiry_period} min</span>
                               </div>
                             </div>
@@ -454,7 +454,7 @@ export default function BuySellPage() {
                                 : ""}
                                 <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
-                            <div className="mt-1">{`Trade Limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
+                            <div className="mt-1">{`Order limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
                               ad.actual_maximum_order_amount || "N/A"
                             }`}</div>
                           </TableCell>
@@ -476,7 +476,7 @@ export default function BuySellPage() {
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="p-2 lg:p-4 text-right align-top row-start-3 whitespace-nowrap">
+                          <TableCell className="p-2 lg:p-4 text-right align-middle row-start-3 whitespace-nowrap">
                             {USER.id != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}

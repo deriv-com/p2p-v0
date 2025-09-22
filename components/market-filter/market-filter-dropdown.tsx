@@ -127,7 +127,7 @@ export default function MarketFilterDropdown({
         </Button>
         <Button
           onClick={handleApply}
-          className={`flex-1 rounded-full bg-black text-white hover:bg-gray-800 ${isMobile ? "order-first" : ""}`}
+          className={`flex-1 rounded-full text-white hover:bg-gray-800 ${isMobile ? "order-first" : ""}`}
           size={isMobile ? "default" : "sm"}
         >
           {isMobile ? "Apply filters" : "Apply"}
