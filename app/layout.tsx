@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster"
 import Main from "./main"
 import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
+import ErrorBoundary from "@/components/error-boundary"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -30,12 +31,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <AlertDialogProvider>
-            <Toaster />
-            <Main>{children}</Main>
-          </AlertDialogProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+            <AlertDialogProvider>
+              <Toaster />
+              <Main>{children}</Main>
+            </AlertDialogProvider>
+          </ThemeProvider>
+        </ErrorBoundary>
       </body>
     </html>
   )

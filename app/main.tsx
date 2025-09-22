@@ -18,9 +18,12 @@ export default function Main({
   const pathname = usePathname()
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    console.log("[v0] Main component mounted, pathname:", pathname)
+
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 
@@ -33,23 +36,33 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
+        console.log("[v0] Fetching session data...")
         const response = await AuthAPI.getSession()
+        console.log("[v0] Session response:", response)
 
         if (abortController.signal.aborted) {
           return
         }
 
         if (response?.errors && !isPublic) {
+          console.log("[v0] Session has errors, redirecting to login")
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
+          console.log("[v0] Session valid, fetching user data...")
+          if (!response?.errors) {
+            await AuthAPI.fetchUserIdAndStore()
+          }
           router.push(pathname)
         }
       } catch (error) {
         if (abortController.signal.aborted) {
           return
         }
-        console.error("Error fetching data:", error)
+        console.error("[v0] Error fetching session data:", error)
+      } finally {
+        console.log("[v0] Session check complete")
+        setIsLoading(false)
       }
     }
 
@@ -60,6 +73,17 @@ export default function Main({
       }
     }
   }, [pathname, router])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+          <p className="mt-2 text-slate-600">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
