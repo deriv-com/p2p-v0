@@ -18,7 +18,6 @@ export default function Main({
   const pathname = usePathname()
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
-  const [isLoading, setIsLoading] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
@@ -53,7 +52,7 @@ export default function Main({
         if (abortController.signal.aborted) {
           return
         }
-        console.error("[v0] Error fetching session data:", error)
+        console.error("Error fetching session data:", error)
       }
     }
 
