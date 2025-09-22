@@ -24,6 +24,7 @@ export const API = {
   baseUrl: process.env.NEXT_PUBLIC_BASE_URL,
   coreUrl: process.env.NEXT_PUBLIC_CORE_URL,
   socketUrl: process.env.NEXT_PUBLIC_SOCKET_URL,
+  notificationUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
   endpoints: {
     ads: "/adverts",
     orders: "/orders",

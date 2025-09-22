@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 
 async function fetchSubscriberHash() {
   try {
-    const url = `${API.coreUrl}/notifications/v1/hash`
+    const url = `${API.notificationUrl}/hash`
 
     const response = await fetch(url, {
       method: "POST",
