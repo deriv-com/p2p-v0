@@ -23,7 +23,6 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
-import { PreviousOrdersModal } from "@/components/previous-orders-modal"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
