@@ -30,12 +30,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-          <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-            <AlertDialogProvider>
-              <Toaster />
-              <Main>{children}</Main>
-            </AlertDialogProvider>
-          </ThemeProvider>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <AlertDialogProvider>
+            <Toaster />
+            <Main>{children}</Main>
+          </AlertDialogProvider>
+        </ThemeProvider>
       </body>
     </html>
   )
