@@ -23,6 +23,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
+import { PreviousOrdersSection } from "./components/previous-orders-section"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -49,6 +50,7 @@ export default function OrdersPage() {
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
@@ -94,6 +96,14 @@ export default function OrdersPage() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleCheckPreviousOrders = () => {
+    setShowPreviousOrders(true)
+  }
+
+  const handleBackFromPreviousOrders = () => {
+    setShowPreviousOrders(false)
   }
 
   const formatDate = (dateString: string) => {
@@ -305,12 +315,21 @@ export default function OrdersPage() {
     )
   }
 
+  if (showPreviousOrders) {
+    return (
+      <>
+        {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+        <PreviousOrdersSection onBack={handleBackFromPreviousOrders} />
+      </>
+    )
+  }
+
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
       <div className="flex flex-col h-full px-3">
         <div className="flex flex-col">
-          <div className="w-full h-[80px] flex flex-row items-start md:items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
+          <div className="w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full bg-transparent">
                 <TabsTrigger
@@ -327,6 +346,10 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+            <Button variant="ghost" size="sm" className="text-white font-normal hover:text-white hover:bg-transparent " onClick={handleCheckPreviousOrders}>
+              Check previous orders
+              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1"/>
+            </Button>
           </div>
           <div className="my-4">
             {activeTab === "past" && (
@@ -354,11 +377,7 @@ export default function OrdersPage() {
             </div>
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
-              <EmptyState
-                icon="/icons/warning-circle.png"
-                title="No orders found"
-                description="Start by placing your first order."
-              />
+              <EmptyState title="No orders found" description="Start by placing your first order." />
             </div>
           ) : (
             <div>
