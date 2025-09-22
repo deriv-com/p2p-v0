@@ -11,7 +11,7 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-4 mb-6 px-3">
         <Button variant="ghost" size="sm" onClick={onBack} className="p-0 hover:bg-transparent">
-          <Image src="/icons/chevron-left.png" alt="Back" width={24} height={24} />
+          <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
         </Button>
         <h1 className="text-xl font-bold">Previous orders</h1>
       </div>
