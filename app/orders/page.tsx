@@ -327,6 +327,7 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+            <Button variant="ghost" className="text-white">Check previous orders</Button>
           </div>
           <div className="my-4">
             {activeTab === "past" && (
