@@ -49,7 +49,6 @@ export default function OrdersPage() {
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
-  const [isPreviousOrdersModalOpen, setIsPreviousOrdersModalOpen] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
@@ -384,7 +383,7 @@ export default function OrdersPage() {
           orderId={selectedOrderId}
           onSubmit={handleRatingSubmit}
           recommendLabel={`Would you recommend this ${getRecommendLabel()}?`}
-        
+        />
       </div>
     </>
   )
