@@ -43,13 +43,16 @@ export default function Main({
           setIsHeaderVisible(false)
           router.push("/login")
         } else {
+          if (!response?.errors) {
+            await AuthAPI.fetchUserIdAndStore()
+          }
           router.push(pathname)
         }
       } catch (error) {
         if (abortController.signal.aborted) {
           return
         }
-        console.error("Error fetching data:", error)
+        console.error("Error fetching session data:", error)
       }
     }
 
