@@ -327,13 +327,6 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <button
-              onClick={handlePreviousOrdersClick}
-              className="flex items-center gap-2 text-white hover:text-gray-300 transition-colors"
-            >
-              <span className="text-sm">Check previous orders</span>
-              <span className="text-lg">→</span>
-            </button>
           </div>
           <div className="my-4">
             {activeTab === "past" && (
