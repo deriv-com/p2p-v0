@@ -54,9 +54,6 @@ export default function Main({
           return
         }
         console.error("[v0] Error fetching session data:", error)
-      } finally {
-        console.log("[v0] Session check complete")
-        setIsLoading(false)
       }
     }
 
@@ -67,17 +64,6 @@ export default function Main({
       }
     }
   }, [pathname, router])
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading...</p>
-        </div>
-      </div>
-    )
-  }
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
