@@ -346,7 +346,7 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button variant="ghost" size="sm" className="text-white hover:bg-transparent" onClick={handleCheckPreviousOrders}>
+            <Button variant="ghost" size="sm" className="text-white font-normal hover:text-white hover:bg-transparent " onClick={handleCheckPreviousOrders}>
               Check previous orders
             </Button>
           </div>
