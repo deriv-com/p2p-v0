@@ -23,6 +23,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
+import { PreviousOrdersModal } from "@/components/previous-orders-modal"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -49,6 +50,7 @@ export default function OrdersPage() {
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
+  const [isPreviousOrdersModalOpen, setIsPreviousOrdersModalOpen] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
@@ -142,6 +144,10 @@ export default function OrdersPage() {
 
   const handleTabChange = (value: string) => {
     setActiveTab(value as "active" | "past")
+  }
+
+  const handlePreviousOrdersClick = () => {
+    setIsPreviousOrdersModalOpen(true)
   }
 
   const getOrderType = (order) => {
@@ -257,9 +263,9 @@ export default function OrdersPage() {
                 )}
                 <TableCell className="px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
-                      <div className="text-xs">
-                        {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
-                      </div>     
+                    <div className="text-xs">
+                      {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
+                    </div>
                     <div className="flex items-center gap-2">
                       <Button
                         onClick={(e) => {
@@ -327,6 +333,13 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
+            <button
+              onClick={handlePreviousOrdersClick}
+              className="flex items-center gap-2 text-white hover:text-gray-300 transition-colors"
+            >
+              <span className="text-sm">Check previous orders</span>
+              <span className="text-lg">→</span>
+            </button>
           </div>
           <div className="my-4">
             {activeTab === "past" && (
@@ -373,6 +386,7 @@ export default function OrdersPage() {
           onSubmit={handleRatingSubmit}
           recommendLabel={`Would you recommend this ${getRecommendLabel()}?`}
         />
+        <PreviousOrdersModal isOpen={isPreviousOrdersModalOpen} onClose={() => setIsPreviousOrdersModalOpen(false)} />
       </div>
     </>
   )
