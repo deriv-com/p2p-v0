@@ -50,7 +50,7 @@ export default function OrdersPage() {
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
-  const [showPreviousOrders, setShowPreviousOrders] = useState(false) // Declare showPreviousOrders here
+  const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
