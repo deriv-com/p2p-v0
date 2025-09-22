@@ -2,6 +2,8 @@
 
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
+import Image from "next/image"
+
 import { cn } from "@/lib/utils"
 
 const Select = SelectPrimitive.Root
@@ -24,7 +26,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <span className="ml-2 text-lg">▼</span>
+      <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className=" ml-[8px]" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -39,7 +41,7 @@ const SelectScrollUpButton = React.forwardRef<
     className={cn("flex cursor-default items-center justify-center py-1", className)}
     {...props}
   >
-    <span className="opacity-70 text-lg">▲</span>
+    <Image src="/icons/chevron-down.png" alt="Scroll up" width={18} height={18} className="opacity-70 rotate-180" />
   </SelectPrimitive.ScrollUpButton>
 ))
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
@@ -53,7 +55,7 @@ const SelectScrollDownButton = React.forwardRef<
     className={cn("flex cursor-default items-center justify-center py-1", className)}
     {...props}
   >
-    <span className="opacity-70 text-lg">▼</span>
+    <Image src="/icons/chevron-down.png" alt="Scroll down" width={18} height={18} className="opacity-70" />
   </SelectPrimitive.ScrollDownButton>
 ))
 SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
