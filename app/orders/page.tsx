@@ -348,7 +348,7 @@ export default function OrdersPage() {
             </Tabs>
             <Button variant="ghost" size="sm" className="text-white font-normal hover:text-white hover:bg-transparent " onClick={handleCheckPreviousOrders}>
               Check previous orders
-              <Image src="/icons/chevron-right-white.png" width={24} height={24} className="ml-1"/>
+              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1"/>
             </Button>
           </div>
           <div className="my-4">
