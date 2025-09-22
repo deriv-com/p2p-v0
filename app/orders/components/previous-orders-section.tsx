@@ -16,7 +16,7 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
             size="sm"
             className="bg-grayscale-300 px-1"
           >
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+            <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
           </Button>
       </div>
 
