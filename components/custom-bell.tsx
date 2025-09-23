@@ -4,9 +4,7 @@ import Image from "next/image"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export default function CustomBell() {
-  const isMobile = useIsMobile()
-
-  // Only show custom bell on responsive screens (mobile)
+  const isMobile = useIsMobile(
   if (!isMobile) {
     return null
   }
