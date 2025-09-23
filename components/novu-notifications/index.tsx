@@ -3,8 +3,9 @@
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
-
 import { useRouter } from "next/navigation"
+import { useIsMobile } from "@/hooks/use-mobile"
+import CustomBell from "@/components/custom-bell"
 
 async function fetchSubscriberHash() {
   try {
@@ -40,6 +41,7 @@ async function fetchSubscriberHash() {
 
 export function NovuNotifications() {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const [mounted, setMounted] = useState(false)
   const [subscriberHash, setSubscriberHash] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -50,6 +52,11 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
+    ...(isMobile && {
+      icons: {
+        bell: () => <CustomBell />,
+      },
+    }),
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
@@ -66,8 +73,8 @@ export function NovuNotifications() {
     },
     elements: {
       preferences__button: {
-            display: "none",
-          },
+        display: "none",
+      },
     },
   }
 

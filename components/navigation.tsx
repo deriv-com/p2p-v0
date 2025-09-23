@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { NovuNotifications } from "@/components/novu-notifications"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
@@ -11,6 +12,7 @@ interface NavigationProps {
   onClose?: () => void
   redirectUrl?: string
   title: string
+  showNotificationIcon?: boolean
 }
 
 export default function Navigation({
@@ -19,6 +21,7 @@ export default function Navigation({
   onClose,
   redirectUrl = "/",
   title,
+  showNotificationIcon = false,
 }: NavigationProps) {
   const router = useRouter()
 
@@ -33,13 +36,21 @@ export default function Navigation({
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
+            <div className="flex items-center gap-2">
+              {showNotificationIcon && (
+                <div className="text-slate-600 hover:text-slate-700">
+                  <NovuNotifications />
+                </div>
+              )}
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
                 <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
               </Button>
+            </div>
           </div>
         )
       } else {
         return (
+          <div className="flex gap-4 items-center justify-between w-full">
             <div className="flex gap-4 items-center">
               <Button
                 variant="ghost"
@@ -51,13 +62,25 @@ export default function Navigation({
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
+            {showNotificationIcon && (
+              <div className="text-slate-600 hover:text-slate-700">
+                <NovuNotifications />
+              </div>
+            )}
+          </div>
         )
       }
     }
 
     return (
-      <>
+      <div className="flex w-full justify-between items-center">
         <h1 className="text-xl font-bold">{title}</h1>
+        <div className="flex items-center gap-2">
+          {showNotificationIcon && (
+            <div className="text-slate-600 hover:text-slate-700">
+              <NovuNotifications />
+            </div>
+          )}
           <Button
             variant="ghost"
             onClick={() => {
@@ -72,12 +95,15 @@ export default function Navigation({
           >
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
-      </>
+        </div>
+      </div>
     )
   }
 
   return (
-    <div className="mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]">
+    <div
+      className={`mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px] ${showNotificationIcon ? "bg-slate-1200" : ""}`}
+    >
       <div className="flex items-center justify-between md:px-0">{getHeaderComponent()}</div>
     </div>
   )

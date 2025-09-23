@@ -29,7 +29,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const userData = (typeof window !== "undefined") ? JSON.parse(localStorage.getItem("user_data")) : {}
+  const userData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data")) : {}
   const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -170,14 +170,14 @@ export default function AdsPage() {
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
-      </TooltipProvider>
-    </div>
-  )
-}
+        </TooltipProvider>
+      </div>
+    )
+  }
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="flex flex-col h-screen bg-white px-[24px]">
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
@@ -193,17 +193,15 @@ export default function AdsPage() {
               >
                 Create ad
               </Button>
-                {getHideMyAdsComponent()}
-            </div>
-          )}
-          
-          {ads.length > 0 && isMobile && (
-            <div className="flex items-center justify-end mb-4">
               {getHideMyAdsComponent()}
             </div>
           )}
+
+          {ads.length > 0 && isMobile && (
+            <div className="flex items-center justify-end mb-4">{getHideMyAdsComponent()}</div>
+          )}
         </div>
-        
+
         {ads.length > 0 && isMobile && (
           <div className="fixed bottom-20 right-4 z-10">
             <Button
@@ -216,15 +214,15 @@ export default function AdsPage() {
             </Button>
           </div>
         )}
-        
+
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-              { error ? (
+          {error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
             <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
           )}
         </div>
-      
+
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
             isOpen

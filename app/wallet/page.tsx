@@ -10,7 +10,7 @@ export default function WalletPage() {
   const isMobile = useIsMobile()
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="min-h-screen bg-background px-[24px]">
         <Tabs defaultValue="assets" className="w-full flex flex-col justify-center items-center">
           <TabsList className="w-full md:w-[330px] md:min-w-[330px]">
@@ -18,7 +18,7 @@ export default function WalletPage() {
               My Wallet
             </TabsTrigger>
             <TabsTrigger value="transactions" className="w-full data-[state=active]:font-bold">
-        Transactions
+              Transactions
             </TabsTrigger>
           </TabsList>
 
