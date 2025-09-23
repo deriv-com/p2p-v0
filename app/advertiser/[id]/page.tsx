@@ -379,22 +379,6 @@ export default function AdvertiserProfilePage() {
               </div>
             </div>
           </div>
-          <div className="container mx-auto pb-6 hidden">
-            <Tabs
-              value={activeSection}
-              onValueChange={(value) => setActiveSection(value as "ads")}
-              className="border-b"
-            >
-              <TabsList className="bg-transparent border-b-0 p-0 h-auto">
-                <TabsTrigger
-                  value="ads"
-                  className="px-4 py-3 text-sm font-medium border-b-2 data-[state=active]:border-blue-500 data-[state=active]:text-blue-500 data-[state=inactive]:border-transparent data-[state=inactive]:text-slate-500 rounded-none"
-                >
-                  Online ads
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
 
           {activeSection === "ads" && (
             <>
