@@ -56,7 +56,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   return (
     <TooltipProvider>
       <div className="mb-6">
-        <div className="flex items-center justify-between p-4 border border-[#E9ECEF] rounded-lg">
+        <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-8 flex-1 overflow-x-auto">
             <div className="flex-shrink-0">
               {buyCompletionRate ? 
@@ -96,7 +96,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             onClick={() => setIsStatsModalOpen(true)}
           >
             View more
-            <Image src="/icons/chevron-right-sm.png" width={20} height={}/>
+            <Image src="/icons/chevron-right-sm.png" width={20} height={20} />
           </Button>
         </div>
       </div>
