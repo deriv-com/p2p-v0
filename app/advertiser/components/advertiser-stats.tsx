@@ -100,8 +100,6 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           </Button>
         </div>
       </div>
-
-      {/* Mobile Bottom Sheet */}
       {isMobile ? (
         <Drawer open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DrawerContent>
@@ -114,7 +112,6 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           </DrawerContent>
         </Drawer>
       ) : (
-        /* Desktop Popup */
         <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
