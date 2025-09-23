@@ -50,15 +50,6 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
   return (
     <TooltipProvider>
       <div className="space-y-6">
-        {/* Primary Stats */}
-        <div className="bg-slate-50 rounded-lg p-4">
-          <div className={`${isMobile ? "grid grid-cols-2 md:flex" : "flex"} gap-4 ${!isMobile ? "gap-6" : ""}`}>
-            <div>
-              <div className="text-xs text-slate-500">Total orders</div>
-              <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime}</div>
-            </div>
-          </div>
-        </div>
         <div className={`grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} gap-${isMobile ? "4" : "6"}`}>
           <div>
             <div className="flex items-center text-xs text-slate-500">
