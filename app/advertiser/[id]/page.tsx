@@ -54,8 +54,7 @@ export default function AdvertiserProfilePage() {
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
-  const [adverts, setAdverts] = useState<Advertisement[]>([])
-  const [activeSection, setActiveSection] = useState<"ads">("ads")
+  const [adverts, setAdverts] = useState<Advertisement[]>([]
   const [isFollowing, setIsFollowing] = useState(false)
   const [isBlocked, setIsBlocked] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -284,8 +283,6 @@ export default function AdvertiserProfilePage() {
               </div>
 
               <AdvertiserStats profile={profile} />
-
-              {activeSection === "ads" && (
                 <>
                   <div className="container mx-auto pb-4 text-lg font-bold">Online ads</div>
                   <div className="container mx-auto pb-8">
@@ -378,7 +375,7 @@ export default function AdvertiserProfilePage() {
                     )}
                   </div>
                 </>
-              )}
+          
               <OrderSidebar
                 isOpen={isOrderSidebarOpen}
                 onClose={() => setIsOrderSidebarOpen(false)}
