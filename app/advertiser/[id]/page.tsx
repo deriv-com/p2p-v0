@@ -165,6 +165,31 @@ export default function AdvertiserProfilePage() {
     return `Joined ${diffDays} days ago`
   }
 
+  if (isLoading) {
+    return (
+      <div>
+        <Navigation title="Back" isVisible={false} />
+        <div className="text-center py-8">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+          <p className="mt-2 text-slate-600">Loading advertiser...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error && !profile) {
+    return (
+      <div className="container mx-auto px-4 py-8 pt-20">
+        <div className="text-center py-8">
+          <p>{error}</p>
+          <Button onClick={() => router.back()} className="mt-4 text-white">
+            Go Back
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <TooltipProvider>
       <div>
