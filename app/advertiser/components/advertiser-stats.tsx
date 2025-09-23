@@ -96,7 +96,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             onClick={() => setIsStatsModalOpen(true)}
           >
             View more
-            <Image src="/icons/chevron-right-sm.png" />
+            <Image src="/icons/chevron-right-sm.png" width={20} height={}/>
           </Button>
         </div>
       </div>
