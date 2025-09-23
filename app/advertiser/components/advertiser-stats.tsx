@@ -59,9 +59,14 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <div className="flex items-center justify-between p-4 border border-[#E9ECEF] rounded-lg">
           <div className="flex items-center gap-8 flex-1 overflow-x-auto">
             <div className="flex-shrink-0">
-              <div className="text-lg font-bold">
-                {buyCompletionRate}% ({buyCount})
-              </div>
+              {buyCompletionRate ? 
+                <div className="text-lg font-bold">
+                  {buyCompletionRate}% ({buyCount})
+                </div> :
+                <div className="text-lg font-bold">
+                  -
+                </div>
+              }
               <div className="text-xs text-slate-500">Buy completion rate (30d)</div>
             </div>
             <div className="flex-shrink-0">
