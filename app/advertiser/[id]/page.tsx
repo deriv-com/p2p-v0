@@ -188,7 +188,6 @@ export default function AdvertiserProfilePage() {
 
   return (
       <div>
-        <Navigation title="Back" isVisible={false} />
         <div className="px-[24px]">
           <div className="flex flex-col md:flex-row justify-between">
             <div className="container mx-auto pb-6">
