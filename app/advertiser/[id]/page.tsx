@@ -187,7 +187,7 @@ export default function AdvertiserProfilePage() {
 
   return (
       <div>
-        <div className="px-2">
+        <div className="px-6 md:px-6">
           <div className="flex flex-col md:flex-row justify-between">
             <div className="container mx-auto pb-6">
               <div className="bg-slate-75 p-6 rounded-3xl flex flex-col md:items-start gap-4">
@@ -195,7 +195,7 @@ export default function AdvertiserProfilePage() {
                   variant="ghost"
                   onClick={() => router.push("/")}
                   size="sm"
-                  className="bg-grayscale-500 px-1 w-fi"
+                  className="bg-grayscale-500 px-1 w-fit"
                 >
                   <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                 </Button>
