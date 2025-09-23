@@ -197,7 +197,7 @@ export default function AdvertiserProfilePage() {
         <div className="px-[24px]">
           <div className="flex flex-col md:flex-row justify-between">
             <div className="container mx-auto pb-6">
-              <div className="flex flex-col md:flex-row md:items-start gap-4">
+              <div className="flex flex-col md:items-start gap-4">
                 <div className="flex-1">
                   <div className="flex flex-row">
                     <div className="relative mr-[16px]">
