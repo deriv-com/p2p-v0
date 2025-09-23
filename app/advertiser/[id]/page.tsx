@@ -471,7 +471,7 @@ export default function AdvertiserProfilePage() {
                                     size="sm"
                                     onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
                                   >
-                                    {activeTab === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                                    {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
                                   </Button>
                                 )}
                               </TableCell>
