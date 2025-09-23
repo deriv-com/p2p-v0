@@ -166,12 +166,9 @@ export default function AdvertiserProfilePage() {
 
   if (isLoading) {
     return (
-      <div>
-        <Navigation title="Back" isVisible={false} />
-        <div className="text-center py-8">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading advertiser...</p>
-        </div>
+      <div className="text-center py-8">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+        <p className="mt-2 text-slate-600">Loading advertiser...</p>
       </div>
     )
   }
