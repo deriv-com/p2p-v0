@@ -119,7 +119,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
               <DialogTitle className="font-bold text-2xl">Advertiser info</DialogTitle>
             </DialogHeader>
             <StatsContent profile={profile} isMobile={false} />
-            <Button>Close</Button>
+            <Button onClick={setIsStatsModalOpen}>Close</Button>
           </DialogContent>
         </Dialog>
       )}
