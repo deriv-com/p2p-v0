@@ -80,7 +80,7 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
             <div className="text-sm text-slate-500">Avg. release time (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.release_time_average_30day)}</div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm border-b py-6">
             <div className="flex items-center text-sm text-slate-500">
               Trade partners
               <Tooltip>
