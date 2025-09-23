@@ -419,7 +419,7 @@ export default function AdvertiserProfilePage() {
                           </TableRow>
                         </TableHeader>
                         <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                          {filteredAdverts.map((ad) => (
+                          {adverts.map((ad) => (
                             <TableRow
                               className="flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
                               key={ad.id}
