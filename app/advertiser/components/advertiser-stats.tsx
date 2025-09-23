@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { ChevronRight } from "lucide-react"
+import Image from "next/image"
 import { useIsMobile } from "@/hooks/use-mobile"
 import StatsContent from "./stats-content"
 
@@ -96,7 +96,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             onClick={() => setIsStatsModalOpen(true)}
           >
             View more
-            <ChevronRight className="h-4 w-4" />
+            <Image src="/icons/chevron-right-sm.png" />
           </Button>
         </div>
       </div>
