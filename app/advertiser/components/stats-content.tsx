@@ -72,11 +72,11 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
             </div>
             <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm border-b py-6">
             <div className="text-sm text-slate-500">Avg. pay time (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.buy_time_average_30day)}</div>
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm border-b py-6">
             <div className="text-sm text-slate-500">Avg. release time (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.release_time_average_30day)}</div>
           </div>
