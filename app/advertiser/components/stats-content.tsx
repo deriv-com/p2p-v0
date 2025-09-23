@@ -51,7 +51,7 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
     <TooltipProvider>
       <div className="space-y-6">
         <div className={`flex flex-col gap-${isMobile ? "4" : "6"}`}>
-          <div>
+          <div className="flex justify-between">
             <div className="flex items-center text-xs text-slate-500">
               Trade volume (30d)
               <Tooltip>
@@ -72,15 +72,15 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
             </div>
             <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
           </div>
-          <div>
+          <div className="flex justify-between">
             <div className="text-xs text-slate-500">Avg. pay time (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.buy_time_average_30day)}</div>
           </div>
-          <div>
+          <div className="flex justify-between">
             <div className="text-xs text-slate-500">Avg. release time (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.release_time_average_30day)}</div>
           </div>
-          <div>
+          <div className="flex justify-between">
             <div className="flex items-center text-xs text-slate-500">
               Trade partners
               <Tooltip>
