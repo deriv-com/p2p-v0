@@ -108,6 +108,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             </DrawerHeader>
             <div className="p-4">
               <StatsContent profile={profile} isMobile={true} />
+              <Button>Close</Button>
             </div>
           </DrawerContent>
         </Drawer>
@@ -118,6 +119,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
               <DialogTitle>Advertiser info</DialogTitle>
             </DialogHeader>
             <StatsContent profile={profile} isMobile={false} />
+            <Button>Close</Button>
           </DialogContent>
         </Dialog>
       )}
