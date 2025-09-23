@@ -70,9 +70,14 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
               <div className="text-xs text-slate-500">Buy completion rate (30d)</div>
             </div>
             <div className="flex-shrink-0">
-              <div className="text-lg font-bold">
-                {sellCompletionRate}% ({sellCount})
-              </div>
+              { sellCompletionRate ?
+                <div className="text-lg font-bold">
+                  {sellCompletionRate}% ({sellCount})
+                </div> : 
+                <div className="text-lg font-bold">
+                  {sellCompletionRate}% ({sellCount})
+                </div>
+              }
               <div className="text-xs text-slate-500">Sell completion rate (30d)</div>
             </div>
             <div className="flex-shrink-0">
