@@ -192,7 +192,14 @@ export default function AdvertiserProfilePage() {
           <div className="flex flex-col md:flex-row justify-between">
             <div className="container mx-auto pb-6">
               <div className="bg-slate-75 p-6 rounded-3xl flex flex-col md:items-start gap-4">
-                <Navigation title="" isVisible={false} />
+                <Button
+                  variant="ghost"
+                  onClick={() => router.push("/")}
+                  size="sm"
+                  className="bg-grayscale-300 px-1"
+                >
+                  <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+                </Button>
                 <div className="flex-1">
                   <div className="flex flex-row">
                     <div className="relative mr-[16px]">
