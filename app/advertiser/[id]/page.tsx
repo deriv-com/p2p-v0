@@ -54,7 +54,7 @@ export default function AdvertiserProfilePage() {
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
-  const [adverts, setAdverts] = useState<Advertisement[]>([]
+  const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isFollowing, setIsFollowing] = useState(false)
   const [isBlocked, setIsBlocked] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
