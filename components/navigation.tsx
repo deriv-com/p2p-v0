@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { NovuNotifications } from "./novu-notifications"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
