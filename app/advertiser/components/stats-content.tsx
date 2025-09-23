@@ -54,46 +54,6 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
         <div className="bg-slate-50 rounded-lg p-4">
           <div className={`${isMobile ? "grid grid-cols-2 md:flex" : "flex"} gap-4 ${!isMobile ? "gap-6" : ""}`}>
             <div>
-              <div className="text-xs text-slate-500">Rating</div>
-              <div className="flex items-center mt-[5.27px]">
-                {profile?.rating_average_lifetime && (
-                  <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
-                )}
-                {profile?.rating_average_lifetime ? (
-                  <span className="font-bold text-base">{profile?.rating_average_lifetime}/5</span>
-                ) : (
-                  <span className="font-bold text-base">Not rated yet</span>
-                )}
-              </div>
-            </div>
-            <div>
-              <div className="flex items-center text-xs text-slate-500">
-                Recommended
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Image
-                      src="/icons/info-circle.png"
-                      alt="Info"
-                      width={12}
-                      height={12}
-                      className="ml-1 cursor-pointer"
-                    />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="opacity-[0.72]">Recommended by {profile?.recommend_count_lifetime} traders</p>
-                    <TooltipArrow className="fill-black" />
-                  </TooltipContent>
-                </Tooltip>
-              </div>
-              <div className="flex items-center mt-1">
-                {profile?.recommend_average_lifetime ? (
-                  <span className="font-bold text-base">{profile?.recommend_average_lifetime}%</span>
-                ) : (
-                  <span className="font-bold text-base">Not recommended yet</span>
-                )}
-              </div>
-            </div>
-            <div>
               <div className="text-xs text-slate-500">Total orders</div>
               <div className="font-bold text-lg mt-1">{profile?.order_count_lifetime}</div>
             </div>
