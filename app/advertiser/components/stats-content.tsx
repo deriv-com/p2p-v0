@@ -34,10 +34,9 @@ interface AdvertiserProfile {
 
 interface StatsContentProps {
   profile: AdvertiserProfile | null
-  isMobile?: boolean
 }
 
-export default function StatsContent({ profile, isMobile = false }: StatsContentProps) {
+export default function StatsContent({ profile }: StatsContentProps) {
   const getDuration = (duration: number | null | undefined) => {
     if (duration == null || duration <= 0) return "-"
 
