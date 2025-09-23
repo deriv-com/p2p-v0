@@ -402,7 +402,7 @@ export default function AdvertiserProfilePage() {
                
               </div>
               <div className="container mx-auto pb-8">
-                {filteredAdverts.length > 0 ? (
+                {adverts.length > 0 ? (
                   <>
                     <div>
                       <Table>
