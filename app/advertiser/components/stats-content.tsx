@@ -50,7 +50,7 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
   return (
     <TooltipProvider>
       <div className="space-y-6">
-        <div className={`grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} gap-${isMobile ? "4" : "6"}`}>
+        <div className={`flex flex-col gap-${isMobile ? "4" : "6"}`}>
           <div>
             <div className="flex items-center text-xs text-slate-500">
               Trade volume (30d)
