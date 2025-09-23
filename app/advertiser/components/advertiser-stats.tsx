@@ -113,7 +113,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           </DrawerContent>
         </Drawer>
       ) : (
-        <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
+        <Dialog className="sm:max-w-md rounded-4xl" open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
               <DialogTitle className="font-bold text-2xl">Advertiser info</DialogTitle>
