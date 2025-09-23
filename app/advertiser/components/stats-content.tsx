@@ -51,7 +51,7 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
     <TooltipProvider>
       <div className="space-y-6">
         <div className={`flex flex-col gap-${isMobile ? "4" : "6"}`}>
-          <div className="flex justify-between">
+          <div className="flex justify-between text-sm border-b py-6">
             <div className="flex items-center text-sm text-slate-500">
               Trade volume (30d)
               <Tooltip>
