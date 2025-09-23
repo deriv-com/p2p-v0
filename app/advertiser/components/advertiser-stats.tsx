@@ -104,7 +104,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <Drawer open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle>Complete Statistics</DrawerTitle>
+              <DrawerTitle>Advertiser info</DrawerTitle>
             </DrawerHeader>
             <div className="p-4">
               <StatsContent profile={profile} isMobile={true} />
@@ -115,7 +115,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DialogContent className="max-w-2xl">
             <DialogHeader>
-              <DialogTitle>Complete Statistics</DialogTitle>
+              <DialogTitle>Advertiser info</DialogTitle>
             </DialogHeader>
             <StatsContent profile={profile} isMobile={false} />
           </DialogContent>
