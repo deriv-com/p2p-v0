@@ -60,10 +60,10 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           <div className="flex items-center gap-8 flex-1 overflow-x-auto">
             <div className="flex-shrink-0">
               {buyCompletionRate ? 
-                <div className="text-lg font-bold">
+                <div className="text-base font-bold">
                   {buyCompletionRate}% ({buyCount})
                 </div> :
-                <div className="text-lg font-bold">
+                <div className="text-base font-bold">
                   -
                 </div>
               }
@@ -71,21 +71,21 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             </div>
             <div className="flex-shrink-0">
               { sellCompletionRate ?
-                <div className="text-lg font-bold">
+                <div className="text-base font-bold">
                   {sellCompletionRate}% ({sellCount})
                 </div> : 
-                <div className="text-lg font-bold">
+                <div className="text-base font-bold">
                   {sellCompletionRate}% ({sellCount})
                 </div>
               }
               <div className="text-xs text-slate-500">Sell completion rate (30d)</div>
             </div>
             <div className="flex-shrink-0">
-              <div className="text-lg font-bold">{totalTrades30d}</div>
+              <div className="text-base font-bold">{totalTrades30d}</div>
               <div className="text-xs text-slate-500">Total trades (30d)</div>
             </div>
             <div className="flex-shrink-0">
-              <div className="text-lg font-bold">{totalAllTimeTrades}</div>
+              <div className="text-base font-bold">{totalAllTimeTrades}</div>
               <div className="text-xs text-slate-500">Total all time trades</div>
             </div>
           </div>
