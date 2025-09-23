@@ -252,8 +252,10 @@ export default function AdvertiserProfilePage() {
                       </div>
                       <div className="flex items-center text-xs text-slate-500 mt-2">
                         <span className="mr-[8px]">Recommended by {profile?.recommend_count_lifetime} traders</span>
-                        <span className="text-slate-400">|</span>
-                        <span className="ml-[8px]">{profile?.rating_average_lifetime}</span>
+                        {profile?.rating_average_lifetime && (
+                          <span className="text-slate-400">|</span>
+                          <span className="ml-[8px]">{profile?.rating_average_lifetime}</span>
+                        )}
                       </div>
                     </div>
                   </div>
