@@ -15,7 +15,6 @@ import { cn, formatPaymentMethodName } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import BlockConfirmation from "@/components/block-confirmation"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { useToast } from "@/components/ui/use-toast"
@@ -191,7 +190,6 @@ export default function AdvertiserProfilePage() {
   }
 
   return (
-    <TooltipProvider>
       <div>
         <Navigation title="Back" isVisible={false} />
         <div className="px-[24px]">
@@ -376,6 +374,5 @@ export default function AdvertiserProfilePage() {
           </div>
         </div>
       </div>
-    </TooltipProvider>
   )
 }
