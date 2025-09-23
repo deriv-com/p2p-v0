@@ -5,7 +5,16 @@ import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
-import CustomBell from "@/components/custom-bell"
+import Image from "next/image"
+
+function CustomBell() {
+  const isMobile = useIsMobile()
+  if (!isMobile) {
+    return null
+  }
+
+  return <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+}
 
 async function fetchSubscriberHash() {
   try {
@@ -54,7 +63,7 @@ export function NovuNotifications() {
   const appearance = {
     ...(isMobile && {
       icons: {
-        bell: () => <CustomBell />,
+        bell: CustomBell,
       },
     }),
     variables: {
