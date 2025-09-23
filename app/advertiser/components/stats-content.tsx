@@ -59,8 +59,6 @@ export default function StatsContent({ profile, isMobile = false }: StatsContent
             </div>
           </div>
         </div>
-
-        {/* Detailed Stats */}
         <div className={`grid ${isMobile ? "grid-cols-2" : "grid-cols-3"} gap-${isMobile ? "4" : "6"}`}>
           <div>
             <div className="flex items-center text-xs text-slate-500">
