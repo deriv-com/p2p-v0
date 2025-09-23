@@ -253,8 +253,8 @@ export default function AdvertiserProfilePage() {
                       <div className="flex items-center text-xs text-slate-500 mt-2">
                         <span className="mr-[8px]">Recommended by {profile?.recommend_count_lifetime} traders</span>
                         {profile?.rating_average_lifetime && (
-                          <span className="text-slate-400">|</span>
                           <div className="flex items-center">
+                            <span className="text-slate-400">|</span>
                             <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
                             <span className="ml-[8px]">{profile?.rating_average_lifetime}</span>
                           </div>
