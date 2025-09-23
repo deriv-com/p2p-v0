@@ -91,7 +91,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           </div>
           <Button
             variant="ghost"
-            size="sm"
+            size="xs"
             className="ml-4"
             onClick={() => setIsStatsModalOpen(true)}
           >
