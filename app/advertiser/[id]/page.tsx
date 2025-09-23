@@ -398,7 +398,7 @@ export default function AdvertiserProfilePage() {
 
           {activeSection === "ads" && (
             <>
-              <div className="container mx-auto pb-4 text-lg">Online ads</div>
+              <div className="container mx-auto pb-4 text-lg font-bold">Online ads</div>
               <div className="container mx-auto pb-8">
                 {adverts.length > 0 ? (
                   <>
