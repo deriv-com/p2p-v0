@@ -401,16 +401,7 @@ export default function AdvertiserProfilePage() {
           {activeSection === "ads" && (
             <>
               <div className="container mx-auto pb-4">
-                <Tabs defaultValue={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                  <TabsList className="w-auto md:min-w-[230px]">
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
-                      Buy Ads
-                    </TabsTrigger>
-                    <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
-                      Sell Ads
-                    </TabsTrigger>
-                  </TabsList>
-                </Tabs>
+               
               </div>
               <div className="container mx-auto pb-8">
                 {filteredAdverts.length > 0 ? (
