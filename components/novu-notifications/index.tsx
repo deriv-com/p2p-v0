@@ -188,7 +188,7 @@ export function NovuNotifications() {
             }
           }, 100)
         }}
-        placement="bottom-start"
+        placement={isMobile ? "bottom-start" : "bottom-end"} 
         appearance={appearance}
         styles={{
    
