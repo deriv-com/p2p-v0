@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { NovuNotifications } from "@/components/novu-notifications"
-import { cn } from "@/lib/utils"
 
 interface NavigationProps {
   isBackBtnVisible?: boolean
@@ -38,11 +37,7 @@ export default function Navigation({
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
             <div className="flex items-center gap-2">
-              {showNotificationIcon && (
-                <div className="text-slate-600 hover:text-slate-700">
-                  <NovuNotifications />
-                </div>
-              )}
+          
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
                 <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
               </Button>
@@ -102,12 +97,11 @@ export default function Navigation({
   }
 
   return (
-    <div
-      className={cn(
-        "mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]",
-        showNotificationIcon && "bg-slate-1200 pr-[14px]",
-      )}
-    >
+ <div
+  className={`mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px] ${showNotificationIcon ? "bg-slate-1200 pr-[14px]" : ""}`}
+>
+
+
       <div className="flex items-center justify-between md:px-0">{getHeaderComponent()}</div>
     </div>
   )

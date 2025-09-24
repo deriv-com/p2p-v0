@@ -8,9 +8,9 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
 import "../../styles/globals.css"
 
-const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={32} height={32} />
 
-const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={32} height={32} />
 
 const BellIcon = () => {
   const isMobile = useIsMobile()
@@ -20,10 +20,7 @@ const BellIcon = () => {
     setMounted(true)
   }, [])
 
-  // Always return DesktopBell during SSR and initial render
   if (!mounted) return <DesktopBell />
-
-  // Return appropriate bell based on screen size
   return isMobile ? <MobileBell /> : <DesktopBell />
 }
 
@@ -61,9 +58,7 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
-    icons: {
-      bell: BellIcon,
-    },
+    icons: { bell: () => <BellIcon /> },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
