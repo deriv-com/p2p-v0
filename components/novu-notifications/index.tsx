@@ -66,7 +66,7 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
-    icons: { bell: () => <BellIcon /> },
+    icons: { bell: () => <BellIcon />,fontSize:24px },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
