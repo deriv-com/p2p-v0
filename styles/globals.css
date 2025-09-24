@@ -90,12 +90,23 @@
 }
 
 .novu-popover-content {
-  max-width: 500px;
+max-width: 500px;
 }
 
-@media (max-width: 500px) {
-  .novu-popover-content {
-    width: 80vw;
-    max-width: none;
-  }
+@media (max-width: 768px) {
+.novu-popover-content {
+max-width: 350px;
+}
+}
+
+@media (max-width: 480px) {
+.novu-popover-content {
+max-width: 250px;
+}
+}
+
+@media (max-width: 320px) {
+.novu-popover-content {
+max-width: 200px;
+}
 }
