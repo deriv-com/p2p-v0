@@ -13,7 +13,6 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
-import * as AuthAPI from "@/services/api/api-auth"
 
 interface StatsTabsProps {
   stats?: any
