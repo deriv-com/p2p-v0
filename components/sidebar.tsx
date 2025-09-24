@@ -14,7 +14,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   const navItems = [
-    { name: "Trader's Hub", href: "https://home.deriv.com/", icon: "/icons/traders-hub.png" },
+    { name: "Home", href: "https://home.deriv.com/dashboard/home", icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
