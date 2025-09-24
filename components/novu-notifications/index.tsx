@@ -82,12 +82,12 @@ export function NovuNotifications() {
     },
     elements: {
        bellContainer: {
-        width: "30px",
-        height: "30px",
+        width: "32px",
+        height: "32px",
       },
       bellIcon: {
-        width: "30px",
-        height: "30px",
+        width: "24px",
+        height: "24px",
       },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",
