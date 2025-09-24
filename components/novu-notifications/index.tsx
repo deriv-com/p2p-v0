@@ -81,6 +81,14 @@ export function NovuNotifications() {
       colorBackground: "#ffffff",
     },
     elements: {
+       bellContainer: {
+        width: "30px",
+        height: "30px",
+      },
+      bellIcon: {
+        width: "30px",
+        height: "30px",
+      },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",
     },
