@@ -99,6 +99,7 @@ export function NovuNotifications() {
       preferences__button: {
         display: "none",
       },
+      popoverContent:"novu-popover-content"
     },
   }
 
