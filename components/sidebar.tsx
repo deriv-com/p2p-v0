@@ -5,7 +5,6 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { USER } from "@/lib/local-variables"
 import { Avatar } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 
