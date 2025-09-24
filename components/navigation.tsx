@@ -72,11 +72,7 @@ export default function Navigation({
       <div className="flex w-full justify-between items-center">
         <h1 className="text-xl font-bold">{title}</h1>
         <div className="flex items-center gap-2">
-          {showNotificationIcon && (
-            <div className="text-slate-600 hover:text-slate-700">
-              <NovuNotifications />
-            </div>
-          )}
+        
           <Button
             variant="ghost"
             onClick={() => {
