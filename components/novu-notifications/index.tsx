@@ -75,7 +75,7 @@ export function NovuNotifications() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [subscriberId, setSubscriberId] = useState<string | null>(null)
-
+  const isMobile = useIsMobile()
   const userIdFallback = USER.id || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
