@@ -8,11 +8,11 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
 
 const DesktopBell = () => {
-  return <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+  return <Image src="/icons/bell-desktop.png" alt="Notifications" width={32} height={32} />
 }
 
 const MobileBell = () => {
-  return <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+  return <Image src="/icons/bell-sm.png" alt="Notifications" width={32} height={32} />
 }
 
 const BellIcon = () => {
