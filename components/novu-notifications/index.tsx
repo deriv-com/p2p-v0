@@ -6,6 +6,7 @@ import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
+import './styles/globals.css';
 
 const DesktopBell = () => {
   return <Image src="/icons/bell-desktop.png" alt="Notifications" width={32} height={32} />
