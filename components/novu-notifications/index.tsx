@@ -7,7 +7,12 @@ import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
 
-const CustomBell = () => {
+function CustomBell() {
+  const isMobile = useIsMobile()
+  if (!isMobile) {
+    return null
+  }
+
   return <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
 }
 
@@ -17,7 +22,7 @@ async function fetchSubscriberHash() {
 
     const response = await fetch(url, {
       method: "POST",
-      body: JSON.stringify({}),
+      body: JSON.stringify({}), 
       credentials: "include",
       headers: AUTH.getNotificationHeader(),
     })
@@ -57,12 +62,11 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
-    ...(mounted &&
-      isMobile && {
-        icons: {
-          bell: () => <CustomBell />,
-        },
-      }),
+    ...(isMobile && {
+      icons: {
+        bell: CustomBell,
+      },
+    }),
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
