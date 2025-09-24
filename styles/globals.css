@@ -88,3 +88,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+.novu-popover-content {
+max-width: 500px;
+}
+
+@media (max-width: 500px) {
+.novu-popover-content {
+width: 80%;
+max-width: none; /* allow the 80% width to take effect */
+}
+}
