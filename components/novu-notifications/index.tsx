@@ -84,6 +84,7 @@ export function NovuNotifications() {
        bellContainer: {
         width: "24px",
         height: "24px",
+        color:"181C25"
       },
       bellIcon: {
         width: "24px",
