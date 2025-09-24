@@ -84,8 +84,7 @@ export function NovuNotifications() {
       bell: () => <BellIcon />,
     },
     variables: {
-    iconheight: "24px",
-      iconwidth: "24px",
+  
       borderRadius: "8px",
       fontSize: "16px",
       colorShadow: "rgba(0, 0, 0, 0.1)",
