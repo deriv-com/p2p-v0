@@ -67,7 +67,7 @@ async function fetchSubscriberHash() {
 
 export function NovuNotifications() {
   const router = useRouter()
-  const isMobile = useIsMobile()
+
   const [mounted, setMounted] = useState(false)
   const [subscriberHash, setSubscriberHash] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
