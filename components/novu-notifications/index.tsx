@@ -191,6 +191,7 @@ export function NovuNotifications() {
         placement="bottom-start"
         appearance={appearance}
         styles={{
+   
           bell: {
             root: {
               background: "transparent",
