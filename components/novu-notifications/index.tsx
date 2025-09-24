@@ -188,7 +188,7 @@ export function NovuNotifications() {
             }
           }, 100)
         }}
-        placement="bottom-end"
+        placement="bottom-start"
         appearance={appearance}
         styles={{
           bell: {
