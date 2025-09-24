@@ -4,27 +4,21 @@ import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
-import { useIsMobile as useIsMobileHook } from "@/hooks/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
-import '../../styles/globals.css';
+import "../../styles/globals.css"
 
-const DesktopBell = () => (
-  <Image src="/icons/bell-desktop.png" alt="Notifications" width={32} height={32} />
-)
+const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={32} height={32} />
 
-const MobileBell = () => (
-  <Image src="/icons/bell-sm.png" alt="Notifications" width={32} height={32} />
-)
+const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={32} height={32} />
 
 const BellIcon = () => {
-  const isMobileHook = useIsMobileHook()
+  const isMobile = useIsMobile()
   const [mounted, setMounted] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-    setIsMobile(isMobileHook)
-  }, [isMobileHook])
+  }, [])
 
   if (!mounted) return <DesktopBell />
   return isMobile ? <MobileBell /> : <DesktopBell />
@@ -59,8 +53,7 @@ export function NovuNotifications() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [subscriberId, setSubscriberId] = useState<string | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
-  const isMobileHook = useIsMobileHook()
+  const isMobile = useIsMobile()
   const userIdFallback = USER.id || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
@@ -80,9 +73,9 @@ export function NovuNotifications() {
       colorBackground: "#ffffff",
     },
     elements: {
-       bellContainer: {
+      bellContainer: {
         width: "24px",
-        height: "24px"   
+        height: "24px",
       },
       bellIcon: {
         width: "24px",
@@ -95,7 +88,6 @@ export function NovuNotifications() {
 
   useEffect(() => {
     setMounted(true)
-    setIsMobile(isMobileHook)
 
     if (!userIdFallback) {
       setError("No user ID available")
@@ -122,7 +114,7 @@ export function NovuNotifications() {
     }
 
     getSubscriberHash()
-  }, [userIdFallback, isMobileHook])
+  }, [userIdFallback])
 
   if (!mounted || isLoading) {
     return (
