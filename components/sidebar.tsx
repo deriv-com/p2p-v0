@@ -64,11 +64,6 @@ export default function Sidebar() {
               </li>
             )
           })}
-          <li key="logout">
-            <Button className="my-4" size="sm" onClick={() => AuthAPI.logout()}>
-              Logout
-            </Button>
-          </li>
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
