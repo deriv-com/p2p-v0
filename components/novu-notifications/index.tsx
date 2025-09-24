@@ -19,7 +19,7 @@ const MobileBell = () => (
 const BellIcon = () => {
   const isMobileHook = useIsMobileHook()
   const [mounted, setMounted] = useState(false)
-  const [isMobile, setIsMobile] = useState(false) // default false
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     setMounted(true)
