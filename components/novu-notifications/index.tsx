@@ -7,13 +7,29 @@ import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
 
-function CustomBell() {
+const DesktopBell = () => {
+  return <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+}
+
+const MobileBell = () => {
+  return <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+}
+
+const BellIcon = () => {
   const isMobile = useIsMobile()
-  if (!isMobile) {
-    return null
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Always render DesktopBell during SSR and before mounting
+  if (!mounted) {
+    return <DesktopBell />
   }
 
-  return <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+  // After mounting, render based on screen size
+  return isMobile ? <MobileBell /> : <DesktopBell />
 }
 
 async function fetchSubscriberHash() {
@@ -22,7 +38,7 @@ async function fetchSubscriberHash() {
 
     const response = await fetch(url, {
       method: "POST",
-      body: JSON.stringify({}), 
+      body: JSON.stringify({}),
       credentials: "include",
       headers: AUTH.getNotificationHeader(),
     })
@@ -62,11 +78,9 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
-    ...(isMobile && {
-      icons: {
-        bell: CustomBell,
-      },
-    }),
+    icons: {
+      bell: () => <BellIcon />,
+    },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
