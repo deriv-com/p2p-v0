@@ -101,9 +101,10 @@ export default function Navigation({
   }
 
   return (
-    <div
-      className={`mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px] ${showNotificationIcon ? "bg-slate-1200" : ""}`}
-    >
+   <div
+  className={`mb-4 border-b py-[12px] px-[16px] mr-[14px] md:mr-0 md:py-[4px] md:border-0 md:px-[24px] ${showNotificationIcon ? "bg-slate-1200" : ""}`}
+>
+
       <div className="flex items-center justify-between md:px-0">{getHeaderComponent()}</div>
     </div>
   )
