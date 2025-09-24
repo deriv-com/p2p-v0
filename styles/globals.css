@@ -96,6 +96,6 @@ max-width: 500px;
 @media (max-width: 500px) {
 .novu-popover-content {
 width: 80%;
-max-width: none; /* allow the 80% width to take effect */
+max-width: none;
 }
 }
