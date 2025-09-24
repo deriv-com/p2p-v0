@@ -89,7 +89,7 @@ export function NovuNotifications() {
       colorCounterForeground: "#ffffff",
       colorCounter: "#FF444F",
       colorSecondaryForeground: "#1A1523",
-      colorSecondary: "#002A33",
+    
       colorPrimaryForeground: "#ffffff",
       colorPrimary: "#FF444F",
       colorForeground: "#181C25",
