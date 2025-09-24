@@ -83,7 +83,9 @@ export function NovuNotifications() {
     elements: {
        bellContainer: {
         width: "24px",
-        height: "24px"   
+        height: "24px",
+      
+      
       },
       bellIcon: {
         width: "24px",
