@@ -2,13 +2,13 @@
 
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
-import { AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
+import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 
 import { useRouter } from "next/navigation"
 
 async function fetchSubscriberHash() {
   try {
-    const url = `https://staging-api.champion.trade/notifications/v1/hash`
+    const url = `${API.notificationUrl}/hash`
 
     const response = await fetch(url, {
       method: "POST",
