@@ -88,7 +88,7 @@ return (
   return (
     <div
       className={cn(
-        "mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]",
+        "py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]",
         showNotificationIcon && "bg-slate-1200 pr-[14px]"
       )}
     >
