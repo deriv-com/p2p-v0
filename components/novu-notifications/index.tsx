@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
+import Image from "next/imag
 import "../../styles/globals.css"
 
 async function fetchSubscriberHash() {
