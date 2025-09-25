@@ -100,7 +100,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
+      {isMobile && <Navigation className="rounded-b-3xl" isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="px-[24px] pt-3 md:pt-0">
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
