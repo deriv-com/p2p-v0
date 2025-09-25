@@ -273,6 +273,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>
+                    <div className="flex items-center justify-between md:justify-normal gap-1">
+                      <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limits:</span>
+                      <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                        {formatLimits(ad)}
+                      </span>
+                    </div>
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">{getStatusBadge(isActive)}</TableCell>
