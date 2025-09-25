@@ -64,25 +64,25 @@ export default function Navigation({
       }
     }
 
-    return (
-      <div className="flex w-full justify-between items-center">
-        <h1 className="text-xl font-bold">{title}</h1>
-        <Button
-          variant="ghost"
-          onClick={() => {
-            if (onClose) {
-              onClose()
-            } else {
-              router.push(redirectUrl)
-            }
-          }}
-          size="sm"
-          className="bg-grayscale-300 px-1"
-        >
-          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-        </Button>
-      </div>
-    )
+return (
+  <>
+    <h1 className="text-xl font-bold">{title}</h1>
+    <Button
+      variant="ghost"
+      onClick={() => {
+        if (onClose) {
+          onClose()
+        } else {
+          router.push(redirectUrl)
+        }
+      }}
+      size="sm"
+      className="bg-grayscale-300 px-1"
+    >
+      <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+    </Button>
+  </>
+)
   }
 
   return (
