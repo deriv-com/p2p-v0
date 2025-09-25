@@ -1,15 +1,9 @@
 "use client"
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 
 interface DeleteConfirmationDialogProps {
   open: boolean
@@ -17,11 +11,7 @@ interface DeleteConfirmationDialogProps {
   onConfirm: () => void
 }
 
-export function DeleteConfirmationDialog({
-  open,
-  onCancel,
-  onConfirm
-}: DeleteConfirmationDialogProps) {
+export function DeleteConfirmationDialog({ open, onCancel, onConfirm }: DeleteConfirmationDialogProps) {
   const isMobile = useIsMobile()
   const title = "Delete ad?"
   const description = "You will not be able to restore it."
@@ -40,7 +30,7 @@ export function DeleteConfirmationDialog({
             <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
               {confirmText}
             </Button>
-            <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
+            <Button onClick={onCancel} variant="outline" className="w-full rounded-full bg-transparent">
               {cancelText}
             </Button>
           </div>
@@ -58,7 +48,7 @@ export function DeleteConfirmationDialog({
           <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
             {confirmText}
           </Button>
-          <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
+          <Button onClick={onCancel} variant="outline" className="w-full rounded-full bg-transparent">
             {cancelText}
           </Button>
         </DialogFooter>

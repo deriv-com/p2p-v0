@@ -15,6 +15,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import Navigation from "@/components/navigation"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface StatusData {
   success: "create" | "update"
@@ -29,8 +30,9 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const userData = (typeof window !== "undefined") ? JSON.parse(localStorage.getItem("user_data")) : {}
+  const userData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data")) : {}
   const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
+  const [activeTab, setActiveTab] = useState<"active" | "inactive">("active")
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -148,6 +150,14 @@ export default function AdsPage() {
     }
   }
 
+  const getFilteredAds = () => {
+    if (activeTab === "active") {
+      return ads.filter((ad) => (ad.is_active !== undefined ? ad.is_active : ad.status === "Active"))
+    } else {
+      return ads.filter((ad) => (ad.is_active !== undefined ? !ad.is_active : ad.status !== "Active"))
+    }
+  }
+
   const getHideMyAdsComponent = () => {
     return (
       <div className="flex items-center">
@@ -170,10 +180,10 @@ export default function AdsPage() {
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
-      </TooltipProvider>
-    </div>
-  )
-}
+        </TooltipProvider>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -193,17 +203,36 @@ export default function AdsPage() {
               >
                 Create ad
               </Button>
-                {getHideMyAdsComponent()}
-            </div>
-          )}
-          
-          {ads.length > 0 && isMobile && (
-            <div className="flex items-center justify-end mb-4">
               {getHideMyAdsComponent()}
             </div>
           )}
+
+          {ads.length > 0 && isMobile && (
+            <div className="flex items-center justify-end mb-4">{getHideMyAdsComponent()}</div>
+          )}
+
+          {ads.length > 0 && (
+            <div className="mb-6">
+              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
+                <TabsList className="w-full bg-slate-1200 h-auto p-0 rounded-3xl">
+                  <TabsTrigger
+                    value="active"
+                    className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:rounded-none text-gray-400 font-normal py-4 px-6 rounded-l-3xl"
+                  >
+                    Active
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="inactive"
+                    className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:rounded-none text-gray-400 font-normal py-4 px-6 rounded-r-3xl"
+                  >
+                    Inactive
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+            </div>
+          )}
         </div>
-        
+
         {ads.length > 0 && isMobile && (
           <div className="fixed bottom-20 right-4 z-10">
             <Button
@@ -216,15 +245,20 @@ export default function AdsPage() {
             </Button>
           </div>
         )}
-        
+
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-              { error ? (
+          {error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
+            <MyAdsTable
+              ads={getFilteredAds()}
+              onAdDeleted={handleAdUpdated}
+              hiddenAdverts={hiddenAdverts}
+              isLoading={loading}
+            />
           )}
         </div>
-      
+
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
             isOpen

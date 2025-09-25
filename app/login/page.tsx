@@ -1,10 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as AuthAPI from "@/services/api/api-auth"
+
+const ArrowLeftIcon = () => (
+  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+  </svg>
+)
 
 export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verification">("login")
@@ -112,7 +117,7 @@ export default function LoginPage() {
       <div className="min-h-screen bg-white px-4 py-6">
         <div className="flex items-center mb-8">
           <Button variant="ghost" onClick={() => setStep("login")} className="p-2 -ml-2">
-            <ArrowLeft className="h-6 w-6" />
+            <ArrowLeftIcon />
             Back
           </Button>
         </div>
@@ -161,13 +166,8 @@ export default function LoginPage() {
           {isLoading ? "Logging in..." : "Log in"}
         </Button>
         <div className="mt-[2rem] text-center">
-          Don’t have an account yet?{" "}
-          <a
-            className="text-primary"
-            href="https://home.deriv.com/dashboard"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          Don't have an account yet?{" "}
+          <a className="text-primary" href="https://home.deriv.com/dashboard" target="_blank" rel="noopener noreferrer">
             Sign up
           </a>
         </div>
