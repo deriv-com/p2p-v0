@@ -8,9 +8,9 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
 import "../../styles/globals.css"
 
-const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={32} height={32} />
+const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
 
-const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={32} height={32} />
+const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
 
 const BellIcon = () => {
   const isMobile = useIsMobile()
@@ -20,8 +20,12 @@ const BellIcon = () => {
     setMounted(true)
   }, [])
 
-  if (!mounted) return <DesktopBell />
-  return isMobile ? <MobileBell /> : <DesktopBell />
+  const getBellIcon = () => {
+    if (!mounted) return DesktopBel
+    return isMobile ? MobileBell : DesktopBell
+  }
+
+  return getBellIcon()
 }
 
 async function fetchSubscriberHash() {
@@ -58,7 +62,7 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
-    icons: { bell: () => <BellIcon /> },
+    icons: { bell: BellIcon },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
