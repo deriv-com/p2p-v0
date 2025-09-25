@@ -326,7 +326,7 @@ export default function OrdersPage() {
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
+      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="flex flex-col h-full px-3">
         <div className="flex flex-col">
           <div className="w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
@@ -346,9 +346,14 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button variant="ghost" size="sm" className="text-white font-normal hover:text-white hover:bg-transparent " onClick={handleCheckPreviousOrders}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white font-normal hover:text-white hover:bg-transparent "
+              onClick={handleCheckPreviousOrders}
+            >
               Check previous orders
-              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1"/>
+              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
             </Button>
           </div>
           <div className="my-4">

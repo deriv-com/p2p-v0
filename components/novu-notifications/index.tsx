@@ -3,31 +3,23 @@
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
-
 import { useRouter } from "next/navigation"
+import { useIsMobile } from "@/hooks/use-mobile"
+import Image from "next/image"
+import "../../styles/globals.css"
 
 async function fetchSubscriberHash() {
   try {
     const url = `${API.notificationUrl}/hash`
-
     const response = await fetch(url, {
       method: "POST",
       credentials: "include",
       headers: AUTH.getNotificationHeader(),
     })
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch subscriber hash: ${response.status}`)
-    }
-
+    if (!response.ok) throw new Error(`Failed to fetch subscriber hash: ${response.status}`)
     const responseData = await response.json()
-
     const subscriberData = responseData.data?.subscriber || responseData.subscriber
-
-    if (!subscriberData) {
-      throw new Error("Invalid response structure: missing subscriber data")
-    }
-
+    if (!subscriberData) throw new Error("Invalid response structure: missing subscriber data")
     return {
       subscriberHash: subscriberData.subscriberHash,
       subscriberId: subscriberData.subscriberId,
@@ -45,11 +37,25 @@ export function NovuNotifications() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [subscriberId, setSubscriberId] = useState<string | null>(null)
-
+  const isMobile = useIsMobile()
   const userIdFallback = USER.id || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
+    useEffect(() => {
+    setMounted(true)
+  }, [])
+
+
   const appearance = {
+    icons: {
+      bell: () => {      
+        return isMobile ? (
+          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+        ) : (
+          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        )
+      },
+    },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
@@ -58,30 +64,36 @@ export function NovuNotifications() {
       colorCounterForeground: "#ffffff",
       colorCounter: "#FF444F",
       colorSecondaryForeground: "#1A1523",
-      colorSecondary: "#002A33",
       colorPrimaryForeground: "#ffffff",
       colorPrimary: "#FF444F",
       colorForeground: "#181C25",
       colorBackground: "#ffffff",
     },
     elements: {
-      preferences__button: {
-            display: "none",
-          },
+      popoverTrigger: {
+        borderRadius: "50%",
+        backgroundColor: "rgba(0, 0, 0, 0.04)",
+      },
+      bellContainer: {
+        width: "24px",
+        height: "24px",
+      },
+      bellIcon: {
+        width: "24px",
+        height: "24px",
+      },
+      preferences__button: { display: "none" },
+      popoverContent: "novu-popover-content",
     },
   }
 
   useEffect(() => {
-    setMounted(true)
-
-    // Only fetch if we have a user ID fallback
     if (!userIdFallback) {
       setError("No user ID available")
       setIsLoading(false)
       return
     }
 
-    // Fetch the subscriber hash
     const getSubscriberHash = async () => {
       setIsLoading(true)
       setError(null)
@@ -128,17 +140,12 @@ export function NovuNotifications() {
         applicationIdentifier={applicationIdentifier}
         subscriber={subscriberId || ""}
         subscriberHash={subscriberHash}
-        localization={{
-          "inbox.filters.labels.default": "Notifications",
-        }}
+        localization={{ "inbox.filters.labels.default": "Notifications" }}
         colorScheme="light"
-        i18n={{
-          poweredBy: "Notifications by",
-        }}
+        i18n={{ poweredBy: "Notifications by" }}
         onNotificationClick={(notification) => {
-          if (notification.data && notification.data["order_id"]) {
-            const orderId = notification.data["order_id"]
-            router.push(`/orders/${orderId}`)
+          if (notification.data?.order_id) {
+            router.push(`/orders/${notification.data.order_id}`)
           }
 
           setTimeout(() => {
@@ -153,20 +160,11 @@ export function NovuNotifications() {
             }
           }, 100)
         }}
-        placement="bottom-end"
+        placement={isMobile ? "bottom-start" : "bottom-end"}
         appearance={appearance}
         styles={{
-          bell: {
-            root: {
-              background: "transparent",
-              color: "black",
-            },
-          },
-          popover: {
-            root: {
-              zIndex: 100,
-            },
-          },
+          bell: { root: { background: "transparent", color: "black" } },
+          popover: { root: { zIndex: 100 } },
         }}
       />
     </div>
