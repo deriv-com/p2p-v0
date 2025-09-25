@@ -25,7 +25,7 @@ export function MobileSidebarTrigger() {
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-[295px]">
         <div className="h-full flex flex-col">
-          <Sidebar className="border-r-0 mr-0" />
+          <Sidebar className="h-full border-r-0 mr-0" />
         </div>
       </SheetContent>
     </Sheet>
