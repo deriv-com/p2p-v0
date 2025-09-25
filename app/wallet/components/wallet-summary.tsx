@@ -155,7 +155,7 @@ export default function WalletSummary() {
             >
               <Plus className="h-5 w-5" />
             </Button>
-            <span className="text-white text-xsfont-normal">Deposit</span>
+            <span className="text-white text-xs font-normal">Deposit</span>
           </div>
 
           {/* Transfer Button */}
