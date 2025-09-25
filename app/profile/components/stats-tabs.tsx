@@ -13,7 +13,6 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
-import * as AuthAPI from "@/services/api/api-auth"
 
 interface StatsTabsProps {
   stats?: any
@@ -207,13 +206,6 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
               </div>
             )}
-            <Divider />
-            <div
-              className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors text-sm font-normal text-gray-900"
-              onClick={() => AuthAPI.logout()}
-            >
-              Logout
-            </div>
             <Divider />
           </div>
         ) : (

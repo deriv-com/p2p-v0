@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
   description: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
   generator: "v0.dev",
+  icons: {
+    icon: "/icons/dp2p.svg"
+  }
 }
 
 export const viewport: Viewport = {

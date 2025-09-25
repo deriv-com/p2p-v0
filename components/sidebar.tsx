@@ -5,16 +5,14 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { USER } from "@/lib/local-variables"
 import { Avatar } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import * as AuthAPI from "@/services/api/api-auth"
 
 export default function Sidebar() {
   const pathname = usePathname()
 
   const navItems = [
-    { name: "Trader's Hub", href: "https://home.deriv.com/", icon: "/icons/traders-hub.png" },
+    { name: "Home", href: "https://home.deriv.com/dashboard/home", icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
@@ -64,11 +62,6 @@ export default function Sidebar() {
               </li>
             )
           })}
-          <li key="logout">
-            <Button className="my-4" size="sm" onClick={() => AuthAPI.logout()}>
-              Logout
-            </Button>
-          </li>
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
