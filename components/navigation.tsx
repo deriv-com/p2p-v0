@@ -67,7 +67,6 @@ export default function Navigation({
     }
 
     return (
-
         <h1 className="text-xl font-bold">{title}</h1>
         <Button
           variant="ghost"
