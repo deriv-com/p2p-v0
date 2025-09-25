@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
+import Image from "next/image"
 import "../../styles/globals.css"
 
 async function fetchSubscriberHash() {
@@ -44,39 +45,19 @@ export function NovuNotifications() {
     setMounted(true)
   }, [])
 
-  const BellIcon = () => {
-    if (!mounted) {
-      // Default bell icon as SVG
-      return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M12 2C13.1 2 14 2.9 14 4C14 4.78 13.64 5.47 13.06 5.85C15.84 6.87 18 9.61 18 12.97V16L20 18V19H4V18L6 16V12.97C6 9.61 8.16 6.87 10.94 5.85C10.36 5.47 10 4.78 10 4C10 2.9 10.9 2 12 2ZM10 20H14C14 21.1 13.1 22 12 22C10.9 22 10 21.1 10 20Z"
-            fill="currentColor"
-          />
-        </svg>
-      )
-    }
-
-    return isMobile ? (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M12 2C13.1 2 14 2.9 14 4C14 4.78 13.64 5.47 13.06 5.85C15.84 6.87 18 9.61 18 12.97V16L20 18V19H4V18L6 16V12.97C6 9.61 8.16 6.87 10.94 5.85C10.36 5.47 10 4.78 10 4C10 2.9 10.9 2 12 2ZM10 20H14C14 21.1 13.1 22 12 22C10.9 22 10 21.1 10 20Z"
-          fill="currentColor"
-        />
-      </svg>
-    ) : (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M12 2C13.1 2 14 2.9 14 4C14 4.78 13.64 5.47 13.06 5.85C15.84 6.87 18 9.61 18 12.97V16L20 18V19H4V18L6 16V12.97C6 9.61 8.16 6.87 10.94 5.85C10.36 5.47 10 4.78 10 4C10 2.9 10.9 2 12 2ZM10 20H14C14 21.1 13.1 22 12 22C10.9 22 10 21.1 10 20Z"
-          fill="currentColor"
-        />
-      </svg>
-    )
-  }
-
   const appearance = {
     icons: {
-      bell: BellIcon,
+      bell: () => {
+        if (!mounted) {
+      
+          return <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        }
+        return isMobile ? (
+          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+        ) : (
+          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        )
+      },
     },
     variables: {
       borderRadius: "8px",
