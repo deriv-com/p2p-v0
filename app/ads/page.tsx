@@ -157,7 +157,6 @@ export default function AdsPage() {
   }
 
   const getFilteredAds = () => {
-    // The API now returns the correct ads based on the show_inactive parameter
     return ads
   }
 
