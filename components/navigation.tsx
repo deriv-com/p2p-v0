@@ -71,7 +71,7 @@ export default function Navigation({
     return (
       <div className="flex w-full justify-between items-center">
         <h1 className="text-xl font-bold">{title}</h1>
-        <div className="flex items-center gap-2">
+    
           <Button
             variant="ghost"
             onClick={() => {
