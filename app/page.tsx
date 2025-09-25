@@ -17,8 +17,6 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import Image from "next/image"
 import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
-import { useIsMobile } from "@/hooks/use-mobile"
-import Navigation from "@/components/navigation"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
@@ -68,13 +66,9 @@ export default function BuySellPage() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
-
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const isMobile = useIsMobile()
-
   const { currencies } = useCurrencyData()
-
   const abortControllerRef = useRef<AbortController | null>(null)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
@@ -228,7 +222,6 @@ export default function BuySellPage() {
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="flex flex-col h-screen overflow-hidden px-3">
         <TemporaryBanAlert />
         <div className="flex-shrink-0">

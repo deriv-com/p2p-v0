@@ -8,7 +8,11 @@ import { Avatar } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 
-export default function Sidebar() {
+interface SidebarProps {
+  className?: string
+}
+
+export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
 
   const navItems = [
@@ -21,10 +25,10 @@ export default function Sidebar() {
   ]
 
   return (
-    <div className="hidden md:flex w-[295px] flex-col border-r border-slate-200 mr-[8px]">
+    <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
-        <div className="text-slate-600 hover:text-slate-700">
+        <div className="hidden md:block text-slate-600 hover:text-slate-700">
           <NovuNotifications />
         </div>
       </div>

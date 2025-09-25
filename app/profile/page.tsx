@@ -6,11 +6,8 @@ import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { useIsMobile } from "@/hooks/use-mobile"
-import Navigation from "@/components/navigation"
 
 export default function ProfilePage() {
-  const isMobile = useIsMobile()
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
@@ -100,8 +97,7 @@ export default function ProfilePage() {
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
-      <div className="px-[24px]">
+      <div className="px-[24px] pt-3 md:pt-0">
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo

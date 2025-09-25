@@ -4,8 +4,7 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import { Button } from "@/components/ui/button"
-import * as AuthAPI from "@/services/api/api-auth"
+import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 
 export default function Header() {
   const pathname = usePathname()
@@ -18,8 +17,12 @@ export default function Header() {
   ]
 
   return (
-    <header className="hidden md:flex justify-between items-center px-[24px] py-[16px] z-10">
-      <div>
+    <header className={cn("flex justify-between items-center px-3 md:px-[24px] py-3 bg-slate-1200")}>
+      <div className="md:hidden">
+        <MobileSidebarTrigger />
+      </div>
+
+      <div className="hidden md:block">
         <nav className="flex h-12 border-b border-slate-200">
           {navItems.map((item) => {
             const isActive =
@@ -49,9 +52,6 @@ export default function Header() {
         <div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
         </div>
-        <Button size="sm" onClick={() => AuthAPI.logout()}>
-          Logout
-        </Button>
       </div>
     </header>
   )
