@@ -56,7 +56,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   return (
     <TooltipProvider>
       <div>
-        <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between py-6">
+        <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between py-6 gap-4">
           <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-8 flex-1">
             <div className="flex-shrink-0">
               {buyCompletionRate ? 
@@ -92,7 +92,6 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           <Button
             variant="ghost"
             size="xs"
-            className="ml-4"
             onClick={() => setIsStatsModalOpen(true)}
           >
             View more
