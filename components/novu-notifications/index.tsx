@@ -41,6 +41,11 @@ export function NovuNotifications() {
   const userIdFallback = USER.id || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
+    useEffect(() => {
+    setMounted(true)
+  }, [])
+
+
   const appearance = {
     icons: {
       bell: () => {      
