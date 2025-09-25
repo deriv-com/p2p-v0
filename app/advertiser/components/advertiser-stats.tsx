@@ -104,7 +104,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <Drawer open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle className="font-bold text-2xl">Advertiser info</DrawerTitle>
+              <DrawerTitle className="font-bold text-xl">Advertiser info</DrawerTitle>
             </DrawerHeader>
             <div className="p-4">
               <StatsContent profile={profile} isMobile={true} />
