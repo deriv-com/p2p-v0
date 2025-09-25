@@ -155,7 +155,7 @@ export default function WalletSummary() {
             >
               <Plus className="h-5 w-5" />
             </Button>
-            <span className="text-white text-sm font-normal">Deposit</span>
+            <span className="text-white text-xsfont-normal">Deposit</span>
           </div>
 
           {/* Transfer Button */}
@@ -168,7 +168,7 @@ export default function WalletSummary() {
             >
               <Image src="/icons/exchange-icon.png" alt="Transfer" width={16} height={16} />
             </Button>
-            <span className="text-white text-sm font-normal">Transfer</span>
+            <span className="text-white text-xs font-normal">Transfer</span>
           </div>
 
           {/* Withdraw Button */}
@@ -181,7 +181,7 @@ export default function WalletSummary() {
             >
               <Minus className="h-5 w-5" />
             </Button>
-            <span className="text-white text-sm font-normal">Withdraw</span>
+            <span className="text-white text-xs font-normal">Withdraw</span>
           </div>
         </div>
       </div>
