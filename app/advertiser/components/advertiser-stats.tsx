@@ -108,7 +108,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             </DrawerHeader>
             <div className="p-4">
               <StatsContent profile={profile} isMobile={true} />
-              <Button onClick={() => setIsStatsModalOpen(false)}>Close</Button>
+              <Button className="my-4 min-w-full w-full" onClick={() => setIsStatsModalOpen(false)}>Close</Button>
             </div>
           </DrawerContent>
         </Drawer>
