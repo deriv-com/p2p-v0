@@ -4,12 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as AuthAPI from "@/services/api/api-auth"
-
-const ArrowLeftIcon = () => (
-  <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-  </svg>
-)
+import Image from "next/image"
 
 export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verification">("login")
