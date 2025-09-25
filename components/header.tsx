@@ -19,7 +19,7 @@ export default function Header() {
   ]
 
   return (
-    <header className="flex justify-between items-center px-[16px] md:px-[24px] py-[16px] z-10">
+    <header className="flex justify-between items-center px-[16px] md:px-[24px] py-[16px]bg-slate-1200 ">
       <div className="md:hidden">
         <MobileSidebarTrigger />
       </div>
@@ -49,15 +49,6 @@ export default function Header() {
             )
           })}
         </nav>
-      </div>
-
-      <div className="h-12 flex items-center space-x-4">
-        <div className="text-slate-600 hover:text-slate-700">
-          <NovuNotifications />
-        </div>
-        <Button size="sm" onClick={() => AuthAPI.logout()} className="hidden md:block">
-          Logout
-        </Button>
       </div>
     </header>
   )
