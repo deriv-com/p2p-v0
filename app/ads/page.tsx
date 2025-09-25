@@ -208,7 +208,7 @@ export default function AdsPage() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-          <>
+          </div>
             <div className="flex items-center justify-between m6">
               {ads.length > 0 && (<Button
                 onClick={() => router.push("/ads/create")}
