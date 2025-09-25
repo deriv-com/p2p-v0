@@ -4,8 +4,6 @@ import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import { Button } from "@/components/ui/button"
-import * as AuthAPI from "@/services/api/api-auth"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 
 export default function Header() {
