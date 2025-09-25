@@ -43,7 +43,7 @@ export function DeleteConfirmationDialog({
             </Button>
           </AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant="destructive" onClick={onConfirm} disabled={isDeleting}>
+            <Button onClick={onConfirm} disabled={isDeleting}>
               {isDeleting ? "Deleting..." : "Delete"}
             </Button>
           </AlertDialogAction>
