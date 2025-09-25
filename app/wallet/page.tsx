@@ -19,7 +19,7 @@ export default function WalletPage() {
           </div>
 
           {/* Transactions Section */}
-          <div className="w-full max-w-[560px] mt-8">
+          <div className="w-full mt-8">
             <h2 className="text-lg font-semibold mb-4">Transactions</h2>
             <TransactionsTab />
           </div>
