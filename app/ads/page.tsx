@@ -211,7 +211,7 @@ export default function AdsPage() {
               </Tabs>
             </div>
           )}
-          {ads.length > 0 && !isMobile && (
+          {ads.length > 0 && (
             <div className="flex items-center justify-between mb-6">
               <Button
                 onClick={() => router.push("/ads/create")}
