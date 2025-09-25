@@ -247,9 +247,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             adType.toLowerCase() === "buy" ? "text-buy" : "text-sell",
                           )}
                         >
-                          {adType} {ad.account_currency}
+                          {adType}
                         </span>
-                        <span className="text-gray-900 text-base font-normal leading-6 ml-1"> {ad.id}</span>
+                        <span className="text-gray-900 text-base font-bold leading-6 ml-1"> {ad.currency}</span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
