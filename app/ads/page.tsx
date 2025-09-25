@@ -191,7 +191,6 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-          {ads.length > 0 && (
             <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
               <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
                 <TabsList className="w-full bg-transparent">
@@ -209,10 +208,8 @@ export default function AdsPage() {
                   </TabsTrigger>
                 </TabsList>
               </Tabs>
-            </div>
           )}
-          {ads.length > 0 && (
-            <div className="flex items-center justify-between my-6">
+            <div className="flex items-center justify-between m6">
               <Button
                 onClick={() => router.push("/ads/create")}
                 size="sm"
@@ -222,7 +219,6 @@ export default function AdsPage() {
               </Button>
               {getHideMyAdsComponent()}
             </div>
-          )}
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
