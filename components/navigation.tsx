@@ -37,11 +37,9 @@ export default function Navigation({
               </Button>
               <h1 className="text-xl font-bold">{title}</h1>
             </div>
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
-                <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-              </Button>
-            </div>
+            <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+            </Button>
           </div>
         )
       } else {
@@ -71,22 +69,20 @@ export default function Navigation({
     return (
       <>
         <h1 className="text-xl font-bold">{title}</h1>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="ghost"
-            onClick={() => {
-              if (onClose) {
-                onClose()
-              } else {
-                router.push(redirectUrl)
-              }
-            }}
-            size="sm"
-            className="bg-grayscale-300 px-1"
-          >
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            if (onClose) {
+              onClose()
+            } else {
+              router.push(redirectUrl)
+            }
+          }}
+          size="sm"
+          className="bg-grayscale-300 px-1"
+        >
+          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+        </Button>
       </>
     )
   }
