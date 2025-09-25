@@ -213,7 +213,7 @@ export default function AdsPage() {
               {ads.length > 0 && (<Button
                 onClick={() => router.push("/ads/create")}
                 size="sm"
-                className="font-extrabold text-base leading-4 tracking-[0%] text-center"
+                className="font-bold text-base leading-4 tracking-[0%] text-center"
               >
                 Create ads
               </Button>
