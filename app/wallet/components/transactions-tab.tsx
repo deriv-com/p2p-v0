@@ -194,7 +194,7 @@ export default function TransactionsTab() {
 
   return (
     <>
-      <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
+      <div className="py-4 space-y-6 mx-auto overflow-hidden">
         <div className="flex gap-2">
           {filters.map((filter) => (
             <Button
