@@ -213,7 +213,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
             <TableRow className="text-sm">
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                Ad ID
+                Ad type
               </TableHead>
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                 Available amount
@@ -249,18 +249,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType}
                         </span>
-                        <span className="text-gray-900 text-base font-normal leading-6 ml-1"> {ad.id}</span>
+                        <span className="text-gray-900 text-base font-bold leading-6 ml-1"> {ad.account_currency}</span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
-                          <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
+                          <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limits:</span>
-                          <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
-                            {formatLimits(ad)}
-                          </span>
+                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
+                          <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
                         </div>
                       </div>
                     </div>
@@ -269,11 +267,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     <div className="mb-1">
                       USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
                     </div>
-                    <div className="h-2 bg-[#E9ECEF] rounded-xs w-full overflow-hidden">
+                    <div className="h-2 bg-[#E9ECEF] rounded-xs w-full overflow-hidden mb-1">
                       <div
                         className="h-full bg-neutral-10 rounded-xs"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
+                    </div>
+                    <div className="flex items-center justify-between md:justify-normal gap-1">
+                      <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limit:</span>
+                      <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                        {formatLimits(ad)}
+                      </span>
                     </div>
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>

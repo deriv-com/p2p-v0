@@ -1,15 +1,9 @@
 "use client"
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 
 interface DeleteConfirmationDialogProps {
   open: boolean
@@ -17,11 +11,7 @@ interface DeleteConfirmationDialogProps {
   onConfirm: () => void
 }
 
-export function DeleteConfirmationDialog({
-  open,
-  onCancel,
-  onConfirm
-}: DeleteConfirmationDialogProps) {
+export function DeleteConfirmationDialog({ open, onCancel, onConfirm }: DeleteConfirmationDialogProps) {
   const isMobile = useIsMobile()
   const title = "Delete ad?"
   const description = "You will not be able to restore it."
@@ -37,10 +27,10 @@ export function DeleteConfirmationDialog({
             <SheetDescription className="text-grayscale-100 text-base text-left">{description}</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-3 mt-6">
-            <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
+            <Button onClick={onConfirm} className="w-full rounded-full">
               {confirmText}
             </Button>
-            <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
+            <Button onClick={onCancel} variant="outline" className="w-full rounded-full bg-transparent">
               {cancelText}
             </Button>
           </div>
@@ -55,10 +45,10 @@ export function DeleteConfirmationDialog({
         <DialogTitle className="font-bold">{title}</DialogTitle>
         <DialogDescription className="text-grayscale-100 text-base">{description}</DialogDescription>
         <DialogFooter className="sm:space-x-0 gap-2 sm:flex-col">
-          <Button onClick={onConfirm} variant="black" className="w-full rounded-full">
+          <Button onClick={onConfirm} className="w-full rounded-full">
             {confirmText}
           </Button>
-          <Button onClick={onCancel} variant="outline" className="w-full rounded-full">
+          <Button onClick={onCancel} variant="outline" className="w-full rounded-full bg-transparent">
             {cancelText}
           </Button>
         </DialogFooter>

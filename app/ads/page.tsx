@@ -15,6 +15,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import Navigation from "@/components/navigation"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 interface StatusData {
   success: "create" | "update"
@@ -29,8 +30,9 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const userData = (typeof window !== "undefined") ? JSON.parse(localStorage.getItem("user_data")) : {}
+  const userData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data")) : {}
   const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
+  const [activeTab, setActiveTab] = useState<"active" | "inactive">("active")
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -40,6 +42,27 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+
+  const fetchAds = async (showInactive?: boolean) => {
+    try {
+      setLoading(true)
+      setError(null)
+      const userAdverts = await AdsAPI.getUserAdverts(showInactive)
+
+      setAds(userAdverts)
+    } catch (err) {
+      console.error("Error fetching ads:", err)
+      setError("Failed to load ads. Please try again later.")
+      setAds([])
+      setErrorModal({
+        show: true,
+        title: "Error Loading Ads",
+        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -77,34 +100,19 @@ export default function AdsPage() {
       })
     }
 
-    const fetchAds = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const userAdverts = await AdsAPI.getUserAdverts()
-
-        setAds(userAdverts)
-      } catch (err) {
-        console.error("Error fetching ads:", err)
-        setError("Failed to load ads. Please try again later.")
-        setAds([])
-        setErrorModal({
-          show: true,
-          title: "Error Loading Ads",
-          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-        })
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchAds()
+    fetchAds(false)
   }, [showAlert, isMobile])
+
+  useEffect(() => {
+    const showInactive = activeTab === "inactive"
+    fetchAds(showInactive)
+  }, [activeTab])
 
   const handleAdUpdated = (status?: string) => {
     const reload = async () => {
       try {
-        const userAdverts = await AdsAPI.getUserAdverts()
+        const showInactive = activeTab === "inactive"
+        const userAdverts = await AdsAPI.getUserAdverts(showInactive)
         setAds(userAdverts)
       } catch (err) {
         console.error("Error reloading ads:", err)
@@ -170,10 +178,10 @@ export default function AdsPage() {
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
-      </TooltipProvider>
-    </div>
-  )
-}
+        </TooltipProvider>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -183,48 +191,50 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-          {ads.length > 0 && !isMobile && (
-            <div className="flex items-center justify-between mb-6">
-              <Button
+            <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
+              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
+                <TabsList className="w-full bg-transparent">
+                  <TabsTrigger
+                    value="active"
+                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                  >
+                    Active
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="inactive"
+                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                  >
+                    Inactive
+                  </TabsTrigger>
+                </TabsList>
+              </Tabs>
+          </div>
+            <div className="flex items-center justify-between my-6">
+              {ads.length > 0 && (<Button
                 onClick={() => router.push("/ads/create")}
-                variant="cyan"
-                size="pill"
-                className="font-extrabold text-base leading-4 tracking-[0%] text-center"
+                size="sm"
+                className="font-bold text-base leading-4 tracking-[0%] text-center"
               >
-                Create ad
+                Create ads
               </Button>
-                {getHideMyAdsComponent()}
-            </div>
-          )}
-          
-          {ads.length > 0 && isMobile && (
-            <div className="flex items-center justify-end mb-4">
+              )}
               {getHideMyAdsComponent()}
             </div>
-          )}
         </div>
-        
-        {ads.length > 0 && isMobile && (
-          <div className="fixed bottom-20 right-4 z-10">
-            <Button
-              onClick={() => router.push("/ads/create")}
-              variant="cyan"
-              size="pill"
-              className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
-            >
-              Create ad
-            </Button>
-          </div>
-        )}
-        
+
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
-              { error ? (
+          {error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
-            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
+            <MyAdsTable
+              ads={ads}
+              onAdDeleted={handleAdUpdated}
+              hiddenAdverts={hiddenAdverts}
+              isLoading={loading}
+            />
           )}
         </div>
-      
+
         {statusData && statusData.showStatusModal && !loading && !errorModal.show && isMobile && (
           <StatusBottomSheet
             isOpen
