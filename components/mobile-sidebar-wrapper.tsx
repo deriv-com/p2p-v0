@@ -20,8 +20,7 @@ export function MobileSidebarTrigger() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="sm" className="md:hidden">
-          <HamburgerIcon />
-          <span className="sr-only">Open menu</span>
+          <HamburgerIcon/>
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-[295px]">
