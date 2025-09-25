@@ -50,6 +50,15 @@ export default function Header() {
           })}
         </nav>
       </div>
+
+      <div className="h-12 flex items-center space-x-4">
+        <div className="text-slate-600 hover:text-slate-700">
+          <NovuNotifications />
+        </div>
+        <Button size="sm" onClick={() => AuthAPI.logout()} className="hidden md:block">
+          Logout
+        </Button>
+      </div>
     </header>
   )
 }
