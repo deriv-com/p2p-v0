@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Minus, Plus } from "lucide-react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -120,19 +119,19 @@ export default function WalletSummary() {
       <div
         className={cn(
           "bg-slate-1200 w-full h-[140px] p-6 flex items-center justify-between",
-          isMobile ? "rounded-b-4 flex-col gap-4 h-auto py-6" : "rounded-2xl",
+          isMobile ? "rounded-b-2xl flex-col gap-4 h-auto py-6" : "rounded-2xl",
         )}
       >
         {/* Left side - Image and balance info */}
         <div className={cn("flex items-center gap-4", isMobile && "flex-col text-center")}>
           <div className="flex-shrink-0">
             <Image
-  src="/icons/p2p-3d.png"
-  alt="P2P Logo"
-  width={92}
-  height={92}
-  className="w-16 h-16 md:w-24 md:h-24"
-/>
+              src="/icons/p2p-3d.png"
+              alt="P2P Logo"
+              width={92}
+              height={92}
+              className="w-16 h-16 md:w-24 md:h-24"
+            />
           </div>
 
           <div className={cn("flex flex-col", isMobile && "items-center")}>
@@ -153,7 +152,7 @@ export default function WalletSummary() {
               onClick={handleDepositClick}
               aria-label="Deposit"
             >
-              <Plus className="h-5 w-5" />
+              <Image src="/icons/plus-white.png" alt="Deposit" width={20} height={20} />
             </Button>
             <span className="text-white text-xs font-normal">Deposit</span>
           </div>
@@ -166,7 +165,7 @@ export default function WalletSummary() {
               onClick={handleTransferClick}
               aria-label="Transfer"
             >
-              <Image src="/icons/exchange-icon.png" alt="Transfer" width={16} height={16} />
+              <Image src="/icons/transfer-white.png" alt="Transfer" width={20} height={20} />
             </Button>
             <span className="text-white text-xs font-normal">Transfer</span>
           </div>
@@ -179,7 +178,7 @@ export default function WalletSummary() {
               onClick={handleWithdrawClick}
               aria-label="Withdraw"
             >
-              <Minus className="h-5 w-5" />
+              <Image src="/icons/withdraw-white.png" alt="Withdraw" width={20} height={20} />
             </Button>
             <span className="text-white text-xs font-normal">Withdraw</span>
           </div>

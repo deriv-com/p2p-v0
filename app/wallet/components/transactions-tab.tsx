@@ -230,7 +230,7 @@ export default function TransactionsTab() {
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc }
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={32}
                                 height={32}
