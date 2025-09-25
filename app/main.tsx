@@ -6,7 +6,6 @@ import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
-import { MobileSidebar } from "@/components/mobile-sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import "./globals.css"
@@ -71,10 +70,8 @@ export default function Main({
 
   return (
     <WebSocketProvider>
-      <MobileSidebar />
-
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
-        {isHeaderVisible && <Sidebar />}
+        {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
           <div className="container mx-auto">{children}</div>
         </div>
