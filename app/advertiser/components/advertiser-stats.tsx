@@ -56,7 +56,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   return (
     <TooltipProvider>
       <div>
-        <div className="flex items-center justify-between py-6">
+        <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between py-6">
           <div className="flex items-center gap-8 flex-1 overflow-x-auto">
             <div className="flex-shrink-0">
               {buyCompletionRate ? 
