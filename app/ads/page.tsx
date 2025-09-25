@@ -43,6 +43,27 @@ export default function AdsPage() {
   const isMobile = useIsMobile()
   const router = useRouter()
 
+  const fetchAds = async (showInactive?: boolean) => {
+    try {
+      setLoading(true)
+      setError(null)
+      const userAdverts = await AdsAPI.getUserAdverts(showInactive)
+
+      setAds(userAdverts)
+    } catch (err) {
+      console.error("Error fetching ads:", err)
+      setError("Failed to load ads. Please try again later.")
+      setAds([])
+      setErrorModal({
+        show: true,
+        title: "Error Loading Ads",
+        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
@@ -79,34 +100,19 @@ export default function AdsPage() {
       })
     }
 
-    const fetchAds = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const userAdverts = await AdsAPI.getUserAdverts()
-
-        setAds(userAdverts)
-      } catch (err) {
-        console.error("Error fetching ads:", err)
-        setError("Failed to load ads. Please try again later.")
-        setAds([])
-        setErrorModal({
-          show: true,
-          title: "Error Loading Ads",
-          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-        })
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchAds()
+    fetchAds(false)
   }, [showAlert, isMobile])
+
+  useEffect(() => {
+    const showInactive = activeTab === "inactive"
+    fetchAds(showInactive)
+  }, [activeTab])
 
   const handleAdUpdated = (status?: string) => {
     const reload = async () => {
       try {
-        const userAdverts = await AdsAPI.getUserAdverts()
+        const showInactive = activeTab === "inactive"
+        const userAdverts = await AdsAPI.getUserAdverts(showInactive)
         setAds(userAdverts)
       } catch (err) {
         console.error("Error reloading ads:", err)
@@ -151,11 +157,8 @@ export default function AdsPage() {
   }
 
   const getFilteredAds = () => {
-    if (activeTab === "active") {
-      return ads.filter((ad) => (ad.is_active !== undefined ? ad.is_active : ad.status === "Active"))
-    } else {
-      return ads.filter((ad) => (ad.is_active !== undefined ? !ad.is_active : ad.status !== "Active"))
-    }
+    // The API now returns the correct ads based on the show_inactive parameter
+    return ads
   }
 
   const getHideMyAdsComponent = () => {

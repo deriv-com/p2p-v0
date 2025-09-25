@@ -173,32 +173,32 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
 
 export async function getCurrencies(): Promise<string[]> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`;
+    const url = `${API.baseUrl}${API.endpoints.settings}`
     const headers = AUTH.getAuthHeader()
 
     const response = await fetch(url, {
       headers,
       credentials: "include",
-    });
-    await response.text();
+    })
+    await response.text()
   } catch (error) {
-    console.log("Error fetching currencies:", error);
+    console.log("Error fetching currencies:", error)
   }
 
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"];
+  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
 }
 
-export async function getUserAdverts(): Promise<MyAd[]> {
+export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
   try {
     const userId = USER.id
 
     const queryParams = new URLSearchParams({
       user_id: userId.toString(),
-      show_inactive: "true",
+      show_inactive: showInactive !== undefined ? showInactive.toString() : "true",
       show_unorderable: "true",
       show_unlisted: "true",
-      show_ineligible: "true"
+      show_ineligible: "true",
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
@@ -219,7 +219,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
     try {
       apiData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
+      console.log(e)
       apiData = { data: [] }
     }
 
@@ -258,7 +258,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
             Number(advert.completed_order_amount || 0),
           currency: "USD",
         },
-        paymentMethods: advert.payment_methods || [],
+        paymentMethods: advert.payment_method_names || [],
         status: status,
         description: advert.description || "",
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
@@ -266,7 +266,7 @@ export async function getUserAdverts(): Promise<MyAd[]> {
       }
     })
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return []
   }
 }
@@ -302,7 +302,7 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
+      console.log(e)
       responseData = {}
     }
 
@@ -360,7 +360,7 @@ export async function toggleAdActiveStatus(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
+      console.log(e)
       responseData = {}
     }
 
@@ -409,7 +409,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
+      console.log(e)
       responseData = {}
     }
 
@@ -459,7 +459,7 @@ export async function createAd(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
+      console.log(e)
       responseData = { raw: responseText }
     }
 
@@ -564,7 +564,7 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e);
+      console.log(e)
       responseData = {}
     }
 
@@ -617,7 +617,7 @@ export async function getAdvert(id: string): Promise<MyAd> {
 
     return data
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return {}
   }
 }
