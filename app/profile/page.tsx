@@ -99,7 +99,6 @@ export default function ProfilePage() {
 
   return (
     <>
-
       <div className="px-[24px] pt-3 md:pt-0">
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
