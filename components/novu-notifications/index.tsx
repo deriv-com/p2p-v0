@@ -47,10 +47,7 @@ export function NovuNotifications() {
 
   const appearance = {
     icons: {
-      bell: () => {
-        if (!mounted) {
-          return <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
-        }
+      bell: () => {      
         return isMobile ? (
           <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
         ) : (
