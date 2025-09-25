@@ -8,26 +8,6 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import Image from "next/image"
 import "../../styles/globals.css"
 
-const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
-
-const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
-
-const BellIcon = () => {
-  const isMobile = useIsMobile()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  const getBellIcon = () => {
-    if (!mounted) return DesktopBell
-    return isMobile ? MobileBell : DesktopBell
-  }
-
-  return getBellIcon()
-}
-
 async function fetchSubscriberHash() {
   try {
     const url = `${API.notificationUrl}/hash`
@@ -61,8 +41,24 @@ export function NovuNotifications() {
   const userIdFallback = USER.id || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const appearance = {
-    icons: { bell: BellIcon },
+    icons: {
+      bell: () => {
+        if (!mounted) {
+          // default to desktop until we know screen size
+          return <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        }
+        return isMobile ? (
+          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+        ) : (
+          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        )
+      },
+    },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
@@ -77,7 +73,7 @@ export function NovuNotifications() {
       colorBackground: "#ffffff",
     },
     elements: {
-     popoverTrigger: {
+      popoverTrigger: {
         borderRadius: "50%",
         backgroundColor: "rgba(0, 0, 0, 0.04)",
       },
@@ -95,8 +91,6 @@ export function NovuNotifications() {
   }
 
   useEffect(() => {
-    setMounted(true)
-
     if (!userIdFallback) {
       setError("No user ID available")
       setIsLoading(false)
