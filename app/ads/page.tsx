@@ -212,7 +212,7 @@ export default function AdsPage() {
             </div>
           )}
           {ads.length > 0 && (
-            <div className="flex items-center justify-between m6">
+            <div className="flex items-center justify-between my-6">
               <Button
                 onClick={() => router.push("/ads/create")}
                 size="sm"
