@@ -69,7 +69,7 @@ export default function Navigation({
     }
 
     return (
-      <div className="flex w-full justify-between items-center">
+
         <h1 className="text-xl font-bold">{title}</h1>
     
           <Button
