@@ -193,11 +193,10 @@ export default function AdsPage() {
               >
                 Create ad
               </Button>
-              )}
               {getHideMyAdsComponent()}
             </div>
+          )}
         </div>
-
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
           {error ? (
