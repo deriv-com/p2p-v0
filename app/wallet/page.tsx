@@ -1,12 +1,10 @@
 "use client"
 
 import WalletBalance from "./components/wallet-balance"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { TransactionsTab } from "./components"
 
 export default function WalletPage() {
-  const isMobile = useIsMobile()
   return (
     <>
       <div className="min-h-screen bg-background px-[24px] pt-3 md:pt-0">
