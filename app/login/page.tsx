@@ -112,7 +112,7 @@ export default function LoginPage() {
       <div className="min-h-screen bg-white px-4 py-6">
         <div className="flex items-center mb-8">
           <Button variant="ghost" onClick={() => setStep("login")} className="p-2 -ml-2">
-            <ArrowLeftIcon />
+            <Image src="/icons/arrow-left-icon.png" width={24} height={24} />
             Back
           </Button>
         </div>
