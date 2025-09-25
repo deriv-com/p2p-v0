@@ -77,6 +77,10 @@ export function NovuNotifications() {
       colorBackground: "#ffffff",
     },
     elements: {
+     popoverTrigger: {
+        borderRadius: "50%",
+        backgroundColor: "rgba(0, 0, 0, 0.04)",
+      },
       bellContainer: {
         width: "24px",
         height: "24px",
