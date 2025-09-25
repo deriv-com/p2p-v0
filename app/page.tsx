@@ -67,13 +67,9 @@ export default function BuySellPage() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
-
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const isMobile = useIsMobile()
-
   const { currencies } = useCurrencyData()
-
   const abortControllerRef = useRef<AbortController | null>(null)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
