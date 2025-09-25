@@ -156,10 +156,6 @@ export default function AdsPage() {
     }
   }
 
-  const getFilteredAds = () => {
-    return ads
-  }
-
   const getHideMyAdsComponent = () => {
     return (
       <div className="flex items-center">
@@ -253,7 +249,7 @@ export default function AdsPage() {
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
             <MyAdsTable
-              ads={getFilteredAds()}
+              ads={ads}
               onAdDeleted={handleAdUpdated}
               hiddenAdverts={hiddenAdverts}
               isLoading={loading}
