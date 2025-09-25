@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button"
 import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import Navigation from "@/components/navigation"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -185,7 +184,6 @@ export default function AdsPage() {
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="flex flex-col h-screen bg-white px-3">
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
