@@ -212,16 +212,16 @@ export default function AdsPage() {
           {ads.length > 0 && (
             <div className="mb-6">
               <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
-                <TabsList className="w-full bg-slate-1200 h-auto p-0 rounded-3xl">
+                <TabsList className="w-full bg-transparent">
                   <TabsTrigger
                     value="active"
-                    className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:rounded-none text-gray-400 font-normal py-4 px-6 rounded-l-3xl"
+                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
                   >
                     Active
                   </TabsTrigger>
                   <TabsTrigger
                     value="inactive"
-                    className="flex-1 data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-primary data-[state=active]:rounded-none text-gray-400 font-normal py-4 px-6 rounded-r-3xl"
+                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
                   >
                     Inactive
                   </TabsTrigger>
