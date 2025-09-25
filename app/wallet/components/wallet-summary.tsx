@@ -126,7 +126,13 @@ export default function WalletSummary() {
         {/* Left side - Image and balance info */}
         <div className={cn("flex items-center gap-4", isMobile && "flex-col text-center")}>
           <div className="flex-shrink-0">
-            <Image src="/icons/p2p-3d.png" alt="P2P Logo" width={56} height={56} className="w-14 h-14" />
+            <Image
+  src="/icons/p2p-3d.png"
+  alt="P2P Logo"
+  width={92}
+  height={92}
+  className="w-16 h-16 md:w-24 md:h-24"
+/>
           </div>
 
           <div className={cn("flex flex-col", isMobile && "items-center")}>
