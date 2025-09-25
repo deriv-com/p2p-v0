@@ -191,24 +191,6 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-          {ads.length > 0 && !isMobile && (
-            <div className="flex items-center justify-between mb-6">
-              <Button
-                onClick={() => router.push("/ads/create")}
-                variant="cyan"
-                size="pill"
-                className="font-extrabold text-base leading-4 tracking-[0%] text-center"
-              >
-                Create ad
-              </Button>
-              {getHideMyAdsComponent()}
-            </div>
-          )}
-
-          {ads.length > 0 && isMobile && (
-            <div className="flex items-center justify-end mb-4">{getHideMyAdsComponent()}</div>
-          )}
-
           {ads.length > 0 && (
             <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
               <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
@@ -229,20 +211,25 @@ export default function AdsPage() {
               </Tabs>
             </div>
           )}
-        </div>
+          {ads.length > 0 && !isMobile && (
+            <div className="flex items-center justify-between mb-6">
+              <Button
+                onClick={() => router.push("/ads/create")}
+                size="sm"
+                variant="cyan"
+                size="pill"
+                className="font-extrabold text-base leading-4 tracking-[0%] text-center"
+              >
+                Create ads
+              </Button>
+              {getHideMyAdsComponent()}
+            </div>
+          )}
 
-        {ads.length > 0 && isMobile && (
-          <div className="fixed bottom-20 right-4 z-10">
-            <Button
-              onClick={() => router.push("/ads/create")}
-              variant="cyan"
-              size="pill"
-              className="font-extrabold text-base leading-4 tracking-[0%] text-center shadow-lg"
-            >
-              Create ad
-            </Button>
-          </div>
-        )}
+          {ads.length > 0 && isMobile && (
+            <div className="flex items-center justify-end mb-4">{getHideMyAdsComponent()}</div>
+          )}
+        </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
           {error ? (
