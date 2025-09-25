@@ -5,16 +5,27 @@ import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
-import "../../styles/globals.css"
 import Image from "next/image"
+import "../../styles/globals.css"
 
-const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} priority />
+const DesktopBell = () => <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
 
-const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} priority />
+const MobileBell = () => <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
 
-const getBellIcon = () => {
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768
-  return isMobile ? MobileBell : DesktopBell
+const BellIcon = () => {
+  const isMobile = useIsMobile()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const getBellIcon = () => {
+    if (!mounted) return DesktopBell
+    return isMobile ? MobileBell : DesktopBell
+  }
+
+  return getBellIcon()
 }
 
 async function fetchSubscriberHash() {
@@ -51,9 +62,7 @@ export function NovuNotifications() {
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   const appearance = {
-    icons: {
-      bell: DesktopBell, // Simplified appearance object with direct icon assignment and default fallback
-    },
+    icons: { bell: BellIcon },
     variables: {
       borderRadius: "8px",
       fontSize: "16px",
