@@ -8,7 +8,6 @@ import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
-  const isMobile = useIsMobile()
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
