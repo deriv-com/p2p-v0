@@ -10,6 +10,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
+  const [showOnboarding, set] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
@@ -29,10 +30,15 @@ export default function ProfilePage() {
 
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
-          showWarningDialog({
-            title: "Error",
-            description: errorMessage,
-          })
+
+          if(response.status == 401) {
+          
+          } else {
+            showWarningDialog({
+              title: "Error",
+              description: errorMessage,
+            })
+          }
           return
         }
 
