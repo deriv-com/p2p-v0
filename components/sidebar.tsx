@@ -103,7 +103,7 @@ export default function Sidebar({ className }: SidebarProps) {
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
         <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
-          <Image src="/icons/chevron-right-black.png" alt="Deriv logo" width={24} />
+          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={24} />
         </Link>
       </div>
     </div>
