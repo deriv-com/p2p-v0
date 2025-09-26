@@ -60,7 +60,7 @@ export default function PaymentMethodsTab() {
 
       if (!response.ok) {
         if(response.status == 401) {
-          setPaymentMethods[])
+          setPaymentMethods([])
         } else {
           throw new Error(`Error fetching payment methods: ${response.statusText}`)
         }
