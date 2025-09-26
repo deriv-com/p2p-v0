@@ -124,7 +124,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      <KycOnboardingSheet />
+      {showOnboarding && <KycOnboardingSheet />}
     </>
   )
 }
