@@ -76,7 +76,6 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     setIsLoading(true)
-    setError(null)
     try {
       const filters: {
         is_open?: boolean
