@@ -8,7 +8,7 @@ interface UseKycVerificationOptions {
   fetchOnMount?: boolean
 }
 
-interface UseKycVerificationReturn 
+interface UseKycVerificationReturn {
   isPoiVerified: boolean
   /** Whether POA (Proof of Address) is verified */
   isPoaVerified: boolean
