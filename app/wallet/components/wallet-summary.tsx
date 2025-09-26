@@ -170,7 +170,7 @@ export default function WalletSummary() {
             <span className="text-white text-xs font-normal">Transfer</span>
           </div>
 
-          {/* Withdraw Button */}
+
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
