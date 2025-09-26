@@ -5,7 +5,7 @@ import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH } from "@/lib/local-variables"
-import { useAlertDialog } from "@/hooks/use-alert-dial
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
@@ -118,9 +118,7 @@ export default function ProfilePage() {
             <StatsTabs stats={userData} isLoading={isLoading} />
           </div>
         </div>
-      </div>
-
-      <KycOnboardingSheet isSheetOpen={showOnboarding} setSheetOpen={setShowOnboarding} />
+      </d
     </>
   )
 }
