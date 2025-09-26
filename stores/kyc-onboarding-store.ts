@@ -17,7 +17,6 @@ export interface KycOnboardingState {
 const initialState = {
   isSheetOpen: false,
   profileCompleted: false,
-  biometricsCompleted: false,
   showOnboarding: false,
 }
 
@@ -28,7 +27,6 @@ export const useKycOnboardingStore = create<KycOnboardingState>((set) => ({
   setKycStatus: (status) =>
     set({
       profileCompleted: status.profile_completed,
-      biometricsCompleted: status.biometrics_completed,
       showOnboarding: status.show_onboarding,
       isSheetOpen: status.show_onboarding && (!status.profile_completed || !status.biometrics_completed),
     }),
