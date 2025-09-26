@@ -44,15 +44,16 @@ export function NovuNotifications() {
   useEffect(() => {
     setMounted(true)
   }, [])
-
+  
 
   const appearance = {
     icons: {
       bell: () => {
-        if (isMobile) {
-          return <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
-        }
-        return <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        return isMobile ? (
+                    <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+        ) : (
+                    <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+        )
       },
     },
     variables: {
