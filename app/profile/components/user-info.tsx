@@ -28,7 +28,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-y-2 items-center mt-4 md:mt-1 text-sm">
             {rating && (
               <div className="flex items-center">
-                <Image src="/glowing-star.png" alt="Star" width={16} height={16} className="mr-1" />
+                <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />
                 <span className="text-neutral-10">{rating ? rating : "Not rated yet"}</span>
               </div>
             )}
