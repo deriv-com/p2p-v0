@@ -82,12 +82,6 @@ export const KycOnboardingSheet: React.FC = () => {
             completed={profileCompleted}
             onClick={handleProfileSetup}
           />
-          <OnboardingStep
-            icon="/biometric-fingerprint-icon.jpg"
-            title="Add biometrics"
-            completed={biometricsCompleted}
-            onClick={handleBiometricsSetup}
-          />
         </div>
 
         <Button variant="ghost" className="w-full text-gray-500 hover:text-gray-700" onClick={handleSkip}>
@@ -109,7 +103,7 @@ export const KycOnboardingSheet: React.FC = () => {
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContenclassName="rounded-t-3xl border-0 p-0 max-h-[80vh]">
+      <SheetContent className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
         <OnboardingContent />
       </SheetContent>
     </Sheet>
