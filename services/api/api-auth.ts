@@ -239,10 +239,5 @@ export async function getKycStatus(): Promise<KycStatusResponse[]> {
     return result.data
   } catch (error) {
     console.error("Error fetching KYC status:", error)
-    return {
-      profile_completed: false,
-      biometrics_completed: false,
-      show_onboarding: false,
-    }
   }
 }
