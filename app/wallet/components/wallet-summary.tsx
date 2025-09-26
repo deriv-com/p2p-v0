@@ -142,7 +142,7 @@ export default function WalletSummary() {
           </div>
         </div>
 
-        {/* Right side - Action buttons */}
+       
         <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
           {/* Deposit Button */}
           <div className="flex flex-col items-center gap-2">
