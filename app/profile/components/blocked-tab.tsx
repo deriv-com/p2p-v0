@@ -21,19 +21,16 @@ export default function BlockedTab() {
   const [searchQuery, setSearchQuery] = useState("")
   const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
   const fetchBlockedUsers = useCallback(async () => {
     try {
       setIsLoading(true)
-      setError(null)
       const data = await getBlockedUsers()
       setBlockedUsers(data)
     } catch (err) {
       console.error("Failed to fetch blocked users:", err)
-      setError("Failed to load blocked users list")
       setBlockedUsers([])
     } finally {
       setIsLoading(false)
