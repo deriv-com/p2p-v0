@@ -5,8 +5,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button"
-import { useKycOnboardingStore } from "@/stores/kyc-onboarding-store"
+import { Button } from "@/components/ui/button
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface OnboardingStepProps {
