@@ -5,7 +5,6 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
-import { useKycOnboardingStore } from "@/stores/kyc-onboarding-store"
 
 interface OnboardingStepProps {
   icon: string
