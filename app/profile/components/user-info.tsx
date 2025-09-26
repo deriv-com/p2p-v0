@@ -39,7 +39,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
               <div className="flex items-center text-neutral-10">
                 {recommendation > 0 && (
                   <div className="flex items-center">
-                    <Image src="/thumbs-up.png" alt="Recommended" width={16} height={16} className="mr-1" />
+                    <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
                     <span>{recommendation}</span>
                   </div>
                 )}
