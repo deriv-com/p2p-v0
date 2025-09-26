@@ -109,7 +109,7 @@ export const KycOnboardingSheet: React.FC = () => {
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContent side="bottom" className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
+      <SheetContenclassName="rounded-t-3xl border-0 p-0 max-h-[80vh]">
         <OnboardingContent />
       </SheetContent>
     </Sheet>
