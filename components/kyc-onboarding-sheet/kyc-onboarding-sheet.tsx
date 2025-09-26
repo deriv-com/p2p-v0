@@ -49,7 +49,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
   </Button>
 )
 
-export const KycOnboardingSheet: React.FC = () => {
+export const KycOnboardingSheet: React.FC = ({isSheetOpen, setSheetOpen}) => {
   const router = useRouter()
   const isMobile = useIsMobile()
   const handleProfileSetup = () => {
