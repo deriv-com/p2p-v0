@@ -8,8 +8,6 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet/kyc-onboarding-sheet"
-import { useKycStatus } from "@/hooks/use-kyc-status"
 import "./globals.css"
 
 export default function Main({
