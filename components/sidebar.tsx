@@ -98,7 +98,7 @@ export default function Sidebar({ className }: SidebarProps) {
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
         <Link
           prefetch
-          href=""
+          href="https://home.deriv.com/dashboard/home"
         >
           <Image src="/icons/chevron-right-sm.png" alt="Deriv logo" width={64} />
         </Link>
