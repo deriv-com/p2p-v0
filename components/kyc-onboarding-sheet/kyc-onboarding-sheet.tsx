@@ -57,15 +57,6 @@ export const KycOnboardingSheet: React.FC = () => {
     router.push("/profile")
   }
 
-  const handleBiometricsSetup = () => {
-    setSheetOpen(false)
-    router.push("/profile/biometrics")
-  }
-
-  const handleSkip = () => {
-    setSheetOpen(false)
-  }
-
   const OnboardingContent = () => (
     <>
       <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6" />
