@@ -105,6 +105,10 @@ export default function WalletSummary() {
   const handleSendTransferClick = () => {}
   const handleReceiveTransferClick = () => {}
 
+  const handleGoBackToCurrency = () => {
+    setCurrentStep("chooseCurrency")
+  }
+
   return (
     <>
       <div
@@ -196,9 +200,11 @@ export default function WalletSummary() {
                 ? "Choose your preferred deposit method."
                 : "Choose your preferred withdrawal method."
             }
-            actionType={currentOperation}
+            actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
+            currencies={currencies}
             selectedCurrency={selectedCurrency}
             onClose={handleClose}
+            onGoBack={handleGoBackToCurrency}
             onDirectDepositClick={handleDirectDepositClick}
             onDirectWithdrawClick={handleDirectWithdrawClick}
           />
