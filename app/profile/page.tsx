@@ -101,12 +101,6 @@ export default function ProfilePage() {
     fetchUserData()
   }, [])
 
-  useEffect(() => {
-    if (!kycLoading && showOnboarding && (!profileCompleted || !biometricsCompleted)) {
-      setSheetOpen(true)
-    }
-  }, [kycLoading, showOnboarding, profileCompleted, biometricsCompleted, setSheetOpen])
-
   return (
     <>
       <div className="px-[24px] pt-3 md:pt-0">
