@@ -82,7 +82,7 @@ export const KycOnboardingSheet: React.FC = () => {
             completed={true}
             onClick={handleProfileSetup}
           />
-        </div
+        </div>
       </div>
     </>
   )
