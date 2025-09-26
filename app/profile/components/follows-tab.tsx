@@ -111,7 +111,7 @@ export default function FollowsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      {filteredFollowing.length > 0 && <div className="flex items-center justify-between gap-4">
         <div className="relative w-full md:w-auto">
           <Image
             src="/icons/search-icon-custom.png"
@@ -139,7 +139,7 @@ export default function FollowsTab() {
             </Button>
           )}
         </div>
-      </div>
+      </div>}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
