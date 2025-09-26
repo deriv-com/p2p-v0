@@ -9,12 +9,11 @@ import { Button } from "@/components/ui/button"
 interface OnboardingStepProps {
   icon: string
   title: string
-  subtitle: string
   completed: boolean
   onClick: () => void
 }
 
-const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, subtitle, completed, onClick }) => (
+const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed, onClick }) => (
   <Button
     variant="ghost"
     className="w-full h-auto p-4 justify-between hover:bg-gray-50 rounded-lg border border-gray-200"
