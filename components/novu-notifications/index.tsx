@@ -45,6 +45,7 @@ export function NovuNotifications() {
     setMounted(true)
   }, [])
 
+
   const appearance = {
     icons: {
       bell: () => {
