@@ -1,7 +1,6 @@
 "use client"
 
 import { useIsMobile } from "@/hooks/use-mobile"
-import Navigation from "@/components/navigation"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 
