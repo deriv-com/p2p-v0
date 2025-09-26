@@ -20,8 +20,6 @@ export default function Main({
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
 
-  const { isLoading: isKycLoading } = useKycStatus()
-
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
