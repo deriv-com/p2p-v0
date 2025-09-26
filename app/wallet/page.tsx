@@ -9,8 +9,7 @@ export default function WalletPage() {
   const isMobile = useIsMobile()
 
   return (
-    <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
+    <
       <div className="min-h-screen bg-background px-0 md:pl-[16px]">
         <div className="w-full flex flex-col items-center">
           
