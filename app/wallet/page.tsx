@@ -1,6 +1,5 @@
 "use client"
 
-import { useIsMobile } from "@/hooks/use-mobile"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 
@@ -22,5 +21,6 @@ export default function WalletPage() {
           </div>
         </div>
       </div>
+    </>
   )
 }
