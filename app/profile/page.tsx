@@ -5,11 +5,10 @@ import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH } from "@/lib/local-variables"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useAlertDialog } from "@/hooks/use-alert-dial
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState({}
+  const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
