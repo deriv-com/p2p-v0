@@ -237,7 +237,7 @@ export async function getKycStatus(): Promise<KycStatusResponse> {
     }
 
     const result = await response.json()
-    return result.data.kyc
+    return result.data
   } catch (error) {
     console.error("Error fetching KYC status:", error)
     return {
