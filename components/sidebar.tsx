@@ -96,6 +96,7 @@ export default function Sidebar({ className }: SidebarProps) {
           {USER.nickname?.charAt(0).toUpperCase()}
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
+        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
       </div>
     </div>
   )
