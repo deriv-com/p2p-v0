@@ -6,11 +6,17 @@ import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useKycStatus } from "@/hooks/use-kyc-status"
+import { useKycOnboardingStore } from "@/stores/kyc-onboarding-store"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
+
+  const { isLoading: kycLoading } = useKycStatus()
+  const { showOnboarding, profileCompleted, biometricsCompleted, setSheetOpen } = useKycOnboardingStore()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -95,6 +101,12 @@ export default function ProfilePage() {
     fetchUserData()
   }, [])
 
+  useEffect(() => {
+    if (!kycLoading && showOnboarding && (!profileCompleted || !biometricsCompleted)) {
+      setSheetOpen(true)
+    }
+  }, [kycLoading, showOnboarding, profileCompleted, biometricsCompleted, setSheetOpen])
+
   return (
     <>
       <div className="px-[24px] pt-3 md:pt-0">
@@ -116,6 +128,8 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+
+      <KycOnboardingSheet />
     </>
   )
 }

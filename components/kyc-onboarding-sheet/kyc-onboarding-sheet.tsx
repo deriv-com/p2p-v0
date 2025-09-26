@@ -24,7 +24,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, subtitle, 
     <div className="flex items-center gap-4">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image
-          src={icon || "/placeholder.svg"}
+          src={icon || "/placeholder.svg?height=24&width=24"}
           alt={title}
           width={24}
           height={24}
@@ -41,10 +41,11 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, subtitle, 
     <div className="flex items-center">
       {completed ? (
         <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-          <Image src="/icons/check-white.png" alt="Completed" width={12} height={12} />
+          <Image src="/white-checkmark-icon.jpg" alt="Completed" width={12} height={12} />
         </div>
       ) : (
-        <Image src="/icons/chevron-right.png" alt="Go" width={20} height={20} />
+        /* Using placeholder.svg for chevron icon with proper dimensions */
+        <Image src="/icons/chevron-right.jpg" alt="Go" width={20} height={20} />
       )}
     </div>
   </Button>
@@ -75,7 +76,7 @@ export const KycOnboardingSheet: React.FC = () => {
 
           <div className="space-y-4">
             <OnboardingStep
-              icon="/icons/user-profile.png"
+              icon="/user-profile-icon.png"
               title="Set up and verify your profile"
               subtitle="5 steps"
               completed={profileCompleted}
