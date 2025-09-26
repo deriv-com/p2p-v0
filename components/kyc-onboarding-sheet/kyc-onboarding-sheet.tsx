@@ -3,8 +3,11 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
+import { useKycOnboardingStore } from "@/stores/kyc-onboarding-store"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface OnboardingStepProps {
   icon: string
@@ -41,7 +44,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
           <Image src="/white-checkmark-icon.jpg" alt="Completed" width={12} height={12} />
         </div>
       ) : (
-        <Image src="/icons/chevron-right.jpg" alt="Go" width={20} height={20} />
+        <Image src="/chevron-right-arrow.jpg" alt="Go" width={20} height={20} />
       )}
     </div>
   </Button>
@@ -49,35 +52,68 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
 
 export const KycOnboardingSheet: React.FC = () => {
   const router = useRouter()
+  const isMobile = useIsMobile()
+  const { isSheetOpen, profileCompleted, biometricsCompleted, setSheetOpen } = useKycOnboardingStore()
 
   const handleProfileSetup = () => {
     setSheetOpen(false)
     router.push("/profile")
   }
 
-  const handleClose = () => {
+  const handleBiometricsSetup = () => {
     setSheetOpen(false)
+    router.push("/profile/biometrics")
+  }
+
+  const handleSkip = () => {
+    setSheetOpen(false)
+  }
+
+  const OnboardingContent = () => (
+    <>
+      <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6" />
+
+      <div className="px-6 pb-6">
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-center text-gray-900">Get started with P2P</h2>
+        </div>
+
+        <div className="space-y-4 mb-6">
+          <OnboardingStep
+            icon="/user-profile-icon.png"
+            title="Set up and verify your profile"
+            completed={profileCompleted}
+            onClick={handleProfileSetup}
+          />
+          <OnboardingStep
+            icon="/biometric-fingerprint-icon.jpg"
+            title="Add biometrics"
+            completed={biometricsCompleted}
+            onClick={handleBiometricsSetup}
+          />
+        </div>
+
+        <Button variant="ghost" className="w-full text-gray-500 hover:text-gray-700" onClick={handleSkip}>
+          Skip for now
+        </Button>
+      </div>
+    </>
+  )
+
+  if (isMobile) {
+    return (
+      <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
+        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
+          <OnboardingContent />
+        </DrawerContent>
+      </Drawer>
+    )
   }
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
       <SheetContent side="bottom" className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
-        <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6" />
-
-        <div className="px-6 pb-6">
-          <SheetHeader className="mb-8">
-            <SheetTitle className="text-2xl font-bold text-center text-gray-900">Get started with P2P</SheetTitle>
-          </SheetHeader>
-
-          <div className="space-y-4">
-            <OnboardingStep
-              icon="/icons/user-profile-icon.png"
-              title="Set up and verify your profile"
-              completed={profileCompleted}
-              onClick={handleProfileSetup}
-            />
-          </div>
-        </div>
+        <OnboardingContent />
       </SheetContent>
     </Sheet>
   )
