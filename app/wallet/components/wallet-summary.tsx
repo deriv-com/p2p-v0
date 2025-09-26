@@ -157,7 +157,7 @@ export default function WalletSummary() {
             <span className="text-white text-xs font-normal">Deposit</span>
           </div>
 
-          {/* Transfer Button */}
+
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
