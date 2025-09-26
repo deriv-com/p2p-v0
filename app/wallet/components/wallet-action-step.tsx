@@ -53,13 +53,19 @@ export default function WalletActionStep({
         <div className="pl-2 pr-4 flex-1 min-h-0">
           <div className="h-full overflow-y-auto">
             {actionType === "deposit" && onDirectDepositClick && (
-              <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
+              <DepositOptions
+                onClose={onClose}
+                onDirectDepositClick={onDirectDepositClick}
+                currencies={currencies}
+                selectedCurrency={selectedCurrency}
+              />
             )}
             {actionType === "withdraw" && onDirectWithdrawClick && (
               <WithdrawOptions
                 onClose={onClose}
                 onDirectWithdrawClick={onDirectWithdrawClick}
                 currencies={currencies}
+                selectedCurrency={selectedCurrency}
               />
             )}
           </div>

@@ -3,14 +3,13 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
 import { cn } from "@/lib/utils"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface DepositOptionProps {
   onClose: () => void
   onDirectDepositClick: (currency: string) => void
   currencies: Currency[]
+  selectedCurrency: string
 }
 
 interface Currency {
@@ -19,10 +18,13 @@ interface Currency {
   logo: string
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClick, currencies }: DepositOptionProps) {
+export default function DepositOptions({
+  onClose,
+  onDirectDepositClick,
+  currencies,
+  selectedCurrency,
+}: DepositOptionProps) {
   const router = useRouter()
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
-
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
@@ -41,50 +43,26 @@ export default function DepositOptions({ onClose, onDirectDepositClick, currenci
     <>
       <div className="mb-6">
         <h2 className="text-base font-bold mb-4">Choose currency</h2>
-        <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-          <SelectTrigger className="w-full h-14 rounded-xl border border-border">
-            {selectedCurrencyData ? (
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                  {selectedCurrencyData.logo && (
-                    <Image
-                      src={selectedCurrencyData.logo }
-                      alt={selectedCurrencyData.name}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <SelectValue>
-                  <span className="text-base">{selectedCurrencyData.name}</span>
-                </SelectValue>
+        <div className="w-full h-14 rounded-xl border border-border flex items-center px-3">
+          {selectedCurrencyData ? (
+            <div className="flex items-center gap-3">
+              <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
+                {selectedCurrencyData.logo && (
+                  <Image
+                    src={selectedCurrencyData.logo || "/placeholder.svg"}
+                    alt={selectedCurrencyData.name}
+                    width={24}
+                    height={24}
+                    className="w-full h-full object-cover"
+                  />
+                )}
               </div>
-            ) : (
-              <div></div>
-            )}
-          </SelectTrigger>
-          <SelectContent>
-            {currencies.map((currency) => (
-              <SelectItem key={currency.code} value={currency.code}>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    {currency.logo && (
-                      <Image
-                        src={currency.logo }
-                        alt={currency.name}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <span>{currency.name}</span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+              <span className="text-base">{selectedCurrencyData.name}</span>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
       </div>
 
       <div className="mb-2">
