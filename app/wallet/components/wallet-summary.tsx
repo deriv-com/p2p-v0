@@ -152,7 +152,7 @@ export default function WalletSummary() {
               onClick={handleDepositClick}
               aria-label="Deposit"
             >
-              <Image src="/icons/plus-white.png" alt="Deposit" width={20} height={20} />
+              <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
             </Button>
             <span className="text-white text-xs font-normal">Deposit</span>
           </div>
@@ -165,7 +165,7 @@ export default function WalletSummary() {
               onClick={handleTransferClick}
               aria-label="Transfer"
             >
-              <Image src="/icons/transfer-white.png" alt="Transfer" width={20} height={20} />
+              <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
             </Button>
             <span className="text-white text-xs font-normal">Transfer</span>
           </div>
@@ -178,7 +178,7 @@ export default function WalletSummary() {
               onClick={handleWithdrawClick}
               aria-label="Withdraw"
             >
-              <Image src="/icons/withdraw-white.png" alt="Withdraw" width={20} height={20} />
+              <Image src="/icons/withdraw-white.png" alt="Withdraw" width={14} height={14} />
             </Button>
             <span className="text-white text-xs font-normal">Withdraw</span>
           </div>
