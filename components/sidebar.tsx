@@ -27,9 +27,9 @@ export default function Sidebar({ className }: SidebarProps) {
         const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
 
         if (userData?.signup === "v1") {
-          setShowWallet(true)
-        } else {
           setShowWallet(false)
+        } else {
+          setShowWallet(true)
         }
       }
     } catch (error) {
