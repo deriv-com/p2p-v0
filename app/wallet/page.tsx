@@ -4,7 +4,6 @@ import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 
 export default function WalletPage() {
-  const isMobile = useIsMobile()
 
   return(
       <div className="min-h-screen bg-background px-0 md:pl-[16px]">
