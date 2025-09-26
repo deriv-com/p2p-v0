@@ -50,12 +50,30 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
+  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
+    checkUserSignupStatus()
   }, [activeTab, dateFilter, customDateRange])
+
+  const checkUserSignupStatus = () => {
+    try {
+      if (typeof window !== "undefined") {
+        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+
+        if(userData?.signup === "v1")
+          setShowCheckPreviousOrdersButton(true)
+        else      
+          setShowCheckPreviousOrdersButton(false)
+      }
+    } catch (error) {
+      console.log(error)
+      setShowCheckPreviousOrdersButton(false)
+    }
+  }
 
   const fetchOrders = async () => {
     setIsLoading(true)
@@ -343,15 +361,17 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white font-normal hover:text-white hover:bg-transparent "
-              onClick={handleCheckPreviousOrders}
-            >
-              Check previous orders
-              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
-            </Button>
+            {showCheckPreviousOrdersButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white font-normal hover:text-white hover:bg-transparent "
+                onClick={handleCheckPreviousOrders}
+              >
+                Check previous orders
+                <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
+              </Button>
+            )}
           </div>
           <div className="my-4">
             {activeTab === "past" && (

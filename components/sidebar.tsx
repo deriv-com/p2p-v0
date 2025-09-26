@@ -7,6 +7,7 @@ import { USER } from "@/lib/local-variables"
 import { Avatar } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
+import { useState, useEffect } from "react"
 
 interface SidebarProps {
   className?: string
@@ -14,13 +15,35 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
+  const [showWallet, setShowWallet] = useState(true)
+
+  useEffect(() => {
+    checkUserSignupStatus()
+  }, [])
+
+  const checkUserSignupStatus = () => {
+    try {
+      if (typeof window !== "undefined") {
+        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+
+        if (userData?.signup === "v1") {
+          setShowWallet(false)
+        } else {
+          setShowWallet(true)
+        }
+      }
+    } catch (error) {
+      console.log(error)
+      setShowWallet(false)
+    }
+  }
 
   const navItems = [
     { name: "Home", href: "https://home.deriv.com/dashboard/home", icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
-    { name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" },
+    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" }] : []),
     { name: "Profile", href: "/profile", icon: "/icons/profile-icon.png" },
   ]
 
