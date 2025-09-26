@@ -67,6 +67,7 @@ export default function OrdersPage() {
         setShowCheckPreviousOrdersButton(userData?.signup)
       }
     } catch (error) {
+      console.log(error)
       setShowCheckPreviousOrdersButton(false)
     }
   }
