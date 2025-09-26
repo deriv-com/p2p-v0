@@ -15,6 +15,8 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import Image from "next/image"
 import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
+import { useKycVerification } from "@/hooks/use-kyc-verification"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -61,6 +63,17 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+
+  const {
+    isKycVerified,
+    isSheetOpen: isKycSheetOpen,
+    checkKycAndShowSheet,
+    hideKycSheet,
+  } = useKycVerification({
+    // Only auto-fetch and show for create mode
+    fetchOnMount: mode === "create",
+    autoShowSheet: false, // We'll handle this manually
+  })
 
   const formDataRef = useRef({})
 
@@ -226,6 +239,14 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
   }
 
   const handleFinalSubmit = async () => {
+    if (mode === "create") {
+      const isVerified = await checkKycAndShowSheet()
+      if (!isVerified) {
+        // KYC sheet will be shown automatically, don't proceed with ad creation
+        return
+      }
+    }
+
     const finalData = { ...formDataRef.current }
 
     setIsSubmitting(true)
@@ -414,122 +435,129 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
     isBottomSheetOpen
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
-          <Navigation
-            isBackBtnVisible={currentStep != 0}
-            isVisible={false}
-            onBack={() => {
-              const updatedStep = currentStep - 1
-              setCurrentStep(updatedStep)
-            }}
-            onClose={handleClose}
-            title={isMobile ? getPageTitle(mode, formData.type) : ""}
-          />
-          <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
-          <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
+    <>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
+          <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
+            <Navigation
+              isBackBtnVisible={currentStep != 0}
+              isVisible={false}
+              onBack={() => {
+                const updatedStep = currentStep - 1
+                setCurrentStep(updatedStep)
+              }}
+              onClose={handleClose}
+              title={isMobile ? getPageTitle(mode, formData.type) : ""}
+            />
+            <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
+            <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
 
-          {currentStep === 0 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 1</div>
-              <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
-            </div>
-          )}
-
-          {currentStep === 1 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 2</div>
-              <div className="text-lg font-bold text-slate-1200">Payment details</div>
-            </div>
-          )}
-
-          {currentStep === 2 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 3</div>
-              <div className="text-lg font-bold text-slate-1200">Set ad conditions</div>
-            </div>
-          )}
-
-          <div className="relative mb-16 md:mb-0 mx-6">
-            {currentStep === 0 ? (
-              <AdDetailsForm
-                onNext={handleAdDetailsNext}
-                onClose={handleClose}
-                initialData={formData}
-                setFormData={setFormData}
-                isEditMode={mode === "edit"}
-              />
-            ) : currentStep === 1 ? (
-              <PaymentDetailsForm
-                onBack={() => setCurrentStep(0)}
-                onClose={handleClose}
-                initialData={formData}
-                setFormData={setFormData}
-                isSubmitting={isSubmitting}
-                isEditMode={mode === "edit"}
-                onBottomSheetOpenChange={handleBottomSheetOpenChange}
-              />
-            ) : (
-              <div className="space-y-6">
-                <div>
-                  <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold leading-6 tracking-normal">Order time limit</h3>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.png"
-                            alt="Info"
-                            width={12}
-                            height={12}
-                            className="ml-1 cursor-pointer"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Orders will expire if they aren't completed within this timeframe.</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
-                </div>
-
-                <div className="w-full md:w-[70%]">
-                  <h3 className="text-base font-bold mb-2">Choose your audience</h3>
-                  <p className="text-sm text-neutral-7 mb-4">
-                    You can filter who interacts with your ads based on their location or P2P history. Stricter filters
-                    may reduce ad visibility.
-                  </p>
-                  <div>
-                    <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
-                  </div>
-                </div>
+            {currentStep === 0 && (
+              <div className="block md:hidden m-6 text-left">
+                <div className="text-sm font-normal text-slate-1200">Step 1</div>
+                <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
               </div>
             )}
-          </div>
 
-          {isMobile ? (
-            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
-              <div className="mx-6">
-                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                  {getButtonText(isSubmitting, currentStep, mode)}
-                </Button>
+            {currentStep === 1 && (
+              <div className="block md:hidden m-6 text-left">
+                <div className="text-sm font-normal text-slate-1200">Step 2</div>
+                <div className="text-lg font-bold text-slate-1200">Payment details</div>
               </div>
-            </div>
-          ) : (
-            <div className="hidden md:block"></div>
-          )}
+            )}
 
-          <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
-              {getButtonText(isSubmitting, currentStep, mode)}
-            </Button>
+            {currentStep === 2 && (
+              <div className="block md:hidden m-6 text-left">
+                <div className="text-sm font-normal text-slate-1200">Step 3</div>
+                <div className="text-lg font-bold text-slate-1200">Set ad conditions</div>
+              </div>
+            )}
+
+            <div className="relative mb-16 md:mb-0 mx-6">
+              {currentStep === 0 ? (
+                <AdDetailsForm
+                  onNext={handleAdDetailsNext}
+                  onClose={handleClose}
+                  initialData={formData}
+                  setFormData={setFormData}
+                  isEditMode={mode === "edit"}
+                />
+              ) : currentStep === 1 ? (
+                <PaymentDetailsForm
+                  onBack={() => setCurrentStep(0)}
+                  onClose={handleClose}
+                  initialData={formData}
+                  setFormData={setFormData}
+                  isSubmitting={isSubmitting}
+                  isEditMode={mode === "edit"}
+                  onBottomSheetOpenChange={handleBottomSheetOpenChange}
+                />
+              ) : (
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex gap-[4px] items-center mb-4">
+                      <h3 className="text-base font-bold leading-6 tracking-normal">Order time limit</h3>
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Image
+                              src="/icons/info-circle.png"
+                              alt="Info"
+                              width={12}
+                              height={12}
+                              className="ml-1 cursor-pointer"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Orders will expire if they aren't completed within this timeframe.</p>
+                            <TooltipArrow className="fill-black" />
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    </div>
+                    <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
+                  </div>
+
+                  <div className="w-full md:w-[70%]">
+                    <h3 className="text-base font-bold mb-2">Choose your audience</h3>
+                    <p className="text-sm text-neutral-7 mb-4">
+                      You can filter who interacts with your ads based on their location or P2P history. Stricter
+                      filters may reduce ad visibility.
+                    </p>
+                    <div>
+                      <CountrySelection
+                        selectedCountries={selectedCountries}
+                        onCountriesChange={setSelectedCountries}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {isMobile ? (
+              <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
+                <div className="mx-6">
+                  <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                    {getButtonText(isSubmitting, currentStep, mode)}
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="hidden md:block"></div>
+            )}
+
+            <div className="hidden md:flex justify-end mt-8 px-6">
+              <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
+                {getButtonText(isSubmitting, currentStep, mode)}
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+
+      {mode === "create" && <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={hideKycSheet} />}
+    </>
   )
 }
 
