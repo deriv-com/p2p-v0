@@ -362,7 +362,6 @@ export default function PaymentMethodsTab() {
           </div>
         </div>
       )}
-      
       {eWallets.length > 0 && (
         <div>
           <h3 className="text-base font-bold mb-4">E-wallets</h3>
