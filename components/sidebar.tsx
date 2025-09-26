@@ -39,7 +39,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const getHomeUrl = () => {
-    const isProduction = process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_BRANCH === "master"
+    const isProduction = process.env.NODE_ENV === "production"
     const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
     return baseUrl
   }
