@@ -23,7 +23,6 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
-import { API, AUTH } from "@/lib/local-variables"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -57,35 +56,30 @@ export default function OrdersPage() {
 
   useEffect(() => {
     fetchOrders()
-    fetchUserSignupStatus()
+    checkUserSignupStatus()
   }, [activeTab, dateFilter, customDateRange])
 
-  const fetchUserSignupStatus = async () => {
+  const checkUserSignupStatus = () => {
     try {
-      const url = `${API.baseUrl}/users/me`
-      const headers = AUTH.getAuthHeader()
+      if (typeof window !== "undefined") {
+        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
 
-      const response = await fetch(url, {
-        credentials: "include",
-        headers,
-      })
+        if (userData && userData.created_at) {
+          // Calculate days since user joined
+          const joinDate = new Date(userData.created_at)
+          const now = new Date()
+          const diff = now.getTime() - joinDate.getTime()
+          const daysSinceJoin = Math.floor(diff / (1000 * 60 * 60 * 24))
 
-      const responseData = await response.json()
-
-      if (responseData && responseData.data) {
-        const data = responseData.data
-
-        // Calculate days since user joined
-        const joinDate = new Date(data.created_at)
-        const now = new Date()
-        const diff = now.getTime() - joinDate.getTime()
-        const daysSinceJoin = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-        // Show button for users who joined more than 7 days ago (not new signups)
-        setShowCheckPreviousOrdersButton(daysSinceJoin > 7)
+          // Show button for users who joined more than 7 days ago (not new signups)
+          setShowCheckPreviousOrdersButton(daysSinceJoin > 7)
+        } else {
+          // Default to showing the button if no user data found
+          setShowCheckPreviousOrdersButton(true)
+        }
       }
     } catch (error) {
-      console.error("Error fetching user signup status:", error)
+      console.error("Error checking user signup status from localStorage:", error)
       // Default to showing the button if there's an error
       setShowCheckPreviousOrdersButton(true)
     }
