@@ -10,23 +10,14 @@ interface UseKycVerificationOptions {
 
 interface UseKycVerificationReturn {
   isPoiVerified: boolean
-  /** Whether POA (Proof of Address) is verified */
   isPoaVerified: boolean
-  /** Whether both POI and POA are verified */
   isKycVerified: boolean
-  /** Whether KYC status is currently being fetched */
   isLoading: boolean
-  /** Any error that occurred while fetching KYC status */
   error: string | null
-  /** Whether the KYC onboarding sheet is open */
   isSheetOpen: boolean
-  /** Function to manually show the KYC onboarding sheet */
   showKycSheet: () => void
-  /** Function to hide the KYC onboarding sheet */
   hideKycSheet: () => void
-  /** Function to manually fetch KYC status */
   fetchKycStatus: () => Promise<void>
-  /** Function to check KYC status and show sheet if needed */
   checkKycAndShowSheet: () => Promise<boolean>
 }
 
@@ -40,14 +31,12 @@ export function useKycVerification(options: UseKycVerificationOptions = {}): Use
 
   const isKycVerified = isPoiVerified && isPoaVerified
 
-  // Fetch KYC status on mount if requested
   useEffect(() => {
     if (fetchOnMount) {
       fetchKycStatus()
     }
   }, [fetchOnMount, fetchKycStatus])
 
-  // Auto-show sheet when verification is incomplete
   useEffect(() => {
     if (autoShowSheet && !isLoading && !hasAutoShown && !isKycVerified && !error) {
       setSheetOpen(true)
@@ -67,8 +56,6 @@ export function useKycVerification(options: UseKycVerificationOptions = {}): Use
   const checkKycAndShowSheet = async (): Promise<boolean> => {
     try {
       await fetchKycStatus()
-
-      // Check if verification is complete after fetching
       const store = useKycOnboardingStore.getState()
       const isVerified = store.isPoiVerified && store.isPoaVerified
 
@@ -79,7 +66,6 @@ export function useKycVerification(options: UseKycVerificationOptions = {}): Use
 
       return true
     } catch (error) {
-      // Show sheet even on error to allow user to try again
       setSheetOpen(true)
       return false
     }
