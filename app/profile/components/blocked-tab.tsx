@@ -111,7 +111,7 @@ export default function BlockedTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      {filteredBlockedUsers.length > 0 && <div className="flex items-center justify-between gap-4">
         <div className="relative w-full md:w-auto">
           <Image
             src="/icons/search-icon-custom.png"
