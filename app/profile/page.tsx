@@ -9,8 +9,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
-  const [userData, setUserData] = useState({})
-  const [showOnboarding, setShowOnboarding] = useState(false)
+  const [userData, setUserData] = useState({}
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
