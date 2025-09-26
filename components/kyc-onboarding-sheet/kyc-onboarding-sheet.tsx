@@ -79,10 +79,6 @@ export const KycOnboardingSheet: React.FC = () => {
               onClick={handleProfileSetup}
             />
           </div>
-
-          <Button variant="ghost" className="w-full mt-6 text-gray-500" onClick={handleClose}>
-            Skip for now
-          </Button>
         </div>
       </SheetContent>
     </Sheet>
