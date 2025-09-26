@@ -105,44 +105,6 @@ export default function WalletSummary() {
   const handleSendTransferClick = () => {}
   const handleReceiveTransferClick = () => {}
 
-  if (currentStep === "chooseCurrency") {
-    const title = currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"
-    const description =
-      currentOperation === "DEPOSIT"
-        ? "Choose which currency you would like to deposit."
-        : "Choose which currency you would like to withdraw."
-
-    return (
-      <ChooseCurrencyStep
-        title={title}
-        description={description}
-        currencies={currencies}
-        onClose={handleClose}
-        onCurrencySelect={handleCurrencySelect}
-      />
-    )
-  }
-
-  if (currentStep === "walletAction") {
-    const title = currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"
-    const description =
-      currentOperation === "DEPOSIT"
-        ? "Choose your preferred deposit method."
-        : "Choose your preferred withdrawal method."
-
-    return (
-      <WalletActionStep
-        title={title}
-        description={description}
-        actionType={currentOperation}
-        selectedCurrency={selectedCurrency}
-        onClose={handleClose}
-        onDirectDepositClick={handleDirectDepositClick}
-        onDirectWithdrawClick={handleDirectWithdrawClick}
-      />
-    )
-  }
-
   return (
     <>
       <div
@@ -208,6 +170,40 @@ export default function WalletSummary() {
           </div>
         </div>
       </div>
+
+      {currentStep === "chooseCurrency" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <ChooseCurrencyStep
+            title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
+            description={
+              currentOperation === "DEPOSIT"
+                ? "Choose which currency you would like to deposit."
+                : "Choose which currency you would like to withdraw."
+            }
+            currencies={currencies}
+            onClose={handleClose}
+            onCurrencySelect={handleCurrencySelect}
+          />
+        </div>
+      )}
+
+      {currentStep === "walletAction" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <WalletActionStep
+            title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
+            description={
+              currentOperation === "DEPOSIT"
+                ? "Choose your preferred deposit method."
+                : "Choose your preferred withdrawal method."
+            }
+            actionType={currentOperation}
+            selectedCurrency={selectedCurrency}
+            onClose={handleClose}
+            onDirectDepositClick={handleDirectDepositClick}
+            onDirectWithdrawClick={handleDirectWithdrawClick}
+          />
+        </div>
+      )}
 
       <WalletSidebar
         isOpen={isSidebarOpen}
