@@ -44,7 +44,6 @@ export default function OrdersPage() {
   const { setIsChatVisible } = useChatVisibilityStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
