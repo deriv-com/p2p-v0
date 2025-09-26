@@ -135,7 +135,7 @@ export default function WalletSummary() {
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
-              className="h-12 w-12 rounded-full border-2 border-white bg-transparent hover:bg-white/10 text-white p-0"
+              className="h-12 w-12 rounded-full border border-white bg-transparent hover:bg-white/10 text-white p-0"
               onClick={handleTransferClick}
               aria-label="Transfer"
             >
@@ -147,7 +147,7 @@ export default function WalletSummary() {
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
-              className="h-12 w-12 rounded-full border-2 border-white bg-transparent hover:bg-white/10 text-white p-0"
+              className="h-12 w-12 rounded-full border border-white bg-transparent hover:bg-white/10 text-white p-0"
               onClick={handleWithdrawClick}
               aria-label="Withdraw"
             >
