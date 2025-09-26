@@ -64,24 +64,10 @@ export default function OrdersPage() {
       if (typeof window !== "undefined") {
         const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
 
-        if (userData && userData.created_at) {
-          // Calculate days since user joined
-          const joinDate = new Date(userData.created_at)
-          const now = new Date()
-          const diff = now.getTime() - joinDate.getTime()
-          const daysSinceJoin = Math.floor(diff / (1000 * 60 * 60 * 24))
-
-          // Show button for users who joined more than 7 days ago (not new signups)
-          setShowCheckPreviousOrdersButton(daysSinceJoin > 7)
-        } else {
-          // Default to showing the button if no user data found
-          setShowCheckPreviousOrdersButton(true)
-        }
+        setShowCheckPreviousOrdersButton(userData?.signup)
       }
-    } catch (error) {
-      console.error("Error checking user signup status from localStorage:", error)
-      // Default to showing the button if there's an error
-      setShowCheckPreviousOrdersButton(true)
+    } catch (error)
+      setShowCheckPreviousOrdersButton(false)
     }
   }
 
