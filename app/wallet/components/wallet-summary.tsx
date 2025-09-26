@@ -123,7 +123,7 @@ export default function WalletSummary() {
         )}
       >
         {/* Left side - Image and balance info */}
-        <div className={cn("flex items-center gap-4", isMobile && "flex-col text-center")}>
+        <div className={cn("flex items-center gap-4", isMobile && "gap-4 flex-col text-center")}>
           <div className="flex-shrink-0">
             <Image
               src="/icons/p2p-3d.png"
