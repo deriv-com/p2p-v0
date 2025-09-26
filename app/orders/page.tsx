@@ -64,7 +64,10 @@ export default function OrdersPage() {
       if (typeof window !== "undefined") {
         const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
 
-        setShowCheckPreviousOrdersButton(userData?.signup)
+        if(userData?.signup === "v1")
+          setShowCheckPreviousOrdersButton(true)
+        else      
+          setShowCheckPreviousOrdersButton(false)
       }
     } catch (error) {
       console.log(error)
