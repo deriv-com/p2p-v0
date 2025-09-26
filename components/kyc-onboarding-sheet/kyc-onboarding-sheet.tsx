@@ -33,7 +33,6 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
         <div className={`font-medium text-base ${completed ? "text-gray-500 line-through" : "text-gray-900"}`}>
           {title}
         </div>
-        <div className="text-sm text-gray-500 mt-1">{subtitle}</div>
       </div>
     </div>
     <div className="flex items-center">
