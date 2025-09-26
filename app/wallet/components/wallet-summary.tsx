@@ -8,6 +8,8 @@ import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
+import ChooseCurrencyStep from "./choose-currency-step"
+import WalletActionStep from "./wallet-action-step"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface Currency {
@@ -17,14 +19,16 @@ interface Currency {
 }
 
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
+type WalletStep = "summary" | "chooseCurrency" | "walletAction"
 
 export default function WalletSummary() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
+  const [currentStep, setCurrentStep] = useState<WalletStep>("summary")
+  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
 
@@ -62,17 +66,26 @@ export default function WalletSummary() {
 
   const handleDepositClick = () => {
     setCurrentOperation("DEPOSIT")
-    setIsSidebarOpen(true)
+    setCurrentStep("chooseCurrency")
   }
 
   const handleWithdrawClick = () => {
     setCurrentOperation("WITHDRAW")
-    setIsSidebarOpen(true)
+    setCurrentStep("chooseCurrency")
   }
 
   const handleTransferClick = () => {
     setCurrentOperation("TRANSFER")
     setIsSidebarOpen(true)
+  }
+
+  const handleCurrencySelect = (currency: Currency) => {
+    setSelectedCurrency(currency.code)
+    setCurrentStep("walletAction")
+  }
+
+  const handleClose = () => {
+    setCurrentStep("summary")
   }
 
   const handleDirectDepositClick = (currency: string) => {
@@ -91,6 +104,44 @@ export default function WalletSummary() {
 
   const handleSendTransferClick = () => {}
   const handleReceiveTransferClick = () => {}
+
+  if (currentStep === "chooseCurrency") {
+    const title = currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"
+    const description =
+      currentOperation === "DEPOSIT"
+        ? "Choose which currency you would like to deposit."
+        : "Choose which currency you would like to withdraw."
+
+    return (
+      <ChooseCurrencyStep
+        title={title}
+        description={description}
+        currencies={currencies}
+        onClose={handleClose}
+        onCurrencySelect={handleCurrencySelect}
+      />
+    )
+  }
+
+  if (currentStep === "walletAction") {
+    const title = currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"
+    const description =
+      currentOperation === "DEPOSIT"
+        ? "Choose your preferred deposit method."
+        : "Choose your preferred withdrawal method."
+
+    return (
+      <WalletActionStep
+        title={title}
+        description={description}
+        actionType={currentOperation}
+        selectedCurrency={selectedCurrency}
+        onClose={handleClose}
+        onDirectDepositClick={handleDirectDepositClick}
+        onDirectWithdrawClick={handleDirectWithdrawClick}
+      />
+    )
+  }
 
   return (
     <>
