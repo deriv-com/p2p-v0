@@ -86,14 +86,6 @@ export const KycOnboardingSheet: React.FC = () => {
               completed={profileCompleted}
               onClick={handleProfileSetup}
             />
-
-            <OnboardingStep
-              icon="/icons/fingerprint.png"
-              title="Add biometrics"
-              subtitle="1 step"
-              completed={biometricsCompleted}
-              onClick={handleBiometricsSetup}
-            />
           </div>
 
           <Button variant="ghost" className="w-full mt-6 text-gray-500" onClick={handleClose}>
