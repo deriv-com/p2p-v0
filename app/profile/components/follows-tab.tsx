@@ -21,7 +21,6 @@ export default function FollowsTab() {
   const [searchQuery, setSearchQuery] = useState("")
   const [following, setFollowing] = useState<FollowUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
@@ -33,7 +32,6 @@ export default function FollowsTab() {
       setFollowing(data)
     } catch (err) {
       console.error("Failed to fetch favourite users:", err)
-      setError("Failed to load following list")
       setFollowing([])
     } finally {
       setIsLoading(false)
