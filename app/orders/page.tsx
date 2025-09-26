@@ -387,13 +387,6 @@ export default function OrdersPage() {
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
               <p className="mt-2 text-slate-600">Loading orders...</p>
             </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-600">{error}</p>
-              <Button onClick={fetchOrders} className="mt-4 text-white">
-                Try Again
-              </Button>
-            </div>
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
               <EmptyState title="No orders found" description="Start by placing your first order." />
