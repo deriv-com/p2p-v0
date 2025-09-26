@@ -226,7 +226,7 @@ export interface KycStatusResponse {
  */
 export async function getKycStatus(): Promise<KycStatusResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/client/kyc-status`, {
+    const response = await fetch(`${API.coreUrl}/client/onboarding-status`, {
       method: "GET",
       credentials: "include",
       headers: AUTH.getAuthHeader(),
