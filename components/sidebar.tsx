@@ -15,7 +15,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const [showWallet, setShowWallet] = useState(false)
+  const [showWallet, setShowWallet] = useState(true)
 
   useEffect(() => {
     checkUserSignupStatus()
