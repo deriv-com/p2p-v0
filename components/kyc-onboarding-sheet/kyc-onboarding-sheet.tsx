@@ -52,16 +52,11 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, subtitle, 
 
 export const KycOnboardingSheet: React.FC = () => {
   const router = useRouter()
-  const { isSheetOpen, profileCompleted, biometricsCompleted, setSheetOpen } = useKycOnboardingStore()
+  const { isSheetOpen, profileCompleted, setSheetOpen } = useKycOnboardingStore()
 
   const handleProfileSetup = () => {
     setSheetOpen(false)
     router.push("/profile")
-  }
-
-  const handleBiometricsSetup = () => {
-    setSheetOpen(false)
-    console.log("Navigate to biometrics setup")
   }
 
   const handleClose = () => {
