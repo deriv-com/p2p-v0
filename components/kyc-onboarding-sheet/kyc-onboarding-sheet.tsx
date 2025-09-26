@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button
+import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 interface OnboardingStepProps {
@@ -52,8 +52,6 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
 export const KycOnboardingSheet: React.FC = () => {
   const router = useRouter()
   const isMobile = useIsMobile()
-  const { isSheetOpen, profileCompleted, biometricsCompleted, setSheetOpen } = useKycOnboardingStore()
-
   const handleProfileSetup = () => {
     setSheetOpen(false)
     router.push("/profile")
