@@ -14,7 +14,7 @@ export default function WalletPage() {
       <div className="min-h-screen bg-background px-0 md:pl-[16px]">
         <div className="w-full flex flex-col items-center">
           
-          <div className="w-full mt-6">
+          <div className="w-full mt-0 md:mt-6">
             <WalletSummary />
           </div>
 
