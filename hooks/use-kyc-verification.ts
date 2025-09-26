@@ -4,14 +4,11 @@ import { useEffect, useState } from "react"
 import { useKycOnboardingStore } from "@/stores/kyc-onboarding-store"
 
 interface UseKycVerificationOptions {
-  /** Whether to automatically show the KYC onboarding sheet when verification is incomplete */
   autoShowSheet?: boolean
-  /** Whether to fetch KYC status on mount */
   fetchOnMount?: boolean
 }
 
-interface UseKycVerificationReturn {
-  /** Whether POI (Proof of Identity) is verified */
+interface UseKycVerificationReturn 
   isPoiVerified: boolean
   /** Whether POA (Proof of Address) is verified */
   isPoaVerified: boolean
@@ -33,35 +30,6 @@ interface UseKycVerificationReturn {
   checkKycAndShowSheet: () => Promise<boolean>
 }
 
-/**
- * Hook to check KYC verification status and manage KYC onboarding sheet
- *
- * @param options Configuration options for the hook
- * @returns KYC verification state and control functions
- *
- * @example
- * ```tsx
- * // Basic usage - just check status
- * const { isKycVerified, isPoiVerified, isPoaVerified } = useKycVerification()
- *
- * // Auto-show sheet when verification is incomplete
- * const { isKycVerified, checkKycAndShowSheet } = useKycVerification({
- *   autoShowSheet: true,
- *   fetchOnMount: true
- * })
- *
- * // Manual control for ad creation flow
- * const { checkKycAndShowSheet } = useKycVerification()
- *
- * const handleCreateAd = async () => {
- *   const isVerified = await checkKycAndShowSheet()
- *   if (isVerified) {
- *     // Proceed with ad creation
- *   }
- *   // Sheet will be shown automatically if verification is incomplete
- * }
- * ```
- */
 export function useKycVerification(options: UseKycVerificationOptions = {}): UseKycVerificationReturn {
   const { autoShowSheet = false, fetchOnMount = false } = options
 
