@@ -106,7 +106,6 @@ export default function OrdersPage() {
       setOrders(ordersArray)
     } catch (err) {
       console.error("Error fetching orders:", err)
-      setError("Failed to load orders. Please try again.")
       setOrders([])
     } finally {
       setIsLoading(false)
