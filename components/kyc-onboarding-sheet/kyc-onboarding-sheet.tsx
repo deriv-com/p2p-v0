@@ -8,6 +8,11 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
+interface KycOnboardingSheetProps {
+  isSheetOpen: boolean
+  setSheetOpen: (open: boolean) => void
+}
+
 interface OnboardingStepProps {
   icon: string
   title: string
@@ -24,7 +29,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
     <div className="flex items-center gap-4">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image
-          src={icon}
+          src={icon || "/placeholder.svg"}
           alt={title}
           width={24}
           height={24}
@@ -49,9 +54,10 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
   </Button>
 )
 
-export const KycOnboardingSheet: React.FC = ({isSheetOpen, setSheetOpen}) => {
+export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetOpen, setSheetOpen }) => {
   const router = useRouter()
   const isMobile = useIsMobile()
+
   const handleProfileSetup = () => {
     setSheetOpen(false)
     router.push("/profile")
