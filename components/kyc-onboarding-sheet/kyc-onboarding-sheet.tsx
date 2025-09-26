@@ -61,7 +61,6 @@ export const KycOnboardingSheet: React.FC = () => {
 
   const handleBiometricsSetup = () => {
     setSheetOpen(false)
-    // Navigate to biometrics setup page when available
     console.log("Navigate to biometrics setup")
   }
 
@@ -72,7 +71,6 @@ export const KycOnboardingSheet: React.FC = () => {
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
       <SheetContent side="bottom" className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
-        {/* Handle bar */}
         <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6" />
 
         <div className="px-6 pb-6">
