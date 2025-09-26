@@ -44,7 +44,6 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, subtitle, 
           <Image src="/white-checkmark-icon.jpg" alt="Completed" width={12} height={12} />
         </div>
       ) : (
-        /* Using placeholder.svg for chevron icon with proper dimensions */
         <Image src="/icons/chevron-right.jpg" alt="Go" width={20} height={20} />
       )}
     </div>
