@@ -118,7 +118,7 @@ export default function ProfilePage() {
             <StatsTabs stats={userData} isLoading={isLoading} />
           </div>
         </div>
-      </d
+      </div
     </>
   )
 }
