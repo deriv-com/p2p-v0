@@ -27,7 +27,6 @@ export default function FollowsTab() {
   const fetchFollowing = useCallback(async () => {
     try {
       setIsLoading(true)
-      setError(null)
       const data = await getFavouriteUsers()
       setFollowing(data)
     } catch (err) {
