@@ -97,7 +97,7 @@ export default function WalletSummary() {
       <div
         className={cn(
           "bg-slate-1200 w-full h-[140px] p-6 flex items-center justify-between",
-          isMobile ? "rounded-b-2xl flex-col gap-4 h-auto py-6" : "rounded-2xl",
+          isMobile ? "rounded-b-3xl flex-col gap-4 h-auto py-6" : "rounded-3xl",
         )}
       >
         <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
