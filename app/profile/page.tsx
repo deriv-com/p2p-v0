@@ -112,7 +112,7 @@ export default function ProfilePage() {
               isVerified={userData?.isVerified}
               isLoading={isLoading}
             />
-            <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
+            <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px] mt-">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
             </div>
             <StatsTabs stats={userData} isLoading={isLoading} />
