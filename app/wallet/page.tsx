@@ -11,7 +11,7 @@ export default function WalletPage() {
   return (
     <>
       {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
-      <div className="min-h-screen bg-background px-[24px]">
+      <div className="min-h-screen bg-background px-0 md:px-[16px]">
         <div className="w-full flex flex-col items-center">
           
           <div className="w-full mt-6">
