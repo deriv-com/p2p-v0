@@ -51,7 +51,6 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, subtitle, 
 
 export const KycOnboardingSheet: React.FC = () => {
   const router = useRouter()
-  const { isSheetOpen, profileCompleted, setSheetOpen } = useKycOnboardingStore()
 
   const handleProfileSetup = () => {
     setSheetOpen(false)
