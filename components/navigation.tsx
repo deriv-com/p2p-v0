@@ -7,6 +7,7 @@ import { NovuNotifications } from "@/components/novu-notifications"
 import { cn } from "@/lib/utils"
 
 interface NavigationProps {
+  className?: string
   isBackBtnVisible?: boolean
   isVisible?: boolean
   onBack?: () => void
@@ -17,6 +18,7 @@ interface NavigationProps {
 }
 
 export default function Navigation({
+  className = "",
   isBackBtnVisible = true,
   onBack,
   onClose,
@@ -88,8 +90,9 @@ return (
   return (
     <div
       className={cn(
-        "mb-4 border-b py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]",
-        showNotificationIcon && "bg-slate-1200 pr-[14px]"
+        "py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]",
+        showNotificationIcon && "bg-slate-1200 pr-[14px]",
+        className
       )}
     >
       <div className="flex items-center justify-between md:px-0">{getHeaderComponent()}</div>

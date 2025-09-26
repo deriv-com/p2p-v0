@@ -14,7 +14,6 @@ import { formatAmount, formatStatus, getStatusBadgeStyle } from "@/lib/utils"
 import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
 import { useIsMobile } from "@/hooks/use-mobile"
-import Navigation from "@/components/navigation"
 import OrderChat from "@/components/order-chat"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
@@ -51,12 +50,30 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
+  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
+    checkUserSignupStatus()
   }, [activeTab, dateFilter, customDateRange])
+
+  const checkUserSignupStatus = () => {
+    try {
+      if (typeof window !== "undefined") {
+        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+
+        if(userData?.signup === "v1")
+          setShowCheckPreviousOrdersButton(true)
+        else      
+          setShowCheckPreviousOrdersButton(false)
+      }
+    } catch (error) {
+      console.log(error)
+      setShowCheckPreviousOrdersButton(false)
+    }
+  }
 
   const fetchOrders = async () => {
     setIsLoading(true)
@@ -318,7 +335,6 @@ export default function OrdersPage() {
   if (showPreviousOrders) {
     return (
       <>
-        {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" />}
         <PreviousOrdersSection onBack={handleBackFromPreviousOrders} />
       </>
     )
@@ -326,10 +342,9 @@ export default function OrdersPage() {
 
   return (
     <>
-      {isMobile && <Navigation isBackBtnVisible={true} redirectUrl="/" title="P2P" showNotificationIcon={true} />}
       <div className="flex flex-col h-full px-3">
         <div className="flex flex-col">
-          <div className="w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between">
+          <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
               <TabsList className="w-full bg-transparent">
                 <TabsTrigger
@@ -346,15 +361,17 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white font-normal hover:text-white hover:bg-transparent "
-              onClick={handleCheckPreviousOrders}
-            >
-              Check previous orders
-              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
-            </Button>
+            {showCheckPreviousOrdersButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white font-normal hover:text-white hover:bg-transparent "
+                onClick={handleCheckPreviousOrders}
+              >
+                Check previous orders
+                <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
+              </Button>
+            )}
           </div>
           <div className="my-4">
             {activeTab === "past" && (
