@@ -4,8 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { USER, API, AUTH } from "@/lib/local-variables"
-import { getCurrencies } from "@/services/api/api-wallets"
+import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
@@ -45,31 +44,10 @@ export default function WalletSummary() {
     }
   }
 
-  const fetchBalance = async () => {
+  const loadBalance = async () => {
     try {
-      const userId = USER.id
-      const url = `${API.baseUrl}/users/${userId}`
-
-      const response = await fetch(url, {
-        credentials: "include",
-        headers: {
-          ...AUTH.getAuthHeader(),
-          accept: "application/json",
-        },
-      })
-
-      if (!response.ok) {
-        throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`)
-      }
-
-      const responseData = await response.json()
-
-      if (responseData && responseData.data) {
-        const data = responseData.data
-        const balance = data.balances?.find((b: any) => b.currency === selectedCurrency)?.amount
-        setBalance(balance ? Number.parseFloat(balance) : 0)
-      }
-
+      const balanceAmount = await fetchBalance(selectedCurrency)
+      setBalance(balanceAmount)
       setIsLoading(false)
     } catch (error) {
       console.error("Error fetching user balance:", error)
@@ -78,7 +56,7 @@ export default function WalletSummary() {
   }
 
   useEffect(() => {
-    fetchBalance()
+    loadBalance()
     fetchCurrencies()
   }, [selectedCurrency])
 
@@ -122,7 +100,6 @@ export default function WalletSummary() {
           isMobile ? "rounded-b-2xl flex-col gap-4 h-auto py-6" : "rounded-2xl",
         )}
       >
-       
         <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
           <div className="flex-shrink-0">
             <Image
@@ -142,9 +119,7 @@ export default function WalletSummary() {
           </div>
         </div>
 
-       
         <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
-
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
@@ -157,7 +132,6 @@ export default function WalletSummary() {
             <span className="text-white text-xs font-normal">Deposit</span>
           </div>
 
-
           <div className="flex flex-col items-center gap-2">
             <Button
               size="icon"
@@ -169,7 +143,6 @@ export default function WalletSummary() {
             </Button>
             <span className="text-white text-xs font-normal">Transfer</span>
           </div>
-
 
           <div className="flex flex-col items-center gap-2">
             <Button
