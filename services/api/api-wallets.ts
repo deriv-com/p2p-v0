@@ -1,4 +1,4 @@
-import { AUTH, API, WALLETS } from "@/lib/local-variables"
+import { AUTH, API, WALLETS, USER } from "@/lib/local-variables"
 
 export async function fetchTransactions() {
   const url = `${API.coreUrl}${API.endpoints.walletsTransactions}?wallet_id=${WALLETS.defaultParams.wallet_id}`
@@ -85,5 +85,37 @@ export async function walletTransfer(params: {
   } catch (error) {
     console.log("Error performing wallet transfer:", error)
     return null
+  }
+}
+
+export async function fetchBalance(selectedCurrency: string): Promise<number> {
+  try {
+    const userId = USER.id
+    const url = `${API.baseUrl}/users/${userId}`
+
+    const response = await fetch(url, {
+      credentials: "include",
+      headers: {
+        ...AUTH.getAuthHeader(),
+        accept: "application/json",
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user data: ${response.status} ${response.statusText}`)
+    }
+
+    const responseData = await response.json()
+
+    if (responseData && responseData.data) {
+      const data = responseData.data
+      const balance = data.balances?.find((b: any) => b.currency === selectedCurrency)?.amount
+      return balance ? Number.parseFloat(balance) : 0
+    }
+
+    return 0
+  } catch (error) {
+    console.error("Error fetching user balance:", error)
+    throw error
   }
 }

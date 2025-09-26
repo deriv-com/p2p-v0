@@ -194,7 +194,7 @@ export default function TransactionsTab() {
 
   return (
     <>
-      <div className="py-4 space-y-6 max-w-[560px] mx-auto overflow-hidden">
+      <div className="py-4 space-y-6 mx-auto overflow-hidden">
         <div className="flex gap-2">
           {filters.map((filter) => (
             <Button
@@ -230,7 +230,7 @@ export default function TransactionsTab() {
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc }
+                                src={display.iconSrc}
                                 alt={`${display.type} icon`}
                                 width={32}
                                 height={32}
