@@ -41,11 +41,11 @@ export default function Sidebar({ className }: SidebarProps) {
   const getHomeUrl = () => {
     const isProduction = process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_BRANCH === "master"
     const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
-    return `https://${baseUrl}/dashboard/home`
+    return baseUrl
   }
 
   const navItems = [
-    { name: "Home", href: getHomeUrl(), icon: "/icons/traders-hub.png" },
+    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
@@ -102,7 +102,7 @@ export default function Sidebar({ className }: SidebarProps) {
           {USER.nickname?.charAt(0).toUpperCase()}
         </Avatar>
         <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
-        <Link prefetch href="https://home.deriv.com/dashboard/user-profile">
+        <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
           <Image src="/icons/chevron-right-sm.png" alt="Deriv logo" width={64} />
         </Link>
       </div>
