@@ -79,14 +79,10 @@ export const KycOnboardingSheet: React.FC = () => {
           <OnboardingStep
             icon="/user-profile-icon.png"
             title="Set up and verify your profile"
-            completed={profileCompleted}
+            completed={true}
             onClick={handleProfileSetup}
           />
-        </div>
-
-        <Button variant="ghost" className="w-full text-gray-500 hover:text-gray-700" onClick={handleSkip}>
-          Skip for now
-        </Button>
+        </div
       </div>
     </>
   )
