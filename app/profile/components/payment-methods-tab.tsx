@@ -59,7 +59,11 @@ export default function PaymentMethodsTab() {
       })
 
       if (!response.ok) {
-        throw new Error(`Error fetching payment methods: ${response.statusText}`)
+        if(response.status == 401) {
+          setPaymentMethods[])
+        } else {
+          throw new Error(`Error fetching payment methods: ${response.statusText}`)
+        }
       }
 
       const responseText = await response.text()
