@@ -144,8 +144,6 @@ export default function BlockedTab() {
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
           <div className="py-8 text-center text-gray-500">Loading...</div>
-        ) : error ? (
-          <div className="py-8 text-center text-red-500">{error}</div>
         ) : filteredBlockedUsers.length > 0 ? (
           filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
         ) : (
