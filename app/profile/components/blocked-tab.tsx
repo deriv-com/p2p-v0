@@ -139,7 +139,7 @@ export default function BlockedTab() {
             </Button>
           )}
         </div>
-      </div>
+      </div>}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
