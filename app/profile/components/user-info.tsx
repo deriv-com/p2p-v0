@@ -54,25 +54,25 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-2 mt-3">
             {isVerified?.id && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
-                <Image src="/check-pattern.png" alt="Check" width={12} height={12} className="mr-1" />
+                <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 ID
               </div>
             )}
             {isVerified?.address && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
-                <Image src="/check-pattern.png" alt="Check" width={12} height={12} className="mr-1" />
+                <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 Address
               </div>
             )}
             {isVerified?.phone && (
               <div className="bg-success-bg text-success px-2 h-[24px] rounded-sm text-xs flex items-center">
-                <Image src="/check-pattern.png" alt="Check" width={12} height={12} className="mr-1" />
+                <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 Phone number
               </div>
             )}
             {isVerified?.email && (
               <div className="bg-success-bg text-success px-3 h-[24px] rounded-sm text-xs flex items-center">
-                <Image src="/check-pattern.png" alt="Check" width={12} height={12} className="mr-1" />
+                <Image src="/icons/check-icon.png" alt="Check" width={12} height={12} className="mr-1" />
                 Email
               </div>
             )}
