@@ -44,7 +44,6 @@ export default function OrdersPage() {
   const { setIsChatVisible } = useChatVisibilityStore()
   const [orders, setOrders] = useState<Order[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isRatingSidebarOpen, setIsRatingSidebarOpen] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null)
   const [showChat, setShowChat] = useState(false)
@@ -77,7 +76,6 @@ export default function OrdersPage() {
 
   const fetchOrders = async () => {
     setIsLoading(true)
-    setError(null)
     try {
       const filters: {
         is_open?: boolean
@@ -108,7 +106,6 @@ export default function OrdersPage() {
       setOrders(ordersArray)
     } catch (err) {
       console.error("Error fetching orders:", err)
-      setError("Failed to load orders. Please try again.")
       setOrders([])
     } finally {
       setIsLoading(false)
@@ -389,13 +386,6 @@ export default function OrdersPage() {
             <div className="text-center py-12">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
               <p className="mt-2 text-slate-600">Loading orders...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-12">
-              <p className="text-red-600">{error}</p>
-              <Button onClick={fetchOrders} className="mt-4 text-white">
-                Try Again
-              </Button>
             </div>
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">

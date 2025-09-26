@@ -21,19 +21,16 @@ export default function FollowsTab() {
   const [searchQuery, setSearchQuery] = useState("")
   const [following, setFollowing] = useState<FollowUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
   const fetchFollowing = useCallback(async () => {
     try {
       setIsLoading(true)
-      setError(null)
       const data = await getFavouriteUsers()
       setFollowing(data)
     } catch (err) {
       console.error("Failed to fetch favourite users:", err)
-      setError("Failed to load following list")
       setFollowing([])
     } finally {
       setIsLoading(false)
@@ -114,7 +111,7 @@ export default function FollowsTab() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      {filteredFollowing.length > 0 && <div className="flex items-center justify-between gap-4">
         <div className="relative w-full md:w-auto">
           <Image
             src="/icons/search-icon-custom.png"
@@ -142,13 +139,11 @@ export default function FollowsTab() {
             </Button>
           )}
         </div>
-      </div>
+      </div>}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
           <div className="py-8 text-center text-gray-500">Loading...</div>
-        ) : error ? (
-          <div className="py-8 text-center text-red-500">{error}</div>
         ) : filteredFollowing.length > 0 ? (
           filteredFollowing.map((user) => <UserCard key={user.user_id} user={user} />)
         ) : (

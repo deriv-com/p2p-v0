@@ -59,7 +59,12 @@ export default function PaymentMethodsTab() {
       })
 
       if (!response.ok) {
-        throw new Error(`Error fetching payment methods: ${response.statusText}`)
+        if(response.status == 401) {
+          setPaymentMethods([])
+          return
+        } else {
+          throw new Error(`Error fetching payment methods: ${response.statusText}`)
+        }
       }
 
       const responseText = await response.text()
@@ -357,7 +362,6 @@ export default function PaymentMethodsTab() {
           </div>
         </div>
       )}
-      
       {eWallets.length > 0 && (
         <div>
           <h3 className="text-base font-bold mb-4">E-wallets</h3>

@@ -145,7 +145,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
-      headers: AUTH.getAuthHeader()
+      headers: AUTH.getAuthHeader(),
     })
 
     if (!response.ok) {
@@ -196,7 +196,7 @@ export async function getSocketToken(token: string): Promise<void> {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        ...AUTH.getAuthHeader()
+        ...AUTH.getAuthHeader(),
       },
     })
 
@@ -212,5 +212,32 @@ export async function getSocketToken(token: string): Promise<void> {
     }
   } catch (error) {
     console.error("Error fetching token:", error)
+  }
+}
+
+export interface KycStatusResponse {
+  kyc_step: "poi" | "poa"
+  status: string
+}
+
+/**
+ * Get KYC status for user onboarding
+ */
+export async function getKycStatus(): Promise<KycStatusResponse[]> {
+  try {
+    const response = await fetch(`${API.coreUrl}/client/kyc-status`, {
+      method: "GET",
+      credentials: "include",
+      headers: AUTH.getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch KYC status: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching KYC status:", error)
   }
 }

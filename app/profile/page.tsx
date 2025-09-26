@@ -28,10 +28,13 @@ export default function ProfilePage() {
 
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
-          showWarningDialog({
-            title: "Error",
-            description: errorMessage,
-          })
+
+          if(response.status != 401) {
+            showWarningDialog({
+              title: "Error",
+              description: errorMessage,
+            })
+          }
           return
         }
 
