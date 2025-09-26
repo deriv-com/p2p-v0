@@ -23,6 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
+import { API, AUTH } from "@/lib/local-variables"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -50,12 +51,45 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
+  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrders()
+    fetchUserSignupStatus()
   }, [activeTab, dateFilter, customDateRange])
+
+  const fetchUserSignupStatus = async () => {
+    try {
+      const url = `${API.baseUrl}/users/me`
+      const headers = AUTH.getAuthHeader()
+
+      const response = await fetch(url, {
+        credentials: "include",
+        headers,
+      })
+
+      const responseData = await response.json()
+
+      if (responseData && responseData.data) {
+        const data = responseData.data
+
+        // Calculate days since user joined
+        const joinDate = new Date(data.created_at)
+        const now = new Date()
+        const diff = now.getTime() - joinDate.getTime()
+        const daysSinceJoin = Math.floor(diff / (1000 * 60 * 60 * 24))
+
+        // Show button for users who joined more than 7 days ago (not new signups)
+        setShowCheckPreviousOrdersButton(daysSinceJoin > 7)
+      }
+    } catch (error) {
+      console.error("Error fetching user signup status:", error)
+      // Default to showing the button if there's an error
+      setShowCheckPreviousOrdersButton(true)
+    }
+  }
 
   const fetchOrders = async () => {
     setIsLoading(true)
@@ -343,15 +377,17 @@ export default function OrdersPage() {
                 </TabsTrigger>
               </TabsList>
             </Tabs>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-white font-normal hover:text-white hover:bg-transparent "
-              onClick={handleCheckPreviousOrders}
-            >
-              Check previous orders
-              <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
-            </Button>
+            {showCheckPreviousOrdersButton && (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-white font-normal hover:text-white hover:bg-transparent "
+                onClick={handleCheckPreviousOrders}
+              >
+                Check previous orders
+                <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
+              </Button>
+            )}
           </div>
           <div className="my-4">
             {activeTab === "past" && (
