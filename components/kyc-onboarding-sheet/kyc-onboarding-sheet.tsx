@@ -24,7 +24,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed,
     <div className="flex items-center gap-4">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image
-          src={icon || "/placeholder.svg?height=24&width=24"}
+          src={icon}
           alt={title}
           width={24}
           height={24}
@@ -56,7 +56,16 @@ export const KycOnboardingSheet: React.FC = () => {
     setSheetOpen(false)
     router.push("/profile")
   }
-  
+
+  const handleBiometricsSetup = () => {
+    setSheetOpen(false)
+    router.push("/profile/biometrics")
+  }
+
+  const handleSkip = () => {
+    setSheetOpen(false)
+  }
+
   const OnboardingContent = () => (
     <>
       <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6" />
@@ -73,7 +82,7 @@ export const KycOnboardingSheet: React.FC = () => {
             completed={true}
             onClick={handleProfileSetup}
           />
-        </div>
+        </div
       </div>
     </>
   )
