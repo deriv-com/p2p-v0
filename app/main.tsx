@@ -81,8 +81,6 @@ export default function Main({
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
-
-      {!isKycLoading && <KycOnboardingSheet />}
     </WebSocketProvider>
   )
 }
