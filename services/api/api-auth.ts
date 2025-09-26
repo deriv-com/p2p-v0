@@ -216,15 +216,14 @@ export async function getSocketToken(token: string): Promise<void> {
 }
 
 export interface KycStatusResponse {
-  profile_completed: boolean
-  biometrics_completed: boolean
-  show_onboarding: boolean
+  kyc_step: "poi" | "poa"
+  status: string
 }
 
 /**
  * Get KYC status for user onboarding
  */
-export async function getKycStatus(): Promise<KycStatusResponse> {
+export async function getKycStatus(): Promise<KycStatusResponse[]> {
   try {
     const response = await fetch(`${API.coreUrl}/client/kyc-status`, {
       method: "GET",
