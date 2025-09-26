@@ -8,6 +8,8 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet/kyc-onboarding-sheet"
+import { useKycStatus } from "@/hooks/use-kyc-status"
 import "./globals.css"
 
 export default function Main({
@@ -19,6 +21,8 @@ export default function Main({
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
+
+  const { isLoading: isKycLoading } = useKycStatus()
 
   useEffect(() => {
     const PUBLIC_ROUTES = ["/login"]
@@ -81,6 +85,8 @@ export default function Main({
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
+
+      {!isKycLoading && <KycOnboardingSheet />}
     </WebSocketProvider>
   )
 }
