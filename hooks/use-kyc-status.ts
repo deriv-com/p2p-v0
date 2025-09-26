@@ -24,7 +24,6 @@ export function useKycStatus() {
       }
     }
 
-    // Only fetch if we're in the browser
     if (typeof window !== "undefined") {
       fetchKycStatus()
     } else {
