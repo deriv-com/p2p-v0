@@ -122,7 +122,7 @@ export default function WalletSummary() {
           isMobile ? "rounded-b-2xl flex-col gap-4 h-auto py-6" : "rounded-2xl",
         )}
       >
-        {/* Left side - Image and balance info */}
+       
         <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
           <div className="flex-shrink-0">
             <Image
