@@ -2,7 +2,6 @@
 
 import type React from "react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
