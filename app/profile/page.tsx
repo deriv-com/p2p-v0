@@ -124,7 +124,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <KycOnboardingSheet hasTrigger={false} />
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
