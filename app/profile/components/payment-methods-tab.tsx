@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
-
 import { useState, useEffect, useCallback } from "react"
 import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -15,6 +14,7 @@ import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import EmptyState from "@/components/empty-state"
 
 interface PaymentMethod {
   id: string
@@ -310,6 +310,14 @@ export default function PaymentMethodsTab() {
         </Button>
       </div>
     )
+  }
+
+  if(bankTransfers.length > 0 && eWallets.length > 0) {
+    return (<EmptyState
+      title="No payment methods yet"
+      description="Start adding payment methods."
+      redirectToAds={false}
+    />)
   }
 
   return (
