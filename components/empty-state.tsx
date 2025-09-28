@@ -25,19 +25,6 @@ export default function EmptyState({
   const router = useRouter()
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const userId = localStorage.getItem("user_id")
-      if (userId && userId.trim() !== "") {
-        // User is authenticated, redirect to ads
-        router.push("/ads")
-      } else {
-        // User is not authenticated, show KYC onboarding sheet
-        setIsKycSheetOpen(true)
-      }
-    }
-  }, [router])
-
   return (
     <>
       <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
