@@ -75,6 +75,19 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   return (
+    <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
+      <div className="bg-white w-full max-w-md h-full flex flex-col">
+        <div className="flex justify-between items-center px-4 py-3 border-b">
+          <h2 className="text-xl font-bold">Order details</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+        <div className="flex-1 overflow-auto p-4">
+          <OnboardingContent />
+        </div>
+      </div>
+    </div>
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen} modal={false}>
       <SheetContent>
         <OnboardingContent />
