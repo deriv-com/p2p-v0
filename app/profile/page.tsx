@@ -10,6 +10,7 @@ import { KycOnboardingSheet } from "./kyc-onboarding-sheet/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
+  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
