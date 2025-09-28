@@ -64,7 +64,7 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
     </div>
   )
 
-  if (!isOpen) return null
+  if (!isSheetOpen) return null
 
   if (isMobile) {
     return (
