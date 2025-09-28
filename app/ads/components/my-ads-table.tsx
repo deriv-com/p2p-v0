@@ -191,18 +191,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   if (ads.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16">
-        <div className="mb-6">
-          <Image src="/icons/search-icon.png" alt="Search" width={48} height={48} className="text-gray-400" />
-        </div>
-        <h2 className="text-xl font-semibold mb-2">You have no ads</h2>
-        <p className="text-gray-600 mb-6 text-center max-w-md">
-          Looking to buy or sell USD? You can post your own ad for others to respond.
-        </p>
-        <Button onClick={() => router.push("/ads/create")} variant="cyan" size="pill">
-          Create ad
-        </Button>
-      </div>
+      <EmptyState
+        title="You have no ads"
+        description="Looking to buy or sell USD? You can post your own ad for others to respond."
+        redirectToAds={true}
+      />
     )
   }
 
