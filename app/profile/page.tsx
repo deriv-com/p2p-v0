@@ -31,9 +31,7 @@ export default function ProfilePage() {
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if(response.status == 401) {
-            if(!isKycSheetOpen) setIsKycSheetOpen(true)
-          } else {
+          if(response.status != 401) {
             showWarningDialog({
               title: "Error",
               description: errorMessage,
@@ -100,6 +98,12 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
+
+    if(USER.id) {
+      fetchUserData()
+    } else {
+    
+    }
   }, [])
 
   return (
