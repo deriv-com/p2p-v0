@@ -188,7 +188,7 @@ export async function getClientProfile(): Promise<void> {
     const { data } = result
 
     localStorage.setItem("user_data", JSON.stringify({
-      email: data.email
+      email: data.email,
       first_name: data.first_name,
       last_name: data.last_name,
       nickname: data.nickname
