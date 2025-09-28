@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Sheet } from "@/components/ui/sheet"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { getHomeUrl } from "@/lib/utils"
@@ -74,6 +74,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+      <SheetTrigger asChild><div>Test</div></SheetTrigger>
       <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
         <div className="mb-4">
           <h3 className="text-xl font-bold text-center">Filter</h3>
