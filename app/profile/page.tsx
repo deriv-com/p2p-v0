@@ -102,7 +102,7 @@ export default function ProfilePage() {
       setIsLoading(false)
     }
   }, [])
-  
+
   return (
     <>
       <div className="px-3 pt-3 md:pt-0">
@@ -121,10 +121,10 @@ export default function ProfilePage() {
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
             </div>
             <StatsTabs stats={userData} isLoading={isLoading} />
-            {isKycSheetOpen && <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />}
           </div>
         </div>
       </div>
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
