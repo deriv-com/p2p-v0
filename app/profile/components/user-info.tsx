@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface UserInfoProps {
   username: string
