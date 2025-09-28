@@ -184,7 +184,7 @@ export async function getClientProfile(): Promise<void> {
       nickname: data.nickname
     }))
     if (data[0].residence_country) {
-      localStorage.setItem("residence_country", data[0].residence_country)
+      localStorage.setItem("residence_country", data.residence)
     }
     
   } catch (error) {
