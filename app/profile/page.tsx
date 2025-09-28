@@ -124,11 +124,11 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <Sheet defaultOpen={isSheetOpen} open={open} onOpenChange={setOpen}>
-      <SheetContent>
-        <OnboardingContent />
-      </SheetContent>
-    </Sheet>
+      <Sheet  open={isKycSheetOpen} onOpenChange={setIsKycSheetOpen}>
+        <SheetContent>
+          <div>Test</>
+        </SheetContent>
+      </Sheet>
     </>
   )
 }
