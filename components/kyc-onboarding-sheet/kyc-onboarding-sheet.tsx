@@ -76,7 +76,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
 
   if (isMobile) {
     return (
-      <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
+      <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
           <OnboardingContent />
         </DrawerContent>
@@ -85,7 +85,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   return (
-    <Sheet open={isSheetOpen} onOpenChange={setSheetOpen} modal={false}>
+    <Sheet open={open} onOpenChange={setOpen} modal={false}>
       <SheetContent>
         <OnboardingContent />
       </SheetContent>
