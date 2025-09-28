@@ -78,7 +78,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
       <div className="bg-white w-full max-w-md h-full flex flex-col">
         <div className="flex justify-between items-center px-4 py-3 border-b">
           <h2 className="text-xl font-bold">Get started with P2P</h2>
-          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+          <Button onClick={() => setSheetOpen(false)} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
