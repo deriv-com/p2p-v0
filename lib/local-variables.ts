@@ -18,7 +18,6 @@ export const USER = {
   first_name: USER_DATA?.first_name,
   last_name: USER_DATA?.last_name,
   email: USER_DATA?.email,
-  email: USER_DATA?.email,
   nickname: USER_DATA?.nickname,
   socketToken: SOCKET_TOKEN,
   userToken: USER_TOKEN,
