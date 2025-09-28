@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from ""
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
