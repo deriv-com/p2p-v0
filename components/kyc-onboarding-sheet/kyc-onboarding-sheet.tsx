@@ -41,7 +41,6 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 )
 
 export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
-  const [open, setOpen] = useState(isSheetOpen)
   const isMobile = useIsMobile()
 
   const handleProfileSetup = () => {
@@ -67,7 +66,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
         <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
           <OnboardingContent />
         </DrawerContent>
@@ -76,7 +75,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   return (
-    <Sheet defaultOpen={isSheetOpen} open={open} onOpenChange={setOpen}>
+    <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
       <SheetContent>
         <OnboardingContent />
       </SheetContent>

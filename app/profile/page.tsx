@@ -126,7 +126,7 @@ export default function ProfilePage() {
       </div>
       <Sheet  open={isKycSheetOpen} onOpenChange={setIsKycSheetOpen}>
         <SheetContent>
-          <div>Test</Test>
+          <div>Test</div>
         </SheetContent>
       </Sheet>
     </>
