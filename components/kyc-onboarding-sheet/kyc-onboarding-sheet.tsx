@@ -75,10 +75,13 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   return (
-    <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContent>
-        <OnboardingContent />
-      </SheetContent>
-    </Sheet>
+    <Dialog open={isSheetOpen} onOpenChange={setSheetOpen}>
+      <DialogContent className="sm:max-w-md rounded-4xl">
+        <DialogTitle className="font-bold">Get started with P2P</DialogTitle>
+        <div className="relative">
+          <OnboardingContent />
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
