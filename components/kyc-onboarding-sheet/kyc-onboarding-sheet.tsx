@@ -49,10 +49,6 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
 
   const OnboardingContent = () => (
     <div>
-      <div className="my-8">
-        <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
-      </div>
-
       <div className="space-y-4 mb-6">
         <OnboardingStep
           icon="/icons/account-profile.png"
@@ -69,6 +65,9 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
     return (
       <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
         <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
+          <div className="my-8">
+            <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
+          </div>
           <OnboardingContent />
         </DrawerContent>
       </Drawer>
