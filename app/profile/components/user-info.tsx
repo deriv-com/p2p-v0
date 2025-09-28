@@ -77,6 +77,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
           </div>
         </div>
       </div>
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </div>
   )
 }
