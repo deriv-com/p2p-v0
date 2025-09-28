@@ -102,11 +102,6 @@ export default function ProfilePage() {
       setIsLoading(false)
     }
   }, [])
-
-  useEffect(() => {
-    console.log("SheetContent mounted")
-    }, [])
-
   return (
     <>
       <div className="px-3 pt-3 md:pt-0">
