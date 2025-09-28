@@ -6,7 +6,6 @@ import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH, USER } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
