@@ -42,8 +42,8 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
                     <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
                     <span>{recommendation}</span>
                   </div>
+                  <span>% (Recommended)</span>
                 )}
-                <span>{recommendation ? "% (Recommended)" : "Not recommended yet"}</span>
               </div>
             )}
 
