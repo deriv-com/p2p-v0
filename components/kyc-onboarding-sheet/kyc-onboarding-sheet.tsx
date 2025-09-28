@@ -43,8 +43,8 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
   const isMobile = useIsMobile()
   const [open, setOpen] = useState(false)
-  if (!USER.id) {
-    setOpen(true)
+  if (USER.id) {
+    setOpen(false)
   } else {
     setOpen(true)
   }
