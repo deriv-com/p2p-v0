@@ -6,9 +6,11 @@ import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH, USER } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
+  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
@@ -93,14 +95,12 @@ export default function ProfilePage() {
       }
     }
 
-   // if (USER.id) {
+    if (USER.id) {
       fetchUserData()
-    /*} else {
+    } else {
       setIsKycSheetOpen(true)
       setIsLoading(false)
-    }*/
-
-    console.log("mounted")
+    }
   }, [])
 
   return (
@@ -124,7 +124,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
