@@ -25,6 +25,11 @@ export default function EmptyState({
   const router = useRouter()
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
 
+  const creatAd = () => {
+      i()
+      router.push("/ads/create")
+  }
+
   return (
     <>
       <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
@@ -38,7 +43,7 @@ export default function EmptyState({
         {title && <p className="text-lg text-neutral-10 mt-[24px] font-bold">{title}</p>}
         {description && <p className="text-base text-neutral-7 mb-[10px] mt-[8px]">{description}</p>}
         {redirectToAds && (
-          <Button onClick={() => router.push("/ads/create")} className="mt-[24px]">
+          <Button onClick={createAd} className="mt-[24px]">
             Create ad
           </Button>
         )}
