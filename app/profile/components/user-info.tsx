@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { USER } from "@/lib/local-variables"
@@ -21,18 +21,18 @@ interface UserInfoProps {
 
 export default function UserInfo({ username, rating, joinDate, isVerified, recommendation, isLoading }: UserInfoProps) {
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
-  const hasInitialized = useRef(false)
 
   useEffect(() => {
-
-    if (hasInitialized.current) return
-    hasInitialized.current = true
+    let timeout = null
 
     if (!USER.id) {
-      setIsKycSheetOpen(true)
+       timeout = setTimeout(() => {
+        setIsKycSheetOpen(true)
+      }, 0)
     }
-
     console.log("mounted")
+
+    return () => clearTimeout(timeout)
   }, [])
   
   return (
