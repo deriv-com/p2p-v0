@@ -18,9 +18,9 @@ interface UserInfoProps {
 
 export default function UserInfo({ username, rating, joinDate, isVerified, recommendation, isLoading }: UserInfoProps) {
   return (
-    <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
+    <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
       <div className="flex items-start gap-4">
-        <div className="h-10 w-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
+        <div className="h-14 w-14 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
         </div>
         <div className="flex-1">
