@@ -63,7 +63,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
     </div>
   )
 
-   if (!isOpen) return null
+   if (!isSheetOpen) return null
 
   if (isMobile) {
     return (
