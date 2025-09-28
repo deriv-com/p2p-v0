@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from ""
 import Image from "next/image"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
@@ -40,6 +41,7 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 )
 
 export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
+  const [container, setContainer] = useState(null);
   const isMobile = useIsMobile()
 
   const handleProfileSetup = () => {
