@@ -2,6 +2,7 @@
 
 import type React from "react"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
