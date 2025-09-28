@@ -121,7 +121,7 @@ export default function ProfilePage() {
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
             </div>
             <StatsTabs stats={userData} isLoading={isLoading} />
-            <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
+            {isKycSheetOpen && <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />}
           </div>
         </div>
       </div>
