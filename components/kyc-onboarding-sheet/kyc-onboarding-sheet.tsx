@@ -52,21 +52,19 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
   }
 
   const OnboardingContent = () => (
-    <>
-      <div>
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
-        </div>
-
-        <div className="space-y-4 mb-6">
-          <OnboardingStep
-            icon="/icons/account-profile.png"
-            title="Set up and verify your profile"
-            onClick={handleProfileSetup}
-          />
-        </div>
+    <div>
+      <div className="mb-8">
+        <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
       </div>
-    </>
+
+      <div className="space-y-4 mb-6">
+        <OnboardingStep
+          icon="/icons/account-profile.png"
+          title="Set up and verify your profile"
+          onClick={handleProfileSetup}
+        />
+      </div>
+    </div>
   )
 
   if (isMobile) {
