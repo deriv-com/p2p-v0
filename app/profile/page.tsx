@@ -104,7 +104,6 @@ export default function ProfilePage() {
 
   return (
     <>
-      <div className="px-3 pt-3 md:pt-0">
       <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
