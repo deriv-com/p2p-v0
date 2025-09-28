@@ -161,7 +161,9 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     if (userId) {
       localStorage.setItem("user_id", userId.toString())
-      localStorage.setItem("user_data", JSON.stringify(result.data))
+      localStorage.setItem("user_data", JSON.stringify({
+
+      })
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
@@ -185,7 +187,7 @@ export async function getClientProfile(): Promise<void> {
     localStorage.setItem("user_data", JSON.stringify({
       first_name: data.first_name,
       last_name: data.last_name,
-      nickname: data.nickname,
+      nickname: data.nickname
     }))
     if (data.residence) {
       localStorage.setItem("residence_country", data.residence)
