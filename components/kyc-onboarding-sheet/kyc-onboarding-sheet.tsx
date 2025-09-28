@@ -76,6 +76,7 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
+      <SheetTrigger asChild />
       <SheetContent>
         <OnboardingContent />
       </SheetContent>
