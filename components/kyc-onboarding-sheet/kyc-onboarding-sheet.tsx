@@ -40,7 +40,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
   </div>
 )
 
-export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) => {
+export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
   const isMobile = useIsMobile()
 
   const handleProfileSetup = () => {
