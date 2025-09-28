@@ -20,7 +20,7 @@ interface OnboardingStepProps {
 
 const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick }) => (
   <div
-    className="w-full p-2 rounded-2xl border border-gray-200"
+    className="w-full p-2 rounded-2xl border border-gray-200 hover:cursor-pointer"
     onClick={onClick}
   >
     <div className="flex items-center gap-2">
