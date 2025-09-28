@@ -121,9 +121,9 @@ export default function ProfilePage() {
             </div>
             <StatsTabs stats={userData} isLoading={isLoading} />
           </div>
+          <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
         </div>
       </div>
-      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
