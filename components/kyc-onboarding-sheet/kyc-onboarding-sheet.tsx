@@ -67,7 +67,7 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
   if (isMobile) {
     return (
       <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
-        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
+        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
           <OnboardingContent />
         </DrawerContent>
       </Drawer>
