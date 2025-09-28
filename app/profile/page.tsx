@@ -123,6 +123,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
