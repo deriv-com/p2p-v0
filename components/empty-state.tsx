@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { USER } from "@/lib/local-variables"
 import { Button } from "@/components/ui/button"
 import { KycOnboardingSheet } from "./kyc-onboarding-sheet/kyc-onboarding-sheet"
 
