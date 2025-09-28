@@ -23,7 +23,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
     className="w-full p-2 rounded-2xl border border-gray-200"
     onClick={onClick}
   >
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image
           src={icon}
