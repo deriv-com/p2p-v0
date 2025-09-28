@@ -42,13 +42,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
       </div>
     </div>
     <div className="flex items-center">
-      {completed ? (
-        <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-          <Image src="/white-checkmark-icon.jpg" alt="Completed" width={12} height={12} />
-        </div>
-      ) : (
-        <Image src="/chevron-right-arrow.jpg" alt="Go" width={20} height={20} />
-      )}
+      <Image src="/icons/chevron-right-sm" alt="Go" width={20} height={20} />
     </div>
   </Button>
 )
