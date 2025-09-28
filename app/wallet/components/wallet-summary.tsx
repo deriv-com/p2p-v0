@@ -11,7 +11,6 @@ import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { KycOnboardingSheet } from "./kyc-onboarding-sheet/kyc-onboarding-sheet"
 
-
 interface Currency {
   code: string
   name: string
