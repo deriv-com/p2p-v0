@@ -95,8 +95,6 @@ export default function ProfilePage() {
       }
     }
 
-    fetchUserData()
-
     if(USER.id) {
       fetchUserData()
     } else {
