@@ -104,7 +104,7 @@ export default function ProfilePage() {
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
-              username={userData?.username}
+              username={userData?.username USER.email}
               rating={userData?.rating}
               recommendation={userData?.recommend_average_lifetime}
               joinDate={userData?.joinDate}
