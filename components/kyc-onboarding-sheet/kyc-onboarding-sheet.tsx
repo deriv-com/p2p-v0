@@ -32,7 +32,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
           height={24}
         />
       </div>
-      <div className="text-left text-slate-1200 text-base font-normal">
+      <div className="text-left text-slate-1200 text-base font-normal flex-1">
         {title}
       </div>
       <Image src="/icons/chevron-right-gray.png" alt="Go" width={24} height={24} />
