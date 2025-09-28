@@ -10,6 +10,7 @@ import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { useIsMobile } from "@/hooks/use-mobile"
 
+
 interface Currency {
   code: string
   name: string
@@ -19,6 +20,7 @@ interface Currency {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletSummary() {
+  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
