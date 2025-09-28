@@ -9,6 +9,7 @@ import { currencyLogoMapper } from "@/lib/utils"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { KycOnboardingSheet } from "./kyc-onboarding-sheet/kyc-onboarding-sheet"
 
 
 interface Currency {
