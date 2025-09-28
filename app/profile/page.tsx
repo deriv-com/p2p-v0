@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
@@ -13,12 +13,8 @@ export default function ProfilePage() {
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
-  const hasInitialized = useRef(false)
 
   useEffect(() => {
-    if (hasInitialized.current) return
-    hasInitialized.current = true
-
     const fetchUserData = async () => {
       try {
         const url = `${API.baseUrl}/users/me`
