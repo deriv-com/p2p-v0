@@ -35,8 +35,6 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
       <div className="text-left text-slate-1200 text-base font-normal">
         {title}
       </div>
-    </div>
-    <div className="flex items-center">
       <Image src="/icons/chevron-right-sm.png" alt="Go" width={24} height={24} />
     </div>
   </div>
