@@ -48,14 +48,12 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   const OnboardingContent = () => (
-    <div>
-      <div className="space-y-4 mb-6">
-        <OnboardingStep
-          icon="/icons/account-profile.png"
-          title="Set up and verify your profile"
-          onClick={handleProfileSetup}
-        />
-      </div>
+    <div className="space-y-4 mb-6">
+      <OnboardingStep
+        icon="/icons/account-profile.png"
+        title="Set up and verify your profile"
+        onClick={handleProfileSetup}
+      />
     </div>
   )
 
