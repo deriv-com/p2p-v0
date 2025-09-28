@@ -19,6 +19,9 @@ interface UserInfoProps {
 
 export default function UserInfo({ username, rating, joinDate, isVerified, recommendation, isLoading }: UserInfoProps) {
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
+  if (!USER.id) {
+    setIsKycSheetOpen(true)
+  }
   return (
     <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
       <div className="flex items-start gap-4">
