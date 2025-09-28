@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import { USER } from "@/lib/local-variables"
 import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 
@@ -49,9 +50,9 @@ export default function Header() {
         </nav>
       </div>
       <div className="h-12 flex items-center space-x-4">
-        <div className="text-slate-600 hover:text-slate-700">
+        {USER.id && (<div className="text-slate-600 hover:text-slate-700">
           <NovuNotifications />
-        </div>
+        </div>)}
       </div>
     </header>
   )
