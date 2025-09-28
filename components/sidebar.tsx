@@ -104,7 +104,7 @@ export default function Sidebar({ className }: SidebarProps) {
         </Avatar>
         <div className="flex-1">
           <h2 className="text-sm font-bold text-slate-1400 flex-1">{`${USER.first_name} ${USER.last_name}`}</h2>
-          <div className="text-sm font-bold text-slate-1400">{USER.email}</div>
+          <div className="text-xs text-slate-1400">{USER.email}</div>
         </div>
         <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} />
