@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { getHomeUrl } from "@/lib/utils"
