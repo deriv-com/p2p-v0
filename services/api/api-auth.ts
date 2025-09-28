@@ -180,6 +180,7 @@ export async function getClientProfile(): Promise<void> {
 
     localStorage.setItem("user_data", {
       first_name: data[0].first_name
+      last_name: data[0].last_name
       nickname: data[0].nickname
     })
     if (data[0].residence_country) {
