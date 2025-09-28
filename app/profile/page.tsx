@@ -93,7 +93,7 @@ export default function ProfilePage() {
     if(USER.id) {
       fetchUserData()
     } else {
-      setIsKycSheetOpen(true)
+      
     }
 
     console.log("mounted")
