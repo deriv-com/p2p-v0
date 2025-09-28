@@ -101,6 +101,8 @@ export default function ProfilePage() {
       setIsKycSheetOpen(true)
       setIsLoading(false)
     }
+
+    console.log("mounted")
   }, [])
 
   return (
