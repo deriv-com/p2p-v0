@@ -62,7 +62,7 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
 
         <div className="space-y-4 mb-6">
           <OnboardingStep
-            icon="/user-profile-icon.png"
+            icon="/icons/account.png"
             title="Set up and verify your profile"
             onClick={handleProfileSetup}
           />
