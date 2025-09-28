@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
@@ -9,7 +8,6 @@ import { getHomeUrl } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
 
 interface KycOnboardingSheetProps {
-  hasTrigger?: boolean
   isSheetOpen?: boolean
   setSheetOpen: (open: boolean) => void
 }
@@ -42,21 +40,8 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
   </div>
 )
 
-export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen }: KycOnboardingSheetProps) {
+export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
   const isMobile = useIsMobile()
-  const [open, setOpen] = useState(false)
-  
-  useEffect(() => {
-    if(!hasTrigger) {
-      if (USER.id) {
-        setOpen(false)
-      } else {
-        setOpen(true)
-      }
-    } else {
-      setOpen(isSheetOpen)
-    }
-  }, [])
 
   const handleProfileSetup = () => {
     setSheetOpen(false)
@@ -81,7 +66,7 @@ export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen }: K
 
   if (isMobile) {
     return (
-      <Drawer open={open} onOpenChange={setOpen}>
+      <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
         <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
           <OnboardingContent />
         </DrawerContent>
@@ -90,7 +75,7 @@ export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen }: K
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen} modal={false}>
+    <Sheet open={isSheetOpen} onOpenChange={setSheetOpen} modal={false}>
       <SheetContent>
         <OnboardingContent />
       </SheetContent>
