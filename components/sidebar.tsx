@@ -38,14 +38,8 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }
 
-  const getHomeUrl = () => {
-    const isProduction = process.env.NODE_ENV === "production"
-    const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
-    return baseUrl
-  }
-
   const navItems = [
-    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
+    { name: "Home", href: "https://home.deriv.com/dashboard/home", icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
@@ -101,9 +95,12 @@ export default function Sidebar({ className }: SidebarProps) {
         <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
           {USER.nickname?.charAt(0).toUpperCase()}
         </Avatar>
-        <h2 className="text-sm font-bold text-slate-1400 flex-1">{USER.nickname}</h2>
-        <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
-          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} />
+        <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
+        <Link
+          prefetch
+          href="https://home.deriv.com/dashboard/home"
+        >
+          <Image src="/icons/chevron-right-sm.png" alt="Deriv logo" width={64} />
         </Link>
       </div>
     </div>
