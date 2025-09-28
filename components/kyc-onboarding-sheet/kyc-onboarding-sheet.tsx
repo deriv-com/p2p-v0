@@ -10,7 +10,7 @@ import { USER } from "@/lib/local-variables"
 
 interface KycOnboardingSheetProps {
   hasTrigger?: boolean
-  isSheetOpen: boolean
+  isSheetOpen?: boolean
   setSheetOpen: (open: boolean) => void
 }
 
