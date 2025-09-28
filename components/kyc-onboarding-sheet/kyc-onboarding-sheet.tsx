@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import type React, {} from "react"
 import Image from "next/image"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
