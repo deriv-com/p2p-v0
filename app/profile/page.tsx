@@ -7,7 +7,6 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
 
   useEffect(() => {
@@ -95,7 +94,6 @@ export default function ProfilePage() {
       fetchUserData()
     } else {
       setIsKycSheetOpen(true)
-      setIsLoading(false)
     }
 
     console.log("mounted")
