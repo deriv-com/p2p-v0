@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from ""
 import Image from "next/image"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
