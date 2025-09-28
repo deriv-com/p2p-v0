@@ -50,7 +50,7 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
 
   const OnboardingContent = () => (
     <div>
-      <div className="mb-8">
+      <div className="my-8">
         <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
       </div>
 
