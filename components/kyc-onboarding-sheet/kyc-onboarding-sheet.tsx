@@ -1,6 +1,6 @@
 "use client"
 
-import type React, { useState } from "react"
+import { useState } from "react"
 import Image from "next/image"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
@@ -18,7 +18,7 @@ interface OnboardingStepProps {
   onClick: () => void
 }
 
-const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick }) => (
+const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
   <div
     className="w-full p-2 rounded-2xl border border-gray-200 hover:cursor-pointer"
     onClick={onClick}
