@@ -16,11 +16,10 @@ interface KycOnboardingSheetProps {
 interface OnboardingStepProps {
   icon: string
   title: string
-  completed: boolean
   onClick: () => void
 }
 
-const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed, onClick }) => (
+const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick }) => (
   <Button
     variant="ghost"
     className="w-full h-auto p-4 justify-between hover:bg-gray-50 rounded-lg border border-gray-200"
