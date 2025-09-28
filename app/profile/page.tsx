@@ -6,7 +6,6 @@ import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { API, AUTH, USER } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-
 import { KycOnboardingSheet } from "./kyc-onboarding-sheet/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
@@ -31,7 +30,9 @@ export default function ProfilePage() {
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if(response.status != 401) {
+          if(response.status == 401) {
+            
+          } else {
             showWarningDialog({
               title: "Error",
               description: errorMessage,
