@@ -32,7 +32,6 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
           alt={title}
           width={24}
           height={24}
-          className={completed ? "opacity-50" : ""}
         />
       </div>
       <div className="text-left text-slate-1200 text-base">
