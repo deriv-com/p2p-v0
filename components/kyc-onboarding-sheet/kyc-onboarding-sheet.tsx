@@ -9,6 +9,7 @@ import { getHomeUrl } from "@/lib/utils"
 import { USER } from "@/lib/local-variables"
 
 interface KycOnboardingSheetProps {
+  hasTrigger?: boolean
   isSheetOpen: boolean
   setSheetOpen: (open: boolean) => void
 }
@@ -41,15 +42,17 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
   </div>
 )
 
-export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
+export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
   const isMobile = useIsMobile()
   const [open, setOpen] = useState(false)
   
   useEffect(() => {
-    if (USER.id) {
-      setOpen(false)
-    } else {
-      setOpen(true)
+    if(!hasTrigger) {
+      if (USER.id) {
+        setOpen(false)
+      } else {
+        setOpen(true)
+      }
     }
   }, [])
 
