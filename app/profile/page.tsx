@@ -97,9 +97,6 @@ export default function ProfilePage() {
 
     if (USER.id) {
       fetchUserData()
-    } else {
-      setIsKycSheetOpen(true)
-      setIsLoading(false)
     }
   }, [])
 
@@ -124,7 +121,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      
     </>
   )
 }
