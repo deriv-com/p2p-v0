@@ -150,7 +150,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     if (!response.ok) {
       if(response.errors && response.errors[0].status == 401) {
-        getClientProfile()
+        awaigetClientProfile()
         return
       }
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
