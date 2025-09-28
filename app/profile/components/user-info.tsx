@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { USER } from "@/lib/local-variables"
 
 interface UserInfoProps {
   username: string
