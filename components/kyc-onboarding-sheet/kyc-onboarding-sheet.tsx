@@ -36,7 +36,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
         />
       </div>
       <div className="text-left">
-        <div className={`font-medium text-base ${completed ? "text-gray-500 line-through" : "text-gray-900"}`}>
+        <div className="font-medium text-base">
           {title}
         </div>
       </div>
