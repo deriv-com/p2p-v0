@@ -61,18 +61,30 @@ export default function WalletSummary() {
   }, [selectedCurrency])
 
   const handleDepositClick = () => {
-    setCurrentOperation("DEPOSIT")
-    setIsSidebarOpen(true)
+    if(USER.id) {
+      setCurrentOperation("DEPOSIT")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleWithdrawClick = () => {
-    setCurrentOperation("WITHDRAW")
-    setIsSidebarOpen(true)
+    if(USER.id) { 
+      setCurrentOperation("WITHDRAW")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleTransferClick = () => {
-    setCurrentOperation("TRANSFER")
-    setIsSidebarOpen(true)
+    if(USER.id) { 
+      setCurrentOperation("TRANSFER")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleDirectDepositClick = (currency: string) => {
