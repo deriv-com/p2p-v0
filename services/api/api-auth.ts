@@ -178,11 +178,11 @@ export async function getClientProfile(): Promise<void> {
     const result = await response.json()
     const { data } = result
 
-    localStorage.setItem("user_data", {
+    localStorage.setItem("user_data", JSON.stringify({
       first_name: data[0].first_name
       last_name: data[0].last_name
       nickname: data[0].nickname
-    })
+    }))
     if (data[0].residence_country) {
       localStorage.setItem("residence_country", data[0].residence_country)
     }
