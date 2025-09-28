@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { getHomeUrl } from "@/lib/utils"
-import { USER } from "@/lib/local-variables"
 
 interface KycOnboardingSheetProps {
   isSheetOpen?: boolean
