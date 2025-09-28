@@ -2,7 +2,7 @@
 
 import type React from "react"
 import Image from "next/image"
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import { Sheet, SheetContent } from "@/components/ui/dialog"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { getHomeUrl } from "@/lib/utils"
