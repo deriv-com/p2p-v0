@@ -157,7 +157,7 @@ export default function AdsPage() {
 
   const getHideMyAdsComponent = () => {
     return (
-      <div className="flex items-center">
+      <div className="flex items-center justify-self-end">
         <Switch
           id="hide-ads"
           checked={hiddenAdverts}
