@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Image from "next/image"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { USER } from "@/lib/local-variables"
 
 interface UserInfoProps {
   username: string
@@ -20,20 +18,6 @@ interface UserInfoProps {
 }
 
 export default function UserInfo({ username, rating, joinDate, isVerified, recommendation, isLoading }: UserInfoProps) {
-  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
-
-  useEffect(() => {
-    let timeout = null
-
-    if (!USER.id) {
-      timeout = setTimeout(() => {
-        setIsKycSheetOpen(true)
-      }, 2000)
-    }
-    console.log("mounted")
-
-    return () => clearTimeout(timeout)
-  }, [])
   
   return (
     <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
@@ -95,7 +79,6 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
           </div>
         </div>
       </div>
-      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </div>
   )
 }
