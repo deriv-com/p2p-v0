@@ -48,8 +48,6 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
             {joinDate && (<div className="mx-4 h-4 w-px bg-slate-300">
               <div className="text-neutral-10">{joinDate}</div>
             </div>)}
-
-            {joinDate && }
           </div>
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-2 mt-3">
             {isVerified?.id && (
