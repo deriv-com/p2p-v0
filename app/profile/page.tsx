@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { API, AUTH, USER } from "@/lib/local-variables"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
+//import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function ProfilePage() {
