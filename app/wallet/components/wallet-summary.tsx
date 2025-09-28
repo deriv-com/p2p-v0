@@ -188,6 +188,7 @@ export default function WalletSummary() {
         operation={currentOperation}
         currency={selectedCurrency}
       />
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
