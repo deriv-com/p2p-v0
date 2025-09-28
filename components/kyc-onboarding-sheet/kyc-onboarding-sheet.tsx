@@ -63,6 +63,8 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
     </div>
   )
 
+   if (!isOpen) return null
+
   if (isMobile) {
     return (
       <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
