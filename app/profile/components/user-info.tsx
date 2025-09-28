@@ -28,7 +28,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
     if (!USER.id) {
       timeout = setTimeout(() => {
         setIsKycSheetOpen(true)
-      }, 1000)
+      }, 2000)
     }
     console.log("mounted")
 
