@@ -55,7 +55,7 @@ export default function ProfilePage() {
             joinDateString = `Joined ${days} days ago`
           }
 
-          setUserData((prevData) => ({
+          setUserData(() => ({
             ...data,
             username: data.nickname || USER.email ,
             rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
