@@ -32,7 +32,7 @@ export default function ProfilePage() {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
           if(response.status == 401) {
-            
+            setIsKycSheetOpen()
           } else {
             showWarningDialog({
               title: "Error",
