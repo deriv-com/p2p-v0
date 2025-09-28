@@ -1,1 +1,1 @@
-export { default asKycOnboardingSheet } from "./kyc-onboarding-sheet"
+export { default as KycOnboardingSheet } from "./kyc-onboarding-sheet"
