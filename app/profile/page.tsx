@@ -9,7 +9,7 @@ export default function ProfilePage() {
   //const { showWarningDialog } = useAlertDialog()
 
   useEffect(() => {
-    setIsKycSheetOpen(true)
+    //setIsKycSheetOpen(true)
     console.log("mounted")
   }, [])
 
