@@ -178,9 +178,13 @@ export async function getClientProfile(): Promise<void> {
     const result = await response.json()
     const { data } = result
 
+    localStorage.setItem("user_data", {
+      nickname: data[0].nickname
+    })
     if (data[0].residence_country) {
       localStorage.setItem("residence_country", data[0].residence_country)
     }
+    
   } catch (error) {
     console.error("Error fetching profile:", error)
   }
