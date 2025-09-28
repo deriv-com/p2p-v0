@@ -26,8 +26,11 @@ export default function EmptyState({
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
 
   const creatAd = () => {
-      i()
-      router.push("/ads/create")
+      if(USER.id) {
+        router.push("/ads/create")
+      } else {
+        setIsKycSheetOpen()
+      }
   }
 
   return (
