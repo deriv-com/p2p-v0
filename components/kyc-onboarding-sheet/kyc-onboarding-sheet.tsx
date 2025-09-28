@@ -72,7 +72,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContent className="h-auto p-[16px] rounded-t-2xl">
+      <SheetContent className="h-auto p-[16px]">
         <div className="mb-4">
           <h3 className="text-xl font-bold text-center">Get started with P2P</h3>
         </div>
