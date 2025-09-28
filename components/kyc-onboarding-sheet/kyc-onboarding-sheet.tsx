@@ -73,6 +73,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   return (
+    <>
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
       <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
         <div className="mb-4">
@@ -81,5 +82,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
         <OnboardingContent />
       </SheetContent>
     </Sheet>
+    <div ref={setContainer} />
+    </>
   )
 }
