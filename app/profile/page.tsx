@@ -99,6 +99,7 @@ export default function ProfilePage() {
       fetchUserData()
     } else {
       setIsKycSheetOpen(true)
+      setIsLoading(false)
     }
   }, [])
 
