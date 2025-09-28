@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { API, AUTH } from "@/lib/local-variables"
+import { API, AUTH, USER } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
@@ -55,9 +55,9 @@ export default function ProfilePage() {
             joinDateString = `Joined ${days} days ago`
           }
 
-          setUserData((prevData) => ({
+          setUserData(() => ({
             ...data,
-            username: data.nickname || prevData.username,
+            username: data.nickname,
             rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
@@ -100,11 +100,11 @@ export default function ProfilePage() {
 
   return (
     <>
-      <div className="px-[24px] pt-3 md:pt-0">
+      <div className="px-3 pt-3 md:pt-0">
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
-              username={userData?.username}
+              username={userData?.username ?? USER.email}
               rating={userData?.rating}
               recommendation={userData?.recommend_average_lifetime}
               joinDate={userData?.joinDate}
@@ -112,7 +112,7 @@ export default function ProfilePage() {
               isVerified={userData?.isVerified}
               isLoading={isLoading}
             />
-            <div className="md:w-[50%] flex flex-col gap-6 order-2 mb-[16px]">
+            <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
             </div>
             <StatsTabs stats={userData} isLoading={isLoading} />

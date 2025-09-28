@@ -148,16 +148,25 @@ export async function fetchUserIdAndStore(): Promise<void> {
       headers: AUTH.getAuthHeader(),
     })
 
+    const result = await response.json()
     if (!response.ok) {
+      if(result.errors && result.errors[0].status == 401) {
+        await getClientProfile()
+        return
+      }
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
-
-    const result = await response.json()
+   
     const userId = result?.data?.id
-
     if (userId) {
       localStorage.setItem("user_id", userId.toString())
-      localStorage.setItem("user_data", JSON.stringify(result.data))
+
+      const userData = JSON.parse(localStorage.getItem("user_data"))
+      if(userData) {
+        userData.adverts_are_listed = result.data.adverts_are_listed,
+        userData.signup = result.data.signup
+        localStorage.setItem("user_data", JSON.stringify(userData))
+      }
     }
   } catch (error) {
     console.error("Error fetching user ID:", error)
@@ -178,9 +187,16 @@ export async function getClientProfile(): Promise<void> {
     const result = await response.json()
     const { data } = result
 
-    if (data[0].residence_country) {
-      localStorage.setItem("residence_country", data[0].residence_country)
+    localStorage.setItem("user_data", JSON.stringify({
+      email: data.email,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      nickname: data.nickname
+    }))
+    if (data.residence) {
+      localStorage.setItem("residence_country", data.residence)
     }
+    
   } catch (error) {
     console.error("Error fetching profile:", error)
   }

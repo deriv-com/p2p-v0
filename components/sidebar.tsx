@@ -16,6 +16,7 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const [showWallet, setShowWallet] = useState(true)
+  const userName = USER.nickname ?? USER.email
 
   useEffect(() => {
     checkUserSignupStatus()
@@ -38,8 +39,14 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }
 
+  const getHomeUrl = () => {
+    const isProduction = process.env.NODE_ENV === "production"
+    const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+    return baseUrl
+  }
+
   const navItems = [
-    { name: "Home", href: "https://home.deriv.com/dashboard/home", icon: "/icons/traders-hub.png" },
+    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
@@ -51,9 +58,9 @@ export default function Sidebar({ className }: SidebarProps) {
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
-        <div className="hidden md:block text-slate-600 hover:text-slate-700">
+        {USER.id && <div className="hidden md:block text-slate-600 hover:text-slate-700">
           <NovuNotifications />
-        </div>
+        </div>}
       </div>
       <nav className="flex-1 px-4">
         <ul>
@@ -93,9 +100,12 @@ export default function Sidebar({ className }: SidebarProps) {
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
         <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
-          {USER.nickname?.charAt(0).toUpperCase()}
+          {userName?.charAt(0).toUpperCase()}
         </Avatar>
-        <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
+        <h2 className="text-sm font-bold text-slate-1400 flex-1">{userName}</h2>
+        <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
+          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} />
+        </Link>
       </div>
     </div>
   )

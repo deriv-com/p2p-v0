@@ -18,13 +18,13 @@ interface UserInfoProps {
 
 export default function UserInfo({ username, rating, joinDate, isVerified, recommendation, isLoading }: UserInfoProps) {
   return (
-    <div className="mb-8 w-fit max-w-3xl">
+    <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
       <div className="flex items-start gap-4">
-        <div className="h-10 w-10 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
-          {username?.charAt(0).toUpperCase()}
+        <div className="h-14 w-14 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
+          <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
         </div>
         <div className="flex-1">
-          <h2 className="text-lg font-bold">{username}</h2>
+          <h2 className="text-base text-white font-bold">{username}</h2>
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-y-2 items-center mt-4 md:mt-1 text-sm">
             {rating && (
               <div className="flex items-center">
@@ -35,21 +35,19 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
 
             {rating && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
-            {!isLoading && (
+            {!isLoading && recommendation && recommendation > 0 &&  (
               <div className="flex items-center text-neutral-10">
-                {recommendation > 0 && (
-                  <div className="flex items-center">
-                    <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
-                    <span>{recommendation}</span>
-                  </div>
-                )}
-                <span>{recommendation ? "% (Recommended)" : "Not recommended yet"}</span>
+                <div className="flex items-center">
+                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
+                  <span>{recommendation}</span>
+                </div>
+                <span>% (Recommended)</span>
               </div>
             )}
 
-            {joinDate && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
-
-            {joinDate && <div className="text-neutral-10">{joinDate}</div>}
+            {joinDate && (<div className="mx-4 h-4 w-px bg-slate-300">
+              <div className="text-neutral-10">{joinDate}</div>
+            </div>)}
           </div>
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-2 mt-3">
             {isVerified?.id && (
