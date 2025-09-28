@@ -95,12 +95,12 @@ export default function ProfilePage() {
       }
     }
 
-    if (USER.id) {
+   // if (USER.id) {
       fetchUserData()
-    } else {
+    /*} else {
       setIsKycSheetOpen(true)
       setIsLoading(false)
-    }
+    }*/
 
     console.log("mounted")
   }, [])
