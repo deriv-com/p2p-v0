@@ -44,12 +44,11 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
 )
 
 export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetOpen, setSheetOpen }) => {
-  const router = useRouter()
   const isMobile = useIsMobile()
 
   const handleProfileSetup = () => {
     setSheetOpen(false)
-    router.push("/profile")
+    window.location.href = `https://${getHomeUrl()}/dashboard/user-profile`
   }
 
   const OnboardingContent = () => (
