@@ -103,8 +103,8 @@ export default function Sidebar({ className }: SidebarProps) {
           {userName?.charAt(0).toUpperCase()}
         </Avatar>
         <div>
-          <h2 className="text-sm font-bold text-slate-1400 flex-1">{userName}</h2>
-          <div className="text-sm font-bold text-slate-1400 flex-1">{userName}</div>
+          <h2 className="text-sm font-bold text-slate-1400 flex-1">{USER.nickname}</h2>
+          <div className="text-sm font-bold text-slate-1400 flex-1">{USER.email}</div>
         </div>
         <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} />
