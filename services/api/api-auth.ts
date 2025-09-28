@@ -148,17 +148,16 @@ export async function fetchUserIdAndStore(): Promise<void> {
       headers: AUTH.getAuthHeader(),
     })
 
+    const result = await response.json()
     if (!response.ok) {
-      if(response.errors && response.errors[0].status == 401) {
+      if(result.errors && result.errors[0].status == 401) {
         await getClientProfile()
         return
       }
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
-
-    const result = await response.json()
+   
     const userId = result?.data?.id
-
     if (userId) {
       localStorage.setItem("user_id", userId.toString())
 
