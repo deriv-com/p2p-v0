@@ -102,6 +102,7 @@ export default function ProfilePage() {
       setIsLoading(false)
     }
   }, [])
+  
   return (
     <>
       <div className="px-3 pt-3 md:pt-0">
