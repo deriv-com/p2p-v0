@@ -20,9 +20,8 @@ interface OnboardingStepProps {
 }
 
 const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick }) => (
-  <Button
-    variant="ghost"
-    className="w-full h-auto p-4 justify-between rounded-2xl border border-gray-200"
+  <div
+    className="w-full p-2 rounded-2xl border border-gray-200"
     onClick={onClick}
   >
     <div className="flex items-center gap-4">
@@ -41,7 +40,7 @@ const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick })
     <div className="flex items-center">
       <Image src="/icons/chevron-right-sm.png" alt="Go" width={24} height={24} />
     </div>
-  </Button>
+  </div>
 )
 
 export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetOpen, setSheetOpen }) => {
