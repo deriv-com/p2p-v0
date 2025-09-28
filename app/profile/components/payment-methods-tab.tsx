@@ -312,7 +312,7 @@ export default function PaymentMethodsTab() {
     )
   }
 
-  if(bankTransfers.length > 0 && eWallets.length > 0) {
+  if(bankTransfers.length == 0 && eWallets.length == 0) {
     return (<EmptyState
       title="No payment methods yet"
       description="Start adding payment methods."
