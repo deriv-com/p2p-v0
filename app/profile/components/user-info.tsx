@@ -25,7 +25,7 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
       setIsKycSheetOpen(true)
     }
 
-    console.log("mounted");
+    console.log("mounted")
   }, [])
   
   return (
