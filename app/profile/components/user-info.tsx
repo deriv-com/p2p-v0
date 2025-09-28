@@ -23,6 +23,10 @@ export default function UserInfo({ username, rating, joinDate, isVerified, recom
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
 
   useEffect(() => {
+
+    if (hasInitialized.current) return
+    hasInitialized.current = true
+
     if (!USER.id) {
       setIsKycSheetOpen(true)
     }
