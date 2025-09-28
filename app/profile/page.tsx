@@ -93,9 +93,7 @@ export default function ProfilePage() {
       }
     }
 
-    if (USER.id) {
-      fetchUserData()
-    }
+    fetchUserData()
   }, [])
 
   return (
