@@ -76,7 +76,7 @@ export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnb
   }
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet defaultValue={open} open={open} onOpenChange={setOpen}>
       <SheetContent>
         <OnboardingContent />
       </SheetContent>
