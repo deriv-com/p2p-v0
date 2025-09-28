@@ -42,7 +42,7 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
   </div>
 )
 
-export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
+export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen }: KycOnboardingSheetProps) {
   const isMobile = useIsMobile()
   const [open, setOpen] = useState(false)
   
@@ -53,6 +53,8 @@ export default function KycOnboardingSheet({ hasTrigger = true, isSheetOpen, set
       } else {
         setOpen(true)
       }
+    } else {
+      setOpen(isSheetOpen)
     }
   }, [])
 
