@@ -165,7 +165,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       const userData = JSON.parse(localStorage.getItem("user_data"))
       if(userData) {
         userData.adverts_are_listed = result.data.adverts_are_listed,
-        userData.signup: result.data.signup
+        userData.signup = result.data.signup
         localStorage.setItem("user_data", JSON.stringify(userData))
       }
     }
