@@ -22,7 +22,7 @@ interface OnboardingStepProps {
 const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, onClick }) => (
   <Button
     variant="ghost"
-    className="w-full h-auto p-4 justify-between hover:bg-gray-50 rounded-lg border border-gray-200"
+    className="w-full h-auto p-4 justify-between hover:bg-gray-50 rounded-2xl border border-gray-200"
     onClick={onClick}
   >
     <div className="flex items-center gap-4">
