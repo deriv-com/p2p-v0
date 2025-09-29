@@ -92,7 +92,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           <Button
             variant="ghost"
             size="xs"
-            className=""
+            className="font-normal"
             onClick={() => setIsStatsModalOpen(true)}
           >
             View more

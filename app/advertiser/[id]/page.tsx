@@ -199,7 +199,7 @@ export default function AdvertiserProfilePage() {
                 >
                   <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                 </Button>
-                <div className="flex-1">
+                <div className="flex-1 w-full">
                   <div className="flex flex-row">
                     <div className="relative mr-[16px]">
                       <div className="h-[40px] w-[40px] rounded-full bg-black flex items-center justify-center text-white font-bold text-lg">
@@ -230,8 +230,8 @@ export default function AdvertiserProfilePage() {
                         )}
                       </div>
                     </div>
-                                         {USER.id != profile?.id && (
-                          <div className="flex items-center md:mt-0 ml-[16px]">
+                    {USER.id != profile?.id && (
+                          <div className="flex items-center md:mt-0 ml-[16px] justify-self-end">
                             <Button
                               onClick={toggleFollow}
                               variant={isFollowing ? "default" : "outline"}
