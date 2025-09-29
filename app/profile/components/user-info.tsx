@@ -18,7 +18,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <h2 className="text-base text-white font-bold">{username}</h2>
-
           {joinDate && (<div className="text-xs text-white">
               {joinDate}
             </div>)}
