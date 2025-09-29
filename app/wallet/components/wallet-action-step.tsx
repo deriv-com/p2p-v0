@@ -13,7 +13,6 @@ interface Currency {
 
 interface WalletActionStepProps {
   title: string
-  description: string
   actionType: "deposit" | "withdraw"
   currencies: Currency[]
   selectedCurrency: string
@@ -25,7 +24,6 @@ interface WalletActionStepProps {
 
 export default function WalletActionStep({
   title,
-  description,
   actionType,
   currencies,
   selectedCurrency,
@@ -48,7 +46,6 @@ export default function WalletActionStep({
       <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col min-h-0">
         <div className="px-2 flex-shrink-0">
           <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2 md:mb-[10px]">{title}</h1>
-          <p className="text-grayscale-600 text-base font-normal mb-6">{description}</p>
         </div>
         <div className="pl-2 pr-4 flex-1 min-h-0">
           <div className="h-full overflow-y-auto">
