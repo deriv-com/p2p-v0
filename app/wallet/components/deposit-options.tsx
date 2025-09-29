@@ -3,7 +3,6 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { cn } from "@/lib/utils"
 
 interface DepositOptionProps {
   onClose: () => void
