@@ -27,7 +27,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation, i
               </div>
             )}
 
-            {rating && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
+            {recommendation && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
 
             {!isLoading && recommendation && recommendation > 0 &&  (
               <div className="flex items-center text-white">
