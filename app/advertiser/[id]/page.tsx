@@ -236,13 +236,11 @@ export default function AdvertiserProfilePage() {
                         <span className="mr-[8px]">{profile?.statistics_lifetime?.recommend_count > 0 ? Recommended by {profile?.statistics_lifetime?.recommend_count} traders : "Not recommended yet" }</span>
                         </div>
                         
-                        {profile?.statistics_lifetime?.rating_count > 0 && (
-                          <div className="flex items-center">
-                            <span>|</span>
-                            <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
-                            <span className="ml-[8px]">{profile?.statistics_lifetime?.rating_count}</span>
-                          </div>
-                        )}
+                        <div className="flex items-center">
+                          <span>|</span>
+                          <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
+                          <span className="ml-[8px]">{profile?.statistics_lifetime?.rating_count > 0 ?`${profile?.statistics_lifetime?.rating_count}` : "Not rated yet"</span>
+                        </div>
                       </div>
                     </div>
                     {USER.id != profile?.id && (
