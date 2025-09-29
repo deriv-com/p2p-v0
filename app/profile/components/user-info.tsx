@@ -16,7 +16,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
         <div className="h-14 w-14 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
         </div>
-        <div className="flex-1">
+        <div className="flex flex-col flex-1 gap-2">
           <h2 className="text-base text-white font-bold">{username}</h2>
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-y-2 items-center mt-4 md:mt-1 text-xs">
             {rating && (
@@ -37,7 +37,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
               </>
             )}
           </div>
-          {joinDate && (<div className="mx-4 text-xs text-white">
+          {joinDate && (<div className="text-xs text-white">
               {joinDate}
             </div>)}
         </div>
