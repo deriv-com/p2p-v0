@@ -224,7 +224,7 @@ export default function AdvertiserProfilePage() {
                         <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                        
                       </div>
-                      <div className="flex items-center text-xs text-slate-500 mt-2">
+                      <div className="flex items-center text-xs text-grayscale-600 mt-2">
                         <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
                         <span className="text-slate-400">|</span>
                         <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
