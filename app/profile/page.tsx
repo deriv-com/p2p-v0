@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { API, AUTH, USER } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
@@ -60,6 +60,7 @@ export default function ProfilePage() {
             ...data,
             username: data.nickname,
             rating: data.statistics_lifetime.rating_average !== null ? `${data.statistics_lifetime.rating_average}/5` : "Not rated yet",
+            recommendation: data.statistics_lifetime?.recommend_average !== null ? `Recommended by ${data.statistics_lifetime.recommend_count} traders` : "Not recommended yet",
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
             sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
@@ -105,9 +106,9 @@ export default function ProfilePage() {
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
-              username={userData?.username ?? USER.email}
+              username={userData?.username}
               rating={userData?.rating}
-              recommendation={userData?.statistics_lifetime?.recommend_average}
+              recommendation={userData?.recommendation}
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}

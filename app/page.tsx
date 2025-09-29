@@ -287,7 +287,7 @@ export default function BuySellPage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
+            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
@@ -309,7 +309,7 @@ export default function BuySellPage() {
                 />
               </div>
 
-              <div className="filter-dropdown-container flex-shrink-0 md:flex-1">
+              <div className="filter-dropdown-container flex-shrink-0">
                 <MarketFilterDropdown
                   activeTab={activeTab}
                   onApply={handleFilterApply}
@@ -327,32 +327,6 @@ export default function BuySellPage() {
                   }
                 />
               </div>
-
-              <div className="hidden md:block">
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem
-                      value="exchange_rate"
-                      className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                    >
-                      {activeTab === "sell" ? (
-                        <>Sort by: Exchange rate (low-high)</>
-                      ) : (
-                        <>Sort by: Exchange rate (high-low)</>
-                      )}
-                    </SelectItem>
-                    <SelectItem
-                      value="user_rating_average_lifetime"
-                      className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                    >
-                      Sort by: User rating (high-low)
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
           </div>
         </div>
@@ -368,7 +342,7 @@ export default function BuySellPage() {
             ) : adverts.length === 0 ? (
               <EmptyState
                 title="No ads for this currency"
-                description={`Looking to buy or sell ${selectedAccountCurrency}? You can post your own ad for others to respond.`}
+                description={`You can post your own ad for others to respond.`}
                 redirectToAds={true}
               />
             ) : (
