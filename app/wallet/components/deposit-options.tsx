@@ -60,7 +60,7 @@ export default function DepositOptions({
 
 
       <div
-        className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-6 py-4"
+        className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-6 py-0"
         onClick={handleDirectDepositClick}
       >
         <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
