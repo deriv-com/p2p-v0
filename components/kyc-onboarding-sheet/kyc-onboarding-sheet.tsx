@@ -3,7 +3,7 @@
 import Image from "next/image"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { useIsMobile } from "@/hooks/use-mobile"
 import { getHomeUrl } from "@/lib/utils"
 
 interface KycOnboardingSheetProps {
@@ -18,12 +18,22 @@ interface OnboardingStepProps {
 }
 
 const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
-  <div className="w-full p-2 rounded-2xl border border-gray-200 hover:cursor-pointer" onClick={onClick}>
+  <div
+    className="w-full p-2 rounded-2xl border border-gray-200 hover:cursor-pointer"
+    onClick={onClick}
+  >
     <div className="flex items-center gap-2">
       <div className="w-10 h-10 flex items-center justify-center">
-        <Image src={icon || "/placeholder.svg"} alt={title} width={24} height={24} />
+        <Image
+          src={icon}
+          alt={title}
+          width={24}
+          height={24}
+        />
       </div>
-      <div className="text-left text-slate-1200 text-base font-normal flex-1">{title}</div>
+      <div className="text-left text-slate-1200 text-base font-normal flex-1">
+        {title}
+      </div>
       <Image src="/icons/chevron-right-gray.png" alt="Go" width={24} height={24} />
     </div>
   </div>
