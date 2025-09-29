@@ -169,7 +169,7 @@ export default function AdvertiserProfilePage() {
     const joinDate = new Date(timestamp)
     const now = new Date()
     const formattedDate = date.toLocaleDateString('en-GB')
-    return `Joined ${date}`
+    return `Joined on ${date}`
   }
 
   if (isLoading) {
