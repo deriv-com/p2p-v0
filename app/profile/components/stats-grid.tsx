@@ -75,7 +75,7 @@ export default function StatsGrid({ stats }) {
             <TabsList className="w-full md:w-auto mb-4 bg-transparent">
               <TabsTrigger
                 value="last30days"
-                className="w-full data-[state=active]:font-bold"
+                className="w-full data-[state=active]:border-b data-[state=active]:border-b-primary data-[state=active]:shadow-none"
               >
                 Last 30 days
               </TabsTrigger>
