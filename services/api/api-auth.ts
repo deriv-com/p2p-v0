@@ -165,6 +165,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
       if(userData) {
         userData.adverts_are_listed = result.data.adverts_are_listed,
         userData.signup = result.data.signup
+        userData.wallet_id = result.data.wallet_id
         localStorage.setItem("user_data", JSON.stringify(userData))
       }
     }
