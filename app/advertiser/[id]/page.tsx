@@ -253,7 +253,7 @@ export default function AdvertiserProfilePage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className={cn("text-xs underline")}
+                              className="underline"
                               onClick={handleBlockClick}
                               disabled={isBlockLoading}
                             >
