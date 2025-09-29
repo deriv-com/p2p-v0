@@ -284,7 +284,7 @@ export default function AdvertiserProfilePage() {
                                   Order limits
                                 </TableHead>
                                 <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                                  Time
+                                  Time limit
                                 </TableHead>
                                 <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                                   Payment methods
