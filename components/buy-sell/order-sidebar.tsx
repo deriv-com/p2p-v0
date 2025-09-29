@@ -441,7 +441,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   </div>
                 </div>
 
-                <div className="border-t m-4 mb-0 pt-4 text-sm flex justify-between">
+                <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-crol justify-between">
                   <h3 className="text-slate-500 flex-1">
                     {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
                   </h3>
