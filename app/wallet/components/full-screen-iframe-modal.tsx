@@ -49,23 +49,30 @@ export default function FullScreenIframeModal({
       setError(null)
 
       try {
-        const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=11ce5a24-d840-4729-9af9-ff6288a9ab9f&operation=DEPOSIT&currency=USD`, {
-          method: "GET",
-          credentials: "include"
-        })
+        const response = await fetchWalletsList()
 
-        if (!response.ok) {
-          const errorText = await response.text()
-          throw new Error(`API request failed with status ${response.status}: ${errorText}`)
+        if (response?.data?.wallets) {
+          const wallets = response?.data?.wallets
+          const userWallet = wallets.filter((wallet) => wallet.type === "p2p")
+          const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${userWallet.id}&operation=DEPOSIT&currency=USD`, {
+            method: "GET",
+            credentials: "include"
+          })
+
+          if (!response.ok) {
+            const errorText = await response.text()
+            throw new Error(`API request failed with status ${response.status}: ${errorText}`)
+          }
+
+          const data: IframeResponse = await response.json()
+
+          if (!data.data?.iframe_url) {
+            throw new Error("No iframe URL returned from API")
+          }
+
+          setIframeUrl(data.data.iframe_url)
         }
-
-        const data: IframeResponse = await response.json()
-
-        if (!data.data?.iframe_url) {
-          throw new Error("No iframe URL returned from API")
-        }
-
-        setIframeUrl(data.data.iframe_url)
+        
         setIsLoading(false)
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch iframe URL")
