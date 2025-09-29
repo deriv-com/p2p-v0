@@ -48,9 +48,9 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   
   const buyCompletionRate = profile?.statistics_30day?.completion_rate_buy
   const sellCompletionRate = profile?.statistics_30day?.completion_rate_sell
-  const buyCount = profile?.statistics_30day?.buy_count_30day || 0
-  const sellCount = profile?.statistics_30day?.sell_count_30day || 0
-  const totalTrades30d = (profile?.statistics_30day?.buy_count_30day || 0) + (profile?.statistics_30day?.sell_count_30day || 0) || 0
+  const buyCount = profile?.statistics_30day?.completion_count_buy || 0
+  const sellCount = profile?.statistics_30day?.completion_count_sell || 0
+  const totalTrades30d = profile?.statistics_30day?.completion_count_all || 0
   const totalAllTimeTrades = profile?.statistics_30day?.order_count_lifetime || 0
 
   return (
