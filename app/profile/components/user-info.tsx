@@ -22,22 +22,22 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
               {joinDate}
             </div>)}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
-            {rating && (
-              <div className="flex items-center">
-                <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />
-                <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
-              </div>
-            )}
             {recommendation &&  (
               <>
                 <div className="mx-4 h-4 w-px bg-slate-300"></div>
                 <div className="flex items-center text-white">
                   <div className="flex items-center">
                     <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
-                    <span className="text-white opacity-[0.72]">{recommendation? `${recommendation}% (Recommended)` : "Not recommended yet"}</span>
+                    <spclassName="text-white opacity-[0.72]">{recommendation? `${recommendation}% (Recommended)` : "Not recommended yet"}</span>
                   </div>
                 </div>
               </>
+            )}
+            {rating && (
+              <div className="flex items-center">
+                <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />
+                <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
+              </div>
             )}
           </div>
         </div>
