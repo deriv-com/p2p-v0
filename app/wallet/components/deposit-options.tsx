@@ -41,7 +41,7 @@ export default function DepositOptions({
 
   return (
     <div className="space-y-0">
-      {/* P2P Trading */}
+    
       <div
         className="flex p-4 justify-center items-center gap-4 self-stretch cursor-pointer"
         onClick={handleP2PTradingClick}
