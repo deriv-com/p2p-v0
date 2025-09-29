@@ -307,7 +307,7 @@ export default function AdvertiserProfilePage() {
                                             maximumFractionDigits: 2,
                                           })
                                         : ""}
-                                        <span>{ad.account_currency}<>
+                                        <span>{ad.account_currency}</span>
                                     </div>
                                     {ad.exchange_rate_type === "floating" && (
                                       <div className="text-xs text-slate-500">0.1%</div>
