@@ -74,6 +74,11 @@ export default function ProfilePage() {
                 max: data.daily_limits?.sell || 0,
               },
             },
+            isVerified: {
+              id: true,
+              address: true,
+              phone: true,
+            },
           }))
         } else {
           showWarningDialog({
@@ -105,6 +110,7 @@ export default function ProfilePage() {
               recommendation={userData?.statistics_lifetime?.recommend_average}
               joinDate={userData?.joinDate}
               realName={userData?.realName}
+              isVerified={userData?.isVerified}
               isLoading={isLoading}
             />
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
