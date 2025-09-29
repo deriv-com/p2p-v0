@@ -253,7 +253,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </div>
                 </div>
               ) : (
-                <div className="relative rounded-lg border p-4">
+                <div className="relative rounded-lg border py-4">
                   <StatsGrid stats={stats} />
                 </div>
               )}
