@@ -34,7 +34,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
                 <div className="flex items-center text-white">
                   <div className="flex items-center">
                     <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
-                    <span>{recommendation? `${recommendation}% (Recommended)` : "Not recommended yet"}</span>
+                    <spclassName="text-white opacity-[0.72]">{recommendation? `${recommendation}% (Recommended)` : "Not recommended yet"}</span>
                   </div>
                 </div>
               </>
