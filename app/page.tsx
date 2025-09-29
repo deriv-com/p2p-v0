@@ -309,7 +309,7 @@ export default function BuySellPage() {
                 />
               </div>
 
-              <div className="filter-dropdown-container flex-shrink-0 md:flex-1">
+              <div className="filter-dropdown-container flex-shrink-0">
                 <MarketFilterDropdown
                   activeTab={activeTab}
                   onApply={handleFilterApply}
