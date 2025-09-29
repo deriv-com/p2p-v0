@@ -75,13 +75,13 @@ export default function StatsGrid({ stats }) {
             <TabsList className="w-full md:w-auto mb-4 bg-transparent">
               <TabsTrigger
                 value="last30days"
-                className="w-full p-4 data-[state=active]:border-b data-[state=active]:border-b-primary data-[state=active]:shadow-none"
+                className="w-full p-4 rounded-none data-[state=active]:border-b data-[state=active]:border-b-primary data-[state=active]:shadow-none"
               >
                 Last 30 days
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="w-full p data-[state=active]:border-b data-[state=active]:border-b-primary data-[state=active]:font-bold"
+                className="w-full p-4 rounded-none data-[state=active]:border-b data-[state=active]:border-b-primary data-[state=active]:font-bold"
               >
                 Lifetime
               </TabsTrigger>
