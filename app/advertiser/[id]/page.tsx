@@ -200,7 +200,7 @@ export default function AdvertiserProfilePage() {
         <div className="p-6 md:px-2 md:py-0">
           <div className="flex flex-col md:flex-row justify-between">
             <div className="container mx-auto pb-6">
-              <div className="bg-slate-75 p-6 rounded-3xl flex flex-col md:items-start gap-4">
+              <div className="bg-slate-75 p-6 rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] md:">
                 <Button
                   variant="ghost"
                   onClick={() => router.push("/")}
