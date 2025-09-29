@@ -60,6 +60,7 @@ export default function ProfilePage() {
             ...data,
             username: data.nickname,
             rating: data.statistics_lifetime.rating_average !== null ? `${data.statistics_lifetime.rating_average}/5` : "Not rated yet",
+            recommendation: data.statistics_lifetime?.recommend_average !== null ? `Recommended by ${data.statistics_lifetime.recommend_count} traders` : "Not recommended yet",
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
             sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
@@ -107,7 +108,7 @@ export default function ProfilePage() {
             <UserInfo
               username={userData?.username ?? USER.email}
               rating={userData?.rating}
-              recommendation={userData?.statistics_lifetime?.recommend_average}
+              recommendation={userData?.recommendation}
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}
