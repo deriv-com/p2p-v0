@@ -26,17 +26,17 @@ export default function UserInfo({ username, rating, joinDate, recommendation, i
                 <span className="text-white">{rating ? rating : "Not rated yet"}</span>
               </div>
             )}
-
-            {recommendation && <div className="mx-4 h-4 w-px bg-slate-300"></div>}
-
-            {!isLoading && recommendation &&  (
-              <div className="flex items-center text-white">
-                <div className="flex items-center">
-                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
-                  <span>{recommendation}</span>
+            {recommendation &&  (
+              <>
+                <div className="mx-4 h-4 w-px bg-slate-300"></div>
+                <div className="flex items-center text-white">
+                  <div className="flex items-center">
+                    <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
+                    <span>{recommendation}</span>
+                  </div>
+                  <span>% (Recommended)</span>
                 </div>
-                <span>% (Recommended)</span>
-              </div>
+              </>
             )}
           </div>
           {joinDate && (<div className="mx-4 text-xs">
