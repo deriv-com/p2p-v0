@@ -320,7 +320,7 @@ export default function AdvertiserProfilePage() {
                                     </div>
                                   </TableCell>
                                     <TableCell className="py-4 px-4 align-top whitespace-nowrap">
-                                    <div className="flex items-center text-xs text-slate-500 mt-1 bg-gray-100 rounded-sm px-2 py-1 w-fit">
+                                    <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
                                       <Image
                                         src="/icons/clock.png"
                                         alt="Time"
