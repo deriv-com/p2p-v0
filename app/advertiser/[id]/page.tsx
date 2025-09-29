@@ -168,9 +168,8 @@ export default function AdvertiserProfilePage() {
   const getJoinedDate = (timestamp: number) => {
     const joinDate = new Date(timestamp)
     const now = new Date()
-    const diffTime = Math.abs(now.getTime() - joinDate.getTime())
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    return `Joined ${diffDays} days ago`
+    const formattedDate = date.toLocaleDateString('en-GB')
+    return `Joined ${date}`
   }
 
   if (isLoading) {
