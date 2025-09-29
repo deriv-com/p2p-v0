@@ -54,7 +54,7 @@ export default function DepositOptions({
             {`Buy ${selectedCurrencyData?.name} directly from other users on the P2P marketplace.`}
           </p>
         
-          <div className="border-b border-grayscale-200 mt-4 ml-14"></div>
+          <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>
 
@@ -72,7 +72,7 @@ export default function DepositOptions({
             Deposit funds directly from your bank account, e-wallet, or other payment methods.
           </p>
         
-          <div className="border-b border-grayscale-200 mt-4 ml-14"></div>
+          <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>
     </div>
