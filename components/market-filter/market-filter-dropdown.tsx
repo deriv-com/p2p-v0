@@ -45,8 +45,7 @@ export default function MarketFilterDropdown({
   }
 
   const handleApply = () => {
-    if (isMobile) onApply(filters, sortBy)
-    else onApply(filters)
+    onApply(filters, sortBy)
     setIsOpen(false)
   }
 
