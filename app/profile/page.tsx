@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { API, AUTH, USER } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
