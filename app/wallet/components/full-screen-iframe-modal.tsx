@@ -52,7 +52,6 @@ export default function FullScreenIframeModal({
       try {
         const response = await fetchWalletsList()
         const wallets = response?.data?.wallets
-        console.log(response?.data)
 
         if (wallets) {
           const userWallet = wallets.filter((wallet) => wallet.type === "p2p")
