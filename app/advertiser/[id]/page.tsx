@@ -278,7 +278,7 @@ export default function AdvertiserProfilePage() {
                         <div>
                           <Table>
                             <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
-                              <TableRow className="text-sm">
+                              <TableRow className="text-xs">
                                 <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
                                 <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
                                   Order limits
@@ -300,13 +300,13 @@ export default function AdvertiserProfilePage() {
                                 >
                                   <TableCell className="py-4 px-4 align-top text-base whitespace-nowrap">
                                     <div className="font-bold">
-                                      {ad.payment_currency}{" "}
                                       {ad.exchange_rate
                                         ? ad.exchange_rate.toLocaleString(undefined, {
                                             minimumFractionDigits: 2,
                                             maximumFractionDigits: 2,
                                           })
                                         : ""}
+                                        {" "}{ad.payment_currency} 
                                         <span className="text-xs font-normal text-black opacity-[0.48]">/{ad.account_currency}</span>
                                     </div>
                                     {ad.exchange_rate_type === "floating" && (
@@ -315,7 +315,7 @@ export default function AdvertiserProfilePage() {
                                   </TableCell>
                                   <TableCell className="py-4 px-4 align-top whitespace-nowrap">
                                     <div>
-                                      {ad.account_currency} {ad.minimum_order_amount} - {ad.actual_maximum_order_amount}
+                                       {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
                                     </div>
                                   </TableCell>
                                     <TableCell className="py-4 px-4 align-top whitespace-nowrap">
