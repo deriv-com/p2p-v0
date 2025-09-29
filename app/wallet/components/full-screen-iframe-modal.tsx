@@ -6,7 +6,6 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
 import { USER, WALLETS } from "@/lib/local-variables"
-import { fetchWalletsList } from "@/services/api/api-wallets"
 
 interface IframeResponse {
   status: string
