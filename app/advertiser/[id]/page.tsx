@@ -226,7 +226,7 @@ export default function AdvertiserProfilePage() {
                       </div>
                       <div className="flex items-center text-xs text-grayscale-600 mt-2">
                         <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
-                        <span className="text-slate-400">|</span>
+                        <span>|</span>
                         <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                       </div>
                       <div className="flex items-center text-xs text-grayscale-600 mt-2">
