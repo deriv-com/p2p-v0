@@ -46,8 +46,8 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const isMobile = useIsMobile()
   
-  const buyCompletionRate = profile?.completion_average_30day
-  const sellCompletionRate = profile?.completion_average_30day
+  const buyCompletionRate = profile?.statistics_30day?.completion_rate_buy
+  const sellCompletionRate = profile?.statistics_30day?.completion_rate_sell
   const buyCount = profile?.buy_count_30day || 0
   const sellCount = profile?.sell_count_30day || 0
   const totalTrades30d = (profile?.buy_count_30day || 0) + (profile?.sell_count_30day || 0) || 0
