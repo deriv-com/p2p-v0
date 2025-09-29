@@ -70,7 +70,7 @@ export default function DepositOptions({
           <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-[#181C25] leading-6 mb-1">Direct deposit</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">Direct deposit</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
             Deposit funds directly from your bank account, e-wallet, or other payment methods.
           </p>
