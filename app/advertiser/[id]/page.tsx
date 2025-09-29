@@ -210,7 +210,7 @@ export default function AdvertiserProfilePage() {
                   <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                 </Button>
                 <div className="flex-1 w-full">
-                  <div className="flex flex-col md:flex-row">
+                  <div className="flex flex-col md:flex-row gap-2 md:gap-0">
                     <div className="relative mr-[16px]">
                       <div className="h-[40px] w-[40px] rounded-full bg-black flex items-center justify-center text-white font-bold text-lg">
                         {profile?.nickname.charAt(0).toUpperCase() || "?"}
@@ -307,7 +307,7 @@ export default function AdvertiserProfilePage() {
                                           })
                                         : ""}
                                         {" "}{ad.payment_currency} 
-                                        <span className="text-xs font-normal text-black opacity-[0.48]">/{ad.account_currency}</span>
+                                        <span className="text-xs font-normal text-black opacity-[0.48]"> /{ad.account_currency}</span>
                                     </div>
                                     {ad.exchange_rate_type === "floating" && (
                                       <div className="text-xs text-slate-500">0.1%</div>
