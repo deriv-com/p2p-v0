@@ -60,7 +60,7 @@ export async function getCurrencies(): Promise<any> {
 }
 
 export async function walletTransfer(params: {
-  net_amount: string
+  amount: string
   currency: string
   destination_wallet_id: string
   request_id: string
