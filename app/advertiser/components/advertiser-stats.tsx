@@ -113,9 +113,9 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         </Drawer>
       ) : (
         <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
-          <DialogContent className="sm:max-w-md rounded-[32px]">
+          <DialogContent className="sm:max-w-md sm:rounded-[32px]">
             <DialogHeader>
-              <DialogTitle className="font-bold text-2xl">Advertiser info</DialogTitle>
+              <DialogTitle className="tracking-normafont-bold text-2xl">Advertiser info</DialogTitle>
             </DialogHeader>
             <StatsContent profile={profile} isMobile={false} />
             <Button onClick={() => setIsStatsModalOpen(false)}>Close</Button>

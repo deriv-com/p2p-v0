@@ -56,7 +56,7 @@ export default function StatsContent({ profile }: StatsContentProps) {
           </div>
           <div className="flex justify-between text-sm border-b py-6">
             <div className="text-sm text-slate-500">Sell completion rate (30d)</div>
-            <div className="font-bold mt-1">{profile?.statistics_30day?.completion_rate_buy ? `${profile?.statistics_30day?.completion_rate_buy}% (${profile?.statistics_30day?.completion_count_buy})` :  "-"}</div>
+            <div className="font-bold mt-1">{profile?.statistics_30day?.completion_rate_sell ? `${profile?.statistics_30day?.completion_rate_sell}% (${profile?.statistics_30day?.completion_count_sell})` :  "-"}</div>
           </div>
           <div className="flex justify-between text-sm border-b py-6">
             <div className="text-sm text-slate-500">Total trades (30d)</div>
