@@ -81,7 +81,7 @@ export default function StatsGrid({ stats }) {
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="w-full p-4 rounded-none border-b-2 border-b-grayscale-1200 data-[state=active]:border-b-primary data-[state=active]:font-bold"
+                className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-primary data-[state=active]:font-bold"
               >
                 Lifetime
               </TabsTrigger>
