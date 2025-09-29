@@ -52,7 +52,7 @@ export default function WithdrawOptions({
           <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">P2P Trading</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6 ">P2P Trading</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
             {`Sell ${selectedCurrencyData?.name} directly to other users on the P2P marketplace.`}
           </p>
@@ -70,7 +70,7 @@ export default function WithdrawOptions({
           <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">Direct withdrawal</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6 ">Direct withdrawal</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
             Withdraw funds directly to your bank account, e-wallet, or other payment methods.
           </p>
