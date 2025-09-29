@@ -253,7 +253,9 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </div>
                 </div>
               ) : (
-                <StatsGrid stats={stats} />
+                <div className="relative rounded-lg border p-4">
+                  <StatsGrid stats={stats} />
+                </div>
               )}
             </TabsContent>
 
