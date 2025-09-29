@@ -239,7 +239,7 @@ export default function AdvertiserProfilePage() {
                         <div className="flex items-center">
                           <span>|</span>
                           <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
-                          <span className="ml-[8px]">{profile?.statistics_lifetime?.rating_count > 0 ?`${profile?.statistics_lifetime?.rating_count}` : "Not rated yet"</span>
+                          <span className="ml-[8px]">{profile?.statistics_lifetime?.rating_count > 0 ?profile?.statistics_lifetime?.rating_count : "Not rated yet"</span>
                         </div>
                       </div>
                     </div>
