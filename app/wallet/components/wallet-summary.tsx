@@ -194,7 +194,7 @@ export default function WalletSummary() {
       {currentStep === "walletAction" && (
         <div className="fixed inset-0 z-50 bg-white">
           <WalletActionStep
-            title={currentOperation === "DEPOSIT" ? "Deposit " : "Withdrawal"}
+            title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
             description={
               currentOperation === "DEPOSIT"
                 ? "Choose your preferred deposit method."
