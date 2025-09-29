@@ -7,12 +7,6 @@ interface UserInfoProps {
   rating: string
   recommendation: number
   joinDate: string
-  isVerified: {
-    id: boolean
-    address: boolean
-    phone: boolean
-    email?: boolean
-  }
   isLoading?: boolean
 }
 
