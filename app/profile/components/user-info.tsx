@@ -25,7 +25,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
             {recommendation && (
               <div className="flex items-center text-white">
                 <div className="flex items-center">
-                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={24} height={16} className="mr-1" />
+                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={24} height={24} className="mr-1" />
                   <span className="text-white opacity-[0.72]">{recommendation? recommendation : "Not recommended yet"}</span>
                 </div>
               </div>
@@ -34,7 +34,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
               <>
                 <div className="mx-4 h-4 w-px bg-slate-300"></div>
                 <div className="flex items-center">
-                  <Image src="/icons/star-icon.png" alt="Star" width={16} height={16} className="mr-1" />
+                  <Image src="/icons/star-icon.png" alt="Star" width={24} height={24} className="mr-1" />
                   <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
                 </div>
               </>
