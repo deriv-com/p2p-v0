@@ -368,7 +368,7 @@ export default function BuySellPage() {
             ) : adverts.length === 0 ? (
               <EmptyState
                 title="No ads for this currency"
-                description={`Looking to buy or sell ${selectedAccountCurrency}? You can post your own ad for others to respond.`}
+                description={`You can post your own ad for others to respond.`}
                 redirectToAds={true}
               />
             ) : (
