@@ -48,16 +48,10 @@ export default function FullScreenIframeModal({
       setIframeLoaded(false)
       setError(null)
 
-      const requestParams = {
-        ...WALLETS.defaultParams,
-        operation: operation === "DEPOSIT" ? "DEPOSIT" : "PAYOUT",
-        currency: currency,
-      }
-
       try {
         const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=11ce5a24-d840-4729-9af9-ff6288a9ab9f&operation=DEPOSIT&currency=USD`, {
           method: "GET",
-          credentials: "include",
+          credentials: "include"
         })
 
         if (!response.ok) {
