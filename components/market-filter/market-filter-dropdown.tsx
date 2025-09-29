@@ -72,11 +72,9 @@ export default function MarketFilterDropdown({
   const FilterContent = () => (
     <div className="w-full h-full">
       <div className="space-y-4 mb-6">
-        {isMobile && (
-          <div className="mb-6">
-            <h4 className="text-sm font-bold mb-4">Ad types</h4>
-          </div>
-        )}
+        <div className="mb-6">
+          <h4 className="text-sm font-bold mb-4">Ad types</h4>
+        </div>
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"
@@ -89,33 +87,29 @@ export default function MarketFilterDropdown({
           </label>
         </div>
       </div>
-
-      {isMobile && (
-        <div className="mb-6">
-          <div className="border-t border-gray-200 pt-6">
-            <h4 className="text-sm font-bold mb-4">Sort by</h4>
-            <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
-              <div className="flex items-center space-x-3">
-                <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
-                <Label htmlFor="exchange_rate" className="text-sm text-gray-700 cursor-pointer">
-                  {activeTab === "sell" ? <>Exchange rate (low-high)</> : <>Exchange rate (high-low)</>}
-                </Label>
-              </div>
-              <div className="flex items-center space-x-3">
-                <RadioGroupItem
-                  value="user_rating_average_lifetime"
-                  id="user_rating_average_lifetime"
-                  className="border-grayscale-100 text-black"
-                />
-                <Label htmlFor="user_rating_average_lifetime" className="text-sm text-gray-700 cursor-pointer">
-                  User rating (high-low)
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
+      <div className="mb-6">
+        <div className="border-t border-gray-200 pt-6">
+          <h4 className="text-sm font-bold mb-4">Sort by</h4>
+          <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
+            <div className="flex items-center space-x-3">
+              <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
+              <Label htmlFor="exchange_rate" className="text-sm text-gray-700 cursor-pointer">
+                {activeTab === "sell" ? <>Exchange rate (low-high)</> : <>Exchange rate (high-low)</>}
+              </Label>
+            </div>
+            <div className="flex items-center space-x-3">
+              <RadioGroupItem
+                value="user_rating_average_lifetime"
+                id="user_rating_average_lifetime"
+                className="border-grayscale-100 text-black"
+              />
+              <Label htmlFor="user_rating_average_lifetime" className="text-sm text-gray-700 cursor-pointer">
+                User rating (high-low)
+              </Label>
+            </div>
+          </RadioGroup>
         </div>
-      )}
-
+      </div>
       <div className="flex flex-col md:flex-row gap-3">
         <Button
           variant="outline"
