@@ -230,6 +230,36 @@ export default function AdvertiserProfilePage() {
                         )}
                       </div>
                     </div>
+                                         {USER.id != profile?.id && (
+                          <div className="flex items-center md:mt-0 ml-[16px]">
+                            <Button
+                              onClick={toggleFollow}
+                              variant={isFollowing ? "default" : "outline"}
+                              size="sm"
+                              className={cn(
+                                "text-xs",
+                                isFollowing ? "bg-primary hover:bg-primary-hover" : "border-slate-300",
+                              )}
+                              disabled={isFollowLoading}
+                            >
+                      
+                              {isFollowing ? "Following" : "Follow"}
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className={cn("text-xs underline", isBlocked && "text-red-500")}
+                              onClick={handleBlockClick}
+                              disabled={isBlockLoading}
+                            >
+                              {isBlockLoading ? (
+                                <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                              ) : null}
+                              {isBlocked ? "Unblock" : "Block"}
+                            </Button>
+                          </div>
+                        )}
+
                   </div>
                 </div>
               </div>
