@@ -380,3 +380,9 @@ export const currencyLogoMapper = {
   BNB: "/icons/bnb-logo.png",
   AED: "/icons/aed-logo.png",
 }
+
+export const getHomeUrl = () => {
+  const isProduction = process.env.NODE_ENV === "production"
+  const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+  return baseUrl
+}

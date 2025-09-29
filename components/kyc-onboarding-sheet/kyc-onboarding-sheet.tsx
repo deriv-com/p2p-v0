@@ -1,93 +1,69 @@
 "use client"
 
-import type React from "react"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { getHomeUrl } from "@/lib/utils"
 
 interface KycOnboardingSheetProps {
-  isSheetOpen: boolean
+  isSheetOpen?: boolean
   setSheetOpen: (open: boolean) => void
 }
 
 interface OnboardingStepProps {
   icon: string
   title: string
-  completed: boolean
   onClick: () => void
 }
 
-const OnboardingStep: React.FC<OnboardingStepProps> = ({ icon, title, completed, onClick }) => (
-  <Button
-    variant="ghost"
-    className="w-full h-auto p-4 justify-between hover:bg-gray-50 rounded-lg border border-gray-200"
+const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
+  <div
+    className="w-full p-2 rounded-2xl border border-gray-200 hover:cursor-pointer"
     onClick={onClick}
   >
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-2">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image
-          src={icon || "/placeholder.svg"}
+          src={icon}
           alt={title}
           width={24}
           height={24}
-          className={completed ? "opacity-50" : ""}
         />
       </div>
-      <div className="text-left">
-        <div className={`font-medium text-base ${completed ? "text-gray-500 line-through" : "text-gray-900"}`}>
-          {title}
-        </div>
+      <div className="text-left text-slate-1200 text-base font-normal flex-1">
+        {title}
       </div>
+      <Image src="/icons/chevron-right-gray.png" alt="Go" width={24} height={24} />
     </div>
-    <div className="flex items-center">
-      {completed ? (
-        <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
-          <Image src="/white-checkmark-icon.jpg" alt="Completed" width={12} height={12} />
-        </div>
-      ) : (
-        <Image src="/chevron-right-arrow.jpg" alt="Go" width={20} height={20} />
-      )}
-    </div>
-  </Button>
+  </div>
 )
 
-export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetOpen, setSheetOpen }) => {
-  const router = useRouter()
+export default function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
   const isMobile = useIsMobile()
 
   const handleProfileSetup = () => {
     setSheetOpen(false)
-    router.push("/profile")
+    window.location.href = `https://${getHomeUrl()}/dashboard/user-profile`
   }
 
   const OnboardingContent = () => (
-    <>
-      <div className="w-12 h-1 bg-gray-300 rounded-full mx-auto mt-3 mb-6" />
-
-      <div className="px-6 pb-6">
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-center text-gray-900">Get started with P2P</h2>
-        </div>
-
-        <div className="space-y-4 mb-6">
-          <OnboardingStep
-            icon="/user-profile-icon.png"
-            title="Set up and verify your profile"
-            completed={true}
-            onClick={handleProfileSetup}
-          />
-        </div>
-      </div>
-    </>
+    <div className="space-y-4 mb-6 mt-2">
+      <OnboardingStep
+        icon="/icons/account-profile.png"
+        title="Set up and verify your profile"
+        onClick={handleProfileSetup}
+      />
+    </div>
   )
 
   if (isMobile) {
     return (
       <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
-        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
+        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
+          <div className="my-8">
+            <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
+          </div>
           <OnboardingContent />
         </DrawerContent>
       </Drawer>
@@ -96,7 +72,10 @@ export const KycOnboardingSheet: React.FC<KycOnboardingSheetProps> = ({ isSheetO
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContent className="rounded-t-3xl border-0 p-0 max-h-[80vh]">
+      <SheetContent className="h-auto p-[16px]">
+        <div className="mb-4">
+          <h3 className="text-xl font-bold text-center">Get started with P2P</h3>
+        </div>
         <OnboardingContent />
       </SheetContent>
     </Sheet>

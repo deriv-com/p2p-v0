@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, currencyLogoMapper } from "@/lib/utils"
+import { USER } from "@/lib/local-variables"
 import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
-import { currencyLogoMapper } from "@/lib/utils"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface Currency {
   code: string
@@ -19,6 +20,7 @@ interface Currency {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletSummary() {
+  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -61,18 +63,30 @@ export default function WalletSummary() {
   }, [selectedCurrency])
 
   const handleDepositClick = () => {
-    setCurrentOperation("DEPOSIT")
-    setIsSidebarOpen(true)
+    if(USER.id) {
+      setCurrentOperation("DEPOSIT")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleWithdrawClick = () => {
-    setCurrentOperation("WITHDRAW")
-    setIsSidebarOpen(true)
+    if(USER.id) { 
+      setCurrentOperation("WITHDRAW")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleTransferClick = () => {
-    setCurrentOperation("TRANSFER")
-    setIsSidebarOpen(true)
+    if(USER.id) { 
+      setCurrentOperation("TRANSFER")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleDirectDepositClick = (currency: string) => {
@@ -174,6 +188,7 @@ export default function WalletSummary() {
         operation={currentOperation}
         currency={selectedCurrency}
       />
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
