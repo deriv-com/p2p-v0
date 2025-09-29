@@ -18,6 +18,10 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <h2 className="text-base text-white font-bold">{username}</h2>
+
+          {joinDate && (<div className="text-xs text-white">
+              {joinDate}
+            </div>)}
           <div className="flex flex-wrap ml-[-56px] md:ml-[0] gap-y-2 items-center mt-4 md:mt-1 text-xs">
             {rating && (
               <div className="flex items-center">
@@ -37,9 +41,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
               </>
             )}
           </div>
-          {joinDate && (<div className="text-xs text-white">
-              {joinDate}
-            </div>)}
         </div>
       </div>
     </div>
