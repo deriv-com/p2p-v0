@@ -39,12 +39,8 @@ export default function MarketFilterDropdown({
   }, [initialFilters])
 
   const handleReset = () => {
-    if (isMobile) {
-      setSortBy("exchange_rate")
-      onApply({ fromFollowing: false }, "exchange_rate")
-    } else {
-      onApply({ fromFollowing: false })
-    }
+    setSortBy("exchange_rate")
+    onApply({ fromFollowing: false }, "exchange_rate")
     setIsOpen(false)
   }
 
