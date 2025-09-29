@@ -25,7 +25,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
             {recommendation && (
               <div className="flex items-center text-white">
                 <div className="flex items-center">
-                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={16} height={16} className="mr-1" />
+                  <Image src="/icons/thumbs-up-icon.png" alt="Recommended" width={24} height={16} className="mr-1" />
                   <span className="text-white opacity-[0.72]">{recommendation? recommendation : "Not recommended yet"}</span>
                 </div>
               </div>
