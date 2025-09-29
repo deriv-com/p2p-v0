@@ -57,7 +57,7 @@ export default function FullScreenIframeModal({
         if (wallets) {
           const userWallet = wallets.filter((wallet) => wallet.type === "p2p")
           const userWalletId = userWallet[0].wallet_id
-          const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${userWallet.wallet_id}&operation=DEPOSIT&currency=USD`, {
+          const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${userWalletId}&operation=DEPOSIT&currency=USD`, {
             method: "GET",
             credentials: "include"
           })
