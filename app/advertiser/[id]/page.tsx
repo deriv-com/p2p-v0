@@ -229,17 +229,16 @@ export default function AdvertiserProfilePage() {
                         <span>|</span>
                         <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                       </div>
-                      <div className="flex items-center text-xs text-grayscale-600 mt-2">
+                      <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
                         
                         <div className="flex items-center">
                         <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
                         <span className="mr-[8px]">{profile?.statistics_lifetime?.recommend_count > 0 ? `Recommended by ${profile?.statistics_lifetime?.recommend_count} traders` : "Not recommended yet" }</span>
                         </div>
-                        
+                        <span>|</span>
                         <div className="flex items-center">
-                          <span>|</span>
                           <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
-                          <span >{profile?.statistics_lifetime?.rating_count > 0 ?profile?.statistics_lifetime?.rating_count : "Not rated yet"}</span>
+                          <span>{profile?.statistics_lifetime?.rating_count > 0 ?profile?.statistics_lifetime?.rating_count : "Not rated yet"}</span>
                         </div>
                       </div>
                     </div>
