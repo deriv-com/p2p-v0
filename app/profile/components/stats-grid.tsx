@@ -70,7 +70,7 @@ export default function StatsGrid({ stats }) {
   return (
     <TooltipProvider>
       <div className="bg-transparent md:bg-slate-1500 rounded-lg md:px-4">
-        <div className="md:hidden">
+        <div>
           <Tabs defaultValue="last30days" className="w-full">
             <TabsList className="w-full mb-4">
               <TabsTrigger
@@ -110,41 +110,6 @@ export default function StatsGrid({ stats }) {
                   </div>
             </TabsContent>
           </Tabs>
-        </div>
-
-        <div className="hidden md:block">
-          <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
-            <StatCard
-              title={`Buy completion (30d)`}
-              value={stats.buy_time_average_30day ?? "-"}
-            />
-            <StatCard
-              title={`Sell completion (30d)`}
-              value={stats.completion_average_30day ?? "-"}
-            />
-            <StatCard title="Trade partners" value={stats.partner_count_lifetime ?? "0"} />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 md:border-b border-slate-200">
-            <StatCard
-              title={`Trade volume (30d)`}
-              value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
-            />
-            <StatCard
-              title="Trade volume (Lifetime)"
-              value={stats.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
-            />
-            <StatCard title="Avg. pay time" value={stats.completion_average_30day ?? "-"} />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3">
-            <StatCard title="Total orders 30d" value={stats.partner_count_lifetime ?? "0"} />
-            <StatCard title="Total orders (Lifetime)" value={stats.partner_count_lifetime ?? "0"} />
-            <StatCard
-              title="Avg. release time"
-              value={stats.release_time_average_30day ?? "-"}
-            />
-          </div>
         </div>
       </div>
     </TooltipProvider>
