@@ -49,7 +49,7 @@ export default function DepositOptions({
         onClick={handleP2PTradingClick}
       >
         <div className="flex-shrink-0 w-12 h-12  rounded-full flex items-center justify-center">
-          <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
+          <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
         </div>
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">P2P Trading</h3>
@@ -67,7 +67,7 @@ export default function DepositOptions({
         onClick={handleDirectDepositClick}
       >
         <div className="flex-shrink-0 w-12 h-12  rounded-full flex items-center justify-center">
-          <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
+          <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
         </div>
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">Direct deposit</h3>
