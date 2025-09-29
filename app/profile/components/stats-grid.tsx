@@ -87,7 +87,7 @@ export default function StatsGrid({ stats }) {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 divide-y divide-slate-200">
+              <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
                   <StatCard title="Sell completion" value={stats.completion_average_30day ?? "-"} />
                   <StatCard title="Buy completion" value={stats.buy_time_average_30day ?? "-"} />
                   <StatCard title="Avg. pay time" value={stats.completion_average_30day ?? "-"} />
@@ -100,7 +100,7 @@ export default function StatsGrid({ stats }) {
                 </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
-            <div className="grid grid-cols-1 divide-y divide-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
                   <StatCard title="Trade partners" value={stats.partner_count_lifetime ?? "0"} />
                   <StatCard title="Total orders" value={stats.partner_count_lifetime ?? "0"} />
                   <StatCard
