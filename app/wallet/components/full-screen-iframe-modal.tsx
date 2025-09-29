@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
-import { WALLETS } from "@/lib/local-variables"
+import { USER, WALLETS } from "@/lib/local-variables"
 import { fetchWalletsList } from "@/services/api/api-wallets"
 
 interface IframeResponse {
@@ -50,31 +50,23 @@ export default function FullScreenIframeModal({
       setError(null)
 
       try {
-        const response = await fetchWalletsList()
-        const wallets = response?.data?.wallets
+        const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${USER.wallet_id}&operation=DEPOSIT&currency=USD`, {
+          method: "GET",
+          credentials: "include"
+        })
 
-        if (wallets) {
-          const userWallet = wallets.filter((wallet) => wallet.type === "p2p")
-          const userWalletId = userWallet[0].wallet_id
-          const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${userWalletId}&operation=DEPOSIT&currency=USD`, {
-            method: "GET",
-            credentials: "include"
-          })
-
-          if (!response.ok) {
-            const errorText = await response.text()
-            throw new Error(`API request failed with status ${response.status}: ${errorText}`)
-          }
-
-          const data: IframeResponse = await response.json()
-
-          if (!data.data?.iframe_url) {
-            throw new Error("No iframe URL returned from API")
-          }
-
-          setIframeUrl(data.data.iframe_url)
+        if (!response.ok) {
+          const errorText = await response.text()
+          throw new Error(`API request failed with status ${response.status}: ${errorText}`)
         }
-        
+
+        const data: IframeResponse = await response.json()
+
+        if (!data.data?.iframe_url) {
+          throw new Error("No iframe URL returned from API")
+        }
+
+        setIframeUrl(data.data.iframe_url)
         setIsLoading(false)
       } catch (err) {
         setError(err instanceof Error ? err.message : "Failed to fetch iframe URL")
