@@ -233,7 +233,7 @@ export default function AdvertiserProfilePage() {
                         {profile?.statistics_lifetime?.recommend_count > 0 && (
                         <div className="flex items-center">
                         <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" /><span className="mr-[8px]">Recommended by {profile?.statistics_lifetime?.recommend_count} traders</span>
-                        </>
+                        </div>
                         )}
                         {profile?.statistics_lifetime?.rating_count > 0 && (
                           <div className="flex items-center">
