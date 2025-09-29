@@ -51,27 +51,6 @@ export default function StatsContent({ profile }: StatsContentProps) {
       <div className="space-y-6">
         <div className="flex flex-col">
           <div className="flex justify-between text-sm border-b py-6">
-            <div className="flex items-center text-sm text-slate-500">
-              Trade volume (30d)
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Image
-                    src="/icons/info-circle.png"
-                    alt="Info"
-                    width={12}
-                    height={12}
-                    className="ml-1 cursor-pointer"
-                  />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="opacity-[0.72]">Total value of trades completed in the last 30 days.</p>
-                  <TooltipArrow className="fill-black" />
-                </TooltipContent>
-              </Tooltip>
-            </div>
-            <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
-          </div>
-          <div className="flex justify-between text-sm border-b py-6">
             <div className="text-sm text-slate-500">Avg. pay time (30d)</div>
             <div className="font-bold mt-1">{getDuration(profile?.buy_time_average_30day)}</div>
           </div>
@@ -99,6 +78,27 @@ export default function StatsContent({ profile }: StatsContentProps) {
               </Tooltip>
             </div>
             <div className="font-bold mt-1">{profile?.partner_count_lifetime}</div>
+          </div>
+          <div className="flex justify-between text-sm border-b py-6">
+            <div className="flex items-center text-sm text-slate-500">
+              Trade volume (30d)
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Image
+                    src="/icons/info-circle.png"
+                    alt="Info"
+                    width={12}
+                    height={12}
+                    className="ml-1 cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="opacity-[0.72]">Total value of trades completed in the last 30 days.</p>
+                  <TooltipArrow className="fill-black" />
+                </TooltipContent>
+              </Tooltip>
+            </div>
+            <div className="font-bold mt-1">{`USD ${(Number.parseFloat(profile?.buy_amount_30day || "0") + Number.parseFloat(profile?.sell_amount_30day || "0")).toFixed(2)}`}</div>
           </div>
         </div>
       </div>
