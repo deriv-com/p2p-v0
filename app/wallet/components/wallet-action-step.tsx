@@ -47,7 +47,7 @@ export default function WalletActionStep({
         <div className="px-2 flex-shrink-0">
           <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mb-2">{title}</h1>
         </div>
-        <div className="pl-2 pr-4 flex-1 min-h-0">
+        <div className="pl-2 pr-0 md:pr-4 flex-1 min-h-0">
           <div className="h-full overflow-y-auto">
             {actionType === "deposit" && onDirectDepositClick && (
               <DepositOptions
