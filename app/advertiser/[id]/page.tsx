@@ -200,7 +200,7 @@ export default function AdvertiserProfilePage() {
                   <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
                 </Button>
                 <div className="flex-1 w-full">
-                  <div className="flex flex-row">
+                  <div className="flex flex-col md:flex-row">
                     <div className="relative mr-[16px]">
                       <div className="h-[40px] w-[40px] rounded-full bg-black flex items-center justify-center text-white font-bold text-lg">
                         {profile?.nickname.charAt(0).toUpperCase() || "?"}
@@ -209,7 +209,7 @@ export default function AdvertiserProfilePage() {
                         <div className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-green-500 border-2 border-white"></div>
                       )}
                     </div>
-                    <div>
+                    <div className="flex-1">
                       <div className="flex">
                         <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                        
@@ -231,15 +231,11 @@ export default function AdvertiserProfilePage() {
                       </div>
                     </div>
                     {USER.id != profile?.id && (
-                          <div className="flex items-center md:mt-0 ml-[16px] justify-self-end">
+                          <div className="flex items-center md:mt-0 ustify-self-end">
                             <Button
                               onClick={toggleFollow}
-                              variant={isFollowing ? "default" : "outline"}
+                              variant="outline"
                               size="sm"
-                              className={cn(
-                                "text-xs",
-                                isFollowing ? "bg-primary hover:bg-primary-hover" : "border-slate-300",
-                              )}
                               disabled={isFollowLoading}
                             >
                       
