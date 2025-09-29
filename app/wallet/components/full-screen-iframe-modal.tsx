@@ -56,12 +56,8 @@ export default function FullScreenIframeModal({
 
       try {
         const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=11ce5a24-d840-4729-9af9-ff6288a9ab9f&operation=DEPOSIT&currency=USD`, {
-          method: "POST",
+          method: "GET",
           credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestParams),
         })
 
         if (!response.ok) {
