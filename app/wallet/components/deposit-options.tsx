@@ -59,7 +59,7 @@ export default function DepositOptions({
         </div>
       </div>
 
-      {/* Direct Deposit */}
+
       <div
         className="flex p-4 justify-center items-center gap-4 self-stretch cursor-pointer"
         onClick={handleDirectDepositClick}
