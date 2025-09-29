@@ -57,7 +57,7 @@ export default function WithdrawOptions({
       </div>
 
       <div
-        className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-6 py-4"
+        className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-6 py-0"
         onClick={handleDirectWithdrawClick}
       >
         <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
