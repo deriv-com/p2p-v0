@@ -230,11 +230,11 @@ export default function AdvertiserProfilePage() {
                         <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                       </div>
                       <div className="flex items-center text-xs text-slate-500 mt-2">
-                        {profile?.recommend_count_lifetime > 0 && (<span className="mr-[8px]">Recommended by {profile?.recommend_count_lifetime} traders</span>)}
+                        {profile?.recommend_count_lifetime > 0 && (<Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" /><span className="mr-[8px]">Recommended by {profile?.recommend_count_lifetime} traders</span>)}
                         {profile?.rating_average_lifetime && (
                           <div className="flex items-center">
                             <span className="text-slate-400">|</span>
-                            <Image src="/icons/star-icon.png" alt="Star" width={20} height={20} className="mr-1" />
+                            <Image src="/icons/star-icon.png" alt="Star" width={24} height={24} className="mr-1" />
                             <span className="ml-[8px]">{profile?.rating_average_lifetime}</span>
                           </div>
                         )}
