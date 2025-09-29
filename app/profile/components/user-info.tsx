@@ -7,7 +7,6 @@ interface UserInfoProps {
   rating: string
   recommendation: number
   joinDate: string
-  isLoading?: boolean
 }
 
 export default function UserInfo({ username, rating, joinDate, recommendation }: UserInfoProps) {
