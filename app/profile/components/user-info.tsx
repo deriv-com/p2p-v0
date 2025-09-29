@@ -30,7 +30,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
                 </div>
               </div>
             )}
-            {recommendation && rating && }
             {rating && (
               <>
                 <div className="mx-4 h-4 w-px bg-slate-300"></div>
