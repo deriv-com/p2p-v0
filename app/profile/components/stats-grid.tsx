@@ -92,7 +92,7 @@ export default function StatsGrid({ stats }) {
                   <StatCard title="Buy completion" value={`${stats.statistics_30day.completion_rate_buy} (${stats.statistics_30day.completion_count_buy})` ?? "-"} />
                   <StatCard title="Total orders" value={stats.statistics_30day.completion_count_all ?? "0"} />
                   <StatCard title="Avg. pay time" value={stats.statistics_30day.completion_average_30day ?? "-"} />
-                  <StatCard title="Avg. release time" value={stats.statistics_30day.release_time_average_30day ?? "-"} />
+                  <StatCard title="Avg. release time" value={stats.statistics_30day.release_time_average ?? "-"} />
                   <StatCard
                     title="Trade volume"
                     value={stats.statistics_30day.completion_average_30day ? `USD ${stats.completion_average_30day}` : "USD 0.00"}
