@@ -51,7 +51,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   const buyCount = profile?.statistics_30day?.buy_count_30day || 0
   const sellCount = profile?.statistics_30day?.sell_count_30day || 0
   const totalTrades30d = (profile?.statistics_30day?.buy_count_30day || 0) + (profile?.statistics_30day?.sell_count_30day || 0) || 0
-  const totalAllTimeTrades = profile?.order_count_lifetime || 0
+  const totalAllTimeTrades = profile?.statistics_30day?.order_count_lifetime || 0
 
   return (
     <TooltipProvider>
