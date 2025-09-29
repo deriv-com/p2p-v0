@@ -327,32 +327,6 @@ export default function BuySellPage() {
                   }
                 />
               </div>
-
-              <div className="hidden md:block">
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem
-                      value="exchange_rate"
-                      className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                    >
-                      {activeTab === "sell" ? (
-                        <>Sort by: Exchange rate (low-high)</>
-                      ) : (
-                        <>Sort by: Exchange rate (high-low)</>
-                      )}
-                    </SelectItem>
-                    <SelectItem
-                      value="user_rating_average_lifetime"
-                      className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                    >
-                      Sort by: User rating (high-low)
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
           </div>
         </div>
