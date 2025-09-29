@@ -39,8 +39,8 @@ export default function UserInfo({ username, rating, joinDate, recommendation, i
               </div>
             )}
           </div>
-          {joinDate && (<div className="mx-4 h-4 w-px bg-slate-300 text-sm">
-              <div className="text-white">{joinDate}</div>
+          {joinDate && (<div className="mx-4 text-xs">
+              {joinDate}
             </div>)}
         </div>
       </div>
