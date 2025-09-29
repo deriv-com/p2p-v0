@@ -5,9 +5,9 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 
-interface DepositOptionProps {
+interface WithdrawOptionProps {
   onClose: () => void
-  onDirectDepositClick: (currency: string) => void
+  onDirectWithdrawClick: (currency: string) => void
   currencies: Currency[]
   selectedCurrency: string
 }
@@ -18,19 +18,19 @@ interface Currency {
   logo: string
 }
 
-export default function DepositOptions({
+export default function WithdrawOptions({
   onClose,
-  onDirectDepositClick,
+  onDirectWithdrawClick,
   currencies,
   selectedCurrency,
-}: DepositOptionProps) {
+}: WithdrawOptionProps) {
   const router = useRouter()
   const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
-  const handleDirectDepositClick = (e: React.MouseEvent) => {
+  const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectDepositClick(selectedCurrency)
+    onDirectWithdrawClick(selectedCurrency)
   }
 
   const handleP2PTradingClick = (e: React.MouseEvent) => {
@@ -40,11 +40,11 @@ export default function DepositOptions({
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-0">
       <div
         className={cn(
           "flex p-4 justify-center items-center gap-4 self-stretch",
-          "rounded-2xl  cursor-pointer hover:bg-accent/80",
+          "cursor-pointer border-b border-grayscale-200",
         )}
         onClick={handleP2PTradingClick}
       >
@@ -54,7 +54,7 @@ export default function DepositOptions({
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">P2P Trading</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
-            {`Buy ${selectedCurrencyData?.name} directly from other users on the P2P marketplace.`}
+            {`Sell ${selectedCurrencyData?.name} directly to other users on the P2P marketplace.`}
           </p>
         </div>
       </div>
@@ -62,17 +62,17 @@ export default function DepositOptions({
       <div
         className={cn(
           "flex p-4 justify-center items-center gap-4 self-stretch",
-          "rounded-2xl  cursor-pointer hover:bg-accent/80",
+          "cursor-pointer border-b border-grayscale-200",
         )}
-        onClick={handleDirectDepositClick}
+        onClick={handleDirectWithdrawClick}
       >
         <div className="flex-shrink-0 w-12 h-12  rounded-full flex items-center justify-center">
           <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">Direct deposit</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">Direct withdrawal</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
-            Deposit funds directly from your bank account, e-wallet, or other payment methods.
+            Withdraw funds directly to your bank account, e-wallet, or other payment methods.
           </p>
         </div>
       </div>
