@@ -247,14 +247,13 @@ export default function AdvertiserProfilePage() {
                               variant="outline"
                               size="sm"
                               disabled={isFollowLoading}
-                            >
-                      
+                          >
                               {isFollowing ? "Following" : "Follow"}
                             </Button>
                             <Button
                               variant="ghost"
                               size="sm"
-                              className={cn("text-xs underline", isBlocked && "text-red-500")}
+                              className={cn("text-xs underline")}
                               onClick={handleBlockClick}
                               disabled={isBlockLoading}
                             >
