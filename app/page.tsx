@@ -287,7 +287,7 @@ export default function BuySellPage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
+            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
