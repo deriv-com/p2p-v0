@@ -84,7 +84,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
     <div className="relative">
       <div className="mb-6">
         {isMobile ? (
-          <div className="mx-[-24px]">
+          <div className="mx-[-12px]">
             <Divider />
             <div
               onClick={() => {
