@@ -233,7 +233,7 @@ export default function AdvertiserProfilePage() {
                         
                         <div className="flex items-center">
                         <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
-                        <span className="mr-[8px]">{profile?.statistics_lifetime?.recommend_count > 0 ? Recommended by {profile?.statistics_lifetime?.recommend_count} traders : "Not recommended yet" }</span>
+                        <span className="mr-[8px]">{profile?.statistics_lifetime?.recommend_count > 0 ? `Recommended by ${profile?.statistics_lifetime?.recommend_count} traders` : "Not recommended yet" }</span>
                         </div>
                         
                         <div className="flex items-center">
