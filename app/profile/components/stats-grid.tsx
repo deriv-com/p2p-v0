@@ -71,7 +71,7 @@ export default function StatsGrid({ stats }) {
     <TooltipProvider>
       <div className="bg-transparent rounded-lg md:px-4">
         <div>
-          <Tabs defaultValue="last30days" className="w-full bg-transparent">
+          <Tabs defaultValue="last30days" className="w-full">
             <TabsList className="w-full mb-4 bg-transparent">
               <TabsTrigger
                 value="last30days"
@@ -86,7 +86,7 @@ export default function StatsGrid({ stats }) {
                 Lifetime
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="last30days" className="mt-0 rounded-lg px-4">
+            <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
               <div className="grid grid-cols-1 divide-y divide-slate-200">
                   <StatCard title="Sell completion" value={stats.completion_average_30day ?? "-"} />
                   <StatCard title="Buy completion" value={stats.buy_time_average_30day ?? "-"} />
