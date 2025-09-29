@@ -52,7 +52,7 @@ export default function DepositOptions({
           <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
         </div>
         <div className="flex-1">
-          <h3 className="text-base font-normal text-[#181C25] leading-6 mb-1">P2P Trading</h3>
+          <h3 className="text-base font-normal text-slate-1200 leading-6 mb-1">P2P Trading</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
             {`Buy ${selectedCurrencyData?.name} directly from other users on the P2P marketplace.`}
           </p>
