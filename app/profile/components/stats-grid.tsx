@@ -106,6 +106,7 @@ export default function StatsGrid({ stats }) {
                 <StatCard title="Total orders" value={stats.statistics_lifetime.completion_count_all ?? "0"} />
                 <StatCard title="Avg. pay time" value={stats.statistics_lifetime.buy_time_average ?? "-"} />
                 <StatCard title="Avg. release time" value={stats.statistics_lifetime.release_time_average ?? "-"} />
+                <StatCard title="Trade partners" value={stats.statistics_lifetime.partner_count ?? "0"} />
                 <StatCard
                   title="Trade volume"
                   value={stats.statistics_lifetime.completion_amount_all ? `USD ${stats.completion_amount_all}` : "USD 0.00"}
