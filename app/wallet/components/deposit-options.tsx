@@ -44,11 +44,11 @@ export default function DepositOptions({
       <div
         className={cn(
           "flex p-4 justify-center items-center gap-4 self-stretch",
-          "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
+          "rounded-2xl  cursor-pointer hover:bg-accent/80",
         )}
         onClick={handleP2PTradingClick}
       >
-        <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
+        <div className="flex-shrink-0 w-12 h-12  rounded-full flex items-center justify-center">
           <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
         </div>
         <div className="flex-1">
@@ -62,11 +62,11 @@ export default function DepositOptions({
       <div
         className={cn(
           "flex p-4 justify-center items-center gap-4 self-stretch",
-          "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
+          "rounded-2xl  cursor-pointer hover:bg-accent/80",
         )}
         onClick={handleDirectDepositClick}
       >
-        <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
+        <div className="flex-shrink-0 w-12 h-12  rounded-full flex items-center justify-center">
           <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
         </div>
         <div className="flex-1">
