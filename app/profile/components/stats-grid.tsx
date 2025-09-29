@@ -15,7 +15,7 @@ function StatCard({ title, value }: StatCardProps) {
       <div className="font-bold text-black text-base leading-6 tracking-normal">
         {value}
       </div>
-      <div className="flex items-center text-slate-500 mb-2 font-normal text-sm leading-5 tracking-normal">
+      <div className="flex items-center text-slate-500 mb-2 font-normal text-xs leading-5 tracking-normal">
         {title}
         {title === "Trade partners" && (
           <Tooltip>
