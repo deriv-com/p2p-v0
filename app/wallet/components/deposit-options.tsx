@@ -50,7 +50,7 @@ export default function DepositOptions({
         </div>
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">P2P Trading</h3>
-          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
+          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
             {`Buy ${selectedCurrencyData?.name} directly from other users on the P2P marketplace.`}
           </p>
         
@@ -68,7 +68,7 @@ export default function DepositOptions({
         </div>
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">Direct deposit</h3>
-          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]">
+          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
             Deposit funds directly from your bank account, e-wallet, or other payment methods.
           </p>
         
