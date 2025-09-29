@@ -59,7 +59,7 @@ export default function ProfilePage() {
           setUserData(() => ({
             ...data,
             username: data.nickname,
-            rating: data.rating_average_lifetime !== null ? `${data.rating_average_lifetime}/5` : "Not rated yet",
+            rating: data.statistics_lifetime.rating_average !== null ? `${data.statistics_lifetime.rating_average}/5` : "Not rated yet",
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
             sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
@@ -107,7 +107,7 @@ export default function ProfilePage() {
             <UserInfo
               username={userData?.username ?? USER.email}
               rating={userData?.rating}
-              recommendation={userData?.recommend_average_lifetime}
+              recommendation={userData?.statistics_lifetime?.recommend_average}
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}

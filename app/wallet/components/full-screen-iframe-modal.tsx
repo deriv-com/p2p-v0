@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
-import { WALLETS } from "@/lib/local-variables"
+import { USER, WALLETS } from "@/lib/local-variables"
 
 interface IframeResponse {
   status: string
@@ -48,20 +48,10 @@ export default function FullScreenIframeModal({
       setIframeLoaded(false)
       setError(null)
 
-      const requestParams = {
-        ...WALLETS.defaultParams,
-        operation: operation === "DEPOSIT" ? "DEPOSIT" : "PAYOUT",
-        currency: currency,
-      }
-
       try {
-        const response = await fetch(WALLETS.cashierUrl, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestParams),
+        const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${USER.wallet_id}&operation=DEPOSIT&currency=USD`, {
+          method: "GET",
+          credentials: "include"
         })
 
         if (!response.ok) {
