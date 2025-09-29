@@ -142,6 +142,7 @@ export function validateEmail(email: string): boolean {
  */
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
+    await getClientProfile()
     const response = await fetch(`${API.baseUrl}/users/me`, {
       method: "GET",
       credentials: "include",
@@ -150,10 +151,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     const result = await response.json()
     if (!response.ok) {
-      if(result.errors && result.errors[0].status == 401) {
-        await getClientProfile()
-        return
-      }
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
    
