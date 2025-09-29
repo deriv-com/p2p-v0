@@ -72,7 +72,7 @@ export default function StatsGrid({ stats }) {
       <div className="bg-transparent rounded-lg md:px-4">
         <div>
           <Tabs defaultValue="last30days" className="w-full">
-            <TabsList className="w-full mb-4 bg-transparent">
+            <TabsList className="w-full md:mb-4 bg-transparent">
               <TabsTrigger
                 value="last30days"
                 className="w-full data-[state=active]:font-bold"
