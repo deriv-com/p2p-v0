@@ -69,7 +69,7 @@ function StatCard({ title, value }: StatCardProps) {
 export default function StatsGrid({ stats }) {
   return (
     <TooltipProvider>
-      <div className="bg-transparent md:bg-slate-1500 rounded-lg md:px-4">
+      <div className="bg-transparent rounded-lg md:px-4">
         <div>
           <Tabs defaultValue="last30days" className="w-full">
             <TabsList className="w-full mb-4">
