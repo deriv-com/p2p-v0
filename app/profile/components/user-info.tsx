@@ -32,7 +32,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
             )}
             {rating && (
               <>
-                <div className="mx-4 h-4 w-px bg-black opacity-[]"></div>
+                <div className="mx-4 h-4 w-px bg-black opacity-[0.08]"></div>
                 <div className="flex items-center">
                   <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
                   <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
