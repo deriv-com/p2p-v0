@@ -473,7 +473,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.7]">Orders will expire if they aren't completed within this timeframe.</p>
+                          <p className="opacity-[0.72]">Orders will expire if they aren't completed within this timeframe.</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
