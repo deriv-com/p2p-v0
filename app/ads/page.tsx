@@ -48,7 +48,7 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(showInactive)
+      const userAdverts = await AdsAPI.getUserAdverts(true)
 
       setAds(userAdverts)
     } catch (err) {
