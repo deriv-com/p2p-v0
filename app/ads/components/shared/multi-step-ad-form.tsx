@@ -35,17 +35,17 @@ const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create
   }
 
   if (currentStep === 2) {
-    return mode === "create" ? "Create Ad" : "Save Details"
+    return mode === "create" ? "Create ad" : "Save changes"
   }
 
-  return mode === "create" ? "Create Ad" : "Save Details"
+  return mode === "create" ? "Create ad" : "Save changes"
 }
 
-const getPageTitle = (mode: "create" | "edit", adType?: string) => {
+const getPageTitle = (mode: "create" | "edit") => {
   if (mode === "create") {
-    return "Create new ad"
+    return "Create ad"
   }
-  return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
+  return `Edit ad`
 }
 
 function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
@@ -294,7 +294,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
       if (error instanceof Error) {
         if (error.name === "AdvertExchangeRateDuplicate") {
           errorInfo = {
-            title: "You already have an ad with this rate.",
+            title: "You already have an ad with this rate",
             message:
               "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
             type: "warning",
@@ -302,7 +302,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           errorInfo = {
-            title: "You already have an ad with this range.",
+            title: "You already have an ad with this range",
             message:
               "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
             type: "warning",
@@ -319,7 +319,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
             title: "Insufficient balance",
-            message: "You don't have enough balance to create this ad.",
+            message: "You don't have enough balance to create this ad",
             type: "error",
             actionButtonText: "Update ad",
           }
@@ -425,31 +425,17 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
               setCurrentStep(updatedStep)
             }}
             onClose={handleClose}
-            title={isMobile ? getPageTitle(mode, formData.type) : ""}
+            title=""
           />
-          <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
-          <ProgressSteps currentStep={currentStep} steps={steps} className="mt-[40px]" />
-
-          {currentStep === 0 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 1</div>
-              <div className="text-lg font-bold text-slate-1200">Set Type and Price</div>
-            </div>
-          )}
-
-          {currentStep === 1 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 2</div>
-              <div className="text-lg font-bold text-slate-1200">Payment details</div>
-            </div>
-          )}
-
-          {currentStep === 2 && (
-            <div className="block md:hidden m-6 text-left">
-              <div className="text-sm font-normal text-slate-1200">Step 3</div>
-              <div className="text-lg font-bold text-slate-1200">Set ad conditions</div>
-            </div>
-          )}
+          <ProgressSteps
+            currentStep={currentStep}
+            steps={steps}
+            className="px-6 my-6"
+            title={{
+                    label: getPageTitle(mode),
+                    stepTitle: steps[currentStep].title,
+                }}
+          />
 
           <div className="relative mb-16 md:mb-0 mx-6">
             {currentStep === 0 ? (
@@ -487,7 +473,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>Orders will expire if they aren't completed within this timeframe.</p>
+                          <p className="opacity-[0.72]">Orders will expire if they aren't completed within this timeframe.</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
@@ -497,11 +483,26 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                 </div>
 
                 <div className="w-full md:w-[70%]">
+                <div className="flex gap-[4px] items-center mb-4">
                   <h3 className="text-base font-bold mb-2">Choose your audience</h3>
-                  <p className="text-sm text-neutral-7 mb-4">
-                    You can filter who interacts with your ads based on their location or P2P history. Stricter filters
-                    may reduce ad visibility.
-                  </p>
+                  <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.png"
+                            alt="Info"
+                            width={12}
+                            height={12}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="opacity-[0.72]">You can filter who interacts with your ads based on their location or P2P history. Stricter filters
+                    may reduce ad visibility.</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider> </div>
                   <div>
                     <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
                   </div>
