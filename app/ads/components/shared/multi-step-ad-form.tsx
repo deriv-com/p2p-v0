@@ -45,7 +45,7 @@ const getPageTitle = (mode: "create" | "edit", adType?: string) => {
   if (mode === "create") {
     return "Create ad"
   }
-  return `Edit ${adType === "sell" ? "Sell" : "Buy"} ad`
+  return `Edit ad`
 }
 
 function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
