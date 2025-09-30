@@ -30,7 +30,7 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData } = useUserDataStore()
-  const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
+  const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
@@ -64,6 +64,7 @@ export default function AdsPage() {
 
   useEffect(() => {
     fetchAds()
+    setHiddenAdverts(!userData?.adverts_are_listed)
   }, [])
 
   useEffect(() => {
