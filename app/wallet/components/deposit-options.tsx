@@ -6,30 +6,16 @@ import { useRouter } from "next/navigation"
 
 interface DepositOptionProps {
   onClose: () => void
-  onDirectDepositClick: (currency: string) => void
-  currencies: Currency[]
-  selectedCurrency: string
+  onDirectDepositClick: () => void
 }
 
-interface Currency {
-  code: string
-  name: string
-  logo: string
-}
-
-export default function DepositOptions({
-  onClose,
-  onDirectDepositClick,
-  currencies,
-  selectedCurrency,
-}: DepositOptionProps) {
+export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
   const router = useRouter()
-
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectDepositClick(selectedCurrency)
+    onDirectDepositClick()
   }
 
   const handleP2PTradingClick = (e: React.MouseEvent) => {
@@ -40,7 +26,6 @@ export default function DepositOptions({
 
   return (
     <div className="space-y-0 mt-6">
-    
       <div
         className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-0 md:pl-6 py-4"
         onClick={handleP2PTradingClick}
@@ -53,11 +38,10 @@ export default function DepositOptions({
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
             {`Trade USD directly with other users on the marketplace.`}
           </p>
-        
+
           <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>
-
 
       <div
         className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-0 md:pl-6 py-0"
@@ -69,9 +53,9 @@ export default function DepositOptions({
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">Direct deposit</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
-            Deposit funds directly from your bank account, e-wallet, or other payment methods.
+            Deposit funds directly from your bank account, e-wallet, or other payment methods.
           </p>
-        
+
           <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>

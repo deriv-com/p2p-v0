@@ -88,16 +88,14 @@ export default function WalletSummary() {
     setCurrentStep("summary")
   }
 
-  const handleDirectDepositClick = (currency: string) => {
+  const handleDirectDepositClick = () => {
     setIsSidebarOpen(false)
-    setSelectedCurrency(currency)
     setCurrentOperation("DEPOSIT")
     setIsIframeModalOpen(true)
   }
 
-  const handleDirectWithdrawClick = (currency: string) => {
+  const handleDirectWithdrawClick = () => {
     setIsSidebarOpen(false)
-    setSelectedCurrency(currency)
     setCurrentOperation("WITHDRAW")
     setIsIframeModalOpen(true)
   }
@@ -195,14 +193,7 @@ export default function WalletSummary() {
         <div className="fixed inset-0 z-50 bg-white">
           <WalletActionStep
             title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
-            description={
-              currentOperation === "DEPOSIT"
-                ? "Choose your preferred deposit method."
-                : "Choose your preferred withdrawal method."
-            }
             actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
-            currencies={currencies}
-            selectedCurrency={selectedCurrency}
             onClose={handleClose}
             onGoBack={handleGoBackToCurrency}
             onDirectDepositClick={handleDirectDepositClick}
@@ -225,7 +216,7 @@ export default function WalletSummary() {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         operation={currentOperation}
-        currency={selectedCurrency}
+        currency={selectedCurrency || "USD"}
       />
     </>
   )

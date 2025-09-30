@@ -6,30 +6,16 @@ import { useRouter } from "next/navigation"
 
 interface WithdrawOptionProps {
   onClose: () => void
-  onDirectWithdrawClick: (currency: string) => void
-  currencies: Currency[]
-  selectedCurrency: string
+  onDirectWithdrawClick: () => void
 }
 
-interface Currency {
-  code: string
-  name: string
-  logo: string
-}
-
-export default function WithdrawOptions({
-  onClose,
-  onDirectWithdrawClick,
-  currencies,
-  selectedCurrency,
-}: WithdrawOptionProps) {
+export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: WithdrawOptionProps) {
   const router = useRouter()
-
 
   const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectWithdrawClick(selectedCurrency)
+    onDirectWithdrawClick()
   }
 
   const handleP2PTradingClick = (e: React.MouseEvent) => {

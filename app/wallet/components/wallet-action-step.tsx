@@ -5,28 +5,18 @@ import { Button } from "@/components/ui/button"
 import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
 
-interface Currency {
-  code: string
-  name: string
-  logo: string
-}
-
 interface WalletActionStepProps {
   title: string
   actionType: "deposit" | "withdraw"
-  currencies: Currency[]
-  selectedCurrency: string
   onClose: () => void
   onGoBack: () => void
-  onDirectDepositClick?: (currency: string) => void
-  onDirectWithdrawClick?: (currency: string) => void
+  onDirectDepositClick?: () => void
+  onDirectWithdrawClick?: () => void
 }
 
 export default function WalletActionStep({
   title,
   actionType,
-  currencies,
-  selectedCurrency,
   onClose,
   onGoBack,
   onDirectDepositClick,
@@ -50,20 +40,10 @@ export default function WalletActionStep({
         <div className="pl-2 pr-0 md:pr-4 flex-1 min-h-0">
           <div className="h-full overflow-y-auto">
             {actionType === "deposit" && onDirectDepositClick && (
-              <DepositOptions
-                onClose={onClose}
-                onDirectDepositClick={onDirectDepositClick}
-                currencies={currencies}
-                selectedCurrency={selectedCurrency}
-              />
+              <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} />
             )}
             {actionType === "withdraw" && onDirectWithdrawClick && (
-              <WithdrawOptions
-                onClose={onClose}
-                onDirectWithdrawClick={onDirectWithdrawClick}
-                currencies={currencies}
-                selectedCurrency={selectedCurrency}
-              />
+              <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectWithdrawClick} />
             )}
           </div>
         </div>
