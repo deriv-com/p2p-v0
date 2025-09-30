@@ -179,15 +179,6 @@ export default function AdsPage() {
     )
   }
 
-  if (!userData) {
-    return (
-       <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading ads...</p>
-        </div>
-    )
-  }
-
   return (
     <>
       <div className="flex flex-col h-screen bg-white px-3">
