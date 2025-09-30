@@ -31,7 +31,7 @@ export default function AdsPage() {
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData } = useUserDataStore()
   const userDataFromStore = userData
-  const [hiddenAdverts, setHiddenAdverts] = useState(!userDataFromStore?.getState()adverts_are_listed)
+  const [hiddenAdverts, setHiddenAdverts] = useState(!userDataFromStore?.getState().adverts_are_listed)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
