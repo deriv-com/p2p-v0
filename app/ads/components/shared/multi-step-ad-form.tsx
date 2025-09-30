@@ -35,10 +35,10 @@ const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create
   }
 
   if (currentStep === 2) {
-    return mode === "create" ? "Create Ad" : "Save Details"
+    return mode === "create" ? "Create ad" : "Save Details"
   }
 
-  return mode === "create" ? "Create Ad" : "Save Details"
+  return mode === "create" ? "Create ad" : "Save Details"
 }
 
 const getPageTitle = (mode: "create" | "edit") => {
