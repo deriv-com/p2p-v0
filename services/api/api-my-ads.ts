@@ -133,7 +133,7 @@ export async function toggleAdStatus(id: string, isActive: boolean, currentAd: M
 
 export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
   try {
-    const url = `${API.baseUrl}/users/${useUserDataStore.getState().user_id}`
+    const url = `${API.baseUrl}/users/${useUserDataStore.getState().userId}`
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
