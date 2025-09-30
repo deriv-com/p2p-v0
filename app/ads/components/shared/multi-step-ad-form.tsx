@@ -294,7 +294,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
       if (error instanceof Error) {
         if (error.name === "AdvertExchangeRateDuplicate") {
           errorInfo = {
-            title: "You already have an ad with this rate.",
+            title: "You already have an ad with this rate",
             message:
               "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
             type: "warning",
@@ -302,7 +302,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           errorInfo = {
-            title: "You already have an ad with this range.",
+            title: "You already have an ad with this range",
             message:
               "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
             type: "warning",
@@ -319,7 +319,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
             title: "Insufficient balance",
-            message: "You don't have enough balance to create this ad.",
+            message: "You don't have enough balance to create this ad",
             type: "error",
             actionButtonText: "Update ad",
           }
