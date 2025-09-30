@@ -24,7 +24,7 @@ export default function DepositOptions({
   selectedCurrency,
 }: DepositOptionProps) {
   const router = useRouter()
-  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
+
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
     e.stopPropagation()
