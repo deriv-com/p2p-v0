@@ -17,7 +17,7 @@ interface OnboardingStepProps {
 }
 
 const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
-  <div className="w-full p-2 rounded-2xl md:rounded-none border mdborder-gray-200 hover:cursor-pointer" onClick={onClick}>
+  <div className="w-full p-2 rounded-2xl md:rounded-none border md:border-b border-gray-200 hover:cursor-pointer" onClick={onClick}>
     <div className="flex items-center gap-2">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image src={icon || "/placeholder.svg"} alt={title} width={24} height={24} />
