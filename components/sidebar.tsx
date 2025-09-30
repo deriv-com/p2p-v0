@@ -104,7 +104,7 @@ export default function Sidebar({ className }: SidebarProps) {
           <h2 className="text-sm font-bold text-slate-1400 mb-1">
             {userData?.first_name && userData?.last_name
               ? `${userData.first_name} ${userData.last_name}`
-              : userData?.e}
+              : userData?.username}
           </h2>
           <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
         </div>
