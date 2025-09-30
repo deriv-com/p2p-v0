@@ -179,6 +179,10 @@ export default function AdsPage() {
     )
   }
 
+  if(isLoading) {
+  
+  }
+
   return (
     <>
       <div className="flex flex-col h-screen bg-white px-3">
