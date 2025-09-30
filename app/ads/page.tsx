@@ -63,7 +63,7 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    fetchAds
+    fetchAds()
   }, [])
 
   useEffect(() => {
