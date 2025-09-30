@@ -3,11 +3,11 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { USER } from "@/lib/local-variables"
-import { Avatar } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { Avatar } from "@/components/ui/avatar"
 
 interface SidebarProps {
   className?: string
@@ -16,21 +16,21 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const [showWallet, setShowWallet] = useState(true)
+  const { userData, userId } = useUserDataStore()
+  const userName = userData?.nickname ?? userData?.email
 
   useEffect(() => {
     checkUserSignupStatus()
-  }, [])
+  }, [userData])
 
   const checkUserSignupStatus = () => {
     try {
-      if (typeof window !== "undefined") {
-        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+      const userDataFromStore = userData
 
-        if (userData?.signup === "v1") {
-          setShowWallet(false)
-        } else {
-          setShowWallet(true)
-        }
+      if (userDataFromStore?.signup === "v1") {
+        setShowWallet(false)
+      } else {
+        setShowWallet(true)
       }
     } catch (error) {
       console.log(error)
@@ -38,22 +38,31 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }
 
+  const getHomeUrl = () => {
+    const isProduction = process.env.NODE_ENV === "production"
+    const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+    return baseUrl
+  }
+
   const navItems = [
-    { name: "Home", href: "https://home.deriv.com/dashboard/home", icon: "/icons/traders-hub.png" },
+    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
     ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" }] : []),
-    { name: "Profile", href: "/profile", icon: "/icons/profile-icon.png" },
+    { name: "P2P Profile", href: "/profile", icon: "/icons/profile-icon.png" },
+    { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: "/icons/p2p-guide.png" },
   ]
 
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
-        <div className="hidden md:block text-slate-600 hover:text-slate-700">
-          <NovuNotifications />
-        </div>
+        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} height={64} />
+        {userId && (
+          <div className="hidden md:block text-slate-600 hover:text-slate-700">
+            <NovuNotifications />
+          </div>
+        )}
       </div>
       <nav className="flex-1 px-4">
         <ul>
@@ -75,7 +84,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     <Image
-                      src={item.icon}
+                      src={item.icon || "/placeholder.svg"}
                       alt={item.name}
                       width={20}
                       height={20}
@@ -93,9 +102,19 @@ export default function Sidebar({ className }: SidebarProps) {
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
         <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
-          {USER.nickname?.charAt(0).toUpperCase()}
+          {userName?.charAt(0).toUpperCase()}
         </Avatar>
-        <h2 className="text-sm font-bold text-slate-1400">{USER.nickname}</h2>
+        <div className="flex-1">
+          <h2 className="text-sm font-bold text-slate-1400 mb-1">
+            {userData?.first_name && userData?.last_name
+              ? `${userData.first_name} ${userData.last_name}`
+              : userData?.nickname}
+          </h2>
+          <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
+        </div>
+        <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
+          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
+        </Link>
       </div>
     </div>
   )

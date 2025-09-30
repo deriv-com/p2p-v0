@@ -84,7 +84,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
     <div className="relative">
       <div className="mb-6">
         {isMobile ? (
-          <div className="mx-[-24px]">
+          <div className="mx-[-12px]">
             <Divider />
             <div
               onClick={() => {
@@ -253,7 +253,9 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </div>
                 </div>
               ) : (
-                <StatsGrid stats={stats} />
+                <div className="relative rounded-lg border py-4">
+                  <StatsGrid stats={stats} />
+                </div>
               )}
             </TabsContent>
 

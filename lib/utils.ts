@@ -382,3 +382,9 @@ export const currencyLogoMapper = {
   USDT: "/icons/eusdt-logo.png",
   TRX: "/icons/trx-logo.png",
 }
+
+export const getHomeUrl = () => {
+  const isProduction = process.env.NODE_ENV === "production"
+  const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+  return baseUrl
+}

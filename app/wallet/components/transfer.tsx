@@ -137,7 +137,7 @@ export default function Transfer({ onClose }: TransferProps) {
       const requestId = crypto.randomUUID()
 
       const transferParams = {
-        net_amount: transferAmount,
+        amount: transferAmount,
         currency: selectedCurrency?.code || "USD",
         destination_wallet_id: destinationWalletData.id,
         request_id: requestId,

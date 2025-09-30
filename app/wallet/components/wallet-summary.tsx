@@ -3,14 +3,15 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { cn, currencyLogoMapper } from "@/lib/utils"
+import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
-import { currencyLogoMapper } from "@/lib/utils"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
 import WalletActionStep from "./wallet-action-step"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface Currency {
   code: string
@@ -22,6 +23,8 @@ type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 type WalletStep = "summary" | "chooseCurrency" | "walletAction"
 
 export default function WalletSummary() {
+  const userId = useUserDataStore((state) => state.userId)
+  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -65,30 +68,33 @@ export default function WalletSummary() {
   }, [selectedCurrency])
 
   const handleDepositClick = () => {
-    setCurrentOperation("DEPOSIT")
-    setCurrentStep("chooseCurrency")
+    if (userId) {
+      setCurrentOperation("DEPOSIT")
+      setCurrentStep("chooseCurrency")
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleWithdrawClick = () => {
-    setCurrentOperation("WITHDRAW")
-    setCurrentStep("chooseCurrency")
+    if (userId) {
+      setCurrentOperation("WITHDRAW")
+      setCurrentStep("chooseCurrency")
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   const handleTransferClick = () => {
-    setCurrentOperation("TRANSFER")
-    setIsSidebarOpen(true)
+    if (userId) {
+      setCurrentOperation("TRANSFER")
+      setIsSidebarOpen(true)
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
-  const handleCurrencySelect = (currency: Currency) => {
-    setSelectedCurrency(currency.code)
-    setCurrentStep("walletAction")
-  }
-
-  const handleClose = () => {
-    setCurrentStep("summary")
-  }
-
-  const handleDirectDepositClick = () => {
+  const handleDirectDepositClick = (currency: string) => {
     setIsSidebarOpen(false)
     setCurrentOperation("DEPOSIT")
     setIsIframeModalOpen(true)
@@ -100,8 +106,8 @@ export default function WalletSummary() {
     setIsIframeModalOpen(true)
   }
 
-  const handleSendTransferClick = () => {}
-  const handleReceiveTransferClick = () => {}
+  const handleSendTransferClick = () => { }
+  const handleReceiveTransferClick = () => { }
 
   const handleGoBackToCurrency = () => {
     setCurrentStep("chooseCurrency")
@@ -218,6 +224,7 @@ export default function WalletSummary() {
         operation={currentOperation}
         currency={selectedCurrency || "USD"}
       />
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }

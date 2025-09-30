@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
@@ -21,6 +20,7 @@ import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
@@ -70,6 +70,7 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const { currencies } = useCurrencyData()
   const abortControllerRef = useRef<AbortController | null>(null)
+  const userId = useUserDataStore((state) => state.userId)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
 
@@ -287,7 +288,7 @@ export default function BuySellPage() {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0">
+            <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
@@ -309,7 +310,7 @@ export default function BuySellPage() {
                 />
               </div>
 
-              <div className="filter-dropdown-container flex-shrink-0 md:flex-1">
+              <div className="filter-dropdown-container flex-shrink-0">
                 <MarketFilterDropdown
                   activeTab={activeTab}
                   onApply={handleFilterApply}
@@ -327,32 +328,6 @@ export default function BuySellPage() {
                   }
                 />
               </div>
-
-              <div className="hidden md:block">
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem
-                      value="exchange_rate"
-                      className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                    >
-                      {activeTab === "sell" ? (
-                        <>Sort by: Exchange rate (low-high)</>
-                      ) : (
-                        <>Sort by: Exchange rate (high-low)</>
-                      )}
-                    </SelectItem>
-                    <SelectItem
-                      value="user_rating_average_lifetime"
-                      className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                    >
-                      Sort by: User rating (high-low)
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
           </div>
         </div>
@@ -368,7 +343,7 @@ export default function BuySellPage() {
             ) : adverts.length === 0 ? (
               <EmptyState
                 title="No ads for this currency"
-                description={`Looking to buy or sell ${selectedAccountCurrency}? You can post your own ad for others to respond.`}
+                description={`You can post your own ad for others to respond.`}
                 redirectToAds={true}
               />
             ) : (
@@ -479,7 +454,7 @@ export default function BuySellPage() {
                             </div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 text-right align-middle row-start-3 whitespace-nowrap">
-                            {USER.id != ad.user.id && (
+                            {userId != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
                                 size="sm"

@@ -46,12 +46,12 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const isMobile = useIsMobile()
   
-  const buyCompletionRate = profile?.completion_average_30day
-  const sellCompletionRate = profile?.completion_average_30day
-  const buyCount = profile?.buy_count_30day || 0
-  const sellCount = profile?.sell_count_30day || 0
-  const totalTrades30d = (profile?.buy_count_30day || 0) + (profile?.sell_count_30day || 0) || 0
-  const totalAllTimeTrades = profile?.order_count_lifetime || 0
+  const buyCompletionRate = profile?.statistics_30day?.completion_rate_buy
+  const sellCompletionRate = profile?.statistics_30day?.completion_rate_sell
+  const buyCount = profile?.statistics_30day?.completion_count_buy || 0
+  const sellCount = profile?.statistics_30day?.completion_count_sell || 0
+  const totalTrades30d = profile?.statistics_30day?.completion_count_all || 0
+  const totalAllTimeTrades = profile?.statistics_lifetime?.completion_count_all || 0
 
   return (
     <TooltipProvider>
@@ -92,6 +92,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
           <Button
             variant="ghost"
             size="xs"
+            className="font-normal"
             onClick={() => setIsStatsModalOpen(true)}
           >
             View more
@@ -113,9 +114,9 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         </Drawer>
       ) : (
         <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
-          <DialogContent className="sm:max-w-md rounded-[32px]">
+          <DialogContent className="sm:max-w-md sm:rounded-[32px]">
             <DialogHeader>
-              <DialogTitle className="font-bold text-2xl">Advertiser info</DialogTitle>
+              <DialogTitle className="tracking-normal font-bold text-2xl">Advertiser info</DialogTitle>
             </DialogHeader>
             <StatsContent profile={profile} isMobile={false} />
             <Button onClick={() => setIsStatsModalOpen(false)}>Close</Button>
