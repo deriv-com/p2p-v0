@@ -192,7 +192,7 @@ export async function getCurrencies(): Promise<string[]> {
 
 export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
   try {
-    const userId = USER.id
+    const userId = useUserDataStore.getState().user_id
 
     const queryParams = new URLSearchParams({
       user_id: userId.toString(),
