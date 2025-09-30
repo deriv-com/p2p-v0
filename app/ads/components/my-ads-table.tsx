@@ -342,6 +342,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent>
+          <DrawerHeader>
+            <DrawerTitle className="font-bold text-xl">Manage ads</DrawerTitle>
+          </DrawerHeader>
           <div className="flex flex-col">
             {selectedAd && (
               <AdActionsMenu
