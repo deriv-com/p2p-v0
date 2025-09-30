@@ -195,7 +195,7 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-          <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl justify-between -m-3 mb-0 md:m-0">
+          <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold justify-between -m-3 mb-0 md:m-0">
             Active ads
           </div>
           <div className="flex items-center justify-between my-6">
