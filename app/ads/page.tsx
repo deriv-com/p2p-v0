@@ -67,7 +67,6 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    console.log("[v0] Initial mount - userId:", userId)
     fetchAds()
     setHiddenAdverts(!userData?.adverts_are_listed)
   }, [userId])
