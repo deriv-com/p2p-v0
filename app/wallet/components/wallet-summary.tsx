@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn, currencyLogoMapper } from "@/lib/utils"
@@ -51,7 +51,7 @@ export default function WalletSummary() {
     }
   }
 
-  const loadBalance = async () => {
+  const loadBalance = useCallback(async () => {
     try {
       const balanceAmount = await fetchBalance(selectedCurrency)
       setBalance(balanceAmount)
@@ -60,12 +60,12 @@ export default function WalletSummary() {
       console.error("Error fetching user balance:", error)
       setIsLoading(false)
     }
-  }
+  }, [selectedCurrency])
 
   useEffect(() => {
     loadBalance()
     fetchCurrencies()
-  }, [selectedCurrency])
+  }, [loadBalance])
 
   const handleDepositClick = () => {
     if (userId) {
@@ -94,20 +94,29 @@ export default function WalletSummary() {
     }
   }
 
-  const handleDirectDepositClick = (currency: string) => {
+  const handleCurrencySelect = (currency: string) => {
+    setSelectedCurrency(currency)
+    setCurrentStep("walletAction")
+  }
+
+  const handleClose = () => {
+    setCurrentStep("summary")
     setIsSidebarOpen(false)
-    setCurrentOperation("DEPOSIT")
+    setIsIframeModalOpen(false)
+  }
+
+  const handleDirectDepositClick = () => {
+    setCurrentStep("summary")
     setIsIframeModalOpen(true)
   }
 
   const handleDirectWithdrawClick = () => {
-    setIsSidebarOpen(false)
-    setCurrentOperation("WITHDRAW")
+    setCurrentStep("summary")
     setIsIframeModalOpen(true)
   }
 
-  const handleSendTransferClick = () => { }
-  const handleReceiveTransferClick = () => { }
+  const handleSendTransferClick = () => {}
+  const handleReceiveTransferClick = () => {}
 
   const handleGoBackToCurrency = () => {
     setCurrentStep("chooseCurrency")
@@ -222,7 +231,7 @@ export default function WalletSummary() {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         operation={currentOperation}
-        currency={selectedCurrency || "USD"}
+        currency={selectedCurrency}
       />
       <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
