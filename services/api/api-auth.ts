@@ -124,7 +124,6 @@ export async function logout(): Promise<void> {
 
     useUserDataStore.getState().clearUserData()
 
-    // Keep auth and socket tokens in localStorage as they're not user data
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")
     window.location.href = "/"
