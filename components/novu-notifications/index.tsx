@@ -1,11 +1,13 @@
 "use client"
 
-import { Inbox } from "@novu/nextjs"
+// import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import "../../styles/globals.css"
 
 const API = {
@@ -54,52 +56,10 @@ export function NovuNotifications() {
   const isMobile = useIsMobile()
   const userId = useUserDataStore((state) => state.userId)
   const userIdFallback = userId || ""
-  const applicationIdentifier = NOTIFICATIONS.applicationId
 
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  const appearance = {
-    icons: {
-      bell: () => {
-        return isMobile ? (
-          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
-        ) : (
-          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
-        )
-      },
-    },
-    variables: {
-      borderRadius: "8px",
-      fontSize: "16px",
-      colorShadow: "rgba(0, 0, 0, 0.1)",
-      colorNeutral: "#1A1523",
-      colorCounterForeground: "#ffffff",
-      colorCounter: "#FF444F",
-      colorSecondaryForeground: "#1A1523",
-      colorPrimaryForeground: "#ffffff",
-      colorPrimary: "#FF444F",
-      colorForeground: "#181C25",
-      colorBackground: "#ffffff",
-    },
-    elements: {
-      popoverTrigger: {
-        borderRadius: "50%",
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
-      },
-      bellContainer: {
-        width: "24px",
-        height: "24px",
-      },
-      bellIcon: {
-        width: "24px",
-        height: "24px",
-      },
-      preferences__button: { display: "none" },
-      popoverContent: "novu-popover-content",
-    },
-  }
 
   useEffect(() => {
     if (!userIdFallback) {
@@ -131,7 +91,8 @@ export function NovuNotifications() {
 
   if (!mounted || isLoading) {
     return (
-      <div className="relative inline-flex h-5 w-5 bg-yellow-100 rounded-full">
+      <div className="relative inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100">
+        <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600" />
         <span className="sr-only">Notifications loading</span>
       </div>
     )
@@ -139,48 +100,55 @@ export function NovuNotifications() {
 
   if (error || !subscriberHash || !subscriberId) {
     return (
-      <div
-        className="relative inline-flex h-5 w-5 bg-red-100 rounded-full"
+      <Button
+        variant="ghost"
+        size="icon"
+        className="relative h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200"
         title={error || "Failed to load notifications"}
+        disabled
       >
+        {isMobile ? (
+          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} className="opacity-50" />
+        ) : (
+          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} className="opacity-50" />
+        )}
         <span className="sr-only">Notifications error</span>
-      </div>
+      </Button>
     )
   }
 
   return (
-    <div style={{ position: "static" }}>
-      <Inbox
-        applicationIdentifier={applicationIdentifier}
-        subscriber={subscriberId || ""}
-        subscriberHash={subscriberHash}
-        localization={{ "inbox.filters.labels.default": "Notifications" }}
-        colorScheme="light"
-        i18n={{ poweredBy: "Notifications by" }}
-        onNotificationClick={(notification) => {
-          if (notification.data?.order_id) {
-            router.push(`/orders/${notification.data.order_id}`)
-          }
-
-          setTimeout(() => {
-            const inboxElement = document.querySelector(".nv-popoverContent") as HTMLElement
-            if (inboxElement) {
-              const clickOutsideEvent = new MouseEvent("click", {
-                bubbles: true,
-                cancelable: true,
-                view: window,
-              })
-              document.body.dispatchEvent(clickOutsideEvent)
-            }
-          }, 100)
-        }}
-        placement={isMobile ? "bottom-start" : "bottom-end"}
-        appearance={appearance}
-        styles={{
-          bell: { root: { background: "transparent", color: "black" } },
-          popover: { root: { zIndex: 100 } },
-        }}
-      />
-    </div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full bg-gray-100 hover:bg-gray-200">
+          {isMobile ? (
+            <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
+          ) : (
+            <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
+          )}
+          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-medium text-white">
+            0
+          </span>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align={isMobile ? "start" : "end"} className="w-80">
+        <div className="flex flex-col gap-4 p-4">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-semibold">Notifications</h3>
+          </div>
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <Image
+              src="/icons/bell-desktop.png"
+              alt="No notifications"
+              width={48}
+              height={48}
+              className="mb-4 opacity-50"
+            />
+            <p className="text-sm text-gray-500">No notifications yet</p>
+            <p className="mt-1 text-xs text-gray-400">Notifications will appear here when you have updates</p>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   )
 }
