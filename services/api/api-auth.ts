@@ -1,4 +1,3 @@
-import { API, AUTH } from "@/lib/local-variables"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface LoginRequest {
@@ -25,12 +24,18 @@ export interface VerificationResponse {
   }
 }
 
+const getAuthHeader = () => ({
+  "Content-Type": "application/json",
+  "X-Branch": "master",
+  "X-Data-Source": "live",
+})
+
 /**
  * Initiate login with email
  */
 export async function login(email: LoginRequest): Promise<LoginResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/login`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/login`, {
       method: "POST",
       body: JSON.stringify(email),
     })
@@ -54,7 +59,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
  */
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/verify`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/verify`, {
       method: "POST",
       headers: {
         "X-Enable-Session": "true",
@@ -82,7 +87,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  */
 export async function getSession(): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/session`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/session`, {
       method: "GET",
       credentials: "include",
     })
@@ -108,7 +113,7 @@ export async function getSession(): Promise<VerificationResponse> {
  */
 export async function logout(): Promise<void> {
   try {
-    const response = await fetch(`${API.coreUrl}/logout`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/logout`, {
       method: "POST",
       credentials: "include",
     })
@@ -135,10 +140,10 @@ export async function logout(): Promise<void> {
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
-    const response = await fetch(`${API.baseUrl}/users/me`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
-      headers: AUTH.getAuthHeader(),
+      headers: getAuthHeader(),
     })
 
     const result = await response.json()
@@ -166,7 +171,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-    const response = await fetch(`${API.coreUrl}/client/profile`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
       method: "GET",
       credentials: "include",
     })
@@ -201,12 +206,12 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token: string): Promise<void> {
   try {
-    const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-websocket-token`, {
       method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        ...AUTH.getAuthHeader(),
+        ...getAuthHeader(),
       },
     })
 
@@ -235,10 +240,10 @@ export interface KycStatusResponse {
  */
 export async function getKycStatus(): Promise<KycStatusResponse[]> {
   try {
-    const response = await fetch(`${API.coreUrl}/client/kyc-status`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/kyc-status`, {
       method: "GET",
       credentials: "include",
-      headers: AUTH.getAuthHeader(),
+      headers: getAuthHeader(),
     })
 
     if (!response.ok) {

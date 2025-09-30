@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn, currencyLogoMapper } from "@/lib/utils"
-import { USER } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
@@ -20,6 +20,7 @@ interface Currency {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletSummary() {
+  const userId = useUserDataStore((state) => state.userId)
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
@@ -63,7 +64,7 @@ export default function WalletSummary() {
   }, [selectedCurrency])
 
   const handleDepositClick = () => {
-    if(USER.id) {
+    if (userId) {
       setCurrentOperation("DEPOSIT")
       setIsSidebarOpen(true)
     } else {
@@ -72,7 +73,7 @@ export default function WalletSummary() {
   }
 
   const handleWithdrawClick = () => {
-    if(USER.id) { 
+    if (userId) {
       setCurrentOperation("WITHDRAW")
       setIsSidebarOpen(true)
     } else {
@@ -81,7 +82,7 @@ export default function WalletSummary() {
   }
 
   const handleTransferClick = () => {
-    if(USER.id) { 
+    if (userId) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {

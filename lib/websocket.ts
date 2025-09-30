@@ -1,5 +1,3 @@
-import { API } from "@/lib/local-variables"
-
 export interface WebSocketMessage {
   action: string
   options: {
@@ -37,7 +35,7 @@ export class WebSocketClient {
   public connect(): Promise<WebSocket> {
     return new Promise((resolve, reject) => {
       try {
-        const url = API.socketUrl
+        const url = process.env.NEXT_PUBLIC_SOCKET_URL
         this.socket = new WebSocket(url)
 
         this.socket.onopen = () => {

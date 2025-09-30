@@ -3,7 +3,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { USER } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
@@ -24,13 +24,14 @@ export default function EmptyState({
 }: EmptyStateProps) {
   const router = useRouter()
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
+  const userId = useUserDataStore((state) => state.userId)
 
   const createAd = () => {
-      if(USER.id) {
-        router.push("/ads/create")
-      } else {
-        setIsKycSheetOpen(true)
-      }
+    if (userId) {
+      router.push("/ads/create")
+    } else {
+      setIsKycSheetOpen(true)
+    }
   }
 
   return (

@@ -1,13 +1,22 @@
-import { AUTH, API, WALLETS, USER } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
+
+const getAuthHeader = () => ({
+  "Content-Type": "application/json",
+  "X-Branch": "master",
+  "X-Data-Source": "live",
+})
 
 export async function fetchTransactions() {
-  const url = `${API.coreUrl}${API.endpoints.walletsTransactions}?wallet_id=${WALLETS.defaultParams.wallet_id}`
+  const userData = useUserDataStore.getState().userData
+  const walletId = userData?.balances?.find((b) => b.currency === "USD")?.wallet_id
+
+  const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
 
   return fetch(url, {
     method: "GET",
     credentials: "include",
     headers: {
-      ...AUTH.getAuthHeader(),
+      ...getAuthHeader(),
     },
   })
     .then((res) => res.json())
@@ -21,13 +30,13 @@ export async function fetchTransactions() {
 }
 
 export async function fetchWalletsList() {
-  const url = `${API.coreUrl}/wallets`
+  const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets`
 
   return fetch(url, {
     method: "GET",
     credentials: "include",
     headers: {
-      ...AUTH.getAuthHeader(),
+      ...getAuthHeader(),
     },
   })
     .then((res) => res.json())
@@ -42,8 +51,8 @@ export async function fetchWalletsList() {
 
 export async function getCurrencies(): Promise<any> {
   try {
-    const url = `${API.coreUrl}/core/business/config/currencies`
-    const headers = AUTH.getAuthHeader()
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`
+    const headers = getAuthHeader()
 
     const response = await fetch(url, {
       method: "POST",
@@ -67,8 +76,8 @@ export async function walletTransfer(params: {
   source_wallet_id: string
 }): Promise<any> {
   try {
-    const url = `${API.coreUrl}/wallets/transfers`
-    const headers = AUTH.getAuthHeader()
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transfers`
+    const headers = getAuthHeader()
 
     const response = await fetch(url, {
       method: "POST",
@@ -90,13 +99,13 @@ export async function walletTransfer(params: {
 
 export async function fetchBalance(selectedCurrency: string): Promise<number> {
   try {
-    const userId = USER.id
-    const url = `${API.baseUrl}/users/${userId}`
+    const userId = useUserDataStore.getState().userId
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
 
     const response = await fetch(url, {
       credentials: "include",
       headers: {
-        ...AUTH.getAuthHeader(),
+        ...getAuthHeader(),
         accept: "application/json",
       },
     })

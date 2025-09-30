@@ -2,11 +2,25 @@
 
 import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
-import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useUserDataStore } from "@/stores/user-data-store"
 import Image from "next/image"
 import "../../styles/globals.css"
+
+const API = {
+  notificationUrl: process.env.NEXT_PUBLIC_NOTIFICATION_URL,
+}
+
+const AUTH = {
+  getNotificationHeader: () => ({
+    "Content-Type": "application/json",
+  }),
+}
+
+const NOTIFICATIONS = {
+  applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
+}
 
 async function fetchSubscriberHash() {
   try {
@@ -38,13 +52,13 @@ export function NovuNotifications() {
   const [error, setError] = useState<string | null>(null)
   const [subscriberId, setSubscriberId] = useState<string | null>(null)
   const isMobile = useIsMobile()
-  const userIdFallback = USER.id || ""
+  const userId = useUserDataStore((state) => state.userId)
+  const userIdFallback = userId || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
 
   useEffect(() => {
     setMounted(true)
   }, [])
-  
 
   const appearance = {
     icons: {

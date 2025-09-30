@@ -4,19 +4,22 @@ import { useState, useEffect } from "react"
 import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
-import { API, AUTH } from "@/lib/local-variables"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
-  
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const url = `${API.baseUrl}/users/me`
-        const headers = AUTH.getAuthHeader()
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`
+        const headers = {
+          "Content-Type": "application/json",
+          "X-Branch": "master",
+          "X-Data-Source": "live",
+        }
 
         const response = await fetch(url, {
           credentials: "include",
@@ -29,13 +32,13 @@ export default function ProfilePage() {
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if(responseData.errors[0].status != 401){
+          if (responseData.errors[0].status != 401) {
             showWarningDialog({
               title: "Error",
               description: errorMessage,
             })
           }
-          
+
           return
         }
 
@@ -59,8 +62,14 @@ export default function ProfilePage() {
           setUserData(() => ({
             ...data,
             username: data.nickname,
-            rating: data.statistics_lifetime.rating_average !== null ? `${data.statistics_lifetime.rating_average}/5` : "Not rated yet",
-            recommendation: data.statistics_lifetime?.recommend_average !== null ? `Recommended by ${data.statistics_lifetime.recommend_count} traders` : "Not recommended yet",
+            rating:
+              data.statistics_lifetime.rating_average !== null
+                ? `${data.statistics_lifetime.rating_average}/5`
+                : "Not rated yet",
+            recommendation:
+              data.statistics_lifetime?.recommend_average !== null
+                ? `Recommended by ${data.statistics_lifetime.recommend_count} traders`
+                : "Not recommended yet",
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
             sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",

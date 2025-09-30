@@ -22,7 +22,7 @@ import {
 } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { USER } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
 import { ComplaintForm } from "@/components/complaint"
@@ -37,6 +37,7 @@ export default function OrderDetailsPage() {
   const isMobile = useIsMobile()
   const { toast } = useToast()
   const { setIsChatVisible } = useChatVisibilityStore()
+  const userId = useUserDataStore((state) => state.userId)
 
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -286,30 +287,30 @@ export default function OrderDetailsPage() {
   }
 
   const orderType =
-    order?.type === "buy" ? (order?.user.id == USER.id ? "Buy" : "Sell") : order?.user.id == USER.id ? "Sell" : "Buy"
-  const counterpartyNickname = order?.advert.user.id == USER.id ? order?.user?.nickname : order?.advert?.user?.nickname
+    order?.type === "buy" ? (order?.user.id == userId ? "Buy" : "Sell") : order?.user.id == userId ? "Sell" : "Buy"
+  const counterpartyNickname = order?.advert.user.id == userId ? order?.user?.nickname : order?.advert?.user?.nickname
   const counterpartyLabel =
     order?.type === "sell"
-      ? order?.advert.user.id == USER.id
+      ? order?.advert.user.id == userId
         ? "Seller"
         : "Buyer"
-      : order?.advert.user.id == USER.id
+      : order?.advert.user.id == userId
         ? "Buyer"
         : "Seller"
   const youPayReceiveLabel =
     order?.type === "buy"
-      ? order?.user.id == USER.id
+      ? order?.user.id == userId
         ? "You pay"
         : "You receive"
-      : order?.user.id == USER.id
+      : order?.user.id == userId
         ? "You receive"
         : "You pay"
   const complainType =
     order?.type === "sell"
-      ? order?.advert.user.id == USER.id
+      ? order?.advert.user.id == userId
         ? "buyer"
         : "seller"
-      : order?.advert.user.id == USER.id
+      : order?.advert.user.id == userId
         ? "seller"
         : "buyer"
 
@@ -454,8 +455,8 @@ export default function OrderDetailsPage() {
                   </div>
                 )}
 
-                {((order.type === "buy" && order.status === "pending_payment" && order.user.id == USER.id) ||
-                  (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == USER.id)) && (
+                {((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
+                  (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
                   <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
                     <Button
                       variant="outline"
@@ -471,10 +472,10 @@ export default function OrderDetailsPage() {
                 )}
                 {((order.type === "buy" &&
                   (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
-                  order.advert.user.id == USER.id) ||
+                  order.advert.user.id == userId) ||
                   (order.type === "sell" &&
                     (order.status === "pending_release" || order.status === "timed_out") &&
-                    order.user.id == USER.id)) && (
+                    order.user.id == userId)) && (
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
                     <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
                       {isConfirmLoading ? (

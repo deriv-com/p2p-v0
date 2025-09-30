@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { USER } from "@/lib/local-variables"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
 import MarketFilterDropdown from "@/components/market-filter/market-filter-dropdown"
@@ -21,6 +20,7 @@ import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
@@ -70,6 +70,7 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const { currencies } = useCurrencyData()
   const abortControllerRef = useRef<AbortController | null>(null)
+  const userId = useUserDataStore((state) => state.userId)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
 
@@ -453,7 +454,7 @@ export default function BuySellPage() {
                             </div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 text-right align-middle row-start-3 whitespace-nowrap">
-                            {USER.id != ad.user.id && (
+                            {userId != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
                                 size="sm"
