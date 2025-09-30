@@ -261,7 +261,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
             Number(advert.completed_order_amount || 0),
           currency: accountCurrency,
         },
-        paymentMethods: advert.payment_method_names || [],
+        paymentMethods: advert.payment_methods || [],
         status: status,
         description: advert.description || "",
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
