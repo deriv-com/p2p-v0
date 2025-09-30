@@ -1,4 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 // Define the Advertisement interface directly in this file
 export interface Advertisement {
@@ -53,18 +54,18 @@ export interface PaymentMethod {
  */
 export async function getAdvertisements(params?: SearchParams): Promise<Advertisement[]> {
   try {
-   const queryParams = new URLSearchParams()
+    const queryParams = new URLSearchParams()
     if (params) {
       if (params.type) queryParams.append("advert_type", params.type)
       if (params.currency) queryParams.append("payment_currency", params.currency)
       if (params.account_currency) queryParams.append("account_currency", params.account_currency)
       if (params.paymentMethod) {
         if (params.paymentMethod.length === 0) {
-          queryParams.append('payment_methods', JSON.stringify([]));
+          queryParams.append("payment_methods", JSON.stringify([]))
         } else {
-          params.paymentMethod.forEach(method => {
-            queryParams.append('payment_methods[]', method);
-          });
+          params.paymentMethod.forEach((method) => {
+            queryParams.append("payment_methods[]", method)
+          })
         }
       }
       if (params.amount) queryParams.append("amount", params.amount.toString())
@@ -73,16 +74,16 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
     }
 
-    const country_code = localStorage.getItem("residence_country")
+    const country_code = useUserDataStore.getState().residenceCountry
     if (country_code) queryParams.append("country_code", country_code)
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
-   
+
     const url = `${API.baseUrl}${API.endpoints.ads}${queryString}`
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-          credentials: "include" 
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -108,7 +109,7 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       return []
     }
   } catch (error) {
-    console.log(error);
+    console.log(error)
     return []
   }
 }
@@ -123,7 +124,7 @@ export async function getAdvertiserById(id: string | number): Promise<any> {
     const headers = AUTH.getAuthHeader()
     const response = await fetch(url, {
       headers,
-      credentials: "include" 
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -247,7 +248,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
 
     const response = await fetch(url, {
       headers,
-       credentials: "include" 
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -258,7 +259,7 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
     let data
 
     try {
-      data = JSON.parse(responseText)
+      data = responseText ? JSON.parse(responseText) : {}
     } catch (e) {
       data = { data: [] }
     }
@@ -280,7 +281,9 @@ export async function toggleFavouriteAdvertiser(
   isFavourite: boolean,
 ): Promise<{ success: boolean; message: string }> {
   try {
-    const url = isFavourite ? `${API.baseUrl}${API.endpoints.userFavourites}` : `${API.baseUrl}${API.endpoints.userFavourites}/${advertiserId}`
+    const url = isFavourite
+      ? `${API.baseUrl}${API.endpoints.userFavourites}`
+      : `${API.baseUrl}${API.endpoints.userFavourites}/${advertiserId}`
     const method = isFavourite ? "POST" : "DELETE"
 
     const headers = {
@@ -296,7 +299,7 @@ export async function toggleFavouriteAdvertiser(
 
     const response = await fetch(url, {
       method,
-     credentials: "include",
+      credentials: "include",
       headers,
       ...(isFavourite && { body }),
     })
@@ -356,7 +359,7 @@ export async function toggleBlockAdvertiser(
 
     const response = await fetch(url, {
       method,
-credentials: "include",
+      credentials: "include",
       headers,
       body,
     })
@@ -401,7 +404,7 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
 
     const response = await fetch(url, {
       headers,
-credentials: "include" 
+      credentials: "include",
     })
 
     if (!response.ok) {
@@ -422,10 +425,8 @@ credentials: "include"
       return data.data
     } else if (Array.isArray(data)) {
       return data
-    } else
-      return []
-  }
-  catch (error) {
+    } else return []
+  } catch (error) {
     // Return empty array on error to prevent map errors
     return []
   }

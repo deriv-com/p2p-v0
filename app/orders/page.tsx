@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
-import { USER } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
@@ -52,6 +52,7 @@ export default function OrdersPage() {
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
+  const { userData, userId } = useUserDataStore()
 
   useEffect(() => {
     fetchOrders()
@@ -60,14 +61,10 @@ export default function OrdersPage() {
 
   const checkUserSignupStatus = () => {
     try {
-      if (typeof window !== "undefined") {
-        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+      const userDataFromStore = userData
 
-        if(userData?.signup === "v1")
-          setShowCheckPreviousOrdersButton(true)
-        else      
-          setShowCheckPreviousOrdersButton(false)
-      }
+      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
+      else setShowCheckPreviousOrdersButton(false)
     } catch (error) {
       console.log(error)
       setShowCheckPreviousOrdersButton(false)
@@ -170,20 +167,20 @@ export default function OrdersPage() {
 
   const getOrderType = (order) => {
     if (order.type === "buy") {
-      if (order.user.id == USER.id) return <span className="text-secondary text-base">Buy</span>
+      if (order.user.id == userId) return <span className="text-secondary text-base">Buy</span>
       else return <span className="text-destructive text-base">Sell</span>
     } else {
-      if (order.user.id == USER.id) return <span className="text-destructive text-base">Sell</span>
+      if (order.user.id == userId) return <span className="text-destructive text-base">Sell</span>
       else return <span className="text-secondary text-base">Buy</span>
     }
   }
 
   const getRecommendLabel = () => {
     if (selectedOrder?.type === "sell") {
-      if (selectedOrder?.advert.user.id == USER.id) return "seller"
+      if (selectedOrder?.advert.user.id == userId) return "seller"
       return "buyer"
     } else {
-      if (selectedOrder?.advert.user.id == USER.id) return "buyer"
+      if (selectedOrder?.advert.user.id == userId) return "buyer"
       return "seller"
     }
   }
@@ -191,10 +188,10 @@ export default function OrdersPage() {
   const getPayReceiveLabel = (order) => {
     let label = ""
     if (order.type === "buy") {
-      if (order.user.id == USER.id) label = "You pay: "
+      if (order.user.id == userId) label = "You pay: "
       else label = "You receive: "
     } else {
-      if (order.user.id == USER.id) label = "You receive: "
+      if (order.user.id == userId) label = "You receive: "
       else label = "You pay: "
     }
 
@@ -282,7 +279,7 @@ export default function OrdersPage() {
                 <TableCell className="px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     <div className="text-xs">
-                      {order.advert.user.id == USER.id ? order.user.nickname : order.advert.user.nickname}
+                      {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
                     </div>
                     <div className="flex items-center gap-2">
                       <Button
@@ -308,7 +305,7 @@ export default function OrdersPage() {
 
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =
-      selectedOrder?.advert.user.id == USER.id ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
+      selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
     const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
     const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
 

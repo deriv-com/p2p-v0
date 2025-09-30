@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 import { Button } from "@/components/ui/button"
-import { USER, WALLETS } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface IframeResponse {
   status: string
@@ -29,6 +29,8 @@ export default function FullScreenIframeModal({
   currency = "USD",
 }: FullScreenIframeModalProps) {
   const router = useRouter()
+  const userData = useUserDataStore((state) => state.userData)
+  const walletId = userData?.wallet_id
   const [iframeUrl, setIframeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [iframeLoaded, setIframeLoaded] = useState<boolean>(false)
@@ -49,10 +51,14 @@ export default function FullScreenIframeModal({
       setError(null)
 
       try {
-        const response = await fetch(`${WALLETS.cashierUrl}?wallet_id=${USER.wallet_id}&operation=DEPOSIT&currency=USD`, {
-          method: "GET",
-          credentials: "include"
-        })
+        const cashierUrl = process.env.NEXT_PUBLIC_CASHIER_URL
+        const response = await fetch(
+          `${cashierUrl}?wallet_id=${walletId}&operation=${operation}&currency=${currency}`,
+          {
+            method: "GET",
+            credentials: "include",
+          },
+        )
 
         if (!response.ok) {
           const errorText = await response.text()
@@ -74,7 +80,7 @@ export default function FullScreenIframeModal({
     }
 
     fetchIframeUrl()
-  }, [isOpen, operation, currency])
+  }, [isOpen, operation, currency, walletId])
 
   const handleIframeLoad = () => {
     setIframeLoaded(true)

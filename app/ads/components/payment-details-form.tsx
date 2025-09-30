@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import PaymentMethodBottomSheet from "./payment-method-bottom-sheet"
 import { Button } from "@/components/ui/button"
-import { API, AUTH } from "@/lib/local-variables"
 import AdPaymentMethods from "./ad-payment-methods"
 
 interface PaymentMethod {
@@ -44,8 +43,12 @@ export default function PaymentDetailsForm({
   useEffect(() => {
     const fetchPaymentMethods = async () => {
       try {
-        const headers = AUTH.getAuthHeader()
-        const response = await fetch(`${API.baseUrl}${API.endpoints.availablePaymentMethods}`, {
+        const headers = {
+          "Content-Type": "application/json",
+          "X-Branch": "master",
+          "X-Data-Source": "live",
+        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/available-payment-methods`, {
           headers,
           credentials: "include",
         })
@@ -92,8 +95,6 @@ export default function PaymentDetailsForm({
       payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
-
-    setFormData(formData)
 
     if (formValid) {
       onSubmit(formData)

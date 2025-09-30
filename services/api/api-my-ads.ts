@@ -1,4 +1,5 @@
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface APIAdvert {
   id: number
@@ -132,7 +133,7 @@ export async function toggleAdStatus(id: string, isActive: boolean, currentAd: M
 
 export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
   try {
-    const url = `${API.baseUrl}/users/${USER.id}`
+    const url = `${API.baseUrl}/users/${useUserDataStore.getState().userId}`
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
@@ -191,7 +192,7 @@ export async function getCurrencies(): Promise<string[]> {
 
 export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
   try {
-    const userId = USER.id
+    const userId = useUserDataStore.getState().userId
 
     const queryParams = new URLSearchParams({
       user_id: userId.toString(),

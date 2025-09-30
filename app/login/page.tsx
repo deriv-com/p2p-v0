@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as AuthAPI from "@/services/api/api-auth"
 import Image from "next/image"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export default function LoginPage() {
   const [step, setStep] = useState<"login" | "verification">("login")
@@ -63,7 +64,7 @@ export default function LoginPage() {
         if (response.access_token) localStorage.setItem("auth_token", response.access_token)
 
         if (response.user?.id) {
-          localStorage.setItem("client_id", response.user.id)
+          useUserDataStore.getState().setClientId(response.user.id)
         }
 
         await AuthAPI.fetchUserIdAndStore()

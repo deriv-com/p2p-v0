@@ -10,7 +10,7 @@ import FullScreenIframeModal from "./full-screen-iframe-modal"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
 
@@ -27,6 +27,7 @@ interface Currency {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 
 export default function WalletBalance({ className }: WalletBalanceProps) {
+  const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -56,13 +57,14 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     try {
       setIsRefreshing(true)
 
-      const userId = USER.id
-      const url = `${API.baseUrl}/users/${userId}`
+      const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
 
       const response = await fetch(url, {
         credentials: "include",
         headers: {
-          ...AUTH.getAuthHeader(),
+          "Content-Type": "application/json",
+          "X-Branch": "master",
+          "X-Data-Source": "live",
           accept: "application/json",
         },
       })
@@ -134,13 +136,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
     <TooltipProvider>
       <div className={cn("flex flex-col items-center justify-center py-8", className)}>
         <div className="mb-6 h-14 w-14">
-          <Image
-            src="/icons/p2p-logo.png"
-            alt="P2P Logo"
-            width={56}
-            height={56}
-            className="rounded-full"
-          />
+          <Image src="/icons/p2p-logo.png" alt="P2P Logo" width={56} height={56} className="rounded-full" />
         </div>
 
         <div className="flex items-center justify-center gap-2">

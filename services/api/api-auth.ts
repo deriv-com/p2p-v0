@@ -1,4 +1,4 @@
-import { API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface LoginRequest {
   email: string
@@ -24,12 +24,18 @@ export interface VerificationResponse {
   }
 }
 
+const getAuthHeader = () => ({
+  "Content-Type": "application/json",
+  "X-Branch": "master",
+  "X-Data-Source": "live",
+})
+
 /**
  * Initiate login with email
  */
 export async function login(email: LoginRequest): Promise<LoginResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/login`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/login`, {
       method: "POST",
       body: JSON.stringify(email),
     })
@@ -53,7 +59,7 @@ export async function login(email: LoginRequest): Promise<LoginResponse> {
  */
 export async function verifyCode(verificationData: VerificationRequest): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/verify`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/verify`, {
       method: "POST",
       headers: {
         "X-Enable-Session": "true",
@@ -81,7 +87,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  */
 export async function getSession(): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${API.coreUrl}/session`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/session`, {
       method: "GET",
       credentials: "include",
     })
@@ -107,7 +113,7 @@ export async function getSession(): Promise<VerificationResponse> {
  */
 export async function logout(): Promise<void> {
   try {
-    const response = await fetch(`${API.coreUrl}/logout`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/logout`, {
       method: "POST",
       credentials: "include",
     })
@@ -116,12 +122,10 @@ export async function logout(): Promise<void> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
+    useUserDataStore.getState().clearUserData()
+
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")
-    localStorage.removeItem("user_data")
-    localStorage.removeItem("user_id")
-    localStorage.removeItem("client_id")
-    localStorage.removeItem("residence_country")
     window.location.href = "/"
   } catch (error) {
     console.error(error)
@@ -130,40 +134,33 @@ export async function logout(): Promise<void> {
 }
 
 /**
- * Validate email format
- */
-export function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return emailRegex.test(email)
-}
-
-/**
  * Fetch user data and store user_id in localStorage
  */
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
-    const response = await fetch(`${API.baseUrl}/users/me`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
-      headers: AUTH.getAuthHeader(),
+      headers: getAuthHeader(),
     })
 
     const result = await response.json()
     if (!response.ok) {
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
-   
+
     const userId = result?.data?.id
     if (userId) {
-      localStorage.setItem("user_id", userId.toString())
+      useUserDataStore.getState().setUserId(userId.toString())
 
-      const userData = JSON.parse(localStorage.getItem("user_data"))
-      if(userData) {
-        userData.adverts_are_listed = result.data.adverts_are_listed,
-        userData.signup = result.data.signup
-        userData.wallet_id = result.data.wallet_id
-        localStorage.setItem("user_data", JSON.stringify(userData))
+      const { userData } = useUserDataStore.getState()
+      if (userData) {
+        useUserDataStore.getState().updateUserData({
+          adverts_are_listed: result.data.adverts_are_listed,
+          signup: result.data.signup,
+          wallet_id: result.data.wallet_id,
+        })
       }
     }
   } catch (error) {
@@ -173,7 +170,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-    const response = await fetch(`${API.coreUrl}/client/profile`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
       method: "GET",
       credentials: "include",
     })
@@ -185,17 +182,19 @@ export async function getClientProfile(): Promise<void> {
     const result = await response.json()
     const { data } = result
 
-    localStorage.setItem("user_data", JSON.stringify({
+    const userData = {
       adverts_are_listed: true,
       email: data.email,
       first_name: data.first_name,
       last_name: data.last_name,
-      nickname: data.nickname
-    }))
-    if (data.residence) {
-      localStorage.setItem("residence_country", data.residence)
+      nickname: data.nickname,
     }
-    
+
+    useUserDataStore.getState().setUserData(userData)
+
+    if (data.residence) {
+      useUserDataStore.getState().setResidenceCountry(data.residence)
+    }
   } catch (error) {
     console.error("Error fetching profile:", error)
   }
@@ -206,12 +205,12 @@ export async function getClientProfile(): Promise<void> {
  */
 export async function getSocketToken(token: string): Promise<void> {
   try {
-    const response = await fetch(`${API.baseUrl}/user-websocket-token`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-websocket-token`, {
       method: "GET",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
-        ...AUTH.getAuthHeader(),
+        ...getAuthHeader(),
       },
     })
 
@@ -240,10 +239,10 @@ export interface KycStatusResponse {
  */
 export async function getKycStatus(): Promise<KycStatusResponse[]> {
   try {
-    const response = await fetch(`${API.coreUrl}/client/kyc-status`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/kyc-status`, {
       method: "GET",
       credentials: "include",
-      headers: AUTH.getAuthHeader(),
+      headers: getAuthHeader(),
     })
 
     if (!response.ok) {
