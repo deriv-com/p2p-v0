@@ -24,7 +24,7 @@ export default function WithdrawOptions({
   selectedCurrency,
 }: WithdrawOptionProps) {
   const router = useRouter()
-  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
+
 
   const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
