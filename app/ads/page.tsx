@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { AdsAPI } from "@/services/api"
@@ -30,14 +30,14 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData } = useUserDataStore()
-  console.log(userData)
-  const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
+  const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
     title: "Error",
     message: "",
   })
   const { showAlert } = useAlertDialog()
+  const hasFetchedRef = useRef(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -50,8 +50,7 @@ export default function AdsPage() {
 
       setAds(userAdverts)
     } catch (err) {
-      console.error("Error fetching ads:", err)
-      setError("Failed to load ads. Please try again later.")
+      setError("Failed to load ads. Please try again.")
       setAds([])
       setErrorModal({
         show: true,
@@ -64,20 +63,25 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
+    if (!hasFetchedRef.current) {
+      fetchAds()
+      setHiddenAdverts(!userData?.adverts_are_listed)
+      hasFetchedRef.current = true
+    }
+  }, [userData?.adverts_are_listed])
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (
-      success &&
-      type &&
-      id &&
-      showStatusModal === "true" &&
-      (success === "create" || success === "update") &&
-      !isMobile
-    ) {
+    if (!success || !type || !id || showStatusModal !== "true") {
+      return
+    }
+
+    if ((success === "create" || success === "update") && !isMobile) {
       const adTypeDisplay = type.toUpperCase()
       const createDescription = `You've successfully created Ad (${adTypeDisplay} ${id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
       const updateDescription = `You've successfully updated Ad (${adTypeDisplay} ${id}).\n\nYour changes have been saved and are now live.`
@@ -90,28 +94,20 @@ export default function AdsPage() {
       })
     }
 
-    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
+    if (success === "create" || success === "update") {
       setStatusData({
         success,
         type,
         id,
         showStatusModal: true,
       })
-    }
 
-    fetchAds()
+      fetchAds()
+    }
   }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
-    const reload = async () => {
-      try {
-        const userAdverts = await AdsAPI.getUserAdverts(true)
-        setAds(userAdverts)
-      } catch (err) {
-        console.error("Error reloading ads:", err)
-      }
-    }
-    reload()
+    fetchAds()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
@@ -167,7 +163,7 @@ export default function AdsPage() {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>Hidden ads won't appear on the Market page.</p>
+              <p>{"Hidden ads won't appear on the Market page."}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -183,13 +179,17 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-          <div className="flex items-center justify-between my-6 md:mb-6">
+          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-0 md:m-0">
+            Active ads
+          </div>
+          <div className="flex items-center justify-between my-6">
             {ads.length > 0 && (
               <Button
                 onClick={() => router.push("/ads/create")}
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center"
               >
+                <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
                 Create ads
               </Button>
             )}

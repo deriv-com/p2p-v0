@@ -1,4 +1,4 @@
-import { USER, API, AUTH } from "@/lib/local-variables"
+import { API, AUTH } from "@/lib/local-variables"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface APIAdvert {
@@ -49,6 +49,7 @@ export interface MyAd {
   status: "Active" | "Inactive"
   createdAt: string
   updatedAt: string
+  account_currency?: string
 }
 
 export interface AdFilters {
@@ -233,6 +234,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       const maxAmount = advert.maximum_order_amount || 0
       const exchangeRate = advert.exchange_rate || 0
       const currency = advert.payment_currency || "USD"
+      const accountCurrency = advert.account_currency
       const isActive = advert.is_active !== undefined ? advert.is_active : true
       const availableAmount = advert.available_amount || 0
 
@@ -249,7 +251,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         limits: {
           min: minAmount,
           max: maxAmount,
-          currency: "USD",
+          currency: accountCurrency,
         },
         available: {
           current: availableAmount,
@@ -257,13 +259,14 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
             Number(availableAmount || 0) +
             Number(advert.open_order_amount || 0) +
             Number(advert.completed_order_amount || 0),
-          currency: "USD",
+          currency: accountCurrency,
         },
         paymentMethods: advert.payment_methods || [],
         status: status,
         description: advert.description || "",
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
+        account_currency: accountCurrency,
       }
     })
   } catch (error) {
