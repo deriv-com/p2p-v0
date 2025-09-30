@@ -53,11 +53,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const renderDesktopContent = () => (
     <div className="px-8 py-6">
       <div className="flex justify-end">
-        <Button onClick={hideAlert} size="sm" variant="ghost">
+        {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
+        <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
           <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="size-5" />
         </Button>
       </div>
-      {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
       {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
       <div className="flex flex-col gap-2 mt-6">
         {config.cancelText && (
