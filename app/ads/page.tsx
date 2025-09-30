@@ -64,7 +64,7 @@ export default function AdsPage() {
   useEffect(() => {
     fetchAds()
     setHiddenAdverts(!userData?.adverts_are_listed)
-  }, [])
+  }, [userData])
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -179,7 +179,7 @@ export default function AdsPage() {
     )
   }
 
-  if (loading) {
+  if (!userData) {
     return (
       <div className="flex flex-col items-center justify-center h-screen bg-white">
         <div className="flex flex-col items-center gap-4">
