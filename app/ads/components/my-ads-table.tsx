@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { Drawer, DrawerContent, DrawerClose } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import EmptyState from "@/components/empty-state"
@@ -15,6 +16,7 @@ import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -27,11 +29,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const router = useRouter()
   const { toast } = useToast()
   const { showAlert } = useAlertDialog()
+  const isMobile = useIsMobile()
   const [isDeleting, setIsDeleting] = useState(false)
   const [deleteConfirmModal, setDeleteConfirmModal] = useState({
     show: false,
     adId: "",
   })
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -100,10 +105,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   const handleEdit = (ad: Ad) => {
+    setDrawerOpen(false)
     router.push(`/ads/edit/${ad.id}`)
   }
 
   const handleToggleStatus = async (ad: Ad) => {
+    setDrawerOpen(false)
     try {
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
@@ -128,10 +135,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   const handleDelete = (adId: string) => {
+    setDrawerOpen(false)
     setDeleteConfirmModal({
       show: true,
       adId: adId,
     })
+  }
+
+  const handleOpenDrawer = (ad: Ad) => {
+    setSelectedAd(ad)
+    setDrawerOpen(true)
   }
 
   const confirmDelete = async () => {
@@ -278,40 +291,57 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {getStatusBadge(isActive)}
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                        >
-                          <Image
-                            src="/icons/ellipsis-vertical-md.png"
-                            alt="More options"
-                            width={20}
-                            height={20}
-                            className="text-gray-500"
-                          />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[160px]">
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleEdit(ad)}>
-                          <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
-                          Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleToggleStatus(ad)}>
-                          <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
-                          {isActive ? "Deactivate" : "Activate"}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2 text-red-600"
-                          onSelect={() => handleDelete(ad.id)}
-                        >
-                          <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
-                          <span className="text-red-600">Delete</span>
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    {isMobile ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                        onClick={() => handleOpenDrawer(ad)}
+                      >
+                        <Image
+                          src="/icons/ellipsis-vertical-md.png"
+                          alt="More options"
+                          width={20}
+                          height={20}
+                          className="text-gray-500"
+                        />
+                      </Button>
+                    ) : (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          >
+                            <Image
+                              src="/icons/ellipsis-vertical-md.png"
+                              alt="More options"
+                              width={20}
+                              height={20}
+                              className="text-gray-500"
+                            />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-[160px]">
+                          <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleEdit(ad)}>
+                            <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
+                            Edit
+                          </DropdownMenuItem>
+                          <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleToggleStatus(ad)}>
+                            <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
+                            {isActive ? "Deactivate" : "Activate"}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-red-600"
+                            onSelect={() => handleDelete(ad.id)}
+                          >
+                            <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
+                            <span className="text-red-600">Delete</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
                   </TableCell>
                 </TableRow>
               )
@@ -319,6 +349,47 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           </TableBody>
         </Table>
       </div>
+
+      <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
+        <DrawerContent>
+          <div className="flex flex-col">
+            <button
+              className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
+              onClick={() => selectedAd && handleEdit(selectedAd)}
+            >
+              <Image src="/icons/pencil.png" alt="Edit" width={20} height={20} />
+              <span className="text-base font-normal text-gray-900">Edit</span>
+            </button>
+            <button
+              className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
+              onClick={() => selectedAd && handleToggleStatus(selectedAd)}
+            >
+              <Image src="/icons/deactivate.png" alt="Toggle status" width={20} height={20} />
+              <span className="text-base font-normal text-gray-900">
+                {selectedAd?.is_active !== undefined
+                  ? selectedAd.is_active
+                    ? "Deactivate"
+                    : "Activate"
+                  : selectedAd?.status === "Active"
+                    ? "Deactivate"
+                    : "Activate"}
+              </span>
+            </button>
+            <button
+              className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
+              onClick={() => selectedAd && handleDelete(selectedAd.id)}
+            >
+              <Image src="/icons/trash-red.png" alt="Delete" width={20} height={20} />
+              <span className="text-base font-normal text-red-600">Delete</span>
+            </button>
+            <DrawerClose asChild>
+              <button className="flex items-center justify-center px-6 py-4 mt-2 border-t hover:bg-gray-50 active:bg-gray-100 transition-colors">
+                <span className="text-base font-medium text-gray-900">Cancel</span>
+              </button>
+            </DrawerClose>
+          </div>
+        </DrawerContent>
+      </Drawer>
 
       <DeleteConfirmationDialog
         open={deleteConfirmModal.show}
