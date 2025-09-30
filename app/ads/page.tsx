@@ -196,7 +196,7 @@ export default function AdsPage() {
         )}
         <div className="flex-none container mx-auto">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
-          <div className="flex items-center justify-between my-6 md:mt-0">
+          <div className="flex items-center justify-between my-6">
             {ads.length > 0 && (
               <Button
                 onClick={() => router.push("/ads/create")}
