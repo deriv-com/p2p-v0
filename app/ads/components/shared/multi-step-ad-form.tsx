@@ -484,10 +484,24 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
 
                 <div className="w-full md:w-[70%]">
                   <h3 className="text-base font-bold mb-2">Choose your audience</h3>
-                  <p className="text-sm text-neutral-7 mb-4">
-                    You can filter who interacts with your ads based on their location or P2P history. Stricter filters
-                    may reduce ad visibility.
-                  </p>
+                  <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Image
+                            src="/icons/info-circle.png"
+                            alt="Info"
+                            width={12}
+                            height={12}
+                            className="ml-1 cursor-pointer"
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="opacity-[0.72]">You can filter who interacts with your ads based on their location or P2P history. Stricter filters
+                    may reduce ad visibility.</p>
+                          <TooltipArrow className="fill-black" />
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   <div>
                     <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
                   </div>
