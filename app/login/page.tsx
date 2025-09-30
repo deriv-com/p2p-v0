@@ -65,7 +65,6 @@ export default function LoginPage() {
 
         if (response.user?.id) {
           useUserDataStore.getState().setClientId(response.user.id)
-          localStorage.setItem("client_id", response.user.id)
         }
 
         await AuthAPI.fetchUserIdAndStore()

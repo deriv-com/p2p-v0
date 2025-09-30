@@ -62,8 +62,7 @@ export default function OrdersPage() {
 
   const checkUserSignupStatus = () => {
     try {
-      const userDataFromStore =
-        userData || (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data") || "{}") : {})
+      const userDataFromStore = userData
 
       if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
       else setShowCheckPreviousOrdersButton(false)

@@ -9,16 +9,13 @@ let CLIENT_ID = null
 if (typeof window !== "undefined") {
   USER_TOKEN = localStorage.getItem("auth_token") ?? ""
 
-  const storeData = useUserDataStore.getState().userData
-  USER_DATA = storeData || JSON.parse(localStorage.getItem("user_data") ?? "{}")
+  USER_DATA = useUserDataStore.getState().userData
 
-  const storeUserId = useUserDataStore.getState().userId
-  USER_ID = (storeUserId || localStorage.getItem("user_id")) ?? ""
+  USER_ID = useUserDataStore.getState().userId ?? ""
 
   SOCKET_TOKEN = localStorage.getItem("socket_token") ?? ""
 
-  const storeClientId = useUserDataStore.getState().clientId
-  CLIENT_ID = (storeClientId || localStorage.getItem("client_id")) ?? ""
+  CLIENT_ID = useUserDataStore.getState().clientId ?? ""
 }
 
 export const USER = {

@@ -119,12 +119,9 @@ export async function logout(): Promise<void> {
 
     useUserDataStore.getState().clearUserData()
 
+    // Keep auth and socket tokens in localStorage as they're not user data
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")
-    localStorage.removeItem("user_data")
-    localStorage.removeItem("user_id")
-    localStorage.removeItem("client_id")
-    localStorage.removeItem("residence_country")
     window.location.href = "/"
   } catch (error) {
     console.error(error)
@@ -152,7 +149,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const userId = result?.data?.id
     if (userId) {
       useUserDataStore.getState().setUserId(userId.toString())
-      localStorage.setItem("user_id", userId.toString())
 
       const { userData } = useUserDataStore.getState()
       if (userData) {
@@ -161,16 +157,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
           signup: result.data.signup,
           wallet_id: result.data.wallet_id,
         })
-
-        localStorage.setItem(
-          "user_data",
-          JSON.stringify({
-            ...userData,
-            adverts_are_listed: result.data.adverts_are_listed,
-            signup: result.data.signup,
-            wallet_id: result.data.wallet_id,
-          }),
-        )
       }
     }
   } catch (error) {
@@ -201,11 +187,9 @@ export async function getClientProfile(): Promise<void> {
     }
 
     useUserDataStore.getState().setUserData(userData)
-    localStorage.setItem("user_data", JSON.stringify(userData))
 
     if (data.residence) {
       useUserDataStore.getState().setResidenceCountry(data.residence)
-      localStorage.setItem("residence_country", data.residence)
     }
   } catch (error) {
     console.error("Error fetching profile:", error)

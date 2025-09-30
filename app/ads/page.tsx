@@ -31,8 +31,7 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData } = useUserDataStore()
-  const userDataFromStore =
-    userData || (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data") || "{}") : {})
+  const userDataFromStore = userData
   const [hiddenAdverts, setHiddenAdverts] = useState(!userDataFromStore?.adverts_are_listed)
   const [activeTab, setActiveTab] = useState<"active" | "inactive">("active")
   const [errorModal, setErrorModal] = useState({

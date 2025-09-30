@@ -1,4 +1,5 @@
 "use client"
+;("use client")
 
 import Link from "next/link"
 import Image from "next/image"
@@ -26,8 +27,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const checkUserSignupStatus = () => {
     try {
-      const userDataFromStore =
-        userData || (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data") || "{}") : {})
+      const userDataFromStore = userData
 
       if (userDataFromStore?.signup === "v1") {
         setShowWallet(false)
@@ -59,7 +59,7 @@ export default function Sidebar({ className }: SidebarProps) {
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
+        <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} height={64} />
         {USER.id && (
           <div className="hidden md:block text-slate-600 hover:text-slate-700">
             <NovuNotifications />
@@ -111,7 +111,7 @@ export default function Sidebar({ className }: SidebarProps) {
           <div className="text-xs text-slate-1400">{USER.email}</div>
         </div>
         <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
-          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} />
+          <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
         </Link>
       </div>
     </div>
