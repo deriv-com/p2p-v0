@@ -14,7 +14,6 @@ import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 interface StatusData {
