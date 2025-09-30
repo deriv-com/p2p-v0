@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { API, AUTH, USER, NOTIFICATIONS } from "@/lib/local-variables"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
-import Image from "next/imag
+import Image from "next/image"
 import "../../styles/globals.css"
 
 async function fetchSubscriberHash() {
@@ -44,6 +44,7 @@ export function NovuNotifications() {
   useEffect(() => {
     setMounted(true)
   }, [])
+  
 
   const appearance = {
     icons: {
