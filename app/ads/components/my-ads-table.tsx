@@ -105,22 +105,21 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleToggleStatus = async (ad: Ad) => {
     try {
-
       const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
       const isListed = !isActive
 
       const result = await AdsAPI.toggleAdActiveStatus(ad.id, isListed)
 
-      if(result.success) {
+      if (result.success) {
         if (onAdDeleted) {
           onAdDeleted()
         }
       } else {
         showAlert({
-            title: "Unable to update advert",
-            description: "There was an error when updating the advert. Please try again.",
-            confirmText: "OK",
-            type: "warning"
+          title: "Unable to update advert",
+          description: "There was an error when updating the advert. Please try again.",
+          confirmText: "OK",
+          type: "warning",
         })
       }
     } catch (error) {
@@ -140,7 +139,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       setIsDeleting(true)
       const result = await AdsAPI.deleteAd(deleteConfirmModal.adId)
 
-      if(result.success) {
+      if (result.success) {
         if (onAdDeleted) {
           onAdDeleted()
           toast({
@@ -157,14 +156,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       } else {
         let description = "There was an error when deleting the advert. Please try again."
 
-        if(result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
+        if (result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
           description = "The advert has ongoing orders."
-        } 
+        }
         showAlert({
-            title: "Unable to delete advert",
-            description,
-            confirmText: "OK",
-            type: "warning"
+          title: "Unable to delete advert",
+          description,
+          confirmText: "OK",
+          type: "warning",
         })
       }
 
@@ -180,14 +179,15 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     setDeleteConfirmModal({ show: false, adId: "" })
   }
 
-  if(isLoading) {
-
-       return (
-              <div className="text-center py-12">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-                <p className="mt-2 text-slate-600">Loading ads...</p>
-              </div>
-            )
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-24">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-solid border-slate-300 border-t-slate-900"></div>
+          <p className="text-base font-medium text-slate-600">Loading ads...</p>
+        </div>
+      </div>
+    )
   }
 
   if (ads.length === 0) {
@@ -206,20 +206,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                Ad type
-              </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                Available amount
-              </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                Payment methods
-              </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                Status
-              </TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Ad type</TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Available amount</TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Payment methods</TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Status</TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -231,7 +222,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
 
               return (
-                <TableRow key={index} className={cn("grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0", !isActive || hiddenAdverts ? "opacity-60" : "")}>
+                <TableRow
+                  key={index}
+                  className={cn(
+                    "grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0",
+                    !isActive || hiddenAdverts ? "opacity-60" : "",
+                  )}
+                >
                   <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 whitespace-nowrap">
                     <div>
                       <div className="mb-1 flex justify-between md:justify-normal ">
@@ -274,12 +271,20 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">{formatPaymentMethods(paymentMethods)}</TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">{getStatusBadge(isActive)}</TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">
+                    {formatPaymentMethods(paymentMethods)}
+                  </TableCell>
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                    {getStatusBadge(isActive)}
+                  </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="sm" className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                        >
                           <Image
                             src="/icons/ellipsis-vertical-md.png"
                             alt="More options"
@@ -294,10 +299,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                           <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
                           Edit
                         </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="flex items-center gap-2"
-                          onSelect={() => handleToggleStatus(ad)}
-                        >
+                        <DropdownMenuItem className="flex items-center gap-2" onSelect={() => handleToggleStatus(ad)}>
                           <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
                           {isActive ? "Deactivate" : "Activate"}
                         </DropdownMenuItem>

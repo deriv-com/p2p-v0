@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
@@ -13,7 +15,7 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 interface StatusData {
@@ -42,7 +44,7 @@ export default function AdsPage() {
   const router = useRouter()
 
   const fetchAds = async () => {
-    try{
+    try {
       setLoading(true)
       setError(null)
       const userAdverts = await AdsAPI.getUserAdverts(true)
@@ -179,13 +181,15 @@ export default function AdsPage() {
     )
   }
 
-  if(loading) {
+  if (loading) {
     return (
-        <div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading ads...</p>
+      <div className="flex flex-col items-center justify-center h-screen bg-white">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-4 border-solid border-slate-300 border-t-slate-900"></div>
+          <p className="text-base font-medium text-slate-600">Loading ads...</p>
         </div>
-      )
+      </div>
+    )
   }
 
   return (
