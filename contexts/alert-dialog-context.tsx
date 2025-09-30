@@ -94,11 +94,11 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       {children}
 
       {isMobile ? (
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetContent side="bottom" className="p-0 rounded-t-[32px]">
+        <Drawer open={isOpen} onOpenChange={setIsOpen}>
+          <DrawerContent side="bottom" className="p-0 rounded-t-[32px]">
             {renderMobileContent()}
-          </SheetContent>
-        </Sheet>
+          </DrawerContent>
+        </Drawer>
       ) : (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
           <AlertDialogTitle></AlertDialogTitle>
