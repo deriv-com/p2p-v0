@@ -40,7 +40,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
         onClick={() => onDelete(ad.id)}
       >
         <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
-        <span className="text-disputed-600">Delete</span>
+        <span className="text-disputed-icon">Delete</span>
       </Button>
     </>
   )
