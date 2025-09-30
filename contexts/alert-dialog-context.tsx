@@ -76,18 +76,6 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
   const renderMobileContent = () => (
     <>
-      {config.type === "success" || config.type === "warning" ? (
-        <div className="bg-gray-100 flex flex-col py-[24px] rounded-t-[32px]">
-          <div style={{ alignSelf: "center" }} className="mb-4 mt-6">
-            {config.type === "success" && (
-              <Image src="/icons/success-icon.png" alt="Success" width={56} height={56} className="size-14" />
-            )}
-            {config.type === "warning" && (
-              <Image src="/icons/warning-icon.png" alt="Warning" width={56} height={56} className="size-14" />
-            )}
-          </div>
-        </div>
-      ) : null}
       <div className="p-6">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         {config.description && <div className="mb-4 text-grayscale-100">{config.description}</div>}
