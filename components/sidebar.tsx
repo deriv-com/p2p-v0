@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { Avatar } from "@/components/ui/avatar"
 
 interface SidebarProps {
   className?: string
@@ -16,7 +17,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const [showWallet, setShowWallet] = useState(true)
   const { userData, userId } = useUserDataStore()
-  const userName = userData.nickname ?? USER.email
+  const userName = userData.nickname ?? userData.email
 
   useEffect(() => {
     checkUserSignupStatus()
