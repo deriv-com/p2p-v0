@@ -101,14 +101,13 @@ export default function AdsPage() {
       })
     }
 
-    fetchAds(false)
+    fetchAds()
   }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
     const reload = async () => {
       try {
-        const showInactive = activeTab === "inactive"
-        const userAdverts = await AdsAPI.getUserAdverts(showInactive)
+        const userAdverts = await AdsAPI.getUserAdverts()
         setAds(userAdverts)
       } catch (err) {
         console.error("Error reloading ads:", err)
