@@ -1,9 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { useIsMobile } from "@/hooks/use-mobile"
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { getHomeUrl } from "@/lib/utils"
 
 interface KycOnboardingSheetProps {
@@ -30,8 +28,6 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 )
 
 function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
-  const isMobile = useIsMobile()
-
   const handleProfileSetup = () => {
     setSheetOpen(false)
     window.location.href = `https://${getHomeUrl()}/dashboard/user-profile`
@@ -47,28 +43,17 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
     </div>
   )
 
-  if (isMobile) {
-    return (
-      <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
-        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
-          <div className="my-8">
-            <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
-          </div>
-          <OnboardingContent />
-        </DrawerContent>
-      </Drawer>
-    )
-  }
-
   return (
-    <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContent className="h-auto p-[16px]">
-        <div className="mb-4">
-          <h3 className="text-xl font-bold text-center">Get started with P2P</h3>
-        </div>
+    <AlertDialog open={isSheetOpen} onOpenChange={setSheetOpen}>
+      <AlertDialogContent className="max-w-md">
+        <AlertDialogHeader>
+          <AlertDialogTitle className="text-xl font-bold text-center text-slate-1200">
+            Get started with P2P
+          </AlertDialogTitle>
+        </AlertDialogHeader>
         <OnboardingContent />
-      </SheetContent>
-    </Sheet>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
 
