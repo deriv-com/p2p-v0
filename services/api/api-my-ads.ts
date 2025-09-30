@@ -234,7 +234,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       const maxAmount = advert.maximum_order_amount || 0
       const exchangeRate = advert.exchange_rate || 0
       const currency = advert.payment_currency || "USD"
-      const accountCurrency = advert.account_currenc
+      const accountCurrency = advert.account_currency
       const isActive = advert.is_active !== undefined ? advert.is_active : true
       const availableAmount = advert.available_amount || 0
 
