@@ -15,7 +15,7 @@ export default function WalletPage() {
           <WalletSummary />
         </div>
 
-        <div className="w-full mt-6 mx-4 md:mx-4 mt-6 px-0">
+        <div className="w-full mt-6 mx-4 md:mx-4 mt-6 px-4">
           {/* Tabs */}
           <div className="flex gap-0 h-10 bg-[#0000000A] rounded-lg p-1 mb-4 md:w-[358px] md:mb-6">
             <button
