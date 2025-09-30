@@ -3,8 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { USER } from "@/lib/local-variables"
-import { Avatar } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
@@ -17,9 +16,8 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const [showWallet, setShowWallet] = useState(true)
-  const userName = USER.nickname ?? USER.email
-  const { userData } = useUserDataStore()
-  console.log(userData)
+  const { userData, userId } = useUserDataStore()
+  const userName = userData?.nickname ?? userData?.email
 
   useEffect(() => {
     checkUserSignupStatus()
@@ -60,7 +58,7 @@ export default function Sidebar({ className }: SidebarProps) {
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} height={64} />
-        {USER.id && (
+        {userId && (
           <div className="hidden md:block text-slate-600 hover:text-slate-700">
             <NovuNotifications />
           </div>
@@ -103,12 +101,16 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
-          {userName?.charAt(0).toUpperCase()}
+        <Avatar className="h-8 w-8 bg-grayscale-500">
+          <AvatarFallback className="text-slate-1200 font-bold">{userName?.charAt(0).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <h2 className="text-sm font-bold text-slate-1400 mb-1">{`${USER.first_name} ${USER.last_name}`}</h2>
-          <div className="text-xs text-slate-1400">{USER.email}</div>
+          <h2 className="text-sm font-bold text-slate-1400 mb-1">
+            {userData?.first_name && userData?.last_name
+              ? `${userData.first_name} ${userData.last_name}`
+              : userData?.email || "User"}
+          </h2>
+          <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
         </div>
         <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
