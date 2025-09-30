@@ -430,7 +430,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
           <ProgressSteps
             currentStep={currentStep}
             steps={steps}
-            className="m-6"
+            className="px-6 my-6"
             title={{
                     label: getPageTitle(mode),
                     stepTitle: steps[currentStep].title,
