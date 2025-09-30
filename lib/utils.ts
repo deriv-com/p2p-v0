@@ -379,6 +379,8 @@ export const currencyLogoMapper = {
   tUSDT: "/icons/eusdt-logo.png",
   BNB: "/icons/bnb-logo.png",
   AED: "/icons/aed-logo.png",
+  USDT: "/icons/eusdt-logo.png",
+  TRX: "/icons/trx-logo.png",
 }
 
 export const getHomeUrl = () => {

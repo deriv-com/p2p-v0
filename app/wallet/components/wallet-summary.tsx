@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn, currencyLogoMapper } from "@/lib/utils"
@@ -8,6 +8,8 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
+import ChooseCurrencyStep from "./choose-currency-step"
+import WalletActionStep from "./wallet-action-step"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
@@ -18,6 +20,7 @@ interface Currency {
 }
 
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
+type WalletStep = "summary" | "chooseCurrency" | "walletAction"
 
 export default function WalletSummary() {
   const userId = useUserDataStore((state) => state.userId)
@@ -25,9 +28,10 @@ export default function WalletSummary() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
+  const [currentStep, setCurrentStep] = useState<WalletStep>("summary")
+  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [balance, setBalance] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
 
@@ -47,7 +51,7 @@ export default function WalletSummary() {
     }
   }
 
-  const loadBalance = async () => {
+  const loadBalance = useCallback(async () => {
     try {
       const balanceAmount = await fetchBalance(selectedCurrency)
       setBalance(balanceAmount)
@@ -56,17 +60,17 @@ export default function WalletSummary() {
       console.error("Error fetching user balance:", error)
       setIsLoading(false)
     }
-  }
+  }, [selectedCurrency])
 
   useEffect(() => {
     loadBalance()
     fetchCurrencies()
-  }, [selectedCurrency])
+  }, [loadBalance])
 
   const handleDepositClick = () => {
     if (userId) {
       setCurrentOperation("DEPOSIT")
-      setIsSidebarOpen(true)
+      setCurrentStep("chooseCurrency")
     } else {
       setIsKycSheetOpen(true)
     }
@@ -75,7 +79,7 @@ export default function WalletSummary() {
   const handleWithdrawClick = () => {
     if (userId) {
       setCurrentOperation("WITHDRAW")
-      setIsSidebarOpen(true)
+      setCurrentStep("chooseCurrency")
     } else {
       setIsKycSheetOpen(true)
     }
@@ -90,22 +94,33 @@ export default function WalletSummary() {
     }
   }
 
-  const handleDirectDepositClick = (currency: string) => {
-    setIsSidebarOpen(false)
+  const handleCurrencySelect = (currency: string) => {
     setSelectedCurrency(currency)
-    setCurrentOperation("DEPOSIT")
+    setCurrentStep("walletAction")
+  }
+
+  const handleClose = () => {
+    setCurrentStep("summary")
+    setIsSidebarOpen(false)
+    setIsIframeModalOpen(false)
+  }
+
+  const handleDirectDepositClick = () => {
+    setCurrentStep("summary")
     setIsIframeModalOpen(true)
   }
 
-  const handleDirectWithdrawClick = (currency: string) => {
-    setIsSidebarOpen(false)
-    setSelectedCurrency(currency)
-    setCurrentOperation("WITHDRAW")
+  const handleDirectWithdrawClick = () => {
+    setCurrentStep("summary")
     setIsIframeModalOpen(true)
   }
 
   const handleSendTransferClick = () => {}
   const handleReceiveTransferClick = () => {}
+
+  const handleGoBackToCurrency = () => {
+    setCurrentStep("chooseCurrency")
+  }
 
   return (
     <>
@@ -172,6 +187,35 @@ export default function WalletSummary() {
           </div>
         </div>
       </div>
+
+      {currentStep === "chooseCurrency" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <ChooseCurrencyStep
+            title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
+            description={
+              currentOperation === "DEPOSIT"
+                ? "Choose which currency you would like to deposit."
+                : "Choose which currency you would like to withdraw."
+            }
+            currencies={currencies}
+            onClose={handleClose}
+            onCurrencySelect={handleCurrencySelect}
+          />
+        </div>
+      )}
+
+      {currentStep === "walletAction" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <WalletActionStep
+            title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
+            actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
+            onClose={handleClose}
+            onGoBack={handleGoBackToCurrency}
+            onDirectDepositClick={handleDirectDepositClick}
+            onDirectWithdrawClick={handleDirectWithdrawClick}
+          />
+        </div>
+      )}
 
       <WalletSidebar
         isOpen={isSidebarOpen}

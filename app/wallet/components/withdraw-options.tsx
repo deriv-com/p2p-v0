@@ -3,131 +3,60 @@
 import type React from "react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
-import { cn } from "@/lib/utils"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface WithdrawOptionProps {
   onClose: () => void
-  onDirectWithdrawClick: (currency: string) => void
-  currencies: Currency[]
+  onDirectWithdrawClick: () => void
 }
 
-interface Currency {
-  code: string
-  name: string
-  logo: string
-}
-
-export default function WithdrawOptions({ onClose, onDirectWithdrawClick, currencies }: WithdrawOptionProps) {
+export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: WithdrawOptionProps) {
   const router = useRouter()
-  const [selectedCurrency, setSelectedCurrency] = useState("USD")
-
-  const selectedCurrencyData = currencies.find((c) => c.code === selectedCurrency) || currencies[0]
 
   const handleDirectWithdrawClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    onDirectWithdrawClick(selectedCurrency)
+    onDirectWithdrawClick()
   }
 
-  const handleMarketplaceClick = (e: React.MouseEvent) => {
+  const handleP2PTradingClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
     router.push("/")
   }
 
   return (
-    <>
-      <div className="mb-6">
-        <h2 className="text-base font-bold mb-4">Choose currency</h2>
-        <Select value={selectedCurrency} onValueChange={setSelectedCurrency}>
-          <SelectTrigger className="w-full h-14 rounded-xl border border-border">
-            {selectedCurrencyData ? (
-              <div className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-2xl overflow-hidden flex-shrink-0">
-                  {selectedCurrencyData.logo && (
-                    <Image
-                      src={selectedCurrencyData.logo }
-                      alt={selectedCurrencyData.name}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <SelectValue>
-                  <span className="text-base">{selectedCurrencyData.name}</span>
-                </SelectValue>
-              </div>
-            ) : (
-              <div></div>
-            )}
-          </SelectTrigger>
-          <SelectContent>
-            {currencies.map((currency) => (
-              <SelectItem key={currency.code} value={currency.code}>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                    {currency.logo && (
-                      <Image
-                        src={currency.logo }
-                        alt={currency.name}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    )}
-                  </div>
-                  <span>{currency.name}</span>
-                </div>
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div className="mb-2">
-        <h2 className="text-base font-bold">Withdraw with</h2>
-      </div>
-
-      <div className="space-y-3">
-        <div
-          className={cn(
-            "flex p-4 justify-center items-center gap-4 self-stretch",
-            "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
-          )}
-          onClick={handleMarketplaceClick}
-        >
-          <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/up-down-arrows.png" alt="Trade" width={48} height={48} />
-          </div>
-          <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">P2P Trading</h3>
-            <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              {`Trade ${selectedCurrencyData?.code} directly to other users on the P2P marketplace.`}
-            </p>
-          </div>
+    <div className="space-y-0 mt-6">
+      <div
+        className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-0 md:pl-6 py-4"
+        onClick={handleP2PTradingClick}
+      >
+        <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
+          <Image src="/icons/up-down-arrows.png" alt="Trade" width={24} height={24} />
         </div>
-
-        <div
-          className={cn(
-            "flex p-4 justify-center items-center gap-4 self-stretch",
-            "rounded-2xl bg-slate-75 cursor-pointer hover:bg-accent/80",
-          )}
-          onClick={handleDirectWithdrawClick}
-        >
-          <div className="flex-shrink-0 w-12 h-12 bg-slate-75 rounded-full flex items-center justify-center">
-            <Image src="/icons/bank-icon.png" alt="Bank" width={48} height={48} />
-          </div>
-          <div className="flex-1">
-            <h3 className="text-base font-bold text-black leading-6 mb-1">Direct withdrawal</h3>
-            <p className="text-muted-foreground text-sm font-normal leading-[22px]">
-              Withdraw funds directly to your bank account, e-wallet, or other payment methods.
-            </p>
-          </div>
+        <div className="flex-1">
+          <h3 className="text-base font-normal text-slate-1200 leading-6">Marketplace</h3>
+          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]  mr-6 md:mr-0">
+            {`Trade USD directly with other users on the marketplace.`}
+          </p>
+          <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>
       </div>
-    </>
+
+      <div
+        className="flex justify-center items-center gap-4 self-stretch cursor-pointer pl-0 md:pl-6 py-0"
+        onClick={handleDirectWithdrawClick}
+      >
+        <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
+          <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
+        </div>
+        <div className="flex-1">
+          <h3 className="text-base font-normal text-slate-1200 leading-6">Direct withdrawal</h3>
+          <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
+            Withdraw funds directly to your bank account, e-wallet, or other payment methods.
+          </p>
+          <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
+        </div>
+      </div>
+    </div>
   )
 }
