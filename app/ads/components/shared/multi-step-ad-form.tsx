@@ -432,14 +432,10 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
             currentStep={currentStep}
             steps={steps}
             className="mt-[40px]"
-            title={
-              isMobile
-                ? {
+            title={{
                     label: getPageTitle(mode, formData.type),
                     stepTitle: steps[currentStep].title,
-                  }
-                : undefined
-            }
+                }}
           />
 
           <div className="relative mb-16 md:mb-0 mx-6">
