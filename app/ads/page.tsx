@@ -1,7 +1,5 @@
 "use client"
 
-import { TooltipTrigger } from "@/components/ui/tooltip"
-
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
@@ -15,7 +13,7 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 interface StatusData {
