@@ -327,6 +327,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         <DropdownMenuContent align="end" className="w-[160px] p-1">
                           <AdActionsMenu
                             ad={ad}
+                            variant="dropdown"
                             onEdit={handleEdit}
                             onToggleStatus={handleToggleStatus}
                             onDelete={handleDelete}
@@ -348,6 +349,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             {selectedAd && (
               <AdActionsMenu
                 ad={selectedAd}
+                variant="drawer"
                 onEdit={handleEdit}
                 onToggleStatus={handleToggleStatus}
                 onDelete={handleDelete}
