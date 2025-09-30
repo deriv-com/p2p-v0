@@ -17,6 +17,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
     <>
       <Button
         variant="ghost"
+        className="hover:bg-transparent"
         onClick={() => onEdit(ad)}
       >
         <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
