@@ -35,11 +35,12 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
       </Button>
       <Button
         variant="ghost"
+        size="sm"
         className="hover:bg-transparent font-normal px-0 justify-start"
         onClick={() => onDelete(ad.id)}
       >
         <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
-        <span className="text-red-600">Delete</span>
+        <span className="text-disputed-600">Delete</span>
       </Button>
     </>
   )
