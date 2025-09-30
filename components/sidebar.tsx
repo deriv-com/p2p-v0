@@ -19,6 +19,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const [showWallet, setShowWallet] = useState(true)
   const userName = USER.nickname ?? USER.email
   const { userData } = useUserDataStore()
+  console.log(userData)
 
   useEffect(() => {
     checkUserSignupStatus()
