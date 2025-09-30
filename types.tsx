@@ -21,4 +21,13 @@ export interface Ad {
   paymentMethods: string[]
   status: "Active" | "Inactive"
   description: string
+  account_currency?: string
+  available_amount?: number
+  open_order_amount?: number
+  completed_order_amount?: number
+  minimum_order_amount?: number
+  actual_maximum_order_amount?: number
+  exchange_rate?: number
+  payment_methods?: string[]
+  is_active?: boolean
 }
