@@ -1,7 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { useEffect } from "react"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getHomeUrl } from "@/lib/utils"
 
 interface KycOnboardingSheetProps {
@@ -28,33 +29,37 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 )
 
 function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
+  const { showAlert, hideAlert } = useAlertDialog()
+
   const handleProfileSetup = () => {
+    hideAlert()
     setSheetOpen(false)
     window.location.href = `https://${getHomeUrl()}/dashboard/user-profile`
   }
 
-  const OnboardingContent = () => (
-    <div className="space-y-4 mb-6 mt-2">
-      <OnboardingStep
-        icon="/icons/account-profile.png"
-        title="Set up and verify your profile"
-        onClick={handleProfileSetup}
-      />
-    </div>
-  )
+  useEffect(() => {
+    if (isSheetOpen) {
+      showAlert({
+        title: "Get started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <OnboardingStep
+              icon="/icons/account-profile.png"
+              title="Set up and verify your profile"
+              onClick={handleProfileSetup}
+            />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onCancel: () => setSheetOpen(false),
+      })
+    } else {
+      hideAlert()
+    }
+  }, [isSheetOpen])
 
-  return (
-    <AlertDialog open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <AlertDialogContent className="max-w-md">
-        <AlertDialogHeader>
-          <AlertDialogTitle className="text-xl font-bold text-center text-slate-1200">
-            Get started with P2P
-          </AlertDialogTitle>
-        </AlertDialogHeader>
-        <OnboardingContent />
-      </AlertDialogContent>
-    </AlertDialog>
-  )
+  return null
 }
 
 export { KycOnboardingSheet }
