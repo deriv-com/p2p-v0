@@ -65,7 +65,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           {config.cancelText}
         </Button>
         )}
-        <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+       {config.type && <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
           {config.confirmText || "Continue"}
         </Button>
       </div>
