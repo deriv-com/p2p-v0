@@ -12,7 +12,7 @@ import Navigation from "@/components/navigation"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import OrderTimeLimitSelector from "./order-time-limit-selector"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import Image from "next/image"
+import { Info } from "lucide-react"
 import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
 
@@ -478,13 +478,9 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.png"
-                            alt="Info"
-                            width={12}
-                            height={12}
-                            className="ml-1 cursor-pointer"
-                          />
+                          <button type="button" className="ml-1 cursor-pointer inline-flex items-center justify-center">
+                            <Info className="h-3 w-3 text-gray-500" />
+                          </button>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Orders will expire if they aren't completed within this timeframe.</p>

@@ -1,11 +1,10 @@
 "use client"
 
-import { Inbox } from "@novu/nextjs"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
-import Image from "next/image"
+import { Bell } from "lucide-react"
 import "../../styles/globals.css"
 
 const API = {
@@ -16,10 +15,6 @@ const AUTH = {
   getNotificationHeader: () => ({
     "Content-Type": "application/json",
   }),
-}
-
-const NOTIFICATIONS = {
-  applicationId: process.env.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID,
 }
 
 async function fetchSubscriberHash() {
@@ -54,52 +49,10 @@ export function NovuNotifications() {
   const isMobile = useIsMobile()
   const userId = useUserDataStore((state) => state.userId)
   const userIdFallback = userId || ""
-  const applicationIdentifier = NOTIFICATIONS.applicationId
 
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  const appearance = {
-    icons: {
-      bell: () => {
-        return isMobile ? (
-          <Image src="/icons/bell-sm.png" alt="Notifications" width={24} height={24} />
-        ) : (
-          <Image src="/icons/bell-desktop.png" alt="Notifications" width={24} height={24} />
-        )
-      },
-    },
-    variables: {
-      borderRadius: "8px",
-      fontSize: "16px",
-      colorShadow: "rgba(0, 0, 0, 0.1)",
-      colorNeutral: "#1A1523",
-      colorCounterForeground: "#ffffff",
-      colorCounter: "#FF444F",
-      colorSecondaryForeground: "#1A1523",
-      colorPrimaryForeground: "#ffffff",
-      colorPrimary: "#FF444F",
-      colorForeground: "#181C25",
-      colorBackground: "#ffffff",
-    },
-    elements: {
-      popoverTrigger: {
-        borderRadius: "50%",
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
-      },
-      bellContainer: {
-        width: "24px",
-        height: "24px",
-      },
-      bellIcon: {
-        width: "24px",
-        height: "24px",
-      },
-      preferences__button: { display: "none" },
-      popoverContent: "novu-popover-content",
-    },
-  }
 
   useEffect(() => {
     if (!userIdFallback) {
@@ -131,7 +84,7 @@ export function NovuNotifications() {
 
   if (!mounted || isLoading) {
     return (
-      <div className="relative inline-flex h-5 w-5 bg-yellow-100 rounded-full">
+      <div className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100">
         <span className="sr-only">Notifications loading</span>
       </div>
     )
@@ -140,47 +93,28 @@ export function NovuNotifications() {
   if (error || !subscriberHash || !subscriberId) {
     return (
       <div
-        className="relative inline-flex h-5 w-5 bg-red-100 rounded-full"
+        className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100"
         title={error || "Failed to load notifications"}
       >
+        <Bell className="h-4 w-4 text-gray-400" />
         <span className="sr-only">Notifications error</span>
       </div>
     )
   }
 
+  // TODO: Replace with @novu/nextjs Inbox component once React 19 compatibility is resolved
   return (
-    <div style={{ position: "static" }}>
-      <Inbox
-        applicationIdentifier={applicationIdentifier}
-        subscriber={subscriberId || ""}
-        subscriberHash={subscriberHash}
-        localization={{ "inbox.filters.labels.default": "Notifications" }}
-        colorScheme="light"
-        i18n={{ poweredBy: "Notifications by" }}
-        onNotificationClick={(notification) => {
-          if (notification.data?.order_id) {
-            router.push(`/orders/${notification.data.order_id}`)
-          }
-
-          setTimeout(() => {
-            const inboxElement = document.querySelector(".nv-popoverContent") as HTMLElement
-            if (inboxElement) {
-              const clickOutsideEvent = new MouseEvent("click", {
-                bubbles: true,
-                cancelable: true,
-                view: window,
-              })
-              document.body.dispatchEvent(clickOutsideEvent)
-            }
-          }, 100)
-        }}
-        placement={isMobile ? "bottom-start" : "bottom-end"}
-        appearance={appearance}
-        styles={{
-          bell: { root: { background: "transparent", color: "black" } },
-          popover: { root: { zIndex: 100 } },
-        }}
-      />
-    </div>
+    <button
+      type="button"
+      className="relative inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+      onClick={() => {
+        // Placeholder - notifications functionality temporarily disabled
+        console.log("[v0] Notifications clicked - Novu integration pending React 19 compatibility")
+      }}
+      title="Notifications (temporarily unavailable)"
+    >
+      <Bell className="h-4 w-4 text-gray-700" />
+      <span className="sr-only">Notifications</span>
+    </button>
   )
 }
