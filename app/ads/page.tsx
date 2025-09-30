@@ -43,8 +43,7 @@ export default function AdsPage() {
 
   const fetchAds = async () => {
     if (!userId) {
-      console.log("[v0] Skipping fetchAds - userId not available yet")
-      setLoading(false)
+      setLoading(true)
       return
     }
 
