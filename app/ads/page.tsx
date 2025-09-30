@@ -104,11 +104,6 @@ export default function AdsPage() {
     fetchAds(false)
   }, [showAlert, isMobile])
 
-  useEffect(() => {
-    const showInactive = activeTab === "inactive"
-    fetchAds(showInactive)
-  }, [activeTab])
-
   const handleAdUpdated = (status?: string) => {
     const reload = async () => {
       try {
