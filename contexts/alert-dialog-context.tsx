@@ -3,7 +3,7 @@
 import type React from "react"
 import { createContext, useContext, useState, useCallback } from "react"
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
