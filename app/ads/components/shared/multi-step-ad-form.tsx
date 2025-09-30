@@ -483,6 +483,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                 </div>
 
                 <div className="w-full md:w-[70%]">
+                <div className="flex gap-[4px] items-center mb-4">
                   <h3 className="text-base font-bold mb-2">Choose your audience</h3>
                   <TooltipProvider>
                       <Tooltip>
@@ -501,7 +502,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
-                    </TooltipProvider>
+                    </TooltipProvider> </div>
                   <div>
                     <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
                   </div>
