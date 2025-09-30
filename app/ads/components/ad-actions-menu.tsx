@@ -17,6 +17,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
     <>
       <Button
         variant="ghost"
+        size="sm"
         className="hover:bg-transparent font-normal px-0 justify-start"
         onClick={() => onEdit(ad)}
       >
@@ -25,6 +26,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
       </Button>
       <Button
         variant="ghost"
+        size="sm"
         className="hover:bg-transparent font-normal px-0 justify-start"
         onClick={() => onToggleStatus(ad)}
       >
