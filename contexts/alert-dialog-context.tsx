@@ -75,7 +75,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   const renderMobileContent = () => (
     <div className="p-6">
       {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
-      {config.description && <div className="mb-4 text-grayscale-100">{config.description}</div>}
+      {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
       <div className="flex flex-col gap-2 mt-6">
         {config.cancelText && (
         <Button onClick={handleCancel} variant="primary" className="w-full">
