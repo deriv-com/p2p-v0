@@ -352,11 +352,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 onDelete={handleDelete}
               />
             )}
-            <DrawerClose asChild>
-              <button className="flex items-center justify-center px-6 py-4 mt-2 border-t hover:bg-gray-50 active:bg-gray-100 transition-colors">
-                <span className="text-base font-medium text-gray-900">Cancel</span>
-              </button>
-            </DrawerClose>
           </div>
         </DrawerContent>
       </Drawer>
