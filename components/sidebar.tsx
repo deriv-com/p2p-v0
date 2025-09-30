@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar } from "@/components/ui/avatar"
 
 interface SidebarProps {
   className?: string
@@ -101,10 +101,8 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8 bg-grayscale-500">
-          <AvatarFallback className="bg-grayscale-500 text-slate-1200 font-bold">
-            {userName?.charAt(0).toUpperCase()}
-          </AvatarFallback>
+        <Avatar className="h-8 w-8 bg-grayscale-500 items-center justify-center text-slate-1200 font-bold">
+          {userName?.charAt(0).toUpperCase()}
         </Avatar>
         <div className="flex-1">
           <h2 className="text-sm font-bold text-slate-1400 mb-1">
