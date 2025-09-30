@@ -23,7 +23,7 @@ export default function WalletPage() {
               className={`flex-1 h-full rounded-md transition-colors text-sm font-normal ${
                 activeTab === "wallet"
                   ? "bg-white text-[#181C25] shadow-sm"
-                  : "bg-transparent text-[#0000007A] hover:text-[#181C25]"
+                  : "bg-transparent text-[#181C25] hover:text-[#181C25]"
               }`}
             >
               Wallet
@@ -33,7 +33,7 @@ export default function WalletPage() {
               className={`flex-1 h-full rounded-md transition-colors text-sm font-normal ${
                 activeTab === "transactions"
                   ? "bg-white text-[#181C25] shadow-sm"
-                  : "bg-transparent text-[#0000007A] hover:text-[#181C25]"
+                  : "bg-transparent text-[#181C25] hover:text-[#181C25]"
               }`}
             >
               Transactions
