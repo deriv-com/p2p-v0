@@ -179,7 +179,7 @@ export default function AdsPage() {
     )
   }
 
-  if(isLoading) {
+  if(loading) {
     return (
         <div className="text-center py-12">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
