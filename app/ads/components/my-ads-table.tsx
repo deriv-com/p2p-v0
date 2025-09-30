@@ -348,7 +348,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             {selectedAd && (
               <AdActionsMenu
                 ad={selectedAd}
-                variant="drawer"
                 onEdit={handleEdit}
                 onToggleStatus={handleToggleStatus}
                 onDelete={handleDelete}
