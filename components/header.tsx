@@ -17,10 +17,11 @@ export default function Header() {
     { name: "Profile", href: "/profile" },
   ]
 
+  if(pathname.startsWith("/advertiser")) return null
   return (
     <header className={cn("flex justify-between items-center px-3 md:px-[24px] py-3 bg-slate-1200")}>
       <div className="md:hidden">
-        <MobileSidebarTrigger />
+          <MobileSidebarTrigger />
       </div>
 
       <div className="hidden md:block">
