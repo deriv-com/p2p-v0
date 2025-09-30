@@ -427,7 +427,6 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
             onClose={handleClose}
             title={isMobile ? getPageTitle(mode, formData.type) : ""}
           />
-          <div className="hidden md:block text-2xl font-bold m-6 mb-10">{getPageTitle(mode, formData.type)}</div>
           <ProgressSteps
             currentStep={currentStep}
             steps={steps}
