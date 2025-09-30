@@ -478,9 +478,14 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <button type="button" className="ml-1 cursor-pointer inline-flex items-center justify-center">
-                            <Info className="h-3 w-3 text-gray-500" />
-                          </button>
+                          <Image
+                            src="/icons/info-circle.png"
+                            alt="Info"
+                            width={12}
+                            height={12}
+                            className="ml-1 cursor-pointer"
+                          />
+
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Orders will expire if they aren't completed within this timeframe.</p>
