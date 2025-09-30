@@ -64,7 +64,7 @@ export default function AdsPage() {
   useEffect(() => {
     fetchAds()
     setHiddenAdverts(!userData?.adverts_are_listed)
-  }, [userId])
+  }, [])
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
