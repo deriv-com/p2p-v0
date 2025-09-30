@@ -63,6 +63,10 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
+    fetchAds
+  }, [])
+
+  useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
