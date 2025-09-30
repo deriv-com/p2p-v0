@@ -12,37 +12,7 @@ interface AdActionsMenuProps {
 }
 
 export function AdActionsMenu({ ad, variant, onEdit, onToggleStatus, onDelete }: AdActionsMenuProps) {
-  const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
-
-  if (variant === "drawer") {
-    return (
-      <>
-        <button
-          className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
-          onClick={() => onEdit(ad)}
-        >
-          <Image src="/icons/pencil.png" alt="Edit" width={20} height={20} />
-          <span className="text-base font-normal text-gray-900">Edit</span>
-        </button>
-        <button
-          className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
-          onClick={() => onToggleStatus(ad)}
-        >
-          <Image src="/icons/deactivate.png" alt="Toggle status" width={20} height={20} />
-          <span className="text-base font-normal text-gray-900">{isActive ? "Deactivate" : "Activate"}</span>
-        </button>
-        <button
-          className="flex items-center gap-3 px-6 py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors text-left"
-          onClick={() => onDelete(ad.id)}
-        >
-          <Image src="/icons/trash-red.png" alt="Delete" width={20} height={20} />
-          <span className="text-base font-normal text-red-600">Delete</span>
-        </button>
-      </>
-    )
-  }
-
-  // Dropdown variant - returns fragment for use inside DropdownMenuContent
+  const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active
   return (
     <>
       <button
