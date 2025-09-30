@@ -42,11 +42,6 @@ export default function AdsPage() {
   const router = useRouter()
 
   const fetchAds = async () => {
-    if (!userId) {
-      setLoading(true)
-      return
-    }
-
     try{
       setLoading(true)
       setError(null)
