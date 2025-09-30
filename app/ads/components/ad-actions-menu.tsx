@@ -17,7 +17,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
     <>
       <Button
         variant="ghost"
-        className="hover:bg-transparent"
+        className="hover:bg-transparent font-normal px-0"
         onClick={() => onEdit(ad)}
       >
         <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
@@ -25,6 +25,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
       </Button>
       <Button
         variant="ghost"
+        className="hover:bg-transparent font-normal px-0"
         onClick={() => onToggleStatus(ad)}
       >
         <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
@@ -32,6 +33,7 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
       </Button>
       <Button
         variant="ghost"
+        className="hover:bg-transparent font-normal px-0"
         onClick={() => onDelete(ad.id)}
       >
         <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
