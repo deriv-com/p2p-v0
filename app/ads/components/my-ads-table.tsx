@@ -326,7 +326,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[160px] p-1">
                           <AdActionsMenu
-                            ad={a
+                            ad={ad}
                             onEdit={handleEdit}
                             onToggleStatus={handleToggleStatus}
                             onDelete={handleDelete}
