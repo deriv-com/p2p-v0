@@ -41,7 +41,7 @@ const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create
   return mode === "create" ? "Create Ad" : "Save Details"
 }
 
-const getPageTitle = (mode: "create" | "edit", adType?: string) => {
+const getPageTitle = (mode: "create" | "edit") => {
   if (mode === "create") {
     return "Create ad"
   }
@@ -432,7 +432,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
             steps={steps}
             className="m-6"
             title={{
-                    label: getPageTitle(mode, formData.type),
+                    label: getPageTitle(mode),
                     stepTitle: steps[currentStep].title,
                 }}
           />
