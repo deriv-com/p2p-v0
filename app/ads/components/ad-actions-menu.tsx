@@ -10,7 +10,7 @@ interface AdActionsMenuProps {
   onDelete: (adId: string) => void
 }
 
-export function AdActionsMenu({ ad, variant, onEdit, onToggleStatus, onDelete }: AdActionsMenuProps) {
+export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdActionsMenuProps) {
   const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
 
   return (
