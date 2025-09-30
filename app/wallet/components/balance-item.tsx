@@ -13,7 +13,7 @@ export default function BalanceItem({ currency, amount, currencyName }: BalanceI
   const logo = currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
 
   return (
-    <div className="flex items-center gap-3 h-[72px] px-4">
+    <div className="flex items-center gap-3 h-[72px] pr-4 pl-0">
       <div className="flex-shrink-0">
         {logo ? (
           <Image
