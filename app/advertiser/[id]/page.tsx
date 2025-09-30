@@ -236,7 +236,7 @@ export default function AdvertiserProfilePage() {
                         <span className="opacity-[0.08]">|</span>
                         <div className="flex items-center">
                           <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
-                          <span>{profile?.statistics_lifetime?.rating_count > 0 ?profile?.statistics_lifetime?.rating_count : "Not rated yet"}</span>
+                          <span>{profile?.statistics_lifetime?.rating_count > 0 ?profile?.statistics_lifetime?.rating_average : "Not rated yet"}</span>
                         </div>
                       </div>
                     </div>
