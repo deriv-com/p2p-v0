@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { AdsAPI } from "@/services/api"
@@ -13,7 +13,7 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 interface StatusData {
@@ -37,6 +37,7 @@ export default function AdsPage() {
     message: "",
   })
   const { showAlert } = useAlertDialog()
+  const hasFetchedRef = useRef(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -49,7 +50,7 @@ export default function AdsPage() {
 
       setAds(userAdverts)
     } catch (err) {
-      setError("Failed to load ads. Please try again later.")
+      setError("Failed to load ads. Please try again.")
       setAds([])
       setErrorModal({
         show: true,
@@ -62,9 +63,12 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    fetchAds()
-    setHiddenAdverts(!userData?.adverts_are_listed)
-  }, [])
+    if (!hasFetchedRef.current) {
+      fetchAds()
+      setHiddenAdverts(!userData?.adverts_are_listed)
+      hasFetchedRef.current = true
+    }
+  }, [userData?.adverts_are_listed])
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -73,14 +77,11 @@ export default function AdsPage() {
     const id = searchParams.get("id")
     const showStatusModal = searchParams.get("showStatusModal")
 
-    if (
-      success &&
-      type &&
-      id &&
-      showStatusModal === "true" &&
-      (success === "create" || success === "update") &&
-      !isMobile
-    ) {
+    if (!success || !type || !id || showStatusModal !== "true") {
+      return
+    }
+
+    if ((success === "create" || success === "update") && !isMobile) {
       const adTypeDisplay = type.toUpperCase()
       const createDescription = `You've successfully created Ad (${adTypeDisplay} ${id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
       const updateDescription = `You've successfully updated Ad (${adTypeDisplay} ${id}).\n\nYour changes have been saved and are now live.`
@@ -93,28 +94,20 @@ export default function AdsPage() {
       })
     }
 
-    if (success && type && id && showStatusModal === "true" && (success === "create" || success === "update")) {
+    if (success === "create" || success === "update") {
       setStatusData({
         success,
         type,
         id,
         showStatusModal: true,
       })
-    }
 
-    fetchAds()
+      fetchAds()
+    }
   }, [showAlert, isMobile])
 
   const handleAdUpdated = (status?: string) => {
-    const reload = async () => {
-      try {
-        const userAdverts = await AdsAPI.getUserAdverts(true)
-        setAds(userAdverts)
-      } catch (err) {
-        console.error("Error reloading ads:", err)
-      }
-    }
-    reload()
+    fetchAds()
 
     if (status === "deleted") {
       setShowDeletedBanner(true)
