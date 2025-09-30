@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import type { Ad } from "../types"
-import { Button } from "./ui/button"
+import { Button } from "@/components/ui/button"
 
 interface AdActionsMenuProps {
   ad: Ad
