@@ -14,7 +14,7 @@ interface ChooseCurrencyStepProps {
   description: string
   currencies: Currency[]
   onClose: () => void
-  onCurrencySelect: (currency: Currency) => void
+  onCurrencySelect: (currencyCode: string) => void
 }
 
 export default function ChooseCurrencyStep({
@@ -43,7 +43,7 @@ export default function ChooseCurrencyStep({
               <div key={currency.code}>
                 <div
                   className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
-                  onClick={() => onCurrencySelect(currency)}
+                  onClick={() => onCurrencySelect(currency.code)}
                 >
                   <div className="flex items-center gap-4">
                     <div className="w-6 rounded-full overflow-hidden flex-shrink-0">
