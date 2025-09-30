@@ -180,7 +180,7 @@ export default function AdsPage() {
   }
 
   if(isLoading) {
-  
+    return null
   }
 
   return (
