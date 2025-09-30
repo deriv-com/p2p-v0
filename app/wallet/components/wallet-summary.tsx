@@ -68,7 +68,6 @@ export default function WalletSummary() {
   }, [loadBalance])
 
   const handleDepositClick = () => {
-      setIsKycSheetOpen(true)
     if (userId) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
