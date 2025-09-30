@@ -9,7 +9,7 @@ export function MobileSidebarTrigger() {
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" size="sm" className="md:hidden px-2">
-          <Image src="/icons/menu.png" width={24} height={24}/>
+          <Image src="/icons/menu.png" alt="Menu" width={24} height={24} />
         </Button>
       </SheetTrigger>
       <SheetContent side="left" className="p-0 w-[295px]">

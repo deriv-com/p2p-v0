@@ -29,7 +29,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData } = useUserDataStore()
+  const { userData, userId } = useUserDataStore()
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -42,10 +42,18 @@ export default function AdsPage() {
   const router = useRouter()
 
   const fetchAds = async () => {
+    if (!userId) {
+      console.log("[v0] Skipping fetchAds - userId not available yet")
+      setLoading(false)
+      return
+    }
+
     try {
+      console.log("[v0] Fetching ads for userId:", userId)
       setLoading(true)
       setError(null)
       const userAdverts = await AdsAPI.getUserAdverts(true)
+      console.log("[v0] Fetched ads:", userAdverts.length)
 
       setAds(userAdverts)
     } catch (err) {
@@ -63,9 +71,10 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
+    console.log("[v0] Initial mount - userId:", userId)
     fetchAds()
     setHiddenAdverts(!userData?.adverts_are_listed)
-  }, [])
+  }, [userId])
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
@@ -171,7 +180,7 @@ export default function AdsPage() {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p>Hidden ads won't appear on the Market page.</p>
+              <p>{"Hidden ads won't appear on the Market page."}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -194,7 +203,7 @@ export default function AdsPage() {
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center"
               >
-                <Image src="/icons/plus-white.png" className="mr-1" height={22} width={13} />
+                <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
                 Create ads
               </Button>
             )}
