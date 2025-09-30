@@ -1,3 +1,5 @@
+import { useUserDataStore } from "@/stores/user-data-store"
+
 let USER_DATA = null
 let USER_TOKEN = null
 let USER_ID = null
@@ -6,10 +8,17 @@ let CLIENT_ID = null
 
 if (typeof window !== "undefined") {
   USER_TOKEN = localStorage.getItem("auth_token") ?? ""
-  USER_DATA = JSON.parse(localStorage.getItem("user_data") ?? "{}")
-  USER_ID = localStorage.getItem("user_id") ?? ""
+
+  const storeData = useUserDataStore.getState().userData
+  USER_DATA = storeData || JSON.parse(localStorage.getItem("user_data") ?? "{}")
+
+  const storeUserId = useUserDataStore.getState().userId
+  USER_ID = (storeUserId || localStorage.getItem("user_id")) ?? ""
+
   SOCKET_TOKEN = localStorage.getItem("socket_token") ?? ""
-  CLIENT_ID = localStorage.getItem("client_id") ?? ""
+
+  const storeClientId = useUserDataStore.getState().clientId
+  CLIENT_ID = (storeClientId || localStorage.getItem("client_id")) ?? ""
 }
 
 export const USER = {
@@ -60,7 +69,7 @@ export const AUTH = {
   getAuthHeader: () => ({
     "Content-Type": "application/json",
     "X-Branch": "master",
-    "X-Data-Source": "live"
+    "X-Data-Source": "live",
   }),
 
   getNotificationHeader: () => ({

@@ -23,6 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -52,6 +53,7 @@ export default function OrdersPage() {
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
+  const { userData } = useUserDataStore()
 
   useEffect(() => {
     fetchOrders()
@@ -60,14 +62,11 @@ export default function OrdersPage() {
 
   const checkUserSignupStatus = () => {
     try {
-      if (typeof window !== "undefined") {
-        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+      const userDataFromStore =
+        userData || (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data") || "{}") : {})
 
-        if(userData?.signup === "v1")
-          setShowCheckPreviousOrdersButton(true)
-        else      
-          setShowCheckPreviousOrdersButton(false)
-      }
+      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
+      else setShowCheckPreviousOrdersButton(false)
     } catch (error) {
       console.log(error)
       setShowCheckPreviousOrdersButton(false)

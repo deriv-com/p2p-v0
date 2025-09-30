@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/avatar"
 import { cn } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface SidebarProps {
   className?: string
@@ -17,21 +18,21 @@ export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const [showWallet, setShowWallet] = useState(true)
   const userName = USER.nickname ?? USER.email
+  const { userData } = useUserDataStore()
 
   useEffect(() => {
     checkUserSignupStatus()
-  }, [])
+  }, [userData])
 
   const checkUserSignupStatus = () => {
     try {
-      if (typeof window !== "undefined") {
-        const userData = JSON.parse(localStorage.getItem("user_data") || "{}")
+      const userDataFromStore =
+        userData || (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data") || "{}") : {})
 
-        if (userData?.signup === "v1") {
-          setShowWallet(false)
-        } else {
-          setShowWallet(true)
-        }
+      if (userDataFromStore?.signup === "v1") {
+        setShowWallet(false)
+      } else {
+        setShowWallet(true)
       }
     } catch (error) {
       console.log(error)
@@ -59,9 +60,11 @@ export default function Sidebar({ className }: SidebarProps) {
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
         <Image src="/icons/deriv-logo.png" alt="Deriv logo" width={64} />
-        {USER.id && <div className="hidden md:block text-slate-600 hover:text-slate-700">
-          <NovuNotifications />
-        </div>}
+        {USER.id && (
+          <div className="hidden md:block text-slate-600 hover:text-slate-700">
+            <NovuNotifications />
+          </div>
+        )}
       </div>
       <nav className="flex-1 px-4">
         <ul>
@@ -83,7 +86,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     <Image
-                      src={item.icon}
+                      src={item.icon || "/placeholder.svg"}
                       alt={item.name}
                       width={20}
                       height={20}

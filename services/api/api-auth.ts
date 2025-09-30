@@ -1,4 +1,5 @@
 import { API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface LoginRequest {
   email: string
@@ -116,6 +117,8 @@ export async function logout(): Promise<void> {
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 
+    useUserDataStore.getState().clearUserData()
+
     localStorage.removeItem("auth_token")
     localStorage.removeItem("socket_token")
     localStorage.removeItem("user_data")
@@ -127,14 +130,6 @@ export async function logout(): Promise<void> {
     console.error(error)
     throw new Error("User not authenticated.")
   }
-}
-
-/**
- * Validate email format
- */
-export function validateEmail(email: string): boolean {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return emailRegex.test(email)
 }
 
 /**
@@ -153,17 +148,29 @@ export async function fetchUserIdAndStore(): Promise<void> {
     if (!response.ok) {
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
-   
+
     const userId = result?.data?.id
     if (userId) {
+      useUserDataStore.getState().setUserId(userId.toString())
       localStorage.setItem("user_id", userId.toString())
 
-      const userData = JSON.parse(localStorage.getItem("user_data"))
-      if(userData) {
-        userData.adverts_are_listed = result.data.adverts_are_listed,
-        userData.signup = result.data.signup
-        userData.wallet_id = result.data.wallet_id
-        localStorage.setItem("user_data", JSON.stringify(userData))
+      const { userData } = useUserDataStore.getState()
+      if (userData) {
+        useUserDataStore.getState().updateUserData({
+          adverts_are_listed: result.data.adverts_are_listed,
+          signup: result.data.signup,
+          wallet_id: result.data.wallet_id,
+        })
+
+        localStorage.setItem(
+          "user_data",
+          JSON.stringify({
+            ...userData,
+            adverts_are_listed: result.data.adverts_are_listed,
+            signup: result.data.signup,
+            wallet_id: result.data.wallet_id,
+          }),
+        )
       }
     }
   } catch (error) {
@@ -185,17 +192,21 @@ export async function getClientProfile(): Promise<void> {
     const result = await response.json()
     const { data } = result
 
-    localStorage.setItem("user_data", JSON.stringify({
+    const userData = {
       adverts_are_listed: true,
       email: data.email,
       first_name: data.first_name,
       last_name: data.last_name,
-      nickname: data.nickname
-    }))
+      nickname: data.nickname,
+    }
+
+    useUserDataStore.getState().setUserData(userData)
+    localStorage.setItem("user_data", JSON.stringify(userData))
+
     if (data.residence) {
+      useUserDataStore.getState().setResidenceCountry(data.residence)
       localStorage.setItem("residence_country", data.residence)
     }
-    
   } catch (error) {
     console.error("Error fetching profile:", error)
   }

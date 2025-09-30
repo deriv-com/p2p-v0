@@ -15,6 +15,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface StatusData {
   success: "create" | "update"
@@ -29,8 +30,10 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const userData = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data")) : {}
-  const [hiddenAdverts, setHiddenAdverts] = useState(!userData?.adverts_are_listed)
+  const { userData } = useUserDataStore()
+  const userDataFromStore =
+    userData || (typeof window !== "undefined" ? JSON.parse(localStorage.getItem("user_data") || "{}") : {})
+  const [hiddenAdverts, setHiddenAdverts] = useState(!userDataFromStore?.adverts_are_listed)
   const [activeTab, setActiveTab] = useState<"active" | "inactive">("active")
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -189,47 +192,43 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-            <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
-              <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
-                <TabsList className="w-full bg-transparent">
-                  <TabsTrigger
-                    value="active"
-                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
-                  >
-                    Active
-                  </TabsTrigger>
-                  <TabsTrigger
-                    value="inactive"
-                    className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
-                  >
-                    Inactive
-                  </TabsTrigger>
-                </TabsList>
-              </Tabs>
+          <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "active" | "inactive")}>
+              <TabsList className="w-full bg-transparent">
+                <TabsTrigger
+                  value="active"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                >
+                  Active
+                </TabsTrigger>
+                <TabsTrigger
+                  value="inactive"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                >
+                  Inactive
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </div>
-            <div className="flex items-center justify-between my-6">
-              {ads.length > 0 && (<Button
+          <div className="flex items-center justify-between my-6">
+            {ads.length > 0 && (
+              <Button
                 onClick={() => router.push("/ads/create")}
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center"
               >
                 Create ads
               </Button>
-              )}
-              {getHideMyAdsComponent()}
-            </div>
+            )}
+            {getHideMyAdsComponent()}
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto overflow-x-hidden container mx-auto p-0">
           {error ? (
             <div className="text-center py-8 text-red-500">{error}</div>
           ) : (
-            <MyAdsTable
-              ads={ads}
-              onAdDeleted={handleAdUpdated}
-              hiddenAdverts={hiddenAdverts}
-              isLoading={loading}
-            />
+            <MyAdsTable ads={ads} onAdDeleted={handleAdUpdated} hiddenAdverts={hiddenAdverts} isLoading={loading} />
           )}
         </div>
 
