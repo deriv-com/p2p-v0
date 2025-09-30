@@ -1,4 +1,5 @@
 import { USER, API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export interface APIAdvert {
   id: number
