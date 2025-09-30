@@ -425,7 +425,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
               setCurrentStep(updatedStep)
             }}
             onClose={handleClose}
-            title={isMobile ? getPageTitle(mode, formData.type) : ""}
+            title=""
           />
           <ProgressSteps
             currentStep={currentStep}
