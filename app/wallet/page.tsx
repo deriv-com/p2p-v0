@@ -17,7 +17,7 @@ export default function WalletPage() {
 
         <div className="w-full mt-6 mx-4 md:mx-4 mt-6 px-0">
           {/* Tabs */}
-          <div className="flex gap-0 h-10 bg-[#0000000A] rounded-lg p-1 mb-4 md:w-[358px] md:mb-6">
+          <div className="flex gap-0 h-10 bg-[#0000000A] rounded-lg px-4 p-1 mb-4 md:w-[358px] md:mb-6">
             <button
               onClick={() => setActiveTab("wallet")}
               className={`flex-1 h-full rounded-md transition-colors text-sm font-normal ${
