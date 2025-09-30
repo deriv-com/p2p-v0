@@ -48,16 +48,13 @@ export default function AdsPage() {
       return
     }
 
-    try {
-      console.log("[v0] Fetching ads for userId:", userId)
+    try{
       setLoading(true)
       setError(null)
       const userAdverts = await AdsAPI.getUserAdverts(true)
-      console.log("[v0] Fetched ads:", userAdverts.length)
 
       setAds(userAdverts)
     } catch (err) {
-      console.error("Error fetching ads:", err)
       setError("Failed to load ads. Please try again later.")
       setAds([])
       setErrorModal({
