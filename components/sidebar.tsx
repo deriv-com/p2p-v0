@@ -101,9 +101,6 @@ export default function Sidebar({ className }: SidebarProps) {
         </ul>
       </nav>
       <div className="flex flex-row items-center gap-4 p-4">
-        <Avatar className="h-8 w-8 bg-grayscale-500">
-          <AvatarFallback className="text-slate-1200 font-bold">{userName?.charAt(0).toUpperCase()}</AvatarFallback>
-        </Avatar>
         <div className="flex-1">
           <h2 className="text-sm font-bold text-slate-1400 mb-1">
             {userData?.first_name && userData?.last_name
