@@ -447,8 +447,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   )}
                 </div>
               )}
-
-
+              
               <div className="mx-4 mt-4 text-sm">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-slate-500">Exchange rate</span>
