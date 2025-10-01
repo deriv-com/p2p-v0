@@ -1,7 +1,5 @@
 "use client"
 
-import { DrawerTrigger } from "@/components/ui/drawer"
-
 import type React from "react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
@@ -9,8 +7,6 @@ import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { useIsMobile } from "@/components/ui/use-mobile"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
@@ -45,7 +41,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [isAnimating, setIsAnimating] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [orderStatus, setOrderStatus] = useState<{ success: boolean; message: string } | null>(null)
-  const [showPaymentSelection, setShowPaymentSelection] = useState(false)
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
@@ -56,7 +51,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const { showAlert } = useAlertDialog()
 
   const handleShowPaymentSelection = () => {
-    setShowPaymentSelection(true)
+    setTempSelectedPaymentMethods(selectedPaymentMethods)
+
+    showAlert({
+      title: "Payment method",
+      description: <PaymentSelectionContent />,
+      confirmText: "Confirm",
+      cancelText: "Cancel",
+      onConfirm: () => {
+        setSelectedPaymentMethods(tempSelectedPaymentMethods)
+      },
+      onCancel: () => {
+        setTempSelectedPaymentMethods(selectedPaymentMethods)
+      },
+    })
   }
 
   useEffect(() => {
@@ -174,7 +182,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setSelectedPaymentMethods([])
       setAmount(null)
       setValidationError(null)
-      setShowPaymentSelection(false)
       setShowAddPaymentMethod(false)
       onClose()
     }, 300)
@@ -191,11 +198,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         return prev
       }
     })
-  }
-
-  const handleConfirmPaymentSelection = () => {
-    setSelectedPaymentMethods(tempSelectedPaymentMethods)
-    setShowPaymentSelection(false)
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -246,7 +248,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const PaymentSelectionContent = () => (
     <div className="flex flex-col h-full overflow-y-auto">
-      <div className="flex-1 p-4 space-y-4">
+      <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {isLoadingPaymentMethods ? (
           <div className="flex items-center justify-center py-8">
@@ -309,16 +311,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           </div>
         </div>
       </div>
-
-      <div className="p-4">
-        <Button
-          className="w-full"
-          onClick={handleConfirmPaymentSelection}
-          disabled={tempSelectedPaymentMethods.length === 0}
-        >
-          Confirm
-        </Button>
-      </div>
     </div>
   )
 
@@ -338,191 +330,137 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         {ad && (
           <div className="flex flex-col h-full max-w-xl mx-auto">
             <div className="flex items-center justify-end px-4 py-3">
-              {showPaymentSelection ? (
-                <>
-                  <div className="flex items-center">
-                    <Button
-                      onClick={() => setShowPaymentSelection(false)}
-                      variant="ghost"
-                      size="sm"
-                      className="mr-[16px] bg-grayscale-300 px-1"
-                    >
-                      <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
-                    </Button>
-                    <h2 className="text-xl font-bold">Payment method</h2>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-                    <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-                  </Button>
-                </>
-              )}
+              <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+                <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+              </Button>
             </div>
 
-            {showPaymentSelection ? (
-              <PaymentSelectionContent />
-            ) : (
-              <div className="flex flex-col h-full overflow-y-auto">
-                <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
-                <div className="p-4">
-                  <div className="mb-2">
-                    <Input
-                      value={amount}
-                      onChange={handleAmountChange}
-                      type="number"
-                      className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
-                      step="any"
-                      inputMode="decimal"
-                      onKeyDown={(e) => {
-                        if (["e", "E", "+", "-"].includes(e.key)) {
-                          e.preventDefault()
-                        }
-                      }}
-                      variant="floatingCurrency"
-                      currency={ad.account_currency}
-                      label="Amount"
-                    />
-                  </div>
-                  {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
-                  <div className="flex items-center">
-                    <span className="text-gray-500">{youSendText}:&nbsp;</span>
-                    <span className="font-bold">
-                      {Number.parseFloat(totalAmount).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                      {" "}{ad.payment_currency}
-                    </span>
-                  </div>
+            <div className="flex flex-col h-full overflow-y-auto">
+              <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
+              <div className="p-4">
+                <div className="mb-2">
+                  <Input
+                    value={amount}
+                    onChange={handleAmountChange}
+                    type="number"
+                    className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
+                    step="any"
+                    inputMode="decimal"
+                    onKeyDown={(e) => {
+                      if (["e", "E", "+", "-"].includes(e.key)) {
+                        e.preventDefault()
+                      }
+                    }}
+                    variant="floatingCurrency"
+                    currency={ad.account_currency}
+                    label="Amount"
+                  />
                 </div>
-
-                {isBuy && (
-                  <div className="mx-4 mt-4 pb-6 border-b">
-                    <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
-                    {isMobile ? (
-                      <Drawer open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
-                        <DrawerTrigger asChild>
-                          <div
-                            className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                            onClick={handleShowPaymentSelection}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
-                              <ChevronRight className="h-5 w-5 text-gray-400" />
-                            </div>
-                          </div>
-                        </DrawerTrigger>
-                        <DrawerContent className="max-h-[80vh]">
-                          <DrawerHeader>
-                            <DrawerTitle>Payment method</DrawerTitle>
-                          </DrawerHeader>
-                          <PaymentSelectionContent />
-                        </DrawerContent>
-                      </Drawer>
-                    ) : (
-                      <Popover open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
-                        <PopoverTrigger asChild>
-                          <div
-                            className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                            onClick={handleShowPaymentSelection}
-                          >
-                            <div className="flex items-center justify-between">
-                              <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
-                              <ChevronRight className="h-5 w-5 text-gray-400" />
-                            </div>
-                          </div>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-96 max-h-96 overflow-y-auto" align="start">
-                          <div className="mb-4">
-                            <h3 className="text-lg font-semibold">Payment method</h3>
-                          </div>
-                          <PaymentSelectionContent />
-                        </PopoverContent>
-                      </Popover>
-                    )}
-                  </div>
-                )}
-
-                <div className="mx-4 mt-4 text-sm">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Exchange rate</span>
-                    <span className="text-slate-1400">
-                      {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}
-                      {" "}{ad.payment_currency}
-                      <span> /{ad.account_currency}</span>
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Order limit</span>
-                    <span className="text-slate-1400">
-                      {minLimit} - {maxLimit} {ad.account_currency}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Payment time</span>
-                    <span className="text-slate-1400">{ad.order_expiry_period} min</span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{isBuy ? "Buyer" : "Seller"}</span>
-                    <span className="text-slate-1400">{ad.user?.nickname}</span>
-                  </div>
-                </div>
-
-                <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
-                  <h3 className="text-slate-500 flex-1">
-                    {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
-                  </h3>
-                  <div className="flex flex-wrap gap-4">
-                    {ad.payment_methods?.map((method, index) => (
-                      <div key={index} className="flex items-center">
-                        <div
-                          className={`h-2 w-2 rounded-full mr-2 ${
-                            method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                          }`}
-                        />
-                        <span className="text-slate-1400">{formatPaymentMethodName(method)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="mx-4 mt-4 border-t py-2 text-sm flex-1">
-                  <h3 className="text-slate-500">{isBuy ? "Buyer's instructions" : "Seller's instructions"}</h3>
-                  <p className="text-slate-1400 break-words">
-                    {ad.description ||
-                      "Kindly transfer the payment to the provided account details after placing your order."}
-                  </p>
-                </div>
-
-                <div className="mt-auto p-4 flex justify-end">
-                  <Button
-                    className="w-full md:w-auto"
-                    variant="primary"
-                    onClick={handleSubmit}
-                    disabled={
-                      !amount || (isBuy && selectedPaymentMethods.length === 0) || !!validationError || isSubmitting
-                    }
-                  >
-                    {isSubmitting ? (
-                      <span className="flex items-center justify-center">
-                        <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
-                        Processing...
-                      </span>
-                    ) : (
-                      "Place order"
-                    )}
-                  </Button>
-                  {orderStatus && !orderStatus.success && (
-                    <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm">{orderStatus.message}</div>
-                  )}
+                {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
+                <div className="flex items-center">
+                  <span className="text-gray-500">{youSendText}:&nbsp;</span>
+                  <span className="font-bold">
+                    {Number.parseFloat(totalAmount).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    {ad.payment_currency}
+                  </span>
                 </div>
               </div>
-            )}
+
+              {isBuy && (
+                <div className="mx-4 mt-4 pb-6 border-b">
+                  <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
+                  <div
+                    className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                    onClick={handleShowPaymentSelection}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
+                      <ChevronRight className="h-5 w-5 text-gray-400" />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="mx-4 mt-4 text-sm">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Exchange rate</span>
+                  <span className="text-slate-1400">
+                    {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    {ad.payment_currency}
+                    <span> /{ad.account_currency}</span>
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Order limit</span>
+                  <span className="text-slate-1400">
+                    {minLimit} - {maxLimit} {ad.account_currency}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Payment time</span>
+                  <span className="text-slate-1400">{ad.order_expiry_period} min</span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">{isBuy ? "Buyer" : "Seller"}</span>
+                  <span className="text-slate-1400">{ad.user?.nickname}</span>
+                </div>
+              </div>
+
+              <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
+                <h3 className="text-slate-500 flex-1">
+                  {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
+                </h3>
+                <div className="flex flex-wrap gap-4">
+                  {ad.payment_methods?.map((method, index) => (
+                    <div key={index} className="flex items-center">
+                      <div
+                        className={`h-2 w-2 rounded-full mr-2 ${
+                          method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                        }`}
+                      />
+                      <span className="text-slate-1400">{formatPaymentMethodName(method)}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mx-4 mt-4 border-t py-2 text-sm flex-1">
+                <h3 className="text-slate-500">{isBuy ? "Buyer's instructions" : "Seller's instructions"}</h3>
+                <p className="text-slate-1400 break-words">
+                  {ad.description ||
+                    "Kindly transfer the payment to the provided account details after placing your order."}
+                </p>
+              </div>
+
+              <div className="mt-auto p-4 flex justify-end">
+                <Button
+                  className="w-full md:w-auto"
+                  variant="primary"
+                  onClick={handleSubmit}
+                  disabled={
+                    !amount || (isBuy && selectedPaymentMethods.length === 0) || !!validationError || isSubmitting
+                  }
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center">
+                      <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+                      Processing...
+                    </span>
+                  ) : (
+                    "Place order"
+                  )}
+                </Button>
+                {orderStatus && !orderStatus.success && (
+                  <div className="mt-4 p-3 rounded-lg bg-red-50 text-red-600 text-sm">{orderStatus.message}</div>
+                )}
+              </div>
+            </div>
           </div>
         )}
         {showAddPaymentMethod && (
