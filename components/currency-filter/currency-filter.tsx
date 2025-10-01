@@ -17,7 +17,6 @@ export function CurrencyFilter({
   currencies,
   selectedCurrency,
   onCurrencySelect,
-  title,
   trigger,
   placeholder = "Search",
 }: CurrencyFilterProps) {
@@ -116,7 +115,7 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-1">
-            {!isMobile && <div className="text-base text-black opacity-[0.48] px-4 py-3">{title}</div>}
+            {!isMobile && <div className="text-base text-black opacity-[0.48] px-4 py-3">You're paying with</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
@@ -137,15 +136,15 @@ export function CurrencyFilter({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
+      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-center">{title}</h3>
+            <h3 className="text-xl font-bold text-center">You're paying with</h3>
           </div>
           <CurrencyList />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
