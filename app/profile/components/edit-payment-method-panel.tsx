@@ -205,7 +205,6 @@ export default function EditPaymentMethodPanel({
           type="button"
           onClick={handleSubmit}
           disabled={isLoading || !isFormValid()}
-          variant="black"
           className="w-full"
         >
           {isLoading ? "Saving..." : "Save changes"}
