@@ -187,7 +187,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         </div>
       </div>
 
-      <div className={`${isMobile ? "" : "max-w-[592px] mx-auto"} pb-20`}>
+      <div className={`${isMobile ? "" : "max-w-[592px] mx-auto"} pb-20 pt-6`}>
         <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">Transaction status</span>
