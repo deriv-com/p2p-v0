@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 
@@ -59,6 +60,7 @@ export default function TransactionsTab() {
     loadTransactions()
   }, [])
 
+
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
     const today = new Date()
@@ -84,7 +86,7 @@ export default function TransactionsTab() {
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
-
+    const status = transaction.metadata.transaction_status
 
     const getAmountColor = () => {
       if (type === "Withdraw") {
