@@ -85,7 +85,7 @@ export default function TransactionsTab() {
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
-    const status = transaction.metadata.transaction_status
+
 
     const getAmountColor = () => {
       if (type === "Withdraw") {
