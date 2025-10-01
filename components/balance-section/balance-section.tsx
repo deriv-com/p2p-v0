@@ -10,7 +10,7 @@ interface BalanceSectionProps {
 
 export function BalanceSection({ className = "" }: BalanceSectionProps) {
   const [balance, setBalance] = useState<number>(0)
-  const [currency, setCurrency] = useState<string>("USD")
+  const [currency, setCurrency] = useState<string>("")
 
   useEffect(() => {
     const fetchBalance = async () => {
