@@ -31,9 +31,20 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert, handlePaymentMethodToggle }) => {
 
-
+   const handlePaymentMethodToggle = (methodId: string) => {
+      setTempSelectedPaymentMethods((prev) => {
+        if (prev.includes(methodId)) {
+          return prev.filter((id) => id !== methodId)
+        } else {
+          if (prev.length < 3) {
+            return [...prev, methodId]
+          }
+          return prev
+        }
+      })
+    }
    return ( <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
@@ -145,18 +156,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     })
   }
 
-  const handlePaymentMethodToggle = (methodId: string) => {
-      setTempSelectedPaymentMethods((prev) => {
-        if (prev.includes(methodId)) {
-          return prev.filter((id) => id !== methodId)
-        } else {
-          if (prev.length < 3) {
-            return [...prev, methodId]
-          }
-          return prev
-        }
-      })
-    }
+ 
 
   useEffect(() => {
     if (isOpen) {
