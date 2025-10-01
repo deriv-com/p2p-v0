@@ -31,6 +31,74 @@ interface PaymentMethod {
   method: string
 }
 
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods }) => (
+    <div className="flex flex-col h-full overflow-y-auto">
+      <div className="flex-1 space-y-4">
+        {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
+        {isLoadingPaymentMethods ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="h-8 w-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+            <span className="ml-2 text-gray-600">Loading payment methods...</span>
+          </div>
+        ) : paymentMethodsError ? (
+          <div className="text-center py-8">
+            <p className="text-red-600 mb-4">{paymentMethodsError}</p>
+            <Button onClick={fetchUserPaymentMethods} variant="outline">
+              Retry
+            </Button>
+          </div>
+        ) : userPaymentMethods.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-600 mb-4">No compatible payment methods found</p>
+            <p className="text-sm text-gray-500">Add a payment method that matches the buyer's accepted methods</p>
+          </div>
+        ) : (
+          userPaymentMethods.map((method) => (
+            <div
+              key={method.id}
+              className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
+                !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
+                  ? "opacity-30 cursor-not-allowed hover:bg-white"
+                  : ""
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center mb-[6px]">
+                    <div
+                      className={`h-2 w-2 rounded-full mr-2 ${
+                        method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
+                      }`}
+                    />
+                    <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
+                  </div>
+                  <div className="font-normal text-neutral-10">{maskAccountNumber(method.fields.account.value)}</div>
+                  <div className="font-normal text-neutral-7">{formatPaymentMethodName(method.display_name)}</div>
+                </div>
+                <Checkbox
+                  checked={tempSelectedPaymentMethods.includes(method.id)}
+                  onCheckedChange={() => handlePaymentMethodToggle(method.id)}
+                  disabled={!tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3}
+                  className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
+                />
+              </div>
+            </div>
+          ))
+        )}
+
+        <div
+          className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+          onClick={() => setShowAddPaymentMethod(true)}
+        >
+          <div className="flex items-center justify-center">
+            <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
+            <span className="text-neutral-10 text-sm">Add payment method</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
   const [amount, setAmount] = useState(null)
@@ -241,74 +309,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
-
-  const PaymentSelectionContent = () => (
-    <div className="flex flex-col h-full overflow-y-auto">
-      <div className="flex-1 space-y-4">
-        {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
-        {isLoadingPaymentMethods ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="h-8 w-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
-            <span className="ml-2 text-gray-600">Loading payment methods...</span>
-          </div>
-        ) : paymentMethodsError ? (
-          <div className="text-center py-8">
-            <p className="text-red-600 mb-4">{paymentMethodsError}</p>
-            <Button onClick={fetchUserPaymentMethods} variant="outline">
-              Retry
-            </Button>
-          </div>
-        ) : userPaymentMethods.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">No compatible payment methods found</p>
-            <p className="text-sm text-gray-500">Add a payment method that matches the buyer's accepted methods</p>
-          </div>
-        ) : (
-          userPaymentMethods.map((method) => (
-            <div
-              key={method.id}
-              className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
-                !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
-                  ? "opacity-30 cursor-not-allowed hover:bg-white"
-                  : ""
-              }`}
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center mb-[6px]">
-                    <div
-                      className={`h-2 w-2 rounded-full mr-2 ${
-                        method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
-                      }`}
-                    />
-                    <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
-                  </div>
-                  <div className="font-normal text-neutral-10">{maskAccountNumber(method.fields.account.value)}</div>
-                  <div className="font-normal text-neutral-7">{formatPaymentMethodName(method.display_name)}</div>
-                </div>
-                <Checkbox
-                  checked={tempSelectedPaymentMethods.includes(method.id)}
-                  onCheckedChange={() => handlePaymentMethodToggle(method.id)}
-                  disabled={!tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3}
-                  className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
-                />
-              </div>
-            </div>
-          ))
-        )}
-
-        <div
-          className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => setShowAddPaymentMethod(true)}
-        >
-          <div className="flex items-center justify-center">
-            <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-            <span className="text-neutral-10 text-sm">Add payment method</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
