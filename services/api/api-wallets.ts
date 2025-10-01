@@ -101,6 +101,8 @@ export async function walletTransfer(params: {
 export async function fetchBalance(selectedCurrency: string): Promise<number> {
   try {
     const userId = useUserDataStore.getState().userId
+
+
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
 
     const response = await fetch(url, {
