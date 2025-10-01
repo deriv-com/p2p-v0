@@ -106,7 +106,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
           </div>
         </div>
       </div>
-      <Button className="w-full" onClick={() => {
+      <Button className="w-full m-4" onClick={() => {
         hideAlert()
         setSelectedPaymentMethods(tempSelectedPaymentMethods)
       }}>Confirm</Button>
