@@ -45,10 +45,8 @@ export default function AdsPage() {
   console.log("[v0] AdsPage mounted, userId:", userId, "hasFetchedRef:", hasFetchedRef.current)
 
   const fetchAds = async () => {
-    console.log("[v0] fetchAds called, userId:", userId)
 
     if (!userId) {
-      console.log("[v0] fetchAds aborted - no userId available")
       setLoading(false)
       return
     }
@@ -56,13 +54,10 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
-      console.log("[v0] Calling getUserAdverts API")
       const userAdverts = await AdsAPI.getUserAdverts(true)
-      console.log("[v0] getUserAdverts returned:", userAdverts.length, "ads")
 
       setAds(userAdverts)
-    } catch (err) {
-      console.error("[v0] Error fetching ads:", err)
+    } catch (err) 
       setError("Failed to load ads. Please try again.")
       setAds([])
       setErrorModal({
