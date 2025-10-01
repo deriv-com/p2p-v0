@@ -299,6 +299,6 @@ export default function WalletSummary({
           currency={displayCurrency}
         />
         <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
-         </>
+      </>
     )
 }
