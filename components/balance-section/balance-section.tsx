@@ -31,8 +31,8 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
   }, [])
 
   return (
-    <div className={` p-6 ${className}`}>
-      <div className="text-slate-500 text-sm mb-2">Est. total value</div>
+    <div className={`p-6 ${className}`}>
+      <div className="text-white opacity-[0.72] text-xs mb-2">Est. total value</div>
       <div className="text-white text-4xl font-bold">
         {isLoading ? (
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
