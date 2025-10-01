@@ -31,7 +31,7 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert, setSelectedPaymentMethods }) => {
    const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
    const handlePaymentMethodToggle = (methodId: string) => {
       setSelectedPMs((prev) => {
@@ -106,6 +106,10 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
           </div>
         </div>
       </div>
+      <Button onClick={() => {
+        hideAlert()
+        setSelectedPaymentMethods(tempSelectedPaymentMethods)
+      }}></Button>
     </div>
   )
   }
@@ -138,14 +142,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             tempSelectedPaymentMethods={tempSelectedPaymentMethods}
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setShowAddPaymentMethod={setShowAddPaymentMethod}
+            setSelectedPaymentMethods={setSelectedPaymentMethods}
             hideAlert={hideAlert}
-      />,
-      confirmText: "Confirm",
-      type: "warning",
-      onConfirm: () => {
-        hideAlert()
-        setSelectedPaymentMethods(tempSelectedPaymentMethods)
-      }
+      />
     })
   }
 
