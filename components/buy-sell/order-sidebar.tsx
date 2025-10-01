@@ -67,7 +67,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
             <div
               key={method.id}
               className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
-                !tempSelectedPaymentMethods.includes(method.id) && tempSelectedPaymentMethods.length >= 3
+                !tempSelectedPaymentMethods?.includes(method.id) && tempSelectedPaymentMethods?.length >= 3
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
               }`}
