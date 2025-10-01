@@ -383,7 +383,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <div className="px-4 pb-4 flex-1 overflow-y-auto">
                             <PaymentSelectionContent />
                           </div>
-                          <div className="p-4 border-t flex gap-2"
+                          <div className="p-4 border-t flex gap-2">
                             <Button
                               variant="primary"
                               className="flex-1"
