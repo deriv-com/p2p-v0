@@ -34,8 +34,6 @@ interface PaymentMethod {
 
 const PaymentSelectionContent = ({
   userPaymentMethods,
-  isLoadingPaymentMethods,
-  paymentMethodsError,
   tempSelectedPaymentMethods,
   setTempSelectedPaymentMethods,
   hideAlert,
@@ -61,16 +59,7 @@ const PaymentSelectionContent = ({
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
-        {isLoadingPaymentMethods ? (
-          <div className="flex items-center justify-center py-8">
-            <div className="h-8 w-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
-            <span className="ml-2 text-gray-600">Loading payment methods...</span>
-          </div>
-        ) : paymentMethodsError ? (
-          <div className="text-center py-8">
-            <p className="text-red-600 mb-4">{paymentMethodsError}</p>
-          </div>
-        ) : userPaymentMethods.length === 0 ? (
+        {userPaymentMethods.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-600 mb-4">No compatible payment methods found</p>
             <p className="text-sm text-gray-500">Add a payment method that matches the buyer's accepted methods</p>
@@ -161,8 +150,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       description: (
         <PaymentSelectionContent
           userPaymentMethods={userPaymentMethods}
-          isLoadingPaymentMethods={isLoadingPaymentMethods}
-          paymentMethodsError={paymentMethodsError}
           tempSelectedPaymentMethods={tempSelectedPaymentMethods}
           setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
           setShowAddPaymentMethod={setShowAddPaymentMethod}
