@@ -86,7 +86,7 @@ export default function StatsGrid({ stats }) {
                 <StatCard
                   tab="last30days"
                   title="Trade volume"
-                  value={stats?.statistics_30day?.completion_amount_all > 0 ? `USD ${stats.completion_amount_all}` : "USD 0.00"}
+                  value={stats?.statistics_30day?.completion_amount_all > 0 ? `${stats.completion_amount_all}` : "0.00 USD"}
                 />
               </div>
             </TabsContent>
