@@ -14,7 +14,7 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -36,6 +36,7 @@ const PaymentSelectionContent = ({
   userPaymentMethods,
   isLoadingPaymentMethods,
   paymentMethodsError,
+  setShowAddPaymentMethod,
   tempSelectedPaymentMethods,
   setTempSelectedPaymentMethods,
   hideAlert,
@@ -138,6 +139,7 @@ const PaymentSelectionContent = ({
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
+  const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
   const [totalAmount, setTotalAmount] = useState(0)
   const [validationError, setValidationError] = useState<string | null>(null)
@@ -152,7 +154,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
-  const isMobile = useIsMobile()
 
   const handleShowPaymentSelection = () => {
     showAlert({
@@ -164,6 +165,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           paymentMethodsError={paymentMethodsError}
           tempSelectedPaymentMethods={tempSelectedPaymentMethods}
           setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          setShowAddPaymentMethod={setShowAddPaymentMethod}
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
@@ -299,7 +301,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       if (response.success) {
         await fetchUserPaymentMethods()
-        if (!isMobile) {
+        if (isDesktop) {
           hideAlert()
         } else {
           setShowAddPaymentMethod(false)
@@ -327,7 +329,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
-    if (!isMobile) {
+    if (isDesktop) {
       showAlert({
         title: "Add payment method",
         description: (
