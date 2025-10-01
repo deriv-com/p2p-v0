@@ -84,7 +84,7 @@ export default function StatsGrid({ stats }) {
                 <StatCard title="Avg. pay time" value={stats?.statistics_30day?.buy_time_average ?? "-"} />
                 <StatCard title="Avg. release time" value={stats?.statistics_30day?.release_time_average ?? "-"} />
                 <StatCard
-                  tab="30d"
+                  tab="last30days"
                   title="Trade volume"
                   value={stats?.statistics_30day?.completion_amount_all > 0 ? `${stats.completion_amount_all} USD` : "0.00 USD"}
                 />
