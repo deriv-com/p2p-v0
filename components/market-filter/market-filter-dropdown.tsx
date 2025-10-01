@@ -110,14 +110,14 @@ export default function MarketFilterDropdown({
           variant="outline"
           onClick={handleReset}
           className="rounded-full flex-1 bg-transparent"
-          size={"default"}
+          size="default"
         >
           Reset
         </Button>
         <Button
           onClick={handleApply}
           className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
-          size={isMobile ? "default" : "sm"}
+          size="default"
         >
           {isMobile ? "Apply filters" : "Apply"}
         </Button>
