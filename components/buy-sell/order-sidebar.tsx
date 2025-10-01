@@ -165,7 +165,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           paymentMethodsError={paymentMethodsError}
           tempSelectedPaymentMethods={tempSelectedPaymentMethods}
           setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-          setShowAddPaymentMethod={setShowAddPaymentMethod}
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
