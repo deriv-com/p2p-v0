@@ -14,6 +14,7 @@ interface AddPaymentMethodPanelProps {
   onAdd: (method: string, fields: Record<string, string>) => void
   isLoading: boolean
   allowedPaymentMethods?: string[]
+  isInDialog?: boolean // Add prop to control whether to render with PanelWrapper
 }
 
 interface PanelWrapperProps {
@@ -63,7 +64,13 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
   )
 }
 
-export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allowedPaymentMethods }: AddPaymentMethodPanelProps) {
+export default function AddPaymentMethodPanel({
+  onClose,
+  onAdd,
+  isLoading,
+  allowedPaymentMethods,
+  isInDialog = false,
+}: AddPaymentMethodPanelProps) {
   const [selectedMethod, setSelectedMethod] = useState<string>("")
   const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
@@ -88,10 +95,8 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
         }
 
         if (allowedPaymentMethods && allowedPaymentMethods.length > 0) {
-          methods = methods.filter(method => 
-            allowedPaymentMethods.some(allowed => 
-              method.method.toLowerCase() === allowed.toLowerCase()
-            )
+          methods = methods.filter((method) =>
+            allowedPaymentMethods.some((allowed) => method.method.toLowerCase() === allowed.toLowerCase()),
           )
         }
 
@@ -146,7 +151,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
 
     selectedMethodFields.forEach((field) => {
       const value = details[field.name]?.trim()
-      
+
       if (!value && field.required) {
         newErrors[field.name] = `${field.label} is required`
       } else if (value && !validateInput(value)) {
@@ -177,7 +182,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
       }))
     }
   }
@@ -196,7 +201,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
       }))
     }
   }
@@ -239,29 +244,25 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     })
   }
 
-  if (isLoadingMethods) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 flex items-center justify-center">
+  const renderContent = () => {
+    if (isLoadingMethods) {
+      return (
+        <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-gray-500">Loading payment methods...</div>
         </div>
-      </PanelWrapper>
-    )
-  }
+      )
+    }
 
-  if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 flex items-center justify-center">
+    if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
+      return (
+        <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-gray-500">No payment methods available</div>
         </div>
-      </PanelWrapper>
-    )
-  }
+      )
+    }
 
-  if (!showMethodDetails) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
+    if (!showMethodDetails) {
+      return (
         <div className="flex-1 overflow-y-auto">
           <div className="p-4">
             <div className="space-y-3">
@@ -275,7 +276,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
                   className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
                 >
                   <Image
-                    src={getPaymentMethodIcon(paymentMethod.type)}
+                    src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
                     alt={paymentMethod.display_name}
                     width={24}
                     height={24}
@@ -286,63 +287,86 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
             </div>
           </div>
         </div>
-      </PanelWrapper>
+      )
+    }
+
+    return (
+      <>
+        {!isInDialog && (
+          <div className="flex items-center px-4 py-3 border-b">
+            <Button variant="ghost" size="sm" onClick={handleBackToMethodList} className="bg-grayscale-300 px-1 mr-4">
+              <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+            </Button>
+            <h2 className="text-xl font-bold">Add payment details</h2>
+          </div>
+        )}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+          <div className="p-4 space-y-6">
+            {selectedMethodFields.length > 0 && (
+              <div className="space-y-4">
+                {selectedMethodFields.map((field) => (
+                  <div key={field.name}>
+                    <Input
+                      id={field.name}
+                      type={field.type}
+                      value={details[field.name] || ""}
+                      onChange={(e) => handleInputChange(field.name, e.target.value)}
+                      label={`Enter ${field.label.toLowerCase()}`}
+                      required={field.required}
+                      variant="floating"
+                    />
+                    {(touched[field.name] || details[field.name]) && errors[field.name] && (
+                      <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div>
+              <Textarea
+                id="instructions"
+                value={instructions}
+                onChange={(e) => handleInstructionsChange(e.target.value)}
+                label="Enter your instructions"
+                className="min-h-[120px] resize-none"
+                maxLength={300}
+                variant="floating"
+              />
+              {errors.instructions && <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>}
+              <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+            </div>
+          </div>
+        </form>
+
+        <div className="p-4">
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isLoading || !selectedMethod || !isFormValid()}
+            className="w-full"
+          >
+            {isLoading ? "Adding..." : "Add"}
+          </Button>
+        </div>
+      </>
     )
   }
 
+  if (isInDialog) {
+    return <div className="w-full max-h-[70vh] overflow-y-auto">{renderContent()}</div>
+  }
+
+  const getTitle = () => {
+    if (isLoadingMethods || availablePaymentMethods.length === 0) {
+      return "Select a payment method"
+    }
+    return showMethodDetails ? "Add payment details" : "Select a payment method"
+  }
+
   return (
-    <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-4 space-y-6">
-          {selectedMethodFields.length > 0 && (
-            <div className="space-y-4">
-              {selectedMethodFields.map((field) => (
-                <div key={field.name}>
-                  <Input
-                    id={field.name}
-                    type={field.type}
-                    value={details[field.name] || ""}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    label={`Enter ${field.label.toLowerCase()}`}
-                    required={field.required}
-                    variant="floating"
-                  />
-                  {(touched[field.name] || details[field.name]) && errors[field.name] && (
-                    <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div>
-            <Textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => handleInstructionsChange(e.target.value)}
-              label="Enter your instructions"
-              className="min-h-[120px] resize-none"
-              maxLength={300}
-              variant="floating"
-            />
-            {errors.instructions && (
-              <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>
-            )}
-            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
-          </div>
-        </div>
-      </form>
-
-      <div className="p-4">
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={isLoading || !selectedMethod || !isFormValid()}
-          className="w-full"
-        >
-          {isLoading ? "Adding..." : "Add"}
-        </Button>
-      </div>
+    <PanelWrapper onClose={onClose} onBack={showMethodDetails ? handleBackToMethodList : undefined} title={getTitle()}>
+      {renderContent()}
     </PanelWrapper>
   )
 }

@@ -332,15 +332,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       showAlert({
         title: "Add payment method",
         description: (
-          <div className="max-h-[70vh] overflow-y-auto">
+          <div className="w-full">
             <AddPaymentMethodPanel
               onClose={hideAlert}
               onAdd={handleAddPaymentMethod}
               isLoading={isAddingPaymentMethod}
               allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
+              isInDialog={true}
             />
           </div>
         ),
+        showCloseButton: false,
       })
     } else {
       setShowAddPaymentMethod(true)
