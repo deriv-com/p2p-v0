@@ -35,16 +35,16 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
           )}
         </div>
 
-        <div className="text-[#181C25] text-base font-normal">{currency}</div>
+        <div className="text-slate-1200 text-base font-normal">{currency}</div>
       </div>
 
       {/* Right side: Amount and Currency Code */}
-      <div className="text-[#181C25] text-base font-normal pr-6">
+      <div className="text-slate-1200 text-base font-normal pr-6">
         {Number(amount).toFixed(2)} {currency}
       </div>
 
       {/* Bottom divider starting 40px from left */}
-      <div className="absolute bottom-0 left-10 right-0 h-[1px] bg-[#00000014]" />
+      <div className="absolute bottom-0 left-10 right-0 h-[1px] bg-grayscale-200" />
     </div>
   )
 }

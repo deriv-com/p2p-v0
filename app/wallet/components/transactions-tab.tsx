@@ -87,13 +87,13 @@ export default function TransactionsTab() {
 
     const getAmountColor = () => {
       if (type === "Withdraw") {
-        return "text-[#C40000]"
+        return "text-error"
       } else if (type === "Deposit") {
-        return "text-[#007A22]"
+        return "text-success-text"
       } else if (type === "Transfer") {
-        return "text-[#181C25]"
+        return "text-slate-1200"
       }
-      return "text-[#181C25]"
+      return "text-slate-1200"
     }
 
     switch (type) {
@@ -101,28 +101,24 @@ export default function TransactionsTab() {
         return {
           iconSrc: "/icons/add-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "+",
           type: "Deposit",
         }
       case "Withdraw":
         return {
           iconSrc: "/icons/subtract-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "-",
           type: "Withdraw",
         }
       case "Transfer":
         return {
           iconSrc: "/icons/transfer-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "",
           type: "Transfer",
         }
       default:
         return {
           iconSrc: "/icons/add-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "+",
           type: "Deposit",
         }
     }
@@ -214,16 +210,15 @@ export default function TransactionsTab() {
                             )}
                           </div>
 
-                          <div className="text-[#181C25] text-base font-normal">{display.type}</div>
+                          <div className="text-slate-1200 text-base font-normal">{display.type}</div>
                         </div>
 
                         <div className={`${display.amountColor} text-base font-normal mr-6`}>
-                          {display.amountPrefix}
                           {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
                         </div>
                       </div>
 
-                      {index < dateTransactions.length - 1 && <div className="h-px bg-[#00000014] ml-10" />}
+                      <div className="h-px bg-grayscale-200 ml-10" />
                     </div>
                   )
                 })}

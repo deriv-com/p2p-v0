@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn, currencyLogoMapper, currencyNameMapper } from "@/lib/utils"
+import { cn, currencyLogoMapper } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
@@ -135,14 +135,13 @@ export default function WalletSummary({
   }
 
   const currencyLogo = currencyLogoMapper[displayCurrency as keyof typeof currencyLogoMapper]
-  const currencyName = currencyNameMapper[displayCurrency as keyof typeof currencyNameMapper]
 
   return (
     <>
       <div
         className={cn(
           "w-full p-6 flex flex-col",
-          isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-[#F6F7F8] md:h-[180px] h-auto",
+          isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
           isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
         )}
       >
@@ -169,17 +168,17 @@ export default function WalletSummary({
             <div className={cn("flex flex-col", isMobile && "items-center")}>
               {isBalancesView ? (
                 <>
-                  <p className="text-xs font-normal text-[rgba(255,255,255,0.72)]">Total value</p>
+                  <p className="text-xs font-normal text-white/72">Total value</p>
                   <p className="text-xl font-extrabold text-white">
                     {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-[28px] font-extrabold text-[#181C25]">
+                  <p className="text-[28px] font-extrabold text-slate-1200">
                     {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
                   </p>
-                  <p className="text-sm font-normal text-[rgba(0,0,0,0.72)]">{currencyName || displayCurrency}</p>
+                  <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
               )}
             </div>
@@ -195,7 +194,7 @@ export default function WalletSummary({
               >
                 <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
               </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-[#181C25]")}>
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 Deposit
               </span>
             </div>
@@ -207,7 +206,7 @@ export default function WalletSummary({
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
                     ? "border border-white bg-transparent hover:bg-white/10 text-white"
-                    : "border border-[#181C25] bg-transparent hover:bg-black/10 text-[#181C25]",
+                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
                 aria-label="Transfer"
@@ -219,7 +218,7 @@ export default function WalletSummary({
                   height={14}
                 />
               </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-[#181C25]")}>
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 Transfer
               </span>
             </div>
@@ -231,7 +230,7 @@ export default function WalletSummary({
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
                     ? "border border-white bg-transparent hover:bg-white/10 text-white"
-                    : "border border-[#181C25] bg-transparent hover:bg-black/10 text-[#181C25]",
+                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleWithdrawClick}
                 aria-label="Withdraw"
@@ -243,7 +242,7 @@ export default function WalletSummary({
                   height={14}
                 />
               </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-[#181C25]")}>
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 Withdraw
               </span>
             </div>
