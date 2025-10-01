@@ -31,8 +31,22 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, tempSelectedPaymentMethods, handlePaymentMethodToggle, setShowAddPaymentMethod, hideAlert }) => (
-    <div className="flex flex-col h-full overflow-y-auto">
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, tempSelectedPaymentMethods, handlePaymentMethodToggle, setShowAddPaymentMethod, hideAlert }) => {
+
+    const handlePaymentMethodToggle = (methodId: string) => {
+        setTempSelectedPaymentMethods((prev) => {
+          if (prev.includes(methodId)) {
+            return prev.filter((id) => id !== methodId)
+          } else {
+            if (prev.length < 3) {
+              return [...prev, methodId]
+            }
+            return prev
+          }
+        })
+      }
+
+   return ( <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {isLoadingPaymentMethods ? (
@@ -101,6 +115,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
       </div>
     </div>
   )
+  }
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
@@ -261,19 +276,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setShowAddPaymentMethod(false)
       onClose()
     }, 300)
-  }
-
-  const handlePaymentMethodToggle = (methodId: string) => {
-    setTempSelectedPaymentMethods((prev) => {
-      if (prev.includes(methodId)) {
-        return prev.filter((id) => id !== methodId)
-      } else {
-        if (prev.length < 3) {
-          return [...prev, methodId]
-        }
-        return prev
-      }
-    })
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
