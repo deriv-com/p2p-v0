@@ -33,6 +33,8 @@ interface PaymentMethod {
 
 const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, tempSelectedPaymentMethods, setShowAddPaymentMethod, hideAlert }) => {
 
+    const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
+
     const handlePaymentMethodToggle = (methodId: string) => {
         setTempSelectedPaymentMethods((prev) => {
           if (prev.includes(methodId)) {
@@ -131,7 +133,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
   const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
-  const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
 
   const handleShowPaymentSelection = () => {
