@@ -12,7 +12,7 @@ export function BalanceSection() {
     const fetchBalance = async () => {
       try {
         const data = await getTotalBalance()
-        setBalance(data.total_balance.amount)
+        setBalance(data.total_balance.amount?.toLocaleString())
         setCurrency(data.total_balance.currency)
       } catch (error) {
         console.error("Failed to fetch balance:", error)
