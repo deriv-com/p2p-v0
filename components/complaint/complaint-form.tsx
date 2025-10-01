@@ -59,7 +59,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
       </div>
 
       <div className="p-4">
-        <Button variant="black" onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]">Submit
+        <Button onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]">Submit
         </Button>
       </div>
     </div>
