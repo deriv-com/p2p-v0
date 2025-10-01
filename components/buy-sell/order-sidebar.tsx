@@ -31,7 +31,7 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
 
    const handlePaymentMethodToggle = (methodId: string) => {
       setTempSelectedPaymentMethods((prev) => {
@@ -56,9 +56,6 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
         ) : paymentMethodsError ? (
           <div className="text-center py-8">
             <p className="text-red-600 mb-4">{paymentMethodsError}</p>
-            <Button onClick={fetchUserPaymentMethods} variant="outline">
-              Retry
-            </Button>
           </div>
         ) : userPaymentMethods.length === 0 ? (
           <div className="text-center py-8">
@@ -141,7 +138,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             userPaymentMethods={userPaymentMethods} 
             isLoadingPaymentMethods={isLoadingPaymentMethods} 
             paymentMethodsError={paymentMethodsError} 
-            fetchUserPaymentMethods={fetchUserPaymentMethods}
             tempSelectedPaymentMethods={tempSelectedPaymentMethods}
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setShowAddPaymentMethod={setShowAddPaymentMethod}
