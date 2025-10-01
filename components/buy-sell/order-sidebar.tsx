@@ -88,7 +88,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
                 <Checkbox
                   checked={tempSelectedPaymentMethods?.includes(method.id)}
                   onCheckedChange={() => handlePaymentMethodToggle(method.id)}
-                  disabled={!tempSelectedPaymentMethods?.includes(method.id) && tempSelectedPaymentMethods.length >= 3}
+                  disabled={!tempSelectedPaymentMethods?.includes(method.id) && tempSelectedPaymentMethods?.length >= 3}
                   className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                 />
               </div>
