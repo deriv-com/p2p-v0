@@ -102,6 +102,9 @@ export async function fetchBalance(selectedCurrency: string): Promise<number> {
   try {
     const userId = useUserDataStore.getState().userId
 
+    if (!userId) {
+      return 0
+    }
 
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
 
@@ -136,9 +139,8 @@ export async function fetchUserBalances(): Promise<any> {
   try {
     const userId = useUserDataStore.getState().userId
 
-
     if (!userId) {
-      throw new Error("User ID not found")
+      return { balances: [] }
     }
 
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
