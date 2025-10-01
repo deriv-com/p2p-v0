@@ -15,7 +15,7 @@ import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
-import { useMediaQuery } from "@/hooks/use-media-query"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface OrderSidebarProps {
   isOpen: boolean
