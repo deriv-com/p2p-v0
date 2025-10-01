@@ -101,7 +101,7 @@ export default function StatsGrid({ stats }) {
                 <StatCard
                   tab="lifetime"
                   title="Trade volume"
-                  value={stats?.statistics_lifetime?.completion_amount_all > 0 ? `${stats.completion_amount_all}` : "USD 0.00"}
+                  value={stats?.statistics_lifetime?.completion_amount_all > 0 ? `USD ${stats.completion_amount_all}` : "USD 0.00"}
                 />
               </div>
             </TabsContent>
