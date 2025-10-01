@@ -26,7 +26,7 @@ export default function WalletPage() {
           <WalletSummary />
         </div>
 
-        <div className="w-full mt-6 mx-4 md:mx-4 mt-6 px-4">
+        <div className="w-full mt-6 mx-4 md:mx-4 px-4 pl-6 md:pl-0">
           {displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} />
           ) : (
