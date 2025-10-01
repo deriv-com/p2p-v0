@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation"
 import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { useIsMobile } from "@/components/ui/use-mobile"
+import { Checkbox } from "@/components/ui/checkbox
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
@@ -34,7 +33,6 @@ interface PaymentMethod {
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
-  const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
   const [totalAmount, setTotalAmount] = useState(0)
   const [validationError, setValidationError] = useState<string | null>(null)
