@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn, currencyLogoMapper } from "@/lib/utils"
+import { cn, currencyLogoMapper, currencyNameMapper } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
@@ -135,6 +135,7 @@ export default function WalletSummary({
   }
 
   const currencyLogo = currencyLogoMapper[displayCurrency as keyof typeof currencyLogoMapper]
+  const currencyName = currencyNameMapper[displayCurrency as keyof typeof currencyNameMapper]
 
   return (
     <>
@@ -166,17 +167,21 @@ export default function WalletSummary({
             </div>
 
             <div className={cn("flex flex-col", isMobile && "items-center")}>
-              <p
-                className={cn(
-                  "text-xs font-normal",
-                  isBalancesView ? "text-[rgba(255,255,255,0.72)]" : "text-[rgba(24,28,37,0.72)]",
-                )}
-              >
-                Total value
-              </p>
-              <p className={cn("text-xl font-extrabold", isBalancesView ? "text-white" : "text-[#181C25]")}>
-                {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
-              </p>
+              {isBalancesView ? (
+                <>
+                  <p className="text-xs font-normal text-[rgba(255,255,255,0.72)]">Total value</p>
+                  <p className="text-xl font-extrabold text-white">
+                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-[28px] font-extrabold text-[#181C25]">
+                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                  </p>
+                  <p className="text-sm font-normal text-[rgba(0,0,0,0.72)]">{currencyName || displayCurrency}</p>
+                </>
+              )}
             </div>
           </div>
 

@@ -383,6 +383,20 @@ export const currencyLogoMapper = {
   TRX: "/icons/trx-logo.png",
 }
 
+export const currencyNameMapper: Record<string, string> = {
+  USD: "US Dollar",
+  BTC: "Bitcoin",
+  ETH: "Ethereum",
+  LTC: "Litecoin",
+  USDC: "USD Coin",
+  eUSDT: "Tether ERC20",
+  tUSDT: "Tether TRC20",
+  BNB: "Binance Coin",
+  AED: "UAE Dirham",
+  USDT: "Tether",
+  TRX: "Tron",
+}
+
 export const getHomeUrl = () => {
   const isProduction = process.env.NODE_ENV === "production"
   const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
