@@ -29,7 +29,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData } = useUserDataStore()
+  const { userData, userId } = useUserDataStore()
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -41,8 +41,13 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-
   const fetchAds = async () => {
+
+    if (!userId) {
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
@@ -63,10 +68,15 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    if (!hasFetchedRef.current) {
+    if (userId && !hasFetchedRef.current)
       fetchAds()
-      setHiddenAdverts(!userData?.adverts_are_listed)
       hasFetchedRef.current = true
+    }
+  }, [userId])
+
+  useEffect(() => {
+    if (userData?.adverts_are_listed !== undefined) {
+      setHiddenAdverts(!userData.adverts_are_listed)
     }
   }, [userData?.adverts_are_listed])
 
