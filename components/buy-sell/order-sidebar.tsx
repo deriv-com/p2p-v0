@@ -383,14 +383,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           <div className="px-4 pb-4 flex-1 overflow-y-auto">
                             <PaymentSelectionContent />
                           </div>
-                          <div className="p-4 border-t flex gap-2">
-                            <Button
-                              variant="outline"
-                              className="flex-1 bg-transparent"
-                              onClick={() => setShowPaymentSelection(false)}
-                            >
-                              Cancel
-                            </Button>
+                          <div className="p-4 border-t flex gap-2"
                             <Button
                               variant="primary"
                               className="flex-1"
@@ -423,14 +416,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         <div className="max-h-[400px] overflow-y-auto mb-4">
                           <PaymentSelectionContent />
                         </div>
-                        <div className="flex gap-2 pt-4 border-t">
-                          <Button
-                            variant="outline"
-                            className="flex-1 bg-transparent"
-                            onClick={() => setShowPaymentSelection(false)}
-                          >
-                            Cancel
-                          </Button>
+                        <div className="flex gap-2 pt-4 border-t"
                           <Button
                             variant="primary"
                             className="flex-1"
