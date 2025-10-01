@@ -165,7 +165,7 @@ export default function AddPaymentMethodPanel({
 
     if (isInDialog && showAlert) {
       showAlert({
-        title: "Add payment method",
+        title: "Select a payment method",
         description: <div className="w-full">{renderContent()}</div>,
         showCloseButton: true,
         onClose: () => {
@@ -394,7 +394,7 @@ export default function AddPaymentMethodPanel({
   useEffect(() => {
     if (isInDialog && show && showAlert) {
       showAlert({
-        title: showMethodDetails ? "Add payment details" : "Add payment method",
+        title: showMethodDetails ? "Add payment details" : "Select a payment method",
         description: <div className="w-full">{renderContent()}</div>,
         showCloseButton: true,
         onClose: () => {
