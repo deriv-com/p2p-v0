@@ -8,7 +8,7 @@ const getAuthHeader = () => ({
 
 export async function fetchTransactions() {
   const userData = useUserDataStore.getState().userData
-  console.log("user data->"+userData);
+  console.log("user data -> " + JSON.stringify(userData));
   const walletId = userData?.balances?.find((b) => b.currency === "USD")?.wallet_id
 
   const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
