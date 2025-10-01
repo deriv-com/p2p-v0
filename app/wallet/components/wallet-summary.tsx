@@ -138,20 +138,13 @@ export default function WalletSummary({
 
   return (
     <>
-     <div
-  className={cn(
-    "w-full p-6 flex flex-col",
-    isBalancesView
-      ? "bg-slate-1200 md:h-[140px] h-auto"
-      : "bg-[#F6F7F8] md:h-[180px] h-auto",
-    isMobile
-      ? isBalancesView
-        ? "rounded-b-3xl"
-        : "rounded-t-3xl"
-      : "rounded-3xl",
-  )}
->
-
+      <div
+        className={cn(
+          "w-full p-6 flex flex-col",
+          isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-[#F6F7F8] md:h-[180px] h-auto",
+          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-t-3xl rounded-b-none") : "rounded-3xl",
+        )}
+      >
         {!isBalancesView && (
           <div className="flex justify-start items-center h-8 mb-4">
             <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
@@ -166,9 +159,9 @@ export default function WalletSummary({
               <Image
                 src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/p2p-3d.png"}
                 alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
-                width={92}
-                height={92}
-                className="w-16 h-16 md:w-24 md:h-24"
+                width={!isBalancesView ? 64 : 92}
+                height={!isBalancesView ? 64 : 92}
+                className={cn(!isBalancesView ? "w-16 h-16" : "w-16 h-16 md:w-24 md:h-24")}
               />
             </div>
 
@@ -215,7 +208,7 @@ export default function WalletSummary({
                 aria-label="Transfer"
               >
                 <Image
-                  src={isBalancesView ? "/icons/transfer-white.png" : "/icons/transfer-icon.png"}
+                  src={isBalancesView ? "/icons/transfer-white.png" : "/icons/transfer-black.png"}
                   alt="Transfer"
                   width={14}
                   height={14}
@@ -239,7 +232,7 @@ export default function WalletSummary({
                 aria-label="Withdraw"
               >
                 <Image
-                  src={isBalancesView ? "/icons/withdraw-white.png" : "/icons/subtract-icon.png"}
+                  src={isBalancesView ? "/icons/withdraw-white.png" : "/icons/withdraw-black.png"}
                   alt="Withdraw"
                   width={14}
                   height={14}
