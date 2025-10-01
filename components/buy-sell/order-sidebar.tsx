@@ -111,7 +111,7 @@ const PaymentSelectionContent = ({
         )}
 
         <div
-          className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
+          className="bg-slate-1200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => {
             handleAddPaymentMethodClick()
             hideAlert()
