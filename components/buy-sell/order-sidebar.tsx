@@ -331,6 +331,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     console.log("[v0] handleAddPaymentMethodClick called, isMobile:", isMobile)
     if (!isMobile) {
       console.log("[v0] Showing alert dialog for AddPaymentMethodPanel")
+      hideAlert()
       showAlert({
         title: "Add payment method",
         description: (
