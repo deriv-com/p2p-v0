@@ -6,7 +6,18 @@ import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
 
 export default function WalletPage() {
-  const [activeTab, setActiveTab] = useState<"wallet" | "transactions">("wallet")
+  const [displayBalances, setDisplayBalances] = useState(true)
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
+
+  const handleBalanceClick = (currency: string) => {
+    setSelectedCurrency(currency)
+    setDisplayBalances(false)
+  }
+
+  const handleBackToBalances = () => {
+    setDisplayBalances(true)
+    setSelectedCurrency(null)
+  }
 
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
@@ -16,38 +27,19 @@ export default function WalletPage() {
         </div>
 
         <div className="w-full mt-6 mx-4 md:mx-4 mt-6 px-4">
-          {/* Tabs */}
-          <div className="flex gap-0 h-10 bg-[#0000000A] rounded-lg p-1 mb-4 md:w-[358px] md:mb-6">
-            <button
-              onClick={() => setActiveTab("wallet")}
-              className={`flex-1 h-full rounded-md transition-colors text-sm font-normal ${
-                activeTab === "wallet"
-                  ? "bg-white text-[#181C25] shadow-sm"
-                  : "bg-transparent text-[#181C25] hover:text-[#181C25]"
-              }`}
-            >
-              Wallet
-            </button>
-            <button
-              onClick={() => setActiveTab("transactions")}
-              className={`flex-1 h-full rounded-md transition-colors text-sm font-normal ${
-                activeTab === "transactions"
-                  ? "bg-white text-[#181C25] shadow-sm"
-                  : "bg-transparent text-[#181C25] hover:text-[#181C25]"
-              }`}
-            >
-              Transactions
-            </button>
-          </div>
-
-          {/* Tab Content */}
-          {activeTab === "wallet" ? (
-            <WalletBalances />
+          {displayBalances ? (
+            <WalletBalances onBalanceClick={handleBalanceClick} />
           ) : (
-            <>
-              <h2 className="text-lg font-semibold mb-4">Transactions</h2>
+            <div>
+              <button
+                onClick={handleBackToBalances}
+                className="mb-4 text-sm text-[#181C25] hover:underline flex items-center gap-2"
+              >
+                ← Back to Balances
+              </button>
+              <h2 className="text-lg font-semibold mb-4">Transactions {selectedCurrency && `(${selectedCurrency})`}</h2>
               <TransactionsTab />
-            </>
+            </div>
           )}
         </div>
       </div>
