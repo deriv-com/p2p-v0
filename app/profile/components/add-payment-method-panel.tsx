@@ -1,7 +1,7 @@
 "use client"
 
 import type * as React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -75,6 +75,7 @@ export default function AddPaymentMethodPanel({
   show = false,
 }: AddPaymentMethodPanelProps) {
   const { showAlert, hideAlert } = useAlertDialog()
+  const isAlertShownRef = useRef(false)
 
   const [selectedMethod, setSelectedMethod] = useState<string>("")
   const [showMethodDetails, setShowMethodDetails] = useState(false)
@@ -127,28 +128,35 @@ export default function AddPaymentMethodPanel({
   }, [instructions])
 
   useEffect(() => {
+    console.log("[v0] AddPaymentMethodPanel show changed:", show)
     if (!show) {
+      console.log("[v0] Resetting state because show is false")
       setShowMethodDetails(false)
       setSelectedMethod("")
       setDetails({})
       setErrors({})
       setTouched({})
       setInstructions("")
+      isAlertShownRef.current = false
     }
   }, [show])
 
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
+    console.log("[v0] Method selected:", paymentMethod.method)
     setSelectedMethod(paymentMethod.method)
     setShowMethodDetails(true)
 
     if (isInDialog && showAlert) {
+      isAlertShownRef.current = true
       showAlert({
         title: "Add payment details",
         description: <div className="w-full">{renderContent()}</div>,
         showCloseButton: true,
         onClose: () => {
+          console.log("[v0] Alert onClose called")
+          isAlertShownRef.current = false
           hideAlert?.()
           onClose()
         },
@@ -157,6 +165,7 @@ export default function AddPaymentMethodPanel({
   }
 
   const handleBackToMethodList = () => {
+    console.log("[v0] Back to method list")
     setShowMethodDetails(false)
     setSelectedMethod("")
     setDetails({})
@@ -165,11 +174,14 @@ export default function AddPaymentMethodPanel({
     setInstructions("")
 
     if (isInDialog && showAlert) {
+      isAlertShownRef.current = true
       showAlert({
         title: "Add payment method",
         description: <div className="w-full">{renderContent()}</div>,
         showCloseButton: true,
         onClose: () => {
+          console.log("[v0] Alert onClose called")
+          isAlertShownRef.current = false
           hideAlert?.()
           onClose()
         },
@@ -393,21 +405,60 @@ export default function AddPaymentMethodPanel({
   }
 
   useEffect(() => {
-    if (isInDialog && show && showAlert) {
+    console.log(
+      "[v0] Alert effect triggered - show:",
+      show,
+      "isInDialog:",
+      isInDialog,
+      "isAlertShown:",
+      isAlertShownRef.current,
+    )
+
+    if (isInDialog && show && !isAlertShownRef.current && showAlert) {
+      console.log("[v0] Showing alert")
+      isAlertShownRef.current = true
       showAlert({
         title: showMethodDetails ? "Add payment details" : "Add payment method",
         description: <div className="w-full">{renderContent()}</div>,
         showCloseButton: true,
         onClose: () => {
+          console.log("[v0] Alert onClose called")
+          isAlertShownRef.current = false
           hideAlert?.()
           onClose()
         },
       })
-    }
-    if (isInDialog && !show && hideAlert) {
+    } else if (isInDialog && show && isAlertShownRef.current && showAlert) {
+      console.log("[v0] Updating alert content")
+      showAlert({
+        title: showMethodDetails ? "Add payment details" : "Add payment method",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          console.log("[v0] Alert onClose called")
+          isAlertShownRef.current = false
+          hideAlert?.()
+          onClose()
+        },
+      })
+    } else if (isInDialog && !show && isAlertShownRef.current && hideAlert) {
+      console.log("[v0] Hiding alert because show is false")
+      isAlertShownRef.current = false
       hideAlert()
     }
-  }, [show, isInDialog, showMethodDetails, isLoadingMethods, availablePaymentMethods, details, errors, instructions])
+  }, [
+    show,
+    isInDialog,
+    showMethodDetails,
+    isLoadingMethods,
+    availablePaymentMethods,
+    details,
+    errors,
+    instructions,
+    showAlert,
+    hideAlert,
+    onClose,
+  ])
 
   if (isInDialog) {
     return null
