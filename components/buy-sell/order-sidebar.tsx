@@ -93,7 +93,7 @@ const PaymentSelectionContent = ({
                         method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                       }`}
                     />
-                    <div>
+                    <div className="flex- fl">
                       <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
                       <div className="font-normal text-neutral-10 text-xs">{formatPaymentMethodName(method.display_name) - maskAccountNumber(method.fields.account.value)}</div>
                     </div>
