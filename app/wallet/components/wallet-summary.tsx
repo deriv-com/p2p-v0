@@ -141,14 +141,8 @@ export default function WalletSummary({
       <div
         className={cn(
           "w-full p-6 flex flex-col",
-          isBalancesView
-            ? "bg-slate-1200 md:h-[140px] h-auto"
-            : "bg-[#F6F7F8] md:h-[180px] h-auto",
-          isMobile
-            ? isBalancesView
-              ? "rounded-b-3xl"
-              : "rounded-t-3xl rounded-b-none"
-            : "rounded-3xl",
+          isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-[#F6F7F8] md:h-[180px] h-auto",
+          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-t-3xl rounded-b-none") : "rounded-3xl",
         )}
       >
         {!isBalancesView && (
@@ -167,9 +161,7 @@ export default function WalletSummary({
                 alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
                 width={!isBalancesView ? 64 : 92}
                 height={!isBalancesView ? 64 : 92}
-                className={cn(
-                  !isBalancesView ? "w-16 h-16" : "w-16 h-16 md:w-24 md:h-24"
-                )}
+                className={cn(!isBalancesView ? "w-16 h-16" : "w-16 h-16 md:w-24 md:h-24")}
               />
             </div>
 
@@ -252,53 +244,54 @@ export default function WalletSummary({
             </div>
           </div>
         </div>
+      </div>
 
-        {currentStep === "chooseCurrency" && (
-          <div className="fixed inset-0 z-50 bg-white">
-            <ChooseCurrencyStep
-              title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
-              description={
-                currentOperation === "DEPOSIT"
-                  ? "Choose which currency you would like to deposit."
-                  : "Choose which currency you would like to withdraw."
-              }
-              currencies={currencies}
-              onClose={handleClose}
-              onCurrencySelect={handleCurrencySelect}
-            />
-          </div>
-        )}
+      {currentStep === "chooseCurrency" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <ChooseCurrencyStep
+            title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
+            description={
+              currentOperation === "DEPOSIT"
+                ? "Choose which currency you would like to deposit."
+                : "Choose which currency you would like to withdraw."
+            }
+            currencies={currencies}
+            onClose={handleClose}
+            onCurrencySelect={handleCurrencySelect}
+          />
+        </div>
+      )}
 
-        {currentStep === "walletAction" && (
-          <div className="fixed inset-0 z-50 bg-white">
-            <WalletActionStep
-              title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
-              actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
-              onClose={handleClose}
-              onGoBack={handleGoBackToCurrency}
-              onDirectDepositClick={handleDirectDepositClick}
-              onDirectWithdrawClick={handleDirectWithdrawClick}
-            />
-          </div>
-        )}
+      {currentStep === "walletAction" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <WalletActionStep
+            title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
+            actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
+            onClose={handleClose}
+            onGoBack={handleGoBackToCurrency}
+            onDirectDepositClick={handleDirectDepositClick}
+            onDirectWithdrawClick={handleDirectWithdrawClick}
+          />
+        </div>
+      )}
 
-        <WalletSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
-          operation={currentOperation}
-          onP2PTransferClick={handleSendTransferClick}
-          onAccountTransferClick={handleReceiveTransferClick}
-          currencies={currencies}
-        />
+      <WalletSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
+        operation={currentOperation}
+        onP2PTransferClick={handleSendTransferClick}
+        onAccountTransferClick={handleReceiveTransferClick}
+        currencies={currencies}
+      />
 
-        <FullScreenIframeModal
-          isOpen={isIframeModalOpen}
-          onClose={() => setIsIframeModalOpen(false)}
-          operation={currentOperation}
-          currency={displayCurrency}
-        />
-        <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
-      </>
-    )
+      <FullScreenIframeModal
+        isOpen={isIframeModalOpen}
+        onClose={() => setIsIframeModalOpen(false)}
+        operation={currentOperation}
+        currency={displayCurrency}
+      />
+      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
+    </>
+  )
 }
