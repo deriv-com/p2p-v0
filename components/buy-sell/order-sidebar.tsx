@@ -117,7 +117,7 @@ const PaymentSelectionContent = ({
             hideAlert()
           }}
         >
-          <div className="flex items-center justify-center">
+          <div className="flex items-center">
             <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
             <span className="text-neutral-10 text-sm">Add payment method</span>
           </div>
