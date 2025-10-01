@@ -87,7 +87,7 @@ const PaymentSelectionContent = ({
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <div className="flex items-center mb-[6px]">
+                  <div className="flex items-center mb-[6px] gap-2">
                     <div
                       className={`h-2 w-2 rounded-full mr-2 ${
                         method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
