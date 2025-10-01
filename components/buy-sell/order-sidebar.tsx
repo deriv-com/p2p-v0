@@ -14,6 +14,9 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -45,22 +48,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
   const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
+  const [showPaymentSelection, setShowPaymentSelection] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { showAlert } = useAlertDialog()
+  const isMobile = useMediaQuery("(max-width: 768px)")
 
   const handleShowPaymentSelection = () => {
     setTempSelectedPaymentMethods(selectedPaymentMethods)
-
-    showAlert({
-      title: "Payment method",
-      description: <PaymentSelectionContent />,
-      confirmText: "Confirm",
-      cancelText: "Cancel",
-      type: "warning",
-      onConfirm: () => {
-        setSelectedPaymentMethods(tempSelectedPaymentMethods)
-      }
-    })
+    setShowPaymentSelection(true)
   }
 
   useEffect(() => {
@@ -272,6 +267,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
               }`}
+              onClick={() => handlePaymentMethodToggle(method.id)}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -368,45 +364,89 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               {isBuy && (
                 <div className="mx-4 mt-4 pb-6 border-b">
                   <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
-                  <div
-                    className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                    onClick={handleShowPaymentSelection}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
-                      <ChevronRight className="h-5 w-5 text-gray-400" />
-                    </div>
-                  </div>
+                  {isMobile ? (
+                    <>
+                      <div
+                        className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                        onClick={handleShowPaymentSelection}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
+                          <ChevronRight className="h-5 w-5 text-gray-400" />
+                        </div>
+                      </div>
+                      <Drawer open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
+                        <DrawerContent className="h-[80vh]">
+                          <DrawerHeader>
+                            <DrawerTitle>Payment method</DrawerTitle>
+                          </DrawerHeader>
+                          <div className="px-4 pb-4 flex-1 overflow-y-auto">
+                            <PaymentSelectionContent />
+                          </div>
+                          <div className="p-4 border-t flex gap-2">
+                            <Button
+                              variant="outline"
+                              className="flex-1 bg-transparent"
+                              onClick={() => setShowPaymentSelection(false)}
+                            >
+                              Cancel
+                            </Button>
+                            <Button
+                              variant="primary"
+                              className="flex-1"
+                              onClick={() => {
+                                setSelectedPaymentMethods(tempSelectedPaymentMethods)
+                                setShowPaymentSelection(false)
+                              }}
+                            >
+                              Confirm
+                            </Button>
+                          </div>
+                        </DrawerContent>
+                      </Drawer>
+                    </>
+                  ) : (
+                    <Popover open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
+                      <PopoverTrigger asChild>
+                        <div
+                          className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                          onClick={handleShowPaymentSelection}
+                        >
+                          <div className="flex items-center justify-between">
+                            <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
+                            <ChevronRight className="h-5 w-5 text-gray-400" />
+                          </div>
+                        </div>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[400px] p-4" align="start">
+                        <h3 className="font-semibold mb-4">Payment method</h3>
+                        <div className="max-h-[400px] overflow-y-auto mb-4">
+                          <PaymentSelectionContent />
+                        </div>
+                        <div className="flex gap-2 pt-4 border-t">
+                          <Button
+                            variant="outline"
+                            className="flex-1 bg-transparent"
+                            onClick={() => setShowPaymentSelection(false)}
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            variant="primary"
+                            className="flex-1"
+                            onClick={() => {
+                              setSelectedPaymentMethods(tempSelectedPaymentMethods)
+                              setShowPaymentSelection(false)
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  )}
                 </div>
               )}
-
-              <div className="mx-4 mt-4 text-sm">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-slate-500">Exchange rate</span>
-                  <span className="text-slate-1400">
-                    {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    {ad.payment_currency}
-                    <span> /{ad.account_currency}</span>
-                  </span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-slate-500">Order limit</span>
-                  <span className="text-slate-1400">
-                    {minLimit} - {maxLimit} {ad.account_currency}
-                  </span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-slate-500">Payment time</span>
-                  <span className="text-slate-1400">{ad.order_expiry_period} min</span>
-                </div>
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-slate-500">{isBuy ? "Buyer" : "Seller"}</span>
-                  <span className="text-slate-1400">{ad.user?.nickname}</span>
-                </div>
-              </div>
 
               <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
                 <h3 className="text-slate-500 flex-1">
