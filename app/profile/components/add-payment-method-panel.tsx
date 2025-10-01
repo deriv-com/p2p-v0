@@ -126,7 +126,7 @@ export default function AddPaymentMethodPanel({
   }, [instructions])
 
   useEffect(() => {
-    return {
+    return () =>{
       setShowMethodDetails(false)
       setSelectedMethod("")
       setDetails({})
