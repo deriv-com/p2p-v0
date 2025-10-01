@@ -5,7 +5,7 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import {formatAmount} from "@/lib/utils"
 
 export function BalanceSection() {
-  const [balance, setBalance] = useState<number>(0)
+  const [balance, setBalance] = useState<number>("0.00")
   const [currency, setCurrency] = useState<string>("")
 
   useEffect(() => {
