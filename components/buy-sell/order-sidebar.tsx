@@ -40,7 +40,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
         }
         return prev
       })
-      setTempSelectedPaymentMethods(setSelectedPMs)
+      setTempSelectedPaymentMethods(selectedPMs)
     }
    return ( <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
