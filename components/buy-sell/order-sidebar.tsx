@@ -95,7 +95,7 @@ const PaymentSelectionContent = ({
                     />
                     <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
                   </div>
-                  <div className="font-normal text-neutral-10">{formatPaymentMethodName(method.display_name) - maskAccountNumber(method.fields.account.value)}</div>
+                  <div className="font-normal text-neutral-10 text-xs">{formatPaymentMethodName(method.display_name) - maskAccountNumber(method.fields.account.value)}</div>
                 </div>
                 <Checkbox
                   checked={selectedPMs?.includes(method.id)}
