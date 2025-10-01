@@ -195,12 +195,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const fetchUserPaymentMethods = async () => {
     try {
-      setPaymentMethodsError(null)
 
       const response = await ProfileAPI.getUserPaymentMethods()
 
       if (response.error) {
-        setPaymentMethodsError(response.error.message || "Failed to fetch payment methods")
+        console.log(response.error.message || "Failed to fetch payment methods")
         return
       }
 
@@ -215,7 +214,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setUserPaymentMethods(filteredMethods)
     } catch (error) {
       console.error("Error fetching payment methods:", error)
-      setPaymentMethodsError("Failed to load payment methods")
     }
   }
 
