@@ -138,13 +138,20 @@ export default function WalletSummary({
 
   return (
     <>
-      <div
-        className={cn(
-          "w-full p-6 flex flex-col",
-          isBalancesView ? "bg-slate-1200 h-[140px]" : "bg-[#F6F7F8] md:h-[180px] h-auto",
-          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-t-3xl") : "rounded-3xl",
-        )}
-      >
+     <div
+  className={cn(
+    "w-full p-6 flex flex-col",
+    isBalancesView
+      ? "bg-slate-1200 md:h-[140px] h-auto"
+      : "bg-[#F6F7F8] md:h-[180px] h-auto",
+    isMobile
+      ? isBalancesView
+        ? "rounded-b-3xl"
+        : "rounded-t-3xl"
+      : "rounded-3xl",
+  )}
+>
+
         {!isBalancesView && (
           <div className="flex justify-start items-center h-8 mb-4">
             <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
