@@ -15,7 +15,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
   return (
     <div
       onClick={onClick}
-      className="flex items-center justify-between h-[72px] w-full md:w-[444px] cursor-pointer hover:bg-gray-50 transition-colors relative"
+      className="flex items-center justify-between h-[72px] w-full md:w-[444px] cursor-pointer transition-colors relative"
     >
       {/* Left side: Logo and Currency Name */}
       <div className="flex items-center gap-4 pl-0">
