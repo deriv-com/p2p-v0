@@ -13,9 +13,8 @@ import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
 import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface OrderSidebarProps {
