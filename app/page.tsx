@@ -425,13 +425,13 @@ export default function BuySellPage() {
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
                             <div className="font-bold text-base flex items-center">
-                              {ad.payment_currency}{" "}
                               {ad.exchange_rate
                                 ? ad.exchange_rate.toLocaleString(undefined, {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,
                                   })
                                 : ""}
+                               {" "} {ad.payment_currency}
                               <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
                             <div className="mt-1">{`Order limits: ${ad.account_currency} ${ad.minimum_order_amount || "N/A"} - ${
