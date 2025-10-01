@@ -231,8 +231,7 @@ export default function OrdersPage() {
                       <div className="font-bold">
                         {getOrderType(order)}
                         <span className="text-base">
-                          {" "}
-                          {order.advert.account_currency} {formatAmount(order.amount)}
+                          {formatAmount(order.amount)}{" "}{order.advert.account_currency} 
                         </span>
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
@@ -242,7 +241,7 @@ export default function OrdersPage() {
                 <TableCell className="py px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end gap-[4px]">
                     <div>
-                      {order.payment_currency} {formatAmount(order.payment_amount)}
+                      {formatAmount(order.payment_amount)} {order.payment_currency}
                     </div>
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>

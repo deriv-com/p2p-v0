@@ -5,11 +5,12 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface StatCardProps {
+  tab: string
   title: string
   value: string | number
 }
 
-function StatCard({ title, value }: StatCardProps) {
+function StatCard({ tab, title, value }: StatCardProps) {
   return (
     <div className="flex justify-between md:border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
       <div className="font-bold text-black text-base leading-6 tracking-normal">
@@ -28,7 +29,7 @@ function StatCard({ title, value }: StatCardProps) {
             </TooltipContent>
           </Tooltip>
         )}
-        {title === "Trade volume (Lifetime)" && (
+        {title === "Trade volume" && tab === "lifetime" && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
@@ -39,24 +40,13 @@ function StatCard({ title, value }: StatCardProps) {
             </TooltipContent>
           </Tooltip>
         )}
-        {title === "Trade volume (30d)" && (
+        {title === "Trade volume" && tab === "last30days" && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
               <p className="opacity-[0.72]">The total value of all completed trades in the last 30 days.</p>
-              <TooltipArrow className="fill-black" />
-            </TooltipContent>
-          </Tooltip>
-        )}
-        {title === "Trade volume" && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="opacity-[0.72]">The total value of all trades completed.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -94,8 +84,9 @@ export default function StatsGrid({ stats }) {
                 <StatCard title="Avg. pay time" value={stats?.statistics_30day?.buy_time_average ?? "-"} />
                 <StatCard title="Avg. release time" value={stats?.statistics_30day?.release_time_average ?? "-"} />
                 <StatCard
+                  tab="last30days"
                   title="Trade volume"
-                  value={stats?.statistics_30day?.completion_amount_all > 0 ? `USD ${stats.completion_amount_all}` : "USD 0.00"}
+                  value={stats?.statistics_30day?.completion_amount_all > 0 ? `${stats.completion_amount_all} USD` : "0.00 USD"}
                 />
               </div>
             </TabsContent>
@@ -108,8 +99,9 @@ export default function StatsGrid({ stats }) {
                 <StatCard title="Avg. release time" value={stats?.statistics_lifetime?.release_time_average ?? "-"} />
                 <StatCard title="Trade partners" value={stats?.statistics_lifetime?.partner_count ?? "0"} />
                 <StatCard
+                  tab="lifetime"
                   title="Trade volume"
-                  value={stats?.statistics_lifetime?.completion_amount_all > 0 ? `USD ${stats.completion_amount_all}` : "USD 0.00"}
+                  value={stats?.statistics_lifetime?.completion_amount_all > 0 ? `${stats.completion_amount_all} USD` : "0.00 USD"}
                 />
               </div>
             </TabsContent>

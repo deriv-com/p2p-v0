@@ -41,7 +41,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
-      return `USD ${ad.minimum_order_amount} - ${ad.actual_maximum_order_amount}`
+      return `${ad.minimum_order_amount} - ${ad.actual_maximum_order_amount} USD`
     }
 
     if (typeof ad.limits === "string") {
@@ -268,7 +268,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-2 col-start-1 col-end-4  whitespace-nowrap">
                     <div className="mb-2">
-                      USD {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)}
+                      {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
                     <div className="h-2 bg-[#E9ECEF] rounded-xs w-full overflow-hidden mb-2">
                       <div

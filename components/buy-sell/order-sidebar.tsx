@@ -85,7 +85,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const maxLimit = ad.actual_maximum_order_amount || "0.00"
 
       if (numAmount < minLimit || numAmount > maxLimit) {
-        setValidationError(`Order limit: ${ad.account_currency} ${minLimit} - ${maxLimit}`)
+        setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
       } else {
         setValidationError(null)
       }
@@ -390,11 +390,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex items-center">
                     <span className="text-gray-500">{youSendText}:&nbsp;</span>
                     <span className="font-bold">
-                      {ad.payment_currency}{" "}
                       {Number.parseFloat(totalAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
+                      {" "}{ad.payment_currency}
                     </span>
                   </div>
                 </div>
@@ -450,18 +450,18 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Exchange rate</span>
                     <span className="text-slate-1400">
-                      {ad.payment_currency}{" "}
                       {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
+                      {" "}{ad.payment_currency}
                       <span> /{ad.account_currency}</span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Order limit</span>
                     <span className="text-slate-1400">
-                      {ad.account_currency} {minLimit} - {maxLimit}
+                      {minLimit} - {maxLimit} {ad.account_currency}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
