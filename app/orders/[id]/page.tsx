@@ -562,7 +562,7 @@ export default function OrderDetailsPage() {
             <p className="text-grayscale-100 mb-6">Don't cancel if you've already paid.</p>
 
             <div className="space-y-3">
-              <Button variant="black" onClick={() => setShowCancelConfirmation(false)} className="w-full">
+              <Button onClick={() => setShowCancelConfirmation(false)} className="w-full">
                 Keep order
               </Button>
               <Button
