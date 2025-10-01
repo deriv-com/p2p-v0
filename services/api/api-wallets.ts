@@ -134,8 +134,7 @@ export async function fetchBalance(selectedCurrency: string): Promise<number> {
 
 export async function fetchUserBalances(): Promise<any> {
   try {
-    const userId = useUserDataStore.getState().userId
-    console.log("user id from getState().userId is "+ userId)
+    const userId = useUserDataStore.getState().userI
 
 
     if (!userId) {
