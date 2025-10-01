@@ -11,19 +11,15 @@ interface BalanceSectionProps {
 export function BalanceSection({ className = "" }: BalanceSectionProps) {
   const [balance, setBalance] = useState<number>(0)
   const [currency, setCurrency] = useState<string>("USD")
-  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const fetchBalance = async () => {
       try {
-        setIsLoading(true)
         const data = await getTotalBalance()
         setBalance(data.balance)
         setCurrency(data.currency)
       } catch (error) {
         console.error("Failed to fetch balance:", error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
@@ -34,7 +30,7 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
     <div className={`p-6 ${className}`}>
       <div className="text-white opacity-[0.72] text-xs mb-2">Est. total value</div>
       <div className="text-white text-xl font-bold">
-        {`${formatAmount(balance?.toLocaleString() ?? "0")} ${currency}`
+        {`${formatAmount(balance?.toLocaleString() ?? "0")} ${currency}`}
       </div>
     </div>
   )
