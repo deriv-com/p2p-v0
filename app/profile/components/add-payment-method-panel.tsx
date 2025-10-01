@@ -126,7 +126,7 @@ export default function AddPaymentMethodPanel({
   }, [instructions])
 
   useEffect(() => {
-    if (!show) {
+    return {
       setShowMethodDetails(false)
       setSelectedMethod("")
       setDetails({})
@@ -134,7 +134,7 @@ export default function AddPaymentMethodPanel({
       setTouched({})
       setInstructions("")
     }
-  }, [show])
+  }, [])
 
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
