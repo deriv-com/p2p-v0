@@ -227,10 +227,10 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden px-3">
         <TemporaryBanAlert />
         <div className="flex-shrink-0">
-          <BalanceSection className="mb-4 md:mb-6" />
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
+              <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0
+                <BalanceSection className="mb-4 md:mb-6" />
                 <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                   <TabsList className="w-full bg-transparent">
                     <TabsTrigger
