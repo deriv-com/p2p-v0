@@ -123,7 +123,7 @@ const PaymentSelectionContent = ({
       </div>
       <Button
         className="w-full mt-4"
-        disabled={selectedPMs.length== 0}
+        disabled={selectedPMs.length == 0}
         onClick={() => {
           setSelectedPaymentMethods(selectedPMs)
           hideAlert()
