@@ -186,17 +186,7 @@ export default function BuySellPage() {
       return "Payment method (All)"
     }
 
-    if (selectedPaymentMethods.length === 1) {
-      return (
-        paymentMethods.find((m) => m.method === selectedPaymentMethods[0])?.display_name || selectedPaymentMethods[0]
-      )
-    }
-
-    const displayNames = selectedPaymentMethods.map(
-      (methodId) => paymentMethods.find((m) => m.method === methodId)?.display_name || methodId,
-    )
-
-    return "Payment: " + displayNames.join(", ")
+    return "Payment method (" + selectedPaymentMethods.length + ")"
   }
 
   useEffect(() => {
