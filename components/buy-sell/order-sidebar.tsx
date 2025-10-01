@@ -401,18 +401,16 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       </Drawer>
                     </>
                   ) : (
+                  <><div
+                      className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={handleShowPaymentSelection}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
+                        <ChevronRight className="h-5 w-5 text-gray-400" />
+                      </div>
+                    </div>
                     <AlertDialog open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
-                      <DialogTrigger asChild>
-                        <div
-                          className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                          onClick={handleShowPaymentSelection}
-                        >
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
-                            <ChevronRight className="h-5 w-5 text-gray-400" />
-                          </div>
-                        </div>
-                      </DialogTrigger>
                       <AlertDialogContent className="w-[400px] p-4" align="start">
                         <h3 className="font-semibold mb-4">Payment method</h3>
                         <div className="max-h-[400px] overflow-y-auto mb-4">
@@ -431,7 +429,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           </Button>
                         </div>
                       </AlertDialogContent>
-                    </AlertDialog>
+                    </AlertDialog></>
                   )}
                 </div>
               )}
