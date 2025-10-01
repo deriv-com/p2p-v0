@@ -131,7 +131,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             isLoadingPaymentMethods={isLoadingPaymentMethods} 
             paymentMethodsError={paymentMethodsError} 
             fetchUserPaymentMethods={fetchUserPaymentMethods}
-            selectedPaymentMethods={selectedPaymentMethods}
+            tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+            setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setShowAddPaymentMethod={setShowAddPaymentMethod}
             hideAlert={hideAlert}
       />,
@@ -143,8 +144,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       }
     })
   }
-
-   
 
   const handlePaymentMethodToggle = (methodId: string) => {
       setTempSelectedPaymentMethods((prev) => {
