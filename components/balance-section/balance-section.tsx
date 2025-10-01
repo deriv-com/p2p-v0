@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getTotalBalance } from "@/services/api/api-auth"
+import {formatAmount} from "@/lib/"
 
 interface BalanceSectionProps {
   className?: string
