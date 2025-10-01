@@ -58,8 +58,6 @@ export default function MarketFilterDropdown({
       ...prev,
       [key]: value,
     }))
-
-    if(!isMobile) onApply(filters, sortBy)
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
