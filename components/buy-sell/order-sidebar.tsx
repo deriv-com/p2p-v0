@@ -93,9 +93,11 @@ const PaymentSelectionContent = ({
                         method.type === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                       }`}
                     />
-                    <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
+                    <div>
+                      <span className="font-bold text-neutral-7">{getCategoryDisplayName(method.type)}</span>
+                      <div className="font-normal text-neutral-10 text-xs">{formatPaymentMethodName(method.display_name) - maskAccountNumber(method.fields.account.value)}</div>
+                    </div>
                   </div>
-                  <div className="font-normal text-neutral-10 text-xs">{formatPaymentMethodName(method.display_name) - maskAccountNumber(method.fields.account.value)}</div>
                 </div>
                 <Checkbox
                   checked={selectedPMs?.includes(method.id)}
