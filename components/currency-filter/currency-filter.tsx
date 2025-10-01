@@ -115,7 +115,7 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-1">
-            <div className="text-black opacity-[0.48]">You're paying with</div>
+            <div className="text-basetext-black opacity-[0.48]">You're paying with</div>
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
