@@ -38,8 +38,15 @@ export default function MarketFilterDropdown({
     setFilters(initialFilters)
   }, [initialFilters])
 
+  const handleReset = () => {
+    setSortBy("exchange_rate")
+    onApply({ fromFollowing: false }, "exchange_rate")
+    setIsOpen(false)
+  }
+
   const handleApply = () => {
     onApply(filters, sortBy)
+    setIsOpen(false)
   }
 
   const handleOpenChange = useCallback((open: boolean) => {
@@ -51,7 +58,6 @@ export default function MarketFilterDropdown({
       ...prev,
       [key]: value,
     }))
-    handleApply()
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
@@ -98,6 +104,23 @@ export default function MarketFilterDropdown({
             </div>
           </RadioGroup>
         </div>
+      </div>
+      {isMobile && <div className="flex flex-col md:flex-row gap-3">
+        <Button
+          variant="outline"
+          onClick={handleReset}
+          className="rounded-full flex-1 bg-transparent"
+          size={isMobile ? "default" : "sm"}
+        >
+          Reset
+        </Button>
+        <Button
+          onClick={handleApply}
+          className={`flex-1 rounded-full text-white hover:bg-gray-800 ${isMobile ? "order-first" : ""}`}
+          size={isMobile ? "default" : "sm"}
+        >
+          {isMobile ? "Apply filters" : "Apply"}
+        </Button>
       </div>
     </div>
   )
