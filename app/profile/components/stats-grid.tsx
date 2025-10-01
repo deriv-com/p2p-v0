@@ -5,7 +5,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 
 interface StatCardProps {
-  tab: 
+  tab: string
   title: string
   value: string | number
 }
@@ -47,17 +47,6 @@ function StatCard({ tab, title, value }: StatCardProps) {
             </TooltipTrigger>
             <TooltipContent>
               <p className="opacity-[0.72]">The total value of all completed trades in the last 30 days.</p>
-              <TooltipArrow className="fill-black" />
-            </TooltipContent>
-          </Tooltip>
-        )}
-        {title === "Trade volume" && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="opacity-[0.72]">The total value of all trades completed.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
