@@ -329,7 +329,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
-    if (isDesktop) {
+    if (!isMobile) {
       showAlert({
         title: "Add payment method",
         description: (
