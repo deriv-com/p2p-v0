@@ -31,7 +31,7 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, setShowAddPaymentMethod, selectedPaymentMethods, hideAlert }) => {
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, setShowAddPaymentMethod, setTempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
 
 
    return ( <div className="flex flex-col h-full overflow-y-auto">
