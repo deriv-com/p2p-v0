@@ -79,7 +79,7 @@ const PaymentSelectionContent = ({
           userPaymentMethods.map((method) => (
             <div
               key={method.id}
-              className={`border bg-grayscale-500 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
+              className={` bg-grayscale-500 rounded-lg p- cursor-pointer hover:bg-gray-50 transition-color ${
                 !selectedPMs?.includes(method.id) && selectedPMs?.length >= 3
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
