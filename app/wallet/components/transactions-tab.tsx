@@ -60,29 +60,6 @@ export default function TransactionsTab() {
     loadTransactions()
   }, [])
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "pending":
-        return (
-          <Badge variant="pending-secondary" className="h-6 rounded">
-            Processing
-          </Badge>
-        )
-      case "completed":
-        return (
-          <Badge variant="success-secondary" className="h-6 rounded">
-            Successful
-          </Badge>
-        )
-      default:
-        return (
-          <Badge variant="error-secondary" className="h-6 rounded">
-            Failed
-          </Badge>
-        )
-    }
-  }
-
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
     const today = new Date()
