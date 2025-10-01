@@ -512,7 +512,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             </div>
           </div>
         )}
-        {!isDesktop && showAddPaymentMethod && (
+        {isMobile && showAddPaymentMethod && (
           <AddPaymentMethodPanel
             onClose={() => setShowAddPaymentMethod(false)}
             onAdd={handleAddPaymentMethod}
