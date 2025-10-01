@@ -34,12 +34,13 @@ interface PaymentMethod {
 const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
    const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
    const handlePaymentMethodToggle = (methodId: string) => {
-      setTempSelectedPaymentMethods((prev) => {
+      setSelectedPMs((prev) => {
         if (prev?.length < 3) {
           return [...prev, methodId]
         }
         return prev
       })
+      setTempSelectedPaymentMethods()
     }
    return ( <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
