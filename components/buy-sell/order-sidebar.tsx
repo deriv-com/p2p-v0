@@ -33,20 +33,6 @@ interface PaymentMethod {
 
 const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, setShowAddPaymentMethod, selectedPaymentMethods, hideAlert }) => {
 
-    const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>(selectedPaymentMethods)
-
-    const handlePaymentMethodToggle = (methodId: string) => {
-        setTempSelectedPaymentMethods((prev) => {
-          if (prev.includes(methodId)) {
-            return prev.filter((id) => id !== methodId)
-          } else {
-            if (prev.length < 3) {
-              return [...prev, methodId]
-            }
-            return prev
-          }
-        })
-      }
 
    return ( <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
@@ -133,6 +119,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
   const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
+  const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>()
   const { hideAlert, showAlert } = useAlertDialog()
 
   const handleShowPaymentSelection = () => {
@@ -156,6 +143,21 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       }
     })
   }
+
+   
+
+  const handlePaymentMethodToggle = (methodId: string) => {
+      setTempSelectedPaymentMethods((prev) => {
+        if (prev.includes(methodId)) {
+          return prev.filter((id) => id !== methodId)
+        } else {
+          if (prev.length < 3) {
+            return [...prev, methodId]
+          }
+          return prev
+        }
+      })
+    }
 
   useEffect(() => {
     if (isOpen) {
