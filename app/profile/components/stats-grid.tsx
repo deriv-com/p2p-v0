@@ -29,7 +29,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
             </TooltipContent>
           </Tooltip>
         )}
-        {title === "Trade volume (Lifetime)" && (
+        {title === "Trade volume" && tab === "lifetime" && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
@@ -40,7 +40,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
             </TooltipContent>
           </Tooltip>
         )}
-        {title === "Trade volume" && (
+        {title === "Trade volume" && tab === "30d" (
           <Tooltip>
             <TooltipTrigger asChild>
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
