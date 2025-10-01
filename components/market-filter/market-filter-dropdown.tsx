@@ -40,7 +40,6 @@ export default function MarketFilterDropdown({
 
   const handleApply = () => {
     onApply(filters, sortBy)
-    setIsOpen(false)
   }
 
   const handleOpenChange = useCallback((open: boolean) => {
