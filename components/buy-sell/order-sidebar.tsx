@@ -14,7 +14,7 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { useMediaQuery } from "@/hooks/use-media-query"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -139,7 +139,8 @@ const PaymentSelectionContent = ({
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
-  const isDesktop = useMediaQuery("(min-width: 640px)")
+  const isMobile = useIsMobile()
+  const isDesktop = !isMobile
   const [amount, setAmount] = useState(null)
   const [totalAmount, setTotalAmount] = useState(0)
   const [validationError, setValidationError] = useState<string | null>(null)
