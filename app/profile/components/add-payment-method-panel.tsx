@@ -416,7 +416,7 @@ export default function AddPaymentMethodPanel({
     if (isLoadingMethods || availablePaymentMethods.length === 0) {
       return "Select a payment method"
     }
-    return showMethodDetails ? "Add payment details" : "Select a payment method"
+    return showMethodDetails && !isInDialog ? "Add payment details" : "Select a payment method"
   }
 
   return (
