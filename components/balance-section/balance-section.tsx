@@ -37,7 +37,7 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
         {isLoading ? (
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
         ) : (
-          `${formatAmount(balance?.toLocaleString())} ${currency}`
+          `${formatAmount(balance?.toLocaleString() ?? "0")} ${currency}`
         )}
       </div>
     </div>
