@@ -448,6 +448,36 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                 </div>
               )}
 
+
+              <div className="mx-4 mt-4 text-sm">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Exchange rate</span>
+                  <span className="text-slate-1400">
+                    {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    {ad.payment_currency}
+                    <span> /{ad.account_currency}</span>
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Order limit</span>
+                  <span className="text-slate-1400">
+                    {minLimit} - {maxLimit} {ad.account_currency}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Payment time</span>
+                  <span className="text-slate-1400">{ad.order_expiry_period} min</span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">{isBuy ? "Buyer" : "Seller"}</span>
+                  <span className="text-slate-1400">{ad.user?.nickname}</span>
+                </div>
+              </div>
+
+
               <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
                 <h3 className="text-slate-500 flex-1">
                   {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
