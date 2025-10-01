@@ -119,7 +119,7 @@ const PaymentSelectionContent = ({
         >
           <div className="flex items-center">
             <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-            <span className="text-slate-10 text-sm">Add payment method</span>
+            <span className="text-slate-1200 text-base">Add payment method</span>
           </div>
         </div>
       </div>
