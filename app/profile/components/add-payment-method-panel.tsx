@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface AddPaymentMethodPanelProps {
   onClose: () => void
   onAdd: (method: string, fields: Record<string, string>) => void
   isLoading: boolean
   allowedPaymentMethods?: string[]
-  isInDialog?: boolean // Add prop to control whether to render with PanelWrapper
+  isInDialog?: boolean
+  show?: boolean
 }
 
 interface PanelWrapperProps {
@@ -70,7 +72,10 @@ export default function AddPaymentMethodPanel({
   isLoading,
   allowedPaymentMethods,
   isInDialog = false,
+  show = false,
 }: AddPaymentMethodPanelProps) {
+  const { showAlert, hideAlert } = useAlertDialog()
+
   const [selectedMethod, setSelectedMethod] = useState<string>("")
   const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
@@ -124,19 +129,41 @@ export default function AddPaymentMethodPanel({
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
-    console.log("[v0] Method selected:", paymentMethod.method, "isInDialog:", isInDialog)
     setSelectedMethod(paymentMethod.method)
     setShowMethodDetails(true)
+
+    if (isInDialog && showAlert) {
+      showAlert({
+        title: "Add payment details",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          hideAlert?.()
+          onClose()
+        },
+      })
+    }
   }
 
   const handleBackToMethodList = () => {
-    console.log("[v0] Back to method list, isInDialog:", isInDialog)
     setShowMethodDetails(false)
     setSelectedMethod("")
     setDetails({})
     setErrors({})
     setTouched({})
     setInstructions("")
+
+    if (isInDialog && showAlert) {
+      showAlert({
+        title: "Add payment method",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          hideAlert?.()
+          onClose()
+        },
+      })
+    }
   }
 
   const validateInput = (value: string) => {
@@ -235,7 +262,6 @@ export default function AddPaymentMethodPanel({
   const isFormValid = () => {
     if (!selectedMethod) return false
 
-    // Check if there are any validation errors
     if (Object.keys(errors).length > 0) return false
 
     return selectedMethodFields.every((field) => {
@@ -247,17 +273,6 @@ export default function AddPaymentMethodPanel({
   }
 
   const renderContent = () => {
-    console.log(
-      "[v0] renderContent called, isLoadingMethods:",
-      isLoadingMethods,
-      "availablePaymentMethods:",
-      availablePaymentMethods.length,
-      "showMethodDetails:",
-      showMethodDetails,
-      "isInDialog:",
-      isInDialog,
-    )
-
     if (isLoadingMethods) {
       return (
         <div className="flex-1 flex items-center justify-center py-8">
@@ -366,9 +381,22 @@ export default function AddPaymentMethodPanel({
     )
   }
 
+  useEffect(() => {
+    if (isInDialog && show && showAlert) {
+      showAlert({
+        title: showMethodDetails ? "Add payment details" : "Add payment method",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          hideAlert?.()
+          onClose()
+        },
+      })
+    }
+  }, [show, isInDialog, showMethodDetails])
+
   if (isInDialog) {
-    console.log("[v0] Rendering in dialog mode")
-    return <div className="w-full">{renderContent()}</div>
+    return null
   }
 
   const getTitle = () => {

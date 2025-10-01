@@ -328,26 +328,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
-    console.log("[v0] handleAddPaymentMethodClick called, isMobile:", isMobile)
     if (!isMobile) {
-      console.log("[v0] Showing alert dialog for AddPaymentMethodPanel")
-      showAlert({
-        title: "Add payment method",
-        description: (
-          <div className="w-full">
-            <AddPaymentMethodPanel
-              onClose={hideAlert}
-              onAdd={handleAddPaymentMethod}
-              isLoading={isAddingPaymentMethod}
-              allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
-              isInDialog={true}
-            />
-          </div>
-        ),
-        showCloseButton: true,
-      })
+      setShowAddPaymentMethod(true)
     } else {
-      console.log("[v0] Showing mobile panel for AddPaymentMethodPanel")
       setShowAddPaymentMethod(true)
     }
   }
@@ -517,12 +500,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             </div>
           </div>
         )}
-        {isMobile && showAddPaymentMethod && (
+        {showAddPaymentMethod && (
           <AddPaymentMethodPanel
             onClose={() => setShowAddPaymentMethod(false)}
             onAdd={handleAddPaymentMethod}
             isLoading={isAddingPaymentMethod}
             allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
+            isInDialog={!isMobile}
+            show={showAddPaymentMethod}
           />
         )}
       </div>
