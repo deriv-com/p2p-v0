@@ -137,7 +137,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [orderStatus, setOrderStatus] = useState<{ success: boolean; message: string } | null>(null)
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
-  const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsError, setPaymentMethodsError] = useState<string | null>(null)
   const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
@@ -196,7 +195,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const fetchUserPaymentMethods = async () => {
     try {
-      setIsLoadingPaymentMethods(true)
       setPaymentMethodsError(null)
 
       const response = await ProfileAPI.getUserPaymentMethods()
@@ -218,8 +216,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     } catch (error) {
       console.error("Error fetching payment methods:", error)
       setPaymentMethodsError("Failed to load payment methods")
-    } finally {
-      setIsLoadingPaymentMethods(false)
     }
   }
 
