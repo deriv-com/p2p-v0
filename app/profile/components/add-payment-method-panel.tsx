@@ -126,6 +126,17 @@ export default function AddPaymentMethodPanel({
     setCharCount(instructions.length)
   }, [instructions])
 
+  useEffect(() => {
+    if (!show) {
+      setShowMethodDetails(false)
+      setSelectedMethod("")
+      setDetails({})
+      setErrors({})
+      setTouched({})
+      setInstructions("")
+    }
+  }, [show])
+
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
@@ -392,6 +403,9 @@ export default function AddPaymentMethodPanel({
           onClose()
         },
       })
+    }
+    if (isInDialog && !show && hideAlert) {
+      hideAlert()
     }
   }, [show, isInDialog, showMethodDetails, isLoadingMethods, availablePaymentMethods, details, errors, instructions])
 
