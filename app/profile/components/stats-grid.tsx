@@ -94,6 +94,7 @@ export default function StatsGrid({ stats }) {
                 <StatCard title="Avg. pay time" value={stats?.statistics_30day?.buy_time_average ?? "-"} />
                 <StatCard title="Avg. release time" value={stats?.statistics_30day?.release_time_average ?? "-"} />
                 <StatCard
+                  tab="lifetime"
                   title="Trade volume"
                   value={stats?.statistics_30day?.completion_amount_all > 0 ? `${stats.completion_amount_all} USD` : "0.00 USD"}
                 />
@@ -108,6 +109,7 @@ export default function StatsGrid({ stats }) {
                 <StatCard title="Avg. release time" value={stats?.statistics_lifetime?.release_time_average ?? "-"} />
                 <StatCard title="Trade partners" value={stats?.statistics_lifetime?.partner_count ?? "0"} />
                 <StatCard
+                  tab="lifetime"
                   title="Trade volume"
                   value={stats?.statistics_lifetime?.completion_amount_all > 0 ? `${stats.completion_amount_all} USD` : "0.00 USD"}
                 />
