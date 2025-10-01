@@ -68,7 +68,7 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    if (userId && !hasFetchedRef.current) {
+    if (userId && !hasFetchedRef.current)
       fetchAds()
       hasFetchedRef.current = true
     }
