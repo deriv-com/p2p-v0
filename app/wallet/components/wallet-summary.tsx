@@ -143,7 +143,7 @@ export default function WalletSummary({
         className={cn(
           "w-full p-6 flex flex-col",
           isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-[#F6F7F8] md:h-[180px] h-auto",
-          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-t-3xl rounded-b-none") : "rounded-3xl",
+          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
         )}
       >
         {!isBalancesView && (
