@@ -23,24 +23,15 @@ export default function WalletPage() {
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
       <div className="w-full flex flex-col items-center">
         <div className="w-full mt-0">
-          <WalletSummary />
+          <WalletSummary
+            isBalancesView={displayBalances}
+            selectedCurrency={selectedCurrency}
+            onBack={handleBackToBalances}
+          />
         </div>
 
         <div className="w-full mt-6 mx-4 md:mx-4 pl-6 pr-0 md:pl-0 ">
-          {displayBalances ? (
-            <WalletBalances onBalanceClick={handleBalanceClick} />
-          ) : (
-            <div>
-              <button
-                onClick={handleBackToBalances}
-                className="mb-4 text-sm text-[#181C25] hover:underline flex items-center gap-2"
-              >
-                ← Back to Balances
-              </button>
-              <h2 className="text-lg font-semibold mb-4">Transactions {selectedCurrency && `(${selectedCurrency})`}</h2>
-              <TransactionsTab />
-            </div>
-          )}
+          {displayBalances ? <WalletBalances onBalanceClick={handleBalanceClick} /> : <TransactionsTab />}
         </div>
       </div>
     </div>
