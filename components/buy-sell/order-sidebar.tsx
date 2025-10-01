@@ -15,7 +15,7 @@ import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface OrderSidebarProps {
@@ -406,8 +406,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       </Drawer>
                     </>
                   ) : (
-                    <Popover open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
-                      <PopoverTrigger asChild>
+                    <Dialog open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
+                      <DialogTrigger asChild>
                         <div
                           className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                           onClick={handleShowPaymentSelection}
@@ -417,8 +417,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             <ChevronRight className="h-5 w-5 text-gray-400" />
                           </div>
                         </div>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-[400px] p-4" align="start">
+                      </DialogTrigger>
+                      <DialogContent className="w-[400px] p-4" align="start">
                         <h3 className="font-semibold mb-4">Payment method</h3>
                         <div className="max-h-[400px] overflow-y-auto mb-4">
                           <PaymentSelectionContent />
@@ -442,8 +442,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             Confirm
                           </Button>
                         </div>
-                      </PopoverContent>
-                    </Popover>
+                      </DialogContent>
+                    </Dialog>
                   )}
                 </div>
               )}
