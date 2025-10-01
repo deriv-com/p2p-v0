@@ -5,7 +5,7 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import {formatAmount} from "@/lib/utils"
 
 export function BalanceSection() {
-  const [balance, setBalance] = useState<number>("0.00")
+  const [balance, setBalance] = useState<string>("0.00")
   const [currency, setCurrency] = useState<string>("")
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export function BalanceSection() {
     <div className="mb-4">
       <div className="text-white opacity-[0.72] text-xs mb-2">Est. total value</div>
       <div className="text-white text-xl font-bold">
-        {`${currency} ${formatAmount(balance?.toLocaleString() ?? "0")}`}
+        {`${currency} ${formatAmount(balance)}`}
       </div>
     </div>
   )
