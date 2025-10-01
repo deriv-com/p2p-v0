@@ -17,6 +17,7 @@ export function CurrencyFilter({
   currencies,
   selectedCurrency,
   onCurrencySelect,
+  title,
   trigger,
   placeholder = "Search",
 }: CurrencyFilterProps) {
