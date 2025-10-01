@@ -14,6 +14,7 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -40,13 +41,14 @@ const PaymentSelectionContent = ({
   setTempSelectedPaymentMethods,
   hideAlert,
   setSelectedPaymentMethods,
+  handleAddPaymentMethodClick,
 }) => {
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
   const handlePaymentMethodToggle = (methodId: string) => {
     setSelectedPMs((prev) => {
       const newSelection = prev.includes(methodId)
-        ? prev.filter((id) => id !== methodId) 
+        ? prev.filter((id) => id !== methodId)
         : prev.length < 3
           ? [...prev, methodId]
           : prev
@@ -111,7 +113,7 @@ const PaymentSelectionContent = ({
         <div
           className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => {
-            setShowAddPaymentMethod(true)
+            handleAddPaymentMethodClick()
             hideAlert()
           }}
         >
@@ -137,6 +139,7 @@ const PaymentSelectionContent = ({
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
+  const isDesktop = useMediaQuery("(min-width: 640px)")
   const [amount, setAmount] = useState(null)
   const [totalAmount, setTotalAmount] = useState(0)
   const [validationError, setValidationError] = useState<string | null>(null)
@@ -165,6 +168,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           setShowAddPaymentMethod={setShowAddPaymentMethod}
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
+          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
         />
       ),
     })
@@ -297,7 +301,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       if (response.success) {
         await fetchUserPaymentMethods()
-        setShowAddPaymentMethod(false)
+        if (isDesktop) {
+          hideAlert()
+        } else {
+          setShowAddPaymentMethod(false)
+        }
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
@@ -317,6 +325,26 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       console.log(error)
     } finally {
       setIsAddingPaymentMethod(false)
+    }
+  }
+
+  const handleAddPaymentMethodClick = () => {
+    if (isDesktop) {
+      showAlert({
+        title: "Add payment method",
+        description: (
+          <div className="max-h-[70vh] overflow-y-auto">
+            <AddPaymentMethodPanel
+              onClose={hideAlert}
+              onAdd={handleAddPaymentMethod}
+              isLoading={isAddingPaymentMethod}
+              allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
+            />
+          </div>
+        ),
+      })
+    } else {
+      setShowAddPaymentMethod(true)
     }
   }
 
@@ -485,7 +513,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             </div>
           </div>
         )}
-        {showAddPaymentMethod && (
+        {!isDesktop && showAddPaymentMethod && (
           <AddPaymentMethodPanel
             onClose={() => setShowAddPaymentMethod(false)}
             onAdd={handleAddPaymentMethod}
