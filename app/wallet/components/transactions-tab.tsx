@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
