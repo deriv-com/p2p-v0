@@ -59,10 +59,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       type: "warning",
       onConfirm: () => {
         setSelectedPaymentMethods(tempSelectedPaymentMethods)
-      },
-      onCancel: () => {
-        setTempSelectedPaymentMethods(selectedPaymentMethods)
-      },
+      }
     })
   }
 
