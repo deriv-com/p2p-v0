@@ -31,7 +31,7 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, tempSelectedPaymentMethods, handlePaymentMethodToggle, setShowAddPaymentMethod }) => (
+const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError, fetchUserPaymentMethods, tempSelectedPaymentMethods, handlePaymentMethodToggle, setShowAddPaymentMethod, hideAlert }) => (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
@@ -129,6 +129,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             tempSelectedPaymentMethods={tempSelectedPaymentMethods} 
             handlePaymentMethodToggle={handlePaymentMethodToggle} 
             setShowAddPaymentMethod={setShowAddPaymentMethod}
+            hideAlert={hideAlert}
       />,
       confirmText: "Confirm",
       type: "warning",
