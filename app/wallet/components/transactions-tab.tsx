@@ -59,7 +59,6 @@ export default function TransactionsTab() {
     loadTransactions()
   }, [])
 
-
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
     const today = new Date()
@@ -85,15 +84,14 @@ export default function TransactionsTab() {
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
-    const status = transaction.metadata.transaction_status
 
     const getAmountColor = () => {
       if (type === "Withdraw") {
-        return "text-[#C40000]" // Red for withdrawals
+        return "text-[#C40000]"
       } else if (type === "Deposit") {
-        return "text-[#007A22]" // Green for deposits
+        return "text-[#007A22]"
       } else if (type === "Transfer") {
-        return "text-[#181C25]" // Dark for transfers
+        return "text-[#181C25]"
       }
       return "text-[#181C25]"
     }
