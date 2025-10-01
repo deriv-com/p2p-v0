@@ -401,7 +401,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       </Drawer>
                     </>
                   ) : (
-                    <Dialog open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
+                    <AlertDialog open={showPaymentSelection} onOpenChange={setShowPaymentSelection}>
                       <DialogTrigger asChild>
                         <div
                           className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -413,7 +413,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                           </div>
                         </div>
                       </DialogTrigger>
-                      <DialogContent className="w-[400px] p-4" align="start">
+                      <AlertDialogContent className="w-[400px] p-4" align="start">
                         <h3 className="font-semibold mb-4">Payment method</h3>
                         <div className="max-h-[400px] overflow-y-auto mb-4">
                           <PaymentSelectionContent />
@@ -430,8 +430,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                             Confirm
                           </Button>
                         </div>
-                      </DialogContent>
-                    </Dialog>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   )}
                 </div>
               )}
