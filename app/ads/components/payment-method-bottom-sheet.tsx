@@ -234,7 +234,6 @@ export default function PaymentMethodBottomSheet({
               type="button"
               onClick={handleSelect}
               onMouseDown={(e) => e.stopPropagation()}
-              variant="black"
               className="w-full"
             >
               Select

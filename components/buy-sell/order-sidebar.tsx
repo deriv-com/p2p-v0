@@ -315,7 +315,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           className="w-full"
           onClick={handleConfirmPaymentSelection}
           disabled={tempSelectedPaymentMethods.length === 0}
-          variant="black"
         >
           Confirm
         </Button>

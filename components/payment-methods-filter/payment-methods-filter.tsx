@@ -6,7 +6,7 @@ import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import EmptyState from "@/components/empty-state"
@@ -122,13 +122,6 @@ export default function PaymentMethodsFilter({
     return type?.charAt(0).toUpperCase() + type?.slice(1)
   }
 
-  const getMethodButtonClass = (methodId: string) => {
-    const isSelected = tempSelectedMethods.includes(methodId)
-    return `rounded-full text-grayscale-100 font-normal ${
-      isSelected ? "hover:bg-slate-1200 bg-slate-1200 text-white" : "border-color-grayscale-200"
-    }`
-  }
-
   const renderPaymentMethodGroups = () => {
     if (Object.keys(groupedMethods).length === 0) {
       return null
@@ -139,17 +132,20 @@ export default function PaymentMethodsFilter({
       .map(([type, methods]) => (
         <div key={type} className="space-y-3">
           <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col gap-3">
             {methods.map((method) => (
-              <Button
-                key={method.method}
-                onClick={() => handleMethodToggle(method.method)}
-                variant="outline"
-                size="sm"
-                className={getMethodButtonClass(method.method)}
-              >
-                {method.display_name}
-              </Button>
+              <div key={method.method} className="flex items-center space-x-3">
+                <Checkbox
+                  id={method.method}
+                  checked={tempSelectedMethods.includes(method.method)}
+                  onCheckedChange={() => handleMethodToggle(method.method)}
+                  className="data-[state=checked]:bg-black border-black"
+                  disabled={isLoading}
+                />
+                <label htmlFor={method.method} className="text-sm text-grayscale-100 cursor-pointer flex-1">
+                  {method.display_name}
+                </label>
+              </div>
             ))}
           </div>
         </div>
@@ -259,7 +255,7 @@ export default function PaymentMethodsFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-80 p-4" align="start">
+      <PopoverContent className="w-80 p-4" align="end">
         <FilterContent />
       </PopoverContent>
     </Popover>

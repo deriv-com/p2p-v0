@@ -132,7 +132,7 @@ export default function StatusModal({
             )}
           </div>
 
-          <Button onClick={onClose} variant="black" className="w-full">
+          <Button onClick={onClose} className="w-full">
             {actionButtonText}
           </Button>
         </div>

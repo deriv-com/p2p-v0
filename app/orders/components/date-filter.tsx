@@ -124,7 +124,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
                 Reset
               </Button>
-              <Button variant="black" onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
+              <Button onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
                 Confirm
               </Button>
             </div>

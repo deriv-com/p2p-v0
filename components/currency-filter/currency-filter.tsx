@@ -7,7 +7,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
@@ -17,6 +17,7 @@ export function CurrencyFilter({
   currencies,
   selectedCurrency,
   onCurrencySelect,
+  title,
   trigger,
   placeholder = "Search",
 }: CurrencyFilterProps) {
@@ -77,7 +78,7 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-4">
+      <div className="relative mb-4 md:mb-0">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
@@ -90,7 +91,7 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base pl-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 md:focus:border-black bg-grayscale-500 md:bg-transparent rounded-lg"
+          className="text-base pl-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -115,6 +116,7 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-1">
+            {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
@@ -135,22 +137,22 @@ export function CurrencyFilter({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
+      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-center">Choose currency</h3>
+            <h3 className="text-xl font-bold text-center">{title}</h3>
           </div>
           <CurrencyList />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{trigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-2" align="end">
+      <PopoverContent className="w-80 h-80 p-4" align="end">
         <CurrencyList />
       </PopoverContent>
     </Popover>
