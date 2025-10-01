@@ -137,6 +137,7 @@ export async function fetchUserBalances(): Promise<any> {
     const userId = useUserDataStore.getState().userId
     console.log("user id from getState().userId is "+ userId)
 
+
     if (!userId) {
       throw new Error("User ID not found")
     }
