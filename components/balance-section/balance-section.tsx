@@ -23,10 +23,10 @@ export function BalanceSection() {
   }, [])
 
   return (
-    <div className="mb-4 md:mb-6">
+    <div className="mb-4">
       <div className="text-white opacity-[0.72] text-xs mb-2">Est. total value</div>
       <div className="text-white text-xl font-bold">
-        {`${formatAmount(balance?.toLocaleString() ?? "0")} ${currency}`}
+        {`${currency} ${formatAmount(balance?.toLocaleString() ?? "0")}`}
       </div>
     </div>
   )
