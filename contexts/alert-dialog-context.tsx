@@ -73,7 +73,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
   )
 
   const renderMobileContent = () => (
-    <div className="p-6">
+    <div className="p-6 overflow-y-auto">
       {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
       {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
       <div className="flex flex-col gap-2 mt-6">
