@@ -90,7 +90,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
           className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => {
             setShowAddPaymentMethod(true)
-            hideAlert
+            hideAlert()
             }}
         >
           <div className="flex items-center justify-center">
