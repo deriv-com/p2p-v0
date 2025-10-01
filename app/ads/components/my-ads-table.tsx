@@ -41,7 +41,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
-      return `USD ${ad.minimum_order_amount} - ${ad.actual_maximum_order_amount}`
+      return `${ad.minimum_order_amount} - ${ad.actual_maximum_order_amount} USD `
     }
 
     if (typeof ad.limits === "string") {
