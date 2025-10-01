@@ -128,7 +128,7 @@ export default function StatusBottomSheet({
           {subMessage && <p className="mt-6 font-normal text-base leading-6">{subMessage}</p>}
 
           <div className="mt-12">
-            <Button onClick={onClose} variant="black" className="w-full h-14">
+            <Button onClick={onClose} className="w-full h-14">
               {actionButtonText}
             </Button>
           </div>
