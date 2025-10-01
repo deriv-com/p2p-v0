@@ -166,7 +166,7 @@ export default function PaymentMethodsFilter({
           placeholder="Search"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="pl-10 pr-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 md:focus:border-black bg-grayscale-500 md:bg-transparent rounded-lg"
+          className="text-base pl-10 pr-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
