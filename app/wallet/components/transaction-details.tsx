@@ -182,7 +182,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
           <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
             <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
           </div>
-          <div className={`text-[28px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
+          <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
           <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
         </div>
       </div>
