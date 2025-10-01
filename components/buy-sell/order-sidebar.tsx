@@ -31,18 +31,34 @@ interface PaymentMethod {
   method: string
 }
 
-const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert, setSelectedPaymentMethods }) => {
-   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
-   const handlePaymentMethodToggle = (methodId: string) => {
-      setSelectedPMs((prev) => {
-        if (prev?.length < 3) {
-          return [...prev, methodId]
-        }
-        return prev
-      })
-      setTempSelectedPaymentMethods(selectedPMs)
-    }
-   return ( <div className="flex flex-col h-full overflow-y-auto">
+const PaymentSelectionContent = ({
+  userPaymentMethods,
+  isLoadingPaymentMethods,
+  paymentMethodsError,
+  setShowAddPaymentMethod,
+  tempSelectedPaymentMethods,
+  setTempSelectedPaymentMethods,
+  hideAlert,
+  setSelectedPaymentMethods,
+}) => {
+  const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
+
+  const handlePaymentMethodToggle = (methodId: string) => {
+    setSelectedPMs((prev) => {
+      const newSelection = prev.includes(methodId)
+        ? prev.filter((id) => id !== methodId) // Remove if already selected
+        : prev.length < 3
+          ? [...prev, methodId] // Add if under limit
+          : prev // Keep unchanged if at limit
+
+      // Update temp state with new selection
+      setTempSelectedPaymentMethods(newSelection)
+      return newSelection
+    })
+  }
+
+  return (
+    <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {isLoadingPaymentMethods ? (
@@ -98,7 +114,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
           onClick={() => {
             setShowAddPaymentMethod(true)
             hideAlert()
-            }}
+          }}
         >
           <div className="flex items-center justify-center">
             <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
@@ -106,13 +122,18 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
           </div>
         </div>
       </div>
-      <Button className="w-full mt-4" onClick={() => {
-        hideAlert()
-        setSelectedPaymentMethods(tempSelectedPaymentMethods)
-      }}>Confirm</Button>
+      <Button
+        className="w-full mt-4"
+        onClick={() => {
+          setSelectedPaymentMethods(selectedPMs)
+          hideAlert()
+        }}
+      >
+        Confirm
+      </Button>
     </div>
   )
-  }
+}
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
   const router = useRouter()
@@ -132,19 +153,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const { hideAlert, showAlert } = useAlertDialog()
 
   const handleShowPaymentSelection = () => {
-
     showAlert({
       title: "Payment method",
-      description: <PaymentSelectionContent 
-            userPaymentMethods={userPaymentMethods} 
-            isLoadingPaymentMethods={isLoadingPaymentMethods} 
-            paymentMethodsError={paymentMethodsError} 
-            tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-            setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-            setShowAddPaymentMethod={setShowAddPaymentMethod}
-            setSelectedPaymentMethods={setSelectedPaymentMethods}
-            hideAlert={hideAlert}
-      />
+      description: (
+        <PaymentSelectionContent
+          userPaymentMethods={userPaymentMethods}
+          isLoadingPaymentMethods={isLoadingPaymentMethods}
+          paymentMethodsError={paymentMethodsError}
+          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          setShowAddPaymentMethod={setShowAddPaymentMethod}
+          setSelectedPaymentMethods={setSelectedPaymentMethods}
+          hideAlert={hideAlert}
+        />
+      ),
     })
   }
 
