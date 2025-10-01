@@ -124,7 +124,7 @@ const PaymentSelectionContent = ({
         </div>
       </div>
       <Button
-        className="w-full mt-4"
+        className="w-full mt-12"
         disabled={selectedPMs.length == 0}
         onClick={() => {
           setSelectedPaymentMethods(selectedPMs)
