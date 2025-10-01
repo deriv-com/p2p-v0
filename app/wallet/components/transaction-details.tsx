@@ -110,8 +110,8 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     switch (type) {
       case "Deposit":
         return {
-          icon: "/icons/add-icon.png",
-          iconBg: "bg-success-light",
+          icon: "/icons/add-green.png",
+          iconBg: "bg-[#00883214]",
           amount: amount,
           amountColor: "text-success-text",
           subtitle: "Deposit",
@@ -119,8 +119,8 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         }
       case "Withdraw":
         return {
-          icon: "/icons/subtract-icon.png",
-          iconBg: "bg-error-light",
+          icon: "/icons/withdraw-red.png",
+          iconBg: "bg-[#E6190E14]",
           amount: amount,
           amountColor: "text-error-text",
           subtitle: "Withdraw",
@@ -128,8 +128,8 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         }
       case "Transfer":
         return {
-          icon: "/icons/transfer-icon.png",
-          iconBg: "bg-slate-100",
+          icon: "/icons/transfer-bold.png",
+          iconBg: "bg-[#181C2514]",
           amount: amount,
           amountColor: "text-slate-1200",
           subtitle: `${getFromWalletName(transaction)} → ${getToWalletName(transaction)}`,
@@ -137,7 +137,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         }
       default:
         return {
-          icon: "/icons/add-icon.png",
+          icon: "/icons/add-green.png",
           iconBg: "bg-slate-100",
           amount: amount,
           amountColor: "text-slate-1200",
@@ -180,7 +180,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
         <div className={`${isMobile ? "w-full" : "max-w-[592px]"} flex flex-col items-center`}>
           <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
-            <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
+            <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={28} height={28} />
           </div>
           <div className={`text-[24px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
           <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
