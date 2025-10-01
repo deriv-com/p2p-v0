@@ -390,11 +390,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex items-center">
                     <span className="text-gray-500">{youSendText}:&nbsp;</span>
                     <span className="font-bold">
-                      {ad.payment_currency}{" "}
                       {Number.parseFloat(totalAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
+                      {" "}{ad.payment_currency}
                     </span>
                   </div>
                 </div>
