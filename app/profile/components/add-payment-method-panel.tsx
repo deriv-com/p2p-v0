@@ -124,11 +124,13 @@ export default function AddPaymentMethodPanel({
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
+    console.log("[v0] Method selected:", paymentMethod.method, "isInDialog:", isInDialog)
     setSelectedMethod(paymentMethod.method)
     setShowMethodDetails(true)
   }
 
   const handleBackToMethodList = () => {
+    console.log("[v0] Back to method list, isInDialog:", isInDialog)
     setShowMethodDetails(false)
     setSelectedMethod("")
     setDetails({})
@@ -245,6 +247,17 @@ export default function AddPaymentMethodPanel({
   }
 
   const renderContent = () => {
+    console.log(
+      "[v0] renderContent called, isLoadingMethods:",
+      isLoadingMethods,
+      "availablePaymentMethods:",
+      availablePaymentMethods.length,
+      "showMethodDetails:",
+      showMethodDetails,
+      "isInDialog:",
+      isInDialog,
+    )
+
     if (isLoadingMethods) {
       return (
         <div className="flex-1 flex items-center justify-center py-8">
@@ -292,7 +305,7 @@ export default function AddPaymentMethodPanel({
 
     return (
       <>
-        {!isInDialog && (
+        {isInDialog && (
           <div className="flex items-center px-4 py-3 border-b">
             <Button variant="ghost" size="sm" onClick={handleBackToMethodList} className="bg-grayscale-300 px-1 mr-4">
               <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
@@ -354,7 +367,8 @@ export default function AddPaymentMethodPanel({
   }
 
   if (isInDialog) {
-    return <div className="w-full max-h-[70vh] overflow-y-auto">{renderContent()}</div>
+    console.log("[v0] Rendering in dialog mode")
+    return <div className="w-full">{renderContent()}</div>
   }
 
   const getTitle = () => {

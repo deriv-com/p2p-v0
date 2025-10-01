@@ -328,7 +328,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
+    console.log("[v0] handleAddPaymentMethodClick called, isMobile:", isMobile)
     if (!isMobile) {
+      console.log("[v0] Showing alert dialog for AddPaymentMethodPanel")
       showAlert({
         title: "Add payment method",
         description: (
@@ -342,9 +344,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             />
           </div>
         ),
-        showCloseButton: false,
+        showCloseButton: true,
       })
     } else {
+      console.log("[v0] Showing mobile panel for AddPaymentMethodPanel")
       setShowAddPaymentMethod(true)
     }
   }
