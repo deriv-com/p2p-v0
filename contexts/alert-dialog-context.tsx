@@ -55,7 +55,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
       <div className="flex justify-between">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
-          <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="size-5" />
+          <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
         </Button>
       </div>
       {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
