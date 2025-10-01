@@ -38,12 +38,6 @@ export default function MarketFilterDropdown({
     setFilters(initialFilters)
   }, [initialFilters])
 
-  const handleReset = () => {
-    setSortBy("exchange_rate")
-    onApply({ fromFollowing: false }, "exchange_rate")
-    setIsOpen(false)
-  }
-
   const handleApply = () => {
     onApply(filters, sortBy)
     setIsOpen(false)
