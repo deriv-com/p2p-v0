@@ -94,7 +94,7 @@ const PaymentSelectionContent = ({
                       }`}
                     />
                     <div className="flex- flex-col">
-                      <span className="font text-neutral-7">{getCategoryDisplayName(method.type)}</span>
+                      <span className="text-base text-slate-7">{getCategoryDisplayName(method.type)}</span>
                       <div className="font-normal text-neutral-10 text-xs">{formatPaymentMethodName(method.display_name) - maskAccountNumber(method.fields.account.value)}</div>
                     </div>
                   </div>
