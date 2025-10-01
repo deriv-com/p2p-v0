@@ -36,7 +36,6 @@ const PaymentSelectionContent = ({
   userPaymentMethods,
   isLoadingPaymentMethods,
   paymentMethodsError,
-  setShowAddPaymentMethod,
   tempSelectedPaymentMethods,
   setTempSelectedPaymentMethods,
   hideAlert,
