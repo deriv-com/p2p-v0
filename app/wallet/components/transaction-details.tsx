@@ -171,13 +171,13 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
   return (
     <div className="fixed w-full h-full bg-white top-0 left-0 overflow-y-auto z-50">
-      <div className="absolute top-4 right-4 md:top-10 md:right-10 z-10">
-        <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
+      <div
+        className={`bg-slate-75 pt-16 pb-6 flex flex-col items-center relative ${isMobile ? "" : "mt-6 mx-auto w-[592px] rounded-2xl"}`}
+      >
+        <Button variant="ghost" size="sm" onClick={onClose} className="absolute top-4 right-6 px-0 z-10">
           <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
         </Button>
-      </div>
 
-      <div className="bg-slate-75 pt-16 pb-6 flex flex-col items-center">
         <div className={`${isMobile ? "w-full" : "max-w-[592px]"} flex flex-col items-center`}>
           <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
             <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
