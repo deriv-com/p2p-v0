@@ -393,7 +393,7 @@ export default function AddPaymentMethodPanel({
         },
       })
     }
-  }, [show, isInDialog, showMethodDetails])
+  }, [show, isInDialog, showMethodDetails, isLoadingMethods, availablePaymentMethods, details, errors, instructions])
 
   if (isInDialog) {
     return null
