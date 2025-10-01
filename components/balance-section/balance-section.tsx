@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getTotalBalance } from "@/services/api/api-auth"
-import {formatAmount} from "@/lib/"
+import {formatAmount} from "@/lib/utils"
 
 interface BalanceSectionProps {
   className?: string
@@ -29,11 +29,6 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
 
     fetchBalance()
   }, [])
-
-  const formattedBalance = balance.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
 
   return (
     <div className={`bg-slate-1200 p-6 rounded-3xl ${className}`}>
