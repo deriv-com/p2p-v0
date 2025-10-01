@@ -21,6 +21,7 @@ export function useAlertDialog() {
       confirmText: "Delete",
       cancelText: "Cancel",
       variant: "destructive",
+      type: "warning",
       ...config,
     })
   }
