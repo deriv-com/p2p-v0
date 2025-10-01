@@ -40,7 +40,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
             </TooltipContent>
           </Tooltip>
         )}
-        {title === "Trade volume" && tab === "30d" (
+        {title === "Trade volume" && tab === "last30days" (
           <Tooltip>
             <TooltipTrigger asChild>
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
