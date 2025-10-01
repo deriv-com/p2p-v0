@@ -153,6 +153,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
+  const isMobile = useIsMobile()
 
   const handleShowPaymentSelection = () => {
     showAlert({
