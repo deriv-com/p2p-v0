@@ -177,7 +177,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         </Button>
       </div>
 
-      <div className="bg-slate-75 pt-16 pb-8 flex flex-col items-center">
+      <div className="bg-slate-75 pt-16 pb-6 flex flex-col items-center">
         <div className={`${isMobile ? "w-full" : "max-w-[592px]"} flex flex-col items-center`}>
           <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
             <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
