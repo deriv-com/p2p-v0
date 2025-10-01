@@ -32,7 +32,7 @@ interface PaymentMethod {
 }
 
 const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
-   
+   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
    const handlePaymentMethodToggle = (methodId: string) => {
       setTempSelectedPaymentMethods((prev) => {
         if (prev?.length < 3) {
@@ -63,7 +63,7 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
             <div
               key={method.id}
               className={`border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-color ${
-                !tempSelectedPaymentMethods?.includes(method.id) && tempSelectedPaymentMethods?.length >= 3
+                !selectedPMs?.includes(method.id) && selectedPMs?.length >= 3
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
               }`}
@@ -82,9 +82,9 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
                   <div className="font-normal text-neutral-7">{formatPaymentMethodName(method.display_name)}</div>
                 </div>
                 <Checkbox
-                  checked={tempSelectedPaymentMethods?.includes(method.id)}
+                  checked={selectedPMs?.includes(method.id)}
                   onCheckedChange={() => handlePaymentMethodToggle(method.id)}
-                  disabled={!tempSelectedPaymentMethods?.includes(method.id) && tempSelectedPaymentMethods?.length >= 3}
+                  disabled={!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3}
                   className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                 />
               </div>
