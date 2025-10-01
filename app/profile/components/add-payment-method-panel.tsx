@@ -319,7 +319,7 @@ export default function AddPaymentMethodPanel({
                     width={24}
                     height={24}
                   />
-                  <span className="text-sm font-normal">{paymentMethod.display_name}</span>
+                  <span className="text-sm font-normal text-slate-">{paymentMethod.display_name}</span>
                 </Button>
               ))}
             </div>
