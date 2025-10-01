@@ -42,7 +42,7 @@ export default function TradeLimits({
             <div className="flex items-center justify-between mb-1">
               <span className="text-sell font-bold text-sm leading-5 tracking-normal">Sell</span>
               <span className="text-sm font-normal leading-5 tracking-normal">
-                {sellRemaining} / {sellMax} USD 
+                {sellRemaining} / {sellMax} USD
               </span>
             </div>
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
