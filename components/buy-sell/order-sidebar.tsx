@@ -295,7 +295,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
         <div
           className="border border-grayscale-200 rounded-lg p-4 bg-white cursor-pointer hover:bg-gray-50 transition-colors"
-          onClick={() => setShowAddPaymentMethod(true)}
+          onClick={() => {
+              setShowAddPaymentMethod(true)
+              setShowPaymentSelection(false)
+          }}
         >
           <div className="flex items-center justify-center">
             <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
