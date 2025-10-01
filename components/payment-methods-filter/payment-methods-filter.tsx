@@ -240,15 +240,15 @@ export default function PaymentMethodsFilter({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>{trigger}</SheetTrigger>
-        <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
+      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Payment method</h3>
           </div>
           <FilterContent />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
