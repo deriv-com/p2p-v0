@@ -14,7 +14,6 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import { useMediaQuery } from "@/hooks/use-media-query"
 
 interface OrderSidebarProps {
   isOpen: boolean
