@@ -34,11 +34,7 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
     <div className={`p-6 ${className}`}>
       <div className="text-white opacity-[0.72] text-xs mb-2">Est. total value</div>
       <div className="text-white text-xl font-bold">
-        {isLoading ? (
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        ) : (
-          `${formatAmount(balance?.toLocaleString() ?? "0")} ${currency}`
-        )}
+        {`${formatAmount(balance?.toLocaleString() ?? "0")} ${currency}`
       </div>
     </div>
   )
