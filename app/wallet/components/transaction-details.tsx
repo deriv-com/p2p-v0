@@ -111,7 +111,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       case "Deposit":
         return {
           icon: "/icons/add-green.png",
-          iconBg: "bg-[#00883214]",
+          iconBg: "bg-success-light",
           amount: amount,
           amountColor: "text-success-text",
           subtitle: "Deposit",
@@ -120,7 +120,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       case "Withdraw":
         return {
           icon: "/icons/withdraw-red.png",
-          iconBg: "bg-[#E6190E14]",
+          iconBg: "bg-error-light",
           amount: amount,
           amountColor: "text-error-text",
           subtitle: "Withdraw",
@@ -129,7 +129,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       case "Transfer":
         return {
           icon: "/icons/transfer-bold.png",
-          iconBg: "bg-[#181C2514]",
+          iconBg: "bg-slate-1200/[0.08]",
           amount: amount,
           amountColor: "text-slate-1200",
           subtitle: `${getFromWalletName(transaction)} → ${getToWalletName(transaction)}`,
