@@ -46,12 +46,11 @@ const PaymentSelectionContent = ({
   const handlePaymentMethodToggle = (methodId: string) => {
     setSelectedPMs((prev) => {
       const newSelection = prev.includes(methodId)
-        ? prev.filter((id) => id !== methodId) // Remove if already selected
+        ? prev.filter((id) => id !== methodId) 
         : prev.length < 3
-          ? [...prev, methodId] // Add if under limit
-          : prev // Keep unchanged if at limit
+          ? [...prev, methodId]
+          : prev
 
-      // Update temp state with new selection
       setTempSelectedPaymentMethods(newSelection)
       return newSelection
     })
