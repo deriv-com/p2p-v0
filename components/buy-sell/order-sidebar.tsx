@@ -32,7 +32,7 @@ interface PaymentMethod {
 }
 
 const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, paymentMethodsError,  setShowAddPaymentMethod, tempSelectedPaymentMethods, setTempSelectedPaymentMethods, hideAlert }) => {
-
+   
    const handlePaymentMethodToggle = (methodId: string) => {
       setTempSelectedPaymentMethods((prev) => {
         if (prev.includes(methodId)) {
