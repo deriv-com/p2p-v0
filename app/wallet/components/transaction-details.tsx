@@ -177,16 +177,18 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         </Button>
       </div>
 
-      <div className="pt-16 pb-8 flex flex-col items-center">
-        <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
-          <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
+      <div className="bg-slate-75 pt-16 pb-8 flex flex-col items-center">
+        <div className={`${isMobile ? "w-full" : "max-w-[592px]"} flex flex-col items-center`}>
+          <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
+            <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
+          </div>
+          <div className={`text-[28px] font-extrabold ${display.amountColor}`}>{display.amount}</div>
+          <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
         </div>
-        <div className={`text-[28px] font-extrabold ${display.amountColor} mb-1`}>{display.amount}</div>
-        <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
       </div>
 
-      <div className={`${isMobile ? "px-4" : "max-w-[592px] mx-auto px-4"} pb-20`}>
-        <div className="space-y-2">
+      <div className={`${isMobile ? "" : "max-w-[592px] mx-auto"} pb-20`}>
+        <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">Transaction status</span>
             <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
@@ -207,7 +209,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
           <div className="h-1 bg-slate-75" />
         </div>
 
-        <div className="space-y-2">
+        <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">From</span>
             <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
@@ -228,7 +230,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
           <div className="h-1 bg-slate-75" />
         </div>
 
-        <div className="space-y-2">
+        <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
             <span className="text-base font-normal text-grayscale-text-muted">Date</span>
             <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
