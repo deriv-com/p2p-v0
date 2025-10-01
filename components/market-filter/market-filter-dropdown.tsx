@@ -105,23 +105,6 @@ export default function MarketFilterDropdown({
           </RadioGroup>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-3">
-        <Button
-          variant="outline"
-          onClick={handleReset}
-          className="rounded-full flex-1 bg-transparent"
-          size={isMobile ? "default" : "sm"}
-        >
-          Reset
-        </Button>
-        <Button
-          onClick={handleApply}
-          className={`flex-1 rounded-full text-white hover:bg-gray-800 ${isMobile ? "order-first" : ""}`}
-          size={isMobile ? "default" : "sm"}
-        >
-          {isMobile ? "Apply filters" : "Apply"}
-        </Button>
-      </div>
     </div>
   )
 
