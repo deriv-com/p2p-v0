@@ -31,7 +31,7 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
   }, [])
 
   return (
-    <div className={`bg-slate-1200 p-6 rounded-3xl ${className}`}>
+    <div className={` p-6 ${className}`}>
       <div className="text-slate-500 text-sm mb-2">Est. total value</div>
       <div className="text-white text-4xl font-bold">
         {isLoading ? (
