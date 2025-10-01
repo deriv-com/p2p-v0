@@ -29,7 +29,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData } = useUserDataStore()
+  const { userData, userId } = useUserDataStore()
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -42,14 +42,27 @@ export default function AdsPage() {
   const isMobile = useIsMobile()
   const router = useRouter()
 
+  console.log("[v0] AdsPage mounted, userId:", userId, "hasFetchedRef:", hasFetchedRef.current)
+
   const fetchAds = async () => {
+    console.log("[v0] fetchAds called, userId:", userId)
+
+    if (!userId) {
+      console.log("[v0] fetchAds aborted - no userId available")
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
+      console.log("[v0] Calling getUserAdverts API")
       const userAdverts = await AdsAPI.getUserAdverts(true)
+      console.log("[v0] getUserAdverts returned:", userAdverts.length, "ads")
 
       setAds(userAdverts)
     } catch (err) {
+      console.error("[v0] Error fetching ads:", err)
       setError("Failed to load ads. Please try again.")
       setAds([])
       setErrorModal({
@@ -63,11 +76,14 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    if (!hasFetchedRef.current) {
+    console.log("[v0] useEffect triggered, userId:", userId, "hasFetchedRef:", hasFetchedRef.current)
+
+    if (userId && !hasFetchedRef.current) {
+      console.log("[v0] Conditions met, calling fetchAds")
       fetchAds()
       hasFetchedRef.current = true
     }
-  }, [])
+  }, [userId])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
