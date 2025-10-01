@@ -168,7 +168,7 @@ export default function WalletSummary({
             <div className={cn("flex flex-col", isMobile && "items-center")}>
               {isBalancesView ? (
                 <>
-                  <p className="text-xs font-normal text-white/72">Total value</p>
+                  <p className="text-xs font-normal text-white">Total value</p>
                   <p className="text-xl font-extrabold text-white">
                     {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
                   </p>
