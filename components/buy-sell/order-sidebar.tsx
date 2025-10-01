@@ -35,14 +35,10 @@ const PaymentSelectionContent = ({userPaymentMethods, isLoadingPaymentMethods, p
    
    const handlePaymentMethodToggle = (methodId: string) => {
       setTempSelectedPaymentMethods((prev) => {
-        if (prev?.includes(methodId)) {
-          return prev?.filter((id) => id !== methodId)
-        } else {
-          if (prev?.length < 3) {
-            return [...prev, methodId]
-          }
-          return prev
+        if (prev?.length < 3) {
+          return [...prev, methodId]
         }
+        return prev
       })
     }
    return ( <div className="flex flex-col h-full overflow-y-auto">
