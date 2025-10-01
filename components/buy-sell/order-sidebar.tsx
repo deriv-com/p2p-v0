@@ -121,7 +121,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
     showAlert({
       title: "Payment method",
-      description: <PaymentSelectionContent />,
+      description: <PaymentSelectionContent 
+            userPaymentMethods={userPaymentMethods} 
+            isLoadingPaymentMethods={isLoadingPaymentMethods} 
+            paymentMethodsError={paymentMethodsError} 
+            fetchUserPaymentMethods={fetchUserPaymentMethods}
+            tempSelectedPaymentMethods={tempSelectedPaymentMethods} 
+            handlePaymentMethodToggle={handlePaymentMethodToggle} 
+            setShowAddPaymentMethod={setShowAddPaymentMethod}
+      />,
       confirmText: "Confirm",
       cancelText: "Cancel",
       type: "warning",
