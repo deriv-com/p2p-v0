@@ -16,7 +16,7 @@ export function BalanceSection({ className = "" }: BalanceSectionProps) {
     const fetchBalance = async () => {
       try {
         const data = await getTotalBalance()
-        setBalance(data.total_balance.balance)
+        setBalance(data.total_balance.amount)
         setCurrency(data.total_balance.currency)
       } catch (error) {
         console.error("Failed to fetch balance:", error)
