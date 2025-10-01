@@ -85,7 +85,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const maxLimit = ad.actual_maximum_order_amount || "0.00"
 
       if (numAmount < minLimit || numAmount > maxLimit) {
-        setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
+        setValidationError(`Order limit: ${minLimit} - ${maxLimit}`)
       } else {
         setValidationError(null)
       }
@@ -461,7 +461,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Order limit</span>
                     <span className="text-slate-1400">
-                      {minLimit} - {maxLimit} {ad.account_currency}
+                      {ad.account_currency} {minLimit} - {maxLimit}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">

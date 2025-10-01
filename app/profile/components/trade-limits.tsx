@@ -30,7 +30,7 @@ export default function TradeLimits({
             <div className="flex items-center justify-between mb-1">
               <span className="text-buy font-bold text-sm leading-5 tracking-normal">Buy</span>
               <span className="text-sm font-normal leading-5 tracking-normal">
-                USD {buyRemaining} / {buyMax}
+                {buyRemaining} / {buyMax} USD
               </span>
             </div>
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -42,7 +42,7 @@ export default function TradeLimits({
             <div className="flex items-center justify-between mb-1">
               <span className="text-sell font-bold text-sm leading-5 tracking-normal">Sell</span>
               <span className="text-sm font-normal leading-5 tracking-normal">
-                USD {sellRemaining} / {sellMax}
+                {sellRemaining} / {sellMax} USD 
               </span>
             </div>
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
