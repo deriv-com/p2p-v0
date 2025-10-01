@@ -34,7 +34,6 @@ export default function BlockConfirmation({
           onClick={onConfirm}
           disabled={isLoading}
           className="w-full rounded-full"
-          variant="black"
         >
           Block
         </Button>
