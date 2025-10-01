@@ -115,7 +115,7 @@ export function CurrencyFilter({
           />
         ) : (
           <div className="space-y-1">
-            {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">You're paying with</div>}
+            {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{titl}</div>}
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
@@ -140,7 +140,7 @@ export function CurrencyFilter({
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="mb-4">
-            <h3 className="text-xl font-bold text-center">{}</h3>
+            <h3 className="text-xl font-bold text-center">{title}</h3>
           </div>
           <CurrencyList />
         </DrawerContent>
