@@ -41,9 +41,6 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-
-  console.log("[v0] AdsPage mounted, userId:", userId, "hasFetchedRef:", hasFetchedRef.current)
-
   const fetchAds = async () => {
 
     if (!userId) {
@@ -57,7 +54,7 @@ export default function AdsPage() {
       const userAdverts = await AdsAPI.getUserAdverts(true)
 
       setAds(userAdverts)
-    } catch (err) 
+    } catch (err) {
       setError("Failed to load ads. Please try again.")
       setAds([])
       setErrorModal({
@@ -71,8 +68,6 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    console.log("[v0] useEffect triggered, userId:", userId, "hasFetchedRef:", hasFetchedRef.current)
-
     if (userId && !hasFetchedRef.current) {
       console.log("[v0] Conditions met, calling fetchAds")
       fetchAds()
