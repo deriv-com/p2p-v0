@@ -16,6 +16,7 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface OrderSidebarProps {
   isOpen: boolean
