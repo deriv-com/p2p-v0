@@ -65,8 +65,13 @@ export default function AdsPage() {
   useEffect(() => {
     if (!hasFetchedRef.current) {
       fetchAds()
-      setHiddenAdverts(!userData?.adverts_are_listed)
       hasFetchedRef.current = true
+    }
+  }, [])
+
+  useEffect(() => {
+    if (userData?.adverts_are_listed !== undefined) {
+      setHiddenAdverts(!userData.adverts_are_listed)
     }
   }, [userData?.adverts_are_listed])
 
