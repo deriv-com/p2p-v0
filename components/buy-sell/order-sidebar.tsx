@@ -111,7 +111,7 @@ const PaymentSelectionContent = ({
         )}
 
         <div
-          className="bg-slate-1200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          className="bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => {
             handleAddPaymentMethodClick()
             hideAlert()
@@ -119,7 +119,7 @@ const PaymentSelectionContent = ({
         >
           <div className="flex items-center">
             <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-            <span className="text-neutral-10 text-sm">Add payment method</span>
+            <span className="text-slate-10 text-sm">Add payment method</span>
           </div>
         </div>
       </div>
