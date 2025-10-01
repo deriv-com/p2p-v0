@@ -21,6 +21,7 @@ import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-me
 import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { BalanceSection } from "@/components/balance-section"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
@@ -226,6 +227,7 @@ export default function BuySellPage() {
       <div className="flex flex-col h-screen overflow-hidden px-3">
         <TemporaryBanAlert />
         <div className="flex-shrink-0">
+          <BalanceSection className="mb-4 md:mb-6" />
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
@@ -299,7 +301,7 @@ export default function BuySellPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-md border border-input font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
+                      className="rounded-md border border-input bg-background font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
