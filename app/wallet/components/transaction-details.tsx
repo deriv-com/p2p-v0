@@ -80,11 +80,11 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     const transactionCurrency = transaction.metadata.transaction_currency
 
     if (sourceWalletType === "main") {
-      return "Trading Wallet"
-    } else if (sourceWalletType === "system") {
       return `${transactionCurrency} Wallet`
+    } else if (sourceWalletType === "system") {
+      return transaction.metadata.payout_method || "External"
     } else if (sourceWalletType === "p2p") {
-      return "P2P Wallet"
+      return `P2P ${transactionCurrency}`
     }
     return formatTransactionType(sourceWalletType)
   }
@@ -94,77 +94,70 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     const transactionCurrency = transaction.metadata.transaction_currency
 
     if (destinationWalletType === "main") {
-      return "Trading Wallet"
-    } else if (destinationWalletType === "system") {
       return `${transactionCurrency} Wallet`
+    } else if (destinationWalletType === "system") {
+      return transaction.metadata.payout_method || "External"
     } else if (destinationWalletType === "p2p") {
-      return "P2P Wallet"
+      return `P2P ${transactionCurrency}`
     }
     return formatTransactionType(destinationWalletType)
   }
 
-  const transactionFields = [
-    { label: "Transaction ID", value: transaction?.transaction_id?.toString() },
-    {
-      label: "Transaction type",
-      value: transaction ? getTransactionType(transaction) : "",
-    },
-    { label: "Date", value: transaction?.timestamp ? formatDate(transaction.timestamp) : "" },
-    { label: "Time", value: transaction?.timestamp ? formatTime(transaction.timestamp) : "" },
-    {
-      label: "From",
-      value: transaction?.metadata?.source_wallet_type ? getFromWalletName(transaction) : "",
-    },
-    {
-      label: "To",
-      value: transaction?.metadata?.destination_wallet_type ? getToWalletName(transaction) : "",
-    },
-    {
-      label: "Withdrawn amount",
-      value:
-        transaction?.metadata?.transaction_net_amount && transaction?.metadata?.transaction_currency
-          ? formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
-          : "",
-    },
-  ].filter((field) => field.value)
+  const getTransactionDisplay = (transaction: Transaction) => {
+    const type = getTransactionType(transaction)
+    const amount = formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
 
-  const getStepperState = (status: string) => {
-    switch (status) {
-      case "pending":
+    switch (type) {
+      case "Deposit":
         return {
-          step1: { border: "border-black", bg: "bg-white", text: "text-black" },
-          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
-          connector: "bg-[#0000003D]",
-          showTick: false,
+          icon: "/icons/add-icon.png",
+          iconBg: "bg-success-light",
+          amount: amount,
+          amountColor: "text-success-text",
+          subtitle: "Deposit",
+          subtitleColor: "text-grayscale-text-muted",
         }
-      case "released":
+      case "Withdraw":
         return {
-          step1: { border: "border-black", bg: "bg-white", text: "text-black" },
-          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
-          connector: "bg-[#0000003D]",
-          showTick: false,
+          icon: "/icons/subtract-icon.png",
+          iconBg: "bg-error-light",
+          amount: amount,
+          amountColor: "text-error-text",
+          subtitle: "Withdraw",
+          subtitleColor: "text-grayscale-text-muted",
         }
-      case "completed":
+      case "Transfer":
         return {
-          step1: { border: "border-[#00C390]", bg: "bg-[#00C390]", text: "text-black" },
-          step2: { border: "border-[#00C390]", bg: "bg-[#00C390]", text: "text-black" },
-          connector: "bg-[#00C390]",
-          showTick: true,
-        }
-      case "reverted":
-        return {
-          step1: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
-          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
-          connector: "bg-[#0000003D]",
-          showTick: false,
+          icon: "/icons/transfer-icon.png",
+          iconBg: "bg-slate-100",
+          amount: amount,
+          amountColor: "text-slate-1200",
+          subtitle: `${getFromWalletName(transaction)} → ${getToWalletName(transaction)}`,
+          subtitleColor: "text-grayscale-text-muted",
         }
       default:
         return {
-          step1: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
-          step2: { border: "border-[#0000003D]", bg: "bg-white", text: "text-[#0000003D]" },
-          connector: "bg-[#0000003D]",
-          showTick: false,
+          icon: "/icons/add-icon.png",
+          iconBg: "bg-slate-100",
+          amount: amount,
+          amountColor: "text-slate-1200",
+          subtitle: type,
+          subtitleColor: "text-grayscale-text-muted",
         }
+    }
+  }
+
+  const getStatusDisplay = (status: string) => {
+    switch (status.toLowerCase()) {
+      case "complete":
+      case "completed":
+        return { text: "Success", color: "text-success-text" }
+      case "pending":
+        return { text: "Processing", color: "text-pending-text-secondary" }
+      case "processing":
+        return { text: "Processing", color: "text-pending-text-secondary" }
+      default:
+        return { text: status, color: "text-slate-1200" }
     }
   }
 
@@ -172,59 +165,80 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     return null
   }
 
-  const stepperState = getStepperState(transaction.metadata.transaction_status)
+  const display = getTransactionDisplay(transaction)
+  const statusDisplay = getStatusDisplay(transaction.metadata.transaction_status)
+  const transactionType = getTransactionType(transaction)
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px] overflow-y-auto z-50">
-      <div className={`${isMobile ? "px-4" : "max-w-[560px] mx-auto px-4"}`}>
-        <div className="flex justify-end pt-4 md:pt-10">
-          <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
-          </Button>
+    <div className="fixed w-full h-full bg-white top-0 left-0 overflow-y-auto z-50">
+      <div className="absolute top-4 right-4 md:top-10 md:right-10 z-10">
+        <Button variant="ghost" size="sm" onClick={onClose} className="px-0">
+          <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+        </Button>
+      </div>
+
+      <div className="pt-16 pb-8 flex flex-col items-center">
+        <div className={`w-16 h-16 rounded-full ${display.iconBg} flex items-center justify-center mb-4`}>
+          <Image src={display.icon || "/placeholder.svg"} alt={transactionType} width={32} height={32} />
         </div>
+        <div className={`text-[28px] font-extrabold ${display.amountColor} mb-1`}>{display.amount}</div>
+        <div className={`text-sm font-normal ${display.subtitleColor}`}>{display.subtitle}</div>
+      </div>
 
-        <div className="pt-10 pb-6">
-          <h1 className="text-slate-900 text-2xl font-extrabold ml-2">Transaction details</h1>
-        </div>
+      <div className={`${isMobile ? "px-4" : "max-w-[592px] mx-auto px-4"} pb-20`}>
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">Transaction status</span>
+            <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
+          </div>
 
-        <div className="px-2 pb-6">
-          <div className="flex flex-col">
-            {/* Step 1 */}
-            <div className="flex items-center mb-2">
-              <div
-                className={`w-5 h-5 rounded-full border-2 ${stepperState.step1.border} ${stepperState.step1.bg} relative flex items-center justify-center`}
-              >
-                {stepperState.showTick && <Image src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
-              </div>
-              <span className={`ml-2 text-sm font-bold ${stepperState.step1.text}`}>Processed</span>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">Transaction ID</span>
+            <span className="text-base font-normal text-slate-1200">{transaction.transaction_id}</span>
+          </div>
 
-            {/* Connector */}
-            <div className={`w-0.5 h-2 ml-2 mb-2 ${stepperState.connector}`}></div>
-
-            {/* Step 2 */}
-            <div className="flex items-center">
-              <div
-                className={`w-5 h-5 rounded-full border-2 ${stepperState.step2.border} ${stepperState.step2.bg} relative flex items-center justify-center`}
-              >
-                {stepperState.showTick && <Image src="/icons/tick_white.png" alt="Completed" width={11} height={11} />}
-              </div>
-              <span className={`ml-2 text-sm font-bold ${stepperState.step2.text}`}>Successful</span>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">Transaction type</span>
+            <span className="text-base font-normal text-slate-1200">{transactionType}</span>
           </div>
         </div>
 
-        <div className="space-y-0">
-          {transactionFields.map((field, index) => (
-            <div key={index} className="py-2 px-2">
-              <div className="mb-1 text-black/48 text-base font-normal">{field.label}</div>
-              <div className="mb-4 whitespace-pre-line text-black/96 text-base font-normal">{field.value}</div>
-              {index < transactionFields.length - 1 && <div className="border-b border-gray-200"></div>}
-            </div>
-          ))}
+        <div className="my-6">
+          <div className="h-1 bg-slate-75" />
         </div>
 
-        {isMobile && <div className="h-[150px]" />}
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">From</span>
+            <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">To</span>
+            <span className="text-base font-normal text-slate-1200">{getToWalletName(transaction)}</span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">Amount</span>
+            <span className="text-base font-normal text-slate-1200">{display.amount}</span>
+          </div>
+        </div>
+
+        <div className="my-6">
+          <div className="h-1 bg-slate-75" />
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">Date</span>
+            <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-base font-normal text-grayscale-text-muted">Time</span>
+            <span className="text-base font-normal text-slate-1200">{formatTime(transaction.timestamp)}</span>
+          </div>
+        </div>
       </div>
     </div>
   )

@@ -143,8 +143,6 @@ export default function WalletSummary({
           "w-full p-6 flex flex-col",
           isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
           isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
-          !isBalancesView && isMobile && "absolute top-0 left-0 right-0 z-10",
-          !isBalancesView && !isMobile && "relative",
         )}
       >
         {!isBalancesView && (
