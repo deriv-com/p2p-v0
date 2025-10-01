@@ -52,7 +52,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
   const renderDesktopContent = () => (
     <div className="px-8 py-6">
-      <div className="flex justify-end">
+      <div className="flex justify-between">
         {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
         <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
           <Image src="/icons/close-icon.png" alt="Close" width={20} height={20} className="size-5" />
@@ -65,9 +65,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           {config.cancelText}
         </Button>
         )}
-        <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+       {config.type && <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
           {config.confirmText || "Continue"}
-        </Button>
+        </Button>}
       </div>
     </div>
   )
@@ -82,9 +82,9 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
           {config.cancelText}
         </Button>
         )}
-        <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+        {config.type && <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
           {config.confirmText || "Continue"}
-        </Button>
+        </Button>}
       </div>
     </div>
   )

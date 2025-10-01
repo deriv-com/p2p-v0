@@ -1,9 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
-import { Drawer, DrawerContent } from "@/components/ui/drawer"
-import { useIsMobile } from "@/hooks/use-mobile"
+import { useEffect } from "react"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getHomeUrl } from "@/lib/utils"
 
 interface KycOnboardingSheetProps {
@@ -18,7 +17,7 @@ interface OnboardingStepProps {
 }
 
 const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
-  <div className="w-full p-2 rounded-2xl border border-gray-200 hover:cursor-pointer" onClick={onClick}>
+  <div className="w-full p-2 rounded-2xl md:rounded-none border md:border-none md:border-b border-gray-200 hover:cursor-pointer" onClick={onClick}>
     <div className="flex items-center gap-2">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image src={icon || "/placeholder.svg"} alt={title} width={24} height={24} />
@@ -30,46 +29,37 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 )
 
 function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
-  const isMobile = useIsMobile()
+  const { showAlert, hideAlert } = useAlertDialog()
 
   const handleProfileSetup = () => {
+    hideAlert()
     setSheetOpen(false)
     window.location.href = `https://${getHomeUrl()}/dashboard/user-profile`
   }
 
-  const OnboardingContent = () => (
-    <div className="space-y-4 mb-6 mt-2">
-      <OnboardingStep
-        icon="/icons/account-profile.png"
-        title="Set up and verify your profile"
-        onClick={handleProfileSetup}
-      />
-    </div>
-  )
-
-  if (isMobile) {
-    return (
-      <Drawer open={isSheetOpen} onOpenChange={setSheetOpen}>
-        <DrawerContent className="rounded-t-3xl border-0 p-0 max-h-[80vh] p-2">
-          <div className="my-8">
-            <h2 className="text-xl font-bold text-center text-slate-1200">Get started with P2P</h2>
+  useEffect(() => {
+    if (isSheetOpen) {
+      showAlert({
+        title: "Get started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <OnboardingStep
+              icon="/icons/account-profile.png"
+              title="Set up and verify your profile"
+              onClick={handleProfileSetup}
+            />
           </div>
-          <OnboardingContent />
-        </DrawerContent>
-      </Drawer>
-    )
-  }
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onCancel: () => setSheetOpen(false),
+      })
+    } else {
+      hideAlert()
+    }
+  }, [isSheetOpen])
 
-  return (
-    <Sheet open={isSheetOpen} onOpenChange={setSheetOpen}>
-      <SheetContent className="h-auto p-[16px]">
-        <div className="mb-4">
-          <h3 className="text-xl font-bold text-center">Get started with P2P</h3>
-        </div>
-        <OnboardingContent />
-      </SheetContent>
-    </Sheet>
-  )
+  return null
 }
 
 export { KycOnboardingSheet }
