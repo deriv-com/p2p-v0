@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Divider } from "@/components/ui/divider"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 
@@ -112,14 +111,14 @@ export default function TransactionsTab() {
     const status = transaction.metadata.transaction_status
 
     const getAmountColor = () => {
-      if (type === "Transfer") {
-        return "text-black opacity-96"
+      if (type === "Withdraw") {
+        return "text-[#C40000]" // Red for withdrawals
       } else if (type === "Deposit") {
-        return status === "completed" ? "text-success-text-secondary" : "text-black opacity-48"
-      } else if (type === "Withdraw") {
-        return status === "completed" ? "text-red-withdraw" : "text-black opacity-48"
+        return "text-[#007A22]" // Green for deposits
+      } else if (type === "Transfer") {
+        return "text-[#181C25]" // Dark for transfers
       }
-      return "text-success-icon"
+      return "text-[#181C25]"
     }
 
     switch (type) {
@@ -216,43 +215,40 @@ export default function TransactionsTab() {
             <div key={dateKey} className="space-y-4">
               <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
 
-              <div className="space-y-3">
+              <div className="space-y-0">
                 {dateTransactions.map((transaction, index) => {
                   const display = getTransactionDisplay(transaction)
 
                   return (
-                    <div key={transaction.transaction_id}>
+                    <div key={transaction.transaction_id} className="relative">
                       <div
-                        className="flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
                         onClick={() => handleTransactionClick(transaction)}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
-                                width={32}
-                                height={32}
-                                className="w-8 h-8 object-contain"
+                                width={24}
+                                height={24}
+                                className="w-6 h-6 object-contain"
                                 priority={index < 3}
                               />
                             )}
                           </div>
 
-                          <div>
-                            <div className="text-base font-normal text-gray-900">{display.type}</div>
-                            <div className={`${display.amountColor} text-base font-bold`}>
-                              {display.amountPrefix}
-                              {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
-                            </div>
-                          </div>
+                          <div className="text-[#181C25] text-base font-normal">{display.type}</div>
                         </div>
 
-                        <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
+                        <div className={`${display.amountColor} text-base font-normal mr-6`}>
+                          {display.amountPrefix}
+                          {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
+                        </div>
                       </div>
 
-                      {index < dateTransactions.length - 1 && <Divider className="my-2" />}
+                      {index < dateTransactions.length - 1 && <div className="h-px bg-[#00000014] ml-10" />}
                     </div>
                   )
                 })}
