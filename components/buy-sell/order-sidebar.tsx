@@ -461,7 +461,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">Order limit</span>
                     <span className="text-slate-1400">
-                      {minLimit} - {maxLimit} {ad.account_currency} 
+                      {minLimit} - {maxLimit} {ad.account_currency}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
