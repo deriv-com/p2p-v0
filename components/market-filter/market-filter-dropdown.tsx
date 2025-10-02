@@ -93,8 +93,8 @@ export default function MarketFilterDropdown({
           </label>
         </div>
       </div>
-      <div className="mb-6">
-        <div className="border-t border-gray-200 pt-6">
+      <div className="mb-2">
+        <div className="border-t border-gray-200 pt-2">
           <h4 className="text-sm text-grayscale-text-muted mb-2">Sort by</h4>
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className="flex items-center space-x-3">
