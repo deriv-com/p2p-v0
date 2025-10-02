@@ -91,7 +91,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                     <SvgIcon src={item.icon} fill={isActive? "primary" : "#181C25"}/>
+                     <SvgIcon src={item.icon} fill={isActive? "#FF444F" : "#181C25"}/>
                   </div>
                   {item.name}
                 </Link>
