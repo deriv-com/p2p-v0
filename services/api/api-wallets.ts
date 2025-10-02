@@ -6,12 +6,15 @@ const getAuthHeader = () => ({
   "X-Data-Source": "live",
 })
 
-export async function fetchTransactions() {
+export async function fetchTransactions(selectedCurrencyCode?: string) {
   const userData = useUserDataStore.getState().userData
 
   const walletId = userData?.wallet_id
 
-  const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
+  let url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
+  if (selectedCurrencyCode) {
+    url += `&transaction_currency=${selectedCurrencyCode}`
+  }
 
   return fetch(url, {
     method: "GET",

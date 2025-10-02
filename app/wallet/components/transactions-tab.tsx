@@ -35,7 +35,11 @@ interface TransactionsResponse {
   }
 }
 
-export default function TransactionsTab() {
+interface TransactionsTabProps {
+  selectedCurrency?: string | null
+}
+
+export default function TransactionsTab({ selectedCurrency }: TransactionsTabProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
@@ -47,7 +51,7 @@ export default function TransactionsTab() {
     const loadTransactions = async () => {
       try {
         setLoading(true)
-        const data: TransactionsResponse = await fetchTransactions()
+        const data: TransactionsResponse = await fetchTransactions(selectedCurrency || undefined)
         setTransactions(data.data.transactions || [])
       } catch (error) {
         console.error("Error loading transactions:", error)
@@ -57,7 +61,7 @@ export default function TransactionsTab() {
     }
 
     loadTransactions()
-  }, [])
+  }, [selectedCurrency])
 
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
@@ -228,7 +232,11 @@ export default function TransactionsTab() {
 
           {filteredTransactions.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
-              {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+              {selectedCurrency
+                ? `No transactions for the selected currency`
+                : activeFilter === "All"
+                  ? "No transactions found"
+                  : `No ${activeFilter.toLowerCase()} transactions found`}
             </div>
           )}
         </div>
