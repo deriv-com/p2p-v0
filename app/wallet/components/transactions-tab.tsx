@@ -135,16 +135,12 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
     const isDestinationP2P = destination_wallet_type?.toLowerCase() === "p2p"
 
     if (isSourceP2P && !isDestinationP2P) {
-
       return `P2P ${transaction_currency} -> ${transaction_currency} Wallet`
     } else if (!isSourceP2P && isDestinationP2P) {
-  
       return `${transaction_currency} Wallet -> P2P ${transaction_currency}`
     } else if (isSourceP2P && isDestinationP2P) {
-  
       return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
     } else {
-
       return `${transaction_currency} Wallet`
     }
   }
@@ -226,7 +222,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc }
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
@@ -239,7 +235,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex flex-col gap-1">
                             <div className="text-slate-1200 text-base font-normal">{display.type}</div>
                             {isTransfer && (
-                              <div className="text-xs font-normal" style={{ color: "#0000007A" }}>
+                              <div className="text-xs font-normal text-grayscale-text-muted">
                                 {getTransferDestinationText(transaction)}
                               </div>
                             )}
@@ -270,7 +266,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
           )}
 
           {filteredTransactions.length > 0 && (
-            <div className="text-center text-xs font-normal pt-0" style={{ color: "#0000003D" }}>
+            <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
               End of transaction
             </div>
           )}
