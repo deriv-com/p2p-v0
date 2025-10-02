@@ -16,7 +16,8 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
 import BlockConfirmation from "@/components/block-confirmation"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
-import { useToast } from "@/components/ui/use-toast"
+import { useToast } from "@/hooks/use-toast"
+
 
 interface AdvertiserProfile {
   id: string | number
