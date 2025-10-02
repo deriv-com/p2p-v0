@@ -172,15 +172,23 @@ export default function Transfer({ onClose }: TransferProps) {
     onClose()
   }
 
-  const handleCurrencySelect = (currency: Currency) => {
-    console.log("[v0] Currency selected:", currency)
+  const handleCurrencySelect = (currencyCode: string) => {
+    console.log("[v0] Currency code selected:", currencyCode)
 
-    if (!currency || !currency.code) {
-      console.error("[v0] Invalid currency selected:", currency)
+    if (!currencyCode) {
+      console.error("[v0] Invalid currency code selected:", currencyCode)
       return
     }
 
-    setSelectedCurrency(currency)
+    const matchingCurrency = currencies.find((c) => c.code === currencyCode)
+
+    if (!matchingCurrency) {
+      console.error("[v0] Currency not found in currencies list:", currencyCode)
+      return
+    }
+
+    console.log("[v0] Setting selected currency:", matchingCurrency)
+    setSelectedCurrency(matchingCurrency)
     toEnterAmount()
   }
 
@@ -397,6 +405,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -480,6 +489,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
@@ -605,6 +615,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
