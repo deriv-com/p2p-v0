@@ -20,7 +20,22 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-2">
             <h2 className="text-base text-white font-bold">{username}</h2>
-            {tradeBand === "bronze" && <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />}
+            {tradeBand === "bronze" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <>
+                      <p className="font-bold text-white mb-2">Bronze tier</p>
+                      <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
+                    </>
+                    <TooltipArrow className="fill-black" />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
            </div>
           {joinDate && (<div className="text-xs text-white opacity-[0.72]">
               {joinDate}
