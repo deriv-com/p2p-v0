@@ -366,7 +366,7 @@ export default function OrdersPage() {
               </Button>
             )}
           </div>
-          <div className="my-4">
+          <div className="my-4 align-self-end">
             {activeTab === "past" && (
               <DateFilter
                 value={dateFilter}
