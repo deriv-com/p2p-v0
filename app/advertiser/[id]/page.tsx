@@ -111,7 +111,7 @@ export default function AdvertiserProfilePage() {
               </div>
             ),
             className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 250000,
+            duration: 2500,
           })
         }
       } else {
