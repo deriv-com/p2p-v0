@@ -8,7 +8,7 @@ import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
-import { OrdersIcon } from "@/components/icons/orders-icon"
+import { SvgIcon } from "@/components/icons/svg-icon"
 
 interface SidebarProps {
   className?: string
