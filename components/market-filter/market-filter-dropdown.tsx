@@ -77,8 +77,8 @@ export default function MarketFilterDropdown({
 
   const FilterContent = () => (
     <div className="w-full h-full">
-      <div className="space-y-4 mb-2">
-        <div className="mb-6">
+      <div className="space-y-2 mb-2">
+        <div className="mb-2">
           {isMobile ?
             <h4 className="text-sm text-black font-bold mb-2">Ad types</h4> :
             <h4 className="text-sm text-grayscale-text-muted mb-2">Ad types</h4>
