@@ -238,7 +238,7 @@ export default function OrdersPage() {
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py px-4 align-top text-xs row-start-3">
+                <TableCell className="py-0 px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end gap-[4px]">
                     <div>
                       {formatAmount(order.payment_amount)} {order.payment_currency}
@@ -246,7 +246,7 @@ export default function OrdersPage() {
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="px-4 align-top row-start-1">
+                <TableCell className="py-0 px-4align-top row-start-1">
                   <div
                     className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
@@ -254,7 +254,7 @@ export default function OrdersPage() {
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="px-4 align-top row-start-1 col-start-2 justify-self-end">
+                  <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release") && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                     )}
@@ -275,7 +275,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="px-4 align-top row-start-4 col-span-full">
+                <TableCell className="py-0 px-4 align-top row-start-4 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     <div className="text-xs">
                       {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
