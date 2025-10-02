@@ -270,7 +270,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
           )}
 
           {filteredTransactions.length > 0 && (
-            <div className="text-center text-xs font-normal pt-6" style={{ color: "#0000003D" }}>
+            <div className="text-center text-xs font-normal pt-0" style={{ color: "#0000003D" }}>
               End of transaction
             </div>
           )}
