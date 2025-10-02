@@ -487,7 +487,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
             onAdd={handleAddPaymentMethod}
             isLoading={isAddingPaymentMethod}
             allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
-            isInDialog={!isMobile}
             show={showAddPaymentMethod}
           />
         )}
