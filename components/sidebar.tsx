@@ -13,8 +13,8 @@ import HomeIcon from "@/public/icons/home.svg"
 import MarketIcon from "@/public/icons/market.svg"
 import OrdersIcon from "@/public/icons/orders.svg"
 import MyAdsIcon from "@/public/icons/my-ads.svg"
-import OrdersIcon from "@/public/icons/orders.svg"
-import OrdersIcon from "@/public/icons/orders.svg"
+import ProfileIcon from "@/public/icons/profile.svg"
+import GuideIcon from "@/public/icons/guide.svg"
 
 interface SidebarProps {
   className?: string
