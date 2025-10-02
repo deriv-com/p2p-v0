@@ -99,7 +99,7 @@ export default function MarketFilterDropdown({
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className="flex items-center space-x-3">
               <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
-              <Label htmlFor="exchange_rate" className="text-sm text-gray-700 cursor-pointer">
+              <Label htmlFor="exchange_rate" className="text-sm text-grayscale-600 cursor-pointer">
                 {activeTab === "sell" ? <>Exchange rate (low-high)</> : <>Exchange rate (high-low)</>}
               </Label>
             </div>
@@ -109,7 +109,7 @@ export default function MarketFilterDropdown({
                 id="user_rating_average_lifetime"
                 className="border-grayscale-100 text-black"
               />
-              <Label htmlFor="user_rating_average_lifetime" className="text-sm text-gray-700 cursor-pointer">
+              <Label htmlFor="user_rating_average_lifetime" className="text-sm text-grayscale-600 cursor-pointer">
                 User rating (high-low)
               </Label>
             </div>
