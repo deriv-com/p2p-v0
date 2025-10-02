@@ -64,6 +64,11 @@ export default function WalletSummary({
   }
 
   const loadBalance = useCallback(async () => {
+    if (!userId) {
+      setIsLoading(false)
+      return
+    }
+
     try {
       const balanceAmount = await fetchBalance(displayCurrency)
       setBalance(balanceAmount)
@@ -72,12 +77,15 @@ export default function WalletSummary({
       console.error("Error fetching user balance:", error)
       setIsLoading(false)
     }
-  }, [displayCurrency])
+  }, [displayCurrency, userId])
 
   useEffect(() => {
     loadBalance()
-    fetchCurrencies()
   }, [loadBalance])
+
+  useEffect(() => {
+    fetchCurrencies()
+  }, [])
 
   const handleDepositClick = () => {
     if (userId) {
