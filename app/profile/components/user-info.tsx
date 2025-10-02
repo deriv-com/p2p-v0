@@ -17,7 +17,10 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
         </div>
         <div className="flex flex-col flex-1 gap-1">
-          <h2 className="text-base text-white font-bold">{username}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base text-white font-bold">{username}</h2>
+            {profile?.trade_band === "bronze" && <Image src="/icons/bronze.png" alt="Bronze" height={18} />}
+           </div>
           {joinDate && (<div className="text-xs text-white opacity-[0.72]">
               {joinDate}
             </div>)}
