@@ -102,7 +102,6 @@ export default function AdvertiserProfilePage() {
 
       if (result.success) {
         setIsFollowing(!isFollowing)
-          console.log(isFollowing)
         if (isFollowing) {
           toast({
             description: (
