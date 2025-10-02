@@ -27,13 +27,10 @@ export default function FollowsTab() {
   const fetchFollowing = useCallback(async () => {
     try {
       setIsLoading(true)
-      console.log("[v0] Fetching favourite users...")
       const data = await getFavouriteUsers()
-      console.log("[v0] Favourite users response:", data)
-      console.log("[v0] Number of users returned:", data?.length || 0)
       setFollowing(data)
     } catch (err) {
-      console.error("[v0] Failed to fetch favourite users:", err)
+      console.error("Failed to fetch favourite users:", err)
       setFollowing([])
     } finally {
       setIsLoading(false)
