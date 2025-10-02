@@ -9,6 +9,7 @@ import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
+import OrdersIcon from "@/public/icons/ic-orders.svg";
 
 interface SidebarProps {
   className?: string
@@ -85,7 +86,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     {item.name === "Orders" ? (
-                      <SvgIcon src="/icons/ic-orders.svg" fill={isActive? "primary" : "slate-1200"}/>
+                      <SvgIcon src={OrdersIcon} fill={isActive? "primary" : "slate-1200"}/>
                     ) : (
                       <Image
                         src={item.icon || "/placeholder.svg"}
