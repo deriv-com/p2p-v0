@@ -123,7 +123,7 @@ export default function MarketFilterDropdown({
         </div>
       </div>
       {isMobile && (
-        <div className="flex flex-col md:flex-row gap-3">
+        <div className="flex flex-col md:flex-row gap-3 mt-6">
           <Button variant="outline" onClick={handleReset} className="rounded-full flex-1 bg-transparent" size="default">
             Reset
           </Button>
