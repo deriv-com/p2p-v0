@@ -27,39 +27,14 @@ interface SvgIconProps {
  * When using src prop, the SVG file's original colors are preserved.
  */
 export function SvgIcon({
-  children,
-  className = "",
   fill = "currentColor",
   width = 20,
   height = 20,
-  viewBox = "0 0 24 24",
   src,
-  alt = "icon",
 }: SvgIconProps) {
-  if (src) {
-    return (
-      <Image
-        src={src || "/placeholder.svg"}
-        alt={alt}
-        width={typeof width === "number" ? width : Number.parseInt(width as string)}
-        height={typeof height === "number" ? height : Number.parseInt(height as string)}
-        className={className}
-        style={{ fill }}
-      />
-    )
-  }
-
   return (
-    <svg
-      width={width}
-      height={height}
-      viewBox={viewBox}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      style={{ fill }}
-    >
-      {children}
-    </svg>
-  )
+    <div style={{ width, height }}>
+      <SVGComponent style={{ fill, width: "100%", height: "100%" }} />
+    </div>
+  );
 }
