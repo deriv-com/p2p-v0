@@ -310,7 +310,7 @@ export default function AdvertiserProfilePage() {
                         <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
                           {adverts.map((ad) => (
                             <TableRow
-                              className="flex flex-col border-b mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
+                              className="flex flex-col gap-2 border-b mb-[16px] llg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
                               key={ad.id}
                             >
                               <TableCell className="py-0 lg:py-4 px-4 align-top text-base whitespace-nowrap">
