@@ -71,8 +71,8 @@ export default function Transfer({ onClose }: TransferProps) {
         if (response?.data) {
           const currencyList = Object.keys(response.data).map((code) => ({
             code,
-            name: response.data[code].name,
-            logo: response.data[code].logo,
+            name: data.label,
+            logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
           }))
           setCurrencies(currencyList)
         }
