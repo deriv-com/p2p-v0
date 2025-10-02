@@ -144,7 +144,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   
       return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
     } else {
-      // Between non-P2P wallets
+
       return `${transaction_currency} Wallet`
     }
   }
