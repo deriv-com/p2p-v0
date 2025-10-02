@@ -30,7 +30,7 @@ export default function MobileFooterNav() {
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname === "/" || pathname.startsWith("/advertiser"),
+            "text-primary": pathname === "/" || pathname.startsWith("/advertiser"),
             "text-slate-700": !(pathname === "/" || pathname.startsWith("/advertiser")),
           })}
         >
@@ -42,7 +42,7 @@ export default function MobileFooterNav() {
         <Link
           href="/orders"
           className={cn("flex flex-col items-center justify-center", {
-            "text-primary font-bold": pathname.startsWith("/orders"),
+            "text-primary": pathname.startsWith("/orders"),
             "text-slate-700": !pathname.startsWith("/orders"),
           })}
         >
