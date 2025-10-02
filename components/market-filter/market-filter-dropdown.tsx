@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Label } from "@/components/ui/label"
 import type { MarketFilterOptions } from "./types"
@@ -110,16 +110,16 @@ export default function MarketFilterDropdown({
           variant="outline"
           onClick={handleReset}
           className="rounded-full flex-1 bg-transparent"
-          size={isMobile ? "default" : "sm"}
+          size="default"
         >
           Reset
         </Button>
         <Button
           onClick={handleApply}
-          className={`flex-1 rounded-full text-white hover:bg-gray-800 ${isMobile ? "order-first" : ""}`}
-          size={isMobile ? "default" : "sm"}
+          className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
+          size="default"
         >
-          {isMobile ? "Apply filters" : "Apply"}
+           Apply filters
         </Button>
       </div>
     </div>
@@ -127,22 +127,22 @@ export default function MarketFilterDropdown({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>
+      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
+        <DrawerTrigger asChild>
           <div className="relative">
             {trigger}
             {hasActiveFilters && (
               <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
             )}
           </div>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
+        </DrawerTrigger>
+        <DrawerContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Filter</h3>
           </div>
           <FilterContent />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 

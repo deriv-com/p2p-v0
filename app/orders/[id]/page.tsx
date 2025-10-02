@@ -334,7 +334,7 @@ export default function OrderDetailsPage() {
   }
 
   return (
-    <div className="lg:absolute left-0 right-0 top-[32px] bottom-0 bg-white">
+    <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
       {order?.type && (
         <Navigation
           isBackBtnVisible={false}

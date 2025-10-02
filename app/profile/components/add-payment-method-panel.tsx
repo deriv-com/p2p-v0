@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface AddPaymentMethodPanelProps {
   onClose: () => void
   onAdd: (method: string, fields: Record<string, string>) => void
   isLoading: boolean
   allowedPaymentMethods?: string[]
+  isInDialog?: boolean
+  show?: boolean
 }
 
 interface PanelWrapperProps {
@@ -63,7 +66,15 @@ function PanelWrapper({ onClose, onBack, title, children }: PanelWrapperProps) {
   )
 }
 
-export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allowedPaymentMethods }: AddPaymentMethodPanelProps) {
+export default function AddPaymentMethodPanel({
+  onClose,
+  onAdd,
+  isLoading,
+  allowedPaymentMethods,
+  isInDialog = false,
+  show = false,
+}: AddPaymentMethodPanelProps) {
+  const { showAlert, hideAlert } = useAlertDialog()
   const [selectedMethod, setSelectedMethod] = useState<string>("")
   const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
@@ -88,10 +99,8 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
         }
 
         if (allowedPaymentMethods && allowedPaymentMethods.length > 0) {
-          methods = methods.filter(method => 
-            allowedPaymentMethods.some(allowed => 
-              method.method.toLowerCase() === allowed.toLowerCase()
-            )
+          methods = methods.filter((method) =>
+            allowedPaymentMethods.some((allowed) => method.method.toLowerCase() === allowed.toLowerCase()),
           )
         }
 
@@ -116,11 +125,34 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     setCharCount(instructions.length)
   }, [instructions])
 
+  useEffect(() => {
+    return () => {
+      setShowMethodDetails(false)
+      setSelectedMethod("")
+      setDetails({})
+      setErrors({})
+      setTouched({})
+      setInstructions("")
+    }
+  }, [])
+
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
     setSelectedMethod(paymentMethod.method)
     setShowMethodDetails(true)
+
+    if (isInDialog && showAlert) {
+      showAlert({
+        title: "Add payment details",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          hideAlert?.()
+          onClose()
+        },
+      })
+    }
   }
 
   const handleBackToMethodList = () => {
@@ -130,6 +162,18 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     setErrors({})
     setTouched({})
     setInstructions("")
+
+    if (isInDialog && showAlert) {
+      showAlert({
+        title: "Select a payment method",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          hideAlert?.()
+          onClose()
+        },
+      })
+    }
   }
 
   const validateInput = (value: string) => {
@@ -146,7 +190,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
 
     selectedMethodFields.forEach((field) => {
       const value = details[field.name]?.trim()
-      
+
       if (!value && field.required) {
         newErrors[field.name] = `${field.label} is required`
       } else if (value && !validateInput(value)) {
@@ -177,7 +221,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
       }))
     }
   }
@@ -196,7 +240,7 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
       }))
     }
   }
@@ -228,7 +272,6 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
   const isFormValid = () => {
     if (!selectedMethod) return false
 
-    // Check if there are any validation errors
     if (Object.keys(errors).length > 0) return false
 
     return selectedMethodFields.every((field) => {
@@ -239,29 +282,25 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
     })
   }
 
-  if (isLoadingMethods) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 flex items-center justify-center">
+  const renderContent = () => {
+    if (isLoadingMethods) {
+      return (
+        <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-gray-500">Loading payment methods...</div>
         </div>
-      </PanelWrapper>
-    )
-  }
+      )
+    }
 
-  if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
-        <div className="flex-1 flex items-center justify-center">
+    if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
+      return (
+        <div className="flex-1 flex items-center justify-center py-8">
           <div className="text-gray-500">No payment methods available</div>
         </div>
-      </PanelWrapper>
-    )
-  }
+      )
+    }
 
-  if (!showMethodDetails) {
-    return (
-      <PanelWrapper onClose={onClose} title="Select a payment method">
+    if (!showMethodDetails) {
+      return (
         <div className="flex-1 overflow-y-auto">
           <div className="p-4">
             <div className="space-y-3">
@@ -272,77 +311,109 @@ export default function AddPaymentMethodPanel({ onClose, onAdd, isLoading, allow
                   variant="ghost"
                   size="lg"
                   onClick={() => handleMethodSelect(paymentMethod)}
-                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-300"
+                  className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-500"
                 >
                   <Image
-                    src={getPaymentMethodIcon(paymentMethod.type)}
+                    src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
                     alt={paymentMethod.display_name}
                     width={24}
                     height={24}
                   />
-                  <span className="text-sm font-normal">{paymentMethod.display_name}</span>
+                  <span className="text-sm font-normal text-slate-1200">{paymentMethod.display_name}</span>
                 </Button>
               ))}
             </div>
           </div>
         </div>
-      </PanelWrapper>
+      )
+    }
+
+    return (
+      <>
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+          <div className="p-4 space-y-6">
+            {selectedMethodFields.length > 0 && (
+              <div className="space-y-4">
+                {selectedMethodFields.map((field) => (
+                  <div key={field.name}>
+                    <Input
+                      id={field.name}
+                      type={field.type}
+                      value={details[field.name] || ""}
+                      onChange={(e) => handleInputChange(field.name, e.target.value)}
+                      label={`Enter ${field.label.toLowerCase()}`}
+                      required={field.required}
+                      variant="floating"
+                    />
+                    {(touched[field.name] || details[field.name]) && errors[field.name] && (
+                      <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div>
+              <Textarea
+                id="instructions"
+                value={instructions}
+                onChange={(e) => handleInstructionsChange(e.target.value)}
+                label="Enter your instructions"
+                className="min-h-[120px] resize-none"
+                maxLength={300}
+                variant="floating"
+              />
+              {errors.instructions && <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>}
+              <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+            </div>
+          </div>
+        </form>
+
+        <div className="p-4">
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isLoading || !selectedMethod || !isFormValid()}
+            className="w-full"
+          >
+            {isLoading ? "Adding..." : "Add"}
+          </Button>
+        </div>
+      </>
     )
   }
 
+  useEffect(() => {
+    if (isInDialog && show && showAlert) {
+      showAlert({
+        title: showMethodDetails ? "Add payment details" : "Select a payment method",
+        description: <div className="w-full">{renderContent()}</div>,
+        showCloseButton: true,
+        onClose: () => {
+          hideAlert?.()
+          onClose()
+        },
+      })
+    }
+    if (isInDialog && !show && hideAlert) {
+      hideAlert()
+    }
+  }, [show, isInDialog, showMethodDetails, isLoadingMethods, availablePaymentMethods, details, errors, instructions])
+
+  if (isInDialog) {
+    return null
+  }
+
+  const getTitle = () => {
+    if (isLoadingMethods || availablePaymentMethods.length === 0) {
+      return "Select a payment method"
+    }
+    return showMethodDetails ? "Add payment details" : "Select a payment method"
+  }
+
   return (
-    <PanelWrapper onClose={onClose} onBack={handleBackToMethodList} title="Add payment details">
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
-        <div className="p-4 space-y-6">
-          {selectedMethodFields.length > 0 && (
-            <div className="space-y-4">
-              {selectedMethodFields.map((field) => (
-                <div key={field.name}>
-                  <Input
-                    id={field.name}
-                    type={field.type}
-                    value={details[field.name] || ""}
-                    onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    label={`Enter ${field.label.toLowerCase()}`}
-                    required={field.required}
-                    variant="floating"
-                  />
-                  {(touched[field.name] || details[field.name]) && errors[field.name] && (
-                    <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div>
-            <Textarea
-              id="instructions"
-              value={instructions}
-              onChange={(e) => handleInstructionsChange(e.target.value)}
-              label="Enter your instructions"
-              className="min-h-[120px] resize-none"
-              maxLength={300}
-              variant="floating"
-            />
-            {errors.instructions && (
-              <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>
-            )}
-            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
-          </div>
-        </div>
-      </form>
-
-      <div className="p-4">
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={isLoading || !selectedMethod || !isFormValid()}
-          className="w-full"
-        >
-          {isLoading ? "Adding..." : "Add"}
-        </Button>
-      </div>
+    <PanelWrapper onClose={onClose} onBack={showMethodDetails ? handleBackToMethodList : undefined} title={getTitle()}>
+      {renderContent()}
     </PanelWrapper>
   )
 }
