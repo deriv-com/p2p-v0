@@ -79,7 +79,7 @@ export default function MarketFilterDropdown({
     <div className="w-full h-full">
       <div className="space-y-4 mb-6">
         <div className="mb-6">
-          <h4 className="text-sm font-bold mb-4">Ad types</h4>
+          <h4 className="text-sm text-grayscale-text-muted mb-4">Ad types</h4>
         </div>
         <div className="flex items-center space-x-3">
           <Checkbox
