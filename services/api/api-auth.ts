@@ -151,8 +151,18 @@ export async function fetchUserIdAndStore(): Promise<void> {
     }
 
     const userId = result?.data?.id
+    const brandClientId = result?.data?.brand_client_id
+    const brand = result?.data?.brand
+
     if (userId) {
       useUserDataStore.getState().setUserId(userId.toString())
+
+      if (brandClientId) {
+        useUserDataStore.getState().setBrandClientId(brandClientId)
+      }
+      if (brand) {
+        useUserDataStore.getState().setBrand(brand)
+      }
 
       const { userData } = useUserDataStore.getState()
       if (userData) {

@@ -15,10 +15,14 @@ interface UserDataState {
   userId: string | null
   clientId: string | null
   residenceCountry: string | null
+  brandClientId: string | null
+  brand: string | null
   setUserData: (data: UserData) => void
   setUserId: (id: string) => void
   setClientId: (id: string) => void
   setResidenceCountry: (country: string) => void
+  setBrandClientId: (id: string) => void
+  setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
   clearUserData: () => void
 }
@@ -28,6 +32,8 @@ const initialState = {
   userId: null,
   clientId: null,
   residenceCountry: null,
+  brandClientId: null,
+  brand: null,
 }
 
 export const useUserDataStore = create<UserDataState>((set) => ({
@@ -40,6 +46,10 @@ export const useUserDataStore = create<UserDataState>((set) => ({
   setClientId: (id) => set({ clientId: id }),
 
   setResidenceCountry: (country) => set({ residenceCountry: country }),
+
+  setBrandClientId: (id) => set({ brandClientId: id }),
+
+  setBrand: (brand) => set({ brand }),
 
   updateUserData: (data) =>
     set((state) => ({
