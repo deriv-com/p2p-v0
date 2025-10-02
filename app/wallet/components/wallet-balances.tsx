@@ -54,7 +54,7 @@ export default function WalletBalances({ onBalanceClick }: WalletBalancesProps) 
   }
 
   if (balances.length === 0) {
-    return <div className="flex items-center justify-center h-[200px] text-gray-500">No balances available</div>
+    return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading available balances</div>
   }
 
   return (
