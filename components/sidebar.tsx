@@ -13,7 +13,7 @@ import HomeIcon from "@/public/icons/home.svg"
 import MarketIcon from "@/public/icons/market.svg"
 import OrdersIcon from "@/public/icons/orders.svg"
 import AdsIcon from "@/public/icons/ads.svg"
-import WalletIcon from "@/public/icons/ads.svg"
+import WalletIcon from "@/public/icons/wallet.svg"
 import ProfileIcon from "@/public/icons/profile.svg"
 import GuideIcon from "@/public/icons/guide.svg"
 
@@ -92,7 +92,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     {item.name === "Orders" && (
-                      <SvgIcon src={OrdersIcon} fill={isActive? "primary" : "slate-1200"}/>
+                      <SvgIcon src={icon} fill={isActive? "primary" : "slate-1200"}/>
                     ) : (
                       <Image
                         src={item.icon || "/placeholder.svg"}
