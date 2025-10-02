@@ -342,7 +342,7 @@ export default function AdvertiserProfilePage() {
                                   <span>{ad.order_expiry_period} min</span>
                                 </div>
                               </TableCell>
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-top whitespace-nowrap">
+                              <TableCell className="p-0 lg:py-4 lg:px-4 align-top whitespace-nowrap row-start-3">
                                 <div className="flex flex-wrap gap-2 text-xs">
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
