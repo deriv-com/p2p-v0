@@ -16,6 +16,7 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
 import BlockConfirmation from "@/components/block-confirmation"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
 
 
