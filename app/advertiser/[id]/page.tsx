@@ -228,7 +228,7 @@ export default function AdvertiserProfilePage() {
                             </TooltipTrigger>
                             <TooltipContent>
                               <>
-                                <div className="text-white">Bronze tier</div>
+                                <p className="font-bold text-white mb-2">Bronze tier</p>
                                 <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
                               </>
                               <TooltipArrow className="fill-black" />
