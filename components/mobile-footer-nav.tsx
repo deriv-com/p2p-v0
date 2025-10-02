@@ -5,6 +5,13 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import HomeIcon from "@/public/icons/ic-home.svg"
+import MarketIcon from "@/public/icons/ic-market.svg"
+import OrdersIcon from "@/public/icons/ic-orders.svg"
+import AdsIcon from "@/public/icons/ic-ads.svg"
+import WalletIcon from "@/public/icons/ic-wallet.svg"
+import ProfileIcon from "@/public/icons/ic-profile.svg"
+import GuideIcon from "@/public/icons/ic-guide.svg"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
