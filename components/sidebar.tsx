@@ -91,19 +91,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                    {item.name === "Orders" && (
-                      <SvgIcon src={icon} fill={isActive? "primary" : "slate-1200"}/>
-                    ) : (
-                      <Image
-                        src={item.icon || "/placeholder.svg"}
-                        alt={item.name}
-                        width={20}
-                        height={20}
-                        className={cn(
-                          isActive && "brightness-0 saturate-100 hue-rotate-[204deg] sepia-[100%] saturate-[200%]",
-                        )}
-                      />
-                    )}
+                     <SvgIcon src={item.icon} fill={isActive? "primary" : "#181C25"}/>
                   </div>
                   {item.name}
                 </Link>
