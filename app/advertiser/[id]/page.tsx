@@ -106,7 +106,7 @@ export default function AdvertiserProfilePage() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              {isFollowing ? <span>Successfully unfollowed</span> :<span>Successfully unfollowed</span>}
+              {isFollowing ? <span>Successfully unfollowed</span> :<span>Successfully followed</span>}
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
