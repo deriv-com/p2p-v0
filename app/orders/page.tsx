@@ -231,7 +231,7 @@ export default function OrdersPage() {
                       <div className="font-bold">
                         {getOrderType(order)}
                         <span className="text-base">
-                          {formatAmount(order.amount)}{" "}{order.advert.account_currency} 
+                          {{" "}formatAmount(order.amount)}{" "}{order.advert.account_currency} 
                         </span>
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
