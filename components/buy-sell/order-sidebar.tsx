@@ -194,7 +194,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const fetchUserPaymentMethods = async () => {
     try {
-
       const response = await ProfileAPI.getUserPaymentMethods()
 
       if (response.error) {
@@ -403,6 +402,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               )}
 
               <div className="mx-4 mt-4 text-sm">
+                {/* Added Rate type row */}
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Rate type</span>
+                  <span className="text-blue-600 capitalize">{ad.exchange_rate_type || "Floating"}</span>
+                </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-slate-500">Exchange rate</span>
                   <span className="text-slate-1400">
