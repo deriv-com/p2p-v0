@@ -17,7 +17,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
       onClick={onClick}
       className="flex items-center justify-between h-[72px] w-full md:w-[444px] cursor-pointer transition-colors relative"
     >
-      {/* Left side: Logo and Currency Name */}
+  
       <div className="flex items-center gap-4 pl-0">
         <div className="flex-shrink-0">
           {logo ? (
@@ -38,7 +38,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
         <div className="text-slate-1200 text-base font-normal">{currency}</div>
       </div>
 
-      {/* Right side: Amount and Currency Code */}
+  
       <div className="text-slate-1200 text-base font-normal pr-6">
         {Number(amount).toFixed(2)} {currency}
       </div>
