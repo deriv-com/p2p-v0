@@ -226,7 +226,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc || "/placeholder.svg"}
+                                src={display.iconSrc }
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
