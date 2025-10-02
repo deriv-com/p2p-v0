@@ -9,7 +9,12 @@ import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
-import OrdersIcon from "@/public/icons/orders.svg";
+import HomeIcon from "@/public/icons/home.svg"
+import MarketIcon from "@/public/icons/market.svg"
+import OrdersIcon from "@/public/icons/orders.svg"
+import OrdersIcon from "@/public/icons/orders.svg"
+import OrdersIcon from "@/public/icons/orders.svg"
+import OrdersIcon from "@/public/icons/orders.svg"
 
 interface SidebarProps {
   className?: string
