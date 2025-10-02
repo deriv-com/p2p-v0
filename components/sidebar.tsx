@@ -48,7 +48,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const navItems = [
     { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
-    { name: "Orders", href: "/orders", icon: "/icons/orders-icon.jpg" },
+    { name: "Orders", href: "/orders", icon: "/icons/orders-icon.svg" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
     ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" }] : []),
     { name: "P2P Profile", href: "/profile", icon: "/icons/profile-icon.png" },
