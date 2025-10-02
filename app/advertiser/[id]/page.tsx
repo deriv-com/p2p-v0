@@ -376,7 +376,7 @@ export default function AdvertiserProfilePage() {
                     </div>
                   </>
                 ) : (
-                  <EmptyState title="No ads yet." redirectToAds={false} />
+                  <EmptyState title="No ads yet" redirectToAds={false} />
                 )}
               </div>
             </>
