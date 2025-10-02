@@ -131,18 +131,17 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   const getTransferDestinationText = (transaction: Transaction) => {
     const { source_wallet_type, destination_wallet_type, transaction_currency } = transaction.metadata
 
-    // Check if source is P2P
     const isSourceP2P = source_wallet_type?.toLowerCase() === "p2p"
     const isDestinationP2P = destination_wallet_type?.toLowerCase() === "p2p"
 
     if (isSourceP2P && !isDestinationP2P) {
-      // From P2P to another wallet
+
       return `P2P ${transaction_currency} -> ${transaction_currency} Wallet`
     } else if (!isSourceP2P && isDestinationP2P) {
-      // From another wallet to P2P
+  
       return `${transaction_currency} Wallet -> P2P ${transaction_currency}`
     } else if (isSourceP2P && isDestinationP2P) {
-      // P2P to P2P (edge case)
+  
       return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
     } else {
       // Between non-P2P wallets
