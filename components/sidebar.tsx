@@ -87,7 +87,7 @@ export default function Sidebar({ className }: SidebarProps) {
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-md py-4 text-sm",
-                    isActive ? "text-primary" : "h",
+                    isActive ? "text-primary" : "",
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
