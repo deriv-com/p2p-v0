@@ -36,16 +36,9 @@ export default function MobileFooterNav() {
             "text-slate-700": !(pathname === "/" || pathname.startsWith("/advertiser")),
           })}
         >
-          <Image
-            src="/icons/buy-sell-icon.png"
-            alt="Buy/Sell"
-            width={20}
-            height={20}
-            className={cn({
-              "filter-to-black": pathname === "/" || pathname.startsWith("/advertiser"),
-              "brightness-50 opacity-70": !(pathname === "/" || pathname.startsWith("/advertiser")),
-            })}
-          />
+          <div className="h-5 w-5 flex items-center justify-center">
+            <SvgIcon src={MarketIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+          </div>
           <span className="text-xs mt-1">Market</span>
         </Link>
         <Link
@@ -55,12 +48,9 @@ export default function MobileFooterNav() {
             "text-slate-700": !pathname.startsWith("/orders"),
           })}
         >
-          <Image
-            src="/icons/orders-icon.png"
-            alt="Orders"
-            width={20}
-            height={20}
-          />
+          <div className="h-5 w-5 flex items-center justify-center">
+            <SvgIcon src={OrdersIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+          </div>
           <span className="text-xs mt-1">Orders</span>
         </Link>
         <Link
@@ -70,16 +60,9 @@ export default function MobileFooterNav() {
             "text-slate-700": !pathname.startsWith("/ads"),
           })}
         >
-          <Image
-            src="/icons/my-ads-icon.png"
-            alt="My ads"
-            width={20}
-            height={20}
-            className={cn({
-              "filter-to-black": pathname.startsWith("/ads"),
-              "brightness-50 opacity-70": !pathname.startsWith("/ads"),
-            })}
-          />
+          <div className="h-5 w-5 flex items-center justify-center">
+            <SvgIcon src={AdsIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+          </div>
           <span className="text-xs mt-1">My ads</span>
         </Link>
         <Link
@@ -89,16 +72,9 @@ export default function MobileFooterNav() {
             "text-slate-700": !pathname.startsWith("/wallet"),
           })}
         >
-          <Image
-            src="/icons/wallet-icon.svg"
-            alt="Wallet"
-            width={20}
-            height={20}
-            className={cn({
-              "filter-to-black": pathname.startsWith("/wallet"),
-              "brightness-50 opacity-70": !pathname.startsWith("/wallet"),
-            })}
-          />
+          <div className="h-5 w-5 flex items-center justify-center">
+            <SvgIcon src={Walle} fill={isActive? "#FF444F" : "#181C25"}/>
+          </div>
           <span className="text-xs mt-1">Wallet</span>
         </Link>
         <Link
