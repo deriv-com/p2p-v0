@@ -69,7 +69,7 @@ export default function Transfer({ onClose }: TransferProps) {
       try {
         const response = await getCurrencies()
         if (response?.data) {
-          const currencyList = Object.keys(response.data).map((code) => ({
+          const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
             code,
             name: data.label,
             logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
@@ -271,6 +271,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     name={wallet.name}
                     amount={formatBalance(wallet.balance)}
                     currency={wallet.currency}
+                    icon={wallet.icon}
                     isSelected={selectedWalletId === wallet.wallet_id}
                     onClick={() => {}}
                   />
@@ -323,6 +324,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     name={wallet.name}
                     amount={formatBalance(wallet.balance)}
                     currency={wallet.currency}
+                    icon={getCurrencyImage(wallet.name, wallet.currency)}
                     isSelected={selectedWalletId === wallet.wallet_id}
                     onClick={() => {}}
                   />
@@ -385,7 +387,6 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -469,7 +470,6 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -593,7 +593,6 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
