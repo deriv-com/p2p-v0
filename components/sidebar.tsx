@@ -8,6 +8,7 @@ import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
+import { OrdersIcon } from "@/components/icons/orders-icon"
 
 interface SidebarProps {
   className?: string
@@ -47,7 +48,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const navItems = [
     { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
-    { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
+    { name: "Orders", href: "/orders", icon: "/icons/orders-icon.jpg" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
     ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" }] : []),
     { name: "P2P Profile", href: "/profile", icon: "/icons/profile-icon.png" },
@@ -83,15 +84,19 @@ export default function Sidebar({ className }: SidebarProps) {
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                    <Image
-                      src={item.icon || "/placeholder.svg"}
-                      alt={item.name}
-                      width={20}
-                      height={20}
-                      className={cn(
-                        isActive && "brightness-0 saturate-100 hue-rotate-[204deg] sepia-[100%] saturate-[200%]",
-                      )}
-                    />
+                    {item.name === "Orders" ? (
+                      <OrdersIcon isActive={isActive} />
+                    ) : (
+                      <Image
+                        src={item.icon || "/placeholder.svg"}
+                        alt={item.name}
+                        width={20}
+                        height={20}
+                        className={cn(
+                          isActive && "brightness-0 saturate-100 hue-rotate-[204deg] sepia-[100%] saturate-[200%]",
+                        )}
+                      />
+                    )}
                   </div>
                   {item.name}
                 </Link>
