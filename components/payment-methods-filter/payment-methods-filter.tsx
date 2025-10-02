@@ -166,7 +166,7 @@ export default function PaymentMethodsFilter({
           placeholder="Search"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="text-base pl-10 pr-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 bg-grayscale-500 rounded-lg"
+          className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -243,7 +243,7 @@ export default function PaymentMethodsFilter({
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
-          <div className="mb-4">
+          <div className="my-4">
             <h3 className="text-xl font-bold text-center">Payment method</h3>
           </div>
           <FilterContent />

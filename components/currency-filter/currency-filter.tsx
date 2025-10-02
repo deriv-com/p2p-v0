@@ -91,7 +91,7 @@ export function CurrencyFilter({
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
-          className="text-base pl-10 border-grayscale-500 focus:border-grayscale-500 md:border-gray-300 bg-grayscale-500 rounded-lg"
+          className="text-base h-8 pl-10 border-grayscale-500 focus:border-grayscale-500 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -140,7 +140,7 @@ export function CurrencyFilter({
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
-          <div className="mb-4">
+          <div className="my-4">
             <h3 className="text-xl font-bold text-center">{title}</h3>
           </div>
           <CurrencyList />

@@ -194,7 +194,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const fetchUserPaymentMethods = async () => {
     try {
-
       const response = await ProfileAPI.getUserPaymentMethods()
 
       if (response.error) {
@@ -360,7 +359,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     value={amount}
                     onChange={handleAmountChange}
                     type="number"
-                    className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
+                    className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0"
                     step="any"
                     inputMode="decimal"
                     onKeyDown={(e) => {
@@ -368,6 +367,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                         e.preventDefault()
                       }
                     }}
+                    placeholder="0.00"
                     variant="floatingCurrency"
                     currency={ad.account_currency}
                     label="Amount"
@@ -402,6 +402,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               )}
 
               <div className="mx-4 mt-4 text-sm">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-slate-500">Rate type</span>
+                  <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">{ad.exchange_rate_type}</span>
+                </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-slate-500">Exchange rate</span>
                   <span className="text-slate-1400">

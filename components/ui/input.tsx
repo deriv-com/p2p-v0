@@ -70,7 +70,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       const shouldFloatLabel = isFocused || hasValue
 
       return (
-        <div className="relative">
+      <> 
+        {variant === "floatingCurrency" && (
+          <label
+            className="text-slate-1200 mb-2 font-normal text-sm"
+          >
+            {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+        )}
+        <div className="relative mt-2">
           <input
             type={type}
             className={cn(inputVariants({ variant: computedVariant }), className)}
@@ -78,10 +87,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
-            placeholder=""
             {...props}
           />
-          <label
+          {variant === "floating" && (<label
             className={cn(
               "absolute left-4 transition-all duration-200 ease-in-out pointer-events-none",
               "text-[#000000B8]",
@@ -90,13 +98,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           >
             {label}
             {required && <span className="text-red-500 ml-1">*</span>}
-          </label>
+          </label>)}
           {variant === "floatingCurrency" && currency && (
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-medium text-[#000000B8]">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-grayscale-600">
               {currency}
             </div>
           )}
         </div>
+        </>
       )
     }
 

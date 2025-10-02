@@ -54,21 +54,33 @@ export default function MarketFilterDropdown({
   }, [])
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
-    setFilters((prev) => ({
-      ...prev,
+    const newFilters = {
+      ...filters,
       [key]: value,
-    }))
+    }
+    setFilters(newFilters)
+
+    if (!isMobile) {
+      onApply(newFilters, sortBy)
+    }
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
+
+    if (!isMobile) {
+      onApply(filters, value)
+    }
   }
 
   const FilterContent = () => (
     <div className="w-full h-full">
-      <div className="space-y-4 mb-6">
-        <div className="mb-6">
-          <h4 className="text-sm font-bold mb-4">Ad types</h4>
+      <div className="space-y-2 mb-2">
+        <div className="mb-2">
+          {isMobile ?
+            <h4 className="text-sm text-black font-bold mb-2">Ad types</h4> :
+            <h4 className="text-sm text-grayscale-text-muted mb-2">Ad types</h4>
+          }
         </div>
         <div className="flex items-center space-x-3">
           <Checkbox
@@ -77,18 +89,21 @@ export default function MarketFilterDropdown({
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
             className="data-[state=checked]:bg-black border-black"
           />
-          <label htmlFor="from-following" className="text-sm text-gray-700 cursor-pointer">
+          <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
             Ads from advertisers you follow
           </label>
         </div>
       </div>
-      <div className="mb-6">
-        <div className="border-t border-gray-200 pt-6">
-          <h4 className="text-sm font-bold mb-4">Sort by</h4>
+      <div className="mb-2">
+        <div className="border-t border-gray-200 pt-2">
+          {isMobile ?
+            <h4 className="text-sm text-black font-bold mb-2">Sort by</h4> :
+            <h4 className="text-sm text-grayscale-text-muted mb-2">Sort by</h4>
+          }
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className="flex items-center space-x-3">
               <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
-              <Label htmlFor="exchange_rate" className="text-sm text-gray-700 cursor-pointer">
+              <Label htmlFor="exchange_rate" className="font-normal text-sm text-grayscale-600 cursor-pointer">
                 {activeTab === "sell" ? <>Exchange rate (low-high)</> : <>Exchange rate (high-low)</>}
               </Label>
             </div>
@@ -98,30 +113,27 @@ export default function MarketFilterDropdown({
                 id="user_rating_average_lifetime"
                 className="border-grayscale-100 text-black"
               />
-              <Label htmlFor="user_rating_average_lifetime" className="text-sm text-gray-700 cursor-pointer">
+              <Label htmlFor="user_rating_average_lifetime" className="font-normal text-sm text-grayscale-600 cursor-pointer">
                 User rating (high-low)
               </Label>
             </div>
           </RadioGroup>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-3">
-        <Button
-          variant="outline"
-          onClick={handleReset}
-          className="rounded-full flex-1 bg-transparent"
-          size="default"
-        >
-          Reset
-        </Button>
-        <Button
-          onClick={handleApply}
-          className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
-          size="default"
-        >
-           Apply filters
-        </Button>
-      </div>
+      {isMobile && (
+        <div className="flex flex-col md:flex-row gap-3 mt-6">
+          <Button variant="outline" onClick={handleReset} className="rounded-full flex-1 bg-transparent" size="default">
+            Reset
+          </Button>
+          <Button
+            onClick={handleApply}
+            className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
+            size="default"
+          >
+            Apply filters
+          </Button>
+        </div>
+      )}
     </div>
   )
 
@@ -137,7 +149,7 @@ export default function MarketFilterDropdown({
           </div>
         </DrawerTrigger>
         <DrawerContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
-          <div className="mb-4">
+          <div className="my-4">
             <h3 className="text-xl font-bold text-center">Filter</h3>
           </div>
           <FilterContent />
@@ -148,12 +160,12 @@ export default function MarketFilterDropdown({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild><div className="relative w-fit">
-            {trigger}
-            {hasActiveFilters && (
-              <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
-            )}
-          </div></PopoverTrigger>
+      <PopoverTrigger asChild>
+        <div className="relative w-fit">
+          {trigger}
+          {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
+        </div>
+      </PopoverTrigger>
       <PopoverContent className="w-fit h-fit p-2" align="end">
         <FilterContent />
       </PopoverContent>
