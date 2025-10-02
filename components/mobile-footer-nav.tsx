@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
-import { OrdersIcon } from "@/components/icons/orders-icon"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
@@ -49,7 +48,12 @@ export default function MobileFooterNav() {
             "text-slate-700": !pathname.startsWith("/orders"),
           })}
         >
-          <OrdersIcon isActive={pathname.startsWith("/orders")} />
+          <Image
+            src="/icons/orders-icon.png"
+            alt="Orders"
+            width={20}
+            height={20}
+          />
           <span className="text-xs mt-1">Orders</span>
         </Link>
         <Link
