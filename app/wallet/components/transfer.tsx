@@ -89,6 +89,8 @@ export default function Transfer({ onClose }: TransferProps) {
 
     const loadWallets = async () => {
       try {
+        console.log("[v0] Loading wallets for currency:", selectedCurrency.code)
+
         const response = await fetchWalletsList()
 
         if (response?.data?.wallets) {
@@ -96,19 +98,19 @@ export default function Transfer({ onClose }: TransferProps) {
 
           response.data.wallets.forEach((wallet: any) => {
             const matchingBalance = wallet.balances.find((balance: any) => balance.currency === selectedCurrency.code)
+            const balanceValue = matchingBalance ? matchingBalance.balance : "0"
 
-            if (matchingBalance) {
-              processedWallets.push({
-                wallet_id: wallet.wallet_id,
-                name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `Trading Wallet`,
-                balance: matchingBalance.balance,
-                currency: matchingBalance.currency, // Use actual currency from balance object
-                icon: "/icons/usd-flag.png",
-                type: wallet.type,
-              })
-            }
+            processedWallets.push({
+              wallet_id: wallet.wallet_id,
+              name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `Trading Wallet`,
+              balance: balanceValue,
+              currency: selectedCurrency.code,
+              icon: "/icons/usd-flag.png",
+              type: wallet.type,
+            })
           })
 
+          console.log("[v0] Processed wallets:", processedWallets)
           setWallets(processedWallets)
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
@@ -171,6 +173,13 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const handleCurrencySelect = (currency: Currency) => {
+    console.log("[v0] Currency selected:", currency)
+
+    if (!currency || !currency.code) {
+      console.error("[v0] Invalid currency selected:", currency)
+      return
+    }
+
     setSelectedCurrency(currency)
     toEnterAmount()
   }
@@ -387,6 +396,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                           "/placeholder.svg" ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -470,6 +480,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
@@ -594,6 +605,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
