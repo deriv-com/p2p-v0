@@ -483,7 +483,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         )}
         {showAddPaymentMethod && (
           <AddPaymentMethodPanel
-            onClose={() => setShowAddPaymentMethod(false)}
+            onClose={() => {
+              setShowAddPaymentMethod(false)
+              hideAlert()
+            }}
             onAdd={handleAddPaymentMethod}
             isLoading={isAddingPaymentMethod}
             allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
