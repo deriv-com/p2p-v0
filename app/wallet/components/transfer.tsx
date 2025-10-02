@@ -201,7 +201,7 @@ export default function Transfer({ onClose }: TransferProps) {
     }
 
     try {
-      const response = await fetchTransactions(selectedCurrency || undefined)
+      const response = await fetchTransactions()
 
       if (response?.data?.transactions) {
         const matchingTransaction = response.data.transactions.find(
