@@ -213,10 +213,13 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? "border border-white bg-transparent hover:bg-white/10 text-white"
+                    ? balance === 0
+                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
+                      : "border border-white bg-transparent hover:bg-white/10 text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
+                disabled={isBalancesView && balance === 0}
                 aria-label="Transfer"
               >
                 <Image
@@ -224,9 +227,15 @@ export default function WalletSummary({
                   alt="Transfer"
                   width={14}
                   height={14}
+                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
                 />
               </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+              <span
+                className={cn(
+                  "text-xs font-normal",
+                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                )}
+              >
                 Transfer
               </span>
             </div>
@@ -237,10 +246,13 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? "border border-white bg-transparent hover:bg-white/10 text-white"
+                    ? balance === 0
+                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
+                      : "border border-white bg-transparent hover:bg-white/10 text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleWithdrawClick}
+                disabled={isBalancesView && balance === 0}
                 aria-label="Withdraw"
               >
                 <Image
@@ -248,9 +260,15 @@ export default function WalletSummary({
                   alt="Withdraw"
                   width={14}
                   height={14}
+                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
                 />
               </Button>
-              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+              <span
+                className={cn(
+                  "text-xs font-normal",
+                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                )}
+              >
                 Withdraw
               </span>
             </div>
