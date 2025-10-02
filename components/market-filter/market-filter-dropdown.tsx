@@ -127,22 +127,22 @@ export default function MarketFilterDropdown({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetTrigger asChild>
+      <Drawer open={isOpen} onOpenChange={handleOpenChange}>
+        <DrawerTrigger asChild>
           <div className="relative">
             {trigger}
             {hasActiveFilters && (
               <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
             )}
           </div>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
+        </DrawerTrigger>
+        <DrawerContent side="bottom" className="h-auto p-[16px] rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Filter</h3>
           </div>
           <FilterContent />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
