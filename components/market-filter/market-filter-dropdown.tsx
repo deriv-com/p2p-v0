@@ -54,14 +54,25 @@ export default function MarketFilterDropdown({
   }, [])
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
-    setFilters((prev) => ({
-      ...prev,
+    const newFilters = {
+      ...filters,
       [key]: value,
-    }))
+    }
+    setFilters(newFilters)
+
+    // Auto-apply on desktop
+    if (!isMobile) {
+      onApply(newFilters, sortBy)
+    }
   }
 
   const handleSortByChange = (value: "exchange_rate" | "user_rating_average_lifetime") => {
     setSortBy(value)
+
+    // Auto-apply on desktop
+    if (!isMobile) {
+      onApply(filters, value)
+    }
   }
 
   const FilterContent = () => (
@@ -105,23 +116,20 @@ export default function MarketFilterDropdown({
           </RadioGroup>
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-3">
-        <Button
-          variant="outline"
-          onClick={handleReset}
-          className="rounded-full flex-1 bg-transparent"
-          size="default"
-        >
-          Reset
-        </Button>
-        <Button
-          onClick={handleApply}
-          className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
-          size="default"
-        >
-           Apply filters
-        </Button>
-      </div>
+      {isMobile && (
+        <div className="flex flex-col md:flex-row gap-3">
+          <Button variant="outline" onClick={handleReset} className="rounded-full flex-1 bg-transparent" size="default">
+            Reset
+          </Button>
+          <Button
+            onClick={handleApply}
+            className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
+            size="default"
+          >
+            Apply filters
+          </Button>
+        </div>
+      )}
     </div>
   )
 
@@ -148,12 +156,12 @@ export default function MarketFilterDropdown({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild><div className="relative w-fit">
-            {trigger}
-            {hasActiveFilters && (
-              <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>
-            )}
-          </div></PopoverTrigger>
+      <PopoverTrigger asChild>
+        <div className="relative w-fit">
+          {trigger}
+          {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
+        </div>
+      </PopoverTrigger>
       <PopoverContent className="w-fit h-fit p-2" align="end">
         <FilterContent />
       </PopoverContent>
