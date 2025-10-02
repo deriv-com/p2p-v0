@@ -283,10 +283,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         await fetchUserPaymentMethods()
         if (!isMobile) {
           hideAlert()
-          setShowAddPaymentMethod(false)
-        } else {
-          setShowAddPaymentMethod(false)
         }
+        setShowAddPaymentMethod(false)
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
