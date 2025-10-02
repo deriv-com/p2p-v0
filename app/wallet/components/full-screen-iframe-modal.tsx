@@ -54,9 +54,10 @@ export default function FullScreenIframeModal({
 
       try {
         const cashierUrl = process.env.NEXT_PUBLIC_CASHIER_URL
+        const apiOperation = operation === "WITHDRAW" ? "PAYOUT" : operation
         const params = new URLSearchParams({
           wallet_id: walletId || "",
-          operation,
+          operation: apiOperation,
           currency,
         })
 
