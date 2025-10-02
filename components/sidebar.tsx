@@ -85,7 +85,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
                     {item.name === "Orders" ? (
-                      <SvgIcon src="/icons/ic-orders.svg" />
+                      <SvgIcon src="/icons/ic-orders.svg" fill={isActive? "primary" : ""}/>
                     ) : (
                       <Image
                         src={item.icon || "/placeholder.svg"}
