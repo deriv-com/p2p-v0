@@ -170,7 +170,9 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const handleCurrencySelect = (currency: Currency) => {
-  console.log("Selected currency object:", currency) /
+  console.log("Selected currency object:", currency) 
+  console.log("Selected currency JSON:", JSON.stringify(currency, null, 2))
+
     setSelectedCurrency(currency)
     toEnterAmount()
   }
