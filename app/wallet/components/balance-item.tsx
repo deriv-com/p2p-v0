@@ -22,7 +22,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
         <div className="flex-shrink-0">
           {logo ? (
             <Image
-              src={logo || "/placeholder.svg"}
+              src={logo}
               alt={`${currency} logo`}
               width={24}
               height={24}
@@ -43,7 +43,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
         {Number(amount).toFixed(2)} {currency}
       </div>
 
-      {/* Bottom divider starting 40px from left */}
+  
       <div className="absolute bottom-0 left-10 right-0 h-[1px] bg-grayscale-200" />
     </div>
   )
