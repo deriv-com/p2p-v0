@@ -13,6 +13,7 @@ import HomeIcon from "@/public/icons/home.svg"
 import MarketIcon from "@/public/icons/market.svg"
 import OrdersIcon from "@/public/icons/orders.svg"
 import AdsIcon from "@/public/icons/ads.svg"
+import WalletIcon from "@/public/icons/ads.svg"
 import ProfileIcon from "@/public/icons/profile.svg"
 import GuideIcon from "@/public/icons/guide.svg"
 
@@ -56,7 +57,7 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "Market", href: "/", icon: MarketIcon },
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
-    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: ProfileIcon }] : []),
+    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
     { name: "P2P Profile", href: "/profile", icon: ProfileIcon },
     { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
