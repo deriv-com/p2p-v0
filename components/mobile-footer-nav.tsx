@@ -73,7 +73,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={Walle} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={WalletIcon} fill={isActive? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Wallet</span>
         </Link>
@@ -84,16 +84,9 @@ export default function MobileFooterNav() {
             "text-slate-700": !pathname.startsWith("/profile"),
           })}
         >
-          <Image
-            src="/icons/profile-icon.png"
-            alt="Profile"
-            width={20}
-            height={20}
-            className={cn({
-              "filter-to-black": pathname.startsWith("/profile"),
-              "brightness-50 opacity-70": !pathname.startsWith("/profile"),
-            })}
-          />
+          <div className="h-5 w-5 flex items-center justify-center">
+            <SvgIcon src={OrdersIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+          </div>
           <span className="text-xs mt-1">Profile</span>
         </Link>
       </div>
