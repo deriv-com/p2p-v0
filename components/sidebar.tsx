@@ -52,7 +52,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const navItems = [
-    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
+    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: HomeIcon },
     { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
     { name: "Orders", href: "/orders", icon: "/icons/orders-icon.svg" },
     { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
@@ -78,10 +78,6 @@ export default function Sidebar({ className }: SidebarProps) {
               item.href === "/"
                 ? pathname === "/" || pathname.startsWith("/advertiser")
                 : pathname.startsWith(item.href)
-            
-            const icon = {
-              "Orders": "orders"
-            }
 
             return (
               <li key={item.name}>
