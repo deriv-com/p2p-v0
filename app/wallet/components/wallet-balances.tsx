@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import BalanceItem from "./balance-item"
 import { fetchUserBalances } from "@/services/api/api-wallets"
 import { useUserDataStore } from "@/stores/user-data-store"
+import Image from "next/image"
 
 interface Balance {
   wallet_id: string
@@ -43,18 +44,37 @@ export default function WalletBalances({ onBalanceClick }: WalletBalancesProps) 
   }, [userId])
 
   if (loading) {
-    return (
-      <div className="p-4">
-        <div className="animate-pulse space-y-4">
-          <div className="h-[72px] bg-gray-200 rounded"></div>
-          <div className="h-[72px] bg-gray-200 rounded"></div>
-        </div>
-      </div>
-    )
+    return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading</div>
   }
 
   if (balances.length === 0) {
-    return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading available balances</div>
+    return (
+      <div className="flex flex-col items-center p-6 md:mt-6">
+        <Image src="/icons/magnifier.png" alt="No assets" width={86} height={86} />
+        <div className="h-2" />
+        <p
+          style={{
+            color: "#181C25",
+            textAlign: "center",
+            fontSize: "16px",
+            fontWeight: 700,
+          }}
+        >
+          No assets yet
+        </p>
+        <div className="h-1" />
+        <p
+          style={{
+            color: "#000000B8",
+            textAlign: "center",
+            fontSize: "14px",
+            fontWeight: 400,
+          }}
+        >
+          Make your first deposit and begin your trading journey today
+        </p>
+      </div>
+    )
   }
 
   return (
