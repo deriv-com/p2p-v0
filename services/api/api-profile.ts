@@ -461,7 +461,6 @@ export async function getFavouriteUsers(): Promise<[]> {
 
     return result.data || []
   } catch (error) {
-    console.error("[v0] Error in getFavouriteUsers:", error)
     throw error
   }
 }
