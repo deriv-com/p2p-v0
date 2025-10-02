@@ -80,7 +80,7 @@ export default function MarketFilterDropdown({
       <div className="space-y-4 mb-2">
         <div className="mb-6">
           {isMobile ?
-            <h4 className="text-sm text-black mb-2">Ad types</h4> :
+            <h4 className="text-sm text-black font-bold mb-2">Ad types</h4> :
             <h4 className="text-sm text-grayscale-text-muted mb-2">Ad types</h4>
           }
         </div>
@@ -98,7 +98,10 @@ export default function MarketFilterDropdown({
       </div>
       <div className="mb-2">
         <div className="border-t border-gray-200 pt-2">
-          <h4 className="text-sm text-grayscale-text-muted mb-2">Sort by</h4>
+          {isMobile ?
+            <h4 className="text-sm text-black font-bold mb-2">Sort by</h4> :
+            <h4 className="text-sm text-grayscale-text-muted mb-2">Sort by</h4>
+          }
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className="flex items-center space-x-3">
               <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
