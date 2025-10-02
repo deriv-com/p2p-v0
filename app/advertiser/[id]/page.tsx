@@ -313,7 +313,7 @@ export default function AdvertiserProfilePage() {
                               className="flex flex-col gap-2 border-b mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
                               key={ad.id}
                             >
-                              <TableCell className="py-0 lg:py-4 px-4 align-top text-base whitespace-nowrap">
+                              <TableCell className="p-0 lg:py-4 lg:px-4 align-top text-base whitespace-nowrap">
                                 <div className="font-bold">
                                   {ad.exchange_rate
                                     ? ad.exchange_rate.toLocaleString(undefined, {
@@ -331,18 +331,18 @@ export default function AdvertiserProfilePage() {
                                   <div className="text-xs text-slate-500">0.1%</div>
                                 )}
                               </TableCell>
-                              <TableCell className="py-0 lg:py-4 px-4 align-top whitespace-nowrap">
+                              <TableCell className="p-0 lg:py-4 lg:px-4 align-top whitespace-nowrap">
                                 <div>
                                   {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
                                 </div>
                               </TableCell>
-                              <TableCell className="py-0 lg:py-4 px-4 align-top whitespace-nowrap">
+                              <TableCell className="p-0 lg:py-4 lg:px-4 align-top whitespace-nowrap">
                                 <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
                                   <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
                                   <span>{ad.order_expiry_period} min</span>
                                 </div>
                               </TableCell>
-                              <TableCell className="py-0 lg:py-4 px-4 align-top whitespace-nowrap">
+                              <TableCell className="p-0 lg:py-4 lg:px-4 align-top whitespace-nowrap">
                                 <div className="flex flex-wrap gap-2 text-xs">
                                   {ad.payment_methods?.map((method, index) => (
                                     <div key={index} className="flex items-center">
@@ -358,7 +358,7 @@ export default function AdvertiserProfilePage() {
                                   ))}
                                 </div>
                               </TableCell>
-                              <TableCell className="py-0 lg:py-4 px-4 text-right align-top whitespace-nowrap">
+                              <TableCell className="p-0 lg:py-4 lg:px-4 text-right align-top whitespace-nowrap">
                                 {userId != ad.user.id && (
                                   <Button
                                     variant={ad.type === "buy" ? "destructive" : "secondary"}
