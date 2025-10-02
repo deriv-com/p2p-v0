@@ -285,7 +285,7 @@ export default function OrdersPage() {
                         onClick={(e) => {
                           handleChatClick(e, order)
                         }}
-                        className="text-slate-500 hover:text-slate-700 z-auto"
+                        className="text-slate-500 hover:text-slate-700 z-auto p-"
                         variant="ghost"
                         size="sm"
                       >
