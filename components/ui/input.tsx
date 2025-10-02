@@ -92,7 +92,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {required && <span className="text-red-500 ml-1">*</span>}
           </label>
           {variant === "floatingCurrency" && currency && (
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-grayscale-">
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-grayscale-600">
               {currency}
             </div>
           )}
