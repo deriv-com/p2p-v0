@@ -220,6 +220,7 @@ export default function AdvertiserProfilePage() {
                   <div className="flex-1">
                     <div className="flex">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
+                      <Image src="/icons/bronze.png" alt="User" width={32} height={32} />
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
