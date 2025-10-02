@@ -448,22 +448,16 @@ export async function getFavouriteUsers(): Promise<[]> {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
     }
-    console.log("[v0] Making request to /user-favourites endpoint...")
     const response = await fetch(`${API.baseUrl}/user-favourites`, {
       headers,
       credentials: "include",
     })
-
-    console.log("[v0] Response status:", response.status, response.statusText)
 
     if (!response.ok) {
       throw new Error(`Error fetching advertisers: ${response.statusText}`)
     }
 
     const result = await response.json()
-    console.log("[v0] Raw API result:", result)
-    console.log("[v0] Result.data:", result.data)
-    console.log("[v0] Result.data length:", result.data?.length || 0)
 
     return result.data || []
   } catch (error) {
