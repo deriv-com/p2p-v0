@@ -9,7 +9,7 @@ export function SvgIcon({
   fill = "currentColor",
   width = 20,
   height = 20,
-  src,
+  src: SVGComponent
 }: SvgIconProps) {
   return (
     <div style={{ width, height }}>
