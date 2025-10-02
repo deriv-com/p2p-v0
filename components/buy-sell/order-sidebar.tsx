@@ -360,7 +360,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     value={amount}
                     onChange={handleAmountChange}
                     type="number"
-                    className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4"
+                    className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0"
                     step="any"
                     inputMode="decimal"
                     onKeyDown={(e) => {
