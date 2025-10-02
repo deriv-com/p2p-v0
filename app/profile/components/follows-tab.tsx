@@ -27,10 +27,13 @@ export default function FollowsTab() {
   const fetchFollowing = useCallback(async () => {
     try {
       setIsLoading(true)
+      console.log("[v0] Fetching favourite users...")
       const data = await getFavouriteUsers()
+      console.log("[v0] Favourite users response:", data)
+      console.log("[v0] Number of users returned:", data?.length || 0)
       setFollowing(data)
     } catch (err) {
-      console.error("Failed to fetch favourite users:", err)
+      console.error("[v0] Failed to fetch favourite users:", err)
       setFollowing([])
     } finally {
       setIsLoading(false)
@@ -79,7 +82,7 @@ export default function FollowsTab() {
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
               duration: 2500,
             })
-              await fetchFollowing()
+            await fetchFollowing()
           }
         } catch (error) {
           console.error("Error unfollowing user:", error)
@@ -111,35 +114,37 @@ export default function FollowsTab() {
 
   return (
     <div className="space-y-4">
-      {filteredFollowing.length > 0 && <div className="flex items-center justify-between gap-4">
-        <div className="relative w-full md:w-auto">
-          <Image
-            src="/icons/search-icon-custom.png"
-            alt="Search"
-            width={24}
-            height={24}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2"
-          />
-          <Input
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
-            autoComplete="off"
-            autoFocus
-          />
-          {searchQuery && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSearchQuery("")}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
-            >
-              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
-            </Button>
-          )}
+      {filteredFollowing.length > 0 && (
+        <div className="flex items-center justify-between gap-4">
+          <div className="relative w-full md:w-auto">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            />
+            <Input
+              placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
+              autoComplete="off"
+              autoFocus
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+              >
+                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              </Button>
+            )}
+          </div>
         </div>
-      </div>}
+      )}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
