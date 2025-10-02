@@ -53,12 +53,12 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const navItems = [
     { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: HomeIcon },
-    { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
-    { name: "Orders", href: "/orders", icon: "/icons/orders-icon.svg" },
-    { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
-    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" }] : []),
-    { name: "P2P Profile", href: "/profile", icon: "/icons/profile-icon.png" },
-    { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: "/icons/p2p-guide.png" },
+    { name: "Market", href: "/", icon: MarketIcon },
+    { name: "Orders", href: "/orders", icon: OrdersIcon },
+    { name: "My Ads", href: "/ads", icon: AdsIcon },
+    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: ProfileIcon }] : []),
+    { name: "P2P Profile", href: "/profile", icon: ProfileIcon },
+    { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
   return (
