@@ -84,7 +84,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             className={cn(
               "absolute left-4 transition-all duration-200 ease-in-out pointer-events-none",
               "text-[#000000B8]",
-              shouldFloatLabel ? "top-2 text-xs" : "top-1/2 -translate-y-1/2 text-sm",
+              //shouldFloatLabel ? "top-2 text-xs" : "top-1/2 -translate-y-1/2 text-sm",
             )}
           >
             {label}
