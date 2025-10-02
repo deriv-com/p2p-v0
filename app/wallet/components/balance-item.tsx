@@ -21,7 +21,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
         <div className="flex-shrink-0">
           {logo ? (
             <Image
-              src={logo || "/placeholder.svg"}
+              src={logo}
               alt={`${currency} logo`}
               width={24}
               height={24}
