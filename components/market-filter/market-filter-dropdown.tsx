@@ -60,7 +60,6 @@ export default function MarketFilterDropdown({
     }
     setFilters(newFilters)
 
-    // Auto-apply on desktop
     if (!isMobile) {
       onApply(newFilters, sortBy)
     }
