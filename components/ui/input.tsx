@@ -70,15 +70,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       const shouldFloatLabel = isFocused || hasValue
 
       return (
-        <div className="relative">
-          {variant === "floatingCurrency" && (
-            <label
-              className="text-[#000000B8]"
-            >
-              {label}
-              {required && <span className="text-red-500 ml-1">*</span>}
-            </label>
-          )}
+      <> 
+        {variant === "floatingCurrency" && (
+          <label
+            className="text-slate-1200 mb-2 font-normal text-sm"
+          >
+            {label}
+            {required && <span className="text-red-500 ml-1">*</span>}
+          </label>
+        )}
+        <div className="relative mt-2">
           <input
             type={type}
             className={cn(inputVariants({ variant: computedVariant }), className)}
@@ -104,6 +105,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             </div>
           )}
         </div>
+        </>
       )
     }
 
