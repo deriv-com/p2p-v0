@@ -216,7 +216,7 @@ export default function OrdersPage() {
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
