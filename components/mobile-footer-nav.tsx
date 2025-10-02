@@ -5,13 +5,11 @@ import { usePathname } from "next/navigation"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
-import HomeIcon from "@/public/icons/ic-home.svg"
 import MarketIcon from "@/public/icons/ic-market.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
 import AdsIcon from "@/public/icons/ic-ads.svg"
 import WalletIcon from "@/public/icons/ic-wallet.svg"
 import ProfileIcon from "@/public/icons/ic-profile.svg"
-import GuideIcon from "@/public/icons/ic-guide.svg"
 
 export default function MobileFooterNav() {
   const pathname = usePathname()
@@ -85,7 +83,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={OrdersIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={ProfileIcon} fill={isActive? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Profile</span>
         </Link>
