@@ -128,6 +128,28 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
     }
   }
 
+  const getTransferDestinationText = (transaction: Transaction) => {
+    const { source_wallet_type, destination_wallet_type, transaction_currency } = transaction.metadata
+
+    // Check if source is P2P
+    const isSourceP2P = source_wallet_type?.toLowerCase() === "p2p"
+    const isDestinationP2P = destination_wallet_type?.toLowerCase() === "p2p"
+
+    if (isSourceP2P && !isDestinationP2P) {
+      // From P2P to another wallet
+      return `P2P ${transaction_currency} -> ${transaction_currency} Wallet`
+    } else if (!isSourceP2P && isDestinationP2P) {
+      // From another wallet to P2P
+      return `${transaction_currency} Wallet -> P2P ${transaction_currency}`
+    } else if (isSourceP2P && isDestinationP2P) {
+      // P2P to P2P (edge case)
+      return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
+    } else {
+      // Between non-P2P wallets
+      return `${transaction_currency} Wallet`
+    }
+  }
+
   const filteredTransactions = transactions.filter((transaction) => {
     if (activeFilter === "All") {
       return true
@@ -193,11 +215,12 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
               <div className="space-y-0">
                 {dateTransactions.map((transaction, index) => {
                   const display = getTransactionDisplay(transaction)
+                  const isTransfer = display.type === "Transfer"
 
                   return (
                     <div key={transaction.transaction_id} className="relative">
                       <div
-                        className="flex items-center justify-between h-[72px] cursor-pointer hover:bg-gray-50 transition-colors"
+                        className="flex items-center justify-between min-h-[72px] py-3 cursor-pointer hover:bg-gray-50 transition-colors"
                         onClick={() => handleTransactionClick(transaction)}
                       >
                         <div className="flex items-center gap-4">
@@ -214,7 +237,14 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                             )}
                           </div>
 
-                          <div className="text-slate-1200 text-base font-normal">{display.type}</div>
+                          <div className="flex flex-col gap-1">
+                            <div className="text-slate-1200 text-base font-normal">{display.type}</div>
+                            {isTransfer && (
+                              <div className="text-xs font-normal" style={{ color: "#0000007A" }}>
+                                {getTransferDestinationText(transaction)}
+                              </div>
+                            )}
+                          </div>
                         </div>
 
                         <div className={`${display.amountColor} text-base font-normal mr-6`}>
@@ -233,10 +263,16 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
           {filteredTransactions.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
               {selectedCurrency
-                ? `No transactions for the selected currency`
+                ? "No transactions for the selected currency"
                 : activeFilter === "All"
                   ? "No transactions found"
                   : `No ${activeFilter.toLowerCase()} transactions found`}
+            </div>
+          )}
+
+          {filteredTransactions.length > 0 && (
+            <div className="text-center text-xs font-normal pt-6" style={{ color: "#0000003D" }}>
+              End of transaction
             </div>
           )}
         </div>
