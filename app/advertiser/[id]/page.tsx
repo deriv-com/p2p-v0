@@ -220,7 +220,22 @@ export default function AdvertiserProfilePage() {
                   <div className="flex-1">
                     <div className="flex gap-2 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
-                      {profile?.trade_band === "bronze" && <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />}
+                      {profile?.trade_band === "bronze" && (
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <>
+                                <div className="text-white">Bronze tier</div>
+                                  <div className="opacity-[0.72]">Default tier for new users with basic trading limits.</div>
+                              </>
+                              <TooltipArrow className="fill-black" />
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
