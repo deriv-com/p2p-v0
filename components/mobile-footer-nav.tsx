@@ -35,7 +35,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={MarketIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={MarketIcon} fill={pathname === "/" ? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Market</span>
         </Link>
@@ -47,7 +47,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={OrdersIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={OrdersIcon} fill={pathname.startsWith("/orders") ? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Orders</span>
         </Link>
@@ -59,7 +59,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={AdsIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">My ads</span>
         </Link>
@@ -71,7 +71,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={WalletIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Wallet</span>
         </Link>
@@ -83,7 +83,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={ProfileIcon} fill={isActive? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={ProfileIcon} fill={pathname.startsWith("/profile") ? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Profile</span>
         </Link>
