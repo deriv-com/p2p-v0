@@ -1,6 +1,3 @@
-import Image from "next/image"
-import type { ReactNode } from "react"
-
 interface SvgIconProps {
   fill?: string
   width?: number | string
