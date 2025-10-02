@@ -358,7 +358,7 @@ export default function AdvertiserProfilePage() {
                                   ))}
                                 </div>
                               </TableCell>
-                              <TableCell className="py-0 lg:py-4 px-4 text-right align-top whitespace-nowrap">
+                              <TableCell className="py-0 lg:py-4 px-4 text-right align-top whitespace-nowrap row-start-3">
                                 {userId != ad.user.id && (
                                   <Button
                                     variant={ad.type === "buy" ? "destructive" : "secondary"}
