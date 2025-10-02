@@ -49,7 +49,7 @@ export default function WalletBalances({ onBalanceClick }: WalletBalancesProps) 
 
   if (balances.length === 0) {
     return (
-      <div className="flex flex-col items-center p-6 md:mt-6 mr-6">
+      <div className="flex flex-col items-center p-6 md:mt-6 mr-6 md:mr-0">
         <Image src="/icons/magnifier.png" alt="No assets" width={86} height={86} />
         <div className="h-2" />
         <p
