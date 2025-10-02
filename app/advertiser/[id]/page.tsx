@@ -218,9 +218,9 @@ export default function AdvertiserProfilePage() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
-                      {profile?.trade_band === "bronze" && <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />}
+                      {profile?.trade_band === "bronze" && <Image src="/icons/bronze.png" alt="Bronze" height={18} />}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
