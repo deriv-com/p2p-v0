@@ -12,7 +12,7 @@ interface StatCardProps {
 
 function StatCard({ tab, title, value }: StatCardProps) {
   return (
-    <div className="flex-row-reverse justify-between md:border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
+    <div className="flex flex-row-reverse justify-between md:border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
       <div className="font-bold text-black text-base leading-6 tracking-normal">
         {value}
       </div>

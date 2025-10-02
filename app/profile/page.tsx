@@ -122,6 +122,7 @@ export default function ProfilePage() {
               realName={userData?.realName}
               isVerified={userData?.isVerified}
               isLoading={isLoading}
+              tradeBand={userData?.trade_band}
             />
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />

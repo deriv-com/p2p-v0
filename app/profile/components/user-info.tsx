@@ -1,5 +1,6 @@
 "use client"
 
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 
 interface UserInfoProps {
@@ -7,9 +8,10 @@ interface UserInfoProps {
   rating: string
   recommendation: number
   joinDate: string
+  tradeBand: string
 }
 
-export default function UserInfo({ username, rating, joinDate, recommendation }: UserInfoProps) {
+export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
   return (
     <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
       <div className="flex flex-col md:flex-row items-start gap-4">
@@ -17,7 +19,25 @@ export default function UserInfo({ username, rating, joinDate, recommendation }:
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
         </div>
         <div className="flex flex-col flex-1 gap-1">
-          <h2 className="text-base text-white font-bold">{username}</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base text-white font-bold">{username}</h2>
+            {tradeBand === "bronze" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <>
+                      <p className="font-bold text-white mb-2">Bronze tier</p>
+                      <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
+                    </>
+                    <TooltipArrow className="fill-black" />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+           </div>
           {joinDate && (<div className="text-xs text-white opacity-[0.72]">
               {joinDate}
             </div>)}
