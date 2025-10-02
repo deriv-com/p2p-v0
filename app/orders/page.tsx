@@ -248,7 +248,7 @@ export default function OrdersPage() {
                 </TableCell>
                 <TableCell className="py-0 px-4align-top row-start-1">
                   <div
-                    className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
+                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
                     {formatStatus(false, order.status, order.type)}
                   </div>
@@ -275,7 +275,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="py-0 px-4 align-top row-start-4 col-span-full">
+                <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     <div className="text-xs">
                       {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
@@ -285,7 +285,7 @@ export default function OrdersPage() {
                         onClick={(e) => {
                           handleChatClick(e, order)
                         }}
-                        className="text-slate-500 hover:text-slate-700 z-auto p-"
+                        className="text-slate-500 hover:text-slate-700 z-auto p-0"
                         variant="ghost"
                         size="sm"
                       >
