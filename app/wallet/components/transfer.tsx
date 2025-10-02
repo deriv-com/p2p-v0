@@ -14,6 +14,8 @@ interface TransferProps {
 
 interface Currency {
   code: string
+  name: string
+  logo: string
 }
 
 interface ProcessedWallet {
@@ -69,6 +71,8 @@ export default function Transfer({ onClose }: TransferProps) {
         if (response?.data) {
           const currencyList = Object.keys(response.data).map((code) => ({
             code,
+            name: response.data[code].name,
+            logo: response.data[code].logo,
           }))
           setCurrencies(currencyList)
         }
@@ -166,7 +170,6 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const handleCurrencySelect = (currencyCode: string) => {
-    console.log("[v0] Currency code selected:", currencyCode)
     setSelectedCurrency(currencyCode)
     toEnterAmount()
   }
@@ -382,6 +385,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -465,6 +469,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -588,6 +593,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
