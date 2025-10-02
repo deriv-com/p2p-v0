@@ -121,7 +121,7 @@ export default function MarketFilterDropdown({
         >
            Apply filters
         </Button>
-      </div>}
+      </div>
     </div>
   )
 
