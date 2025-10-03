@@ -29,7 +29,6 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
     loadCountries()
   }, [])
 
-  // Get flag emoji from country code
   const getFlagEmoji = (countryCode: string) => {
     if (!countryCode || countryCode.length !== 2) return "🏳️"
     const codePoints = countryCode
