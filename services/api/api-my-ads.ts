@@ -244,7 +244,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         id: String(advert.id || "0"),
         type: ((advert.type || "buy") as string).toLowerCase() === "buy" ? "Buy" : "Sell",
         rate: {
-          value: `${currency} ${exchangeRate.toFixed(4)}`,
+          value: `${exchangeRate.toFixed(4)}`,
           percentage: "0.1%",
           currency: currency,
         },
