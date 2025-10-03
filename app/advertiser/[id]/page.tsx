@@ -297,7 +297,7 @@ export default function AdvertiserProfilePage() {
                 </div>
                 <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
                 <p className="text-base text-neutral-7">
-                  Unblock them if you'd like to interact with this advertiser again
+                  Unblock them if you'd like to interact with this advertiser again.
                 </p>
               </div>
             )}
