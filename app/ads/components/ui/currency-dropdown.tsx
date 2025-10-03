@@ -12,21 +12,21 @@ interface CurrencyDropdownProps {
 }
 
 export function CurrencyDropdown({ value, onValueChange, disabled = false }: CurrencyDropdownProps) {
-  const [countries, setCountries] = useState<Country[]>([])
+  const [currencies, setCurrencies] = useState<Country[]>([])
 
   useEffect(() => {
-    const loadCountries = async () => {
+    const getCurrencies = async () => {
       try {
         const response = await AuthAPI.getCountries()
-        if (response.countries) {
-          setCountries(response.countries)
+        if (response.data) {
+          setCurrencies(response.countries)
         }
       } catch (error) {
         console.error("Failed to load countries:", error)
       }
     }
 
-    loadCountries()
+    getCurrencies()
   }, [])
 
   const getFlagEmoji = (countryCode: string) => {
