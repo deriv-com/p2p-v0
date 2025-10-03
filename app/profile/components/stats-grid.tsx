@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { formatAmount } from "@/lib/utils"
 
 interface StatCardProps {
   tab: string
