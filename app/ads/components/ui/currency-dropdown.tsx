@@ -28,7 +28,6 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
           const countryData = response.countries as CountryData[]
           setCountries(countryData)
 
-          // Extract unique currencies from the data
           const uniqueCurrencies = Array.from(
             new Set(countryData.map((country) => country.currency).filter(Boolean)),
           ) as string[]
