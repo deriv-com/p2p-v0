@@ -22,7 +22,17 @@ interface Currency {
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
 type WalletStep = "summary" | "chooseCurrency" | "walletAction"
 
-export default function WalletSummary() {
+interface WalletSummaryProps {
+  isBalancesView?: boolean
+  selectedCurrency?: string | null
+  onBack?: () => void
+}
+
+export default function WalletSummary({
+  isBalancesView = true,
+  selectedCurrency: externalSelectedCurrency = null,
+  onBack,
+}: WalletSummaryProps) {
   const userId = useUserDataStore((state) => state.userId)
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -34,6 +44,8 @@ export default function WalletSummary() {
   const [isLoading, setIsLoading] = useState(true)
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
+
+  const displayCurrency = externalSelectedCurrency || selectedCurrency
 
   const fetchCurrencies = async () => {
     try {
@@ -52,20 +64,28 @@ export default function WalletSummary() {
   }
 
   const loadBalance = useCallback(async () => {
+    if (!userId) {
+      setIsLoading(false)
+      return
+    }
+
     try {
-      const balanceAmount = await fetchBalance(selectedCurrency)
+      const balanceAmount = await fetchBalance(displayCurrency)
       setBalance(balanceAmount)
       setIsLoading(false)
     } catch (error) {
       console.error("Error fetching user balance:", error)
       setIsLoading(false)
     }
-  }, [selectedCurrency])
+  }, [displayCurrency, userId])
 
   useEffect(() => {
     loadBalance()
-    fetchCurrencies()
   }, [loadBalance])
+
+  useEffect(() => {
+    fetchCurrencies()
+  }, [])
 
   const handleDepositClick = () => {
     if (userId) {
@@ -122,68 +142,136 @@ export default function WalletSummary() {
     setCurrentStep("chooseCurrency")
   }
 
+  const currencyLogo = currencyLogoMapper[displayCurrency as keyof typeof currencyLogoMapper]
+
   return (
     <>
       <div
         className={cn(
-          "bg-slate-1200 w-full h-[140px] p-6 flex items-center justify-between",
-          isMobile ? "rounded-b-3xl flex-col gap-4 h-auto py-6" : "rounded-3xl",
+          "w-full p-6 flex flex-col",
+          isBalancesView ? "bg-slate-1200 md:h-[140px] h-auto" : "bg-slate-75 md:h-[180px] h-auto",
+          isMobile ? (isBalancesView ? "rounded-b-3xl" : "rounded-b-none") : "rounded-3xl",
         )}
       >
-        <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
-          <div className="flex-shrink-0">
-            <Image
-              src="/icons/p2p-3d.png"
-              alt="P2P Logo"
-              width={92}
-              height={92}
-              className="w-16 h-16 md:w-24 md:h-24"
-            />
+        {!isBalancesView && (
+          <div className="flex justify-start items-center h-8 mb-6">
+            <button onClick={onBack} className="w-8 h-8 flex items-center justify-center" aria-label="Back to balances">
+              <Image src="/icons/back-circle.png" alt="Back" width={32} height={32} />
+            </button>
+          </div>
+        )}
+
+        <div className={cn("flex items-center justify-between", isMobile && "flex-col gap-4")}>
+          <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
+            <div className="flex-shrink-0">
+              <Image
+                src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/p2p-3d.png"}
+                alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
+                width={!isBalancesView ? 64 : 92}
+                height={!isBalancesView ? 64 : 92}
+                className={cn(!isBalancesView ? "w-16 h-16" : "w-16 h-16 md:w-24 md:h-24")}
+              />
+            </div>
+
+            <div className={cn("flex flex-col", isMobile && "items-center")}>
+              {isBalancesView ? (
+                <>
+                  <p className="text-xs font-normal text-white/72">Total value</p>
+                  <p className="text-xl font-extrabold text-white">
+                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-[28px] font-extrabold text-slate-1200">
+                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                  </p>
+                  <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
+                </>
+              )}
+            </div>
           </div>
 
-          <div className={cn("flex flex-col", isMobile && "items-center")}>
-            <p className="text-[rgba(255,255,255,0.72)] text-xs font-normal">Total value</p>
-            <p className="text-white text-xl font-extrabold">
-              {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${selectedCurrency}`}
-            </p>
-          </div>
-        </div>
+          <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
+            <div className="flex flex-col items-center gap-2">
+              <Button
+                size="icon"
+                className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
+                onClick={handleDepositClick}
+                aria-label="Deposit"
+              >
+                <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
+              </Button>
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
+                Deposit
+              </span>
+            </div>
 
-        <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
-          <div className="flex flex-col items-center gap-2">
-            <Button
-              size="icon"
-              className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
-              onClick={handleDepositClick}
-              aria-label="Deposit"
-            >
-              <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
-            </Button>
-            <span className="text-white text-xs font-normal">Deposit</span>
-          </div>
+            <div className="flex flex-col items-center gap-2">
+              <Button
+                size="icon"
+                className={cn(
+                  "h-12 w-12 rounded-full p-0",
+                  isBalancesView
+                    ? balance === 0
+                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
+                      : "border border-white bg-transparent hover:bg-white/10 text-white"
+                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
+                )}
+                onClick={handleTransferClick}
+                disabled={isBalancesView && balance === 0}
+                aria-label="Transfer"
+              >
+                <Image
+                  src={isBalancesView ? "/icons/transfer-white.png" : "/icons/transfer-black.png"}
+                  alt="Transfer"
+                  width={14}
+                  height={14}
+                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
+                />
+              </Button>
+              <span
+                className={cn(
+                  "text-xs font-normal",
+                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                )}
+              >
+                Transfer
+              </span>
+            </div>
 
-          <div className="flex flex-col items-center gap-2">
-            <Button
-              size="icon"
-              className="h-12 w-12 rounded-full border border-white bg-transparent hover:bg-white/10 text-white p-0"
-              onClick={handleTransferClick}
-              aria-label="Transfer"
-            >
-              <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
-            </Button>
-            <span className="text-white text-xs font-normal">Transfer</span>
-          </div>
-
-          <div className="flex flex-col items-center gap-2">
-            <Button
-              size="icon"
-              className="h-12 w-12 rounded-full border border-white bg-transparent hover:bg-white/10 text-white p-0"
-              onClick={handleWithdrawClick}
-              aria-label="Withdraw"
-            >
-              <Image src="/icons/withdraw-white.png" alt="Withdraw" width={14} height={14} />
-            </Button>
-            <span className="text-white text-xs font-normal">Withdraw</span>
+            <div className="flex flex-col items-center gap-2">
+              <Button
+                size="icon"
+                className={cn(
+                  "h-12 w-12 rounded-full p-0",
+                  isBalancesView
+                    ? balance === 0
+                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
+                      : "border border-white bg-transparent hover:bg-white/10 text-white"
+                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
+                )}
+                onClick={handleWithdrawClick}
+                disabled={isBalancesView && balance === 0}
+                aria-label="Withdraw"
+              >
+                <Image
+                  src={isBalancesView ? "/icons/withdraw-white.png" : "/icons/withdraw-black.png"}
+                  alt="Withdraw"
+                  width={14}
+                  height={14}
+                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
+                />
+              </Button>
+              <span
+                className={cn(
+                  "text-xs font-normal",
+                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                )}
+              >
+                Withdraw
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -231,7 +319,7 @@ export default function WalletSummary() {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         operation={currentOperation}
-        currency={selectedCurrency}
+        currency={displayCurrency}
       />
       <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>

@@ -3,10 +3,11 @@ import Image from "next/image"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { fetchWalletsList, walletTransfer, getCurrencies } from "@/services/api/api-wallets"
+import { fetchWalletsList, walletTransfer, getCurrencies, fetchTransactions } from "@/services/api/api-wallets"
 import { currencyLogoMapper } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
+import TransactionDetails from "./transaction-details"
 
 interface TransferProps {
   onClose: () => void
@@ -33,6 +34,30 @@ interface WalletData {
   currency: string
 }
 
+interface Transaction {
+  transaction_id: number
+  timestamp: string
+  metadata: {
+    brand_name: string
+    description: string
+    destination_client_id: string
+    destination_wallet_id: string
+    destination_wallet_type: string
+    is_reversible: string
+    payout_method: string
+    requester_platform: string
+    source_client_id: string
+    source_wallet_id: string
+    source_wallet_type: string
+    transaction_currency: string
+    transaction_gross_amount: string
+    transaction_net_amount: string
+    transaction_status: string
+    wallet_transaction_type: string
+    external_reference_id?: string
+  }
+}
+
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
@@ -40,7 +65,7 @@ export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency | null>(null)
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
   const [showMobileConfirmSheet, setShowMobileConfirmSheet] = useState(false)
@@ -49,6 +74,9 @@ export default function Transfer({ onClose }: TransferProps) {
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
+
+  const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => {
@@ -62,6 +90,11 @@ export default function Transfer({ onClose }: TransferProps) {
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
+  }
+
+  const handleCurrencySelect = (currency: string) => {
+    setSelectedCurrency(currency)
+    toEnterAmount()
   }
 
   useEffect(() => {
@@ -95,14 +128,14 @@ export default function Transfer({ onClose }: TransferProps) {
           const processedWallets: ProcessedWallet[] = []
 
           response.data.wallets.forEach((wallet: any) => {
-            const matchingBalance = wallet.balances.find((balance: any) => balance.currency === selectedCurrency.code)
+            const matchingBalance = wallet.balances.find((balance: any) => balance.currency === selectedCurrency)
             const balanceValue = matchingBalance ? matchingBalance.balance : "0"
 
             processedWallets.push({
               wallet_id: wallet.wallet_id,
               name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `Trading Wallet`,
               balance: balanceValue,
-              currency: selectedCurrency.code,
+              currency: selectedCurrency,
               icon: "/icons/usd-flag.png",
               type: wallet.type,
             })
@@ -138,7 +171,7 @@ export default function Transfer({ onClose }: TransferProps) {
 
       const transferParams = {
         amount: transferAmount,
-        currency: selectedCurrency?.code || "USD",
+        currency: selectedCurrency || "USD",
         destination_wallet_id: destinationWalletData.id,
         request_id: requestId,
         source_wallet_id: sourceWalletData.id,
@@ -148,6 +181,9 @@ export default function Transfer({ onClose }: TransferProps) {
 
       if (!result?.data?.errors || result.data.errors.length === 0) {
         console.log("Transfer successful:", result)
+        if (result?.data?.external_reference_id) {
+          setExternalReferenceId(result.data.external_reference_id)
+        }
         setShowDesktopConfirmPopup(false)
         setShowMobileConfirmSheet(false)
         toSuccess()
@@ -159,19 +195,45 @@ export default function Transfer({ onClose }: TransferProps) {
     }
   }
 
+  const handleViewDetails = async () => {
+    if (!externalReferenceId) {
+      console.error("No external reference ID available")
+      return
+    }
+
+    try {
+      const response = await fetchTransactions()
+
+      if (response?.data?.transactions) {
+        const matchingTransaction = response.data.transactions.find(
+          (transaction: Transaction) => transaction.metadata.external_reference_id === externalReferenceId,
+        )
+
+        if (matchingTransaction) {
+          setSelectedTransaction(matchingTransaction)
+        } else {
+          console.error("Transaction not found with external_reference_id:", externalReferenceId)
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching transaction details:", error)
+    }
+  }
+
+  const handleCloseTransactionDetails = () => {
+    setSelectedTransaction(null)
+    onClose()
+  }
+
   const handleDoneClick = () => {
     setStep("chooseCurrency")
     setTransferAmount(null)
     setSourceWalletData(null)
     setDestinationWalletData(null)
     setSelectedCurrency(null)
+    setExternalReferenceId(null)
 
     onClose()
-  }
-
-  const handleCurrencySelect = (currency: Currency) => {
-    setSelectedCurrency(currency)
-    toEnterAmount()
   }
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
@@ -367,7 +429,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {sourceWalletData && (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -386,7 +448,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -401,7 +463,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
                 <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} {selectedCurrency?.code || "USD"}
+                  {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
                 </span>
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
@@ -482,7 +544,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
                 <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} {selectedCurrency?.code || "USD"}
+                  {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
                 </span>
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
@@ -550,7 +612,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -632,13 +694,13 @@ export default function Transfer({ onClose }: TransferProps) {
                 max={getSourceWalletBalance()}
               />
               <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
-                {selectedCurrency?.code || "USD"}
+                {selectedCurrency || "USD"}
               </span>
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">
                 Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())}{" "}
-                {selectedCurrency?.code || "USD"})
+                {selectedCurrency || "USD"})
               </p>
             )}
             <div className="hidden md:block absolute top-full right-0 mt-6">
@@ -685,43 +747,55 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText = `${formatBalance(transferAmount || "0")} ${selectedCurrency?.code || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+    const transferText = `${formatBalance(transferAmount || "0")} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
-      <div
-        className="absolute inset-0 flex flex-col h-full p-6"
-        style={{
-          background:
-            "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), #181C25",
-        }}
-      >
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
-          <div className="mb-6">
-            <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
+      <>
+        <div
+          className="absolute inset-0 flex flex-col h-full p-6"
+          style={{
+            background:
+              "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), #181C25",
+          }}
+        >
+          <div className="flex-1 flex flex-col items-center justify-center text-center">
+            <div className="mb-6">
+              <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
+            </div>
+            <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
+            <p className="text-white text-center text-base font-normal">{transferText}</p>
+            <div className="hidden md:flex gap-4 mt-6">
+              <Button
+                onClick={handleViewDetails}
+                className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+              >
+                View details
+              </Button>
+              <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+                Got it
+              </Button>
+            </div>
           </div>
-          <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
-          <p className="text-white text-center text-base font-normal">{transferText}</p>
-          <div className="hidden md:flex gap-4 mt-6">
-            <Button className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10">
-              View details
-            </Button>
-            <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+          <div className="block md:hidden w-full space-y-3">
+            <Button
+              onClick={handleDoneClick}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+            >
               Got it
             </Button>
+            <Button
+              onClick={handleViewDetails}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+            >
+              View details
+            </Button>
           </div>
         </div>
-        <div className="block md:hidden w-full space-y-3">
-          <Button
-            onClick={handleDoneClick}
-            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-          >
-            Got it
-          </Button>
-          <Button className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10">
-            View details
-          </Button>
-        </div>
-      </div>
+
+        {selectedTransaction && (
+          <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+        )}
+      </>
     )
   }
 
