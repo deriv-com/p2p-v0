@@ -298,7 +298,7 @@ export interface CountriesResponse {
  */
 export async function getCountries(): Promise<CountriesResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BSE_URL}/countries`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/countries`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
