@@ -355,6 +355,7 @@ export default function AdvertiserProfilePage() {
                                   </TableCell>
                                   <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
                                     <div>
+                                      <span>Trade Limits: </span>
                                       {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
                                     </div>
                                   </TableCell>
