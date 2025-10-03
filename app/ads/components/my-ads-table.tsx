@@ -256,7 +256,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          {!isMobile && (<span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
+                          {!isMobile && (<span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>)}
                           <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (<div className="flex items-center justify-between md:justify-normal gap-1">
@@ -276,6 +276,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>
+                    {isMobile && (<div className="flex items-center justify-between md:justify-normal gap-1">
+                      <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
+                      <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                    </div>)}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
                       <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limit:</span>
                       <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
