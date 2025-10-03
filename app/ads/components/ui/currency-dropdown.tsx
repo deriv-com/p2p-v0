@@ -13,7 +13,6 @@ interface CurrencyDropdownProps {
 
 export function CurrencyDropdown({ value, onValueChange, disabled = false }: CurrencyDropdownProps) {
   const [countries, setCountries] = useState<Country[]>([])
-  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     const loadCountries = async () => {
@@ -43,14 +42,6 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
   }
 
   const selectedCountry = countries.find((country) => country.code === value)
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-14 rounded-lg border border-grayscale-200 flex items-center px-4">
-        <span className="text-sm text-gray-400">Loading currencies...</span>
-      </div>
-    )
-  }
 
   return (
     <Select value={value} onValueChange={onValueChange} disabled={disabled}>
