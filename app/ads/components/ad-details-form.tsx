@@ -6,6 +6,7 @@ import type { AdFormData } from "../types"
 import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
+import { CurrencyDropdown } from "./ui/currency-dropdown"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AdsAPI } from "@/services/api"
 import { useCurrencyData } from "@/hooks/use-currency-data"
@@ -31,6 +32,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState("USD")
   const [forCurrency, setForCurrency] = useState("IDR")
+  const [selectedCurrency, setSelectedCurrency] = useState("ID")
   const { currencies: currencyList } = useCurrencyData()
   const [currencies, setCurrencies] = useState<string[]>([])
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
@@ -176,8 +178,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       maxAmount: Number.parseFloat(maxAmount) || 0,
     }
 
-    setFormData(formData)
-
     onNext(formData)
   }
 
@@ -244,6 +244,12 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           </div>
         )}
 
+        {/* Added currency dropdown before Price type section */}
+        <div>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Currency</h3>
+          <CurrencyDropdown value={selectedCurrency} onValueChange={setSelectedCurrency} disabled={isEditMode} />
+        </div>
+
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-grayscale-200 rounded-lg p-4">
@@ -255,7 +261,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder={type ==="sell"? "Sell quantity": "Buy quantity"}
+                placeholder={type === "sell" ? "Sell quantity" : "Buy quantity"}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
                 currency={buyCurrency}
@@ -267,7 +273,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
             <div>
               <RateInput
-                  currency={forCurrency}
+                currency={forCurrency}
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
