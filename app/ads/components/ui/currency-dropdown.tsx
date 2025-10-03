@@ -3,7 +3,12 @@
 import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AuthAPI } from "@/services/api"
-import type { Country } from "@/services/api/api-auth"
+
+interface CountryData {
+  code: string
+  name: string
+  currency?: string
+}
 
 interface CurrencyDropdownProps {
   value: string
@@ -12,14 +17,22 @@ interface CurrencyDropdownProps {
 }
 
 export function CurrencyDropdown({ value, onValueChange, disabled = false }: CurrencyDropdownProps) {
-  const [currencies, setCurrencies] = useState<Country[]>([])
+  const [countries, setCountries] = useState<CountryData[]>([])
+  const [currencies, setCurrencies] = useState<string[]>([])
 
   useEffect(() => {
     const getCurrencies = async () => {
       try {
         const response = await AuthAPI.getCountries()
-        if (response.data) {
-          setCurrencies(response.countries)
+        if (response.countries) {
+          const countryData = response.countries as CountryData[]
+          setCountries(countryData)
+
+          // Extract unique currencies from the data
+          const uniqueCurrencies = Array.from(
+            new Set(countryData.map((country) => country.currency).filter(Boolean)),
+          ) as string[]
+          setCurrencies(uniqueCurrencies)
         }
       } catch (error) {
         console.error("Failed to load countries:", error)
@@ -38,7 +51,7 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
     return String.fromCodePoint(...codePoints)
   }
 
-  const selectedCountry = countries.find((country) => country.code === value)
+  const selectedCountry = countries.find((country) => country.currency === value)
 
   return (
     <Select value={value} onValueChange={onValueChange} disabled={disabled}>
@@ -48,23 +61,26 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
             <>
               <span className="text-2xl">{getFlagEmoji(selectedCountry.code)}</span>
               <SelectValue>
-                <span className="text-base font-medium">{selectedCountry.code}</span>
+                <span className="text-base font-medium">{selectedCountry.currency}</span>
               </SelectValue>
             </>
           )}
         </div>
       </SelectTrigger>
       <SelectContent className="max-h-[300px]">
-        {countries.map((country) => (
-          <SelectItem key={country.code} value={country.code} className="cursor-pointer">
-            <div className="flex items-center gap-3">
-              <span className="text-xl">{getFlagEmoji(country.code)}</span>
-              <span className="text-sm">
-                {country.code} - {country.name}
-              </span>
-            </div>
-          </SelectItem>
-        ))}
+        {currencies.map((currency) => {
+          const country = countries.find((c) => c.currency === currency)
+          if (!country) return null
+
+          return (
+            <SelectItem key={currency} value={currency} className="cursor-pointer">
+              <div className="flex items-center gap-3">
+                <span className="text-xl">{getFlagEmoji(country.code)}</span>
+                <span className="text-sm">{currency}</span>
+              </div>
+            </SelectItem>
+          )
+        })}
       </SelectContent>
     </Select>
   )

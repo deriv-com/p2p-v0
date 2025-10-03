@@ -287,6 +287,7 @@ export async function getTotalBalance(): Promise<TotalBalanceResponse> {
 export interface Country {
   code: string
   name: string
+  currency?: string
 }
 
 export interface CountriesResponse {
