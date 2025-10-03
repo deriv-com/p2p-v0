@@ -58,6 +58,7 @@ export default function FollowsTab() {
       description: "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
       confirmText: "Unfollow",
       cancelText: "Cancel",
+      type: "warning",
       onConfirm: async () => {
         try {
           const result = await toggleFavouriteAdvertiser(user.user_id, false)

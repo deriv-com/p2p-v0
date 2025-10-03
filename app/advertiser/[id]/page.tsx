@@ -18,7 +18,7 @@ import BlockConfirmation from "@/components/block-confirmation"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
-
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AdvertiserProfile {
   id: string | number
@@ -53,6 +53,7 @@ export default function AdvertiserProfilePage() {
   const router = useRouter()
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
+  const isMobile = useIsMobile()
   const userId = useUserDataStore((state) => state.userId)
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
@@ -107,13 +108,12 @@ export default function AdvertiserProfilePage() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              {isFollowing ? <span>Successfully unfollowed</span> :<span>Successfully followed</span>}
+              {isFollowing ? <span>Successfully unfollowed</span> : <span>Successfully followed</span>}
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
-        
       } else {
         console.error("Failed to toggle follow status:", result.message)
       }
@@ -125,26 +125,28 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockClick = () => {
-    setIsBlockConfirmationOpen(true)
+    if(!isBlocked)
+      setIsBlockConfirmationOpen(true)
+    else 
+      handleBlockConfirm()
   }
 
   const handleBlockConfirm = async () => {
     if (!profile) return
 
+    setIsBlockConfirmationOpen(false)
     setIsBlockLoading(true)
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
       if (result.success) {
         setIsBlocked(!isBlocked)
-        setIsBlockConfirmationOpen(false)
 
-        router.push("/")
         toast({
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              <span>{profile?.nickname} blocked.</span>
+              {isBlocked ? <span>{profile?.nickname} unblocked.</span> : <span>{profile?.nickname} blocked.</span>}
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -265,9 +267,9 @@ export default function AdvertiserProfilePage() {
                   </div>
                   {userId != profile?.id && (
                     <div className="flex items-center md:mt-0 ustify-self-end">
-                      <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
+                      {!isBlocked && <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
                         {isFollowing ? "Following" : "Follow"}
-                      </Button>
+                      </Button>}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -286,100 +288,135 @@ export default function AdvertiserProfilePage() {
               </div>
             </div>
 
-            <AdvertiserStats profile={profile} />
-            <>
-              <div className="container mx-auto pb-4 text-lg font-bold">Online ads</div>
-              <div className="container mx-auto pb-8">
-                {adverts.length > 0 ? (
-                  <>
-                    <div>
-                      <Table>
-                        <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
-                          <TableRow className="text-xs">
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                              Order limits
-                            </TableHead>
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Time limit</TableHead>
-                            <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                              Payment methods
-                            </TableHead>
-                            <TableHead className="text-right py-4 px-4"></TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                          {adverts.map((ad) => (
-                            <TableRow
-                              className="grid grid-col gap-2 border-b mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0]"
-                              key={ad.id}
-                            >
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
-                                <div className="font-bold">
-                                  {ad.exchange_rate
-                                    ? ad.exchange_rate.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                      })
-                                    : ""}{" "}
-                                  {ad.payment_currency}
-                                  <span className="text-xs font-normal text-black opacity-[0.48]">
-                                    {" "}
-                                    /{ad.account_currency}
-                                  </span>
-                                </div>
-                                {ad.exchange_rate_type === "floating" && (
-                                  <div className="text-xs text-slate-500">0.1%</div>
-                                )}
-                              </TableCell>
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
-                                <div>
-                                  {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
-                                </div>
-                              </TableCell>
-                              <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
-                                <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                  <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
-                                  <span>{ad.order_expiry_period} min</span>
-                                </div>
-                              </TableCell>
-                              <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
-                                <div className="flex flex-wrap gap-2 text-xs">
-                                  {ad.payment_methods?.map((method, index) => (
-                                    <div key={index} className="flex items-center">
-                                      <div
-                                        className={`h-2 w-2 rounded-full mr-2 ${
-                                          method.toLowerCase().includes("bank")
-                                            ? "bg-paymentMethod-bank"
-                                            : "bg-paymentMethod-ewallet"
-                                        }`}
-                                      ></div>
-                                      <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              </TableCell>
-                              <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
-                                {userId != ad.user.id && (
-                                  <Button
-                                    variant={ad.type === "buy" ? "destructive" : "secondary"}
-                                    size="sm"
-                                    onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
-                                  >
-                                    {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                                  </Button>
-                                )}
-                              </TableCell>
-                            </TableRow>
-                          ))}
-                        </TableBody>
-                      </Table>
-                    </div>
-                  </>
-                ) : (
-                  <EmptyState title="No ads yet" description="This advertiser do not have any active ads." redirectToAds={false} />
-                )}
+            {isBlocked && (
+              <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
+                <div className="mb-4">
+                  <Image
+                    src="/icons/blocked.png"
+                    alt="Blocked user"
+                    width={128}
+                    height={128}
+                    className="mx-auto"
+                  />
+                </div>
+                <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
+                <p className="text-base text-neutral-7">
+                  Unblock them if you'd like to interact with this advertiser again.
+                </p>
               </div>
-            </>
+            )}
+
+            {!isBlocked && (
+              <>
+                <AdvertiserStats profile={profile} />
+                <>
+                  <div className="container mx-auto pb-4 text-lg font-bold">Online ads</div>
+                  <div className="container mx-auto pb-8">
+                    {adverts.length > 0 ? (
+                      <>
+                        <div>
+                          <Table>
+                            <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+                              <TableRow className="text-xs">
+                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
+                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                  Order limits
+                                </TableHead>
+                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                  Time limit
+                                </TableHead>
+                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                  Payment methods
+                                </TableHead>
+                                <TableHead className="text-right py-4 px-4"></TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                              {adverts.map((ad) => (
+                                <TableRow
+                                  className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
+                                  key={ad.id}
+                                >
+                                  <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
+                                    <div className="font-bold">
+                                      {ad.exchange_rate
+                                        ? ad.exchange_rate.toLocaleString(undefined, {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                          })
+                                        : ""}{" "}
+                                      {ad.payment_currency}
+                                      <span className="text-xs font-normal text-black opacity-[0.48]">
+                                        {" "}
+                                        /{ad.account_currency}
+                                      </span>
+                                    </div>
+                                    {ad.exchange_rate_type === "floating" && (
+                                      <div className="text-xs text-slate-500">0.1%</div>
+                                    )}
+                                  </TableCell>
+                                  <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
+                                    <div>
+                                      {isMobile && <span>Trade Limits: </span>}
+                                      {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
+                                    <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
+                                      <Image
+                                        src="/icons/clock.png"
+                                        alt="Time"
+                                        width={12}
+                                        height={12}
+                                        className="mr-1"
+                                      />
+                                      <span>{ad.order_expiry_period} min</span>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
+                                    <div className="flex flex-wrap gap-2 text-xs">
+                                      {ad.payment_methods?.map((method, index) => (
+                                        <div key={index} className="flex items-center">
+                                          <div
+                                            className={`h-2 w-2 rounded-full mr-2 ${
+                                              method.toLowerCase().includes("bank")
+                                                ? "bg-paymentMethod-bank"
+                                                : "bg-paymentMethod-ewallet"
+                                            }`}
+                                          ></div>
+                                          <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
+                                    {userId != ad.user.id && (
+                                      <Button
+                                        variant={ad.type === "buy" ? "destructive" : "secondary"}
+                                        size="sm"
+                                        onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
+                                      >
+                                        {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                                      </Button>
+                                    )}
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      </>
+                    ) : (
+                      <EmptyState
+                        title="No ads yet"
+                        description="This advertiser do not have any active ads."
+                        redirectToAds={false}
+                      />
+                    )}
+                  </div>
+                </>
+              </>
+            )}
 
             <OrderSidebar
               isOpen={isOrderSidebarOpen}
