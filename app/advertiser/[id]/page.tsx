@@ -286,7 +286,7 @@ export default function AdvertiserProfilePage() {
 
             {isBlocked && (
               <div className="p-12 my-6 flex flex-col items-center justify-center text-center">
-                <div className="mb-6">
+                <div className="mb-4">
                   <Image
                     src="/icons/blocked.png"
                     alt="Blocked user"
@@ -295,8 +295,8 @@ export default function AdvertiserProfilePage() {
                     className="mx-auto"
                   />
                 </div>
-                <h2 className="text-lg font-bold text-neutral-10 mb-3">You've blocked this user</h2>
-                <p className="text-base text-neutral-600">
+                <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
+                <p className="text-base text-neutral-7">
                   Unblock them if you'd like to interact with this advertiser again
                 </p>
               </div>
