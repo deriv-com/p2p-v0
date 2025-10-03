@@ -29,8 +29,6 @@ export default function Navigation({
 }: NavigationProps) {
   const router = useRouter()
 
-  if (!isVisible) return null
-
   const getHeaderComponent = () => {
     if (isBackBtnVisible) {
       if (onBack && onClose) {
