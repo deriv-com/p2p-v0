@@ -152,7 +152,7 @@ export default function FollowsTab() {
         ) : (
           <EmptyState
             title={searchQuery ? "No matching name" : "Not following anyone yet"}
-            description={searchQuery ? "" : "Start following users to see them here."}
+            description={searchQuery ? `There is no result for ${searchQuery}` : "Start following users to see them here."}
             redirectToAds={false}
           />
         )}
