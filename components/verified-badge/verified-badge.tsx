@@ -18,8 +18,6 @@ export default function VerifiedBadge() {
   }
 
   return (
-    <Button onClick={handleClick}>
-      <Image src="/icons/verified-badge.png" alt="Verified" width={18} height={18} />
-    </Button>
+    <Image onClick={handleClick} src="/icons/verified-badge.png" alt="Verified" width={18} height={18} />
   )
 }
