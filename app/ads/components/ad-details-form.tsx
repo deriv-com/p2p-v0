@@ -243,8 +243,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
             </div>
           </div>
         )}
-
-        {/* Added currency dropdown before Price type section */}
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Currency</h3>
           <CurrencyDropdown value={selectedCurrency} onValueChange={setSelectedCurrency} disabled={isEditMode} />
