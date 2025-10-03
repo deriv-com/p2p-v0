@@ -31,7 +31,7 @@ export default function MobileFooterNav() {
           href="/"
           className={cn("flex flex-col items-center justify-center", {
             "text-primary": pathname === "/" || pathname.startsWith("/advertiser"),
-            "text-slate-700": !(pathname === "/" || pathname.startsWith("/advertiser")),
+            "text-slate-1200": !(pathname === "/" || pathname.startsWith("/advertiser")),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
@@ -43,7 +43,7 @@ export default function MobileFooterNav() {
           href="/orders"
           className={cn("flex flex-col items-center justify-center", {
             "text-primary": pathname.startsWith("/orders"),
-            "text-slate-700": !pathname.startsWith("/orders"),
+            "text-slate-1200": !pathname.startsWith("/orders"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
@@ -55,7 +55,7 @@ export default function MobileFooterNav() {
           href="/ads"
           className={cn("flex flex-col items-center justify-center", {
             "text-primary": pathname.startsWith("/ads"),
-            "text-slate-700": !pathname.startsWith("/ads"),
+            "text-slate-1200": !pathname.startsWith("/ads"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
@@ -67,7 +67,7 @@ export default function MobileFooterNav() {
           href="/wallet"
           className={cn("flex flex-col items-center justify-center", {
             "text-primary": pathname.startsWith("/wallet"),
-            "text-slate-700": !pathname.startsWith("/wallet"),
+            "text-slate-1200": !pathname.startsWith("/wallet"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
@@ -79,7 +79,7 @@ export default function MobileFooterNav() {
           href="/profile"
           className={cn("flex flex-col items-center justify-center", {
             "text-primary": pathname.startsWith("/profile"),
-            "text-slate-700": !pathname.startsWith("/profile"),
+            "text-slate-1200": !pathname.startsWith("/profile"),
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
