@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Button } from "@/components/ui/button"
 
-export default function VerifiedBadge({description}) {
+export default function VerifiedBadge({ description }) {
   const { showAlert } = useAlertDialog()
 
   const handleClick = () => {
