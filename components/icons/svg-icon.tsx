@@ -13,7 +13,7 @@ export function SvgIcon({
 }: SvgIconProps) {
   return (
     <div style={{ width, height }}>
-      <SVGComponent style={{ fill, width: "100%", height: "100%" }} />
+      <SVGComponent style={{ fill }} />
     </div>
   );
 }
