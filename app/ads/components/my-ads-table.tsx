@@ -256,13 +256,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          <span className="hidden mmd:block text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
+                          <span className="hidden md:block text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
                           <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
                         </div>
-                        <div className="flex items-center justify-between md:justify-normal gap-1">
+                        {!isMobile && (<div className="flex items-center justify-between md:justify-normal gap-1">
                           <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
                           <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
-                        </div>
+                        </div>)}
                       </div>
                     </div>
                   </TableCell>
