@@ -52,6 +52,7 @@ export default function AdvertiserProfilePage() {
   const router = useRouter()
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
+  const isMobile = useIsMobile()
   const userId = useUserDataStore((state) => state.userId)
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
