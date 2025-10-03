@@ -123,7 +123,10 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockClick = () => {
-    setIsBlockConfirmationOpen(true)
+    if(isBlocked)
+      setIsBlockConfirmationOpen(true)
+    else 
+      handleBlockConfirm
   }
 
   const handleBlockConfirm = async () => {
