@@ -284,7 +284,7 @@ export default function AdvertiserProfilePage() {
             </div>
 
             {isBlocked && (
-              <div className="p-12 my-6 flex flex-col items-center justify-center text-center">
+              <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
                 <div className="mb-4">
                   <Image
                     src="/icons/blocked.png"
