@@ -343,6 +343,9 @@ export async function toggleBlockAdvertiser(
   isBlocked: boolean,
 ): Promise<{ success: boolean; message: string }> {
   try {
+    const url = isBlocked
+      ? `${API.baseUrl}${API.endpoints.userBlocks}`
+      : `${API.baseUrl}${API.endpoints.userBlocks}/${advertiserId}`
     const url = `${API.baseUrl}${API.endpoints.userBlocks}`
     const method = isBlocked ? "POST" : "DELETE"
 
