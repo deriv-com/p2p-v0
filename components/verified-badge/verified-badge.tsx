@@ -10,8 +10,7 @@ export default function VerifiedBadge({description}) {
   const handleClick = () => {
     showAlert({
       title: "Fully verified account",
-      description:
-        "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified.",
+      description,
       confirmText: "OK",
       type: "info",
     })
