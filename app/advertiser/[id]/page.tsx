@@ -123,7 +123,7 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockClick = () => {
-    if(isBlocked)
+    if(!isBlocked)
       setIsBlockConfirmationOpen(true)
     else 
       handleBlockConfirm()
@@ -144,7 +144,7 @@ export default function AdvertiserProfilePage() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              {isBlocked ? <span>S{profile?.nickname} blocked.</span> : <span>{profile?.nickname} unblocked.</span>}
+              {isBlocked ? <span>S{profile?.nickname} unblocked.</span> : <span>{profile?.nickname} blocked.</span>}
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
