@@ -8,6 +8,14 @@ import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
+import { SvgIcon } from "@/components/icons/svg-icon"
+import HomeIcon from "@/public/icons/ic-home.svg"
+import MarketIcon from "@/public/icons/ic-buy-sell.svg"
+import OrdersIcon from "@/public/icons/ic-orders.svg"
+import AdsIcon from "@/public/icons/ic-my-ads.svg"
+import WalletIcon from "@/public/icons/ic-wallet.svg"
+import ProfileIcon from "@/public/icons/ic-profile.svg"
+import GuideIcon from "@/public/icons/ic-guide.svg"
 
 interface SidebarProps {
   className?: string
@@ -45,13 +53,13 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const navItems = [
-    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: "/icons/traders-hub.png" },
-    { name: "Market", href: "/", icon: "/icons/buy-sell-icon.png" },
-    { name: "Orders", href: "/orders", icon: "/icons/orders-icon.png" },
-    { name: "My Ads", href: "/ads", icon: "/icons/my-ads-icon.png" },
-    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: "/icons/wallet-icon.svg" }] : []),
-    { name: "P2P Profile", href: "/profile", icon: "/icons/profile-icon.png" },
-    { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: "/icons/p2p-guide.png" },
+    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: HomeIcon },
+    { name: "Market", href: "/", icon: MarketIcon },
+    { name: "Orders", href: "/orders", icon: OrdersIcon },
+    { name: "My Ads", href: "/ads", icon: AdsIcon },
+    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
+    { name: "P2P Profile", href: "/profile", icon: ProfileIcon },
+    { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
   return (
@@ -79,19 +87,11 @@ export default function Sidebar({ className }: SidebarProps) {
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 rounded-md py-4 text-sm",
-                    isActive ? "text-primary" : "hover:text-primary",
+                    isActive ? "text-primary" : "",
                   )}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                    <Image
-                      src={item.icon || "/placeholder.svg"}
-                      alt={item.name}
-                      width={20}
-                      height={20}
-                      className={cn(
-                        isActive && "brightness-0 saturate-100 hue-rotate-[204deg] sepia-[100%] saturate-[200%]",
-                      )}
-                    />
+                     <SvgIcon src={item.icon} fill={isActive? "#FF444F" : "#181C25"}/>
                   </div>
                   {item.name}
                 </Link>

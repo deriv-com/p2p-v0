@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   webpack: (config, { isServer }) => {
+    config.module?.rules?.push({
+      test: /\.svg$/i,
+      issuer: /\.[jt]sx?$/,
+      use: ['@svgr/webpack'],
+    });
+
     if (isServer) {
       config.externals = config.externals || [];
       if (Array.isArray(config.externals)) {

@@ -216,7 +216,7 @@ export default function OrdersPage() {
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-sm cursor-pointer"
+                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
@@ -231,14 +231,14 @@ export default function OrdersPage() {
                       <div className="font-bold">
                         {getOrderType(order)}
                         <span className="text-base">
-                          {`${formatAmount(order.amount)} ${order.advert.account_currency}`} 
+                          {` ${formatAmount(order.amount)} ${order.advert.account_currency}`} 
                         </span>
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                     </div>
                   </div>
                 </TableCell>
-                <TableCell className="py px-4 align-top text-xs row-start-3">
+                <TableCell className="py-0 px-4 align-top text-xs row-start-3">
                   <div className="flex flex-row-reverse justify-end gap-[4px]">
                     <div>
                       {formatAmount(order.payment_amount)} {order.payment_currency}
@@ -246,15 +246,15 @@ export default function OrdersPage() {
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="px-4 align-top row-start-1">
+                <TableCell className="py-0 px-4align-top row-start-1">
                   <div
-                    className={`inline px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
+                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
                     {formatStatus(false, order.status, order.type)}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
-                  <TableCell className="px-4 align-top row-start-1 col-start-2 justify-self-end">
+                  <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
                     {(order.status === "pending_payment" || order.status === "pending_release") && (
                       <TimeRemainingDisplay expiresAt={order.expires_at} />
                     )}
@@ -275,7 +275,7 @@ export default function OrdersPage() {
                     )}
                   </TableCell>
                 )}
-                <TableCell className="px-4 align-top row-start-4 col-span-full">
+                <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
                   <div className="flex flex-row items-center justify-between">
                     <div className="text-xs">
                       {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
@@ -285,7 +285,7 @@ export default function OrdersPage() {
                         onClick={(e) => {
                           handleChatClick(e, order)
                         }}
-                        className="text-slate-500 hover:text-slate-700 z-auto"
+                        className="text-slate-500 hover:text-slate-700 z-auto p-0"
                         variant="ghost"
                         size="sm"
                       >
@@ -366,7 +366,7 @@ export default function OrdersPage() {
               </Button>
             )}
           </div>
-          <div className="my-4">
+          <div className="my-4 align-self-end">
             {activeTab === "past" && (
               <DateFilter
                 value={dateFilter}
