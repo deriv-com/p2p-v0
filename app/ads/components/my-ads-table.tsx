@@ -270,7 +270,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
-                    <div className="h-2 bg-[#E9ECEF] rounded-border-b w-full overflow-hidden mb-2">
+                    <div className="h-2 bg-[#E9ECEF] rounded-full w-full overflow-hidden mb-2">
                       <div
                         className="h-full bg-neutral-10 rounded-full"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
