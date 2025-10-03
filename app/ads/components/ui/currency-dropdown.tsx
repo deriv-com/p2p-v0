@@ -58,12 +58,9 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
       <SelectTrigger className="w-full h-14 rounded-lg border-grayscale-200 hover:border-grayscale-300 transition-colors">
         <div className="flex items-center gap-3">
           {selectedCountry && (
-            <>
-              <span className="text-2xl">{getFlagEmoji(selectedCountry.code)}</span>
-              <SelectValue>
-                <span className="text-base font-medium">{selectedCountry.currency}</span>
-              </SelectValue>
-            </>
+            <SelectValue>
+              <span className="text-base font-medium">{selectedCountry.currency}</span>
+            </SelectValue>
           )}
         </div>
       </SelectTrigger>
