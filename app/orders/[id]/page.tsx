@@ -335,15 +335,15 @@ export default function OrderDetailsPage() {
 
   return (
     <div className="lg:absolute left-0 right-0 top-6 bottom-0 bg-white">
-      <div className="container mx-auto px-[24px]">
-        {order?.type && (
-          <Navigation
-            isBackBtnVisible={false}
-            isVisible={false}
-            title={`${orderType} ${order?.advert?.account_currency}`}
-            redirectUrl={"/orders"}
-          />
-        )}
+      {order?.type && (
+        <Navigation
+          isBackBtnVisible={false}
+          isVisible={false}
+          title={`${orderType} ${order?.advert?.account_currency}`}
+          redirectUrl={"/orders"}
+        />
+      )}
+      <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
