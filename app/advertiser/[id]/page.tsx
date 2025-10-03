@@ -18,6 +18,7 @@ import BlockConfirmation from "@/components/block-confirmation"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface AdvertiserProfile {
   id: string | number
