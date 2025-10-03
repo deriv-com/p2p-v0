@@ -137,7 +137,6 @@ export default function AdvertiserProfilePage() {
         setIsBlocked(!isBlocked)
         setIsBlockConfirmationOpen(false)
 
-        router.push("/")
         toast({
           description: (
             <div className="flex items-center gap-2">
