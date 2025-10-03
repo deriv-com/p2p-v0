@@ -3,7 +3,6 @@
 import Image from "next/image"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { formatAmount } from "@/lib/utils"
 
 interface StatCardProps {
   tab: string
@@ -58,6 +57,13 @@ function StatCard({ tab, title, value }: StatCardProps) {
 }
 
 export default function StatsGrid({ stats }) {
+  const formatAmount = () => {
+    return Number.parseFloat(amount).toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })
+  }
+
   return (
     <TooltipProvider>
       <div className="bg-transparent rounded-lg md:px-4">
