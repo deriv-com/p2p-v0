@@ -95,7 +95,7 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
 
       {isMobile ? (
         <Drawer open={isOpen} onOpenChange={setIsOpen}>
-          <DrawerContent side="bottom" className="p-0 rounded-t-[32px]">
+          <DrawerContent side="bottom" className="p-0 rounded-t-[16px]">
             {renderMobileContent()}
           </DrawerContent>
         </Drawer>
