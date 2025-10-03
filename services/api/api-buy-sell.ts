@@ -364,7 +364,7 @@ export async function toggleBlockAdvertiser(
       method,
       credentials: "include",
       headers,
-      ...(isFavourite && { body }),
+      ...(isBlocked && { body }),
     })
 
     if (!response.ok) {
