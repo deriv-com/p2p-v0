@@ -82,7 +82,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
             return (
               <li key={item.name}>
-                {item.name === "P2P Profile" && }
+                {item.name === "P2P Profile" && <div className="m-3 border-b border"></div>}
                 <Link
                   prefetch
                   href={item.href}
