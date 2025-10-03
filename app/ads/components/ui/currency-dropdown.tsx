@@ -46,7 +46,7 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
   return (
     <Select value={value} onValueChange={onValueChange} disabled={disabled}>
        <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px] hidden" disabled>
-        <SelectValue placeholder="" />
+        <SelectValue placeholder="For" />
       </SelectTrigger>
       <SelectContent className="max-h-[300px]">
         {currencies.map((currency) => {
