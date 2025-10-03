@@ -48,7 +48,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       return ad.limits
     }
     if (ad.limits && typeof ad.limits === "object") {
-      return `${ad.limits.currency} ${ad.limits.min} - ${ad.limits.max}`
+      return `${ad.limits.min} - ${ad.limits.max} ${ad.limits.currency}`
     }
     return "N/A"
   }
