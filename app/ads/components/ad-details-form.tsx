@@ -206,7 +206,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
                 <label className="block mb-2 text-black text-sm font-normal leading-5">
                   {type === "buy" ? "Buy currency" : "Sell currency"}
