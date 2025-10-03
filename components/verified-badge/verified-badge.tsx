@@ -17,6 +17,6 @@ export default function VerifiedBadge({description}) {
   }
 
   return (
-    <Image onClick={handleClick} src="/icons/verified-badge.png" alt="Verified" width={18} height={18} />
+    <Image onClick={handleClick} src="/icons/verified-badge.png" alt="Verified" width={32} height={32} />
   )
 }
