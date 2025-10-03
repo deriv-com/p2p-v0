@@ -346,7 +346,6 @@ export async function toggleBlockAdvertiser(
     const url = isBlocked
       ? `${API.baseUrl}${API.endpoints.userBlocks}`
       : `${API.baseUrl}${API.endpoints.userBlocks}/${advertiserId}`
-    const url = `${API.baseUrl}${API.endpoints.userBlocks}`
     const method = isBlocked ? "POST" : "DELETE"
 
     const headers = {
@@ -360,11 +359,12 @@ export async function toggleBlockAdvertiser(
       },
     })
 
+
     const response = await fetch(url, {
       method,
       credentials: "include",
       headers,
-      body,
+      ...(isFavourite && { body }),
     })
 
     if (!response.ok) {
