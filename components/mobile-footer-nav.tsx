@@ -7,7 +7,7 @@ import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
-import AdsIcon from "@/public/icons/ic-myads.svg"
+import AdsIcon from "@/public/icons/ic-my-ads.svg"
 import WalletIcon from "@/public/icons/ic-wallet.svg"
 import ProfileIcon from "@/public/icons/ic-profile.svg"
 
