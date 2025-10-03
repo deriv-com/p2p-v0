@@ -71,10 +71,7 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
 
           return (
             <SelectItem key={currency} value={currency} className="cursor-pointer">
-              <div className="flex items-center gap-3">
-                <span className="text-xl">{getFlagEmoji(country.code)}</span>
-                <span className="text-sm">{currency}</span>
-              </div>
+              <span className="text-sm">{currency}</span>
             </SelectItem>
           )
         })}
