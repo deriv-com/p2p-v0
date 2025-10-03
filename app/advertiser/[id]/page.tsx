@@ -264,7 +264,7 @@ export default function AdvertiserProfilePage() {
                     <div className="flex items-center md:mt-0 ustify-self-end">
                       {!isBlocked && <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>}
                         {isFollowing ? "Following" : "Follow"}
-                      </Button>
+                      </Button>}
                       <Button
                         variant="ghost"
                         size="sm"
