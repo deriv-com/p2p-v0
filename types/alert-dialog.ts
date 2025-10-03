@@ -4,6 +4,7 @@ export interface AlertDialogConfig {
   confirmText?: string
   cancelText?: string
   variant?: "default" | "destructive"
+  type?: "warning" | "info" | "error" | "success"
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
 }
