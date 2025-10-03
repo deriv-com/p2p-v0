@@ -295,7 +295,7 @@ export default function AdvertiserProfilePage() {
                     className="mx-auto"
                   />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-3">You've blocked this user</h2>
+                <h2 className="text-lg font-bold text-neutral-10 mb-3">You've blocked this user</h2>
                 <p className="text-base text-gray-600">
                   Unblock them if you'd like to interact with this advertiser again
                 </p>
