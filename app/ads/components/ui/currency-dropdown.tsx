@@ -23,8 +23,6 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
         }
       } catch (error) {
         console.error("Failed to load countries:", error)
-      } finally {
-        setIsLoading(false)
       }
     }
 
