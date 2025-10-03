@@ -150,7 +150,7 @@ export default function BlockedTab() {
         ) : (
           <EmptyState
             title={searchQuery ? "No matching name" : "No blocked users"}
-            description={searchQuery ? `There is no result for ${searchQuery}` : "Users you block will appear here."}
+            description={searchQuery ? `There is no result for ${searchQuery}.` : "Users you block will appear here."}
             redirectToAds={false}
           />
         )}
