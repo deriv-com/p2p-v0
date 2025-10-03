@@ -343,7 +343,7 @@ export default function OrderDetailsPage() {
           redirectUrl={"/orders"}
         />
       )}
-      <div className="container mx-auto px-[24px]">
+      <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
