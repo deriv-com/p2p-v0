@@ -2,6 +2,7 @@
 
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
+import { VerifiedBadge } from "@/components/verified-badge"
 
 interface UserInfoProps {
   username: string
@@ -21,6 +22,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-2">
             <h2 className="text-base text-white font-bold">{username}</h2>
+            <VerifiedBadge />
             {tradeBand === "bronze" && (
               <TooltipProvider>
                 <Tooltip>
@@ -37,16 +39,16 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
                 </Tooltip>
               </TooltipProvider>
             )}
-           </div>
-          {joinDate && (<div className="text-xs text-white opacity-[0.72]">
-              {joinDate}
-            </div>)}
+          </div>
+          {joinDate && <div className="text-xs text-white opacity-[0.72]">{joinDate}</div>}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
             {recommendation && (
               <div className="flex items-center text-white">
                 <div className="flex items-center">
                   <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
-                  <span className="text-white opacity-[0.72]">{recommendation? recommendation : "Not recommended yet"}</span>
+                  <span className="text-white opacity-[0.72]">
+                    {recommendation ? recommendation : "Not recommended yet"}
+                  </span>
                 </div>
               </div>
             )}
