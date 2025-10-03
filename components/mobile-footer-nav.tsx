@@ -35,7 +35,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={MarketIcon} fill={pathname === "/" ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={MarketIcon} fill={pathname === "/" || pathname.startsWith("/advertiser") ? "#FF444F" : "#181C25"}/>
           </div>
           <span className="text-xs mt-1">Market</span>
         </Link>

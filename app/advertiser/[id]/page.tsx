@@ -19,6 +19,7 @@ import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { VerifiedBadge } from "@/components/verified-badge"
 
 interface AdvertiserProfile {
   id: string | number
@@ -125,10 +126,8 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockClick = () => {
-    if(!isBlocked)
-      setIsBlockConfirmationOpen(true)
-    else 
-      handleBlockConfirm()
+    if (!isBlocked) setIsBlockConfirmationOpen(true)
+    else handleBlockConfirm()
   }
 
   const handleBlockConfirm = async () => {
@@ -221,8 +220,9 @@ export default function AdvertiserProfilePage() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
+                      <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."/>
                       {profile?.trade_band === "bronze" && (
                         <TooltipProvider>
                           <Tooltip>
@@ -241,8 +241,8 @@ export default function AdvertiserProfilePage() {
                       )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
-                      <span className="mr-[8px]">{profile?.isOnline ? "Online" : "Offline"}</span>
-                      <span className="opacity-[0.08]">|</span>
+                      <span className="mr-[8px] hidden">{profile?.isOnline ? "Online" : "Offline"}</span>
+                      <span className="opacity-[0.08] hidden">|</span>
                       <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
@@ -267,9 +267,11 @@ export default function AdvertiserProfilePage() {
                   </div>
                   {userId != profile?.id && (
                     <div className="flex items-center md:mt-0 ustify-self-end">
-                      {!isBlocked && <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
-                        {isFollowing ? "Following" : "Follow"}
-                      </Button>}
+                      {!isBlocked && (
+                        <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
+                          {isFollowing ? "Following" : "Follow"}
+                        </Button>
+                      )}
                       <Button
                         variant="ghost"
                         size="sm"
@@ -291,13 +293,7 @@ export default function AdvertiserProfilePage() {
             {isBlocked && (
               <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
                 <div className="mb-4">
-                  <Image
-                    src="/icons/blocked.png"
-                    alt="Blocked user"
-                    width={128}
-                    height={128}
-                    className="mx-auto"
-                  />
+                  <Image src="/icons/blocked.png" alt="Blocked user" width={128} height={128} className="mx-auto" />
                 </div>
                 <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
                 <p className="text-base text-neutral-7">
