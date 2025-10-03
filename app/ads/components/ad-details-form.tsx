@@ -244,7 +244,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           </div>
         )}
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Fory</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">For</h3>
           <CurrencyDropdown value={selectedCurrency} onValueChange={setSelectedCurrency} disabled={isEditMode} />
         </div>
 
