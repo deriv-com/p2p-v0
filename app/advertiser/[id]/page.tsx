@@ -220,7 +220,7 @@ export default function AdvertiserProfilePage() {
                     )}
                   </div>
                   <div className="flex-1">
-                    <div className="flex gap-2 items-center">
+                    <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                       <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."/>
                       {profile?.trade_band === "bronze" && (
