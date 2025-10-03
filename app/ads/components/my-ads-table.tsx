@@ -242,7 +242,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   )}
                 >
                   <TableCell className="p-2 lg:p-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
-                    <div>
+                    <div className="flex justify-between md:flex">
                       <div className="mb-1 flex justify-normal ">
                         <span
                           className={cn(
