@@ -136,9 +136,9 @@ export default function AdvertiserProfilePage() {
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
+      setIsBlockConfirmationOpen(false)
       if (result.success) {
         setIsBlocked(!isBlocked)
-        setIsBlockConfirmationOpen(false)
 
         toast({
           description: (
