@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { Button } from "@/components/ui/button"
 
 export default function VerifiedBadge() {
   const { showAlert } = useAlertDialog()
@@ -17,8 +18,8 @@ export default function VerifiedBadge() {
   }
 
   return (
-    <button onClick={handleClick} className="cursor-pointer focus:outline-none" aria-label="Verified account">
+    <Button onClick={handleClick}>
       <Image src="/icons/verified-badge.png" alt="Verified" width={18} height={18} />
-    </button>
+    </Button>
   )
 }
