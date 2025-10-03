@@ -45,14 +45,8 @@ export function CurrencyDropdown({ value, onValueChange, disabled = false }: Cur
 
   return (
     <Select value={value} onValueChange={onValueChange} disabled={disabled}>
-      <SelectTrigger className="w-full h-14 rounded-lg border-grayscale-200 hover:border-grayscale-300 transition-colors">
-        <div className="flex items-center gap-3">
-          {selectedCountry && (
-            <SelectValue>
-              <span className="text-base font-medium">{selectedCountry.currency}</span>
-            </SelectValue>
-          )}
-        </div>
+       <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px] hidden" disabled>
+        <SelectValue placeholder="" />
       </SelectTrigger>
       <SelectContent className="max-h-[300px]">
         {currencies.map((currency) => {
