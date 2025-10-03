@@ -132,11 +132,12 @@ export default function AdvertiserProfilePage() {
   const handleBlockConfirm = async () => {
     if (!profile) return
 
+    setIsBlockConfirmationOpen(false)
     setIsBlockLoading(true)
     try {
       const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
-      setIsBlockConfirmationOpen(false)
+      
       if (result.success) {
         setIsBlocked(!isBlocked)
 
