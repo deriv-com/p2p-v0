@@ -22,7 +22,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-2">
             <h2 className="text-base text-white font-bold">{username}</h2>
-            <VerifiedBadge />
+            <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification."/>
             {tradeBand === "bronze" && (
               <TooltipProvider>
                 <Tooltip>
