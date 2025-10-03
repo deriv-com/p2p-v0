@@ -58,6 +58,7 @@ export default function BlockedTab() {
       description: "You'll be able to see their ads and they can place orders on yours again.",
       confirmText: "Unblock",
       cancelText: "Cancel",
+      type: "confirm",
       onConfirm: async () => {
         try {
           const result = await toggleBlockAdvertiser(user.user_id, false)
