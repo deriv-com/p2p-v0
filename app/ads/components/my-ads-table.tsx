@@ -241,7 +241,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     !isActive || hiddenAdverts ? "opacity-60" : "",
                   )}
                 >
-                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
                     <div>
                       <div className="mb-1 flex justify-between md:justify-normal ">
                         <span
