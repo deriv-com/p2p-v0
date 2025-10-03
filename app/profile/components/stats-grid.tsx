@@ -57,7 +57,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
 }
 
 export default function StatsGrid({ stats }) {
-  const formatAmount = () => {
+  const formatAmount = (amount) => {
     return Number.parseFloat(amount).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
