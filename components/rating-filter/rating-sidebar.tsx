@@ -9,6 +9,7 @@ import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/components/ui/use-mobile"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 
 interface RatingContentProps {
   rating: number
