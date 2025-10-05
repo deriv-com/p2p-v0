@@ -66,16 +66,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
     setIsOpen(false)
   }
 
-  const handleTodayClick = () => {
-    const today = new Date()
-    const normalizedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    const range = { from: normalizedToday, to: normalizedToday }
-    setTempRange(range)
-    onCustomRangeChange(range)
-    onValueChange("custom")
-    setIsOpen(false)
-  }
-
   const handleReset = () => {
     const resetRange = { from: undefined, to: undefined }
     setTempRange(resetRange)
