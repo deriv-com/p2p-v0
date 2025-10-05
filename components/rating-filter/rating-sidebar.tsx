@@ -195,16 +195,15 @@ export function RatingSidebar({
   }
 
   return (
-
-     <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
-          <DialogContent className="sm:max-w-md sm:rounded-[32px]">
-            <DialogHeader>
-              <DialogTitle className="tracking-normal font-bold text-2xl">Advertiser info</DialogTitle>
-            </DialogHeader>
-            <StatsContent profile={profile} isMobile={false} />
-            <Button onClick={() => setIsStatsModalOpen(false)}>Close</Button>
-          </DialogContent>
-        </Dialog>
+     <Dialog open={isStatsModalOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
+        <DialogHeader>
+          <DialogTitle className="tracking-normal font-bold text-2xl">Advertiser info</DialogTitle>
+        </DialogHeader>
+        <StatsContent profile={profile} isMobile={false} />
+        <Button onClick={() => handleClose(false)}>Close</Button>
+      </DialogContent>
+    </Dialog>
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
         <div className="flex justify-between items-center px-4 py-3 border-b">
