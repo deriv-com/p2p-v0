@@ -199,7 +199,7 @@ export function RatingSidebar({
      <Dialog open={isStatsModalOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
-          <DialogTitle className="tracking-normal font-bold text-2xl">Advertiser info</DialogTitle>
+          <DialogTitle className="tracking-normal font-bold text-2xl">{title}</DialogTitle>
         </DialogHeader>
          <RatingContent
           rating={rating}
