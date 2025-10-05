@@ -198,7 +198,7 @@ export default function PaymentDetailsForm({
                       >
                         {dropdownOpen ? (
                           <div className="flex flex-col items-start">
-                            <span className="font-medium text-sm text-black">Select payment method</span>
+                            <span className="font-medium text-sm text-black">Payment method</span>
                             <span className="text-gray-400 text-sm">{`Selected (${paymentMethods.length})`}</span>
                           </div>
                         ) : (
