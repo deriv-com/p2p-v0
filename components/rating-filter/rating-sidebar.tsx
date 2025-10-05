@@ -7,7 +7,7 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/components/ui/use-mobile"
 
 interface RatingContentProps {
@@ -176,8 +176,8 @@ export function RatingSidebar({
       <Drawer open={isOpen} onOpenChange={onClose}>
         <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
           <DrawerHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-center">{title}</SheetTitle>
-          </SheetHeader>
+            <DrawerTitle className="text-xl font-bold text-center">{title}</DrawerTitle>
+          </DrawerHeader>
           <RatingContent
             rating={rating}
             setRating={setRating}
