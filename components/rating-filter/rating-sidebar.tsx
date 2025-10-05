@@ -91,7 +91,7 @@ const RatingContent = ({
               variant="outline"
               className={cn(
                   "border-opacity-10",
-                  recommend === true ? "bg-disputed-icon hover:bg-success-text" : "",
+                  recommend === true ? "bg-disputed-icon hover:bg-disputed-icon" : "",
                 )}
               size="sm"
               onClick={() => setRecommend(recommend === false ? null : false)}
