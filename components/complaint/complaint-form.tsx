@@ -93,5 +93,24 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         <ComplaintContent />
       </div>
     </div>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
+        <DialogHeader>
+          <DialogTitle className="tracking-normal font-bold text-2xl">Submit a complaint</DialogTitle>
+        </DialogHeader>
+         <RatingContent
+          rating={rating}
+          setRating={setRating}
+          hoverRating={hoverRating}
+          setHoverRating={setHoverRating}
+          recommend={recommend}
+          setRecommend={setRecommend}
+          ratingLabel={ratingLabel}
+          recommendLabel={recommendLabel}
+          onSubmit={handleSubmit}
+        />
+        <Button onClick={() => handleClose()}>Close</Button>
+      </DialogContent>
+    </Dialog>
   )
 }
