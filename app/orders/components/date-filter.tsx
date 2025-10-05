@@ -99,11 +99,12 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           <div className="bg-white p-4">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
             <div className="flex flex-col gap-2 mt-4">
-              <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
-                Reset
-              </Button>
+              
               <Button onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
                 Confirm
+              </Button>
+              <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
+                Reset
               </Button>
             </div>
           </div>
