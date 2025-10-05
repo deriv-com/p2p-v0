@@ -212,7 +212,6 @@ export function RatingSidebar({
           recommendLabel={recommendLabel}
           onSubmit={handleSubmit}
         />
-        <Button onClick={() => handleClose(false)}>Close</Button>
       </DialogContent>
     </Dialog>
   )
