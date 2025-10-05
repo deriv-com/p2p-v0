@@ -108,18 +108,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
         <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
           <div className="bg-white">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
-
-            <div className="flex items-center justify-end p-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleTodayClick}
-                className="rounded-full"
-              >
-                <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
-                Today
-              </Button>
-            </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
                 Reset
