@@ -88,7 +88,6 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           <DialogTitle className="tracking-normal font-bold text-2xl">Submit a complaint</DialogTitle>
         </DialogHeader>
          <ComplaintContent />
-        <Button onClick={() => handleClose()}>Close</Button>
       </DialogContent>
     </Dialog>
   )
