@@ -67,7 +67,7 @@ const RatingContent = ({
               variant="outline"
               className={cn(
                   "border-opacity-10",
-                  recommend === true ? "bg-success-text" : "",
+                  recommend === true ? "bg-success-text hover:bg-success-text" : "",
                 )}
               size="sm"
               onClick={() => setRecommend(recommend === true ? null : true)}
