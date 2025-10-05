@@ -87,17 +87,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         <DialogHeader>
           <DialogTitle className="tracking-normal font-bold text-2xl">Submit a complaint</DialogTitle>
         </DialogHeader>
-         <ComplaintContent
-          rating={rating}
-          setRating={setRating}
-          hoverRating={hoverRating}
-          setHoverRating={setHoverRating}
-          recommend={recommend}
-          setRecommend={setRecommend}
-          ratingLabel={ratingLabel}
-          recommendLabel={recommendLabel}
-          onSubmit={handleSubmit}
-        />
+         <ComplaintContent />
         <Button onClick={() => handleClose()}>Close</Button>
       </DialogContent>
     </Dialog>
