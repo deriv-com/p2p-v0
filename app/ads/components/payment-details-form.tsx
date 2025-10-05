@@ -205,7 +205,7 @@ export default function PaymentDetailsForm({
                           <span className="font-normal text-base">
                             {paymentMethods.length > 0
                               ? `Selected (${paymentMethods.length})`
-                              : "Ppayment method"}
+                              : "Payment method"}
                           </span>
                         )}
                         {dropdownOpen ? (
