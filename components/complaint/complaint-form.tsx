@@ -5,7 +5,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
@@ -69,14 +69,14 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleClose}>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-center">Submit a complaint</SheetTitle>
-          </SheetHeader>
+      <Drawer open={isOpen} onOpenChange={handleClose}>
+        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
+          <DrawerHeader className="pb-4">
+            <DrawerTitle className="text-xl font-bold text-center">Submit a complaint</DrawerTitle>
+          </DrawerHeader>
           <ComplaintContent />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
