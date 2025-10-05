@@ -76,8 +76,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
+      <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <DrawerTrigger asChild>
           <Button
             variant="outline"
             size="sm"
@@ -94,8 +94,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
             </div>
           </Button>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
+        </DrawerTrigger>
+        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
           <div className="bg-white">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
             <div className="flex gap-2">
@@ -107,8 +107,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               </Button>
             </div>
           </div>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
