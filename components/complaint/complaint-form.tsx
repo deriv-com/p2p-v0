@@ -42,7 +42,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
   const ComplaintContent = () => (
     <div className="flex flex-col h-full">
-      <div className="flex-1 p-4 space-y-6">
+      <div className="flex-1 p-4 md:px-0 space-y-6">
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           {COMPLAINT_OPTIONS.filter((option) => option.type === type).map((option) => (
               <div key={option.id} className="flex items-start space-x-3">
@@ -59,7 +59,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 md:px-0">
         <Button onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]">Submit
         </Button>
       </div>
