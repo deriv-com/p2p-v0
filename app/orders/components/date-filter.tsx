@@ -120,6 +120,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           size="sm"
           className={cn(
           "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
+          isOpen && "bg-[#00000029]"
             className,
           )}
         >
