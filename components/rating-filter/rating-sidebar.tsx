@@ -190,7 +190,7 @@ export function RatingSidebar({
             onSubmit={handleSubmit}
           />
         </DrawerContent>
-      </Sheet>
+      </Drawer>
     )
   }
 
