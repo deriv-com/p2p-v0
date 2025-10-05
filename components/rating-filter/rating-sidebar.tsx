@@ -35,7 +35,7 @@ const RatingContent = ({
   onSubmit,
 }: RatingContentProps) => (
   <>
-    <div className="flex-1 overflow-auto p-4">
+    <div className="flex-1 overflow-auto p-4 md:px-0">
       <div className="space-y-6">
         <div className="space-y-4">
           <h3 className="text-sm">{ratingLabel}</h3>
