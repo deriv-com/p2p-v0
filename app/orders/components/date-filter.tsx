@@ -157,17 +157,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       <PopoverContent className="w-auto p-0" align="end">
         <div className="relative">
           <DualMonthCalendar handleCustomRangeApply={handleCustomRange} selected={tempRange} onSelect={setTempRange} />
-
-          <div className="flex items-center justify-end p-6">
-            <Button
-              variant="outline"
-              onClick={handleTodayClick}
-              className="rounded-full"
-            >
-               <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
-              Today
-            </Button>
-          </div>
         </div>
       </PopoverContent>
     </Popover>
