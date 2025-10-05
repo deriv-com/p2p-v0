@@ -88,8 +88,11 @@ const RatingContent = ({
               </span>
             </Button>
             <Button
-              variant={recommend === false ? "black" : "outline"}
-              className="border-opacity-10"
+              variant="outline"
+              className={cn(
+                  "border-opacity-10",
+                  recommend === true ? "bg-disputed-icon hover:bg-success-text" : "",
+                )}
               size="sm"
               onClick={() => setRecommend(recommend === false ? null : false)}
             >
