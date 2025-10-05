@@ -95,7 +95,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
             </div>
           </Button>
         </DrawerTrigger>
-        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
+        <DrawerContent>
           <div className="bg-white">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
             <div className="flex gap-2">
