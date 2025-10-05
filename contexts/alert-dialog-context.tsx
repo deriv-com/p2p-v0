@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useCallback } from "react"
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog"
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from "@/components/ui/alert-dialog"
 import { Drawer, DrawerContent } from "@/components/ui/drawer"
 import type { AlertDialogConfig, AlertDialogContextType } from "@/types/alert-dialog"
 import { Button } from "@/components/ui/button"
@@ -50,44 +50,75 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     isOpen,
   }
 
-  const renderDesktopContent = () => (
-    <div className="px-8 py-6 overflow-y-auto">
-      <div className="flex justify-between">
-        {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
-        <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
-          <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
-        </Button>
-      </div>
-      {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
-      <div className="flex flex-col gap-2 mt-6">
-        {config.cancelText && (
-        <Button onClick={handleCancel} variant="primary" className="w-full">
-          {config.cancelText}
-        </Button>
-        )}
-       {config.type && <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-          {config.confirmText || "Continue"}
-        </Button>}
-      </div>
-    </div>
-  )
+  const renderDesktopContent = () => {
+    if (config.content) {
+      return (
+        <div className="overflow-y-auto">
+          <div className="flex justify-between px-8 pt-6">
+            {config.title && <div className="mb-4 font-bold text-2xl">{config.title}</div>}
+            <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
+              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
+            </Button>
+          </div>
+          <div className="px-8 pb-6">{config.content}</div>
+        </div>
+      )
+    }
 
-  const renderMobileContent = () => (
-    <div className="p-6 overflow-y-auto">
-      {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
-      {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
-      <div className="flex flex-col gap-2 mt-6">
-        {config.cancelText && (
-        <Button onClick={handleCancel} variant="primary" className="w-full">
-          {config.cancelText}
-        </Button>
-        )}
-        {config.type && <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
-          {config.confirmText || "Continue"}
-        </Button>}
+    return (
+      <div className="px-8 py-6 overflow-y-auto">
+        <div className="flex justify-between">
+          {config.title && <div className="mb-8 font-bold text-2xl">{config.title}</div>}
+          <Button onClick={hideAlert} size="sm" variant="ghost" className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="size-5" />
+          </Button>
+        </div>
+        {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
+        <div className="flex flex-col gap-2 mt-6">
+          {config.cancelText && (
+            <Button onClick={handleCancel} variant="primary" className="w-full">
+              {config.cancelText}
+            </Button>
+          )}
+          {config.type && (
+            <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+              {config.confirmText || "Continue"}
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
+
+  const renderMobileContent = () => {
+    if (config.content) {
+      return (
+        <div className="overflow-y-auto">
+          {config.title && <div className="mb-4 font-bold text-lg px-6 pt-6">{config.title}</div>}
+          <div className="px-6 pb-6">{config.content}</div>
+        </div>
+      )
+    }
+
+    return (
+      <div className="p-6 overflow-y-auto">
+        {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
+        {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
+        <div className="flex flex-col gap-2 mt-6">
+          {config.cancelText && (
+            <Button onClick={handleCancel} variant="primary" className="w-full">
+              {config.cancelText}
+            </Button>
+          )}
+          {config.type && (
+            <Button onClick={handleConfirm} variant={config.cancelText ? "outline" : "primary"} className="w-full">
+              {config.confirmText || "Continue"}
+            </Button>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <AlertDialogContext.Provider value={contextValue}>

@@ -1,3 +1,5 @@
+import type React from "react"
+
 export interface AlertDialogConfig {
   title?: string
   description?: string
@@ -5,6 +7,7 @@ export interface AlertDialogConfig {
   cancelText?: string
   variant?: "default" | "destructive"
   type?: "warning" | "info" | "error" | "success"
+  content?: React.ReactNode
   onConfirm?: () => void | Promise<void>
   onCancel?: () => void
 }
