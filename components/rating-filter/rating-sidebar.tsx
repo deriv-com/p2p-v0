@@ -7,6 +7,7 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/components/ui/use-mobile"
 
@@ -214,16 +215,5 @@ export function RatingSidebar({
         <Button onClick={() => handleClose(false)}>Close</Button>
       </DialogContent>
     </Dialog>
-    <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
-      <div className="bg-white w-full max-w-md h-full flex flex-col">
-        <div className="flex justify-between items-center px-4 py-3 border-b">
-          <h2 className="text-xl font-bold">{title}</h2>
-          <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
-       
-      </div>
-    </div>
   )
 }
