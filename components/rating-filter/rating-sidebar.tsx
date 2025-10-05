@@ -174,8 +174,8 @@ export function RatingSidebar({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
-          <SheetHeader className="pb-4">
+        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
+          <DrawerHeader className="pb-4">
             <SheetTitle className="text-xl font-bold text-center">{title}</SheetTitle>
           </SheetHeader>
           <RatingContent
@@ -189,7 +189,7 @@ export function RatingSidebar({
             recommendLabel={recommendLabel}
             onSubmit={handleSubmit}
           />
-        </SheetContent>
+        </DrawerContent>
       </Sheet>
     )
   }
