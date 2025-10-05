@@ -196,7 +196,7 @@ export function RatingSidebar({
   }
 
   return (
-     <Dialog open={isStatsModalOpen} onOpenChange={handleClose}>
+     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
           <DialogTitle className="tracking-normal font-bold text-2xl">{title}</DialogTitle>
