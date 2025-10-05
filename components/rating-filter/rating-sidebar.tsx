@@ -7,7 +7,7 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/components/ui/use-mobile"
 
 interface RatingContentProps {
