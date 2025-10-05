@@ -386,8 +386,8 @@ export default function OrdersPage() {
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
                 {activeTab === "active" ?
-                    <EmptyState title="No active orders" description="View and manage your past orders here." /> : 
-                    <EmptyState title="No orders found" description="View and manage your past orders here." />
+                    <EmptyState title="No active orders" description="Star" /> : 
+                    <EmptyState title="No past orders" description="View and manage your past orders here." />
                 }
             </div>
           ) : (
