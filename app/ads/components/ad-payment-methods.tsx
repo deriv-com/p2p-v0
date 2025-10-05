@@ -103,7 +103,7 @@ const AdPaymentMethods = () => {
   return (
     <>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
+        <h3 className="text-lg font-semibold mb-2">payment method</h3>
         <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
 
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
