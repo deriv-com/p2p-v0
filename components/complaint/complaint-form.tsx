@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
