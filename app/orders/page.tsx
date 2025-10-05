@@ -268,7 +268,7 @@ export default function OrdersPage() {
                         {Number(order.rating).toFixed(1)}
                       </div>
                     )}
-                    {order.is_reviewable > -1 && (
+                    {order.is_reviewable >  && (
                       <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
                         Rate
                       </Button>
