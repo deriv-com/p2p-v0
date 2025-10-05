@@ -63,7 +63,7 @@ const RatingContent = ({
           <h3 className="text-sm">{recommendLabel}</h3>
           <div className="flex gap-4">
             <Button
-              variant=""
+              variant="outline"
               className={cn(
                   "border-opacity-10",
                   recommend === true ? "bg-success-text" : "",
