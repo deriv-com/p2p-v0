@@ -172,7 +172,7 @@ export default function PaymentDetailsForm({
                         }}
                       >
                         <span className="font-normal text-base">
-                          {paymentMethods.length > 0 ? `Selected (${paymentMethods.length})` : "payment method"}
+                          {paymentMethods.length > 0 ? `Selected (${paymentMethods.length})` : "Payment method"}
                         </span>
                         <ChevronDown className="h-4 w-4 opacity-70 ml-auto" />
                       </Button>
