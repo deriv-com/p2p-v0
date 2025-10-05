@@ -200,7 +200,17 @@ export function RatingSidebar({
         <DialogHeader>
           <DialogTitle className="tracking-normal font-bold text-2xl">Advertiser info</DialogTitle>
         </DialogHeader>
-        <StatsContent profile={profile} isMobile={false} />
+         <RatingContent
+          rating={rating}
+          setRating={setRating}
+          hoverRating={hoverRating}
+          setHoverRating={setHoverRating}
+          recommend={recommend}
+          setRecommend={setRecommend}
+          ratingLabel={ratingLabel}
+          recommendLabel={recommendLabel}
+          onSubmit={handleSubmit}
+        />
         <Button onClick={() => handleClose(false)}>Close</Button>
       </DialogContent>
     </Dialog>
@@ -212,17 +222,7 @@ export function RatingSidebar({
             <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
-        <RatingContent
-          rating={rating}
-          setRating={setRating}
-          hoverRating={hoverRating}
-          setHoverRating={setHoverRating}
-          recommend={recommend}
-          setRecommend={setRecommend}
-          ratingLabel={ratingLabel}
-          recommendLabel={recommendLabel}
-          onSubmit={handleSubmit}
-        />
+       
       </div>
     </div>
   )
