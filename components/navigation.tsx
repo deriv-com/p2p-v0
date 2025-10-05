@@ -20,6 +20,7 @@ interface NavigationProps {
 export default function Navigation({
   className = "",
   isBackBtnVisible = true,
+  isVisible = true,
   onBack,
   onClose,
   redirectUrl = "/",
@@ -66,25 +67,25 @@ export default function Navigation({
       }
     }
 
-return (
-  <>
-    <h1 className="text-xl font-bold">{title}</h1>
-    <Button
-      variant="ghost"
-      onClick={() => {
-        if (onClose) {
-          onClose()
-        } else {
-          router.push(redirectUrl)
-        }
-      }}
-      size="sm"
-      className="bg-grayscale-300 px-1"
-    >
-      <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-    </Button>
-  </>
-)
+    return (
+      <>
+        <h1 className="text-xl font-bold">{title}</h1>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            if (onClose) {
+              onClose()
+            } else {
+              router.push(redirectUrl)
+            }
+          }}
+          size="sm"
+          className="bg-grayscale-300 px-1"
+        >
+          <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+        </Button>
+      </>
+    )
   }
 
   return (
@@ -92,7 +93,7 @@ return (
       className={cn(
         "py-[12px] px-[16px] md:py-[4px] md:border-0 md:px-[24px]",
         showNotificationIcon && "bg-slate-1200 pr-[14px]",
-        className
+        className,
       )}
     >
       <div className="flex items-center justify-between md:px-0">{getHeaderComponent()}</div>

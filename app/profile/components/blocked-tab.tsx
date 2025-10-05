@@ -112,7 +112,7 @@ export default function BlockedTab() {
 
   return (
     <div className="space-y-4">
-      {filteredBlockedUsers.length > 0 && <div className="flex items-center justify-between gap-4">
+      {(filteredBlockedUsers.length > 0 || searchQuery) && <div className="flex items-center justify-between gap-4">
         <div className="relative w-full md:w-auto">
           <Image
             src="/icons/search-icon-custom.png"
@@ -150,7 +150,7 @@ export default function BlockedTab() {
         ) : (
           <EmptyState
             title={searchQuery ? "No matching name" : "No blocked users"}
-            description={searchQuery ? "" : "Users you block will appear here."}
+            description={searchQuery ? `There is no result for ${searchQuery}.` : "Users you block will appear here."}
             redirectToAds={false}
           />
         )}

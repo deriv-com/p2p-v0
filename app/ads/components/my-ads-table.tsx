@@ -48,7 +48,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       return ad.limits
     }
     if (ad.limits && typeof ad.limits === "object") {
-      return `${ad.limits.currency} ${ad.limits.min} - ${ad.limits.max}`
+      return `${ad.limits.min} - ${ad.limits.max} ${ad.limits.currency}`
     }
     return "N/A"
   }
@@ -241,9 +241,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     !isActive || hiddenAdverts ? "opacity-60" : "",
                   )}
                 >
-                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 whitespace-nowrap">
-                    <div>
-                      <div className="mb-1 flex justify-between md:justify-normal ">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
+                    <div className="flex justify-between md:block">
+                      <div className="mb-1 flex justify-normal ">
                         <span
                           className={cn(
                             "font-bold text-base leading-6",
@@ -256,29 +256,33 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
+                          {!isMobile && (<span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>)}
                           <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
                         </div>
-                        <div className="flex items-center justify-between md:justify-normal gap-1">
+                        {!isMobile && (<div className="flex items-center justify-between md:justify-normal gap-1">
                           <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
                           <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
-                        </div>
+                        </div>)}
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-start-1 col-end-4  whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap">
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
-                    <div className="h-2 bg-[#E9ECEF] rounded-xs w-full overflow-hidden mb-2">
+                    <div className="h-2 bg-[#E9ECEF] rounded-full w-full overflow-hidden mb-2">
                       <div
                         className="h-full bg-neutral-10 rounded-full"
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>
+                    {isMobile && (<div className="flex items-center justify-between gap-1">
+                      <span className="text-xs font-bold leading-5 text-slate-500">Rate:</span>
+                      <span className="text-xs leading-5 text-gray-900">{rate}</span>
+                    </div>)}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
-                      <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Limit:</span>
-                      <span className="text-xs md:text-sm font-bold md:font-normal leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                      <span className="text-xs font-bold leading-5 text-slate-500">Limit:</span>
+                      <span className="text-xs md:text-sm leading-5 text-gray-900 overflow-hidden text-ellipsis">
                         {formatLimits(ad)}
                       </span>
                     </div>

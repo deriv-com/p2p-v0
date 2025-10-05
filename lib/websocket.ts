@@ -1,3 +1,5 @@
+import { USER } from "@/lib/local-variables"
+
 export interface WebSocketMessage {
   action: string
   options: {
@@ -36,7 +38,8 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
-        this.socket = new WebSocket(url)
+        const protocols = USER.socketToken && USER.socketToken.trim() ? [USER.socketToken] : undefined
+        this.socket = new WebSocket(url, protocols)
 
         this.socket.onopen = () => {
           this.reconnectAttempts = 0

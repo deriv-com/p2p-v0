@@ -343,7 +343,7 @@ export default function OrderDetailsPage() {
           redirectUrl={"/orders"}
         />
       )}
-      <div className="container mx-auto px-[24px]">
+      <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
@@ -380,7 +380,7 @@ export default function OrderDetailsPage() {
                         <div>
                           <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
                           <p className="font-bold">
-                            {order?.payment_currency} {formatAmount(order.payment_amount)}
+                            {formatAmount(order.payment_amount)} {order?.payment_currency}
                           </p>
                         </div>
                         <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
