@@ -215,6 +215,7 @@ export function RatingSidebar({
           recommendLabel={recommendLabel}
           onSubmit={handleSubmit}
         />
+        <Button onClick={() => setIsStatsModalOpen(false)}>Close</Button>
       </DialogContent>
     </Dialog>
   )
