@@ -385,7 +385,7 @@ export default function OrdersPage() {
             </div>
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
-              <EmptyState title="No orders found" description="Start by placing your first order." />
+              <EmptyState title="No orders found" description="View and manage your past orders here." />
             </div>
           ) : (
             <div>
