@@ -63,8 +63,11 @@ const RatingContent = ({
           <h3 className="text-sm">{recommendLabel}</h3>
           <div className="flex gap-4">
             <Button
-              variant={recommend === true ? "black" : "outline"}
-              className="border-opacity-10"
+              variant=""
+              className={cn(
+                  "border-opacity-10",
+                  recommend === true ? "bg-success-text" : "",
+                )}
               size="sm"
               onClick={() => setRecommend(recommend === true ? null : true)}
             >
