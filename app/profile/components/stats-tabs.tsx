@@ -13,7 +13,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
-import { Sheet, SheetContent,} from "@/components/ui/sheet"
+import { Sheet, SheetContent} from "@/components/ui/sheet"
 
 interface StatsTabsProps {
   stats?: any
