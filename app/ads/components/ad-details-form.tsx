@@ -280,8 +280,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                 <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
               )}
             </div>
-
-            
           </div>
         </div>
 
