@@ -260,50 +260,54 @@ export default function AddPaymentMethodPanel({
 
   return (
     <div className="w-full">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {selectedMethodFields.length > 0 && (
-          <div className="space-y-4">
-            {selectedMethodFields.map((field) => (
-              <div key={field.name}>
-                <Input
-                  id={field.name}
-                  type={field.type}
-                  value={details[field.name] || ""}
-                  onChange={(e) => handleInputChange(field.name, e.target.value)}
-                  label={`Enter ${field.label.toLowerCase()}`}
-                  required={field.required}
-                  variant="floating"
-                />
-                {(touched[field.name] || details[field.name]) && errors[field.name] && (
-                  <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+      <form onSubmit={handleSubmit} className="flex flex-col min-h-[400px]">
+        <div className="flex-1 space-y-6">
+          {selectedMethodFields.length > 0 && (
+            <div className="space-y-4">
+              {selectedMethodFields.map((field) => (
+                <div key={field.name}>
+                  <Input
+                    id={field.name}
+                    type={field.type}
+                    value={details[field.name] || ""}
+                    onChange={(e) => handleInputChange(field.name, e.target.value)}
+                    label={`Enter ${field.label.toLowerCase()}`}
+                    required={field.required}
+                    variant="floating"
+                  />
+                  {(touched[field.name] || details[field.name]) && errors[field.name] && (
+                    <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
 
-        <div>
-          <Textarea
-            id="instructions"
-            value={instructions}
-            onChange={(e) => handleInstructionsChange(e.target.value)}
-            label="Enter your instructions"
-            className="min-h-[120px] resize-none"
-            maxLength={300}
-            variant="floating"
-          />
-          {errors.instructions && <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>}
-          <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+          <div>
+            <Textarea
+              id="instructions"
+              value={instructions}
+              onChange={(e) => handleInstructionsChange(e.target.value)}
+              label="Enter your instructions"
+              className="min-h-[120px] resize-none"
+              maxLength={300}
+              variant="floating"
+            />
+            {errors.instructions && <p className="mt-1 text-xs text-red-500">{errors.instructions}</p>}
+            <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
+          </div>
         </div>
 
-        <Button
-          type="submit"
-          onClick={handleSubmit}
-          disabled={isLoading || !selectedMethod || !isFormValid()}
-          className="w-full"
-        >
-          {isLoading ? "Adding..." : "Add"}
-        </Button>
+        <div className="mt-auto pt-6">
+          <Button
+            type="submit"
+            onClick={handleSubmit}
+            disabled={isLoading || !selectedMethod || !isFormValid()}
+            className="w-full"
+          >
+            {isLoading ? "Adding..." : "Add"}
+          </Button>
+        </div>
       </form>
     </div>
   )
