@@ -41,6 +41,8 @@ const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
 }
 
 export default function BuySellPage() {
+  // TODO: Replace these once the currencies are ready
+  const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
 
   const {
