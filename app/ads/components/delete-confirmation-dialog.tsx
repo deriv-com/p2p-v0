@@ -1,6 +1,6 @@
 "use client"
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from "@/components/ui/sheet"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
@@ -20,12 +20,12 @@ export function DeleteConfirmationDialog({ open, onCancel, onConfirm }: DeleteCo
 
   if (isMobile) {
     return (
-      <Sheet open={open} onOpenChange={onCancel}>
-        <SheetContent side="bottom" className="rounded-t-2xl">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-left">{title}</SheetTitle>
-            <SheetDescription className="text-grayscale-100 text-base text-left">{description}</SheetDescription>
-          </SheetHeader>
+      <Drawer open={open} onOpenChange={onCancel}>
+        <DrawerContent side="bottom" className="rounded-t-2xl">
+          <DrawerHeader className="pb-4">
+            <DrawerTitle className="text-xl font-bold text-left">{title}</DrawerTitle>
+            <DrawerDescription className="text-grayscale-100 text-base text-left">{description}</DrawerDescription>
+          </DrawerHeader>
           <div className="flex flex-col gap-3 mt-6">
             <Button onClick={onConfirm} className="w-full rounded-full">
               {confirmText}
@@ -34,8 +34,8 @@ export function DeleteConfirmationDialog({ open, onCancel, onConfirm }: DeleteCo
               {cancelText}
             </Button>
           </div>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
