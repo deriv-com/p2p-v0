@@ -62,6 +62,8 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
+  const hideOnMobile = ["Market", "Orders", "My Ads", "P2P Profile"]
+
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
@@ -81,18 +83,15 @@ export default function Sidebar({ className }: SidebarProps) {
                 : pathname.startsWith(item.href)
 
             return (
-              <li key={item.name}>
+              <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
                 {item.name === "P2P Profile" && <div className="my-3 border-b border-grayscale-200"></div>}
                 <Link
                   prefetch
                   href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 rounded-md py-4 text-sm",
-                    isActive ? "text-primary" : "",
-                  )}
+                  className={cn("flex items-center gap-3 rounded-md py-4 text-sm", isActive ? "text-primary" : "")}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">
-                     <SvgIcon src={item.icon} fill={isActive? "#FF444F" : "#181C25"}/>
+                    <SvgIcon src={item.icon} fill={isActive ? "#FF444F" : "#181C25"} />
                   </div>
                   {item.name}
                 </Link>
