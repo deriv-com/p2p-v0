@@ -132,7 +132,7 @@ export default function AdvertiserProfilePage() {
         description: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
         confirmText: "Block",
         cancelText: "Cancel",
-        type: "warning"
+        type: "warning",
         onConfirm: async () => {
           if (!profile) return
 
