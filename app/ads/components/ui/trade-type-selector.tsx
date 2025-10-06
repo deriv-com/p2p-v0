@@ -20,7 +20,7 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
             I want to buy
           </TabsTrigger>
           <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
-            Sell USD
+            I want to sell
           </TabsTrigger>
         </TabsList>
       </Tabs>
