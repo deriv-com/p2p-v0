@@ -25,7 +25,6 @@ export function useCurrencyData(currency = "USD") {
         const uniquePaymentCurrencies = [...new Set(paymentCurrencies)]
         currencyList = uniquePaymentCurrencies.map((code) => ({ code })).sort((a, b) => a.code.localeCompare(b.code))
         
-
         setCurrencies(currencyList)
         setError(null)
       } catch (err) {
