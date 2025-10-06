@@ -4,7 +4,7 @@ import * as React from "react"
 import { format } from "date-fns"
 import { Button } from "@/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import type { DateFilterType, DateRange } from "@/stores/orders-filter-store"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { SingleMonthCalendar } from "./single-month-calendar"
@@ -29,11 +29,11 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
     if (customRange.from) {
       if (customRange.to) {
         if (customRange.from == customRange.to) {
-          return format(customRange.from, "dd/MM/yyyy")
+          return format(customRange.from, "dd MMM yyyy")
         }
-        return `${format(customRange.from, "dd/MM/yyyy")} to ${format(customRange.to, "dd/MM/yyyy")}`
+        return `${format(customRange.from, "dd MMM yyyy")} - ${format(customRange.to, "dd MMM yyyy")}`
       }
-      return format(customRange.from, "dd/MM/yyyy")
+      return format(customRange.from, "dd MMM yyyy")
     }
     return "All time"
   }
@@ -66,16 +66,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
     setIsOpen(false)
   }
 
-  const handleTodayClick = () => {
-    const today = new Date()
-    const normalizedToday = new Date(today.getFullYear(), today.getMonth(), today.getDate())
-    const range = { from: normalizedToday, to: normalizedToday }
-    setTempRange(range)
-    onCustomRangeChange(range)
-    onValueChange("custom")
-    setIsOpen(false)
-  }
-
   const handleReset = () => {
     const resetRange = { from: undefined, to: undefined }
     setTempRange(resetRange)
@@ -86,8 +76,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
+      <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <DrawerTrigger asChild>
           <Button
             variant="outline"
             size="sm"
@@ -104,33 +94,22 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
               <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
             </div>
           </Button>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl">
-          <div className="bg-white">
+        </DrawerTrigger>
+        <DrawerContent>
+          <div className="bg-white p-4">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
-
-            <div className="flex items-center justify-end p-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleTodayClick}
-                className="rounded-full"
-              >
-                <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
-                Today
-              </Button>
-            </div>
-            <div className="flex gap-2">
-              <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
-                Reset
-              </Button>
+            <div className="flex flex-col gap-2 mt-6">
+              
               <Button onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
                 Confirm
               </Button>
+              <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
+                Reset
+              </Button>
             </div>
           </div>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
@@ -143,6 +122,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           className={cn(
           "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
             className,
+          isOpen && "bg-grayscale-800",
           )}
         >
           <div className="flex items-center justify-between w-full">
@@ -157,17 +137,6 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       <PopoverContent className="w-auto p-0" align="end">
         <div className="relative">
           <DualMonthCalendar handleCustomRangeApply={handleCustomRange} selected={tempRange} onSelect={setTempRange} />
-
-          <div className="flex items-center justify-end p-6">
-            <Button
-              variant="outline"
-              onClick={handleTodayClick}
-              className="rounded-full"
-            >
-               <Image src="/icons/calendar-arrow.png" alt="Calendar" width={14} height={14} />
-              Today
-            </Button>
-          </div>
         </div>
       </PopoverContent>
     </Popover>

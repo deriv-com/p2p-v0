@@ -5,7 +5,8 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
@@ -41,7 +42,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
   const ComplaintContent = () => (
     <div className="flex flex-col h-full">
-      <div className="flex-1 p-4 space-y-6">
+      <div className="flex-1 p-4 md:px-0 space-y-6">
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           {COMPLAINT_OPTIONS.filter((option) => option.type === type).map((option) => (
               <div key={option.id} className="flex items-start space-x-3">
@@ -58,7 +59,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         </div>
       </div>
 
-      <div className="p-4">
+      <div className="p-4 md:px-0">
         <Button onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]">Submit
         </Button>
       </div>
@@ -69,28 +70,25 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={handleClose}>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-center">Submit a complaint</SheetTitle>
-          </SheetHeader>
+      <Drawer open={isOpen} onOpenChange={handleClose}>
+        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
+          <DrawerHeader className="pb-4">
+            <DrawerTitle className="text-xl font-bold text-center">Submit a complaint</DrawerTitle>
+          </DrawerHeader>
           <ComplaintContent />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
-      <div className="bg-white w-full max-w-md h-full flex flex-col">
-        <div className="flex justify-between items-center px-4 py-3 border-b">
-          <h2 className="text-xl font-bold">Submit a complaint</h2>
-          <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 p-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
-        <ComplaintContent />
-      </div>
-    </div>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
+        <DialogHeader>
+          <DialogTitle className="tracking-normal font-bold text-2xl">Submit a complaint</DialogTitle>
+        </DialogHeader>
+         <ComplaintContent />
+      </DialogContent>
+    </Dialog>
   )
 }

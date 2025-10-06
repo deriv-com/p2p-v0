@@ -7,7 +7,8 @@ import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import type { RatingSidebarProps, RatingData } from "./types"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/components/ui/use-mobile"
 
 interface RatingContentProps {
@@ -34,7 +35,7 @@ const RatingContent = ({
   onSubmit,
 }: RatingContentProps) => (
   <>
-    <div className="flex-1 overflow-auto p-4">
+    <div className="flex-1 overflow-auto p-4 md:px-0">
       <div className="space-y-6">
         <div className="space-y-4">
           <h3 className="text-sm">{ratingLabel}</h3>
@@ -63,8 +64,11 @@ const RatingContent = ({
           <h3 className="text-sm">{recommendLabel}</h3>
           <div className="flex gap-4">
             <Button
-              variant={recommend === true ? "black" : "outline"}
-              className="border-opacity-10"
+              variant="outline"
+              className={cn(
+                  "border-opacity-10",
+                  recommend === true ? "bg-success-text hover:bg-success-text" : "",
+                )}
               size="sm"
               onClick={() => setRecommend(recommend === true ? null : true)}
             >
@@ -84,8 +88,11 @@ const RatingContent = ({
               </span>
             </Button>
             <Button
-              variant={recommend === false ? "black" : "outline"}
-              className="border-opacity-10"
+              variant="outline"
+              className={cn(
+                  "border-opacity-10",
+                  recommend === false ? "bg-disputed-icon hover:bg-disputed-icon" : "",
+                )}
               size="sm"
               onClick={() => setRecommend(recommend === false ? null : false)}
             >
@@ -108,7 +115,7 @@ const RatingContent = ({
         </div>
       </div>
     </div>
-    <div className="p-4">
+    <div className="p-4 md:px-0">
       <Button onClick={onSubmit} disabled={rating === 0} className="w-full disabled:opacity-[0.24]">
         Submit
       </Button>
@@ -170,11 +177,11 @@ export function RatingSidebar({
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={onClose}>
-        <SheetContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
-          <SheetHeader className="pb-4">
-            <SheetTitle className="text-xl font-bold text-center">{title}</SheetTitle>
-          </SheetHeader>
+      <Drawer open={isOpen} onOpenChange={onClose}>
+        <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
+          <DrawerHeader className="pb-4">
+            <DrawerTitle className="text-xl font-bold text-center">{title}</DrawerTitle>
+          </DrawerHeader>
           <RatingContent
             rating={rating}
             setRating={setRating}
@@ -186,21 +193,18 @@ export function RatingSidebar({
             recommendLabel={recommendLabel}
             onSubmit={handleSubmit}
           />
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
-      <div className="bg-white w-full max-w-md h-full flex flex-col">
-        <div className="flex justify-between items-center px-4 py-3 border-b">
-          <h2 className="text-xl font-bold">{title}</h2>
-          <Button onClick={handleClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
-        <RatingContent
+     <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
+        <DialogHeader>
+          <DialogTitle className="tracking-normal font-bold text-2xl">{title}</DialogTitle>
+        </DialogHeader>
+         <RatingContent
           rating={rating}
           setRating={setRating}
           hoverRating={hoverRating}
@@ -211,7 +215,7 @@ export function RatingSidebar({
           recommendLabel={recommendLabel}
           onSubmit={handleSubmit}
         />
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   )
 }

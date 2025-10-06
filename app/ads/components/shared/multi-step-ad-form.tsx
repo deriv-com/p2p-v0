@@ -15,6 +15,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import Image from "next/image"
 import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
+import { useToast } from "@/hooks/use-toast"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -51,6 +52,8 @@ const getPageTitle = (mode: "create" | "edit") => {
 function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
+
+  const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
   const [formData, setFormData] = useState({})
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -257,6 +260,14 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
           throw new Error(errorMessage)
+        } else {
+          router.push("/ads")
+          showAlert({
+            title: "Ad created",
+            description: `You've successfully created Ad (${(result.data.type)?.toUpperCase()} ${result.data.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`,
+            confirmText: "OK",
+            type: "success",
+          })
         }
       } else {
         const payload = {
@@ -279,10 +290,21 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
         if (updateResult.errors && updateResult.errors.length > 0) {
           const errorMessage = formatErrorMessage(updateResult.errors)
           throw new Error(errorMessage)
+        } else {
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+                <span>Ad details have been updated.</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
         }
+        router.push("/ads")
       }
 
-      router.push("/ads")
     } catch (error) {
       let errorInfo = {
         title: mode === "create" ? "" : "Failed to update ad",
