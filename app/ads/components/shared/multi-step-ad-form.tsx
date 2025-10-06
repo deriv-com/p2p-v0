@@ -120,6 +120,8 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
               paymentMethods: paymentMethodNames,
               payment_method_ids: paymentMethodIds,
               instructions: data.description || "",
+              forCurrency: data.payment_currency,
+              buyCurrency: data.account_currency
             }
 
             setFormData(formattedData)
