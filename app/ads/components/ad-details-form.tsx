@@ -56,7 +56,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   }, [])
 
   useEffect(() => {
-    if (currencyList.length > 0  && !forCurrency) {
+    if (currencyList.length > 0 && !forCurrency) {
       setForCurrency(currencyList[0].code)
     }
   }, [currencyList, forCurrency])
