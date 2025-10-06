@@ -169,7 +169,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         minAmount: Number.parseFloat(minAmount) || 0,
         maxAmount: Number.parseFloat(maxAmount) || 0,
         forCurrency,
-        buyC
+        buyCurrency
       }
 
       onNext(formData, combinedErrors)
@@ -182,6 +182,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       fixedRate: Number.parseFloat(fixedRate) || 0,
       minAmount: Number.parseFloat(minAmount) || 0,
       maxAmount: Number.parseFloat(maxAmount) || 0,
+      forCurrency,
+        buyCurrency
     }
 
     onNext(formData)
