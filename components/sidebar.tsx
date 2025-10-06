@@ -62,7 +62,7 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "P2P Guide", href: `https://deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
-  const hideOnMobile = ["Market", "Orders", "My Ads", "P2P Profile"]
+  const hideOnMobile = ["Market", "Orders", "My Ads", "Wallet", "P2P Profile"]
 
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
