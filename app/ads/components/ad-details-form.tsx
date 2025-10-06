@@ -69,7 +69,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       if (initialData.minAmount !== undefined) setMinAmount(initialData.minAmount.toString())
       if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
       if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
-      if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.maxAmount.toString())
+      if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
     }
   }, [initialData])
 
