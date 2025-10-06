@@ -134,6 +134,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       fixedRate: true,
       minAmount: true,
       maxAmount: true,
+      forCurrency
     })
 
     const total = Number(totalAmount)
