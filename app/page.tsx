@@ -222,17 +222,19 @@ export default function BuySellPage() {
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
                 <div>
                   <BalanceSection />
-                  <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")} variant="underline">
+                  <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-full bg-transparent">
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
                         value="sell"
+                        variant="underline"
                       >
                         Buy
                       </TabsTrigger>
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
                         value="buy"
+                        variant="underline"
                       >
                         Sell
                       </TabsTrigger>
