@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
 import { getSettings } from "@/services/api/api-auth"
 
-export function useCurrencyData(currency?: string) {
+export function useCurrencyData(currency = "USD") {
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
