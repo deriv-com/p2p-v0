@@ -15,6 +15,7 @@ interface AddPaymentMethodPanelProps {
   allowedPaymentMethods?: string[]
   onMethodSelect?: (method: string) => void
   onBack?: () => void
+  selectedMethod?: string
 }
 
 export default function AddPaymentMethodPanel({
@@ -23,8 +24,10 @@ export default function AddPaymentMethodPanel({
   allowedPaymentMethods,
   onMethodSelect,
   onBack,
+  selectedMethod: selectedMethodProp,
 }: AddPaymentMethodPanelProps) {
-  const [selectedMethod, setSelectedMethod] = useState<string>("")
+  const [selectedMethodState, setSelectedMethodState] = useState<string>("")
+  const selectedMethod = selectedMethodProp || selectedMethodState
   const [showMethodDetails, setShowMethodDetails] = useState(false)
   const [details, setDetails] = useState<Record<string, string>>({})
   const [instructions, setInstructions] = useState("")
@@ -77,7 +80,7 @@ export default function AddPaymentMethodPanel({
   useEffect(() => {
     return () => {
       setShowMethodDetails(false)
-      setSelectedMethod("")
+      setSelectedMethodState("")
       setDetails({})
       setErrors({})
       setTouched({})
@@ -88,14 +91,17 @@ export default function AddPaymentMethodPanel({
   const selectedMethodFields = getPaymentMethodFields(selectedMethod, availablePaymentMethods)
 
   const handleMethodSelect = (paymentMethod: AvailablePaymentMethod) => {
-    setSelectedMethod(paymentMethod.method)
-    setShowMethodDetails(true)
-    onMethodSelect?.(paymentMethod.method)
+    if (onMethodSelect) {
+      onMethodSelect(paymentMethod.method)
+    } else {
+      setSelectedMethodState(paymentMethod.method)
+      setShowMethodDetails(true)
+    }
   }
 
   const handleBackToMethodList = () => {
     setShowMethodDetails(false)
-    setSelectedMethod("")
+    setSelectedMethodState("")
     setDetails({})
     setErrors({})
     setTouched({})
@@ -225,7 +231,7 @@ export default function AddPaymentMethodPanel({
     )
   }
 
-  if (!showMethodDetails) {
+  if (!showMethodDetails && !selectedMethodProp) {
     return (
       <div className="w-full">
         <div className="space-y-3">
