@@ -37,9 +37,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
     { id: "stats", label: "Stats" },
     { id: "payment", label: "Payment methods" },
     { id: "follows", label: "Follows" },
-    { id: "blocked", label: "Blocked" },
-    { id: "ads", label: "Ads" },
-    { id: "counterparties", label: "Counterparties" },
+    { id: "blocked", label: "Blocked" }
   ]
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
