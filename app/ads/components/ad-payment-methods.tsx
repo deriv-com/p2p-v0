@@ -10,6 +10,8 @@ import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 interface PaymentMethod {
   id: number
@@ -27,6 +29,10 @@ const AdPaymentMethods = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert, hideAlert } = useAlertDialog()
+  const isMobile = useIsMobile()
+  const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
+  const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
+  const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -60,7 +66,12 @@ const AdPaymentMethods = () => {
       if (result.success) {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
-        hideAlert()
+        if (isMobile) {
+          setShowPaymentDetailsSheet(false)
+          setShowAddPaymentSheet(false)
+        } else {
+          hideAlert()
+        }
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
@@ -84,29 +95,34 @@ const AdPaymentMethods = () => {
   }
 
   const handleShowAddPaymentMethod = () => {
-    showAlert({
-      title: "Select a payment method",
-      description: (
-        <AddPaymentMethodPanel
-          onAdd={handleAddPaymentMethod}
-          isLoading={isAddingMethod}
-          onMethodSelect={(method) => {
-            showAlert({
-              title: "Add payment details",
-              description: (
-                <AddPaymentMethodPanel
-                  onAdd={handleAddPaymentMethod}
-                  isLoading={isAddingMethod}
-                  onBack={() => handleShowAddPaymentMethod()}
-                />
-              ),
-              showCloseButton: true,
-            })
-          }}
-        />
-      ),
-      showCloseButton: true,
-    })
+    if (isMobile) {
+      setShowAddPaymentSheet(true)
+    } else {
+      showAlert({
+        title: "Select a payment method",
+        description: (
+          <AddPaymentMethodPanel
+            onAdd={handleAddPaymentMethod}
+            isLoading={isAddingMethod}
+            onMethodSelect={(method) => {
+              showAlert({
+                title: "Add payment details",
+                description: (
+                  <AddPaymentMethodPanel
+                    onAdd={handleAddPaymentMethod}
+                    isLoading={isAddingMethod}
+                    selectedMethod={method}
+                    onBack={() => handleShowAddPaymentMethod()}
+                  />
+                ),
+                showCloseButton: true,
+              })
+            }}
+          />
+        ),
+        showCloseButton: true,
+      })
+    }
   }
 
   if (isLoading) {
@@ -190,6 +206,44 @@ const AdPaymentMethods = () => {
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
+
+      <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
+        <SheetContent side="bottom" className="h-[90vh]">
+          <SheetHeader>
+            <SheetTitle>Select a payment method</SheetTitle>
+          </SheetHeader>
+          <div className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
+            <AddPaymentMethodPanel
+              onAdd={handleAddPaymentMethod}
+              isLoading={isAddingMethod}
+              onMethodSelect={(method) => {
+                setSelectedMethodForDetails(method)
+                setShowAddPaymentSheet(false)
+                setShowPaymentDetailsSheet(true)
+              }}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
+
+      <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
+        <SheetContent side="bottom" className="h-[90vh]">
+          <SheetHeader>
+            <SheetTitle>Add payment details</SheetTitle>
+          </SheetHeader>
+          <div className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
+            <AddPaymentMethodPanel
+              onAdd={handleAddPaymentMethod}
+              isLoading={isAddingMethod}
+              selectedMethod={selectedMethodForDetails}
+              onBack={() => {
+                setShowPaymentDetailsSheet(false)
+                setShowAddPaymentSheet(true)
+              }}
+            />
+          </div>
+        </SheetContent>
+      </Sheet>
     </>
   )
 }
