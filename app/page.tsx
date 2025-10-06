@@ -22,6 +22,7 @@ import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
+import { getCountries } from "@/services/api/api-auth"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
@@ -41,8 +42,7 @@ const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
 }
 
 export default function BuySellPage() {
-  // TODO: Replace these once the currencies are ready
-  const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
+  const [currencyFilters, setCurrencyFilters] = useState<string[]>([])
   const router = useRouter()
 
   const {
@@ -74,6 +74,25 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+
+  useEffect(() => {
+    const fetchCurrencies = async () => {
+      try {
+        const response = await getCountries()
+        const currencies = response.countries
+          .map((country) => country.currency)
+          .filter((currency): currency is string => currency !== undefined && currency !== null)
+
+        const uniqueCurrencies = Array.from(new Set(currencies)).sort()
+        setCurrencyFilters(uniqueCurrencies)
+      } catch (error) {
+        console.error("Error fetching currencies:", error)
+        setCurrencyFilters(["USD", "BTC", "LTC", "ETH", "USDT"])
+      }
+    }
+
+    fetchCurrencies()
+  }, [])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -247,7 +266,7 @@ export default function BuySellPage() {
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
-                      {CURRENCY_FILTERS.map((currencyFilter) => (
+                      {currencyFilters.map((currencyFilter) => (
                         <SelectItem
                           key={currencyFilter}
                           value={currencyFilter}
@@ -423,8 +442,8 @@ export default function BuySellPage() {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,
                                   })
-                                : ""}
-                               {" "} {ad.payment_currency}
+                                : ""}{" "}
+                              {ad.payment_currency}
                               <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
                             <div className="mt-1">{`Order limits: ${ad.minimum_order_amount || "N/A"} - ${
