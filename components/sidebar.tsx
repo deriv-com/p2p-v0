@@ -53,7 +53,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const navItems = [
-    { name: "Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: HomeIcon },
+    { name: "Back to Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: HomeIcon },
     { name: "Market", href: "/", icon: MarketIcon },
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
