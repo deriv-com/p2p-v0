@@ -248,6 +248,22 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-grayscale-200 pb-6">
             <div>
+              <RateInput
+                  currency={forCurrency}
+                label="Fixed price"
+                value={fixedRate}
+                onChange={(value) => {
+                  setFixedRate(value)
+                  setTouched((prev) => ({ ...prev, fixedRate: true }))
+                }}
+                onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
+                error={touched.fixedRate && !!formErrors.fixedRate}
+              />
+              {touched.fixedRate && formErrors.fixedRate && (
+                <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
+              )}
+            </div>
+            <div>
               <CurrencyInput
                 value={totalAmount}
                 onValueChange={(value) => {
@@ -265,22 +281,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
               )}
             </div>
 
-            <div>
-              <RateInput
-                  currency={forCurrency}
-                label="Fixed price"
-                value={fixedRate}
-                onChange={(value) => {
-                  setFixedRate(value)
-                  setTouched((prev) => ({ ...prev, fixedRate: true }))
-                }}
-                onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
-                error={touched.fixedRate && !!formErrors.fixedRate}
-              />
-              {touched.fixedRate && formErrors.fixedRate && (
-                <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
-              )}
-            </div>
+            
           </div>
         </div>
 
