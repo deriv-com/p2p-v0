@@ -19,8 +19,11 @@ export default function Main({
   const router = useRouter()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
+  const isMountedRef = useRef(true)
 
   useEffect(() => {
+    isMountedRef.current = true
+
     const PUBLIC_ROUTES = ["/login"]
     const isPublic = PUBLIC_ROUTES.includes(pathname)
 
@@ -35,7 +38,7 @@ export default function Main({
       try {
         const response = await AuthAPI.getSession()
 
-        if (abortController.signal.aborted) {
+        if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
 
@@ -46,10 +49,12 @@ export default function Main({
           if (!response?.errors) {
             await AuthAPI.fetchUserIdAndStore()
           }
-          router.push(pathname)
+          if (isMountedRef.current && !abortController.signal.aborted) {
+            router.push(pathname)
+          }
         }
       } catch (error) {
-        if (abortController.signal.aborted) {
+        if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
         console.error("Error fetching session data:", error)
@@ -57,12 +62,14 @@ export default function Main({
     }
 
     fetchSessionData()
+
     return () => {
+      isMountedRef.current = false
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router])
+  }, [pathname])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>

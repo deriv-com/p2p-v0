@@ -2,7 +2,7 @@
 
 export const runtime = "edge"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
@@ -69,31 +69,59 @@ export default function AdvertiserProfilePage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
 
+  const abortControllerRef = useRef<AbortController | null>(null)
+
   const fetchAdvertiserData = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     setIsLoading(true)
     setError(null)
 
     try {
       const advertiserData = await BuySellAPI.getAdvertiserById(id)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
       setProfile(advertiserData.data)
       setIsFollowing(advertiserData.data.is_favourite || false)
       setIsBlocked(advertiserData.data.is_blocked || false)
 
       const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
+
+      if (abortController.signal.aborted) {
+        return
+      }
+
       setAdverts(advertiserAds)
     } catch (err) {
-      console.error("Error fetching advertiser data:", err)
-      setError("Failed to load advertiser profile. Please try again.")
-
-      setProfile(null)
-      setAdverts([])
+      if (!abortController.signal.aborted) {
+        console.error("Error fetching advertiser data:", err)
+        setError("Failed to load advertiser profile. Please try again.")
+        setProfile(null)
+        setAdverts([])
+      }
     } finally {
-      setIsLoading(false)
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
     }
   }
 
   useEffect(() => {
     fetchAdvertiserData()
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
   }, [id])
 
   const toggleFollow = async () => {
@@ -153,7 +181,11 @@ export default function AdvertiserProfilePage() {
                       height={24}
                       className="text-white"
                     />
-                {isBlocked ? <span>{profile?.nickname} unblocked.</span> : <span>{profile?.nickname} blocked.</span>}
+                    {isBlocked ? (
+                      <span>{profile?.nickname} unblocked.</span>
+                    ) : (
+                      <span>{profile?.nickname} blocked.</span>
+                    )}
                   </div>
                 ),
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",

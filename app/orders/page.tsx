@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -54,9 +54,17 @@ export default function OrdersPage() {
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
 
+  const abortControllerRef = useRef<AbortController | null>(null)
+
   useEffect(() => {
     fetchOrders()
     checkUserSignupStatus()
+
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
   }, [activeTab, dateFilter, customDateRange])
 
   const checkUserSignupStatus = () => {
@@ -72,6 +80,13 @@ export default function OrdersPage() {
   }
 
   const fetchOrders = async () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+
+    const abortController = new AbortController()
+    abortControllerRef.current = abortController
+
     setIsLoading(true)
     try {
       const filters: {
@@ -98,14 +113,22 @@ export default function OrdersPage() {
       }
 
       const orders = await OrdersAPI.getOrders(filters)
-      const ordersArray = Array.isArray(orders.data) ? orders.data : []
 
+      if (abortController.signal.aborted) {
+        return
+      }
+
+      const ordersArray = Array.isArray(orders.data) ? orders.data : []
       setOrders(ordersArray)
     } catch (err) {
-      console.error("Error fetching orders:", err)
-      setOrders([])
+      if (!abortController.signal.aborted) {
+        console.error("Error fetching orders:", err)
+        setOrders([])
+      }
     } finally {
-      setIsLoading(false)
+      if (!abortController.signal.aborted) {
+        setIsLoading(false)
+      }
     }
   }
 
@@ -231,7 +254,7 @@ export default function OrdersPage() {
                       <div className="font-bold">
                         {getOrderType(order)}
                         <span className="text-base">
-                          {` ${formatAmount(order.amount)} ${order.advert.account_currency}`} 
+                          {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
                         </span>
                       </div>
                       <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
@@ -387,10 +410,11 @@ export default function OrdersPage() {
             </div>
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
-                {activeTab === "active" ?
-                    <EmptyState title="No active orders" description="View and manage your active orders here." /> : 
-                    <EmptyState title="No past orders" description="View and manage your past orders here." />
-                }
+              {activeTab === "active" ? (
+                <EmptyState title="No active orders" description="View and manage your active orders here." />
+              ) : (
+                <EmptyState title="No past orders" description="View and manage your past orders here." />
+              )}
             </div>
           ) : (
             <div>
