@@ -11,6 +11,7 @@ import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
 import { useToast } from "@/hooks/use-toast"
+import { useFollowsStore } from "@/stores/follows-store"
 
 interface FollowUser {
   nickname: string
@@ -19,23 +20,25 @@ interface FollowUser {
 
 export default function FollowsTab() {
   const [searchQuery, setSearchQuery] = useState("")
-  const [following, setFollowing] = useState<FollowUser[]>([])
+  const { follows: following, setFollows: setFollowing } = useFollowsStore()
   const [isLoading, setIsLoading] = useState(true)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
 
   const fetchFollowing = useCallback(async () => {
     try {
+      console.log("[v0] Fetching favourite users from API")
       setIsLoading(true)
       const data = await getFavouriteUsers()
+      console.log("[v0] Received favourite users:", data)
       setFollowing(data)
     } catch (err) {
-      console.error("Failed to fetch favourite users:", err)
+      console.error("[v0] Failed to fetch favourite users:", err)
       setFollowing([])
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [setFollowing])
 
   useEffect(() => {
     fetchFollowing()
@@ -61,6 +64,7 @@ export default function FollowsTab() {
       type: "warning",
       onConfirm: async () => {
         try {
+          console.log("[v0] Unfollowing user:", user.user_id)
           const result = await toggleFavouriteAdvertiser(user.user_id, false)
 
           if (result.success) {
@@ -83,7 +87,7 @@ export default function FollowsTab() {
             await fetchFollowing()
           }
         } catch (error) {
-          console.error("Error unfollowing user:", error)
+          console.error("[v0] Error unfollowing user:", error)
         }
       },
     })
@@ -152,7 +156,9 @@ export default function FollowsTab() {
         ) : (
           <EmptyState
             title={searchQuery ? "No matching name" : "Not following anyone yet"}
-            description={searchQuery ? `There is no result for ${searchQuery}.` : "Start following users to see them here."}
+            description={
+              searchQuery ? `There is no result for ${searchQuery}.` : "Start following users to see them here."
+            }
             redirectToAds={false}
           />
         )}

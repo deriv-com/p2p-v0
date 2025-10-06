@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useFollowsStore } from "@/stores/follows-store"
 import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
@@ -57,6 +58,7 @@ export default function AdvertiserProfilePage() {
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
   const userId = useUserDataStore((state) => state.userId)
+  const { addFollow, removeFollow } = useFollowsStore()
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isFollowing, setIsFollowing] = useState(false)
@@ -127,12 +129,27 @@ export default function AdvertiserProfilePage() {
   const toggleFollow = async () => {
     if (!profile) return
 
+    console.log("[v0] Toggling follow for advertiser:", profile.id, "Current state:", isFollowing)
     setIsFollowLoading(true)
     try {
       const result = await toggleFavouriteAdvertiser(profile.id, !isFollowing)
+      console.log("[v0] Toggle follow result:", result)
 
       if (result.success) {
-        setIsFollowing(!isFollowing)
+        const newFollowState = !isFollowing
+        setIsFollowing(newFollowState)
+
+        if (newFollowState) {
+          console.log("[v0] Adding to follows store")
+          addFollow({
+            nickname: profile.nickname,
+            user_id: typeof profile.id === "string" ? Number.parseInt(profile.id) : profile.id,
+          })
+        } else {
+          console.log("[v0] Removing from follows store")
+          removeFollow(typeof profile.id === "string" ? Number.parseInt(profile.id) : profile.id)
+        }
+
         toast({
           description: (
             <div className="flex items-center gap-2">
@@ -144,10 +161,10 @@ export default function AdvertiserProfilePage() {
           duration: 2500,
         })
       } else {
-        console.error("Failed to toggle follow status:", result.message)
+        console.error("[v0] Failed to toggle follow status:", result.message)
       }
     } catch (error) {
-      console.error("Error toggling follow status:", error)
+      console.error("[v0] Error toggling follow status:", error)
     } finally {
       setIsFollowLoading(false)
     }
