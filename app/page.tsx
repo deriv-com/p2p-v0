@@ -249,8 +249,8 @@ export default function BuySellPage() {
                     <SelectContent>
                       {currencies.map((currency) => (
                         <SelectItem
-                          key={currency}
-                          value={currency}
+                          key={currency.code}
+                          value={currency.code}
                           className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                         >
                           {currency.code}
