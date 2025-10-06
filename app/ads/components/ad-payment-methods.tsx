@@ -208,7 +208,7 @@ const AdPaymentMethods = () => {
       </div>
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
-        <SheetContent side="right" className="h-[90vh]">
+        <SheetContent side="right" className="w-full h-full">
           <SheetHeader>
             <SheetTitle>Select a payment method</SheetTitle>
           </SheetHeader>
@@ -227,7 +227,7 @@ const AdPaymentMethods = () => {
       </Sheet>
 
       <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
-        <SheetContent side="bottom" className="h-[90vh]">
+        <SheetContent side="right" className="w-full h-full">
           <SheetHeader>
             <SheetTitle>Add payment details</SheetTitle>
           </SheetHeader>
