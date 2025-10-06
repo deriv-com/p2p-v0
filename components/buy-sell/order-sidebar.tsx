@@ -15,7 +15,7 @@ import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent} from "@/components/ui/sheet"
 
 interface OrderSidebarProps {
   isOpen: boolean
