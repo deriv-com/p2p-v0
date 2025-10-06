@@ -209,7 +209,7 @@ const AdPaymentMethods = () => {
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
+          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
             <div className="my-4 font-bold text-xl">Select a payment method</div>
             <AddPaymentMethodPanel
               onAdd={handleAddPaymentMethod}
@@ -226,7 +226,7 @@ const AdPaymentMethods = () => {
 
       <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
+          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
             <div className="my-4 font-bold text-xl">Add payment details</div>
             <AddPaymentMethodPanel
               onAdd={handleAddPaymentMethod}
