@@ -65,7 +65,7 @@ export default function Sidebar({ className }: SidebarProps) {
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
       <div className="flex flex-row justify-between items-center gap-4 p-4 pt-0">
-        <Image src="/icons/deriv-p2p.png" alt="Deriv logo" width={128} height={64} />
+        <Image src="/icons/deriv-p2p.png" alt="Deriv logo" width={128} height={24} />
         {userId && (
           <div className="hidden md:block text-slate-600 hover:text-slate-700">
             <NovuNotifications />
