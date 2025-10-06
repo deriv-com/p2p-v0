@@ -17,10 +17,9 @@ export function useCurrencyData() {
         const currencyMap = new Map<string, Currency>()
 
         response.data.forEach((country) => {
-          if (country.currency && country.currency_name) {
+          if (country.currency) {
             currencyMap.set(country.currency, {
               code: country.currency,
-              name: country.currency_name,
             })
           }
         })
