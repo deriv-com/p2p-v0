@@ -182,8 +182,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       maxAmount: Number.parseFloat(maxAmount) || 0,
     }
 
-    // setFormData(formData)
-
     onNext(formData)
   }
 
