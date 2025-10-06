@@ -56,6 +56,12 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   }, [])
 
   useEffect(() => {
+    if (currencyList.length > 0 && !forCurrency) {
+      setForCurrency(currencyList[0].code)
+    }
+  }, [currencyList, forCurrency])
+
+  useEffect(() => {
     if (initialData) {
       if (initialData.type) setType(initialData.type as "buy" | "sell")
       if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
@@ -176,7 +182,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       maxAmount: Number.parseFloat(maxAmount) || 0,
     }
 
-    setFormData(formData)
+    // setFormData(formData)
 
     onNext(formData)
   }
@@ -249,7 +255,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-grayscale-200 pb-6">
             <div>
               <RateInput
-                  currency={forCurrency}
+                currency={forCurrency}
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
@@ -271,7 +277,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder={type ==="sell"? "Sell quantity": "Buy quantity"}
+                placeholder={type === "sell" ? "Sell quantity" : "Buy quantity"}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
                 currency={buyCurrency}
