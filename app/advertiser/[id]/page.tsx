@@ -14,7 +14,7 @@ import { formatPaymentMethodName } from "@/lib/utils"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
-import BlockConfirmation from "@/components/block-confirmation"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
@@ -55,6 +55,7 @@ export default function AdvertiserProfilePage() {
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
   const isMobile = useIsMobile()
+  const { showAlert } = useAlertDialog()
   const userId = useUserDataStore((state) => state.userId)
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
@@ -67,7 +68,6 @@ export default function AdvertiserProfilePage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
-  const [isBlockConfirmationOpen, setIsBlockConfirmationOpen] = useState(false)
 
   const fetchAdvertiserData = async () => {
     setIsLoading(true)
@@ -126,26 +126,68 @@ export default function AdvertiserProfilePage() {
   }
 
   const handleBlockClick = () => {
-    if (!isBlocked) setIsBlockConfirmationOpen(true)
-    else handleBlockConfirm()
+    if (!isBlocked) {
+      showAlert({
+        title: `Block ${profile?.nickname}?`,
+        message: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
+        primaryButtonLabel: "Block",
+        secondaryButtonLabel: "Cancel",
+        onConfirm: async () => {
+          if (!profile) return
+
+          setIsBlockLoading(true)
+          try {
+            const result = await toggleBlockAdvertiser(profile.id, true)
+
+            if (result.success) {
+              setIsBlocked(true)
+
+              toast({
+                description: (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/icons/success-checkmark.png"
+                      alt="Success"
+                      width={24}
+                      height={24}
+                      className="text-white"
+                    />
+                    <span>{profile?.nickname} blocked.</span>
+                  </div>
+                ),
+                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                duration: 2500,
+              })
+            } else {
+              console.error("Failed to toggle block status:", result.message)
+            }
+          } catch (error) {
+            console.error("Error toggling block status:", error)
+          } finally {
+            setIsBlockLoading(false)
+          }
+        },
+      })
+    } else {
+      handleUnblock()
+    }
   }
 
-  const handleBlockConfirm = async () => {
+  const handleUnblock = async () => {
     if (!profile) return
 
-    setIsBlockConfirmationOpen(false)
     setIsBlockLoading(true)
     try {
-      const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
+      const result = await toggleBlockAdvertiser(profile.id, false)
 
       if (result.success) {
-        setIsBlocked(!isBlocked)
+        setIsBlocked(false)
 
         toast({
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-              {isBlocked ? <span>{profile?.nickname} unblocked.</span> : <span>{profile?.nickname} blocked.</span>}
+              <span>{profile?.nickname} unblocked.</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -222,7 +264,7 @@ export default function AdvertiserProfilePage() {
                   <div className="flex-1">
                     <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
-                      <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."/>
+                      <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
                       {profile?.trade_band === "bronze" && (
                         <TooltipProvider>
                           <Tooltip>
@@ -419,13 +461,6 @@ export default function AdvertiserProfilePage() {
               onClose={() => setIsOrderSidebarOpen(false)}
               ad={selectedAd}
               orderType={orderType}
-            />
-            <BlockConfirmation
-              isOpen={isBlockConfirmationOpen}
-              onClose={() => setIsBlockConfirmationOpen(false)}
-              onConfirm={handleBlockConfirm}
-              nickname={profile?.nickname || ""}
-              isLoading={isBlockLoading}
             />
           </div>
         </div>
