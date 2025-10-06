@@ -240,7 +240,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
         const payload = {
           type: finalData.type || "buy",
           account_currency: finalData.buyCurrency,
-          payment_currency: finalData.forCurrenc,
+          payment_currency: finalData.forCurrency,
           minimum_order_amount: finalData.minAmount || 0,
           maximum_order_amount: finalData.maxAmount || 0,
           available_amount: finalData.totalAmount || 0,
