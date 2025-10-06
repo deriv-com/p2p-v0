@@ -10,7 +10,7 @@ import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
-import { Sheet, SheetContent, e } from "@/components/ui/sheet"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 interface PaymentMethod {
