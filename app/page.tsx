@@ -225,13 +225,13 @@ export default function BuySellPage() {
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-full bg-transparent">
                       <TabsTrigger
-                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
                         value="sell"
                       >
                         Buy
                       </TabsTrigger>
                       <TabsTrigger
-                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
                         value="buy"
                       >
                         Sell
