@@ -129,9 +129,9 @@ export default function AdvertiserProfilePage() {
     if (!isBlocked) {
       showAlert({
         title: `Block ${profile?.nickname}?`,
-        message: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
-        primaryButtonLabel: "Block",
-        secondaryButtonLabel: "Cancel",
+        description: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
+        confirmText: "Block",
+        cancelText: "Cancel",
         onConfirm: async () => {
           if (!profile) return
 
