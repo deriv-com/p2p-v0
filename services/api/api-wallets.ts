@@ -6,11 +6,15 @@ const getAuthHeader = () => ({
   "X-Data-Source": "live",
 })
 
-export async function fetchTransactions() {
+export async function fetchTransactions(selectedCurrencyCode?: string) {
   const userData = useUserDataStore.getState().userData
-  const walletId = userData?.balances?.find((b) => b.currency === "USD")?.wallet_id
 
-  const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
+  const walletId = userData?.wallet_id
+
+  let url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
+  if (selectedCurrencyCode) {
+    url += `&transaction_currency=${selectedCurrencyCode}`
+  }
 
   return fetch(url, {
     method: "GET",
@@ -100,6 +104,11 @@ export async function walletTransfer(params: {
 export async function fetchBalance(selectedCurrency: string): Promise<number> {
   try {
     const userId = useUserDataStore.getState().userId
+
+    if (!userId) {
+      return 0
+    }
+
     const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
 
     const response = await fetch(url, {
@@ -125,6 +134,41 @@ export async function fetchBalance(selectedCurrency: string): Promise<number> {
     return 0
   } catch (error) {
     console.error("Error fetching user balance:", error)
+    throw error
+  }
+}
+
+export async function fetchUserBalances(): Promise<any> {
+  try {
+    const userId = useUserDataStore.getState().userId
+
+    if (!userId) {
+      return { balances: [] }
+    }
+
+    const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}`
+
+    const response = await fetch(url, {
+      credentials: "include",
+      headers: {
+        ...getAuthHeader(),
+        accept: "application/json",
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user data: ${response.status}`)
+    }
+
+    const responseData = await response.json()
+
+    if (responseData?.data?.balances) {
+      return { balances: responseData.data.balances }
+    }
+
+    return { balances: [] }
+  } catch (error) {
+    console.error("Error fetching user balances:", error)
     throw error
   }
 }

@@ -15,6 +15,7 @@ const config: Config = {
         24: "0.24",
         48: "0.48",
         96: "0.96",
+        72: "0.72",
       },
       colors: {
         border: "hsl(var(--border))",

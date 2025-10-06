@@ -2,9 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
-import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Divider } from "@/components/ui/divider"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 
@@ -37,7 +35,11 @@ interface TransactionsResponse {
   }
 }
 
-export default function TransactionsTab() {
+interface TransactionsTabProps {
+  selectedCurrency?: string | null
+}
+
+export default function TransactionsTab({ selectedCurrency }: TransactionsTabProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
@@ -49,7 +51,7 @@ export default function TransactionsTab() {
     const loadTransactions = async () => {
       try {
         setLoading(true)
-        const data: TransactionsResponse = await fetchTransactions()
+        const data: TransactionsResponse = await fetchTransactions(selectedCurrency || undefined)
         setTransactions(data.data.transactions || [])
       } catch (error) {
         console.error("Error loading transactions:", error)
@@ -59,30 +61,7 @@ export default function TransactionsTab() {
     }
 
     loadTransactions()
-  }, [])
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "pending":
-        return (
-          <Badge variant="pending-secondary" className="h-6 rounded">
-            Processing
-          </Badge>
-        )
-      case "completed":
-        return (
-          <Badge variant="success-secondary" className="h-6 rounded">
-            Successful
-          </Badge>
-        )
-      default:
-        return (
-          <Badge variant="error-secondary" className="h-6 rounded">
-            Failed
-          </Badge>
-        )
-    }
-  }
+  }, [selectedCurrency])
 
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
@@ -109,17 +88,16 @@ export default function TransactionsTab() {
 
   const getTransactionDisplay = (transaction: Transaction) => {
     const type = getTransactionType(transaction)
-    const status = transaction.metadata.transaction_status
 
     const getAmountColor = () => {
-      if (type === "Transfer") {
-        return "text-black opacity-96"
+      if (type === "Withdraw") {
+        return "text-error"
       } else if (type === "Deposit") {
-        return status === "completed" ? "text-success-text-secondary" : "text-black opacity-48"
-      } else if (type === "Withdraw") {
-        return status === "completed" ? "text-red-withdraw" : "text-black opacity-48"
+        return "text-success-text"
+      } else if (type === "Transfer") {
+        return "text-slate-1200"
       }
-      return "text-success-icon"
+      return "text-slate-1200"
     }
 
     switch (type) {
@@ -127,30 +105,43 @@ export default function TransactionsTab() {
         return {
           iconSrc: "/icons/add-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "+",
           type: "Deposit",
         }
       case "Withdraw":
         return {
           iconSrc: "/icons/subtract-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "-",
           type: "Withdraw",
         }
       case "Transfer":
         return {
           iconSrc: "/icons/transfer-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "",
           type: "Transfer",
         }
       default:
         return {
           iconSrc: "/icons/add-icon.png",
           amountColor: getAmountColor(),
-          amountPrefix: "+",
           type: "Deposit",
         }
+    }
+  }
+
+  const getTransferDestinationText = (transaction: Transaction) => {
+    const { source_wallet_type, destination_wallet_type, transaction_currency } = transaction.metadata
+
+    const isSourceP2P = source_wallet_type?.toLowerCase() === "p2p"
+    const isDestinationP2P = destination_wallet_type?.toLowerCase() === "p2p"
+
+    if (isSourceP2P && !isDestinationP2P) {
+      return `P2P ${transaction_currency} -> ${transaction_currency} Wallet`
+    } else if (!isSourceP2P && isDestinationP2P) {
+      return `${transaction_currency} Wallet -> P2P ${transaction_currency}`
+    } else if (isSourceP2P && isDestinationP2P) {
+      return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
+    } else {
+      return `${transaction_currency} Wallet`
     }
   }
 
@@ -194,7 +185,7 @@ export default function TransactionsTab() {
 
   return (
     <>
-      <div className="py-4 space-y-6 mx-auto overflow-hidden">
+      <div className="py-0 space-y-6 mx-auto overflow-hidden">
         <div className="flex gap-2">
           {filters.map((filter) => (
             <Button
@@ -213,46 +204,50 @@ export default function TransactionsTab() {
 
         <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
           {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
-            <div key={dateKey} className="space-y-4">
-              <h3 className="text-xs font-medium text-gray-500">{dateKey}</h3>
+            <div key={dateKey} className="space-y-0">
+              <h3 className="text-xs font-medium text-grayscale-text-muted">{dateKey}</h3>
 
-              <div className="space-y-3">
+              <div className="space-y-0">
                 {dateTransactions.map((transaction, index) => {
                   const display = getTransactionDisplay(transaction)
+                  const isTransfer = display.type === "Transfer"
 
                   return (
-                    <div key={transaction.transaction_id}>
+                    <div key={transaction.transaction_id} className="relative">
                       <div
-                        className="flex items-center justify-between p-4 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors"
+                        className="flex items-center justify-between min-h-[72px] py-3 cursor-pointer hover:bg-gray-50 transition-colors"
                         onClick={() => handleTransactionClick(transaction)}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
                                 src={display.iconSrc}
                                 alt={`${display.type} icon`}
-                                width={32}
-                                height={32}
-                                className="w-8 h-8 object-contain"
+                                width={24}
+                                height={24}
+                                className="w-6 h-6 object-contain"
                                 priority={index < 3}
                               />
                             )}
                           </div>
 
-                          <div>
-                            <div className="text-base font-normal text-gray-900">{display.type}</div>
-                            <div className={`${display.amountColor} text-base font-bold`}>
-                              {display.amountPrefix}
-                              {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
-                            </div>
+                          <div className="flex flex-col gap-1">
+                            <div className="text-slate-1200 text-base font-normal">{display.type}</div>
+                            {isTransfer && (
+                              <div className="text-xs font-normal text-grayscale-text-muted">
+                                {getTransferDestinationText(transaction)}
+                              </div>
+                            )}
                           </div>
                         </div>
 
-                        <div>{getStatusBadge(transaction.metadata.transaction_status)}</div>
+                        <div className={`${display.amountColor} text-base font-normal mr-6`}>
+                          {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
+                        </div>
                       </div>
 
-                      {index < dateTransactions.length - 1 && <Divider className="my-2" />}
+                      <div className="h-px bg-grayscale-200 ml-10" />
                     </div>
                   )
                 })}
@@ -262,7 +257,17 @@ export default function TransactionsTab() {
 
           {filteredTransactions.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
-              {activeFilter === "All" ? "No transactions found" : `No ${activeFilter.toLowerCase()} transactions found`}
+              {selectedCurrency
+                ? "No transactions for the selected currency"
+                : activeFilter === "All"
+                  ? "No transactions found"
+                  : `No ${activeFilter.toLowerCase()} transactions found`}
+            </div>
+          )}
+
+          {filteredTransactions.length > 0 && (
+            <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
+              End of transaction
             </div>
           )}
         </div>

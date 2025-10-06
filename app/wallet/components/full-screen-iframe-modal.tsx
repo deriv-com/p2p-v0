@@ -31,6 +31,8 @@ export default function FullScreenIframeModal({
   const router = useRouter()
   const userData = useUserDataStore((state) => state.userData)
   const walletId = userData?.wallet_id
+  const brandClientId = useUserDataStore((state) => state.brandClientId)
+  const brand = useUserDataStore((state) => state.brand)
   const [iframeUrl, setIframeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [iframeLoaded, setIframeLoaded] = useState<boolean>(false)
@@ -52,13 +54,25 @@ export default function FullScreenIframeModal({
 
       try {
         const cashierUrl = process.env.NEXT_PUBLIC_CASHIER_URL
-        const response = await fetch(
-          `${cashierUrl}?wallet_id=${walletId}&operation=${operation}&currency=${currency}`,
-          {
-            method: "GET",
-            credentials: "include",
-          },
-        )
+        const apiOperation = operation === "WITHDRAW" ? "PAYOUT" : operation
+        const params = new URLSearchParams({
+          wallet_id: walletId || "",
+          operation: apiOperation,
+          currency,
+        })
+
+        if (brandClientId) {
+          params.append("user_id", brandClientId)
+        }
+
+        if (brand) {
+          params.append("brand_id", brand)
+        }
+
+        const response = await fetch(`${cashierUrl}?${params.toString()}`, {
+          method: "GET",
+          credentials: "include",
+        })
 
         if (!response.ok) {
           const errorText = await response.text()
@@ -80,7 +94,7 @@ export default function FullScreenIframeModal({
     }
 
     fetchIframeUrl()
-  }, [isOpen, operation, currency, walletId])
+  }, [isOpen, operation, currency, walletId, brandClientId, brand])
 
   const handleIframeLoad = () => {
     setIframeLoaded(true)
