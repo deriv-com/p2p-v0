@@ -326,7 +326,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       </div>
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
-        <SheetContent side="right" className="h-full">
+        <SheetContent side="right" className="w-full h-full">
           <SheetHeader>
             <SheetTitle>Select a payment method</SheetTitle>
           </SheetHeader>
@@ -345,7 +345,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       </Sheet>
 
       <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
-        <SheetContent side="right" className="h-full">
+        <SheetContent side="right" className="w-full h-full">
           <SheetHeader>
             <SheetTitle>Add payment details</SheetTitle>
           </SheetHeader>
