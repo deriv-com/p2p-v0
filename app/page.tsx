@@ -247,10 +247,10 @@ export default function BuySellPage() {
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
-                      {currencies.map((currency) => (
+                      {CURRENCY_FILTERS.map((currencyFilter) => (
                         <SelectItem
-                          key={currency.code}
-                          value={currency.code}
+                          key={currencyFilter}
+                          value={currencyFilter}
                           className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                         >
                           {currency.code}
