@@ -537,19 +537,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
-            <div className="my-4 font-bold text-xl">Add payment details</div>
-            <AddPaymentMethodPanel
-              onAdd={handleAddPaymentMethod}
-              isLoading={isAddingPaymentMethod}
-              allowedPaymentMethods={ad?.payment_methods}
-              selectedMethod={selectedMethodForDetails}
-              onBack={() => {
-                setShowPaymentDetailsSheet(false)
-                setShowAddPaymentSheet(true)
-              }}
-            />
-          </div>
+          <div className="my-4 font-bold text-xl">Add payment details</div>
+          <AddPaymentMethodPanel
+            onAdd={handleAddPaymentMethod}
+            isLoading={isAddingPaymentMethod}
+            allowedPaymentMethods={ad?.payment_methods}
+            selectedMethod={selectedMethodForDetails}
+            onBack={() => {
+              setShowPaymentDetailsSheet(false)
+              setShowAddPaymentSheet(true)
+            }}
+          />
         </SheetContent>
       </Sheet>
     </>
