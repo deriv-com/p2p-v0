@@ -50,7 +50,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
         <div className="flex-shrink-0  rounded-full flex items-center justify-center mb-4">
           <Image src="/icons/bank-icon.png" alt="Bank" width={24} height={24} />
         </div>
-        <div className="flex-1 hidden">
+        <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">Direct deposit</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px] mr-6 md:mr-0">
             Deposit funds directly from your bank account, e-wallet, or other payment methods.
