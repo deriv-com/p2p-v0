@@ -259,7 +259,7 @@ export default function AddPaymentMethodPanel({
   }
 
   return (
-    <div className="w-full h-[calc(100%-20px)]">
+    <div className="w-full h-[calc(100%-60px)]">
       <form onSubmit={handleSubmit} className="flex flex-col h-full">
         <div className="flex-1 space-y-6 overflow-y-auto">
           {selectedMethodFields.length > 0 && (
