@@ -309,7 +309,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
-   // hideAlert()
     if (isMobile) {
       setShowAddPaymentSheet(true)
     } else {
