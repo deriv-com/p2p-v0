@@ -122,7 +122,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           className={cn(
           "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
             className,
-          isOpen && "bg-[#00000029]",
+          isOpen && "bg-grayscale-800",
           )}
         >
           <div className="flex items-center justify-between w-full">
