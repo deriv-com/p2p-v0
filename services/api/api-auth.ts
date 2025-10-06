@@ -336,7 +336,7 @@ export interface SettingsResponse {
  */
 export async function getSettings(): Promise<SettingsResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/settings`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
