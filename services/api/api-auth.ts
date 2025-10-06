@@ -326,3 +326,30 @@ export async function getCountries(): Promise<CountriesResponse> {
     throw error
   }
 }
+
+export interface SettingsResponse {
+  [key: string]: any
+}
+
+/**
+ * Get user settings
+ */
+export async function getSettings(): Promise<SettingsResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/settings`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch settings: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching settings:", error)
+    throw error
+  }
+}
