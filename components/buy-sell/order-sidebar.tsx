@@ -519,33 +519,37 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <div className="my-4 font-bold text-xl">Select a payment method</div>
-          <AddPaymentMethodPanel
-            onAdd={handleAddPaymentMethod}
-            isLoading={isAddingPaymentMethod}
-            allowedPaymentMethods={ad?.payment_methods}
-            onMethodSelect={(method) => {
-              setSelectedMethodForDetails(method)
-              setShowAddPaymentSheet(false)
-              setShowPaymentDetailsSheet(true)
-            }}
-          />
+          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
+            <div className="my-4 font-bold text-xl">Select a payment method</div>
+            <AddPaymentMethodPanel
+              onAdd={handleAddPaymentMethod}
+              isLoading={isAddingPaymentMethod}
+              allowedPaymentMethods={ad?.payment_methods}
+              onMethodSelect={(method) => {
+                setSelectedMethodForDetails(method)
+                setShowAddPaymentSheet(false)
+                setShowPaymentDetailsSheet(true)
+              }}
+            />
+          </div>
         </SheetContent>
       </Sheet>
 
       <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <div className="my-4 font-bold text-xl">Add payment details</div>
-          <AddPaymentMethodPanel
-            onAdd={handleAddPaymentMethod}
-            isLoading={isAddingPaymentMethod}
-            allowedPaymentMethods={ad?.payment_methods}
-            selectedMethod={selectedMethodForDetails}
-            onBack={() => {
-              setShowPaymentDetailsSheet(false)
-              setShowAddPaymentSheet(true)
-            }}
-          />
+          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
+            <div className="my-4 font-bold text-xl">Add payment details</div>
+            <AddPaymentMethodPanel
+              onAdd={handleAddPaymentMethod}
+              isLoading={isAddingPaymentMethod}
+              allowedPaymentMethods={ad?.payment_methods}
+              selectedMethod={selectedMethodForDetails}
+              onBack={() => {
+                setShowPaymentDetailsSheet(false)
+                setShowAddPaymentSheet(true)
+              }}
+            />
+          </div>
         </SheetContent>
       </Sheet>
     </>
