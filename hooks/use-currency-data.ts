@@ -19,17 +19,12 @@ export function useCurrencyData(currency = "USD") {
 
         let currencyList: Currency[] = []
 
-        if (currency && availableAdverts[currency]) {
-          const paymentCurrencies = availableAdverts[currency].map(
-            (advert: { payment_currency: string }) => advert.payment_currency,
-          )
-          const uniquePaymentCurrencies = [...new Set(paymentCurrencies)]
-          currencyList = uniquePaymentCurrencies.map((code) => ({ code })).sort((a, b) => a.code.localeCompare(b.code))
-        } else {
-          currencyList = Object.keys(availableAdverts)
-            .map((code) => ({ code }))
-            .sort((a, b) => a.code.localeCompare(b.code))
-        }
+        const paymentCurrencies = availableAdverts[currency]?.map(
+          (advert: { payment_currency: string }) => advert.payment_currency,
+        )
+        const uniquePaymentCurrencies = [...new Set(paymentCurrencies)]
+        currencyList = uniquePaymentCurrencies.map((code) => ({ code })).sort((a, b) => a.code.localeCompare(b.code))
+        
 
         setCurrencies(currencyList)
         setError(null)
