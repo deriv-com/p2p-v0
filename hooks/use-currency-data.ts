@@ -14,8 +14,6 @@ export function useCurrencyData() {
       try {
         setIsLoading(true)
         const response = await getCountries()
-
-        // Extract unique currencies from countries response
         const currencyMap = new Map<string, Currency>()
 
         response.countries.forEach((country) => {
@@ -26,8 +24,6 @@ export function useCurrencyData() {
             })
           }
         })
-
-        // Convert map to array and sort by currency code
         const currencyList = Array.from(currencyMap.values()).sort((a, b) => a.code.localeCompare(b.code))
 
         setCurrencies(currencyList)
@@ -35,11 +31,7 @@ export function useCurrencyData() {
       } catch (err) {
         console.error("Error fetching currencies:", err)
         setError("Failed to load currencies")
-        setCurrencies([
-          { code: "USD", name: "US Dollar" },
-          { code: "EUR", name: "Euro" },
-          { code: "GBP", name: "British Pound" },
-        ])
+        setCurrencies([])
       } finally {
         setIsLoading(false)
       }
