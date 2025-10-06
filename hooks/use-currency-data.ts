@@ -1,33 +1,52 @@
 "use client"
 
-import { useMemo } from "react"
+import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
-
-const CURRENCY_DATA: Currency[] = [
-  { code: "ARS", name: "Argentine peso" },
-  { code: "BDT", name: "Bangladeshi taka" },
-  { code: "BOB", name: "Boliviano" },
-  { code: "BRL", name: "Brazilian real" },
-  { code: "CNY", name: "Chinese Yuan" },
-  { code: "COP", name: "Colombian peso" },
-  { code: "CRC", name: "Costa Rican colon" },
-  { code: "EUR", name: "Euro" },
-  { code: "GBP", name: "British Pound" },
-  { code: "IDR", name: "Indonesian rupiah" },
-  { code: "INR", name: "Indian Rupee" },
-  { code: "JPY", name: "Japanese Yen" },
-  { code: "KRW", name: "South Korean Won" },
-  { code: "MYR", name: "Malaysian Ringgit" },
-  { code: "PKR", name: "Pakistani Rupee" },
-  { code: "PHP", name: "Philippine Peso" },
-  { code: "SGD", name: "Singapore Dollar" },
-  { code: "THB", name: "Thai Baht" },
-  { code: "USD", name: "US Dollar" },
-  { code: "VND", name: "Vietnamese Dong" },
-]
+import { getCountries } from "@/services/api/api-auth"
 
 export function useCurrencyData() {
-  const currencies = useMemo(() => CURRENCY_DATA, [])
+  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchCurrencies = async () => {
+      try {
+        setIsLoading(true)
+        const response = await getCountries()
+
+        // Extract unique currencies from countries response
+        const currencyMap = new Map<string, Currency>()
+
+        response.countries.forEach((country) => {
+          if (country.currency && country.currency_name) {
+            currencyMap.set(country.currency, {
+              code: country.currency,
+              name: country.currency_name,
+            })
+          }
+        })
+
+        // Convert map to array and sort by currency code
+        const currencyList = Array.from(currencyMap.values()).sort((a, b) => a.code.localeCompare(b.code))
+
+        setCurrencies(currencyList)
+        setError(null)
+      } catch (err) {
+        console.error("Error fetching currencies:", err)
+        setError("Failed to load currencies")
+        setCurrencies([
+          { code: "USD", name: "US Dollar" },
+          { code: "EUR", name: "Euro" },
+          { code: "GBP", name: "British Pound" },
+        ])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCurrencies()
+  }, [])
 
   const getCurrencyByCode = (code: string): Currency | undefined => {
     return currencies.find((currency) => currency.code === code)
@@ -42,5 +61,7 @@ export function useCurrencyData() {
     currencies,
     getCurrencyByCode,
     getCurrencyName,
+    isLoading,
+    error,
   }
 }
