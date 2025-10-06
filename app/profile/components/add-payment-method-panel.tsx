@@ -259,9 +259,9 @@ export default function AddPaymentMethodPanel({
   }
 
   return (
-    <div className="w-full">
-      <form onSubmit={handleSubmit} className="flex flex-col min-h-[400px]">
-        <div className="flex-1 space-y-6">
+    <div className="w-full h-full">
+      <form onSubmit={handleSubmit} className="flex flex-col h-full">
+        <div className="flex-1 space-y-6 overflow-y-auto">
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
@@ -298,7 +298,7 @@ export default function AddPaymentMethodPanel({
           </div>
         </div>
 
-        <div className="mt-auto pt-6">
+        <div className="mt-auto pt-6 flex-shrink-0">
           <Button
             type="submit"
             onClick={handleSubmit}
