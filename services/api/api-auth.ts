@@ -327,14 +327,10 @@ export async function getCountries(): Promise<CountriesResponse> {
   }
 }
 
-export interface SettingsResponse {
-  [key: string]: any
-}
-
 /**
  * Get user settings
  */
-export async function getSettings(): Promise<SettingsResponse> {
+export async function getSettings(): Promise<> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
       method: "GET",
