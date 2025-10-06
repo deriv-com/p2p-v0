@@ -104,7 +104,6 @@ const PaymentSelectionContent = ({
           className="bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
           onClick={() => {
             handleAddPaymentMethodClick()
-            hideAlert()
           }}
         >
           <div className="flex items-center">
@@ -310,6 +309,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
+    hideAlert()
     if (isMobile) {
       setShowAddPaymentSheet(true)
     } else {
