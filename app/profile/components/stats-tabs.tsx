@@ -327,10 +327,8 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <SheetHeader>
-            <SheetTitle>Select a payment method</SheetTitle>
-          </SheetHeader>
           <div className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
+            <div>Select a payment method</div>
             <AddPaymentMethodPanel
               onAdd={handleAddPaymentMethod}
               isLoading={isAddingPaymentMethod}
@@ -346,10 +344,8 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
       <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
         <SheetContent side="right" className="w-full h-full">
-          <SheetHeader>
-            <SheetTitle>Add payment details</SheetTitle>
-          </SheetHeader>
           <div className="mt-4 h-[calc(100%-60px)] overflow-y-auto">
+            <div>Add payment details</div>
             <AddPaymentMethodPanel
               onAdd={handleAddPaymentMethod}
               isLoading={isAddingPaymentMethod}
