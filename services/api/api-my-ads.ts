@@ -50,6 +50,7 @@ export interface MyAd {
   createdAt: string
   updatedAt: string
   account_currency?: string
+  payment_currency?: string
 }
 
 export interface AdFilters {

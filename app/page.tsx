@@ -247,13 +247,13 @@ export default function BuySellPage() {
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
-                      {CURRENCY_FILTERS.map((currencyFilter) => (
+                      {currencies.map((currency) => (
                         <SelectItem
-                          key={currencyFilter}
-                          value={currencyFilter}
+                          key={currency.code}
+                          value={currency.code}
                           className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
                         >
-                          {currencyFilter}
+                          {currency.code}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -423,8 +423,8 @@ export default function BuySellPage() {
                                     minimumFractionDigits: 2,
                                     maximumFractionDigits: 2,
                                   })
-                                : ""}
-                               {" "} {ad.payment_currency}
+                                : ""}{" "}
+                              {ad.payment_currency}
                               <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
                             <div className="mt-1">{`Order limits: ${ad.minimum_order_amount || "N/A"} - ${

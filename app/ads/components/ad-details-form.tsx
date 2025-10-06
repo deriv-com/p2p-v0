@@ -29,8 +29,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
-  const [buyCurrency, setBuyCurrency] = useState("USD")
-  const [forCurrency, setForCurrency] = useState("IDR")
+  const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
+  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
   const { currencies: currencyList } = useCurrencyData()
   const [currencies, setCurrencies] = useState<string[]>([])
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
@@ -56,12 +56,20 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   }, [])
 
   useEffect(() => {
+    if (currencyList.length > 0 !initialData.forCurrency && !forCurrency) {
+      setForCurrency(currencyList[0].code)
+    }
+  }, [currencyList, forCurrency])
+
+  useEffect(() => {
     if (initialData) {
       if (initialData.type) setType(initialData.type as "buy" | "sell")
       if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
       if (initialData.fixedRate !== undefined) setFixedRate(initialData.fixedRate.toString())
       if (initialData.minAmount !== undefined) setMinAmount(initialData.minAmount.toString())
       if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
+      if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
+      if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
     }
   }, [initialData])
 
@@ -128,6 +136,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       fixedRate: true,
       minAmount: true,
       maxAmount: true,
+      forCurrency
     })
 
     const total = Number(totalAmount)
@@ -162,6 +171,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         fixedRate: Number.parseFloat(fixedRate) || 0,
         minAmount: Number.parseFloat(minAmount) || 0,
         maxAmount: Number.parseFloat(maxAmount) || 0,
+        forCurrency,
+        buyCurrency
       }
 
       onNext(formData, combinedErrors)
@@ -174,9 +185,9 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       fixedRate: Number.parseFloat(fixedRate) || 0,
       minAmount: Number.parseFloat(minAmount) || 0,
       maxAmount: Number.parseFloat(maxAmount) || 0,
+      forCurrency,
+      buyCurrency
     }
-
-    setFormData(formData)
 
     onNext(formData)
   }
@@ -193,6 +204,8 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           fixedRate: Number.parseFloat(fixedRate) || 0,
           minAmount: Number.parseFloat(minAmount) || 0,
           maxAmount: Number.parseFloat(maxAmount) || 0,
+          forCurrency,
+          buyCurrency
         },
       },
     })
@@ -206,7 +219,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           <div>
             <TradeTypeSelector value={type} onChange={setType} isEditMode={isEditMode} />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 hidden">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
                 <label className="block mb-2 text-black text-sm font-normal leading-5">
                   {type === "buy" ? "Buy currency" : "Sell currency"}
@@ -246,28 +259,10 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border border-grayscale-200 rounded-lg p-4">
-            <div>
-              <CurrencyInput
-                value={totalAmount}
-                onValueChange={(value) => {
-                  setTotalAmount(value)
-                  setTouched((prev) => ({ ...prev, totalAmount: true }))
-                }}
-                onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder={type ==="sell"? "Sell quantity": "Buy quantity"}
-                isEditMode={isEditMode}
-                error={touched.totalAmount && !!formErrors.totalAmount}
-                currency={buyCurrency}
-              />
-              {touched.totalAmount && formErrors.totalAmount && (
-                <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
-              )}
-            </div>
-
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-grayscale-200 pb-6">
             <div>
               <RateInput
-                  currency={forCurrency}
+                currency={forCurrency}
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
@@ -279,6 +274,23 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
               />
               {touched.fixedRate && formErrors.fixedRate && (
                 <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
+              )}
+            </div>
+            <div>
+              <CurrencyInput
+                value={totalAmount}
+                onValueChange={(value) => {
+                  setTotalAmount(value)
+                  setTouched((prev) => ({ ...prev, totalAmount: true }))
+                }}
+                onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
+                placeholder={type === "sell" ? "Sell quantity" : "Buy quantity"}
+                isEditMode={isEditMode}
+                error={touched.totalAmount && !!formErrors.totalAmount}
+                currency={buyCurrency}
+              />
+              {touched.totalAmount && formErrors.totalAmount && (
+                <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
               )}
             </div>
           </div>
