@@ -342,13 +342,15 @@ export default function OrdersPage() {
               <TabsList className="w-full bg-transparent">
                 <TabsTrigger
                   value="active"
-                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
+                  variant="underline"
                 >
                   Active
                 </TabsTrigger>
                 <TabsTrigger
                   value="past"
-                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
+                  variant="underline"
                 >
                   Past
                 </TabsTrigger>

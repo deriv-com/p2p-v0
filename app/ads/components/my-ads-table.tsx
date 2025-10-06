@@ -12,7 +12,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { AdsAPI } from "@/services/api"
 import type { Ad } from "../types"
 import { cn } from "@/lib/utils"
-import { DeleteConfirmationDialog } from "./delete-confirmation-dialog"
 import { formatPaymentMethodName, getPaymentMethodColourByName } from "@/lib/utils"
 import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -29,13 +28,8 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const { showAlert } = useAlertDialog()
+  const { showDeleteDialog, showAlert } = useAlertDialog()
   const isMobile = useIsMobile()
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [deleteConfirmModal, setDeleteConfirmModal] = useState({
-    show: false,
-    adId: "",
-  })
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
 
@@ -137,60 +131,58 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleDelete = (adId: string) => {
     setDrawerOpen(false)
-    setDeleteConfirmModal({
-      show: true,
-      adId: adId,
+    showDeleteDialog({
+      title: "Delete ad?",
+      description: "You will not be able to restore it.",
+      confirmText: "Delete",
+      cancelText: "Cancel",
+      onConfirm: async () => {
+        try {
+          const result = await AdsAPI.deleteAd(adId)
+
+          if (result.success) {
+            if (onAdDeleted) {
+              onAdDeleted()
+              toast({
+                description: (
+                  <div className="flex items-center gap-2">
+                    <Image
+                      src="/icons/success-checkmark.png"
+                      alt="Success"
+                      width={24}
+                      height={24}
+                      className="text-white"
+                    />
+                    <span>Ad deleted</span>
+                  </div>
+                ),
+                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+                duration: 2500,
+              })
+            }
+          } else {
+            let description = "There was an error when deleting the advert. Please try again."
+
+            if (result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
+              description = "The advert has ongoing orders."
+            }
+            showAlert({
+              title: "Unable to delete advert",
+              description,
+              confirmText: "OK",
+              type: "warning",
+            })
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      },
     })
   }
 
   const handleOpenDrawer = (ad: Ad) => {
     setSelectedAd(ad)
     setDrawerOpen(true)
-  }
-
-  const confirmDelete = async () => {
-    try {
-      setIsDeleting(true)
-      const result = await AdsAPI.deleteAd(deleteConfirmModal.adId)
-
-      if (result.success) {
-        if (onAdDeleted) {
-          onAdDeleted()
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                <span>Ad deleted</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-        }
-      } else {
-        let description = "There was an error when deleting the advert. Please try again."
-
-        if (result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
-          description = "The advert has ongoing orders."
-        }
-        showAlert({
-          title: "Unable to delete advert",
-          description,
-          confirmText: "OK",
-          type: "warning",
-        })
-      }
-
-      setDeleteConfirmModal({ show: false, adId: "" })
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsDeleting(false)
-    }
-  }
-
-  const cancelDelete = () => {
-    setDeleteConfirmModal({ show: false, adId: "" })
   }
 
   if (isLoading) {
@@ -256,13 +248,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
-                          {!isMobile && (<span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>)}
+                          {!isMobile && (
+                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
+                          )}
                           <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
                         </div>
-                        {!isMobile && (<div className="flex items-center justify-between md:justify-normal gap-1">
-                          <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
-                          <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
-                        </div>)}
+                        {!isMobile && (
+                          <div className="flex items-center justify-between md:justify-normal gap-1">
+                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
+                            <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </TableCell>
@@ -276,10 +272,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         style={{ width: `${Math.min(availableData.percentage, 100)}%` }}
                       ></div>
                     </div>
-                    {isMobile && (<div className="flex items-center justify-between gap-1">
-                      <span className="text-xs font-bold leading-5 text-slate-500">Rate:</span>
-                      <span className="text-xs leading-5 text-gray-900">{rate}</span>
-                    </div>)}
+                    {isMobile && (
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="text-xs font-bold leading-5 text-slate-500">Rate:</span>
+                        <span className="text-xs leading-5 text-gray-900">{rate}</span>
+                      </div>
+                    )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
                       <span className="text-xs font-bold leading-5 text-slate-500">Limit:</span>
                       <span className="text-xs md:text-sm leading-5 text-gray-900 overflow-hidden text-ellipsis">
@@ -362,15 +360,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           </div>
         </DrawerContent>
       </Drawer>
-
-      <DeleteConfirmationDialog
-        open={deleteConfirmModal.show}
-        title="Delete ad?"
-        description="You will not be able to restore it."
-        isDeleting={isDeleting}
-        onConfirm={confirmDelete}
-        onCancel={cancelDelete}
-      />
     </>
   )
 }
