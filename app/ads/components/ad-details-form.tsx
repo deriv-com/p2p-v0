@@ -55,11 +55,11 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     loadCurrencies()
   }, [])
 
-  /*useEffect(() => {
-    if (currencyList.length > 0 && !initialData.forCurrency && !forCurrency) {
+  useEffect(() => {
+    if (currencyList.length > 0  && !forCurrency) {
       setForCurrency(currencyList[0].code)
     }
-  }, [currencyList, forCurrency])*/
+  }, [currencyList, forCurrency])
 
   useEffect(() => {
     if (initialData) {
