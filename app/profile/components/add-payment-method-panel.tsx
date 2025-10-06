@@ -260,12 +260,6 @@ export default function AddPaymentMethodPanel({
 
   return (
     <div className="w-full">
-      {onBack && (
-        <Button variant="ghost" size="sm" onClick={handleBackToMethodList} className="mb-4">
-          <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} className="mr-2" />
-          Back to payment methods
-        </Button>
-      )}
       <form onSubmit={handleSubmit} className="space-y-6">
         {selectedMethodFields.length > 0 && (
           <div className="space-y-4">
