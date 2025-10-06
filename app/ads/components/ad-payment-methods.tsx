@@ -25,9 +25,8 @@ const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
   const [isLoading, setIsLoading] = useState(true)
-  const [showAddPanel, setShowAddPanel] = useState(false)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
-  const { showAlert } = useAlertDialog()
+  const { showAlert, hideAlert } = useAlertDialog()
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -61,7 +60,7 @@ const AdPaymentMethods = () => {
       if (result.success) {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
-        setShowAddPanel(false)
+        hideAlert()
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
@@ -82,6 +81,32 @@ const AdPaymentMethods = () => {
     } finally {
       setIsAddingMethod(false)
     }
+  }
+
+  const handleShowAddPaymentMethod = () => {
+    showAlert({
+      title: "Select a payment method",
+      description: (
+        <AddPaymentMethodPanel
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingMethod}
+          onMethodSelect={(method) => {
+            showAlert({
+              title: "Add payment details",
+              description: (
+                <AddPaymentMethodPanel
+                  onAdd={handleAddPaymentMethod}
+                  isLoading={isAddingMethod}
+                  onBack={() => handleShowAddPaymentMethod()}
+                />
+              ),
+              showCloseButton: true,
+            })
+          }}
+        />
+      ),
+      showCloseButton: true,
+    })
   }
 
   if (isLoading) {
@@ -124,12 +149,8 @@ const AdPaymentMethods = () => {
                   <CardContent className="p-2">
                     <div className="flex items-center justify-between mb-3">
                       <div className="flex items-center gap-2 ml-2">
-                        <div
-                          className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`}
-                        />
-                        <span className="font-bold tex-sm text-gray-700">
-                          {getCategoryDisplayName(method.type)}
-                        </span>
+                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
+                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
                       </div>
                       <Checkbox
                         checked={isSelected}
@@ -139,12 +160,8 @@ const AdPaymentMethods = () => {
                       />
                     </div>
                     <div className="space-y-1">
-                      <div className="text-sm tracking-wide text-neutral-10">
-                        {displayDetails.primary}
-                      </div>
-                      <div className="text-sm text-neutral-7">
-                        {displayDetails.secondary}
-                      </div>
+                      <div className="text-sm tracking-wide text-neutral-10">{displayDetails.primary}</div>
+                      <div className="text-sm text-neutral-7">{displayDetails.secondary}</div>
                     </div>
                   </CardContent>
                 </Card>
@@ -153,7 +170,7 @@ const AdPaymentMethods = () => {
 
             <Card
               className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-grayscale-400 bg-white"
-              onClick={() => setShowAddPanel(true)}
+              onClick={handleShowAddPaymentMethod}
             >
               <CardContent className="p-4 h-full flex items-center justify-center">
                 <div className="text-center">
@@ -173,13 +190,6 @@ const AdPaymentMethods = () => {
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
       </div>
-      {showAddPanel && (
-        <AddPaymentMethodPanel
-          onClose={() => setShowAddPanel(false)}
-          onAdd={handleAddPaymentMethod}
-          isLoading={isAddingMethod}
-        />
-      )}
     </>
   )
 }

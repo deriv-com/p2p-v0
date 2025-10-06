@@ -137,7 +137,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [orderStatus, setOrderStatus] = useState<{ success: boolean; message: string } | null>(null)
   const [selectedPaymentMethods, setSelectedPaymentMethods] = useState<string[]>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<PaymentMethod[]>([])
-  const [showAddPaymentMethod, setShowAddPaymentMethod] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
@@ -150,7 +149,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           userPaymentMethods={userPaymentMethods}
           tempSelectedPaymentMethods={tempSelectedPaymentMethods}
           setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-          setShowAddPaymentMethod={setShowAddPaymentMethod}
           setSelectedPaymentMethods={setSelectedPaymentMethods}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
@@ -268,7 +266,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setSelectedPaymentMethods([])
       setAmount(null)
       setValidationError(null)
-      setShowAddPaymentMethod(false)
       onClose()
     }, 300)
   }
@@ -283,7 +280,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         if (!isMobile) {
           hideAlert()
         }
-        setShowAddPaymentMethod(false)
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
@@ -307,11 +303,31 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
-    if (!isMobile) {
-      setShowAddPaymentMethod(true)
-    } else {
-      setShowAddPaymentMethod(true)
-    }
+    showAlert({
+      title: "Select a payment method",
+      description: (
+        <AddPaymentMethodPanel
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingPaymentMethod}
+          allowedPaymentMethods={ad?.payment_methods}
+          onMethodSelect={(method) => {
+            showAlert({
+              title: "Add payment details",
+              description: (
+                <AddPaymentMethodPanel
+                  onAdd={handleAddPaymentMethod}
+                  isLoading={isAddingPaymentMethod}
+                  allowedPaymentMethods={ad?.payment_methods}
+                  onBack={() => handleAddPaymentMethodClick()}
+                />
+              ),
+              showCloseButton: true,
+            })
+          }}
+        />
+      ),
+      showCloseButton: true,
+    })
   }
 
   const getSelectedPaymentMethodsText = () => {
@@ -404,7 +420,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               <div className="mx-4 mt-4 text-sm">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-slate-500">Rate type</span>
-                  <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">{ad.exchange_rate_type}</span>
+                  <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
+                    {ad.exchange_rate_type}
+                  </span>
                 </div>
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-slate-500">Exchange rate</span>
@@ -483,17 +501,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
               </div>
             </div>
           </div>
-        )}
-        {showAddPaymentMethod && (
-          <AddPaymentMethodPanel
-            onClose={() => {
-              setShowAddPaymentMethod(false)
-            }}
-            onAdd={handleAddPaymentMethod}
-            isLoading={isAddingPaymentMethod}
-            allowedPaymentMethods={isBuy ? ad?.payment_methods : undefined}
-            show={showAddPaymentMethod}
-          />
         )}
       </div>
     </div>
