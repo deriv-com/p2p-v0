@@ -321,20 +321,6 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 <BlockedTab />
               </div>
             </TabsContent>
-
-            <TabsContent value="ads">
-              <div className="p-4 border rounded-lg">
-                <h3 className="text-lg font-medium mb-4">Advertisers' instruction</h3>
-                <p className="text-slate-500">Your ad details will appear here.</p>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="counterparties">
-              <div className="p-4 border rounded-lg">
-                <h3 className="text-lg font-medium mb-4">Counterparties</h3>
-                <p className="text-slate-500">Your counterparties will appear here.</p>
-              </div>
-            </TabsContent>
           </Tabs>
         )}
       </div>
