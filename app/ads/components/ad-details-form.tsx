@@ -28,7 +28,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [totalAmount, setTotalAmount] = useState(initialData?.totalAmount?.toString() || "")
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
-  const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() )
+  const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
   const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
   const { currencies: currencyList } = useCurrencyData()
