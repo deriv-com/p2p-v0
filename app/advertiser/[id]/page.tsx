@@ -137,10 +137,10 @@ export default function AdvertiserProfilePage() {
 
           setIsBlockLoading(true)
           try {
-            const result = await toggleBlockAdvertiser(profile.id, true)
+            const result = await toggleBlockAdvertiser(profile.id, !isBlocked)
 
             if (result.success) {
-              setIsBlocked(true)
+              setIsBlocked(!isBlocked)
 
               toast({
                 description: (
