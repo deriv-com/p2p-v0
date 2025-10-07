@@ -13,25 +13,18 @@ export function useCurrencyData(currency = "USD") {
     const fetchCurrencies = async () => {
       try {
         setIsLoading(true)
-        const settings = await getSettings()
+        const response = await getSettings()
 
-        const paymentCurrencies = new Set<string>()
-        if (settings?.available_adverts) {
-          Object.keys(settings.available_adverts).forEach((key) => {
-            const [, paymentCurrency] = key.split("-")
-            if (paymentCurrency) {
-              paymentCurrencies.add(paymentCurrency)
-            }
-          })
-        }
+        const availableAdverts = response.available_adverts || {}
 
-        const currencyList: Currency[] = Array.from(paymentCurrencies)
-          .map((code) => ({
-            code,
-            name: code,
-          }))
-          .sort((a, b) => a.code.localeCompare(b.code))
+        let currencyList: Currency[] = []
 
+        const paymentCurrencies = availableAdverts[currency]?.map(
+          (advert: { payment_currency: string }) => advert.payment_currency,
+        )
+        const uniquePaymentCurrencies = [...new Set(paymentCurrencies)]
+        currencyList = uniquePaymentCurrencies.map((code) => ({ code })).sort((a, b) => a.code.localeCompare(b.code))
+        
         setCurrencies(currencyList)
         setError(null)
       } catch (err) {
