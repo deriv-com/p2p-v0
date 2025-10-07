@@ -257,7 +257,7 @@ export default function BuySellPage() {
                 </div>
                 <div>
                   <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
-                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px]" disabled>
+                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px]">
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
