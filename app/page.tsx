@@ -22,6 +22,7 @@ import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
+import { cn } from "@/lib/utils"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
