@@ -33,7 +33,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
   const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
   const { currencies: currencyList } = useCurrencyData()
-  const [currencies, setCurrencies] = useState<string[]>([])
+  const { currencies: accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
     totalAmount: false,
