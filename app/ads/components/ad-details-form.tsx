@@ -48,14 +48,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   }
 
   useEffect(() => {
-    const loadCurrencies = async () => {
-      const currencyList = await AdsAPI.getCurrencies()
-      setCurrencies(currencyList)
-    }
-    loadCurrencies()
-  }, [])
-
-  useEffect(() => {
     if (currencyList.length > 0 && !initialData.forCurrency && !forCurrency) {
       setForCurrency(currencyList[0].code)
     }
