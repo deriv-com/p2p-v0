@@ -14,6 +14,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
 import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
@@ -69,6 +70,7 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const { currencies } = useCurrencyData()
+  const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
 
@@ -259,7 +261,7 @@ export default function BuySellPage() {
                       <SelectValue placeholder="Select currency" />
                     </SelectTrigger>
                     <SelectContent>
-                      {currencies.map((currency) => (
+                      {accountCurrencies.map((currency) => (
                         <SelectItem
                           key={currency.code}
                           value={currency.code}

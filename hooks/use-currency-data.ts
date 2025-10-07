@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
-import { getCurrencies } from "@/services/api/api-auth"
+import { getSettings } from "@/services/api/api-auth"
 
 export function useCurrencyData(currency = "USD") {
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -13,12 +13,22 @@ export function useCurrencyData(currency = "USD") {
     const fetchCurrencies = async () => {
       try {
         setIsLoading(true)
-        const response = await getCurrencies()
+        const settings = await getSettings()
 
-        const currencyList: Currency[] = response.currencies
-          .map((currency) => ({
-            code: currency.code,
-            name: currency.name,
+        const paymentCurrencies = new Set<string>()
+        if (settings?.available_adverts) {
+          Object.keys(settings.available_adverts).forEach((key) => {
+            const [, paymentCurrency] = key.split("-")
+            if (paymentCurrency) {
+              paymentCurrencies.add(paymentCurrency)
+            }
+          })
+        }
+
+        const currencyList: Currency[] = Array.from(paymentCurrencies)
+          .map((code) => ({
+            code,
+            name: code,
           }))
           .sort((a, b) => a.code.localeCompare(b.code))
 
