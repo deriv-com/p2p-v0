@@ -40,7 +40,7 @@ export interface CurrencyItem {
 }
 
 export interface CurrenciesResponse {
-  currencies: CurrencyItem[]
+  [currencyCode: string]: Record<string, any>
 }
 
 export interface KycStatusResponse {
@@ -343,7 +343,7 @@ export async function getCurrencies(): Promise<CurrenciesResponse> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`, {
       method: "POST",
-      credentials: "include"
+      credentials: "include",
     })
 
     if (!response.ok) {

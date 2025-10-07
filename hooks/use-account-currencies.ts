@@ -19,10 +19,10 @@ export function useAccountCurrencies() {
         setIsLoading(true)
         const response = await getCurrencies()
 
-        const currencyList: AccountCurrency[] = response.currencies
-          .map((currency) => ({
-            code: currency.code,
-            name: currency.name,
+        const currencyList: AccountCurrency[] = Object.keys(response)
+          .map((code) => ({
+            code,
+            name: code, // Use code as name since API doesn't provide full names
           }))
           .sort((a, b) => a.code.localeCompare(b.code))
 
