@@ -225,7 +225,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   {type === "buy" ? "Buy currency" : "Sell currency"}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-l>
+                  <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>{buyCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
