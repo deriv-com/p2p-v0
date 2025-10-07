@@ -19,7 +19,7 @@ export function useAccountCurrencies() {
         setIsLoading(true)
         const response = await getCurrencies()
 
-        const currencyList: AccountCurrency[] = Object.keys(response)
+        const currencyList = Object.keys(response)
           .map((code) => ({
             code,
             name: code,
