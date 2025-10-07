@@ -9,6 +9,7 @@ import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AdsAPI } from "@/services/api"
 import { useCurrencyData } from "@/hooks/use-currency-data"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
