@@ -288,7 +288,7 @@ export default function BuySellPage() {
                     key={curr.code}
                     variant={selectedAccountCurrency === curr.code? "black": "outline"}
                     onClick={() => setSelectedAccountCurrency(curr.code)}
-                    className="px-4 py-2 rounded-full hover:bg-transparent font-normal border-slate-00"
+                    className="px-4 py-2 rounded-full hover:bg-transparent font-normal border-slate-800"
                     size="sm"
                   >
                     {curr.code}
