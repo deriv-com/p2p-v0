@@ -22,7 +22,7 @@ export function useAccountCurrencies() {
         const currencyList: AccountCurrency[] = Object.keys(response)
           .map((code) => ({
             code,
-            name: code, // Use code as name since API doesn't provide full names
+            name: code,
           }))
           .sort((a, b) => a.code.localeCompare(b.code))
 
