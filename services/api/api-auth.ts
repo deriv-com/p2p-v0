@@ -342,9 +342,8 @@ export async function getCountries(): Promise<CountriesResponse> {
 export async function getCurrencies(): Promise<CurrenciesResponse> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`, {
-      method: "GET",
-      credentials: "include",
-      headers: getAuthHeader(),
+      method: "POST",
+      credentials: "include"
     })
 
     if (!response.ok) {
