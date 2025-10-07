@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
@@ -256,22 +255,21 @@ export default function BuySellPage() {
                   </Tabs>
                 </div>
                 <div>
-                  <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
-                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px]">
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {accountCurrencies.map((currency) => (
-                        <SelectItem
-                          key={currency.code}
-                          value={currency.code}
-                          className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                        >
-                          {currency.code}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <div className="flex gap-2 mb-3">
+                    {accountCurrencies.map((curr) => (
+                      <button
+                        key={curr.code}
+                        onClick={() => setSelectedAccountCurrency(curr.code)}
+                        className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                          selectedAccountCurrency === curr.code
+                            ? "bg-white text-black"
+                            : "bg-transparent text-white border border-white/20 hover:border-white/40"
+                        }`}
+                      >
+                        {curr.code}
+                      </button>
+                    ))}
+                  </div>
                   <CurrencyFilter
                     currencies={currencies}
                     selectedCurrency={currency}
