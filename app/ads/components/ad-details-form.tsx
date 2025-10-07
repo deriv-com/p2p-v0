@@ -222,7 +222,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                     <SelectValue>{buyCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {accountCurrencies.map((currency) => (
+                    {accountCurrencies?.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         {currency.code}
                       </SelectItem>
