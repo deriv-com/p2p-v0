@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -44,6 +44,7 @@ export default function BuySellPage() {
   // TODO: Replace these once the currencies are ready
   const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const {
     activeTab,
@@ -74,6 +75,19 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+
+  useEffect(() => {
+    const operation = searchParams.get("operation")
+    const currencyParam = searchParams.get("currency")
+
+    if (operation && (operation === "buy" || operation === "sell")) {
+      setActiveTab(operation as "buy" | "sell")
+    }
+
+    if (currencyParam) {
+      setCurrency(currencyParam.toUpperCase())
+    }
+  }, [searchParams, setActiveTab, setCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
