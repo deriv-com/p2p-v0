@@ -87,9 +87,9 @@ export default function BuySellPage() {
     }
 
     if (currencyParam) {
-      setCurrency(currencyParam.toUpperCase())
+      setSelectedAccountCurrency(currencyParam.toUpperCase())
     }
-  }, [searchParams, setActiveTab, setCurrency])
+  }, [searchParams, setActiveTab, selectedAccountCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
