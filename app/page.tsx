@@ -257,7 +257,7 @@ export default function BuySellPage() {
                 <div>
                   <div className="flex gap-2 mb-3">
                     {accountCurrencies.map((curr) => (
-                      <button
+                      <Button
                         key={curr.code}
                         onClick={() => setSelectedAccountCurrency(curr.code)}
                         className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
@@ -267,7 +267,7 @@ export default function BuySellPage() {
                         }`}
                       >
                         {curr.code}
-                      </button>
+                      </Button>
                     ))}
                   </div>
                   <CurrencyFilter
