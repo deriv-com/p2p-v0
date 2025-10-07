@@ -24,6 +24,35 @@ export interface VerificationResponse {
   }
 }
 
+export interface Country {
+  code: string
+  name: string
+  currency?: string
+}
+
+export interface CountriesResponse {
+  countries: Country[]
+}
+
+export interface CurrencyItem {
+  code: string
+  name: string
+}
+
+export interface CurrenciesResponse {
+  currencies: CurrencyItem[]
+}
+
+export interface KycStatusResponse {
+  kyc_step: "poi" | "poa"
+  status: string
+}
+
+export interface TotalBalanceResponse {
+  balance: number
+  currency: string
+}
+
 const getAuthHeader = () => ({
   "Content-Type": "application/json",
   "X-Branch": "master",
@@ -239,11 +268,6 @@ export async function getSocketToken(token: string): Promise<void> {
   }
 }
 
-export interface KycStatusResponse {
-  kyc_step: "poi" | "poa"
-  status: string
-}
-
 /**
  * Get KYC status for user onboarding
  */
@@ -264,11 +288,6 @@ export async function getKycStatus(): Promise<KycStatusResponse[]> {
   } catch (error) {
     console.error("Error fetching KYC status:", error)
   }
-}
-
-export interface TotalBalanceResponse {
-  balance: number
-  currency: string
 }
 
 /**
@@ -292,16 +311,6 @@ export async function getTotalBalance(): Promise<TotalBalanceResponse> {
     console.error("Error fetching total balance:", error)
     throw error
   }
-}
-
-export interface Country {
-  code: string
-  name: string
-  currency?: string
-}
-
-export interface CountriesResponse {
-  countries: Country[]
 }
 
 /**
@@ -328,9 +337,32 @@ export async function getCountries(): Promise<CountriesResponse> {
 }
 
 /**
+ * Get list of available currencies
+ */
+export async function getCurrencies(): Promise<CurrenciesResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch currencies: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching currencies:", error)
+    throw error
+  }
+}
+
+/**
  * Get user settings
  */
-export async function getSettings(): Promise<> {
+export async function getSettings(): Promise<any> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/settings`, {
       method: "GET",
