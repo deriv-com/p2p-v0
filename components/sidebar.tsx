@@ -41,7 +41,6 @@ export default function Sidebar({ className }: SidebarProps) {
         setShowWallet(true)
       }
     } catch (error) {
-      console.log(error)
       setShowWallet(false)
     }
   }

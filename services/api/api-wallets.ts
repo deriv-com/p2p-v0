@@ -67,7 +67,6 @@ export async function getCurrencies(): Promise<any> {
     const data = await response.json()
     return data
   } catch (error) {
-    console.log("Error fetching currencies:", error)
     return null
   }
 }
@@ -96,7 +95,6 @@ export async function walletTransfer(params: {
     const data = await response.json()
     return data
   } catch (error) {
-    console.log("Error performing wallet transfer:", error)
     return null
   }
 }

@@ -56,9 +56,9 @@ export default function OrderChat({
 
         if (data.payload.data.message || data.payload.data.attachment) {
           const newMessage = data.payload.data
-          if(newMessage.order_id == orderId) {
+          if (newMessage.order_id == orderId) {
             setMessages((prev) => {
-                return [...prev, newMessage]
+              return [...prev, newMessage]
             })
           }
         }
@@ -95,7 +95,6 @@ export default function OrderChat({
 
       await OrdersAPI.sendChatMessage(orderId, messageToSend, null)
     } catch (error) {
-      console.log(error)
     } finally {
       setIsSending(false)
     }
@@ -119,7 +118,6 @@ export default function OrderChat({
         const base64 = await fileToBase64(file)
         await OrdersAPI.sendChatMessage(orderId, "", base64)
       } catch (error) {
-        console.error("Error sending file:", error)
       } finally {
         setIsSending(false)
         if (fileInputRef.current) {
@@ -230,9 +228,7 @@ export default function OrderChat({
       </div>
 
       {isClosed ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">
-          This conversation is closed.
-        </div>
+        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">This conversation is closed.</div>
       ) : (
         <div className="p-4 border-t bg-slate-75">
           <div className="space-y-2">

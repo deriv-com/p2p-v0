@@ -58,7 +58,6 @@ export default function AddPaymentMethodPanel({
 
         setAvailablePaymentMethods(methods)
       } catch (error) {
-        console.log(error)
       } finally {
         setIsLoadingMethods(false)
       }

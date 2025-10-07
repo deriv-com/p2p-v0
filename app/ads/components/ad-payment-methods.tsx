@@ -40,7 +40,6 @@ const AdPaymentMethods = () => {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
       } catch (error) {
-        console.log(error)
         setPaymentMethods([])
       } finally {
         setIsLoading(false)
@@ -88,7 +87,6 @@ const AdPaymentMethods = () => {
         })
       }
     } catch (error) {
-      console.log(error)
     } finally {
       setIsAddingMethod(false)
     }

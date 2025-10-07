@@ -184,9 +184,7 @@ export async function getCurrencies(): Promise<string[]> {
       credentials: "include",
     })
     await response.text()
-  } catch (error) {
-    console.log("Error fetching currencies:", error)
-  }
+  } catch (error) {}
 
   // TODO: Returning a default array for now until the API response structure is finalised and we have required data
   return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
@@ -222,7 +220,6 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
     try {
       apiData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       apiData = { data: [] }
     }
 
@@ -271,7 +268,6 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       }
     })
   } catch (error) {
-    console.log(error)
     return []
   }
 }
@@ -307,7 +303,6 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       responseData = {}
     }
 
@@ -365,7 +360,6 @@ export async function toggleAdActiveStatus(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       responseData = {}
     }
 
@@ -414,7 +408,6 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       responseData = {}
     }
 
@@ -464,7 +457,6 @@ export async function createAd(
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       responseData = { raw: responseText }
     }
 
@@ -569,7 +561,6 @@ export async function activateAd(id: string): Promise<{ success: boolean; errors
     try {
       responseData = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       responseData = {}
     }
 
@@ -616,13 +607,11 @@ export async function getAdvert(id: string): Promise<MyAd> {
     try {
       data = JSON.parse(responseText)
     } catch (e) {
-      console.warn("⚠️ Could not parse response as JSON:", e)
       data = {}
     }
 
     return data
   } catch (error) {
-    console.log(error)
     return {}
   }
 }

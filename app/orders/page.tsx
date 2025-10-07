@@ -74,7 +74,6 @@ export default function OrdersPage() {
       if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
       else setShowCheckPreviousOrdersButton(false)
     } catch (error) {
-      console.log(error)
       setShowCheckPreviousOrdersButton(false)
     }
   }
