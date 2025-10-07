@@ -9,6 +9,7 @@ import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AdsAPI } from "@/services/api"
 import { useCurrencyData } from "@/hooks/use-currency-data"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -32,7 +33,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
   const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
   const { currencies: currencyList } = useCurrencyData()
-  const [currencies, setCurrencies] = useState<string[]>([])
+  const { accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
     totalAmount: false,
@@ -46,14 +47,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
     const hasNoErrors = Object.keys(formErrors).length === 0
     return hasValues && hasNoErrors
   }
-
-  useEffect(() => {
-    const loadCurrencies = async () => {
-      const currencyList = await AdsAPI.getCurrencies()
-      setCurrencies(currencyList)
-    }
-    loadCurrencies()
-  }, [])
 
   useEffect(() => {
     if (currencyList.length > 0 && !initialData.forCurrency && !forCurrency) {
@@ -225,13 +218,13 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                   {type === "buy" ? "Buy currency" : "Sell currency"}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg" disabled>
+                  <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>{buyCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((currency) => (
-                      <SelectItem key={currency} value={currency}>
-                        {currency}
+                    {accountCurrencies.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
+                        {currency.code}
                       </SelectItem>
                     ))}
                   </SelectContent>

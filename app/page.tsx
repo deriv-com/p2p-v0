@@ -1,8 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
@@ -14,6 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
 import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
@@ -41,9 +41,8 @@ const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
 }
 
 export default function BuySellPage() {
-  // TODO: Replace these once the currencies are ready
-  const CURRENCY_FILTERS = ["USD", "BTC", "LTC", "ETH", "USDT"]
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const {
     activeTab,
@@ -70,10 +69,24 @@ export default function BuySellPage() {
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const { currencies } = useCurrencyData()
+  const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+
+  useEffect(() => {
+    const operation = searchParams.get("operation")
+    const currencyParam = searchParams.get("currency")
+
+    if (operation && (operation === "buy" || operation === "sell")) {
+      setActiveTab(operation as "buy" | "sell")
+    }
+
+    if (currencyParam) {
+      setCurrency(currencyParam.toUpperCase())
+    }
+  }, [searchParams, setActiveTab, setCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -242,22 +255,6 @@ export default function BuySellPage() {
                   </Tabs>
                 </div>
                 <div>
-                  <Select value={selectedAccountCurrency} onValueChange={setSelectedAccountCurrency}>
-                    <SelectTrigger className="rounded-md px-3 h-[32px] lg:h-[40px] hidden" disabled>
-                      <SelectValue placeholder="Select currency" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {currencies.map((currency) => (
-                        <SelectItem
-                          key={currency.code}
-                          value={currency.code}
-                          className="data-[state=checked]:bg-black data-[state=checked]:text-white focus:bg-gray-50"
-                        >
-                          {currency.code}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
                   <CurrencyFilter
                     currencies={currencies}
                     selectedCurrency={currency}
@@ -285,6 +282,19 @@ export default function BuySellPage() {
             </div>
 
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
+              <div className="flex gap-2 mb-3 flex-1">
+                {accountCurrencies.map((curr) => (
+                  <Button
+                    key={curr.code}
+                    variant={selectedAccountCurrency === curr.code? "black": "outline"}
+                    onClick={() => setSelectedAccountCurrency(curr.code)}
+                    className="px-4 py-2 rounded-full hover:bg-transparent font-normal border-slate-800"
+                    size="sm"
+                  >
+                    {curr.code}
+                  </Button>
+                ))}
+              </div>
               <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}
