@@ -279,7 +279,7 @@ export default function PaymentMethodsTab() {
   )
 
   if (!userId) {
-    return
+    return (
       <EmptyState title="No payment methods yet" description="Start adding payment methods" redirectToAds={false} />
     )
   }
