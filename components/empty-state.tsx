@@ -55,14 +55,12 @@ export default function EmptyState({
               title="Set up and verify your profile"
               onClick={() => {
                   window.location.href = `https://${getHomeUrl()}/dashboard/userprofile`
-                  //setIsKycSheetOpen(false)
               }}
             />
           </div>
         ),
         confirmText: undefined,
-        cancelText: undefined,
-        onCancel: () => setIsKycSheetOpen(false),
+        cancelText: undefined
       })
     }
   }
