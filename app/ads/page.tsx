@@ -49,6 +49,7 @@ export default function AdsPage() {
         return
       }
 
+    const fetchAdverts = async () => {
       try {
         setLoading(true)
         setError(null)
@@ -67,7 +68,9 @@ export default function AdsPage() {
       } finally {
         setLoading(false)
       }
+    }
     
+    fetchAdverts()
   }, [])
 
   useEffect(() => {
