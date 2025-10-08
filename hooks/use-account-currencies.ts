@@ -24,7 +24,6 @@ export function useAccountCurrencies() {
             code,
             name: code,
           }))
-          .sort((a, b) => a.code.localeCompare(b.code))
 
         setAccountCurrencies(currencyList)
         setError(null)

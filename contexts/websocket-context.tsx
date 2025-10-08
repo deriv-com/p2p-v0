@@ -54,9 +54,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const wsClient = new WebSocketClient(wsOptions)
     wsClientRef.current = wsClient
 
-    wsClient.connect().catch((error) => {
-      console.error("Failed to connect to WebSocket:", error)
-    })
+    wsClient.connect()
 
     return () => {
       if (wsClientRef.current) {

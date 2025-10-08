@@ -97,7 +97,6 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
     try {
       data = JSON.parse(responseText)
     } catch (e) {
-      console.log(e)
       data = { data: [] }
     }
 
@@ -358,7 +357,6 @@ export async function toggleBlockAdvertiser(
         user_id: advertiserId,
       },
     })
-
 
     const response = await fetch(url, {
       method,

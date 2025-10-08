@@ -121,7 +121,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
               payment_method_ids: paymentMethodIds,
               instructions: data.description || "",
               forCurrency: data.payment_currency,
-              buyCurrency: data.account_currency
+              buyCurrency: data.account_currency,
             }
 
             setFormData(formattedData)
@@ -135,9 +135,7 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
               setSelectedCountries(data.available_countries)
             }
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       }
 
       loadInitialData()
@@ -306,7 +304,6 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
         }
         router.push("/ads")
       }
-
     } catch (error) {
       let errorInfo = {
         title: mode === "create" ? "" : "Failed to update ad",
@@ -456,9 +453,9 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
             steps={steps}
             className="px-6 my-6"
             title={{
-                    label: getPageTitle(mode),
-                    stepTitle: steps[currentStep].title,
-                }}
+              label: getPageTitle(mode),
+              stepTitle: steps[currentStep].title,
+            }}
           />
 
           <div className="relative mb-16 md:mb-0 mx-6">
@@ -497,7 +494,9 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">Orders will expire if they aren't completed within this timeframe.</p>
+                          <p className="opacity-[0.72]">
+                            Orders will expire if they aren't completed within this timeframe.
+                          </p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
@@ -507,9 +506,9 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                 </div>
 
                 <div className="w-full md:w-[70%]">
-                <div className="flex gap-[4px] items-center mb-4">
-                  <h3 className="text-base font-bold mb-2">Choose your audience</h3>
-                  <TooltipProvider>
+                  <div className="flex gap-[4px] items-center mb-4">
+                    <h3 className="text-base font-bold mb-2">Choose your audience</h3>
+                    <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Image
@@ -521,12 +520,15 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">You can filter who interacts with your ads based on their location or P2P history. Stricter filters
-                    may reduce ad visibility.</p>
+                          <p className="opacity-[0.72]">
+                            You can filter who interacts with your ads based on their location or P2P history. Stricter
+                            filters may reduce ad visibility.
+                          </p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
-                    </TooltipProvider> </div>
+                    </TooltipProvider>{" "}
+                  </div>
                   <div>
                     <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
                   </div>

@@ -180,7 +180,6 @@ export default function Transfer({ onClose }: TransferProps) {
       const result = await walletTransfer(transferParams)
 
       if (!result?.data?.errors || result.data.errors.length === 0) {
-        console.log("Transfer successful:", result)
         if (result?.data?.external_reference_id) {
           setExternalReferenceId(result.data.external_reference_id)
         }
@@ -429,7 +428,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {sourceWalletData && (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -448,7 +447,9 @@ export default function Transfer({ onClose }: TransferProps) {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -510,7 +511,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   {sourceWalletData && (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -529,7 +530,9 @@ export default function Transfer({ onClose }: TransferProps) {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -612,7 +615,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -650,7 +653,9 @@ export default function Transfer({ onClose }: TransferProps) {
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}

@@ -22,6 +22,7 @@ import { useMarketFilterStore } from "@/stores/market-filter-store"
 import { Alert } from "@/components/ui/alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
+import { cn } from "@/lib/utils"
 
 interface TemporaryBanAlertProps {
   tempBanUntil?: string
@@ -72,8 +73,10 @@ export default function BuySellPage() {
   const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
+  const userData = useUserDataStore((state) => state.userData)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
+  const isV1Signup = userData?.signup === "v1"
 
   useEffect(() => {
     const operation = searchParams.get("operation")
@@ -84,9 +87,9 @@ export default function BuySellPage() {
     }
 
     if (currencyParam) {
-      setCurrency(currencyParam.toUpperCase())
+      setSelectedAccountCurrency(currencyParam.toUpperCase())
     }
-  }, [searchParams, setActiveTab, setCurrency])
+  }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
@@ -282,19 +285,26 @@ export default function BuySellPage() {
             </div>
 
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
-              <div className="flex gap-2 mb-3 flex-1">
-                {accountCurrencies.map((curr) => (
-                  <Button
-                    key={curr.code}
-                    variant={selectedAccountCurrency === curr.code? "black": "outline"}
-                    onClick={() => setSelectedAccountCurrency(curr.code)}
-                    className="px-4 py-2 rounded-full hover:bg-transparent font-normal border-slate-800"
-                    size="sm"
-                  >
-                    {curr.code}
-                  </Button>
-                ))}
-              </div>
+              {!isV1Signup && (
+                <div className="flex gap-2 mb-3 flex-1">
+                  {accountCurrencies.map((curr) => (
+                    <Button
+                      key={curr.code}
+                      variant={selectedAccountCurrency === curr.code ? "black" : "outline"}
+                      onClick={() => setSelectedAccountCurrency(curr.code)}
+                      className={cn(
+                        "px-4 py-2 rounded-full font-normal border-slate-800",
+                        selectedAccountCurrency === curr.code
+                          ? ""
+                          : "text-grayscale-600 hover:bg-transparent border-gray-300",
+                      )}
+                      size="sm"
+                    >
+                      {curr.code}
+                    </Button>
+                  ))}
+                </div>
+              )}
               <div className="flex-1 md:block md:flex-none">
                 <PaymentMethodsFilter
                   paymentMethods={paymentMethods}

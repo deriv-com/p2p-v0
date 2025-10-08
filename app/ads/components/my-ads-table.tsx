@@ -124,9 +124,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           type: "warning",
         })
       }
-    } catch (error) {
-      console.log(error)
-    }
+    } catch (error) {}
   }
 
   const handleDelete = (adId: string) => {
@@ -173,9 +171,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               type: "warning",
             })
           }
-        } catch (error) {
-          console.log(error)
-        }
+        } catch (error) {}
       },
     })
   }
