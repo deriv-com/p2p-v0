@@ -11,6 +11,7 @@ import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
 import WalletActionStep from "./wallet-action-step"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface Currency {
@@ -43,6 +44,7 @@ export default function WalletSummary({
   const [isLoading, setIsLoading] = useState(true)
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
+  const { showAlert } = useAlertDialog()
 
   const displayCurrency = externalSelectedCurrency || selectedCurrency
 
