@@ -41,7 +41,7 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
   }, [hideAlert, setSheetOpen])
 
   useEffect(() => {
-    if (isSheetOpen) {
+    //if (isSheetOpen) {
       showAlert({
         title: "Get started with P2P",
         description: (
@@ -57,10 +57,10 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
         cancelText: undefined,
         onCancel: () => setSheetOpen(false),
       })
-    } else {
+    //} else {
       //hideAlert()
-    }
-  }, [isSheetOpen, showAlert, setSheetOpen, handleProfileSetup])
+    //}
+  }, [])
 
   return null
 }
