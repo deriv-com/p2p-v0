@@ -27,7 +27,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
       try {
         setIsLoading(true)
         const response = await getCountries()
-        setCountries(response.data)
+        setCountries(response)
       } catch (error) {
         setCountries([])
       } finally {
