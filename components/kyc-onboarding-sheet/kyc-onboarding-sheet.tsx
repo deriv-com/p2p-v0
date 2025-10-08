@@ -58,7 +58,7 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
         onCancel: () => setSheetOpen(false),
       })
     } else {
-      hideAlert()
+      //hideAlert()
     }
   }, [isSheetOpen, showAlert, hideAlert, setSheetOpen, handleProfileSetup])
 
