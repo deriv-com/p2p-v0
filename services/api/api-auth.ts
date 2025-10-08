@@ -55,7 +55,7 @@ export interface TotalBalanceResponse {
 
 export interface OnboardingStatusResponse {
   kyc: {
-    status: boolean
+    status: string
   }
   verification: {
     email_verified: boolean
