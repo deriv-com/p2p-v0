@@ -40,19 +40,14 @@ export default function CountrySelection({
     return selectedCountries.length === 0 || selectedCountries.length === countries.length
   }, [selectedCountries.length, countries.length])
 
-  const handleCountryToggle = useCallback(
-    (countryCode: string) => {
-      if (selectedCountries.length === 0) {
-        onCountriesChange([countryCode])
-      } else if (selectedCountries.includes(countryCode)) {
-        const newSelection = selectedCountries.filter((code) => code !== countryCode)
-        onCountriesChange(newSelection.length === 0 ? [] : newSelection)
-      } else {
-        onCountriesChange([...selectedCountries, countryCode])
-      }
-    },
-    [selectedCountries, onCountriesChange],
-  )
+  const handleCountryToggle = (countryCode: string) => {
+    if (selectedCountries.includes(countryCode)) {
+      const newSelection = selectedCountries.filter((code) => code !== countryCode)
+      onCountriesChange(newSelection.length === 0 ? [] : newSelection)
+    } else {
+      onCountriesChange([...selectedCountries, countryCode])
+    }
+  }
 
   const handleAllToggle = useCallback(
     (checked: boolean | string) => {
