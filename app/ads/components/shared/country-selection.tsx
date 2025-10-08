@@ -1,6 +1,8 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import type React from "react"
+
+import { useMemo, useState, useCallback } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -34,27 +36,43 @@ export default function CountrySelection({
     return countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
   }, [countries, searchTerm])
 
-  const isAllSelected = selectedCountries.length === 0 || selectedCountries.length === countries.length
+  const isAllSelected = useMemo(() => {
+    return selectedCountries.length === 0 || selectedCountries.length === countries.length
+  }, [selectedCountries.length, countries.length])
 
-  const handleCountryToggle = (countryCode: string) => {
-    if (selectedCountries.length === 0) {
-      onCountriesChange([countryCode])
-    } else if (selectedCountries.includes(countryCode)) {
-      const newSelection = selectedCountries.filter((code) => code !== countryCode)
-      onCountriesChange(newSelection.length === 0 ? [] : newSelection)
-    } else {
-      onCountriesChange([...selectedCountries, countryCode])
-    }
-  }
+  const handleCountryToggle = useCallback(
+    (countryCode: string) => {
+      if (selectedCountries.length === 0) {
+        onCountriesChange([countryCode])
+      } else if (selectedCountries.includes(countryCode)) {
+        const newSelection = selectedCountries.filter((code) => code !== countryCode)
+        onCountriesChange(newSelection.length === 0 ? [] : newSelection)
+      } else {
+        onCountriesChange([...selectedCountries, countryCode])
+      }
+    },
+    [selectedCountries, onCountriesChange],
+  )
 
-  const handleAllToggle = (checked: boolean | string) => {
-    if (checked) {
-      const allCountryCodes = countries.map((country) => country.code)
-      onCountriesChange(allCountryCodes)
-    } else {
-      onCountriesChange([])
-    }
-  }
+  const handleAllToggle = useCallback(
+    (checked: boolean | string) => {
+      if (checked) {
+        const allCountryCodes = countries.map((country) => country.code)
+        onCountriesChange(allCountryCodes)
+      } else {
+        onCountriesChange([])
+      }
+    },
+    [countries, onCountriesChange],
+  )
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value)
+  }, [])
+
+  const handleClearSearch = useCallback(() => {
+    setSearchTerm("")
+  }, [])
 
   const displayText = useMemo(() => {
     if (isAllSelected) {
@@ -81,7 +99,7 @@ export default function CountrySelection({
         <Input
           placeholder="Search"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
           className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
@@ -90,7 +108,7 @@ export default function CountrySelection({
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setSearchTerm("")}
+            onClick={handleClearSearch}
             className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
           >
             <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
