@@ -121,7 +121,10 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         {isLoading ? (
           <div className="text-sm text-center py-4">Loading countries...</div>
         ) : filteredCountries.length === 0 ? (
-          <div className="text-sm text-center py-4">No countries found</div>
+            <EmptyState
+                title="No countries found"
+                redirectToAds={false}
+              />
         ) : (
           filteredCountries.map((country) => (
             <div key={country.code} className="flex items-center space-x-3">
