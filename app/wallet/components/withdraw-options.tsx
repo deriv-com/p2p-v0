@@ -36,7 +36,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick }: With
         <div className="flex-1">
           <h3 className="text-base font-normal text-slate-1200 leading-6">Marketplace</h3>
           <p className="text-grayscale-text-muted text-xs font-normal leading-[22px]  mr-6 md:mr-0">
-            {`Trade USD directly with other users on the marketplace.`}
+            {`Trade directly with other users on the marketplace.`}
           </p>
           <div className="border-b border-grayscale-200 mt-4 ml-0"></div>
         </div>

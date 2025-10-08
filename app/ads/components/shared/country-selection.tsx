@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
 
@@ -15,23 +15,17 @@ interface Country {
 }
 
 interface CountrySelectionProps {
+  countries: Country[]
   selectedCountries: string[]
   onCountriesChange: (countries: string[]) => void
 }
 
-const COUNTRIES: Country[] = [
-  { code: "ad", name: "Andorra" },
-  { code: "af", name: "Afghanistan" },
-  { code: "al", name: "Albania" },
-  { code: "ar", name: "Argentina" },
-]
-
-export default function CountrySelection({ selectedCountries, onCountriesChange }: CountrySelectionProps) {
+export default function CountrySelection({ countries, selectedCountries, onCountriesChange }: CountrySelectionProps) {
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
-  const filteredCountries = COUNTRIES.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredCountries = countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const isAllSelected = selectedCountries.length === 0
 
@@ -60,7 +54,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     }
   
       const countryNames = selectedCountries
-        .map((code) => COUNTRIES.find((c) => c.code === code)?.name)
+        .map((code) => countries.find((c) => c.code === code)?.name)
         .join(", ")
       return countryNames
   
@@ -79,8 +73,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         <Input
           placeholder="Search"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
+          onChange={() => setSearchTerm("")}
+          className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
@@ -129,8 +123,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
+      <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <DrawerTrigger asChild>
           <Button
             variant="outline"
             className="w-full justify-between px-4 rounded-lg bg-transparent"
@@ -139,17 +133,17 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
             <span className="text-left font-normal">{getDisplayText()}</span>
             <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
           </Button>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
-          <div className="mb-4">
+        </DrawerTrigger>
+        <DrawerContent side="bottom" className="h-fit">
+          <div className="my-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
             <div className="text-base text-center opacity-72 mt-2">Select any number of countries.</div>
           </div>
-          <div className="mt-6">
+          <div className="p-4">
             <CountryList />
           </div>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
