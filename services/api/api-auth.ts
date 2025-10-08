@@ -54,11 +54,19 @@ export interface TotalBalanceResponse {
 }
 
 export interface OnboardingStatusResponse {
-  kyc: {}
+  kyc: {
+    status: boolean
+  }
   verification: {
     email_verified: boolean
     phone_verified: boolean
   }
+}
+
+export interface CreateP2PUserResponse {
+  id: string
+  user_id: string
+  created_at: string
 }
 
 const getAuthHeader = () => ({
@@ -408,6 +416,29 @@ export async function getSettings(): Promise<any> {
     return result.data
   } catch (error) {
     console.error("Error fetching settings:", error)
+    throw error
+  }
+}
+
+/**
+ * Create a P2P user after verification is complete
+ */
+export async function createP2PUser(): Promise<CreateP2PUserResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/p2p/client`, {
+      method: "POST",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to create P2P user: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error creating P2P user:", error)
     throw error
   }
 }

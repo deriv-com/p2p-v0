@@ -22,6 +22,7 @@ export default function Main({
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
+  const userId = useUserDataStore((state) => state.userId)
 
   useEffect(() => {
     isMountedRef.current = true
@@ -60,6 +61,20 @@ export default function Main({
                   phone_verified: onboardingStatus.verification.phone_verified,
                   kyc_verified: onboardingStatus.kyc.status,
                 })
+
+                const currentUserId = useUserDataStore.getState().userId
+                if (
+                  currentUserId &&
+                  onboardingStatus.verification.email_verified &&
+                  onboardingStatus.verification.phone_verified &&
+                  onboardingStatus.kyc.status
+                ) {
+                  try {
+                    await AuthAPI.createP2PUser()
+                  } catch (error) {
+                    console.error("Error creating P2P user:", error)
+                  }
+                }
               }
             } catch (error) {
               console.error("Error fetching onboarding status:", error)
