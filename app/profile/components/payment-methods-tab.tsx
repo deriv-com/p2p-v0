@@ -15,6 +15,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface PaymentMethod {
   id: string
@@ -27,6 +28,7 @@ interface PaymentMethod {
 }
 
 export default function PaymentMethodsTab() {
+  const userId = useUserDataStore((state) => state.userId)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -59,7 +61,7 @@ export default function PaymentMethodsTab() {
       })
 
       if (!response.ok) {
-        if(response.status == 401) {
+        if (response.status == 401) {
           setPaymentMethods([])
           return
         } else {
@@ -161,14 +163,14 @@ export default function PaymentMethodsTab() {
 
       if (result.success) {
         toast({
-            description: (
-                <div className="flex items-center gap-2">
-                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                  <span>Payment method updated.</span>
-                </div>
-              ),
-              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-              duration: 2500,
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Payment method updated.</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
         })
 
         fetchPaymentMethods()
@@ -211,12 +213,14 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-      showDeleteDialog({
-        title: `Delete ${name}?`,
-        description: "Are you sure you want to delete this payment method?",
-        confirmText: "Yes, delete",
-        onConfirm: () => { confirmDeletePaymentMethod(id) },
-      })
+    showDeleteDialog({
+      title: `Delete ${name}?`,
+      description: "Are you sure you want to delete this payment method?",
+      confirmText: "Yes, delete",
+      onConfirm: () => {
+        confirmDeletePaymentMethod(id)
+      },
+    })
   }
 
   const confirmDeletePaymentMethod = async (id) => {
@@ -225,14 +229,14 @@ export default function PaymentMethodsTab() {
 
       if (result.success) {
         toast({
-            description: (
-                <div className="flex items-center gap-2">
-                  <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
-                  <span>Payment method deleted.</span>
-                </div>
-              ),
-              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-              duration: 2500,
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <span>Payment method deleted.</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
         })
         fetchPaymentMethods()
       } else {
@@ -274,6 +278,16 @@ export default function PaymentMethodsTab() {
     </div>
   )
 
+  if (!userId) {
+    return (
+      <EmptyState
+        title="Sign in required"
+        description="Please sign in to view your payment methods."
+        redirectToAds={false}
+      />
+    )
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-6">
@@ -312,17 +326,14 @@ export default function PaymentMethodsTab() {
     )
   }
 
-  if(bankTransfers.length == 0 && eWallets.length == 0) {
-    return (<EmptyState
-      title="No payment methods yet"
-      description="Start adding payment methods."
-      redirectToAds={false}
-    />)
+  if (bankTransfers.length == 0 && eWallets.length == 0) {
+    return (
+      <EmptyState title="No payment methods yet" description="Start adding payment methods." redirectToAds={false} />
+    )
   }
 
   return (
     <div>
-
       {bankTransfers.length > 0 && (
         <div className="mb-4">
           <h3 className="text-base font-bold mb-4">Bank transfer</h3>
@@ -382,9 +393,7 @@ export default function PaymentMethodsTab() {
                       {getEWalletIcon()}
                       <div className="flex-1 min-w-0 text-sm">
                         <div className="text-neutral-10">{method.name}</div>
-                        <div className="text-neutral-7">
-                          {method.details?.account?.value || `ID: ${method.id}`}
-                        </div>
+                        <div className="text-neutral-7">{method.details?.account?.value || `ID: ${method.id}`}</div>
                       </div>
                     </div>
                     <DropdownMenu>
