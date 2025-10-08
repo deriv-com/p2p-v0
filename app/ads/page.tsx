@@ -41,7 +41,6 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const fetchAds = async () => {
 
   useEffect(() => {
       if (!userId) {
@@ -49,7 +48,7 @@ export default function AdsPage() {
         return
       }
 
-    const fetchAdverts = async () => {
+    const fetchAds = async () => {
       try {
         setLoading(true)
         setError(null)
@@ -70,7 +69,7 @@ export default function AdsPage() {
       }
     }
     
-    fetchAdverts()
+    fetchAds()
   }, [])
 
   useEffect(() => {
