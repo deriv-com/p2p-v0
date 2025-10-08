@@ -24,7 +24,6 @@ export default function EmptyState({
   redirectToAds = false,
 }: EmptyStateProps) {
   const router = useRouter()
-  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
   const { showAlert, hideAlert } = useAlertDialog()
 
