@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface EmptyStateProps {
   icon?: string
