@@ -75,15 +75,15 @@ export default function CountrySelection({
   }, [])
 
   const displayText = useMemo(() => {
-   // if (isAllSelected) {
+    if (isAllSelected) {
       return "All"
-   // }
+    }
 
-    /*const countryNames = selectedCountries
+    const countryNames = selectedCountries
       .map((code) => countries.find((c) => c.code === code)?.name)
       .filter(Boolean)
       .join(", ")
-    return countryNames || "All"*/
+    return countryNames || "All"
   }, [isAllSelected, selectedCountries, countries])
 
   const CountryList = () => (
