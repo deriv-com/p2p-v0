@@ -5,11 +5,13 @@ import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
+  const { userData: user } = useUserDataStore()
 
   useEffect(() => {
     const fetchUserData = async () => {
