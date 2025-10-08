@@ -34,7 +34,6 @@ export default function WalletSummary({
   onBack,
 }: WalletSummaryProps) {
   const userId = useUserDataStore((state) => state.userId)
-  const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
