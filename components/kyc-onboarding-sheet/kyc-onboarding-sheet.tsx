@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useEffect } from "react"
+import { useEffect, useCallback } from "react"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getHomeUrl } from "@/lib/utils"
 
@@ -17,7 +17,10 @@ interface OnboardingStepProps {
 }
 
 const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
-  <div className="w-full p-2 rounded-2xl md:rounded-none border md:border-none md:border-b border-gray-200 hover:cursor-pointer" onClick={onClick}>
+  <div
+    className="w-full p-2 rounded-2xl md:rounded-none border md:border-none md:border-b border-gray-200 hover:cursor-pointer"
+    onClick={onClick}
+  >
     <div className="flex items-center gap-2">
       <div className="w-10 h-10 flex items-center justify-center">
         <Image src={icon || "/placeholder.svg"} alt={title} width={24} height={24} />
@@ -31,11 +34,11 @@ const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
 function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
   const { showAlert, hideAlert } = useAlertDialog()
 
-  const handleProfileSetup = () => {
+  const handleProfileSetup = useCallback(() => {
     hideAlert()
     setSheetOpen(false)
     window.location.href = `https://${getHomeUrl()}/dashboard/userprofile`
-  }
+  }, [hideAlert, setSheetOpen])
 
   useEffect(() => {
     if (isSheetOpen) {
@@ -57,7 +60,7 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
     } else {
       hideAlert()
     }
-  }, [isSheetOpen])
+  }, [isSheetOpen, showAlert, hideAlert, setSheetOpen, handleProfileSetup])
 
   return null
 }
