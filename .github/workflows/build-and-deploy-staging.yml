@@ -47,6 +47,7 @@ jobs:
                 NEXT_PUBLIC_BRANCH: ${{ vars.NEXT_PUBLIC_BRANCH }}
                 NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID }}
                 NEXT_PUBLIC_NOTIFICATION_URL: ${{ vars.NEXT_PUBLIC_NOTIFICATION_URL }}
+                NEXT_PUBLIC_NODE_ENV: staging
                 NODE_ENV: staging
 
             - name: Generate Worker output with next-on-pages
@@ -60,6 +61,7 @@ jobs:
                 NEXT_PUBLIC_BRANCH: ${{ vars.NEXT_PUBLIC_BRANCH }}
                 NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID }}
                 NEXT_PUBLIC_NOTIFICATION_URL: ${{ vars.NEXT_PUBLIC_NOTIFICATION_URL }}
+                NEXT_PUBLIC_NODE_ENV: staging
                 NODE_ENV: staging
 
             - name: Replace placeholders in wrangler.toml
