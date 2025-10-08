@@ -58,7 +58,7 @@ export default function Main({
                 setVerificationStatus({
                   email_verified: onboardingStatus.verification.email_verified,
                   phone_verified: onboardingStatus.verification.phone_verified,
-                  kyc_verified: Object.keys(onboardingStatus.kyc).length > 0,
+                  kyc_verified: onboardingStatus.kyc.status,
                 })
               }
             } catch (error) {
