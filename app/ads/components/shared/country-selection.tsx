@@ -77,7 +77,7 @@ export default function CountrySelection({
   const displayText = useMemo(() => {
    // if (isAllSelected) {
       return "All"
-    }
+   // }
 
     /*const countryNames = selectedCountries
       .map((code) => countries.find((c) => c.code === code)?.name)
