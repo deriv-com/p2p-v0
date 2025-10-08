@@ -41,36 +41,31 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+  const fetchAds = async () => {
 
-  useEffect(() => {
-      if (!userId) {
-        setLoading(false)
-        return
-      }
-
-    const fetchAds = async () => {
-      try {
-        setLoading(true)
-        setError(null)
-        const userAdverts = await AdsAPI.getUserAdverts(true)
-
-        setAds(userAdverts)
-        setLoading(false)
-      } catch (err) {
-        setError("Failed to load ads. Please try again.")
-        setAds([])
-        setErrorModal({
-          show: true,
-          title: "Error Loading Ads",
-          message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
-        })
-      } finally {
-        setLoading(false)
-      }
+    if (!userId) {
+      setLoading(false)
+      return
     }
-    
-    fetchAds()
-  }, [])
+
+    try {
+      setLoading(true)
+      setError(null)
+      const userAdverts = await AdsAPI.getUserAdverts(true)
+
+      setAds(userAdverts)
+    } catch (err) {
+      setError("Failed to load ads. Please try again.")
+      setAds([])
+      setErrorModal({
+        show: true,
+        title: "Error Loading Ads",
+        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     if (userId && !hasFetchedRef.current) {
