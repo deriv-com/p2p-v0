@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
-import { getCountries, type Country } from "@/services/api/api-auth
+import { getCountries, type Country } from "@/services/api/api-auth"
 import EmptyState from "@/components/empty-state"
 
 interface CountrySelectionProps {
