@@ -39,7 +39,11 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     fetchCountries()
   }, [])
 
-  const filteredCountries = countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredCountries = useMemo(() => {
+    if (!searchTerm.trim()) return countries
+
+    return countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  }, [countries, searchTerm])
 
   const isAllSelected = selectedCountries.length === 0
 
