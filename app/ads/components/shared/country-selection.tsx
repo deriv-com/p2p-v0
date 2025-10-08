@@ -15,7 +15,7 @@ interface Country {
 }
 
 interface CountrySelectionProps {
-  countries: string[]
+  countries: Country[]
   selectedCountries: string[]
   onCountriesChange: (countries: string[]) => void
 }
