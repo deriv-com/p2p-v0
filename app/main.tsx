@@ -55,7 +55,6 @@ export default function Main({
               const onboardingStatus = await AuthAPI.getOnboardingStatus()
 
               if (isMountedRef.current && !abortController.signal.aborted) {
-                // Store verification status in Zustand store
                 setVerificationStatus({
                   email_verified: onboardingStatus.verification.email_verified,
                   phone_verified: onboardingStatus.verification.phone_verified,
