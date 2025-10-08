@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
-import { getCountries, type Country } from "@/services/api/api-auth"
+import { getCountries, type Country } from "@/services/api/api-auth
 import EmptyState from "@/components/empty-state"
 
 interface CountrySelectionProps {
@@ -160,7 +160,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
           </Button>
         </DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit p-4">
-          <div className="mb-4">
+          <div className="m-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
             <div className="text-base text-center opacity-72 mt-2">Select any number of countries.</div>
           </div>
