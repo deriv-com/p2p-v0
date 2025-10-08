@@ -53,6 +53,12 @@ export interface TotalBalanceResponse {
   currency: string
 }
 
+export interface OnboardingStatusResponse {
+  status: string
+  step?: string
+  [key: string]: any
+}
+
 const getAuthHeader = () => ({
   "Content-Type": "application/json",
   "X-Branch": "master",
@@ -287,6 +293,29 @@ export async function getKycStatus(): Promise<KycStatusResponse[]> {
     return result.data
   } catch (error) {
     console.error("Error fetching KYC status:", error)
+  }
+}
+
+/**
+ * Get onboarding status for the user
+ */
+export async function getOnboardingStatus(): Promise<OnboardingStatusResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/onboarding-status`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch onboarding status: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data
+  } catch (error) {
+    console.error("Error fetching onboarding status:", error)
+    throw error
   }
 }
 
