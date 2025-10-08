@@ -266,7 +266,11 @@ export default function PaymentMethodsTab() {
   const bankTransfers = paymentMethods.filter((method) => method.category === "bank_transfer")
   const eWallets = paymentMethods.filter((method) => method.category === "e_wallet")
 
-
+  const getBankIcon = () => (
+    <div className="w-10 h-10 flex items-center justify-center">
+      <Image src="/icons/bank-transfer-icon.png" alt="Bank" width={24} height={24} />
+    </div>
+  )
 
   const getEWalletIcon = () => (
     <div className="w-10 h-10 flex items-center justify-center">
@@ -275,7 +279,7 @@ export default function PaymentMethodsTab() {
   )
 
   if (!userId) {
-    return (
+    return
       <EmptyState title="No payment methods yet" description="Start adding payment methods" redirectToAds={false} />
     )
   }
