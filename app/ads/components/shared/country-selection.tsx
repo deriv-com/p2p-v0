@@ -79,8 +79,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         <Input
           placeholder="Search"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="text-base pl-10 border-gray-200 focus:border-black focus:ring-0"
+          onChange={() => setSearchTerm("")}
+          className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
