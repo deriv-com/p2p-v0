@@ -60,7 +60,7 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
     } else {
       //hideAlert()
     }
-  }, [isSheetOpen, showAlert, hideAlert, setSheetOpen, handleProfileSetup])
+  }, [isSheetOpen, showAlert, setSheetOpen, handleProfileSetup])
 
   return null
 }
