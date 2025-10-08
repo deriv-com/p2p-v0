@@ -129,8 +129,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   if (isMobile) {
     return (
-      <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
+      <Drawer open={isOpen} onOpenChange={setIsOpen}>
+        <DrawerTrigger asChild>
           <Button
             variant="outline"
             className="w-full justify-between px-4 rounded-lg bg-transparent"
@@ -139,8 +139,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
             <span className="text-left font-normal">{getDisplayText()}</span>
             <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
           </Button>
-        </SheetTrigger>
-        <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
+        </DrawerTrigger>
+        <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
             <div className="text-base text-center opacity-72 mt-2">Select any number of countries.</div>
@@ -148,8 +148,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
           <div className="mt-6">
             <CountryList />
           </div>
-        </SheetContent>
-      </Sheet>
+        </DrawerContent>
+      </Drawer>
     )
   }
 
