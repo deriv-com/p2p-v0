@@ -32,7 +32,7 @@ export function useWebSocket(options?: WebSocketOptions) {
     const wsClient = new WebSocketClient(wsOptions)
     wsClientRef.current = wsClient
 
-    wsClient.connect(
+    wsClient.connect()
 
     return () => {
       if (wsClientRef.current) {
