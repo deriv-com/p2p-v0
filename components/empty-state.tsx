@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
-import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { getHomeUrl } from "@/lib/utils"
 
 interface EmptyStateProps {
   icon?: string
@@ -70,8 +71,6 @@ export default function EmptyState({
           </Button>
         )}
       </div>
-
-      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
