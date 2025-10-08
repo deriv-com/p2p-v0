@@ -44,7 +44,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     return countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
   }, [countries, searchTerm])
 
-  const isAllSelected = filteredCountries.length === 0
+  const isAllSelected = selectedCountries.length === 0 || selectedCountries.length === countries.length
 
   const handleCountryToggle = (countryCode: string) => {
     if (selectedCountries.length === 0) {
@@ -59,7 +59,8 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
 
   const handleAllToggle = (checked: boolean | string) => {
     if (checked) {
-      onCountriesChange([])
+      const allCountryCodes = countries.map((country) => country.code)
+      onCountriesChange(allCountryCodes)
     } else {
       onCountriesChange([])
     }
