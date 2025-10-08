@@ -67,7 +67,7 @@ export default function Main({
                   !currentUserId &&
                   onboardingStatus.verification.email_verified &&
                   onboardingStatus.verification.phone_verified &&
-                  onboardingStatus.kyc.status
+                  onboardingStatus.kyc.status === ""
                 ) {
                   try {
                     await AuthAPI.createP2PUser()
