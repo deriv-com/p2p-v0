@@ -141,7 +141,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
           </Button>
         </DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
-          <div className="mb-4">
+          <div className="my-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
             <div className="text-base text-center opacity-72 mt-2">Select any number of countries.</div>
           </div>
