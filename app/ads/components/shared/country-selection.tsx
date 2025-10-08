@@ -62,7 +62,7 @@ export default function CountrySelection({
   )
 
   const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    //setSearchTerm(e.target.value)
+    setSearchTerm(e.target.value)
   }, [])
 
   const handleClearSearch = useCallback(() => {
