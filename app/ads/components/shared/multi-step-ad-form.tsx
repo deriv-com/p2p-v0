@@ -16,6 +16,7 @@ import Image from "next/image"
 import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
 import { useToast } from "@/hooks/use-toast"
+import { getCountries, type Country } from "@/services/api/api-auth"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -64,6 +65,8 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+  const [countries, setCountries] = useState<Country[]>([])
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true)
 
   const formDataRef = useRef({})
 
@@ -79,6 +82,22 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
       .replace(/\s+/g, "_")
       .replace(/[^a-z0-9_]/g, "")
   }
+
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        setIsLoadingCountries(true)
+        const response = await getCountries()
+        setCountries(response)
+      } catch (error) {
+        setCountries([])
+      } finally {
+        setIsLoadingCountries(false)
+      }
+    }
+
+    fetchCountries()
+  }, [])
 
   useEffect(() => {
     if (mode === "edit" && adId) {
@@ -530,7 +549,12 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
                     </TooltipProvider>{" "}
                   </div>
                   <div>
-                    <CountrySelection selectedCountries={selectedCountries} onCountriesChange={setSelectedCountries} />
+                    <CountrySelection
+                      selectedCountries={selectedCountries}
+                      onCountriesChange={setSelectedCountries}
+                      countries={countries}
+                      isLoading={isLoadingCountries}
+                    />
                   </div>
                 </div>
               </div>

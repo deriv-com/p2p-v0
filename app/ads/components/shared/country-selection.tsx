@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
+import { useMemo, useState } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,36 +8,25 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
-import { getCountries, type Country } from "@/services/api/api-auth
+import type { Country } from "@/services/api/api-auth"
 import EmptyState from "@/components/empty-state"
 
 interface CountrySelectionProps {
   selectedCountries: string[]
   onCountriesChange: (countries: string[]) => void
+  countries: Country[]
+  isLoading: boolean
 }
 
-export default function CountrySelection({ selectedCountries, onCountriesChange }: CountrySelectionProps) {
+export default function CountrySelection({
+  selectedCountries,
+  onCountriesChange,
+  countries,
+  isLoading,
+}: CountrySelectionProps) {
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
-  const [countries, setCountries] = useState<Country[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        setIsLoading(true)
-        const response = await getCountries()
-        setCountries(response)
-      } catch (error) {
-        setCountries([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchCountries()
-  }, [])
 
   const filteredCountries = useMemo(() => {
     if (!searchTerm.trim()) return countries
@@ -122,10 +111,7 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         {isLoading ? (
           <div className="text-sm text-center py-4">Loading countries...</div>
         ) : filteredCountries.length === 0 ? (
-            <EmptyState
-                title="No countries found"
-                redirectToAds={false}
-              />
+          <EmptyState title="No countries found" redirectToAds={false} />
         ) : (
           filteredCountries.map((country) => (
             <div key={country.code} className="flex items-center space-x-3">
