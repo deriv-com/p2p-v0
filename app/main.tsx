@@ -64,7 +64,7 @@ export default function Main({
 
                 const currentUserId = useUserDataStore.getState().userId
                 if (
-                  currentUserId &&
+                  !currentUserId &&
                   onboardingStatus.verification.email_verified &&
                   onboardingStatus.verification.phone_verified &&
                   onboardingStatus.kyc.status
