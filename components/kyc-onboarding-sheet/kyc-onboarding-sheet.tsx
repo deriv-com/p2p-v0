@@ -17,18 +17,7 @@ interface OnboardingStepProps {
 }
 
 const OnboardingStep = ({ icon, title, onClick }: OnboardingStepProps) => (
-  <div
-    className="w-full p-2 rounded-2xl md:rounded-none border md:border-none md:border-b border-gray-200 hover:cursor-pointer"
-    onClick={onClick}
-  >
-    <div className="flex items-center gap-2">
-      <div className="w-10 h-10 flex items-center justify-center">
-        <Image src={icon || "/placeholder.svg"} alt={title} width={24} height={24} />
-      </div>
-      <div className="text-left text-slate-1200 text-base font-normal flex-1">{title}</div>
-      <Image src="/icons/chevron-right-gray.png" alt="Go" width={24} height={24} />
-    </div>
-  </div>
+  
 )
 
 function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetProps) {
@@ -62,7 +51,20 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
     //}
   }, [])
 
-  return null
+  return (
+    <div
+      className="w-full p-2 rounded-2xl md:rounded-none border md:border-none md:border-b border-gray-200 hover:cursor-pointer"
+      onClick={handleProfileSetup}
+    >
+      <div className="flex items-center gap-2">
+        <div className="w-10 h-10 flex items-center justify-center">
+          <Image src={"/icons/account-profile.png" || "/placeholder.svg"} alt="Set up and verify your profile" width={24} height={24} />
+        </div>
+        <div className="text-left text-slate-1200 text-base font-normal flex-1">Set up and verify your profile</div>
+        <Image src="/icons/chevron-right-gray.png" alt="Go" width={24} height={24} />
+      </div>
+    </div>
+  )
 }
 
 export { KycOnboardingSheet }
