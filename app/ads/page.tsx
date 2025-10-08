@@ -67,7 +67,7 @@ export default function AdsPage() {
       } finally {
         setLoading(false)
       }
-    }
+    
   }, [])
 
   useEffect(() => {
