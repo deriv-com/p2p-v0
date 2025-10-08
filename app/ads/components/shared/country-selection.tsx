@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -8,30 +8,38 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
-
-interface Country {
-  code: string
-  name: string
-}
+import { getCountries, type Country } from "@/services/api/api-auth"
 
 interface CountrySelectionProps {
   selectedCountries: string[]
   onCountriesChange: (countries: string[]) => void
 }
 
-const COUNTRIES: Country[] = [
-  { code: "ad", name: "Andorra" },
-  { code: "af", name: "Afghanistan" },
-  { code: "al", name: "Albania" },
-  { code: "ar", name: "Argentina" },
-]
-
 export default function CountrySelection({ selectedCountries, onCountriesChange }: CountrySelectionProps) {
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const [countries, setCountries] = useState<Country[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const filteredCountries = COUNTRIES.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        setIsLoading(true)
+        const response = await getCountries()
+        setCountries(response.countries)
+      } catch (error) {
+        console.error("Failed to fetch countries:", error)
+        setCountries([])
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchCountries()
+  }, [])
+
+  const filteredCountries = countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const isAllSelected = selectedCountries.length === 0
 
@@ -58,12 +66,9 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
     if (isAllSelected) {
       return "All"
     }
-  
-      const countryNames = selectedCountries
-        .map((code) => COUNTRIES.find((c) => c.code === code)?.name)
-        .join(", ")
-      return countryNames
-  
+
+    const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
+    return countryNames
   }
 
   const CountryList = () => (
@@ -109,20 +114,26 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
           </label>
         </div>
 
-        {filteredCountries.map((country) => (
-          <div key={country.code} className="flex items-center space-x-3">
-            <Checkbox
-              id={country.code}
-              checked={selectedCountries.includes(country.code)}
-              onCheckedChange={() => handleCountryToggle(country.code)}
-              disabled={false}
-              className="data-[state=checked]:bg-black border-black"
-            />
-            <label htmlFor={country.code} className="text-sm cursor-pointer">
-              {country.name}
-            </label>
-          </div>
-        ))}
+        {isLoading ? (
+          <div className="text-sm text-center py-4">Loading countries...</div>
+        ) : filteredCountries.length === 0 ? (
+          <div className="text-sm text-center py-4">No countries found</div>
+        ) : (
+          filteredCountries.map((country) => (
+            <div key={country.code} className="flex items-center space-x-3">
+              <Checkbox
+                id={country.code}
+                checked={selectedCountries.includes(country.code)}
+                onCheckedChange={() => handleCountryToggle(country.code)}
+                disabled={false}
+                className="data-[state=checked]:bg-black border-black"
+              />
+              <label htmlFor={country.code} className="text-sm cursor-pointer">
+                {country.name}
+              </label>
+            </div>
+          ))
+        )}
       </div>
     </div>
   )
