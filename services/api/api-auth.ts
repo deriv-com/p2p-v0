@@ -54,9 +54,10 @@ export interface TotalBalanceResponse {
 }
 
 export interface OnboardingStatusResponse {
-  status: string
-  step?: string
-  [key: string]: any
+  kyc: {}
+  verification: {
+    email_verified: boolean
+  }
 }
 
 const getAuthHeader = () => ({
