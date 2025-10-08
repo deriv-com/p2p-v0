@@ -92,7 +92,16 @@ export default function WalletSummary({
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
-      setIsKycSheetOpen(true)
+      showAlert({
+        title: "Get started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined
+      })
     }
   }
 
@@ -101,7 +110,16 @@ export default function WalletSummary({
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
-      setIsKycSheetOpen(true)
+      showAlert({
+        title: "Get started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined
+      })
     }
   }
 
@@ -110,7 +128,16 @@ export default function WalletSummary({
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
-      setIsKycSheetOpen(true)
+      showAlert({
+        title: "Get started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined
+      })
     }
   }
 
@@ -321,7 +348,6 @@ export default function WalletSummary({
         operation={currentOperation}
         currency={displayCurrency}
       />
-      <KycOnboardingSheet isSheetOpen={isKycSheetOpen} setSheetOpen={setIsKycSheetOpen} />
     </>
   )
 }
