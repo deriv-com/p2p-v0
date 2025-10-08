@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Drawer, DrawerContent, SheetTrigger } from "@/components/ui/drawer"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
 
