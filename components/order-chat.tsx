@@ -188,7 +188,7 @@ export default function OrderChat({
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                 <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
-                    <div className={`${msg.sender_is_self ? "bg-blue-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
+                    <div className={`${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
                       <div
                         className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
                       >
