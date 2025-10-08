@@ -3,6 +3,7 @@
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface UserInfoProps {
   username: string
@@ -13,6 +14,11 @@ interface UserInfoProps {
 }
 
 export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+
+  const isFullyVerified =
+    verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified
+
   return (
     <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
       <div className="flex flex-col md:flex-row items-start gap-4">
@@ -22,7 +28,9 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-1">
             <h2 className="text-base text-white font-bold">{username}</h2>
-            <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification."/>
+            {isFullyVerified && (
+              <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification." />
+            )}
             {tradeBand === "bronze" && (
               <TooltipProvider>
                 <Tooltip>
