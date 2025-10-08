@@ -54,6 +54,7 @@ export default function AdsPage() {
       const userAdverts = await AdsAPI.getUserAdverts(true)
 
       setAds(userAdverts)
+      setLoading(false)
     } catch (err) {
       setError("Failed to load ads. Please try again.")
       setAds([])
