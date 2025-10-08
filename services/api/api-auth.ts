@@ -57,6 +57,7 @@ export interface OnboardingStatusResponse {
   kyc: {}
   verification: {
     email_verified: boolean
+    phone_verified: boolean
   }
 }
 
