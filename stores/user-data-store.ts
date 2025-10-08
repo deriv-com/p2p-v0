@@ -10,6 +10,12 @@ export interface UserData {
   wallet_id?: string
 }
 
+export interface VerificationStatus {
+  email_verified: boolean
+  phone_verified: boolean
+  kyc_verified: boolean
+}
+
 interface UserDataState {
   userData: UserData | null
   userId: string | null
@@ -17,6 +23,7 @@ interface UserDataState {
   residenceCountry: string | null
   brandClientId: string | null
   brand: string | null
+  verificationStatus: VerificationStatus | null
   setUserData: (data: UserData) => void
   setUserId: (id: string) => void
   setClientId: (id: string) => void
@@ -24,6 +31,7 @@ interface UserDataState {
   setBrandClientId: (id: string) => void
   setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
+  setVerificationStatus: (status: VerificationStatus) => void
   clearUserData: () => void
 }
 
@@ -34,6 +42,7 @@ const initialState = {
   residenceCountry: null,
   brandClientId: null,
   brand: null,
+  verificationStatus: null,
 }
 
 export const useUserDataStore = create<UserDataState>((set) => ({
@@ -55,6 +64,8 @@ export const useUserDataStore = create<UserDataState>((set) => ({
     set((state) => ({
       userData: state.userData ? { ...state.userData, ...data } : data,
     })),
+
+  setVerificationStatus: (status) => set({ verificationStatus: status }),
 
   clearUserData: () => set(initialState),
 }))

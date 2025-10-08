@@ -8,6 +8,7 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
+import { useUserDataStore } from "@/stores/user-data-store"
 import "./globals.css"
 
 export default function Main({
@@ -20,6 +21,8 @@ export default function Main({
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
+  const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
+  const userId = useUserDataStore((state) => state.userId)
 
   useEffect(() => {
     isMountedRef.current = true
@@ -48,6 +51,34 @@ export default function Main({
         } else {
           if (!response?.errors) {
             await AuthAPI.fetchUserIdAndStore()
+
+            try {
+              const onboardingStatus = await AuthAPI.getOnboardingStatus()
+
+              if (isMountedRef.current && !abortController.signal.aborted) {
+                setVerificationStatus({
+                  email_verified: onboardingStatus.verification.email_verified,
+                  phone_verified: onboardingStatus.verification.phone_verified,
+                  kyc_verified: onboardingStatus.kyc.status,
+                })
+
+                const currentUserId = useUserDataStore.getState().userId
+                if (
+                  !currentUserId &&
+                  onboardingStatus.verification.email_verified &&
+                  onboardingStatus.verification.phone_verified &&
+                  onboardingStatus.kyc.status === "approved"
+                ) {
+                  try {
+                    await AuthAPI.createP2PUser()
+                  } catch (error) {
+                    console.error("Error creating P2P user:", error)
+                  }
+                }
+              }
+            } catch (error) {
+              console.error("Error fetching onboarding status:", error)
+            }
           }
           if (isMountedRef.current && !abortController.signal.aborted) {
             router.push(pathname)
@@ -69,7 +100,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname])
+  }, [pathname, router, setVerificationStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>

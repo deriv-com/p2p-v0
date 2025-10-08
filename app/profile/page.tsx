@@ -5,11 +5,13 @@ import UserInfo from "./components/user-info"
 import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
+  const { userData: user } = useUserDataStore()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,7 +34,7 @@ export default function ProfilePage() {
         if (responseData.errors && responseData.errors.length > 0) {
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
 
-          if (responseData.errors[0].status != 401) {
+          if (responseData.errors[0].status != 401 && responseData.errors[0].status != 404) {
             showWarningDialog({
               title: "Error",
               description: errorMessage,
@@ -115,7 +117,7 @@ export default function ProfilePage() {
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
-              username={userData?.username}
+              username={userData?.username ?? user?.email}
               rating={userData?.rating}
               recommendation={userData?.recommendation}
               joinDate={userData?.joinDate}

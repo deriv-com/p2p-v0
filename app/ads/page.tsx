@@ -42,7 +42,6 @@ export default function AdsPage() {
   const isMobile = useIsMobile()
   const router = useRouter()
   const fetchAds = async () => {
-
     if (!userId) {
       setLoading(false)
       return
@@ -68,6 +67,7 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
+    setLoading(false)
     if (userId && !hasFetchedRef.current) {
       fetchAds()
       hasFetchedRef.current = true
