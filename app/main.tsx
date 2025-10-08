@@ -8,6 +8,7 @@ import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
+import { useUserDataStore } from "@/stores/user-data-store"
 import "./globals.css"
 
 export default function Main({
@@ -20,6 +21,7 @@ export default function Main({
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
+  const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
 
   useEffect(() => {
     isMountedRef.current = true
@@ -48,6 +50,21 @@ export default function Main({
         } else {
           if (!response?.errors) {
             await AuthAPI.fetchUserIdAndStore()
+
+            try {
+              const onboardingStatus = await AuthAPI.getOnboardingStatus()
+
+              if (isMountedRef.current && !abortController.signal.aborted) {
+                // Store verification status in Zustand store
+                setVerificationStatus({
+                  email_verified: onboardingStatus.verification.email_verified,
+                  phone_verified: onboardingStatus.verification.phone_verified,
+                  kyc_verified: Object.keys(onboardingStatus.kyc).length > 0,
+                })
+              }
+            } catch (error) {
+              console.error("Error fetching onboarding status:", error)
+            }
           }
           if (isMountedRef.current && !abortController.signal.aborted) {
             router.push(pathname)
@@ -69,7 +86,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname])
+  }, [pathname, router, setVerificationStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
