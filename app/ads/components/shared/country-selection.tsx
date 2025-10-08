@@ -56,14 +56,17 @@ export default function CountrySelection({
     }
   }
 
-  const getDisplayText = () => {
+  const displayText = useMemo(() => {
     if (isAllSelected) {
       return "All"
     }
 
-    const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
-    return countryNames
-  }
+    const countryNames = selectedCountries
+      .map((code) => countries.find((c) => c.code === code)?.name)
+      .filter(Boolean)
+      .join(", ")
+    return countryNames || "All"
+  }, [isAllSelected, selectedCountries, countries])
 
   const CountryList = () => (
     <div className="space-y-4">
@@ -141,7 +144,7 @@ export default function CountrySelection({
             className="w-full justify-between px-4 rounded-lg bg-transparent"
             onClick={() => setIsOpen(true)}
           >
-            <span className="text-left font-normal">{getDisplayText()}</span>
+            <span className="text-left font-normal">{displayText}</span>
             <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
           </Button>
         </DrawerTrigger>
@@ -166,7 +169,7 @@ export default function CountrySelection({
           className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black"
           onClick={() => setIsOpen(!isOpen)}
         >
-          <span className="text-left font-normal">{getDisplayText()}</span>
+          <span className="text-left font-normal">{displayText}</span>
           <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
         </Button>
       </PopoverTrigger>
