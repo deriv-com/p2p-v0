@@ -25,7 +25,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
 
-  const filteredCountries = COUNTRIES.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredCountries = countries.filter((country) => country.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const isAllSelected = selectedCountries.length === 0
 
