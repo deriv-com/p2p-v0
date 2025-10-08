@@ -15,18 +15,12 @@ interface Country {
 }
 
 interface CountrySelectionProps {
+  countries: string[]
   selectedCountries: string[]
   onCountriesChange: (countries: string[]) => void
 }
 
-const COUNTRIES: Country[] = [
-  { code: "ad", name: "Andorra" },
-  { code: "af", name: "Afghanistan" },
-  { code: "al", name: "Albania" },
-  { code: "ar", name: "Argentina" },
-]
-
-export default function CountrySelection({ selectedCountries, onCountriesChange }: CountrySelectionProps) {
+export default function CountrySelection({ countries, selectedCountries, onCountriesChange }: CountrySelectionProps) {
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
