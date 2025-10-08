@@ -25,12 +25,30 @@ export default function EmptyState({
   const router = useRouter()
   const [isKycSheetOpen, setIsKycSheetOpen] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
+  const { showAlert, hideAlert } = useAlertDialog()
 
   const createAd = () => {
     if (userId) {
       router.push("/ads/create")
     } else {
-      setIsKycSheetOpen(true)
+      showAlert({
+        title: "Get started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <OnboardingStep
+              icon="/icons/account-profile.png"
+              title="Set up and verify your profile"
+              onClick={() => {
+                  window.location.href = `https://${getHomeUrl()}/dashboard/userprofile`
+                  //setIsKycSheetOpen(false)
+              }}
+            />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+        onCancel: () => setIsKycSheetOpen(false),
+      })
     }
   }
 
