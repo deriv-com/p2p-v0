@@ -29,7 +29,6 @@ export default function Sidebar({ className }: SidebarProps) {
 
   useEffect(() => {
     checkUserSignupStatus()
-    console.log("NODE_ENV:", process.env.NODE_ENV);
   }, [userData])
 
   const checkUserSignupStatus = () => {
