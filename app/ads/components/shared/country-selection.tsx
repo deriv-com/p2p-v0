@@ -29,7 +29,6 @@ export default function CountrySelection({ selectedCountries, onCountriesChange 
         const response = await getCountries()
         setCountries(response.countries)
       } catch (error) {
-        console.error("Failed to fetch countries:", error)
         setCountries([])
       } finally {
         setIsLoading(false)
