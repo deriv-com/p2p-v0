@@ -54,7 +54,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
     }
   
       const countryNames = selectedCountries
-        .map((code) => COUNTRIES.find((c) => c.code === code)?.name)
+        .map((code) => countries.find((c) => c.code === code)?.name)
         .join(", ")
       return countryNames
   
