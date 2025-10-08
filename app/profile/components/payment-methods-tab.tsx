@@ -278,6 +278,12 @@ export default function PaymentMethodsTab() {
     </div>
   )
 
+  if (!userId) {
+    return
+      <EmptyState title="No payment methods yet" description="Start adding payment methods" redirectToAds={false} />
+    )
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-6">
