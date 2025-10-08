@@ -201,7 +201,7 @@ export default function OrderChat({
                   {msg.message && (
                     <div className="flex items-center">
                       <div
-                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-blue-200 opacity-50" : "bg-blue-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
+                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-blue-200 opacity-50" : "bg-slate-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
                       >
                         {msg.message}
                       </div>
