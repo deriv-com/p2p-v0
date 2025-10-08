@@ -34,7 +34,7 @@ function KycOnboardingSheet({ isSheetOpen, setSheetOpen }: KycOnboardingSheetPro
   const handleProfileSetup = () => {
     hideAlert()
     setSheetOpen(false)
-    window.location.href = `https://${getHomeUrl()}/dashboard/user-profile`
+    window.location.href = `https://${getHomeUrl()}/dashboard/userprofile`
   }
 
   useEffect(() => {
