@@ -384,7 +384,7 @@ export const currencyLogoMapper = {
 }
 
 export const getHomeUrl = () => {
-  const isProduction = process.env.NODE_ENV === "production"
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
   return baseUrl
 }

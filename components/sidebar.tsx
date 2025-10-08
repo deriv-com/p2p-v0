@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
-import { cn } from "@/lib/utils"
+import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -43,12 +43,6 @@ export default function Sidebar({ className }: SidebarProps) {
     } catch (error) {
       setShowWallet(false)
     }
-  }
-
-  const getHomeUrl = () => {
-    const isProduction = process.env.NODE_ENV === "production"
-    const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
-    return baseUrl
   }
 
   const navItems = [
@@ -111,7 +105,7 @@ export default function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
         </div>
-        <Link prefetch href={`https://${getHomeUrl()}/dashboard/user-profile`}>
+        <Link prefetch href={`https://${getHomeUrl()}/dashboard/userprofile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
         </Link>
       </div>
