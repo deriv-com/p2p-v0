@@ -29,7 +29,7 @@ interface TemporaryBanAlertProps {
 }
 
 const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(Number(tempBanUntil) * 1000)
+  const banUntil = formatDateTime(Number(tempBanUntil))
 
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
