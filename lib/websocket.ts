@@ -7,6 +7,7 @@ export class WebSocketClient {
   private options: WebSocketOptions
   private reconnectAttempts = 0
   private reconnectTimeout: NodeJS.Timeout | null = null
+  private isConnecting = false
 
   constructor(options: WebSocketOptions = {}) {
     this.options = {
@@ -23,15 +24,36 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
+    if (this.isConnecting) {
+      console.log("[v0] Connection already in progress, skipping")
+      return Promise.reject(new Error("Connection already in progress"))
+    }
+
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      console.log("[v0] Already connected, returning existing socket")
+      return Promise.resolve(this.socket)
+    }
+
     return new Promise((resolve, reject) => {
       try {
+        this.isConnecting = true
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const socketToken = this.getSocketToken()
-        const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
+
+        if (!socketToken) {
+          this.isConnecting = false
+          reject(new Error("No socket token available"))
+          return
+        }
+
+        console.log("[v0] Creating new WebSocket connection")
+        const protocols = socketToken.trim() ? [socketToken] : undefined
         this.socket = new WebSocket(url, protocols)
 
         this.socket.onopen = () => {
+          console.log("[v0] WebSocket opened")
           this.reconnectAttempts = 0
+          this.isConnecting = false
           if (this.options.onOpen) {
             this.options.onOpen(this.socket!)
           }
@@ -50,6 +72,8 @@ export class WebSocketClient {
         }
 
         this.socket.onerror = (event) => {
+          console.error("[v0] WebSocket error event")
+          this.isConnecting = false
           if (this.options.onError) {
             this.options.onError(event, this.socket!)
           }
@@ -57,6 +81,8 @@ export class WebSocketClient {
         }
 
         this.socket.onclose = (event) => {
+          console.log("[v0] WebSocket closed")
+          this.isConnecting = false
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
           }
@@ -64,11 +90,13 @@ export class WebSocketClient {
           if (this.options.autoReconnect && this.reconnectAttempts < (this.options.maxReconnectAttempts || 5)) {
             this.reconnectTimeout = setTimeout(() => {
               this.reconnectAttempts++
+              console.log(`[v0] Reconnecting... Attempt ${this.reconnectAttempts}`)
               this.connect()
             }, this.options.reconnectInterval)
           }
         }
       } catch (error) {
+        this.isConnecting = false
         reject(error)
       }
     })
@@ -121,15 +149,25 @@ export class WebSocketClient {
   }
 
   public disconnect(): void {
+    console.log("[v0] Disconnecting WebSocket")
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout)
       this.reconnectTimeout = null
     }
 
     if (this.socket) {
-      this.socket.close()
+      this.socket.onclose = null
+      this.socket.onerror = null
+      this.socket.onmessage = null
+      this.socket.onopen = null
+
+      if (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING) {
+        this.socket.close()
+      }
       this.socket = null
     }
+
+    this.isConnecting = false
   }
 
   public isConnected(): boolean {
@@ -142,17 +180,4 @@ export class WebSocketClient {
   }
 }
 
-// Create a singleton instance for global use
-let wsClientInstance: WebSocketClient | null = null
-
-export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
-  if (!wsClientInstance) {
-    wsClientInstance = new WebSocketClient(options)
-  } else if (options) {
-    // Update options if provided
-    wsClientInstance.disconnect()
-    wsClientInstance = new WebSocketClient(options)
-  }
-
-  return wsClientInstance
-}
+// Each WebSocketProvider will manage its own instance
