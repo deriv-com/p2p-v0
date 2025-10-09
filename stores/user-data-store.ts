@@ -9,6 +9,7 @@ export interface UserData {
   signup?: string
   wallet_id?: string
   temp_ban_until?: number | null
+  is_online?: boolean
 }
 
 export interface VerificationStatus {
