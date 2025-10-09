@@ -32,7 +32,7 @@ const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
   const banUntil = formatDateTime(tempBanUntil)
 
   return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6 hidden">
+    <Alert variant="warning" className="flex items-start gap-2 mb-">
       <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
       <div className="text-sm mt-[2px]">
         {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
