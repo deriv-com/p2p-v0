@@ -29,7 +29,7 @@ interface TemporaryBanAlertProps {
 }
 
 const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(tempBanUntil)
+  const banUntil = formatDateTime(Number(tempBanUntil) * 1000)
 
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
@@ -351,7 +351,6 @@ export default function BuySellPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
-          
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil.toString()} />}
           <div>
             {isLoading ? (
