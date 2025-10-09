@@ -21,17 +21,14 @@ export class WebSocketClient {
     const socketToken = this.getSocketToken()
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN && this.currentToken === socketToken) {
-      console.log("[v0] WebSocket already connected with same token, reusing connection")
       return Promise.resolve(this.socket)
     }
 
     if (this.socket && this.currentToken !== socketToken) {
-      console.log("[v0] Token changed, reconnecting with new token")
       this.disconnect()
     }
 
     if (this.isConnecting) {
-      console.log("[v0] Connection already in progress")
       return Promise.reject(new Error("Connection already in progress"))
     }
 
@@ -41,8 +38,6 @@ export class WebSocketClient {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
-
-        console.log("[v0] Creating new WebSocket connection")
         this.socket = new WebSocket(url, protocols)
         this.currentToken = socketToken
 
