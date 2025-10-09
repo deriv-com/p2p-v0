@@ -83,7 +83,11 @@ export default function BuySellPage() {
     const currencyParam = searchParams.get("currency")
 
     if (operation && (operation === "buy" || operation === "sell")) {
-      setActiveTab(operation as "buy" | "sell")
+        if(operation === "buy")
+            setActiveTab("sell")
+        else {
+            setActiveTab("sell")
+        }
     }
 
     if (currencyParam) {
