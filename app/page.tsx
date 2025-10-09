@@ -351,7 +351,7 @@ export default function BuySellPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
-          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUnti} />}
+          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div>
             {isLoading ? (
               <div className="text-center py-12">
