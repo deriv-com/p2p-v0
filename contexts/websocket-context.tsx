@@ -28,7 +28,7 @@ export class WebSocketClient {
       this.disconnect()
     }
 
-    if (this.isConnecting)
+    if (this.isConnecting) {
       return Promise.reject(new Error("Connection already in progress"))
     }
 
@@ -38,8 +38,6 @@ export class WebSocketClient {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
-
-        console.log("[v0] Creating new WebSocket connection")
         this.socket = new WebSocket(url, protocols)
         this.currentToken = socketToken
 
