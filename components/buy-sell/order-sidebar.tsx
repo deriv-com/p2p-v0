@@ -193,16 +193,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     }
   }, [amount, ad])
 
-  useEffect(() => {
-    return () => {
-      const isBuy = orderType === "buy"
-      if (!isBuy) {
-       // setSelectedPaymentMethods([])
-        //setTempSelectedPaymentMethods([])
-      }
-    }
-  }, [orderType])
-
   const fetchUserPaymentMethods = async () => {
     try {
       const response = await ProfileAPI.getUserPaymentMethods()
