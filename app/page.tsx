@@ -29,7 +29,7 @@ interface TemporaryBanAlertProps {
 }
 
 const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(tempBanUntil)
+  const banUntil = formatDateTime(tempBanUntil * 1000)
 
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
@@ -479,6 +479,7 @@ export default function BuySellPage() {
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
                                 size="sm"
                                 onClick={() => handleOrderClick(ad)}
+                                disabled={!!tempBanUntil}
                               >
                                 {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
                               </Button>
