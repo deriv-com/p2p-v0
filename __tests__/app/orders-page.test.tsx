@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation"
 import OrdersPage from "@/app/orders/page"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { OrdersAPI } from "@/services/api"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useIsMobile } from "@/hooks/use-mobile"
 import jest from "jest" // Import jest to fix the undeclared variable error
 
@@ -14,7 +13,6 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("@/stores/orders-filter-store")
 jest.mock("@/services/api")
-jest.mock("@/contexts/websocket-context")
 jest.mock("@/hooks/use-mobile")
 jest.mock("@/components/navigation", () => {
   return function MockNavigation() {
@@ -39,10 +37,6 @@ jest.mock("@/components/rating-filter/rating-sidebar", () => ({
 
 const mockRouter = {
   push: jest.fn(),
-}
-
-const mockWebSocketContext = {
-  joinChannel: jest.fn(),
 }
 
 const mockOrdersFilterStore = {
@@ -83,7 +77,6 @@ describe("OrdersPage", () => {
     jest.clearAllMocks()
     ;(useRouter as jest.Mock).mockReturnValue(mockRouter)
     ;(useOrdersFilterStore as jest.Mock).mockReturnValue(mockOrdersFilterStore)
-    ;(useWebSocketContext as jest.Mock).mockReturnValue(mockWebSocketContext)
     ;(useIsMobile as jest.Mock).mockReturnValue(false)
     ;(OrdersAPI.getOrders as jest.Mock).mockResolvedValue(mockOrdersData)
   })

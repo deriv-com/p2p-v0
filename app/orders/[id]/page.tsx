@@ -21,7 +21,6 @@ import {
   copyToClipboard,
 } from "@/lib/utils"
 import OrderDetailsSidebar from "@/components/order-details-sidebar"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useUserDataStore } from "@/stores/user-data-store"
 import Image from "next/image"
 import { RatingSidebar } from "@/components/rating-filter"
@@ -51,36 +50,10 @@ export default function OrderDetailsPage() {
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState(false)
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
-  const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
-
-    if (!isConnected) {
-      reconnect()
-    }
   }, [orderId])
-
-  useEffect(() => {
-    if (isConnected) {
-      joinChannel("orders", orderId)
-    }
-  }, [isConnected, orderId])
-
-  useEffect(() => {
-    const unsubscribe = subscribe((data: any) => {
-      if (
-        ["buyer_paid", "completed", "cancelled", "refunded", "disputed", "user_review", "advertiser_review"].includes(
-          data.payload.data?.event,
-        ) &&
-        data.payload.data?.order?.id == orderId
-      ) {
-        setOrder(data.payload.data.order)
-      }
-    })
-
-    return unsubscribe
-  }, [orderId, subscribe])
 
   const fetchOrderDetails = async () => {
     setIsLoading(true)
