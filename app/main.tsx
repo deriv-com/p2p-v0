@@ -50,6 +50,10 @@ export default function Main({
           router.push("/login")
         } else {
           if (!response?.errors) {
+            if (response?.access_token) {
+              await AuthAPI.getSocketToken(response.access_token)
+            }
+
             await AuthAPI.fetchUserIdAndStore()
 
             try {
@@ -64,10 +68,7 @@ export default function Main({
                 })
 
                 const currentUserId = useUserDataStore.getState().userId
-                if (
-                  !currentUserId &&
-                  onboardingStatus.onboardingStatus.p2p.allowed
-                ) {
+                if (!currentUserId && onboardingStatus.onboardingStatus.p2p.allowed) {
                   try {
                     await AuthAPI.createP2PUser()
                   } catch (error) {
