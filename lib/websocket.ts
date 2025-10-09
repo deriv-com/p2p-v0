@@ -16,6 +16,21 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
+    if (this.socket && this.socket.readyState === WebSocket.CONNECTING) {
+      return new Promise((resolve) => {
+        const checkConnection = setInterval(() => {
+          if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+            clearInterval(checkConnection)
+            resolve(this.socket)
+          }
+        }, 100)
+      })
+    }
+
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      return Promise.resolve(this.socket)
+    }
+
     return new Promise((resolve, reject) => {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
@@ -107,6 +122,10 @@ export class WebSocketClient {
 
   public disconnect(): void {
     if (this.socket) {
+      this.socket.onopen = null
+      this.socket.onmessage = null
+      this.socket.onerror = null
+      this.socket.onclose = null
       this.socket.close()
       this.socket = null
     }
@@ -120,19 +139,4 @@ export class WebSocketClient {
     const token = this.getSocketToken()
     return token !== null && token.trim() !== ""
   }
-}
-
-// Create a singleton instance for global use
-let wsClientInstance: WebSocketClient | null = null
-
-export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
-  if (!wsClientInstance) {
-    wsClientInstance = new WebSocketClient(options)
-  } else if (options) {
-    // Update options if provided
-    wsClientInstance.disconnect()
-    wsClientInstance = new WebSocketClient(options)
-  }
-
-  return wsClientInstance
 }

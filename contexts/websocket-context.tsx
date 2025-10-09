@@ -34,35 +34,70 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const socketToken = useUserDataStore((state) => state.socketToken)
+  const connectedTokenRef = useRef<string | null>(null)
+  const isConnectingRef = useRef(false)
 
   useEffect(() => {
-    const wsOptions: WebSocketOptions = {
-      onOpen: (socket) => {
-        setIsConnected(true)
-      },
-      onMessage: (data, socket) => {
-        subscribersRef.current.forEach((callback) => callback(data))
-      },
-      onClose: (event, socket) => {
-        setIsConnected(false)
-      },
-      onError: (error, socket) => {
-        console.error("WebSocket error:", error)
-      },
+    if (!socketToken) {
+      return
     }
 
-    const wsClient = new WebSocketClient(wsOptions)
-    wsClientRef.current = wsClient
+    if (wsClientRef.current?.isConnected() && connectedTokenRef.current === socketToken) {
+      return
+    }
 
-    if (socketToken) {
-      wsClient.connect().catch((error) => {
+    if (isConnectingRef.current) {
+      return
+    }
+
+    const connectWebSocket = async () => {
+      isConnectingRef.current = true
+
+      if (wsClientRef.current && connectedTokenRef.current !== socketToken) {
+        wsClientRef.current.disconnect()
+        wsClientRef.current = null
+        connectedTokenRef.current = null
+      }
+
+      const wsOptions: WebSocketOptions = {
+        onOpen: (socket) => {
+          setIsConnected(true)
+          connectedTokenRef.current = socketToken
+          isConnectingRef.current = false
+        },
+        onMessage: (data, socket) => {
+          subscribersRef.current.forEach((callback) => callback(data))
+        },
+        onClose: (event, socket) => {
+          setIsConnected(false)
+          connectedTokenRef.current = null
+          isConnectingRef.current = false
+        },
+        onError: (error, socket) => {
+          console.error("WebSocket error:", error)
+          isConnectingRef.current = false
+        },
+      }
+
+      const wsClient = new WebSocketClient(wsOptions)
+      wsClientRef.current = wsClient
+
+      try {
+        await wsClient.connect()
+      } catch (error) {
         console.error("Failed to connect to WebSocket:", error)
-      })
+        isConnectingRef.current = false
+      }
     }
+
+    connectWebSocket()
 
     return () => {
       if (wsClientRef.current) {
         wsClientRef.current.disconnect()
+        wsClientRef.current = null
+        connectedTokenRef.current = null
+        isConnectingRef.current = false
       }
     }
   }, [socketToken])
