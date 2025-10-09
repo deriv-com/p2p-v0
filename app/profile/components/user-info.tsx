@@ -25,10 +25,9 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
       <div className="flex flex-col md:flex-row items-start gap-4">
         <div className="relative h-14 w-14 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
-          {/* Online status indicator */}
           <div
             className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-slate-1200 ${
-              isOnline ? "bg-green-500" : "bg-gray-400"
+              isOnline ? "bg-success-500" : "bg-gray-400"
             }`}
           />
         </div>
