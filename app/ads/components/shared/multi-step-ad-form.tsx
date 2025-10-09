@@ -21,6 +21,7 @@ import { getCountries, type Country } from "@/services/api/api-auth"
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
   adId?: string
+  initialType?: "buy" | "sell" // Add initialType prop for query param support
 }
 
 const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
@@ -50,13 +51,13 @@ const getPageTitle = (mode: "create" | "edit") => {
   return `Edit ad`
 }
 
-function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
+function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
 
   const { toast } = useToast()
   const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState({})
+  const [formData, setFormData] = useState(initialType ? { type: initialType } : {})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [adFormValid, setAdFormValid] = useState(false)
   const [paymentFormValid, setPaymentFormValid] = useState(false)
@@ -584,10 +585,10 @@ function MultiStepAdFormInner({ mode, adId }: MultiStepAdFormProps) {
   )
 }
 
-export default function MultiStepAdForm({ mode, adId }: MultiStepAdFormProps) {
+export default function MultiStepAdForm({ mode, adId, initialType }: MultiStepAdFormProps) {
   return (
     <PaymentSelectionProvider>
-      <MultiStepAdFormInner mode={mode} adId={adId} />
+      <MultiStepAdFormInner mode={mode} adId={adId} initialType={initialType} />
     </PaymentSelectionProvider>
   )
 }
