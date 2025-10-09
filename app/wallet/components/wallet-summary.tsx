@@ -34,7 +34,6 @@ export default function WalletSummary({
   selectedCurrency: externalSelectedCurrency = null,
   onBack,
 }: WalletSummaryProps) {
-  const p2pAllowed = useUserDataStore((state) => state.verificationStatus?.p2p_allowed)
   const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
@@ -90,7 +89,7 @@ export default function WalletSummary({
   }, [])
 
   const handleDepositClick = () => {
-    if (p2pAllowed) {
+    if (userId) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
@@ -108,7 +107,7 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
-    if (p2pAllowed) {
+    if (userId) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
@@ -126,7 +125,7 @@ export default function WalletSummary({
   }
 
   const handleTransferClick = () => {
-    if (p2pAllowed) {
+    if (userId) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {
@@ -303,52 +302,53 @@ export default function WalletSummary({
             </div>
           </div>
         </div>
+      </div>
 
-        {currentStep === "chooseCurrency" && (
-          <div className="fixed inset-0 z-50 bg-white">
-            <ChooseCurrencyStep
-              title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
-              description={
-                currentOperation === "DEPOSIT"
-                  ? "Choose which currency you would like to deposit."
-                  : "Choose which currency you would like to withdraw."
-              }
-              currencies={currencies}
-              onClose={handleClose}
-              onCurrencySelect={handleCurrencySelect}
-            />
-          </div>
-        )}
+      {currentStep === "chooseCurrency" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <ChooseCurrencyStep
+            title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
+            description={
+              currentOperation === "DEPOSIT"
+                ? "Choose which currency you would like to deposit."
+                : "Choose which currency you would like to withdraw."
+            }
+            currencies={currencies}
+            onClose={handleClose}
+            onCurrencySelect={handleCurrencySelect}
+          />
+        </div>
+      )}
 
-        {currentStep === "walletAction" && (
-          <div className="fixed inset-0 z-50 bg-white">
-            <WalletActionStep
-              title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
-              actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
-              onClose={handleClose}
-              onGoBack={handleGoBackToCurrency}
-              onDirectDepositClick={handleDirectDepositClick}
-              onDirectWithdrawClick={handleDirectWithdrawClick}
-            />
-          </div>
-        )}
+      {currentStep === "walletAction" && (
+        <div className="fixed inset-0 z-50 bg-white">
+          <WalletActionStep
+            title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
+            actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
+            onClose={handleClose}
+            onGoBack={handleGoBackToCurrency}
+            onDirectDepositClick={handleDirectDepositClick}
+            onDirectWithdrawClick={handleDirectWithdrawClick}
+          />
+        </div>
+      )}
 
-        <WalletSidebar
-          isOpen={isSidebarOpen}
-          onClose={() => setIsSidebarOpen(false)}
-          onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
-          operation={currentOperation}
-          onP2PTransferClick={handleSendTransferClick}
-          onAccountTransferClick={handleReceiveTransferClick}
-          currencies={currencies}
-        />
+      <WalletSidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
+        operation={currentOperation}
+        onP2PTransferClick={handleSendTransferClick}
+        onAccountTransferClick={handleReceiveTransferClick}
+        currencies={currencies}
+      />
 
-        <FullScreenIframeModal
-          isOpen={isIframeModalOpen}
-          onClose={() => setIsIframeModalOpen(false)}
-          operation={currentOperation}
-          currency={displayCurrency}
-        />
-      </>
+      <FullScreenIframeModal
+        isOpen={isIframeModalOpen}
+        onClose={() => setIsIframeModalOpen(false)}
+        operation={currentOperation}
+        currency={displayCurrency}
+      />
+    </>
   )
 }
