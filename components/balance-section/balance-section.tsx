@@ -13,7 +13,7 @@ export function BalanceSection() {
       try {
         const data = await getTotalBalance()
 
-        const p2pWallet = response?.data?.wallets?.items?.find(
+        const p2pWallet = data?.data?.wallets?.items?.find(
           (item: any) => item?.type === 'p2p'
         );
         const p2pBalance = p2pWallet?.balances?.[0]?.balance ?? '0';
