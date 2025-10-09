@@ -197,8 +197,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     return () => {
       const isBuy = orderType === "buy"
       if (!isBuy) {
-        setSelectedPaymentMethods([])
-        setTempSelectedPaymentMethods([])
+       // setSelectedPaymentMethods([])
+        //setTempSelectedPaymentMethods([])
       }
     }
   }, [orderType])
