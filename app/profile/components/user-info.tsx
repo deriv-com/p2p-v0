@@ -27,7 +27,7 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
           <div
             className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-slate-1200 ${
-              isOnline ? "bg-success-500" : "bg-gray-400"
+              isOnline ? "bg-buy-DEFAULT" : "bg-gray-400"
             }`}
           />
         </div>
