@@ -236,7 +236,6 @@ export default function BuySellPage() {
   return (
     <>
       <div className="flex flex-col h-screen overflow-hidden px-3">
-        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil.toString()} />}
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -353,6 +352,8 @@ export default function BuySellPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
+          
+          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil.toString()} />}
           <div>
             {isLoading ? (
               <div className="text-center py-12">
