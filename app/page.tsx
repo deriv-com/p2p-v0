@@ -28,8 +28,7 @@ interface TemporaryBanAlertProps {
   tempBanUntil?: string
 }
 
-const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
-  console.log(tempBanUntil)
+const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => 
   const banUntil = formatDateTime(tempBanUntil)
 
   return (
