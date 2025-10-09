@@ -1,21 +1,6 @@
-export interface WebSocketMessage {
-  action: string
-  options: {
-    channel: string
-    [key: string]: any
-  }
-  payload: any
-}
-
-export interface WebSocketOptions {
-  onOpen?: (socket: WebSocket) => void
-  onMessage?: (data: any, socket: WebSocket) => void
-  onError?: (error: Event, socket: WebSocket) => void
-  onClose?: (event: CloseEvent, socket: WebSocket) => void
-  autoReconnect?: boolean
-  maxReconnectAttempts?: number
-  reconnectInterval?: number
-}
+import { useUserDataStore } from "@/stores/user-data-store"
+import type { WebSocketMessage } from "./websocket-message"
+import type { WebSocketOptions } from "./websocket-options"
 
 export class WebSocketClient {
   private socket: WebSocket | null = null
@@ -34,7 +19,7 @@ export class WebSocketClient {
 
   private getSocketToken(): string | null {
     if (typeof window === "undefined") return null
-    return localStorage.getItem("socket_token")
+    return useUserDataStore.getState().socketToken
   }
 
   public connect(): Promise<WebSocket> {

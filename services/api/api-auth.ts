@@ -286,10 +286,7 @@ export async function getSocketToken(token?: string): Promise<void> {
     const socketToken = result?.data.token
 
     if (socketToken) {
-      localStorage.setItem("socket_token", socketToken.toString())
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("socket-token-ready", { detail: { token: socketToken } }))
-      }
+      useUserDataStore.getState().setSocketToken(socketToken.toString())
     }
   } catch (error) {
     console.error("Error fetching token:", error)

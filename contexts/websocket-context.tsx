@@ -3,6 +3,7 @@
 import type React from "react"
 import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { WebSocketClient, type WebSocketMessage, type WebSocketOptions } from "@/lib/websocket"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface WebSocketContextType {
   isConnected: boolean
@@ -32,20 +33,14 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [isConnected, setIsConnected] = useState(false)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
-  const connectionAttemptRef = useRef<NodeJS.Timeout | null>(null)
-  const tokenCheckIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const socketToken = useUserDataStore((state) => state.socketToken)
 
   useEffect(() => {
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
         setIsConnected(true)
-        if (tokenCheckIntervalRef.current) {
-          clearInterval(tokenCheckIntervalRef.current)
-          tokenCheckIntervalRef.current = null
-        }
       },
       onMessage: (data, socket) => {
-        // Notify all subscribers
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: (event, socket) => {
@@ -59,40 +54,18 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const wsClient = new WebSocketClient(wsOptions)
     wsClientRef.current = wsClient
 
-    const attemptConnection = () => {
-      if (!wsClient.hasValidToken()) {
-        return false
-      }
-
+    if (socketToken) {
       wsClient.connect().catch((error) => {
         console.error("Failed to connect to WebSocket:", error)
       })
-      return true
-    }
-
-    const connected = attemptConnection()
-
-    if (!connected) {
-      tokenCheckIntervalRef.current = setInterval(() => {
-        const hasToken = wsClient.hasValidToken()
-        if (hasToken) {
-          attemptConnection()
-        }
-      }, 500) // Check every 500ms for token availability
     }
 
     return () => {
-      if (tokenCheckIntervalRef.current) {
-        clearInterval(tokenCheckIntervalRef.current)
-      }
-      if (connectionAttemptRef.current) {
-        clearTimeout(connectionAttemptRef.current)
-      }
       if (wsClientRef.current) {
         wsClientRef.current.disconnect()
       }
     }
-  }, [])
+  }, [socketToken])
 
   const sendMessage = (message: WebSocketMessage) => {
     if (wsClientRef.current) {

@@ -23,7 +23,6 @@ export default function Main({
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
   const userId = useUserDataStore((state) => state.userId)
-  const [isSocketTokenReady, setIsSocketTokenReady] = useState(false)
 
   useEffect(() => {
     isMountedRef.current = true
@@ -52,7 +51,6 @@ export default function Main({
         } else {
           if (!response?.errors) {
             await AuthAPI.getSocketToken()
-            setIsSocketTokenReady(true)
 
             await AuthAPI.fetchUserIdAndStore()
 
@@ -68,7 +66,7 @@ export default function Main({
                 })
 
                 const currentUserId = useUserDataStore.getState().userId
-                if (!currentUserId && onboardingStatus.onboardingStatus.p2p.allowed) {
+                if (!currentUserId && onboardingStatus.p2p.allowed) {
                   try {
                     await AuthAPI.createP2PUser()
                   } catch (error) {
