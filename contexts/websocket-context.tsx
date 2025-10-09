@@ -1,114 +1,157 @@
-"use client"
-
-import type React from "react"
-import { createContext, useContext, useEffect, useRef, useState } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getWebSocketClient } from "@/lib/websocket"
 import type { WebSocketMessage } from "./websocket-message"
+import type { WebSocketOptions } from "./websocket-options"
 
-interface WebSocketContextType {
-  isConnected: boolean
-  joinChannel: (channel: string, id: number) => void
-  leaveChannel: (channel: string) => void
-  getChatHistory: (channel: string, orderId: string) => void
-  subscribe: (callback: (data: WebSocketMessage) => void) => () => void
-  reconnect: () => void
-}
+export class WebSocketClient {
+  private socket: WebSocket | null = null
+  private options: WebSocketOptions
+  private isConnecting = false
+  private currentToken: string | null = null
 
-const WebSocketContext = createContext<WebSocketContextType | undefined>(undefined)
+  constructor(options: WebSocketOptions = {}) {
+    this.options = options
+  }
 
-export function WebSocketProvider({ children }: { children: React.ReactNode }) {
-  const [isConnected, setIsConnected] = useState(false)
-  const socketToken = useUserDataStore((state) => state.socketToken)
-  const messageCallbacks = useRef<Set<(data: WebSocketMessage) => void>>(new Set())
-  const hasInitializedRef = useRef(false)
+  private getSocketToken(): string | null {
+    if (typeof window === "undefined") return null
+    return useUserDataStore.getState().socketToken
+  }
 
-  useEffect(() => {
-    if (!socketToken || hasInitializedRef.current) {
-      return
+  public connect(): Promise<WebSocket> {
+    const socketToken = this.getSocketToken()
+
+    if (this.socket && this.socket.readyState === WebSocket.OPEN && this.currentToken === socketToken) {
+      return Promise.resolve(this.socket)
     }
 
-    hasInitializedRef.current = true
+    if (this.socket && this.currentToken !== socketToken) {
+      this.disconnect()
+    }
 
-    const wsClient = getWebSocketClient({
-      onOpen: () => {
-        console.log("[v0] WebSocket connected")
-        setIsConnected(true)
-      },
-      onMessage: (data) => {
-        messageCallbacks.current.forEach((callback) => callback(data))
-      },
-      onError: (error) => {
-        console.error("[v0] WebSocket error:", error)
-        setIsConnected(false)
-      },
-      onClose: () => {
-        console.log("[v0] WebSocket disconnected")
-        setIsConnected(false)
-      },
+    if (this.isConnecting) {
+      return Promise.reject(new Error("Connection already in progress"))
+    }
+
+    this.isConnecting = true
+
+    return new Promise((resolve, reject) => {
+      try {
+        const url = process.env.NEXT_PUBLIC_SOCKET_URL
+        const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
+        this.socket = new WebSocket(url, protocols)
+        this.currentToken = socketToken
+
+        this.socket.onopen = () => {
+          this.isConnecting = false
+          if (this.options.onOpen) {
+            this.options.onOpen(this.socket!)
+          }
+          resolve(this.socket!)
+        }
+
+        this.socket.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data)
+            if (this.options.onMessage) {
+              this.options.onMessage(data, this.socket!)
+            }
+          } catch (err) {
+            console.error("Error parsing WebSocket message:", err)
+          }
+        }
+
+        this.socket.onerror = (event) => {
+          this.isConnecting = false
+          if (this.options.onError) {
+            this.options.onError(event, this.socket!)
+          }
+          reject(event)
+        }
+
+        this.socket.onclose = (event) => {
+          this.isConnecting = false
+          this.currentToken = null
+          if (this.options.onClose) {
+            this.options.onClose(event, this.socket!)
+          }
+        }
+      } catch (error) {
+        this.isConnecting = false
+        reject(error)
+      }
     })
-
-    wsClient.connect().catch((error) => {
-      console.error("[v0] Failed to connect WebSocket:", error)
-    })
-  }, [socketToken])
-
-  const joinChannel = (channel: string, id: number) => {
-    const wsClient = getWebSocketClient()
-    wsClient.joinChannel(channel, id)
   }
 
-  const leaveChannel = (channel: string) => {
-    const wsClient = getWebSocketClient()
-    wsClient.leaveChannel(channel)
-  }
-
-  const getChatHistory = (channel: string, orderId: string) => {
-    const wsClient = getWebSocketClient()
-    wsClient.getChatHistory(channel, orderId)
-  }
-
-  const subscribe = (callback: (data: WebSocketMessage) => void) => {
-    messageCallbacks.current.add(callback)
-    return () => {
-      messageCallbacks.current.delete(callback)
+  public send(message: WebSocketMessage): void {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify(message))
+    } else {
+      console.warn("WebSocket is not connected. Message not sent:", message)
     }
   }
 
-  const reconnect = () => {
-    const wsClient = getWebSocketClient()
-    wsClient.disconnect()
-    hasInitializedRef.current = false
-    wsClient
-      .connect()
-      .then(() => {
-        setIsConnected(true)
-      })
-      .catch((error) => {
-        console.error("[v0] Failed to reconnect WebSocket:", error)
-      })
+  public joinChannel(channel: string, id: number): void {
+    const joinMessage: WebSocketMessage = {
+      action: "join",
+      options: {
+        channel,
+      },
+      payload: {
+        order_id: id,
+      },
+    }
+    this.send(joinMessage)
   }
 
-  return (
-    <WebSocketContext.Provider
-      value={{
-        isConnected,
-        joinChannel,
-        leaveChannel,
-        getChatHistory,
-        subscribe,
-        reconnect,
-      }}
-    >
-      {children}
-    </WebSocketContext.Provider>
-  )
+  public leaveChannel(channel: string): void {
+    const leaveMessage: WebSocketMessage = {
+      action: "leave",
+      options: {
+        channel,
+      },
+      payload: {},
+    }
+    this.send(leaveMessage)
+  }
+
+  public getChatHistory(channel: string, orderId: string): void {
+    const getChatHistoryMessage: WebSocketMessage = {
+      action: "message",
+      options: {
+        channel,
+      },
+      payload: {
+        chat_history: true,
+        order_id: orderId,
+      },
+    }
+    this.send(getChatHistoryMessage)
+  }
+
+  public disconnect(): void {
+    if (this.socket) {
+      this.socket.close()
+      this.socket = null
+      this.isConnecting = false
+      this.currentToken = null
+    }
+  }
+
+  public isConnected(): boolean {
+    return this.socket !== null && this.socket.readyState === WebSocket.OPEN
+  }
+
+  public hasValidToken(): boolean {
+    const token = this.getSocketToken()
+    return token !== null && token.trim() !== ""
+  }
 }
 
-export function useWebSocketContext() {
-  const context = useContext(WebSocketContext)
-  if (context === undefined) {
-    throw new Error("useWebSocketContext must be used within a WebSocketProvider")
+let wsClientInstance: WebSocketClient | null = null
+
+export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
+  if (!wsClientInstance) {
+    wsClientInstance = new WebSocketClient(options)
   }
-  return context
+  return wsClientInstance
 }
