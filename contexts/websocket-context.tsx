@@ -129,7 +129,7 @@ export class WebSocketClient {
   }
 
   public disconnect(): void {
-    if (this.socket) 
+    if (this.socket) {
       this.socket.close()
       this.socket = null
       this.isConnecting = false
@@ -150,8 +150,7 @@ export class WebSocketClient {
 let wsClientInstance: WebSocketClient | null = null
 
 export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
-  if (!wsClientInstance) {
-    console.log("[v0] Creating singleton WebSocket client instance")
+  if (!wsClientInstance)
     wsClientInstance = new WebSocketClient(options)
   }
   return wsClientInstance
