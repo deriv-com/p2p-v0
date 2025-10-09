@@ -267,7 +267,7 @@ export async function getClientProfile(): Promise<void> {
 /**
  * Get websocket token
  */
-export async function getSocketToken(token: string): Promise<void> {
+export async function getSocketToken(token?: string): Promise<void> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/user-websocket-token`, {
       method: "GET",
@@ -287,6 +287,9 @@ export async function getSocketToken(token: string): Promise<void> {
 
     if (socketToken) {
       localStorage.setItem("socket_token", socketToken.toString())
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("socket-token-ready", { detail: { token: socketToken } }))
+      }
     }
   } catch (error) {
     console.error("Error fetching token:", error)

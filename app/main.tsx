@@ -23,6 +23,7 @@ export default function Main({
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
   const userId = useUserDataStore((state) => state.userId)
+  const [isSocketTokenReady, setIsSocketTokenReady] = useState(false)
 
   useEffect(() => {
     isMountedRef.current = true
@@ -51,6 +52,8 @@ export default function Main({
         } else {
           if (!response?.errors) {
             await AuthAPI.getSocketToken()
+            setIsSocketTokenReady(true)
+
             await AuthAPI.fetchUserIdAndStore()
 
             try {

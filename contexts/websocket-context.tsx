@@ -32,12 +32,17 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [isConnected, setIsConnected] = useState(false)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
+  const connectionAttemptRef = useRef<NodeJS.Timeout | null>(null)
+  const tokenCheckIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
         setIsConnected(true)
+        if (tokenCheckIntervalRef.current) {
+          clearInterval(tokenCheckIntervalRef.current)
+          tokenCheckIntervalRef.current = null
+        }
       },
       onMessage: (data, socket) => {
         // Notify all subscribers
@@ -54,9 +59,35 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const wsClient = new WebSocketClient(wsOptions)
     wsClientRef.current = wsClient
 
-    wsClient.connect()
+    const attemptConnection = () => {
+      if (!wsClient.hasValidToken()) {
+        return false
+      }
+
+      wsClient.connect().catch((error) => {
+        console.error("Failed to connect to WebSocket:", error)
+      })
+      return true
+    }
+
+    const connected = attemptConnection()
+
+    if (!connected) {
+      tokenCheckIntervalRef.current = setInterval(() => {
+        const hasToken = wsClient.hasValidToken()
+        if (hasToken) {
+          attemptConnection()
+        }
+      }, 500) // Check every 500ms for token availability
+    }
 
     return () => {
+      if (tokenCheckIntervalRef.current) {
+        clearInterval(tokenCheckIntervalRef.current)
+      }
+      if (connectionAttemptRef.current) {
+        clearTimeout(connectionAttemptRef.current)
+      }
       if (wsClientRef.current) {
         wsClientRef.current.disconnect()
       }

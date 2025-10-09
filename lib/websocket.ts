@@ -1,5 +1,3 @@
-import { USER } from "@/lib/local-variables"
-
 export interface WebSocketMessage {
   action: string
   options: {
@@ -34,11 +32,17 @@ export class WebSocketClient {
     }
   }
 
+  private getSocketToken(): string | null {
+    if (typeof window === "undefined") return null
+    return localStorage.getItem("socket_token")
+  }
+
   public connect(): Promise<WebSocket> {
     return new Promise((resolve, reject) => {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
-        const protocols = USER.socketToken && USER.socketToken.trim() ? [USER.socketToken] : undefined
+        const socketToken = this.getSocketToken()
+        const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
         this.socket = new WebSocket(url, protocols)
 
         this.socket.onopen = () => {
@@ -145,6 +149,11 @@ export class WebSocketClient {
 
   public isConnected(): boolean {
     return this.socket !== null && this.socket.readyState === WebSocket.OPEN
+  }
+
+  public hasValidToken(): boolean {
+    const token = this.getSocketToken()
+    return token !== null && token.trim() !== ""
   }
 }
 
