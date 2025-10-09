@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { createContext, useContext, useEffect, useRef, useState } from "react"
-import { WebSocketClient, type WebSocketMessage, type WebSocketOptions } from "@/lib/websocket"
+import { getWebSocketInstance, type WebSocketMessage, type WebSocketOptions } from "@/lib/websocket"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 interface WebSocketContextType {
@@ -31,99 +31,103 @@ interface WebSocketProviderProps {
 
 export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const [isConnected, setIsConnected] = useState(false)
-  const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const socketToken = useUserDataStore((state) => state.socketToken)
-  const isConnectingRef = useRef(false)
-  const lastTokenRef = useRef<string | null>(null)
+  const hasInitializedRef = useRef(false)
+  const mountedRef = useRef(true)
 
   useEffect(() => {
-    if (isConnectingRef.current || !socketToken || socketToken === lastTokenRef.current) {
-      return
+    mountedRef.current = true
+    return () => {
+      mountedRef.current = false
     }
+  }, [])
 
-    if (wsClientRef.current?.isConnected() && socketToken === lastTokenRef.current) {
+  useEffect(() => {
+    if (!socketToken || hasInitializedRef.current) {
       return
     }
 
     console.log("[v0] Initializing WebSocket connection with token")
-    isConnectingRef.current = true
-    lastTokenRef.current = socketToken
+    hasInitializedRef.current = true
 
     const wsOptions: WebSocketOptions = {
       onOpen: (socket) => {
         console.log("[v0] WebSocket connected successfully")
-        setIsConnected(true)
-        isConnectingRef.current = false
+        if (mountedRef.current) {
+          setIsConnected(true)
+        }
       },
       onMessage: (data, socket) => {
-        subscribersRef.current.forEach((callback) => callback(data))
+        if (mountedRef.current) {
+          subscribersRef.current.forEach((callback) => callback(data))
+        }
       },
       onClose: (event, socket) => {
         console.log("[v0] WebSocket disconnected")
-        setIsConnected(false)
-        isConnectingRef.current = false
+        if (mountedRef.current) {
+          setIsConnected(false)
+        }
       },
       onError: (error, socket) => {
         console.error("[v0] WebSocket error:", error)
-        isConnectingRef.current = false
       },
     }
 
-    if (wsClientRef.current) {
-      console.log("[v0] Disconnecting existing WebSocket")
-      wsClientRef.current.disconnect()
+    const wsClient = getWebSocketInstance(wsOptions)
+
+    if (!wsClient.isConnected() || wsClient.getCurrentToken() !== socketToken) {
+      wsClient.connect().catch((error) => {
+        console.error("[v0] Failed to connect to WebSocket:", error)
+        if (mountedRef.current) {
+          hasInitializedRef.current = false
+        }
+      })
+    } else {
+      console.log("[v0] WebSocket already connected, reusing connection")
+      setIsConnected(true)
     }
 
-    const wsClient = new WebSocketClient(wsOptions)
-    wsClientRef.current = wsClient
-
-    wsClient.connect().catch((error) => {
-      console.error("[v0] Failed to connect to WebSocket:", error)
-      isConnectingRef.current = false
-    })
-
     return () => {
-      console.log("[v0] Cleaning up WebSocket connection")
-      if (wsClientRef.current) {
-        wsClientRef.current.disconnect()
-        wsClientRef.current = null
-      }
-      isConnectingRef.current = false
+      console.log("[v0] Component unmounting, keeping WebSocket alive")
     }
   }, [socketToken])
 
   const sendMessage = (message: WebSocketMessage) => {
-    if (wsClientRef.current) {
-      wsClientRef.current.send(message)
+    const wsClient = getWebSocketInstance()
+    if (wsClient.isConnected()) {
+      wsClient.send(message)
     }
   }
 
   const joinChannel = (channel: string, id: number) => {
-    if (wsClientRef.current) {
-      wsClientRef.current.joinChannel(channel, id)
+    const wsClient = getWebSocketInstance()
+    if (wsClient.isConnected()) {
+      wsClient.joinChannel(channel, id)
     }
   }
 
   const leaveChannel = (channel: string) => {
-    if (wsClientRef.current) {
-      wsClientRef.current.leaveChannel(channel)
+    const wsClient = getWebSocketInstance()
+    if (wsClient.isConnected()) {
+      wsClient.leaveChannel(channel)
     }
   }
 
   const getChatHistory = (channel: string, orderId: string) => {
-    if (wsClientRef.current) {
-      wsClientRef.current.getChatHistory(channel, orderId)
+    const wsClient = getWebSocketInstance()
+    if (wsClient.isConnected()) {
+      wsClient.getChatHistory(channel, orderId)
     }
   }
 
   const reconnect = () => {
-    if (wsClientRef.current) {
-      wsClientRef.current.disconnect()
-      wsClientRef.current.connect().catch((error) => {
-        console.error("Failed to reconnect to WebSocket:", error)
-      })
-    }
+    const wsClient = getWebSocketInstance()
+    wsClient.disconnect()
+    hasInitializedRef.current = false
+    wsClient.connect().catch((error) => {
+      console.error("Failed to reconnect to WebSocket:", error)
+    })
   }
 
   const subscribe = (callback: (data: any) => void) => {
