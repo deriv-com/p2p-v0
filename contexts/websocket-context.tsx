@@ -28,7 +28,7 @@ export class WebSocketClient {
       this.disconnect()
     }
 
-    if (this.isConnecting) {
+    if (this.isConnecting)
       return Promise.reject(new Error("Connection already in progress"))
     }
 
