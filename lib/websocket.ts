@@ -151,8 +151,7 @@ let wsClientInstance: WebSocketClient | null = null
 
 export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
   if (!wsClientInstance) {
-    console.log("[v0] Creating singleton WebSocket client instance")
-    wsClientInstance = new WebSocketClient(options)
+      wsClientInstance = new WebSocketClient(options)
   }
   return wsClientInstance
 }
