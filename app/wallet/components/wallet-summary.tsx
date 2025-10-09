@@ -350,5 +350,5 @@ export default function WalletSummary({
           currency={displayCurrency}
         />
       </>
-  )\
+  )
 }
