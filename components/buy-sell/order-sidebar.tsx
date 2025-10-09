@@ -225,6 +225,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     }
   }
 
+  if (!isOpen && !isAnimating) return null
+
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value)
   }
