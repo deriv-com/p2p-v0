@@ -6,6 +6,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
 
 type Message = {
@@ -43,6 +44,41 @@ export default function OrderChat({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const maxLength = 300
+
+  const { isConnected, getChatHistory, subscribe } = useWebSocketContext()
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data) => {
+      if (data && data.payload && data.payload.data) {
+        if (data.payload.data.chat_history && Array.isArray(data.payload.data.chat_history)) {
+          setMessages(data.payload.data.chat_history)
+        }
+
+        if (data.payload.data.message || data.payload.data.attachment) {
+          const newMessage = data.payload.data
+          if (newMessage.order_id == orderId) {
+            setMessages((prev) => {
+              return [...prev, newMessage]
+            })
+          }
+        }
+
+        setIsLoading(false)
+      } else {
+        setIsLoading(false)
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
+
+  useEffect(() => {
+    if (isConnected) {
+      setTimeout(() => {
+        getChatHistory("orders", orderId)
+      }, 100)
+    }
+  }, [isConnected, getChatHistory, orderId])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })

@@ -15,6 +15,7 @@ import { RatingSidebar } from "@/components/rating-filter/rating-sidebar"
 import { useTimeRemaining } from "@/hooks/use-time-remaining"
 import { useIsMobile } from "@/hooks/use-mobile"
 import OrderChat from "@/components/order-chat"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 import EmptyState from "@/components/empty-state"
 import { useOrdersFilterStore } from "@/stores/orders-filter-store"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
@@ -50,6 +51,7 @@ export default function OrdersPage() {
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
+  const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
 
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -174,6 +176,8 @@ export default function OrdersPage() {
       setSelectedOrder(order)
       setShowChat(true)
       setIsChatVisible(true)
+
+      joinChannel("orders", order.id)
     } else {
       navigateToOrderDetails(order.id)
     }

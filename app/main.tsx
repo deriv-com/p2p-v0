@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
+import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
 import "./globals.css"
@@ -104,7 +105,7 @@ export default function Main({
   }
 
   return (
-    <>
+    <WebSocketProvider>
       <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
         {isHeaderVisible && <Sidebar className="hidden md:flex" />}
         <div className="flex-1">
@@ -116,6 +117,6 @@ export default function Main({
         <main className="flex-1 overflow-hidden">{children}</main>
         <MobileFooterNav className="flex-shrink-0" />
       </div>
-    </>
+    </WebSocketProvider>
   )
 }

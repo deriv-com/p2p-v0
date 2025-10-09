@@ -1,3 +1,6 @@
+"use client"
+
+import { createContext, useContext, useEffect, useRef, type ReactNode } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import type { WebSocketMessage } from "./websocket-message"
 import type { WebSocketOptions } from "./websocket-options"
@@ -154,4 +157,105 @@ export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient 
     wsClientInstance = new WebSocketClient(options)
   }
   return wsClientInstance
+}
+
+interface WebSocketContextType {
+  isConnected: boolean
+  joinChannel: (channel: string, id: number) => void
+  leaveChannel: (channel: string) => void
+  getChatHistory: (channel: string, orderId: string) => void
+  subscribe: (callback: (data: any) => void) => () => void
+  reconnect: () => void
+}
+
+const WebSocketContext = createContext<WebSocketContextType | null>(null)
+
+export function useWebSocketContext() {
+  const context = useContext(WebSocketContext)
+  if (!context) {
+    throw new Error("useWebSocketContext must be used within WebSocketProvider")
+  }
+  return context
+}
+
+interface WebSocketProviderProps {
+  children: ReactNode
+}
+
+export function WebSocketProvider({ children }: WebSocketProviderProps) {
+  const socketToken = useUserDataStore((state) => state.socketToken)
+  const wsClientRef = useRef<WebSocketClient | null>(null)
+  const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
+  const hasInitializedRef = useRef(false)
+  const isConnectedRef = useRef(false)
+
+  useEffect(() => {
+    // Only initialize once when token becomes available
+    if (!socketToken || hasInitializedRef.current) return
+
+    hasInitializedRef.current = true
+
+    const wsClient = getWebSocketClient({
+      onOpen: () => {
+        console.log("[v0] WebSocket connected")
+        isConnectedRef.current = true
+      },
+      onMessage: (data) => {
+        subscribersRef.current.forEach((callback) => callback(data))
+      },
+      onClose: () => {
+        console.log("[v0] WebSocket disconnected")
+        isConnectedRef.current = false
+      },
+      onError: (error) => {
+        console.error("[v0] WebSocket error:", error)
+        isConnectedRef.current = false
+      },
+    })
+
+    wsClientRef.current = wsClient
+
+    wsClient.connect().catch((error) => {
+      console.error("[v0] Failed to connect WebSocket:", error)
+    })
+  }, [socketToken])
+
+  const joinChannel = (channel: string, id: number) => {
+    wsClientRef.current?.joinChannel(channel, id)
+  }
+
+  const leaveChannel = (channel: string) => {
+    wsClientRef.current?.leaveChannel(channel)
+  }
+
+  const getChatHistory = (channel: string, orderId: string) => {
+    wsClientRef.current?.getChatHistory(channel, orderId)
+  }
+
+  const subscribe = (callback: (data: any) => void) => {
+    subscribersRef.current.add(callback)
+    return () => {
+      subscribersRef.current.delete(callback)
+    }
+  }
+
+  const reconnect = () => {
+    if (wsClientRef.current) {
+      wsClientRef.current.disconnect()
+      wsClientRef.current.connect().catch((error) => {
+        console.error("[v0] Failed to reconnect WebSocket:", error)
+      })
+    }
+  }
+
+  const value: WebSocketContextType = {
+    isConnected: isConnectedRef.current,
+    joinChannel,
+    leaveChannel,
+    getChatHistory,
+    subscribe,
+    reconnect,
+  }
+
+  return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>
 }
