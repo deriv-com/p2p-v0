@@ -21,7 +21,7 @@ import { getCountries, type Country } from "@/services/api/api-auth"
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
   adId?: string
-  initialType?: "buy" | "sell" // Add initialType prop for query param support
+  initialType?: "buy" | "sell"
 }
 
 const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
