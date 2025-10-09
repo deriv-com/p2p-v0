@@ -12,7 +12,6 @@ export function BalanceSection() {
     const fetchBalance = async () => {
       try {
         const data = await getTotalBalance()
-
         const p2pWallet = data?.data?.wallets?.items?.find(
           (item: any) => item?.type === 'p2p'
         );
