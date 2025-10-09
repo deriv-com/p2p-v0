@@ -193,6 +193,16 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     }
   }, [amount, ad])
 
+  useEffect(() => {
+    return () => {
+      const isBuy = orderType === "buy"
+      if (!isBuy) {
+        setSelectedPaymentMethods([])
+        setTempSelectedPaymentMethods([])
+      }
+    }
+  }, [orderType])
+
   const fetchUserPaymentMethods = async () => {
     try {
       const response = await ProfileAPI.getUserPaymentMethods()
@@ -214,8 +224,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       console.error("Error fetching payment methods:", error)
     }
   }
-
-  if (!isOpen && !isAnimating) return null
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value)
