@@ -268,6 +268,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       setSelectedPaymentMethods([])
       setAmount(null)
       setValidationError(null)
+      setTempSelectedPaymentMethods([])
       onClose()
     }, 300)
   }
