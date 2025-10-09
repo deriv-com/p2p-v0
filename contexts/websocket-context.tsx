@@ -38,11 +38,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const isConnectingRef = useRef(false)
 
   useEffect(() => {
-    if (!socketToken) {
-      return
-    }
-
-    if (wsClientRef.current?.isConnected() && connectedTokenRef.current === socketToken) {
+    if (!socketToken || socketToken === connectedTokenRef.current) {
       return
     }
 
@@ -50,54 +46,51 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
       return
     }
 
-    const connectWebSocket = async () => {
-      isConnectingRef.current = true
+    isConnectingRef.current = true
 
-      if (wsClientRef.current && connectedTokenRef.current !== socketToken) {
-        wsClientRef.current.disconnect()
-        wsClientRef.current = null
-        connectedTokenRef.current = null
-      }
-
-      const wsOptions: WebSocketOptions = {
-        onOpen: (socket) => {
-          setIsConnected(true)
-          connectedTokenRef.current = socketToken
-          isConnectingRef.current = false
-        },
-        onMessage: (data, socket) => {
-          subscribersRef.current.forEach((callback) => callback(data))
-        },
-        onClose: (event, socket) => {
-          setIsConnected(false)
-          connectedTokenRef.current = null
-          isConnectingRef.current = false
-        },
-        onError: (error, socket) => {
-          console.error("WebSocket error:", error)
-          isConnectingRef.current = false
-        },
-      }
-
-      const wsClient = new WebSocketClient(wsOptions)
-      wsClientRef.current = wsClient
-
-      try {
-        await wsClient.connect()
-      } catch (error) {
-        console.error("Failed to connect to WebSocket:", error)
+    const wsOptions: WebSocketOptions = {
+      onOpen: (socket) => {
+        console.log("[v0] WebSocket connected")
+        setIsConnected(true)
+        connectedTokenRef.current = socketToken
         isConnectingRef.current = false
-      }
+      },
+      onMessage: (data, socket) => {
+        subscribersRef.current.forEach((callback) => callback(data))
+      },
+      onClose: (event, socket) => {
+        console.log("[v0] WebSocket disconnected")
+        setIsConnected(false)
+        connectedTokenRef.current = null
+        isConnectingRef.current = false
+      },
+      onError: (error, socket) => {
+        console.error("[v0] WebSocket error:", error)
+        isConnectingRef.current = false
+      },
     }
 
-    connectWebSocket()
+    if (!wsClientRef.current) {
+      const wsClient = new WebSocketClient(wsOptions)
+      wsClientRef.current = wsClient
+    }
+
+    if (wsClientRef.current && !wsClientRef.current.isConnected()) {
+      wsClientRef.current.connect().catch((error) => {
+        console.error("[v0] Failed to connect to WebSocket:", error)
+        isConnectingRef.current = false
+      })
+    } else {
+      isConnectingRef.current = false
+    }
 
     return () => {
+      // This cleanup only runs when the component unmounts
       if (wsClientRef.current) {
+        console.log("[v0] WebSocketProvider unmounting, disconnecting")
         wsClientRef.current.disconnect()
         wsClientRef.current = null
         connectedTokenRef.current = null
-        isConnectingRef.current = false
       }
     }
   }, [socketToken])

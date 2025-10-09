@@ -5,6 +5,7 @@ import type { WebSocketOptions } from "./websocket-options"
 export class WebSocketClient {
   private socket: WebSocket | null = null
   private options: WebSocketOptions
+  private isConnecting = false
 
   constructor(options: WebSocketOptions = {}) {
     this.options = options
@@ -16,29 +17,29 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
-    if (this.socket && this.socket.readyState === WebSocket.CONNECTING) {
-      return new Promise((resolve) => {
-        const checkConnection = setInterval(() => {
-          if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-            clearInterval(checkConnection)
-            resolve(this.socket)
-          }
-        }, 100)
-      })
-    }
-
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      console.log("[v0] WebSocket already connected, reusing existing connection")
       return Promise.resolve(this.socket)
     }
+
+    if (this.isConnecting) {
+      console.log("[v0] Connection already in progress")
+      return Promise.reject(new Error("Connection already in progress"))
+    }
+
+    this.isConnecting = true
 
     return new Promise((resolve, reject) => {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const socketToken = this.getSocketToken()
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
+
+        console.log("[v0] Creating new WebSocket connection")
         this.socket = new WebSocket(url, protocols)
 
         this.socket.onopen = () => {
+          this.isConnecting = false
           if (this.options.onOpen) {
             this.options.onOpen(this.socket!)
           }
@@ -57,6 +58,7 @@ export class WebSocketClient {
         }
 
         this.socket.onerror = (event) => {
+          this.isConnecting = false
           if (this.options.onError) {
             this.options.onError(event, this.socket!)
           }
@@ -64,11 +66,13 @@ export class WebSocketClient {
         }
 
         this.socket.onclose = (event) => {
+          this.isConnecting = false
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
           }
         }
       } catch (error) {
+        this.isConnecting = false
         reject(error)
       }
     })
@@ -122,12 +126,10 @@ export class WebSocketClient {
 
   public disconnect(): void {
     if (this.socket) {
-      this.socket.onopen = null
-      this.socket.onmessage = null
-      this.socket.onerror = null
-      this.socket.onclose = null
+      console.log("[v0] Disconnecting WebSocket")
       this.socket.close()
       this.socket = null
+      this.isConnecting = false
     }
   }
 
@@ -139,4 +141,19 @@ export class WebSocketClient {
     const token = this.getSocketToken()
     return token !== null && token.trim() !== ""
   }
+}
+
+// Create a singleton instance for global use
+let wsClientInstance: WebSocketClient | null = null
+
+export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
+  if (!wsClientInstance) {
+    wsClientInstance = new WebSocketClient(options)
+  } else if (options) {
+    // Update options if provided
+    wsClientInstance.disconnect()
+    wsClientInstance = new WebSocketClient(options)
+  }
+
+  return wsClientInstance
 }
