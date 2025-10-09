@@ -77,17 +77,17 @@ export default function BuySellPage() {
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
+  const tempBanUntil = userData?.temp_ban_until
 
   useEffect(() => {
     const operation = searchParams.get("operation")
     const currencyParam = searchParams.get("currency")
 
     if (operation && (operation === "buy" || operation === "sell")) {
-        if(operation === "buy")
-            setActiveTab("sell")
-        else {
-            setActiveTab("buy")
-        }
+      if (operation === "buy") setActiveTab("sell")
+      else {
+        setActiveTab("buy")
+      }
     }
 
     if (currencyParam) {
@@ -235,7 +235,7 @@ export default function BuySellPage() {
   return (
     <>
       <div className="flex flex-col h-screen overflow-hidden px-3">
-        <TemporaryBanAlert />
+        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil.toString()} />}
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
