@@ -60,6 +60,7 @@ export interface OnboardingStatusResponse {
   verification: {
     email_verified: boolean
     phone_verified: boolean
+    p2p_allowed: boolean
   }
 }
 

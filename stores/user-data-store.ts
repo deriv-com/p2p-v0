@@ -15,6 +15,7 @@ export interface VerificationStatus {
   email_verified: boolean
   phone_verified: boolean
   kyc_verified: boolean
+  p2p_allowed: boolean
 }
 
 interface UserDataState {

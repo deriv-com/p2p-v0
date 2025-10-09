@@ -60,6 +60,7 @@ export default function Main({
                   email_verified: onboardingStatus.verification.email_verified,
                   phone_verified: onboardingStatus.verification.phone_verified,
                   kyc_verified: onboardingStatus.kyc.status,
+                  p2p_allowed: onboardingStatus.verification.p2p_allowed,
                 })
 
                 const currentUserId = useUserDataStore.getState().userId
