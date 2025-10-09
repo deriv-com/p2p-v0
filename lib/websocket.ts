@@ -5,16 +5,9 @@ import type { WebSocketOptions } from "./websocket-options"
 export class WebSocketClient {
   private socket: WebSocket | null = null
   private options: WebSocketOptions
-  private reconnectAttempts = 0
-  private reconnectTimeout: NodeJS.Timeout | null = null
 
   constructor(options: WebSocketOptions = {}) {
-    this.options = {
-      autoReconnect: true,
-      maxReconnectAttempts: 5,
-      reconnectInterval: 3000,
-      ...options,
-    }
+    this.options = options
   }
 
   private getSocketToken(): string | null {
@@ -31,7 +24,6 @@ export class WebSocketClient {
         this.socket = new WebSocket(url, protocols)
 
         this.socket.onopen = () => {
-          this.reconnectAttempts = 0
           if (this.options.onOpen) {
             this.options.onOpen(this.socket!)
           }
@@ -59,13 +51,6 @@ export class WebSocketClient {
         this.socket.onclose = (event) => {
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
-          }
-
-          if (this.options.autoReconnect && this.reconnectAttempts < (this.options.maxReconnectAttempts || 5)) {
-            this.reconnectTimeout = setTimeout(() => {
-              this.reconnectAttempts++
-              this.connect()
-            }, this.options.reconnectInterval)
           }
         }
       } catch (error) {
@@ -121,11 +106,6 @@ export class WebSocketClient {
   }
 
   public disconnect(): void {
-    if (this.reconnectTimeout) {
-      clearTimeout(this.reconnectTimeout)
-      this.reconnectTimeout = null
-    }
-
     if (this.socket) {
       this.socket.close()
       this.socket = null
