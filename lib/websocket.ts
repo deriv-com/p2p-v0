@@ -135,7 +135,6 @@ export class WebSocketClient {
 
   public disconnect(): void {
     if (this.socket) {
-      console.log("[v0] Disconnecting WebSocket")
       this.socket.close()
       this.socket = null
       this.isConnecting = false

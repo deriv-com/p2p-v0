@@ -150,7 +150,7 @@ export class WebSocketClient {
 let wsClientInstance: WebSocketClient | null = null
 
 export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
-  if (!wsClientInstance)
+  if (!wsClientInstance) {
     wsClientInstance = new WebSocketClient(options)
   }
   return wsClientInstance
