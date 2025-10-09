@@ -29,7 +29,6 @@ export class WebSocketClient {
     }
 
     if (this.isConnecting) {
-      console.log("[v0] Connection already in progress")
       return Promise.reject(new Error("Connection already in progress"))
     }
 
