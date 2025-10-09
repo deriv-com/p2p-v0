@@ -8,6 +8,7 @@ export interface UserData {
   nickname?: string
   signup?: string
   wallet_id?: string
+  temp_ban_until?: number | null
 }
 
 export interface VerificationStatus {

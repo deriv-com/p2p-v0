@@ -25,14 +25,14 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 
 interface TemporaryBanAlertProps {
-  tempBanUntil?: string
+  tempBanUntil: number
 }
 
-const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
+const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
   const banUntil = formatDateTime(tempBanUntil)
 
   return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6 hidden">
+    <Alert variant="warning" className="flex items-start gap-2 mb-6">
       <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
       <div className="text-sm mt-[2px]">
         {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
@@ -77,17 +77,17 @@ export default function BuySellPage() {
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
+  const tempBanUntil = userData?.temp_ban_until
 
   useEffect(() => {
     const operation = searchParams.get("operation")
     const currencyParam = searchParams.get("currency")
 
     if (operation && (operation === "buy" || operation === "sell")) {
-        if(operation === "buy")
-            setActiveTab("sell")
-        else {
-            setActiveTab("buy")
-        }
+      if (operation === "buy") setActiveTab("sell")
+      else {
+        setActiveTab("buy")
+      }
     }
 
     if (currencyParam) {
@@ -235,7 +235,6 @@ export default function BuySellPage() {
   return (
     <>
       <div className="flex flex-col h-screen overflow-hidden px-3">
-        <TemporaryBanAlert />
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -352,6 +351,7 @@ export default function BuySellPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
+          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div>
             {isLoading ? (
               <div className="text-center py-12">
@@ -479,6 +479,7 @@ export default function BuySellPage() {
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
                                 size="sm"
                                 onClick={() => handleOrderClick(ad)}
+                                disabled={!!tempBanUntil}
                               >
                                 {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
                               </Button>
