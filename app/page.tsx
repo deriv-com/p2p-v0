@@ -86,7 +86,7 @@ export default function BuySellPage() {
         if(operation === "buy")
             setActiveTab("sell")
         else {
-            setActiveTab("sell")
+            setActiveTab("buy")
         }
     }
 
