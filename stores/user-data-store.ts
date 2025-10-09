@@ -9,12 +9,14 @@ export interface UserData {
   signup?: string
   wallet_id?: string
   temp_ban_until?: number | null
+  is_online?: boolean
 }
 
 export interface VerificationStatus {
   email_verified: boolean
   phone_verified: boolean
   kyc_verified: boolean
+  p2p_allowed: boolean
 }
 
 interface UserDataState {

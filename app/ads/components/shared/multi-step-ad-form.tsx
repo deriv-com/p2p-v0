@@ -326,7 +326,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
     } catch (error) {
       let errorInfo = {
-        title: mode === "create" ? "" : "Failed to update ad",
+        title: mode === "create" ? "Failed to create ad" : "Failed to update ad",
         message: "Please try again.",
         type: "error" as "error" | "warning",
         actionButtonText: mode === "create" ? "Update ad" : "Update ad",

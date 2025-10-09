@@ -61,6 +61,13 @@ export interface OnboardingStatusResponse {
     email_verified: boolean
     phone_verified: boolean
   }
+  p2p: {
+    allowed: boolean
+    criteria: Array<{
+      code: string
+      passed: boolean
+    }>
+  }
 }
 
 export interface CreateP2PUserResponse {

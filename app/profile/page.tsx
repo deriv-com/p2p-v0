@@ -64,6 +64,7 @@ export default function ProfilePage() {
           setUserData(() => ({
             ...data,
             username: data.nickname,
+            is_online: data.is_online,
             rating:
               data.statistics_lifetime.rating_average !== null
                 ? `${data.statistics_lifetime.rating_average}/5`
@@ -125,6 +126,7 @@ export default function ProfilePage() {
               isVerified={userData?.isVerified}
               isLoading={isLoading}
               tradeBand={userData?.trade_band}
+              isOnline={userData?.is_online}
             />
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} />
