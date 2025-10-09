@@ -25,11 +25,11 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 
 interface TemporaryBanAlertProps {
-  tempBanUntil?: string
+  tempBanUntil: number
 }
 
-const TemporaryBanAlert = ({ tempBanUntil = "" }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(Number(tempBanUntil))
+const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
+  const banUntil = formatDateTime(tempBanUntil)
 
   return (
     <Alert variant="warning" className="flex items-start gap-2 mb-6">
