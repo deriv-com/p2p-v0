@@ -33,7 +33,7 @@ function KycOnboardingSheet() {
     {
       id: "profile",
       title: "Set up your profile",
-      icon: "/icons/user-icon-black.png",
+      icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
     },
     {
