@@ -88,7 +88,7 @@ function KycOnboardingSheet() {
                 <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                   <div className="w-6 h-6 rounded-full bg-green-600 flex items-center justify-center">
                     <Image
-                      src=""
+                      src="/icons/check-filled.png"
                       alt={step.title}
                       width={24}
                       height={24}
