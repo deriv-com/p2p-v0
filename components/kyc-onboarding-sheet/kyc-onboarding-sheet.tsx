@@ -86,15 +86,13 @@ function KycOnboardingSheet() {
               <div className="text-left text-slate-1200 text-base font-normal flex-1">{step.title}</div>
               {step.completed && (
                 <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
-                  <div className="w-6 h-6 rounded-full bg-green-600 flex items-center justify-center">
-                    <Image
-                      src="/icons/check-filled.png"
-                      alt={step.title}
-                      width={24}
-                      height={24}
-                      className="object-contain"
-                    />
-                  </div>
+                  <Image
+                    src="/icons/check-filled.png"
+                    alt={step.title}
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
                 </div>
               )}
             </div>
