@@ -68,6 +68,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
+  const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
 
   const formDataRef = useRef({})
 
@@ -90,8 +91,19 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         setIsLoadingCountries(true)
         const response = await getCountries()
         setCountries(response)
+
+        const uniqueCurrencies = Array.from(
+          new Set(
+            response.map((country: Country) => country.currency).filter((currency): currency is string => !!currency),
+          ),
+        )
+          .map((code) => ({ code }))
+          .sort((a, b) => a.code.localeCompare(b.code))
+
+        setCurrencies(uniqueCurrencies)
       } catch (error) {
         setCountries([])
+        setCurrencies([])
       } finally {
         setIsLoadingCountries(false)
       }
@@ -486,6 +498,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 initialData={formData}
                 setFormData={setFormData}
                 isEditMode={mode === "edit"}
+                currencies={currencies}
               />
             ) : currentStep === 1 ? (
               <PaymentDetailsForm
