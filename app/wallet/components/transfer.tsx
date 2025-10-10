@@ -470,6 +470,10 @@ export default function Transfer({ onClose }: TransferProps) {
     if (!showDesktopConfirmPopup) return null
 
     const transferFee = calculateTransferFee()
+    const amountReceive =
+      transferFee && transferFee.feeAmount > 0
+        ? (Number.parseFloat(transferAmount || "0") - transferFee.feeAmount).toFixed(8)
+        : transferAmount || "0"
 
     return (
       <div
@@ -524,6 +528,7 @@ export default function Transfer({ onClose }: TransferProps) {
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -561,7 +566,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
                   <span className="text-base font-normal text-slate-1200">
-                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                    {amountReceive} {selectedCurrency || "USD"}
                   </span>
                 </div>
               </div>
@@ -591,6 +596,10 @@ export default function Transfer({ onClose }: TransferProps) {
     if (!showMobileConfirmSheet) return null
 
     const transferFee = calculateTransferFee()
+    const amountReceive =
+      transferFee && transferFee.feeAmount > 0
+        ? (Number.parseFloat(transferAmount || "0") - transferFee.feeAmount).toFixed(8)
+        : transferAmount || "0"
 
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
@@ -636,6 +645,7 @@ export default function Transfer({ onClose }: TransferProps) {
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -673,7 +683,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
                   <span className="text-base font-normal text-slate-1200">
-                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                    {amountReceive} {selectedCurrency || "USD"}
                   </span>
                 </div>
               </div>
@@ -785,6 +795,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
