@@ -24,11 +24,10 @@ function KycOnboardingSheet() {
     fetchOnboardingStatus()
   }, [])
 
-  // Determine completion status for each step
-  const isProfileCompleted = onboardingStatus?.kyc?.status === "verified"
+  const isProfileCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "kyc_approved")?.passed || false
   const isPoiCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "poi")?.passed || false
   const isPoaCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "poa")?.passed || false
-  const isPhoneCompleted = onboardingStatus?.verification?.phone_verified || false
+  const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
   const verificationSteps = [
     {
