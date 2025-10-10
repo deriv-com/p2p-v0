@@ -65,7 +65,7 @@ function KycOnboardingSheet() {
   }
 
   return (
-    <div className="w-full  border-gray-200">
+    <div className="w-full">
       <h2 className="text-slate-1200 text-base font-normal mb-6">
         To access P2P, complete your profile and verification.
       </h2>
