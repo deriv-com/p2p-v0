@@ -513,7 +513,6 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
-                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -528,29 +527,24 @@ export default function Transfer({ onClose }: TransferProps) {
                 </div>
               </div>
               <div className="h-1 bg-[#F6F7F8]  mt-4 mb-0"></div>
-              <div className="h-[72px] flex items-center">
+              <div className={`flex flex-col justify-center ${transferFee ? "h-[104px] gap-2" : "h-[72px]"}`}>
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                   <span className="text-base font-normal text-slate-1200">
                     {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
                   </span>
                 </div>
-              </div>
-              {transferFee && (
-                <>
-                  <div className="h-1 bg-[#F6F7F8]"></div>
-                  <div className="h-[72px] flex items-center">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">
-                        Transfer fee ({transferFee.feePercentage}%)
-                      </span>
-                      <span className="text-base font-normal text-slate-1200">
-                        {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
-                      </span>
-                    </div>
+                {transferFee && (
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-base font-normal text-grayscale-text-muted">
+                      Transfer fee ({transferFee.feePercentage}%)
+                    </span>
+                    <span className="text-base font-normal text-slate-1200">
+                      {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
+                    </span>
                   </div>
-                </>
-              )}
+                )}
+              </div>
               <div className="h-1 bg-[#F6F7F8]"></div>
               <div className="h-[72px] flex items-center">
                 <div className="flex items-center justify-between w-full">
@@ -628,7 +622,6 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
-                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -643,29 +636,24 @@ export default function Transfer({ onClose }: TransferProps) {
                 </div>
               </div>
               <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
-              <div className="h-[72px] flex items-center">
+              <div className={`flex flex-col justify-center ${transferFee ? "h-[104px] gap-2" : "h-[72px]"}`}>
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                   <span className="text-base font-normal text-slate-1200">
                     {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
                   </span>
                 </div>
-              </div>
-              {transferFee && (
-                <>
-                  <div className="h-1 bg-[#F6F7F8]"></div>
-                  <div className="h-[72px] flex items-center">
-                    <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">
-                        Transfer fee ({transferFee.feePercentage}%)
-                      </span>
-                      <span className="text-base font-normal text-slate-1200">
-                        {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
-                      </span>
-                    </div>
+                {transferFee && (
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-base font-normal text-grayscale-text-muted">
+                      Transfer fee ({transferFee.feePercentage}%)
+                    </span>
+                    <span className="text-base font-normal text-slate-1200">
+                      {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
+                    </span>
                   </div>
-                </>
-              )}
+                )}
+              </div>
               <div className="h-1 bg-[#F6F7F8]"></div>
               <div className="h-[72px] flex items-center">
                 <div className="flex items-center justify-between w-full">
@@ -778,7 +766,6 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
