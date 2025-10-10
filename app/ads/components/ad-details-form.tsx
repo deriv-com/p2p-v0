@@ -6,8 +6,7 @@ import type { AdFormData } from "../types"
 import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useCurrencyData } from "@/hooks/use-currency-data"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface AdDetailsFormProps {
@@ -36,9 +35,8 @@ export default function AdDetailsForm({
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
-  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
-  const { currencies: currencyListFromHook } = useCurrencyData()
-  const currencyList = currenciesProp && currenciesProp.length > 0 ? currenciesProp : currencyListFromHook
+  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || ""
+  const currencyList = currenciesProp
   const { accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
