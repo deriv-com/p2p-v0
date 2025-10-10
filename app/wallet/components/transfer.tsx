@@ -464,7 +464,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   </div>
                 </div>
               </div>
-              <div className="h-1 bg-[#F6F7F8] my-4"></div>
+              <div className="h-1 bg-[#F6F7F8]  mt-4 mb-0"></div>
               <div className="h-[72px] flex items-center">
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
