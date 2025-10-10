@@ -77,7 +77,7 @@ export interface CreateP2PUserResponse {
 }
 
 const getAuthHeader = () => ({
-  "Content-Type": "application/json",
+  "Content-Type": "application/json"
 })
 
 /**
