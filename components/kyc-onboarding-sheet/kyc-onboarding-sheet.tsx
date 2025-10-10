@@ -51,7 +51,7 @@ function KycOnboardingSheet() {
     {
       id: "phone",
       title: "Phone number",
-      icon: "/icons/bell-sm.png",
+      icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
     },
   ]
