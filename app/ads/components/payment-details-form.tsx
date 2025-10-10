@@ -45,8 +45,6 @@ export default function PaymentDetailsForm({
       try {
         const headers = {
           "Content-Type": "application/json",
-          "X-Branch": "master",
-          "X-Data-Source": "live",
         }
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/available-payment-methods`, {
           headers,
