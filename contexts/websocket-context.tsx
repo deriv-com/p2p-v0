@@ -243,7 +243,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     if (wsClientRef.current) {
       wsClientRef.current.disconnect()
       wsClientRef.current.connect().catch((error) => {
-        console.error("[v0] Failed to reconnect WebSocket:", error)
+        console.error("Failed to reconnect WebSocket:", error)
       })
     }
   }
