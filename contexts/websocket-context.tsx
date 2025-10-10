@@ -197,18 +197,16 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     const wsClient = getWebSocketClient({
       onOpen: () => {
-        console.log("WebSocket connected")
         isConnectedRef.current = true
       },
       onMessage: (data) => {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: () => {
-        console.log("WebSocket disconnected")
         isConnectedRef.current = false
       },
       onError: (error) => {
-        console.error("[v0] WebSocket error:", error)
+        console.error("WebSocket error:", error)
         isConnectedRef.current = false
       },
     })
@@ -216,7 +214,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current = wsClient
 
     wsClient.connect().catch((error) => {
-      console.error("[v0] Failed to connect WebSocket:", error)
+      console.error("Failed to connect WebSocket:", error)
     })
   }, [socketToken])
 
