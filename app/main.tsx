@@ -50,8 +50,6 @@ export default function Main({
           router.push("/login")
         } else {
           if (!response?.errors) {
-            await AuthAPI.getSocketToken()
-
             await AuthAPI.fetchUserIdAndStore()
 
             try {
