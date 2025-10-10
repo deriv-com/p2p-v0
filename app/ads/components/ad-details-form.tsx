@@ -35,8 +35,7 @@ export default function AdDetailsForm({
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
-  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || ""
-  const currencyList = currenciesProp
+  const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
   const { accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
@@ -53,10 +52,10 @@ export default function AdDetailsForm({
   }
 
   useEffect(() => {
-    if (currencyList.length > 0 && !initialData.forCurrency && !forCurrency) {
-      setForCurrency(currencyList[0].code)
+    if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
+      setForCurrency(currenciesProp[0].code)
     }
-  }, [currencyList, forCurrency])
+  }, [currenciesProp, forCurrency])
 
   useEffect(() => {
     if (initialData) {
@@ -242,7 +241,7 @@ export default function AdDetailsForm({
                     <SelectValue>{forCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencyList.map((currency) => (
+                    {currenciesProp.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         {currency.code}
                       </SelectItem>
