@@ -7,14 +7,13 @@ import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { AdsAPI } from "@/services/api"
-import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
   initialData?: Partial<AdFormData>
   isEditMode?: boolean
+  currencies?: Array<{ code: string }>
 }
 
 interface ValidationErrors {
@@ -24,7 +23,12 @@ interface ValidationErrors {
   maxAmount?: string
 }
 
-export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDetailsFormProps) {
+export default function AdDetailsForm({
+  onNext,
+  initialData,
+  isEditMode,
+  currencies: currenciesProp,
+}: AdDetailsFormProps) {
   const [type, setType] = useState<"buy" | "sell">(initialData?.type || "buy")
   const [totalAmount, setTotalAmount] = useState(initialData?.totalAmount?.toString() || "")
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
@@ -32,7 +36,6 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
   const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
-  const { currencies: currencyList } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
@@ -49,10 +52,10 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
   }
 
   useEffect(() => {
-    if (currencyList.length > 0 && !initialData.forCurrency && !forCurrency) {
-      setForCurrency(currencyList[0].code)
+    if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
+      setForCurrency(currenciesProp[0].code)
     }
-  }, [currencyList, forCurrency])
+  }, [currenciesProp, forCurrency])
 
   useEffect(() => {
     if (initialData) {
@@ -129,7 +132,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       fixedRate: true,
       minAmount: true,
       maxAmount: true,
-      forCurrency
+      forCurrency,
     })
 
     const total = Number(totalAmount)
@@ -165,7 +168,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
         minAmount: Number.parseFloat(minAmount) || 0,
         maxAmount: Number.parseFloat(maxAmount) || 0,
         forCurrency,
-        buyCurrency
+        buyCurrency,
       }
 
       onNext(formData, combinedErrors)
@@ -179,7 +182,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
       minAmount: Number.parseFloat(minAmount) || 0,
       maxAmount: Number.parseFloat(maxAmount) || 0,
       forCurrency,
-      buyCurrency
+      buyCurrency,
     }
 
     onNext(formData)
@@ -198,7 +201,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
           minAmount: Number.parseFloat(minAmount) || 0,
           maxAmount: Number.parseFloat(maxAmount) || 0,
           forCurrency,
-          buyCurrency
+          buyCurrency,
         },
       },
     })
@@ -238,7 +241,7 @@ export default function AdDetailsForm({ onNext, initialData, isEditMode }: AdDet
                     <SelectValue>{forCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencyList.map((currency) => (
+                    {currenciesProp.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         {currency.code}
                       </SelectItem>
