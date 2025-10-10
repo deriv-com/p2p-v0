@@ -18,9 +18,7 @@ export default function ProfilePage() {
       try {
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`
         const headers = {
-          "Content-Type": "application/json",
-          "X-Branch": "master",
-          "X-Data-Source": "live",
+          "Content-Type": "application/json"
         }
 
         const response = await fetch(url, {
