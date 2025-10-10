@@ -513,6 +513,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -540,7 +541,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       Transfer fee ({transferFee.feePercentage}%)
                     </span>
                     <span className="text-base font-normal text-slate-1200">
-                      {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
+                      {transferFee.feeAmount.toFixed(8)} {getSourceWalletCurrency() || "USD"}
                     </span>
                   </div>
                 )}
@@ -622,6 +623,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -649,7 +651,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       Transfer fee ({transferFee.feePercentage}%)
                     </span>
                     <span className="text-base font-normal text-slate-1200">
-                      {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
+                      {transferFee.feeAmount.toFixed(8)} {getSourceWalletCurrency() || "USD"}
                     </span>
                   </div>
                 )}
@@ -683,6 +685,11 @@ export default function Transfer({ onClose }: TransferProps) {
       return "/icons/p2p-logo.png"
     }
     return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
+  }
+
+  const getSourceWalletCurrency = () => {
+    const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
+    return wallet?.currency || ""
   }
 
   if (step === "chooseCurrency") {
@@ -766,6 +773,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
