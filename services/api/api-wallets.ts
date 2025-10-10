@@ -1,9 +1,7 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 
 const getAuthHeader = () => ({
-  "Content-Type": "application/json",
-  "X-Branch": "master",
-  "X-Data-Source": "live",
+  "Content-Type": "application/json"
 })
 
 export async function fetchTransactions(selectedCurrencyCode?: string) {
