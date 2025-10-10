@@ -434,7 +434,7 @@ export async function getSettings(): Promise<any> {
  */
 export async function createP2PUser(): Promise<CreateP2PUserResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/p2p/client`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/p2p/client`, {
       method: "POST",
       credentials: "include",
       headers: getAuthHeader(),
