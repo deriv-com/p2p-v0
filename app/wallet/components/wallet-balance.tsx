@@ -63,9 +63,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "X-Branch": "master",
-          "X-Data-Source": "live",
-          accept: "application/json",
+          accept: "application/json"
         },
       })
 
