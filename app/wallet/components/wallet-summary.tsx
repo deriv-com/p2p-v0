@@ -79,7 +79,6 @@ export default function WalletSummary({
         const p2pBalance = p2pWallet.balances[0]
         setBalance(Number.parseFloat(p2pBalance.balance) || 0)
 
-        // Update selected currency if P2P wallet has a different currency
         if (p2pBalance.currency && !externalSelectedCurrency) {
           setSelectedCurrency(p2pBalance.currency)
         }
