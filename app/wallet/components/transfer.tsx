@@ -204,7 +204,6 @@ export default function Transfer({ onClose }: TransferProps) {
     const sourceType = sourceCurrencyData.type
     let feePercentage = 0
 
-    // Determine fee percentage based on source currency type
     if (sourceType === "cryptocurrency") {
       feePercentage = destinationCurrencyData.fee.transfer.crypto_percentage
     } else if (sourceType === "fiat") {
@@ -213,7 +212,6 @@ export default function Transfer({ onClose }: TransferProps) {
       feePercentage = destinationCurrencyData.fee.transfer.stablecoin_percentage
     }
 
-    // If fee percentage is 0, return null (no fee to display)
     if (feePercentage === 0) {
       return null
     }
