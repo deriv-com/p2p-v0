@@ -197,14 +197,14 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     const wsClient = getWebSocketClient({
       onOpen: () => {
-        console.log("[v0] WebSocket connected")
+        console.log("WebSocket connected")
         isConnectedRef.current = true
       },
       onMessage: (data) => {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: () => {
-        console.log("[v0] WebSocket disconnected")
+        console.log("WebSocket disconnected")
         isConnectedRef.current = false
       },
       onError: (error) => {
