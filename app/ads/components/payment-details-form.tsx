@@ -44,7 +44,7 @@ export default function PaymentDetailsForm({
     const fetchPaymentMethods = async () => {
       try {
         const headers = {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         }
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/available-payment-methods`, {
           headers,
