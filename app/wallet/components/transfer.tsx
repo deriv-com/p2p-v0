@@ -118,6 +118,13 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const handleCurrencySelect = (currency: string) => {
     setDestinationWalletData(null)
+    if (sourceWalletData) {
+      setSourceWalletData({
+        id: sourceWalletData.id,
+        name: sourceWalletData.name,
+        currency: currency,
+      })
+    }
     setSelectedCurrency(currency)
     toEnterAmount()
   }
@@ -516,6 +523,7 @@ export default function Transfer({ onClose }: TransferProps) {
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -624,6 +632,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
@@ -776,6 +785,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
