@@ -24,7 +24,7 @@ function KycOnboardingSheet() {
     fetchOnboardingStatus()
   }, [])
 
-  const isProfileCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "kyc_approved")?.passed || false
+  const isProfileCompleted = (onboardingStatus?.p2p?.criteria?.find((c) => c.code === "deposit_enabled")?.passed && onboardingStatus?.p2p?.criteria?.find((c) => c.code === "withdraw_enabled")?.passed) || false
   const isPoiCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "poi")?.passed || false
   const isPoaCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "poa")?.passed || false
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
