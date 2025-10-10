@@ -465,16 +465,17 @@ export default function Transfer({ onClose }: TransferProps) {
                 </div>
               </div>
               <div className="h-1 bg-[#F6F7F8] my-4"></div>
-              <div className="mb-4">
-                <div className="flex items-center justify-between">
+              <div className="h-[72px] flex items-center">
+                <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                   <span className="text-base font-normal text-slate-1200">
                     {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
                   </span>
                 </div>
               </div>
-              <div className="mb-4">
-                <div className="flex items-center justify-between">
+              <div className="h-1 bg-[#F6F7F8]"></div>
+              <div className="h-[72px] flex items-center">
+                <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
                   <span className="text-base font-normal text-slate-1200">
                     {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
@@ -561,16 +562,17 @@ export default function Transfer({ onClose }: TransferProps) {
                 </div>
               </div>
               <div className="h-1 bg-[#F6F7F8] my-4"></div>
-              <div className="mb-4">
-                <div className="flex items-center justify-between">
+              <div className="h-[72px] flex items-center">
+                <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                   <span className="text-base font-normal text-slate-1200">
                     {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
                   </span>
                 </div>
               </div>
-              <div className="mb-4">
-                <div className="flex items-center justify-between">
+              <div className="h-1 bg-[#F6F7F8]"></div>
+              <div className="h-[72px] flex items-center">
+                <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
                   <span className="text-base font-normal text-slate-1200">
                     {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
