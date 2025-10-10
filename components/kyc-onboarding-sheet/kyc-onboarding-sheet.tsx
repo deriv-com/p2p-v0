@@ -78,8 +78,8 @@ function KycOnboardingSheet() {
                 <Image
                   src={step.icon || "/placeholder.svg"}
                   alt={step.title}
-                  width={24}
-                  height={24}
+                  width={32}
+                  height={32}
                   className="object-contain"
                 />
               </div>
