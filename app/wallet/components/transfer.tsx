@@ -423,51 +423,64 @@ export default function Transfer({ onClose }: TransferProps) {
             <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6 text-left">Confirm transfer</h2>
             <div className="mb-6">
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-                <div className="flex items-center gap-3">
-                  {sourceWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                        alt={sourceWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">From</span>
+                  <div className="flex items-center gap-3">
+                    {sourceWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                          alt={sourceWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-                <div className="flex items-center gap-3">
-                  {destinationWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg"
-                        }
-                        alt={destinationWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">To</span>
+                  <div className="flex items-center gap-3">
+                    {destinationWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
+                            "/placeholder.svg"
+                          }
+                          alt={destinationWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="h-1 bg-[#F6F7F8] my-4"></div>
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-                <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                  </span>
+                </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="mb-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="space-y-2 mt-12">
               <Button
@@ -506,51 +519,64 @@ export default function Transfer({ onClose }: TransferProps) {
             <h1 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">Confirm transfer</h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-                <div className="flex items-center gap-3">
-                  {sourceWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                        alt={sourceWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">From</span>
+                  <div className="flex items-center gap-3">
+                    {sourceWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                          alt={sourceWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-                <div className="flex items-center gap-3">
-                  {destinationWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg"
-                        }
-                        alt={destinationWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">To</span>
+                  <div className="flex items-center gap-3">
+                    {destinationWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
+                            "/placeholder.svg"
+                          }
+                          alt={destinationWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="h-1 bg-[#F6F7F8] my-4"></div>
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-                <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                  </span>
+                </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="mb-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="space-y-3 mt-8">
               <Button
@@ -654,6 +680,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
