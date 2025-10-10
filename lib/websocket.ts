@@ -38,7 +38,7 @@ export class WebSocketClient {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
-        this.socket = new WebSocket(url, protocols)
+        this.socket = new WebSocket(url)
         this.currentToken = socketToken
 
         this.socket.onopen = () => {
