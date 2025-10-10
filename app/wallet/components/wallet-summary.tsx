@@ -5,7 +5,8 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { cn, currencyLogoMapper } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getCurrencies, fetchBalance } from "@/services/api/api-wallets"
+import { getTotalBalance } from "@/services/api/api-auth"
+import { getCurrencies } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
 import ChooseCurrencyStep from "./choose-currency-step"
@@ -71,14 +72,27 @@ export default function WalletSummary({
     }
 
     try {
-      const balanceAmount = await fetchBalance(displayCurrency)
-      setBalance(balanceAmount)
+      const data = await getTotalBalance()
+      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+
+      if (p2pWallet?.balances?.length) {
+        const p2pBalance = p2pWallet.balances[0]
+        setBalance(Number.parseFloat(p2pBalance.balance) || 0)
+
+        // Update selected currency if P2P wallet has a different currency
+        if (p2pBalance.currency && !externalSelectedCurrency) {
+          setSelectedCurrency(p2pBalance.currency)
+        }
+      } else {
+        setBalance(0)
+      }
       setIsLoading(false)
     } catch (error) {
-      console.error("Error fetching user balance:", error)
+      console.error("Error fetching P2P wallet balance:", error)
+      setBalance(0)
       setIsLoading(false)
     }
-  }, [displayCurrency, userId])
+  }, [userId, externalSelectedCurrency])
 
   useEffect(() => {
     loadBalance()
@@ -101,7 +115,7 @@ export default function WalletSummary({
           </div>
         ),
         confirmText: undefined,
-        cancelText: undefined
+        cancelText: undefined,
       })
     }
   }
@@ -119,7 +133,7 @@ export default function WalletSummary({
           </div>
         ),
         confirmText: undefined,
-        cancelText: undefined
+        cancelText: undefined,
       })
     }
   }
@@ -137,7 +151,7 @@ export default function WalletSummary({
           </div>
         ),
         confirmText: undefined,
-        cancelText: undefined
+        cancelText: undefined,
       })
     }
   }
@@ -302,53 +316,53 @@ export default function WalletSummary({
             </div>
           </div>
         </div>
+
+        {currentStep === "chooseCurrency" && (
+          <div className="fixed inset-0 z-50 bg-white">
+            <ChooseCurrencyStep
+              title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
+              description={
+                currentOperation === "DEPOSIT"
+                  ? "Choose which currency you would like to deposit."
+                  : "Choose which currency you would like to withdraw."
+              }
+              currencies={currencies}
+              onClose={handleClose}
+              onCurrencySelect={handleCurrencySelect}
+            />
+          </div>
+        )}
+
+        {currentStep === "walletAction" && (
+          <div className="fixed inset-0 z-50 bg-white">
+            <WalletActionStep
+              title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
+              actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
+              onClose={handleClose}
+              onGoBack={handleGoBackToCurrency}
+              onDirectDepositClick={handleDirectDepositClick}
+              onDirectWithdrawClick={handleDirectWithdrawClick}
+            />
+          </div>
+        )}
+
+        <WalletSidebar
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
+          operation={currentOperation}
+          onP2PTransferClick={handleSendTransferClick}
+          onAccountTransferClick={handleReceiveTransferClick}
+          currencies={currencies}
+        />
+
+        <FullScreenIframeModal
+          isOpen={isIframeModalOpen}
+          onClose={() => setIsIframeModalOpen(false)}
+          operation={currentOperation}
+          currency={displayCurrency}
+        />
       </div>
-
-      {currentStep === "chooseCurrency" && (
-        <div className="fixed inset-0 z-50 bg-white">
-          <ChooseCurrencyStep
-            title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
-            description={
-              currentOperation === "DEPOSIT"
-                ? "Choose which currency you would like to deposit."
-                : "Choose which currency you would like to withdraw."
-            }
-            currencies={currencies}
-            onClose={handleClose}
-            onCurrencySelect={handleCurrencySelect}
-          />
-        </div>
-      )}
-
-      {currentStep === "walletAction" && (
-        <div className="fixed inset-0 z-50 bg-white">
-          <WalletActionStep
-            title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
-            actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
-            onClose={handleClose}
-            onGoBack={handleGoBackToCurrency}
-            onDirectDepositClick={handleDirectDepositClick}
-            onDirectWithdrawClick={handleDirectWithdrawClick}
-          />
-        </div>
-      )}
-
-      <WalletSidebar
-        isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
-        onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
-        operation={currentOperation}
-        onP2PTransferClick={handleSendTransferClick}
-        onAccountTransferClick={handleReceiveTransferClick}
-        currencies={currencies}
-      />
-
-      <FullScreenIframeModal
-        isOpen={isIframeModalOpen}
-        onClose={() => setIsIframeModalOpen(false)}
-        operation={currentOperation}
-        currency={displayCurrency}
-      />
     </>
   )
 }
