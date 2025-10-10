@@ -1,124 +1,117 @@
-import { render, screen, fireEvent } from "@testing-library/react"
-import { useRouter } from "next/navigation"
+import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet/kyc-onboarding-sheet"
-import { useKycOnboardingStore } from "@/stores/kyc-onboarding-store"
+import { getOnboardingStatus } from "@/services/api/api-auth"
+import jest from "jest" // Declare the jest variable
 
-// Mock Next.js router
-jest.mock("next/navigation", () => ({
-  useRouter: jest.fn(),
+// Mock the API
+jest.mock("@/services/api/api-auth", () => ({
+  getOnboardingStatus: jest.fn(),
 }))
 
-// Mock the store
-jest.mock("@/stores/kyc-onboarding-store", () => ({
-  useKycOnboardingStore: jest.fn(),
-}))
-
-const mockPush = jest.fn()
-const mockUseRouter = useRouter as jest.MockedFunction<typeof useRouter>
-const mockUseKycOnboardingStore = useKycOnboardingStore as jest.MockedFunction<typeof useKycOnboardingStore>
+const mockGetOnboardingStatus = getOnboardingStatus as jest.MockedFunction<typeof getOnboardingStatus>
 
 describe("KycOnboardingSheet", () => {
-  const mockSetSheetOpen = jest.fn()
+  const mockOnboardingStatus = {
+    kyc: {
+      status: "verified",
+    },
+    verification: {
+      email_verified: true,
+      phone_verified: true,
+    },
+    p2p: {
+      allowed: true,
+      criteria: [
+        { code: "poi", passed: true },
+        { code: "poa", passed: true },
+      ],
+    },
+  }
 
   beforeEach(() => {
     jest.clearAllMocks()
-    mockUseRouter.mockReturnValue({
-      push: mockPush,
-      back: jest.fn(),
-      forward: jest.fn(),
-      refresh: jest.fn(),
-      replace: jest.fn(),
-      prefetch: jest.fn(),
-    } as any)
+    delete (window as any).location
+    window.location = { href: "" } as any
   })
 
-  it("should render when sheet is open", () => {
-    mockUseKycOnboardingStore.mockReturnValue({
-      isSheetOpen: true,
-      profileCompleted: false,
-      biometricsCompleted: false,
-      showOnboarding: true,
-      setSheetOpen: mockSetSheetOpen,
-      setKycStatus: jest.fn(),
-      resetState: jest.fn(),
-    })
+  it("should render the verification checklist", async () => {
+    mockGetOnboardingStatus.mockResolvedValue(mockOnboardingStatus)
 
     render(<KycOnboardingSheet />)
 
-    expect(screen.getByText("Get started with P2P")).toBeInTheDocument()
-    expect(screen.getByText("Set up and verify your profile")).toBeInTheDocument()
-    expect(screen.getByText("Add biometrics")).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText("To access P2P, complete your profile and verification.")).toBeInTheDocument()
+    })
+
+    expect(screen.getByText("Set up your profile")).toBeInTheDocument()
+    expect(screen.getByText("Proof of identity")).toBeInTheDocument()
+    expect(screen.getByText("Proof of address")).toBeInTheDocument()
+    expect(screen.getByText("Phone number")).toBeInTheDocument()
   })
 
-  it("should not render when sheet is closed", () => {
-    mockUseKycOnboardingStore.mockReturnValue({
-      isSheetOpen: false,
-      profileCompleted: false,
-      biometricsCompleted: false,
-      showOnboarding: true,
-      setSheetOpen: mockSetSheetOpen,
-      setKycStatus: jest.fn(),
-      resetState: jest.fn(),
+  it("should show checkmarks for completed steps", async () => {
+    mockGetOnboardingStatus.mockResolvedValue(mockOnboardingStatus)
+
+    const { container } = render(<KycOnboardingSheet />)
+
+    await waitFor(() => {
+      const checkmarks = container.querySelectorAll("svg")
+      expect(checkmarks.length).toBeGreaterThan(0)
     })
+  })
+
+  it("should not show checkmarks for incomplete steps", async () => {
+    const incompleteStatus = {
+      kyc: {
+        status: "pending",
+      },
+      verification: {
+        email_verified: true,
+        phone_verified: false,
+      },
+      p2p: {
+        allowed: false,
+        criteria: [
+          { code: "poi", passed: false },
+          { code: "poa", passed: false },
+        ],
+      },
+    }
+
+    mockGetOnboardingStatus.mockResolvedValue(incompleteStatus)
+
+    const { container } = render(<KycOnboardingSheet />)
+
+    await waitFor(() => {
+      expect(screen.getByText("Phone number")).toBeInTheDocument()
+    })
+
+    const checkmarks = container.querySelectorAll("svg")
+    expect(checkmarks.length).toBe(0)
+  })
+
+  it("should navigate to profile when clicked", async () => {
+    mockGetOnboardingStatus.mockResolvedValue(mockOnboardingStatus)
 
     render(<KycOnboardingSheet />)
 
-    expect(screen.queryByText("Get started with P2P")).not.toBeInTheDocument()
-  })
-
-  it("should navigate to profile when profile setup clicked", () => {
-    mockUseKycOnboardingStore.mockReturnValue({
-      isSheetOpen: true,
-      profileCompleted: false,
-      biometricsCompleted: false,
-      showOnboarding: true,
-      setSheetOpen: mockSetSheetOpen,
-      setKycStatus: jest.fn(),
-      resetState: jest.fn(),
+    await waitFor(() => {
+      expect(screen.getByText("Set up your profile")).toBeInTheDocument()
     })
 
-    render(<KycOnboardingSheet />)
+    const profileStep = screen.getByText("Set up your profile")
+    fireEvent.click(profileStep)
 
-    const profileButton = screen.getByText("Set up and verify your profile").closest("button")
-    fireEvent.click(profileButton!)
-
-    expect(mockSetSheetOpen).toHaveBeenCalledWith(false)
-    expect(mockPush).toHaveBeenCalledWith("/profile")
+    expect(window.location.href).toContain("dashboard/userprofile")
   })
 
-  it("should show completed state for finished tasks", () => {
-    mockUseKycOnboardingStore.mockReturnValue({
-      isSheetOpen: true,
-      profileCompleted: true,
-      biometricsCompleted: false,
-      showOnboarding: true,
-      setSheetOpen: mockSetSheetOpen,
-      setKycStatus: jest.fn(),
-      resetState: jest.fn(),
+  it("should handle API errors gracefully", async () => {
+    mockGetOnboardingStatus.mockRejectedValue(new Error("API Error"))
+
+    const { container } = render(<KycOnboardingSheet />)
+
+    await waitFor(() => {
+      expect(container.firstChild).toBeNull()
     })
-
-    render(<KycOnboardingSheet />)
-
-    const profileTitle = screen.getByText("Set up and verify your profile")
-    expect(profileTitle).toHaveClass("line-through")
-  })
-
-  it("should close sheet when skip button clicked", () => {
-    mockUseKycOnboardingStore.mockReturnValue({
-      isSheetOpen: true,
-      profileCompleted: false,
-      biometricsCompleted: false,
-      showOnboarding: true,
-      setSheetOpen: mockSetSheetOpen,
-      setKycStatus: jest.fn(),
-      resetState: jest.fn(),
-    })
-
-    render(<KycOnboardingSheet />)
-
-    const skipButton = screen.getByText("Skip for now")
-    fireEvent.click(skipButton)
-
-    expect(mockSetSheetOpen).toHaveBeenCalledWith(false)
   })
 })
