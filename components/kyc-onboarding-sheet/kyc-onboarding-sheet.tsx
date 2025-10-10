@@ -39,13 +39,13 @@ function KycOnboardingSheet() {
     {
       id: "poi",
       title: "Proof of identity",
-      icon: "/icons/account-profile.png",
+      icon: "/icons/poi.png",
       completed: isPoiCompleted,
     },
     {
       id: "poa",
       title: "Proof of address",
-      icon: "/icons/home-icon.png",
+      icon: "/icons/poa.png",
       completed: isPoaCompleted,
     },
     {
