@@ -6,7 +6,7 @@ import type { AdFormData } from "../types"
 import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface AdDetailsFormProps {
