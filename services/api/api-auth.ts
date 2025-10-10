@@ -78,8 +78,6 @@ export interface CreateP2PUserResponse {
 
 const getAuthHeader = () => ({
   "Content-Type": "application/json",
-  "X-Branch": "master",
-  "X-Data-Source": "live",
 })
 
 /**
