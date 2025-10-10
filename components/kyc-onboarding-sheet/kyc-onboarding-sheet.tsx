@@ -73,7 +73,7 @@ function KycOnboardingSheet() {
       <div className="space-y-0">
         {verificationSteps.map((step, index) => (
           <div key={step.id}>
-            <div className="flex items-center gap-3 py-4 hover:cursor-pointer" onClick={handleStepClick}>
+            <div className="flex items-center gap-3 py-6 hover:cursor-pointer" onClick={handleStepClick}>
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                 <Image
                   src={step.icon || "/placeholder.svg"}
