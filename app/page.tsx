@@ -242,7 +242,7 @@ export default function BuySellPage() {
                 <div>
                   <BalanceSection />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                    <TabsList className="w-full bg-transparent">
+                    <TabsList className="w-full md:w-auto bg-transparent">
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
                         value="sell"
