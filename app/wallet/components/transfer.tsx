@@ -58,6 +58,29 @@ interface Transaction {
   }
 }
 
+interface CurrencyData {
+  type: "cryptocurrency" | "fiat" | "stablecoin"
+  fee: {
+    transfer: {
+      crypto_percentage: number
+      fiat_percentage: number
+      stablecoin_percentage: number
+    }
+  }
+  label: string
+  decimal: {
+    maximum: number
+    minimum: number
+  }
+  [key: string]: any
+}
+
+interface CurrenciesResponse {
+  data: {
+    [currencyCode: string]: CurrencyData
+  }
+}
+
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
@@ -65,6 +88,7 @@ export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
@@ -102,6 +126,7 @@ export default function Transfer({ onClose }: TransferProps) {
       try {
         const response = await getCurrencies()
         if (response?.data) {
+          setCurrenciesData(response as CurrenciesResponse)
           const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
             code,
             name: data.label,
@@ -155,6 +180,41 @@ export default function Transfer({ onClose }: TransferProps) {
 
     loadWallets()
   }, [selectedCurrency])
+
+  const calculateTransferFee = (): { feeAmount: number; feePercentage: number } | null => {
+    if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
+      return null
+    }
+
+    const sourceCurrencyData = currenciesData.data[sourceWalletData.currency]
+    const destinationCurrencyData = currenciesData.data[destinationWalletData.currency]
+
+    if (!sourceCurrencyData || !destinationCurrencyData) {
+      return null
+    }
+
+    const sourceType = sourceCurrencyData.type
+    let feePercentage = 0
+
+    // Determine fee percentage based on source currency type
+    if (sourceType === "cryptocurrency") {
+      feePercentage = destinationCurrencyData.fee.transfer.crypto_percentage
+    } else if (sourceType === "fiat") {
+      feePercentage = destinationCurrencyData.fee.transfer.fiat_percentage
+    } else if (sourceType === "stablecoin") {
+      feePercentage = destinationCurrencyData.fee.transfer.stablecoin_percentage
+    }
+
+    // If fee percentage is 0, return null (no fee to display)
+    if (feePercentage === 0) {
+      return null
+    }
+
+    const amount = Number.parseFloat(transferAmount)
+    const feeAmount = (amount * feePercentage) / 100
+
+    return { feeAmount, feePercentage }
+  }
 
   const handleTransferClick = () => {
     toConfirm()
@@ -401,6 +461,8 @@ export default function Transfer({ onClose }: TransferProps) {
   const renderDesktopConfirmPopup = () => {
     if (!showDesktopConfirmPopup) return null
 
+    const transferFee = calculateTransferFee()
+
     return (
       <div
         className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center"
@@ -451,6 +513,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -473,6 +536,21 @@ export default function Transfer({ onClose }: TransferProps) {
                   </span>
                 </div>
               </div>
+              {transferFee && (
+                <>
+                  <div className="h-1 bg-[#F6F7F8]"></div>
+                  <div className="h-[72px] flex items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        Transfer fee ({transferFee.feePercentage}%)
+                      </span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
               <div className="h-1 bg-[#F6F7F8]"></div>
               <div className="h-[72px] flex items-center">
                 <div className="flex items-center justify-between w-full">
@@ -506,6 +584,8 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const renderMobileConfirmSheet = () => {
     if (!showMobileConfirmSheet) return null
+
+    const transferFee = calculateTransferFee()
 
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
@@ -548,6 +628,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -570,6 +651,21 @@ export default function Transfer({ onClose }: TransferProps) {
                   </span>
                 </div>
               </div>
+              {transferFee && (
+                <>
+                  <div className="h-1 bg-[#F6F7F8]"></div>
+                  <div className="h-[72px] flex items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        Transfer fee ({transferFee.feePercentage}%)
+                      </span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {transferFee.feeAmount.toFixed(8)} {sourceWalletData?.currency || "USD"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
               <div className="h-1 bg-[#F6F7F8]"></div>
               <div className="h-[72px] flex items-center">
                 <div className="flex items-center justify-between w-full">
@@ -682,6 +778,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
