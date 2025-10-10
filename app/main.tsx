@@ -51,6 +51,7 @@ export default function Main({
         } else {
           if (!response?.errors) {
             await AuthAPI.getSocketToken()
+
             await AuthAPI.fetchUserIdAndStore()
 
             try {
@@ -65,7 +66,7 @@ export default function Main({
                 })
 
                 const currentUserId = useUserDataStore.getState().userId
-                if (!currentUserId && onboardingStatus.onboardingStatus.p2p.allowed) {
+                if (!currentUserId && onboardingStatus.p2p.allowed) {
                   try {
                     await AuthAPI.createP2PUser()
                   } catch (error) {

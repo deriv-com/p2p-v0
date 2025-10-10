@@ -27,6 +27,7 @@ interface UserDataState {
   brandClientId: string | null
   brand: string | null
   verificationStatus: VerificationStatus | null
+  socketToken: string | null
   setUserData: (data: UserData) => void
   setUserId: (id: string) => void
   setClientId: (id: string) => void
@@ -35,6 +36,7 @@ interface UserDataState {
   setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
   setVerificationStatus: (status: VerificationStatus) => void
+  setSocketToken: (token: string | null) => void
   clearUserData: () => void
 }
 
@@ -46,6 +48,7 @@ const initialState = {
   brandClientId: null,
   brand: null,
   verificationStatus: null,
+  socketToken: null,
 }
 
 export const useUserDataStore = create<UserDataState>((set) => ({
@@ -69,6 +72,8 @@ export const useUserDataStore = create<UserDataState>((set) => ({
     })),
 
   setVerificationStatus: (status) => set({ verificationStatus: status }),
+
+  setSocketToken: (token) => set({ socketToken: token }),
 
   clearUserData: () => set(initialState),
 }))
