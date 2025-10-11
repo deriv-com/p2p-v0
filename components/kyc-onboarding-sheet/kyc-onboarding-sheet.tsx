@@ -35,29 +35,33 @@ function KycOnboardingSheet() {
       title: "Set up your profile",
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
+      link: `https://${getHomeUrl()}/dashboard/userprofile`
     },
     {
       id: "poi",
       title: "Proof of identity",
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
+      link: `https://${getHomeUrl()}/dashboard/userprofile`
     },
     {
       id: "poa",
       title: "Proof of address",
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
+      link: `https://${getHomeUrl()}/dashboard/userprofile`
     },
     {
       id: "phone",
       title: "Phone number",
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
+      link: `https://${getHomeUrl()}/dashboard/userprofile`
     },
   ]
 
-  const handleStepClick = () => {
-    window.location.href = `https://${getHomeUrl()}/dashboard/userprofile`
+  const handleStepClick = (link) => {
+    window.location.href = link;
   }
 
   if (loading) {
