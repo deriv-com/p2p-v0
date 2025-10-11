@@ -35,7 +35,7 @@ function KycOnboardingSheet() {
       title: "Set up your profile",
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/terms-of-use`
+      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details`
     },
     {
       id: "poi",
