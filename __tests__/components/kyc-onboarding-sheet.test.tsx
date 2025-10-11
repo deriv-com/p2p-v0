@@ -1,19 +1,20 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react"
+import { render, screen, fireEvent } from "@testing-library/react"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet/kyc-onboarding-sheet"
-import { getOnboardingStatus } from "@/services/api/api-auth"
-import jest from "jest" // Declare the jest variable
+import { useUserDataStore } from "@/stores/user-data-store"
+import jest from "jest"
 
-// Mock the API
-jest.mock("@/services/api/api-auth", () => ({
-  getOnboardingStatus: jest.fn(),
+jest.mock("@/stores/user-data-store", () => ({
+  useUserDataStore: jest.fn(),
 }))
 
-const mockGetOnboardingStatus = getOnboardingStatus as jest.MockedFunction<typeof getOnboardingStatus>
+const mockUseUserDataStore = useUserDataStore as jest.MockedFunction<typeof useUserDataStore>
 
 describe("KycOnboardingSheet", () => {
   const mockOnboardingStatus = {
     kyc: {
       status: "verified",
+      poi_status: "approved",
+      poa_status: "approved",
     },
     verification: {
       email_verified: true,
@@ -22,8 +23,9 @@ describe("KycOnboardingSheet", () => {
     p2p: {
       allowed: true,
       criteria: [
-        { code: "poi", passed: true },
-        { code: "poa", passed: true },
+        { code: "deposit_enabled", passed: true },
+        { code: "withdraw_enabled", passed: true },
+        { code: "phone_verified", passed: true },
       ],
     },
   }
@@ -34,36 +36,33 @@ describe("KycOnboardingSheet", () => {
     window.location = { href: "" } as any
   })
 
-  it("should render the verification checklist", async () => {
-    mockGetOnboardingStatus.mockResolvedValue(mockOnboardingStatus)
+  it("should render the verification checklist", () => {
+    mockUseUserDataStore.mockReturnValue(mockOnboardingStatus)
 
     render(<KycOnboardingSheet />)
 
-    await waitFor(() => {
-      expect(screen.getByText("To access P2P, complete your profile and verification.")).toBeInTheDocument()
-    })
-
+    expect(screen.getByText("To access P2P, complete your profile and verification.")).toBeInTheDocument()
     expect(screen.getByText("Set up your profile")).toBeInTheDocument()
     expect(screen.getByText("Proof of identity")).toBeInTheDocument()
     expect(screen.getByText("Proof of address")).toBeInTheDocument()
     expect(screen.getByText("Phone number")).toBeInTheDocument()
   })
 
-  it("should show checkmarks for completed steps", async () => {
-    mockGetOnboardingStatus.mockResolvedValue(mockOnboardingStatus)
+  it("should show checkmarks for completed steps", () => {
+    mockUseUserDataStore.mockReturnValue(mockOnboardingStatus)
 
     const { container } = render(<KycOnboardingSheet />)
 
-    await waitFor(() => {
-      const checkmarks = container.querySelectorAll("svg")
-      expect(checkmarks.length).toBeGreaterThan(0)
-    })
+    const checkmarks = container.querySelectorAll('img[src="/icons/check-filled.png"]')
+    expect(checkmarks.length).toBeGreaterThan(0)
   })
 
-  it("should not show checkmarks for incomplete steps", async () => {
+  it("should not show checkmarks for incomplete steps", () => {
     const incompleteStatus = {
       kyc: {
         status: "pending",
+        poi_status: "pending",
+        poa_status: "pending",
       },
       verification: {
         email_verified: true,
@@ -72,46 +71,39 @@ describe("KycOnboardingSheet", () => {
       p2p: {
         allowed: false,
         criteria: [
-          { code: "poi", passed: false },
-          { code: "poa", passed: false },
+          { code: "deposit_enabled", passed: false },
+          { code: "withdraw_enabled", passed: false },
+          { code: "phone_verified", passed: false },
         ],
       },
     }
 
-    mockGetOnboardingStatus.mockResolvedValue(incompleteStatus)
+    mockUseUserDataStore.mockReturnValue(incompleteStatus)
 
     const { container } = render(<KycOnboardingSheet />)
 
-    await waitFor(() => {
-      expect(screen.getByText("Phone number")).toBeInTheDocument()
-    })
+    expect(screen.getByText("Phone number")).toBeInTheDocument()
 
-    const checkmarks = container.querySelectorAll("svg")
+    const checkmarks = container.querySelectorAll('img[src="/icons/check-filled.png"]')
     expect(checkmarks.length).toBe(0)
   })
 
-  it("should navigate to profile when clicked", async () => {
-    mockGetOnboardingStatus.mockResolvedValue(mockOnboardingStatus)
+  it("should navigate to profile when clicked", () => {
+    mockUseUserDataStore.mockReturnValue(mockOnboardingStatus)
 
     render(<KycOnboardingSheet />)
 
-    await waitFor(() => {
-      expect(screen.getByText("Set up your profile")).toBeInTheDocument()
-    })
-
     const profileStep = screen.getByText("Set up your profile")
-    fireEvent.click(profileStep)
+    fireEvent.click(profileStep.closest("div"))
 
-    expect(window.location.href).toContain("dashboard/userprofile")
+    expect(window.location.href).toContain("dashboard/onboarding/personal-details")
   })
 
-  it("should handle API errors gracefully", async () => {
-    mockGetOnboardingStatus.mockRejectedValue(new Error("API Error"))
+  it("should not render when onboarding status is null", () => {
+    mockUseUserDataStore.mockReturnValue(null)
 
     const { container } = render(<KycOnboardingSheet />)
 
-    await waitFor(() => {
-      expect(container.firstChild).toBeNull()
-    })
+    expect(container.firstChild).toBeNull()
   })
 })

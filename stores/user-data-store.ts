@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import type { OnboardingStatusResponse } from "@/services/api/api-auth"
 
 export interface UserData {
   adverts_are_listed?: boolean
@@ -27,6 +28,7 @@ interface UserDataState {
   brandClientId: string | null
   brand: string | null
   verificationStatus: VerificationStatus | null
+  onboardingStatus: OnboardingStatusResponse | null
   socketToken: string | null
   setUserData: (data: UserData) => void
   setUserId: (id: string) => void
@@ -36,6 +38,7 @@ interface UserDataState {
   setBrand: (brand: string) => void
   updateUserData: (data: Partial<UserData>) => void
   setVerificationStatus: (status: VerificationStatus) => void
+  setOnboardingStatus: (status: OnboardingStatusResponse) => void
   setSocketToken: (token: string | null) => void
   clearUserData: () => void
 }
@@ -48,6 +51,7 @@ const initialState = {
   brandClientId: null,
   brand: null,
   verificationStatus: null,
+  onboardingStatus: null,
   socketToken: null,
 }
 
@@ -72,6 +76,8 @@ export const useUserDataStore = create<UserDataState>((set) => ({
     })),
 
   setVerificationStatus: (status) => set({ verificationStatus: status }),
+
+  setOnboardingStatus: (status) => set({ onboardingStatus: status }),
 
   setSocketToken: (token) => set({ socketToken: token }),
 

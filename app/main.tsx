@@ -22,6 +22,7 @@ export default function Main({
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
+  const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
 
   useEffect(() => {
@@ -63,6 +64,8 @@ export default function Main({
                   p2p_allowed: onboardingStatus.p2p.allowed,
                 })
 
+                setOnboardingStatus(onboardingStatus)
+
                 const currentUserId = useUserDataStore.getState().userId
                 if (!currentUserId && onboardingStatus.p2p.allowed) {
                   try {
@@ -96,7 +99,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, setVerificationStatus])
+  }, [pathname, router, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
