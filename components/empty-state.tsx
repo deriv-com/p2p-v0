@@ -31,7 +31,7 @@ export default function EmptyState({
       router.push("/ads/create")
     } else {
       showAlert({
-        title: "Get started with P2P",
+        title: "Getting started with P2P",
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
