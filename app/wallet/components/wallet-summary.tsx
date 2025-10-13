@@ -41,7 +41,7 @@ export default function WalletSummary({
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [currentStep, setCurrentStep] = useState<WalletStep>("summary")
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
-  const [balance, setBalance] = useState(0)
+  const [balance, setBalance] = useState("0.00")
   const [isLoading, setIsLoading] = useState(true)
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
