@@ -7,9 +7,10 @@ import { useRouter } from "next/navigation"
 interface DepositOptionProps {
   onClose: () => void
   onDirectDepositClick: () => void
+  selectedCurrency?: string
 }
 
-export default function DepositOptions({ onClose, onDirectDepositClick }: DepositOptionProps) {
+export default function DepositOptions({ onClose, onDirectDepositClick, selectedCurrency }: DepositOptionProps) {
   const router = useRouter()
 
   const handleDirectDepositClick = (e: React.MouseEvent) => {
@@ -21,7 +22,11 @@ export default function DepositOptions({ onClose, onDirectDepositClick }: Deposi
   const handleP2PTradingClick = (e: React.MouseEvent) => {
     e.stopPropagation()
     onClose()
-    router.push("/")
+    if (selectedCurrency) {
+      router.push(`/?currency=${selectedCurrency}`)
+    } else {
+      router.push("/")
+    }
   }
 
   return (

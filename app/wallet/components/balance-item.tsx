@@ -12,13 +12,7 @@ interface BalanceItemProps {
 export default function BalanceItem({ currency, amount, onClick }: BalanceItemProps) {
   const logo = currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
 
-  const formatAmount = (value: string) => {
-    const numValue = Number(value)
-    if (isNaN(numValue)) return "0.00"
-    return numValue.toLocaleString("en-US")
-  }
-
-  const displayAmount = formatAmount(amount)
+  const displayAmount = isNaN(Number(amount)) ? "0.00" : amount
 
   return (
     <div
