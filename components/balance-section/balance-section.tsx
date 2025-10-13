@@ -15,9 +15,8 @@ export function BalanceSection() {
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
         if (p2pWallet?.balances?.length) {
-          const p2pBalance = p2pWallet.balances[0]
-          setBalance(p2pBalance.balance)
-          setCurrency(p2pBalance.currency)
+          setBalance(p2pWallet.total_balance.approximate_total_balance)
+          setCurrency(p2pWallet.total_balance.converted_to)
         }
       } catch (error) {
         console.error("Failed to fetch balance:", error)
