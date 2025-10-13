@@ -32,6 +32,7 @@ interface AdvertiserProfile {
   favourited_by_user_count: number
   is_blocked: boolean
   is_favourite: boolean
+  is_online?: boolean
   temp_ban_until: number | null
   trade_band: string
   order_count_lifetime: number
@@ -290,7 +291,7 @@ export default function AdvertiserProfilePage() {
                     <div className="h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
                     </div>
-                    {profile?.isOnline && (
+                    {profile?.is_online && (
                       <div className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-green-500 border-2 border-white"></div>
                     )}
                   </div>
@@ -316,7 +317,7 @@ export default function AdvertiserProfilePage() {
                       )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
-                      <span className="mr-[8px] hidden">{profile?.isOnline ? "Online" : "Offline"}</span>
+                      <span className="mr-[8px] hidden">{profile?.is_online ? "Online" : "Offline"}</span>
                       <span className="opacity-[0.08] hidden">|</span>
                       <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                     </div>
