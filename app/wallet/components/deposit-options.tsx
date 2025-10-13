@@ -23,7 +23,7 @@ export default function DepositOptions({ onClose, onDirectDepositClick, selected
     e.stopPropagation()
     onClose()
     if (selectedCurrency) {
-      router.push(`/?operation=buy&currency=${selectedCurrency}`)
+      router.push(`/?operation=sell&currency=${selectedCurrency}`)
     } else {
       router.push("/")
     }
