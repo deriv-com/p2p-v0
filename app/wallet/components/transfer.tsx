@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { fetchWalletsList, walletTransfer, getCurrencies, fetchTransactions } from "@/services/api/api-wallets"
-import { currencyLogoMapper } from "@/lib/utils"
+import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
@@ -252,12 +252,6 @@ export default function Transfer({ onClose }: TransferProps) {
     setDestinationWalletData(tempSource)
   }
 
-  const formatBalance = (amount: string): string => {
-    const num = Number.parseFloat(amount)
-    if (isNaN(num)) return "0.00"
-    return num.toFixed(2)
-  }
-
   const getSourceWalletBalance = (): number => {
     const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
     return wallet ? Number.parseFloat(wallet.balance) : 0
@@ -271,12 +265,12 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const getSourceWalletAmount = () => {
     const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
-    return wallet ? `${formatBalance(wallet.balance)} ${wallet.currency}` : ""
+    return wallet ? `${formatAmountWithDecimals(wallet.balance)} ${wallet.currency}` : ""
   }
 
   const getDestinationWalletAmount = () => {
     const wallet = wallets.find((w) => w.wallet_id === destinationWalletData?.id)
-    return wallet ? `${formatBalance(wallet.balance)} ${wallet.currency}` : ""
+    return wallet ? `${formatAmountWithDecimals(wallet.balance)} ${wallet.currency}` : ""
   }
 
   const getFilteredWallets = (type: WalletSelectorType) => {
@@ -330,7 +324,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={formatBalance(wallet.balance)}
+                    amount={formatAmountWithDecimals(wallet.balance)}
                     currency={wallet.currency}
                     icon={wallet.icon}
                     isSelected={selectedWalletId === wallet.wallet_id}
@@ -383,7 +377,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={formatBalance(wallet.balance)}
+                    amount={formatAmountWithDecimals(wallet.balance)}
                     currency={wallet.currency}
                     icon={getCurrencyImage(wallet.name, wallet.currency)}
                     isSelected={selectedWalletId === wallet.wallet_id}
@@ -448,6 +442,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -464,7 +459,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
                 <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                  {formatAmountWithDecimals(transferAmount || "0")} {selectedCurrency || "USD"}
                 </span>
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
@@ -531,6 +526,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
@@ -547,7 +543,7 @@ export default function Transfer({ onClose }: TransferProps) {
               <div className="mb-4">
                 <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
                 <span className="block text-base font-normal text-slate-1200">
-                  {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                  {formatAmountWithDecimals(transferAmount || "0")} {selectedCurrency || "USD"}
                 </span>
               </div>
               <div className="h-px bg-gray-200 mb-4"></div>
@@ -654,6 +650,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
@@ -704,7 +701,7 @@ export default function Transfer({ onClose }: TransferProps) {
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">
-                Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())}{" "}
+                Amount cannot exceed available balance ({formatAmountWithDecimals(getSourceWalletBalance().toString())}{" "}
                 {selectedCurrency || "USD"})
               </p>
             )}
@@ -752,7 +749,7 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText = `${formatBalance(transferAmount || "0")} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+    const transferText = `${formatAmountWithDecimals(transferAmount || "0")} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
       <>
