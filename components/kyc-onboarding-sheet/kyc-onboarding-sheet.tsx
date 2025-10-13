@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { getHomeUrl } from "@/lib/utils"
+import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 function KycOnboardingSheet() {
