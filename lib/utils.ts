@@ -194,8 +194,21 @@ export function getChatErrorMessage(tags: string[]): string {
   return message
 }
 
-export function formatAmount(amount: string) {
+export function formatAmount(amount: string): string {
   return amount.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+}
+
+export function formatAmountWithDecimals(amount: number | string): string {
+  const numericAmount = typeof amount === "string" ? Number.parseFloat(amount) : amount
+
+  if (isNaN(numericAmount)) {
+    return "0"
+  }
+
+  return numericAmount.toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 20,
+  })
 }
 
 export function formatDateTime(datetime) {
