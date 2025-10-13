@@ -202,11 +202,11 @@ export function formatAmountWithDecimals(amount: number | string): string {
   const numericAmount = typeof amount === "string" ? Number.parseFloat(amount) : amount
 
   if (isNaN(numericAmount)) {
-    return "0"
+    return "0.00"
   }
 
   return numericAmount.toLocaleString("en-US", {
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
     maximumFractionDigits: 20,
   })
 }
