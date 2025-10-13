@@ -20,7 +20,6 @@ export default function WalletPage() {
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const userId = useUserDataStore((state) => state.userId)
 
   useEffect(() => {
     const loadBalanceData = async () => {
@@ -48,11 +47,6 @@ export default function WalletPage() {
           setIsLoading(false)
         }
     }
-
-     if (!userId) {
-        setIsLoading(false)
-        return
-      }
      loadBalanceData()
   },[])
 
