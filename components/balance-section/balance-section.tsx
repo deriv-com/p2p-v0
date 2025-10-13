@@ -6,7 +6,7 @@ import { formatAmount } from "@/lib/utils"
 
 export function BalanceSection() {
   const [balance, setBalance] = useState<string>("0.00")
-  const [currency, setCurrency] = useState<string>("")
+  const [currency, setCurrency] = useState<string>("USD")
 
   useEffect(() => {
     const fetchBalance = async () => {
