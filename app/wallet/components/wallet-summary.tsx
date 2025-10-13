@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn, currencyLogoMapper } from "@/lib/utils"
+import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
@@ -51,6 +51,7 @@ export default function WalletSummary({
   const { showAlert } = useAlertDialog()
 
   const displayCurrency = externalSelectedCurrency || propCurrency
+  const formattedBalance = formatAmountWithDecimals(propBalance)
 
   const fetchCurrencies = async () => {
     try {
@@ -190,13 +191,13 @@ export default function WalletSummary({
                 <>
                   <p className="text-xs font-normal text-white/72">Total value</p>
                   <p className="text-xl font-extrabold text-white">
-                    {propIsLoading ? "0.00 USD" : `${propBalance} ${displayCurrency}`}
+                    {propIsLoading ? "0.00 USD" : `${formattedBalance} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-[28px] font-extrabold text-slate-1200">
-                    {propIsLoading ? "Loading..." : `${propBalance} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
                   </p>
                   <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
