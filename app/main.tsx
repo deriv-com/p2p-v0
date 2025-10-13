@@ -61,13 +61,13 @@ export default function Main({
                   email_verified: onboardingStatus.verification.email_verified,
                   phone_verified: onboardingStatus.verification.phone_verified,
                   kyc_verified: onboardingStatus.kyc.status === "approved",
-                  p2p_allowed: onboardingStatus.p2p.allowed,
+                  p2p_allowed: onboardingStatus.p2p?.allowed,
                 })
 
                 setOnboardingStatus(onboardingStatus)
 
                 const currentUserId = useUserDataStore.getState().userId
-                if (!currentUserId && onboardingStatus.p2p.allowed) {
+                if (!currentUserId && onboardingStatus.p2p?.allowed) {
                   try {
                     await AuthAPI.createP2PUser()
                     await AuthAPI.fetchUserIdAndStore()
