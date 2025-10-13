@@ -59,14 +59,14 @@ export default function WalletPage() {
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
-    setSelectedBalance(balance)
+    setTotalBalance(balance)
     setDisplayBalances(false)
   }
 
   const handleBackToBalances = () => {
     setDisplayBalances(true)
     setSelectedCurrency(null)
-    setSelectedBalance(null)
+    setTotalBalance(null)
   }
 
   return (
