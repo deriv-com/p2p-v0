@@ -80,7 +80,7 @@ export default function WalletSummary({
       setIsLoading(false)
     } catch (error) {
       console.error("Error fetching P2P wallet balance:", error)
-      setBalance(0)
+      setBalance("0.00")
       setIsLoading(false)
     }
   }, [userId, externalSelectedCurrency])
