@@ -195,7 +195,7 @@ export function getChatErrorMessage(tags: string[]): string {
 }
 
 export function formatAmount(amount: string): string {
-  return amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ",") ?? ""
+  return amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ",") ?? "0.00"
 }
 
 export function formatAmountWithDecimals(amount: number | string): string {
@@ -205,7 +205,7 @@ export function formatAmountWithDecimals(amount: number | string): string {
     return "0.00"
   }
 
-  return numericAmount?.toLocaleString("en-US")
+  return numericAmount?.toLocaleString("en-US") ?? "0.00"
 }
 
 export function formatDateTime(datetime) {
