@@ -260,30 +260,32 @@ export default function BuySellPage() {
                     </TabsList>
                   </Tabs>
                 </div>
-                <div>
-                  <CurrencyFilter
-                    currencies={currencies}
-                    selectedCurrency={currency}
-                    onCurrencySelect={handleCurrencySelect}
-                    title={activeTab === "sell" ? "You're paying with" : "You're receiving"}
-                    trigger={
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border border-input bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
-                      >
-                        <span>{currency}</span>
-                        <Image
-                          src="/icons/chevron-down-white.png"
-                          alt="Arrow"
-                          width={24}
-                          height={24}
-                          className="ml-2"
-                        />
-                      </Button>
-                    }
-                  />
-                </div>
+                {currencies.length > 0 && (
+                  <div>
+                    <CurrencyFilter
+                      currencies={currencies}
+                      selectedCurrency={currency}
+                      onCurrencySelect={handleCurrencySelect}
+                      title={activeTab === "sell" ? "You're paying with" : "You're receiving"}
+                      trigger={
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border border-input bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                        >
+                          <span>{currency}</span>
+                          <Image
+                            src="/icons/chevron-down-white.png"
+                            alt="Arrow"
+                            width={24}
+                            height={24}
+                            className="ml-2"
+                          />
+                        </Button>
+                      }
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
