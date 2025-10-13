@@ -5,7 +5,6 @@ import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
 import { getTotalBalance } from "@/services/api/api-auth"
-import { useUserDataStore } from "@/stores/user-data-store"
 
 interface Balance {
   wallet_id: string
