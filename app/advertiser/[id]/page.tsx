@@ -288,7 +288,7 @@ export default function AdvertiserProfilePage() {
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
                   <div className="relative mr-[16px]">
-                    <div className="h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
+                    <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
                         <div
                         className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-slate-1200 ${
