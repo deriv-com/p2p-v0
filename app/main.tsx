@@ -60,7 +60,7 @@ export default function Main({
                 setVerificationStatus({
                   email_verified: onboardingStatus.verification.email_verified,
                   phone_verified: onboardingStatus.verification.phone_verified,
-                  kyc_verified: onboardingStatus.kyc.status,
+                  kyc_verified: onboardingStatus.kyc.status === "approved",
                   p2p_allowed: onboardingStatus.p2p.allowed,
                 })
 

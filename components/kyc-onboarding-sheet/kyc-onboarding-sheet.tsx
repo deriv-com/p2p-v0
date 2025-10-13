@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { getHomeUrl } from "@/lib/utils"
+import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 
 function KycOnboardingSheet() {
@@ -64,8 +64,11 @@ function KycOnboardingSheet() {
         {verificationSteps.map((step, index) => (
           <div key={step.id}>
             <div
-              className="flex items-center gap-3 py-6 hover:cursor-pointer"
-              onClick={() => handleStepClick(step.link)}
+              className={cn("flex items-center gap-3 py-6", !step.completed && "hover:cursor-pointer")}
+              onClick={() => {
+                if(!step.completed)
+                    handleStepClick(step.link)
+              }}
             >
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                 <Image
