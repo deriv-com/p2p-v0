@@ -9,7 +9,7 @@ interface Balance {
 }
 
 interface WalletBalancesProps {
-  onBalanceClick?: (currency: string) => void
+  onBalanceClick?: (currency: string, balance: string) => void
   balances?: Balance[]
   isLoading?: boolean
 }
@@ -51,7 +51,6 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
 
   return (
     <div className="w-full">
-
       <div className="flex flex-col md:grid md:grid-rows-2 lg:grid-rows-3 gap-0">
         {balances.map((wallet) => (
           <BalanceItem
