@@ -199,13 +199,8 @@ export function formatAmount(amount: string): string {
 }
 
 export function formatAmountWithDecimals(amount: number | string): string {
-  const numericAmount = typeof amount === "string" ? Number.parseFloat(amount) : amount
 
-  if (isNaN(numericAmount)) {
-    return "0.00"
-  }
-
-  return numericAmount?.toLocaleString("en-US") ?? "0.00"
+  return amount?.toLocaleString("en-US") ?? "0.00"
 }
 
 export function formatDateTime(datetime) {
