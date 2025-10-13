@@ -201,7 +201,7 @@ export function formatAmount(amount: string): string {
 export function formatAmountWithDecimals(amount: number | string): string {
   if(Number(amount) == 0) return "0.00"
 
-  return Number(amount?.toLocaleString("en-US") ?? "0.00"
+  return Number(amount)?.toLocaleString("en-US") ?? "0.00"
 }
 
 export function formatDateTime(datetime) {
