@@ -76,12 +76,8 @@ export default function WalletSummary({
       const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
       if (p2pWallet?.balances?.length) {
-        const p2pBalance = p2pWallet.balances[0]
-        setBalance(Number.parseFloat(p2pBalance.balance) || 0)
-
-        if (p2pBalance.currency && !externalSelectedCurrency) {
-          setSelectedCurrency(p2pBalance.currency)
-        }
+        setBalance(p2pWallet.total_balance.approximate_total_balance)
+        setSelectedCurrency(p2pWallet.total_balance.converted_to)
       } else {
         setBalance(0)
       }
