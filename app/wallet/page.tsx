@@ -39,7 +39,7 @@ export default function WalletPage() {
         if (p2pWallet.balances) {
           const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
             wallet_id: p2pWallet.id,
-            amount: String(wallet.amount || "0"),
+            amount: String(wallet.balance || "0"),
             currency: wallet.currency,
           }))
           setP2pBalances(balancesList)

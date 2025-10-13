@@ -4,7 +4,7 @@ import Image from "next/image"
 import BalanceItem from "./balance-item"
 
 interface Balance {
-  balance: string
+  amount: string
   currency: string
 }
 
@@ -57,7 +57,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
             key={wallet.currency}
             currency={wallet.currency}
             amount={wallet.balance}
-            onClick={() => onBalanceClick?.(wallet.currency, wallet.balance)}
+            onClick={() => onBalanceClick?.(wallet.currency, wallet.amount)}
           />
         ))}
       </div>
