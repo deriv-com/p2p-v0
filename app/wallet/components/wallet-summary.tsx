@@ -159,7 +159,7 @@ export default function WalletSummary({
   const formatBalance = (value: string) => {
     const numValue = Number(value)
     if (isNaN(numValue)) return "0.00"
-    return numValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+    return numValue.toLocaleString("en-US")
   }
 
   const formattedBalance = formatBalance(propBalance)
