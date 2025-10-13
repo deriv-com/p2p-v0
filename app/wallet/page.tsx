@@ -20,34 +20,36 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
 
-  useEffect(() => {
-    const loadBalanceData = async () => {
-        try {
-          const data = await getTotalBalance()
-          const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+  const loadBalanceData = useCallback(async () => {
+    setIsLoading(true)
+    try {
+      const data = await getTotalBalance()
+      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
-          if (p2pWallet) {
-            setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
-            setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
+      if (p2pWallet) {
+        setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
+        setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
 
-            if (p2pWallet.balances) {
-              const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
-                wallet_id: p2pWallet.id,
-                amount: String(wallet.balance || "0"),
-                currency: wallet.currency,
-              }))
-              setP2pBalances(balancesList)
-            }
-          }
-          setIsLoading(false)
-        } catch (error) {
-          console.error("Error fetching P2P wallet balance:", error)
-          setTotalBalance("0.00")
-          setIsLoading(false)
+        if (p2pWallet.balances) {
+          const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
+            wallet_id: p2pWallet.id,
+            amount: String(wallet.balance || "0"),
+            currency: wallet.currency,
+          }))
+          setP2pBalances(balancesList)
         }
+      }
+    } catch (error) {
+      console.error("Error fetching P2P wallet balance:", error)
+      setTotalBalance("0.00")
+    } finally {
+      setIsLoading(false)
     }
-     loadBalanceData()
-  },[])
+  }, [])
+
+  useEffect(() => {
+    loadBalanceData()
+  }, [loadBalanceData])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
@@ -59,6 +61,7 @@ export default function WalletPage() {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setTotalBalance(null)
+    loadBalanceData()
   }
 
   return (
