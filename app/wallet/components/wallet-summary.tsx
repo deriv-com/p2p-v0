@@ -75,8 +75,8 @@ export default function WalletSummary({
       const data = await getTotalBalance()
       const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
-      setBalance(p2pWallet?.total_balance?.approximate_total_balance)
-      setSelectedCurrency(p2pWallet?.total_balance?.converted_to)
+      setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
+      setSelectedCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
       setIsLoading(false)
     } catch (error) {
       console.error("Error fetching P2P wallet balance:", error)
