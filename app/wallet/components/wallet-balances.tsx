@@ -4,7 +4,6 @@ import Image from "next/image"
 import BalanceItem from "./balance-item"
 
 interface Balance {
-  wallet_id: string
   amount: string
   currency: string
 }
@@ -52,6 +51,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
 
   return (
     <div className="w-full">
+
       <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-0">
         {balances.map((balance) => (
           <BalanceItem
