@@ -21,7 +21,6 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const userId = useUserDataStore((state) => state.userId)
-  const isFetchingRef = useRef(false)
 
   const loadBalanceData = useCallback(async () => {
     if (!userId) {
@@ -29,11 +28,6 @@ export default function WalletPage() {
       return
     }
 
-    if (isFetchingRef.current) {
-      return
-    }
-
-    isFetchingRef.current = true
     setIsLoading(true)
 
     try {
