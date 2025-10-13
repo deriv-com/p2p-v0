@@ -16,7 +16,10 @@ interface WalletBalancesProps {
 
 export default function WalletBalances({ onBalanceClick, balances = [], isLoading = true }: WalletBalancesProps) {
   if (isLoading) {
-    return <div className="mt-2 text-slate-600">Loading assets...</div>
+    return (<div className="text-center py-12">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+          <p className="mt-2 text-slate-600">Loading assets...</p>
+        </div>)
   }
 
   if (balances.length === 0) {
