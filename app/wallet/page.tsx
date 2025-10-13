@@ -53,7 +53,7 @@ export default function WalletPage() {
         setIsLoading(false)
         return
       }
-    await loadBalanceData()
+     loadBalanceData()
   },[])
 
   const handleBalanceClick = (currency: string, balance: string) => {
