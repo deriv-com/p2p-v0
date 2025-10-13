@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback, useRef } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
@@ -52,7 +52,7 @@ export default function WalletPage() {
       console.error("Error fetching P2P wallet balance:", error)
       setTotalBalance("0.00")
       setIsLoading(false)
-    
+    }
   }, [userId])
 
   useEffect(() => {
