@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import BalanceItem from "./balance-item"
+import { Spinner } from "@/components/ui/spinner"
 
 interface Balance {
   balance: string
@@ -16,7 +17,12 @@ interface WalletBalancesProps {
 
 export default function WalletBalances({ onBalanceClick, balances = [], isLoading = true }: WalletBalancesProps) {
   if (isLoading) {
-    return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading</div>
+    return (
+      <div className="flex flex-col items-center justify-center h-[200px] gap-3">
+        <Spinner className="size-8 text-slate-1200" />
+        <p className="text-sm text-gray-500">Loading balances...</p>
+      </div>
+    )
   }
 
   if (balances.length === 0) {
