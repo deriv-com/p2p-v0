@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
@@ -21,12 +21,20 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const userId = useUserDataStore((state) => state.userId)
+  const isFetchingRef = useRef(false)
 
   const loadBalanceData = useCallback(async () => {
     if (!userId) {
       setIsLoading(false)
       return
     }
+
+    if (isFetchingRef.current) {
+      return
+    }
+
+    isFetchingRef.current = true
+    setIsLoading(true)
 
     try {
       const data = await getTotalBalance()
@@ -50,6 +58,8 @@ export default function WalletPage() {
       console.error("Error fetching P2P wallet balance:", error)
       setTotalBalance("0.00")
       setIsLoading(false)
+    } finally {
+      isFetchingRef.current = false
     }
   }, [userId])
 
