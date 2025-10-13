@@ -4,7 +4,7 @@ import Image from "next/image"
 import BalanceItem from "./balance-item"
 
 interface Balance {
-  amount: string
+  balance: string
   currency: string
 }
 
