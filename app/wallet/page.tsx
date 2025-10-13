@@ -57,7 +57,7 @@ export default function WalletPage() {
     loadBalanceData()
   }, [loadBalanceData])
 
-  const handleBalanceClick = (currency: string) => {
+  const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
     setDisplayBalances(false)
   }
