@@ -62,7 +62,7 @@ export default function ProfilePage() {
           setUserData(() => ({
             ...data,
             username: data.nickname,
-            is_online: data.is_online,
+            is_online: data.is_online ?? true,
             rating:
               data.statistics_lifetime.rating_average !== null
                 ? `${data.statistics_lifetime.rating_average}/5`
