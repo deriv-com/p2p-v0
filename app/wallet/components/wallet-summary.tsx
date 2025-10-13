@@ -156,6 +156,14 @@ export default function WalletSummary({
 
   const currencyLogo = currencyLogoMapper[displayCurrency as keyof typeof currencyLogoMapper]
 
+  const formatBalance = (value: string) => {
+    const numValue = Number(value)
+    if (isNaN(numValue)) return "0.00"
+    return numValue.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+  }
+
+  const formattedBalance = formatBalance(propBalance)
+
   return (
     <>
       <div
@@ -190,13 +198,13 @@ export default function WalletSummary({
                 <>
                   <p className="text-xs font-normal text-white/72">Total value</p>
                   <p className="text-xl font-extrabold text-white">
-                    {propIsLoading ? "0.00 USD" : `${propBalance} ${displayCurrency}`}
+                    {propIsLoading ? "0.00 USD" : `${formattedBalance} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-[28px] font-extrabold text-slate-1200">
-                    {propIsLoading ? "Loading..." : `${propBalance} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
                   </p>
                   <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
