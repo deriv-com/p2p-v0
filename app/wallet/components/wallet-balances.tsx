@@ -55,7 +55,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
       <div className="flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-0">
         {balances.map((balance) => (
           <BalanceItem
-            key={balance.wallet_id}
+            key={balance.currency}
             currency={balance.currency}
             amount={balance.amount}
             onClick={() => onBalanceClick?.(balance.currency)}
