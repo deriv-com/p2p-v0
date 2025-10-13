@@ -13,7 +13,6 @@ import WalletActionStep from "./wallet-action-step"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { Spinner } from "@/components/ui/spinner"
 
 interface Currency {
   code: string
@@ -191,27 +190,13 @@ export default function WalletSummary({
                 <>
                   <p className="text-xs font-normal text-white/72">Total value</p>
                   <p className="text-xl font-extrabold text-white">
-                    {propIsLoading ? (
-                      <span className="flex items-center gap-2">
-                        <Spinner className="size-5 text-white" />
-                        Loading...
-                      </span>
-                    ) : (
-                      `${Number(propBalance).toFixed(2)} ${displayCurrency}`
-                    )}
+                    {propIsLoading ? "Loading..." : `${Number(propBalance).toFixed(2)} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-[28px] font-extrabold text-slate-1200">
-                    {propIsLoading ? (
-                      <span className="flex items-center gap-2">
-                        <Spinner className="size-6 text-slate-1200" />
-                        Loading...
-                      </span>
-                    ) : (
-                      `${Number(propBalance).toFixed(2)} ${displayCurrency}`
-                    )}
+                    {propIsLoading ? "Loading..." : `${Number(propBalance).toFixed(2)} ${displayCurrency}`}
                   </p>
                   <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
