@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { currencyLogoMapper } from "@/lib/utils"
+import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 
 interface BalanceItemProps {
   currency: string
@@ -12,7 +12,7 @@ interface BalanceItemProps {
 export default function BalanceItem({ currency, amount, onClick }: BalanceItemProps) {
   const logo = currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
 
-  const displayAmount = isNaN(Number(amount)) ? "0.00" : amount
+  const displayAmount = isNaN(Number(amount)) ? "0.00" : formatAmountWithDecimals(amount)
 
   return (
     <div
