@@ -64,7 +64,7 @@ function KycOnboardingSheet() {
         {verificationSteps.map((step, index) => (
           <div key={step.id}>
             <div
-              className="flex items-center gap-3 py-6 hover:cursor-pointer"
+              className={cn("flex items-center gap-3 py-6", !step.completed &&"hover:cursor-pointer")}
               onClick={() => {
                 if(!step.completed)
                     handleStepClick(step.link)
