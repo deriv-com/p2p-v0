@@ -52,9 +52,7 @@ export default function WalletPage() {
       console.error("Error fetching P2P wallet balance:", error)
       setTotalBalance("0.00")
       setIsLoading(false)
-    } finally {
-      isFetchingRef.current = false
-    }
+    
   }, [userId])
 
   useEffect(() => {
