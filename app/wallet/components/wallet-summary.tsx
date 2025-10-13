@@ -190,13 +190,13 @@ export default function WalletSummary({
                 <>
                   <p className="text-xs font-normal text-white/72">Total value</p>
                   <p className="text-xl font-extrabold text-white">
-                    {propIsLoading ? "Loading..." : `${Number(propBalance).toFixed(2)} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${propBalance} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-[28px] font-extrabold text-slate-1200">
-                    {propIsLoading ? "Loading..." : `${Number(propBalance).toFixed(2)} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${propBalance} ${displayCurrency}`}
                   </p>
                   <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
