@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn, currencyLogoMapper } from "@/lib/utils"
+import { cn, currencyLogoMapper, formatAmount } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { getCurrencies } from "@/services/api/api-wallets"
