@@ -16,7 +16,7 @@ interface WalletBalancesProps {
 
 export default function WalletBalances({ onBalanceClick, balances = [], isLoading = true }: WalletBalancesProps) {
   if (isLoading) {
-    return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading</div>
+    return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading assets...</div>
   }
 
   if (balances.length === 0) {
