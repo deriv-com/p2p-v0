@@ -33,11 +33,9 @@ export default function WalletPage() {
       const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
       if (p2pWallet) {
-        // Set total balance for WalletSummary
         setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
         setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
 
-        // Extract individual balances for WalletBalances
         if (p2pWallet.balances) {
           const balancesList: Balance[] = p2pWallet.balances.map((balance: any) => ({
             wallet_id: p2pWallet.id,
