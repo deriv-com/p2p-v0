@@ -199,13 +199,14 @@ export function formatAmount(amount: string): string {
 }
 
 export function formatAmountWithDecimals(amount: number | string): string {
-  const numericAmount = typeof amount === "string" ? Number.parseFloat(amount) : amount
+  const strAmount = String(amount)
 
-  if (isNaN(numericAmount)) {
-    return "0.00"
-  }
+  if (Number(strAmount) === 0) return "0.00"
 
-  return numericAmount?.toLocaleString("en-US") ?? "0.00"
+  const [whole, decimal] = strAmount.split(".")
+  const wholeWithCommas = Number(whole).toLocaleString("en-US")
+
+  return decimal !== undefined ? `${wholeWithCommas}.${decimal}` : wholeWithCommas
 }
 
 export function formatDateTime(datetime) {
