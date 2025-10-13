@@ -58,7 +58,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
             key={wallet.currency}
             currency={wallet.currency}
             amount={wallet.balance}
-            onClick={() => onBalanceClick?.(wallet.currency)}
+            onClick={() => onBalanceClick?.(wallet.currency, wallet.balance)}
           />
         ))}
       </div>
