@@ -23,7 +23,7 @@ export default function WithdrawOptions({ onClose, onDirectWithdrawClick, select
     e.stopPropagation()
     onClose()
     if (selectedCurrency) {
-      router.push(`/?currency=${selectedCurrency}`)
+      router.push(`/?operation=sell&currency=${selectedCurrency}`)
     } else {
       router.push("/")
     }
