@@ -74,13 +74,21 @@ export default function Main({
                     console.error("Error creating P2P user:", error)
                   }
                 }
+
+                if (isMountedRef.current && !abortController.signal.aborted) {
+                  router.push(pathname)
+                }
               }
             } catch (error) {
               console.error("Error fetching onboarding status:", error)
+              if (isMountedRef.current && !abortController.signal.aborted) {
+                router.push(pathname)
+              }
             }
-          }
-          if (isMountedRef.current && !abortController.signal.aborted) {
-            router.push(pathname)
+          } else {
+            if (isMountedRef.current && !abortController.signal.aborted) {
+              router.push(pathname)
+            }
           }
         }
       } catch (error) {
