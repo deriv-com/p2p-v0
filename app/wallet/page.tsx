@@ -22,42 +22,40 @@ export default function WalletPage() {
   const [isLoading, setIsLoading] = useState(true)
   const userId = useUserDataStore((state) => state.userId)
 
-  const loadBalanceData = useCallback(async () => {
-    if (!userId) {
-      setIsLoading(false)
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      const data = await getTotalBalance()
-      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-
-      if (p2pWallet) {
-        setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
-        setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
-
-        if (p2pWallet.balances) {
-          const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
-            wallet_id: p2pWallet.id,
-            amount: String(wallet.balance || "0"),
-            currency: wallet.currency,
-          }))
-          setP2pBalances(balancesList)
-        }
-      }
-      setIsLoading(false)
-    } catch (error) {
-      console.error("Error fetching P2P wallet balance:", error)
-      setTotalBalance("0.00")
-      setIsLoading(false)
-    }
-  }, [userId])
+  
 
   useEffect(() => {
-    loadBalanceData()
-  }, [loadBalanceData])
+    const loadBalanceData = async () => {
+          if (!userId) {
+            setIsLoading(false)
+            return
+          }
+          try {
+            const data = await getTotalBalance()
+            const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+
+            if (p2pWallet) {
+              setTotalBalance(p2pWallet.total_balance?.approximate_total_balance ?? "0.00")
+              setBalanceCurrency(p2pWallet.total_balance?.converted_to ?? "USD")
+
+              if (p2pWallet.balances) {
+                const balancesList: Balance[] = p2pWallet.balances.map((wallet: any) => ({
+                  wallet_id: p2pWallet.id,
+                  amount: String(wallet.balance || "0"),
+                  currency: wallet.currency,
+                }))
+                setP2pBalances(balancesList)
+              }
+            }
+            setIsLoading(false)
+          } catch (error) {
+            console.error("Error fetching P2P wallet balance:", error)
+            setTotalBalance("0.00")
+            setIsLoading(false)
+          }
+        }
+     await loadBalanceData()
+  },[])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
