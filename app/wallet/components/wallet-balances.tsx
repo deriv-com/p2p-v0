@@ -1,10 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import BalanceItem from "./balance-item"
-import { fetchUserBalances } from "@/services/api/api-wallets"
-import { useUserDataStore } from "@/stores/user-data-store"
 import Image from "next/image"
+import BalanceItem from "./balance-item"
 
 interface Balance {
   wallet_id: string
@@ -14,36 +11,12 @@ interface Balance {
 
 interface WalletBalancesProps {
   onBalanceClick?: (currency: string) => void
+  balances?: Balance[]
+  isLoading?: boolean
 }
 
-export default function WalletBalances({ onBalanceClick }: WalletBalancesProps) {
-  const [balances, setBalances] = useState<Balance[]>([])
-  const [loading, setLoading] = useState(true)
-  const userId = useUserDataStore((state) => state.userId)
-
-  useEffect(() => {
-    const loadBalances = async () => {
-      if (!userId) {
-        setLoading(false)
-        return
-      }
-
-      try {
-        const data = await fetchUserBalances()
-        if (data?.balances) {
-          setBalances(data.balances)
-        }
-      } catch (error) {
-        console.error("Error fetching balances:", error)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    loadBalances()
-  }, [userId])
-
-  if (loading) {
+export default function WalletBalances({ onBalanceClick, balances = [], isLoading = true }: WalletBalancesProps) {
+  if (isLoading) {
     return <div className="flex items-center justify-center h-[200px] text-gray-500">Loading</div>
   }
 

@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn, currencyLogoMapper, formatAmount } from "@/lib/utils"
+import { cn, currencyLogoMapper } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getTotalBalance } from "@/services/api/api-auth"
+// import { getTotalBalance } from "@/services/api/api-auth"
 import { getCurrencies } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
@@ -28,12 +28,18 @@ interface WalletSummaryProps {
   isBalancesView?: boolean
   selectedCurrency?: string | null
   onBack?: () => void
+  balance?: string
+  currency?: string
+  isLoading?: boolean
 }
 
 export default function WalletSummary({
   isBalancesView = true,
   selectedCurrency: externalSelectedCurrency = null,
   onBack,
+  balance: propBalance = "0.00",
+  currency: propCurrency = "USD",
+  isLoading: propIsLoading = true,
 }: WalletSummaryProps) {
   const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -41,13 +47,11 @@ export default function WalletSummary({
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [currentStep, setCurrentStep] = useState<WalletStep>("summary")
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
-  const [balance, setBalance] = useState("0.00")
-  const [isLoading, setIsLoading] = useState(true)
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
 
-  const displayCurrency = externalSelectedCurrency || selectedCurrency
+  const displayCurrency = externalSelectedCurrency || propCurrency
 
   const fetchCurrencies = async () => {
     try {
@@ -64,30 +68,6 @@ export default function WalletSummary({
       console.error("Error fetching currencies:", error)
     }
   }
-
-  const loadBalance = useCallback(async () => {
-    if (!userId) {
-      setIsLoading(false)
-      return
-    }
-
-    try {
-      const data = await getTotalBalance()
-      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-
-      setBalance(formatAmount(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00"))
-      setSelectedCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
-      setIsLoading(false)
-    } catch (error) {
-      console.error("Error fetching P2P wallet balance:", error)
-      setBalance("0.00")
-      setIsLoading(false)
-    }
-  }, [userId, externalSelectedCurrency])
-
-  useEffect(() => {
-    loadBalance()
-  }, [loadBalance])
 
   useEffect(() => {
     fetchCurrencies()
@@ -211,13 +191,13 @@ export default function WalletSummary({
                 <>
                   <p className="text-xs font-normal text-white/72">Total value</p>
                   <p className="text-xl font-extrabold text-white">
-                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${Number(propBalance).toFixed(2)} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-[28px] font-extrabold text-slate-1200">
-                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${Number(propBalance).toFixed(2)} ${displayCurrency}`}
                   </p>
                   <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
@@ -246,13 +226,13 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? balance === 0
+                    ? propBalance === "0.00"
                       ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
                       : "border border-white bg-transparent hover:bg-white/10 text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
-                disabled={isBalancesView && balance === 0}
+                disabled={isBalancesView && propBalance === "0.00"}
                 aria-label="Transfer"
               >
                 <Image
@@ -260,13 +240,13 @@ export default function WalletSummary({
                   alt="Transfer"
                   width={14}
                   height={14}
-                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
+                  className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
                 />
               </Button>
               <span
                 className={cn(
                   "text-xs font-normal",
-                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
                 )}
               >
                 Transfer
@@ -279,13 +259,13 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? balance === 0
+                    ? propBalance === "0.00"
                       ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
                       : "border border-white bg-transparent hover:bg-white/10 text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleWithdrawClick}
-                disabled={isBalancesView && balance === 0}
+                disabled={isBalancesView && propBalance === "0.00"}
                 aria-label="Withdraw"
               >
                 <Image
@@ -293,13 +273,13 @@ export default function WalletSummary({
                   alt="Withdraw"
                   width={14}
                   height={14}
-                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
+                  className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
                 />
               </Button>
               <span
                 className={cn(
                   "text-xs font-normal",
-                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
                 )}
               >
                 Withdraw
