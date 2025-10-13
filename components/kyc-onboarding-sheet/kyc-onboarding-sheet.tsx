@@ -65,7 +65,10 @@ function KycOnboardingSheet() {
           <div key={step.id}>
             <div
               className="flex items-center gap-3 py-6 hover:cursor-pointer"
-              onClick={() => handleStepClick(step.link)}
+              onClick={() => {
+                if(!step.completed)
+                    handleStepClick(step.link)
+              }}
             >
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
                 <Image
