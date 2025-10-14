@@ -24,6 +24,11 @@ export function useAccountCurrencies() {
             code,
             name: code,
           }))
+          .sort((a, b) => {
+            if (a.code === "USD") return -1
+            if (b.code === "USD") return 1
+            return a.code.localeCompare(b.code)
+          })
 
         setAccountCurrencies(currencyList)
         setError(null)

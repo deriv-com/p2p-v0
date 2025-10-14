@@ -11,10 +11,9 @@ interface UserInfoProps {
   recommendation: number
   joinDate: string
   tradeBand: string
-  isOnline?: boolean
 }
 
-export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand, isOnline }: UserInfoProps) {
+export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
 
   const isFullyVerified =
@@ -25,11 +24,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
       <div className="flex flex-col md:flex-row items-start gap-4">
         <div className="relative h-14 w-14 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-lg">
           <Image src="/icons/user-icon.png" alt="Star" width={32} height={32} />
-          <div
-            className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-slate-1200 ${
-              isOnline ? "bg-buy" : "bg-gray-400"
-            }`}
-          />
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-1">
