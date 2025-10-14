@@ -361,17 +361,17 @@ export default function OrdersPage() {
         <div className="flex flex-col">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
             <Tabs value={activeTab} onValueChange={handleTabChange}>
-              <TabsList className="w-full bg-transparent">
+              <TabsList className="w-full bg-transparent gap-4">
                 <TabsTrigger
                   value="active"
-                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                   variant="underline"
                 >
                   Active
                 </TabsTrigger>
                 <TabsTrigger
                   value="past"
-                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
+                  className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                   variant="underline"
                 >
                   Past
