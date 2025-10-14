@@ -27,10 +27,6 @@ export class WebSocketClient {
       return Promise.resolve(this.socket)
     }
 
-    if (this.socket && this.currentToken !== socketToken) {
-      this.disconnect()
-    }
-
     if (this.isConnecting) {
       return Promise.reject(new Error("Connection already in progress"))
     }
