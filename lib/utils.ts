@@ -209,16 +209,6 @@ export function formatAmountWithDecimals(amount: number | string): string {
   return decimal !== undefined ? `${wholeWithCommas}.${decimal}` : wholeWithCommas
 }
 
-export function formatAmountWithDecimals(amount: number | string): string {
-  const strAmount = String(amount)
-
-  if (Number(strAmount) === 0) return "0.00"
-
-  const [whole, decimal] = strAmount.split(".")
-  const wholeWithCommas = Number(whole).toLocaleString("en-US")
-
-  return decimal !== undefined ? `${wholeWithCommas}.${decimal}` : wholeWithCommas
-}
 
 export function formatDateTime(datetime) {
   const d = new Date(datetime)
