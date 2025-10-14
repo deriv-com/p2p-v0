@@ -173,7 +173,7 @@ async function getAdvertiserFromAds(advertiserId: string | number): Promise<any>
       return {
         id: user.id,
         nickname: user.nickname || "Unknown",
-        is_online: user.is_online || true,
+        is_online: user.is_online,
         joined_date: `Joined ${Math.floor((Date.now() / 1000 - user.created_at) / (60 * 60 * 24))} days ago`,
         rating: user.user_rating_average || 0,
         rating_count: 0,
