@@ -401,7 +401,10 @@ export default function BuySellPage() {
                                   >
                                     {ad.user?.nickname}
                                   </button>
-                                  {ad.user?.is_online && <div className="ml-2 h-2 w-2 rounded-full bg-green-500"></div>}
+                                  {ad.user?.is_online && <div
+                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
+                          profile?.is_online ? "bg-buy" : "bg-gray-400"
+                        }`}/>}
                                   {ad.user?.is_favourite && (
                                     <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                       Following
