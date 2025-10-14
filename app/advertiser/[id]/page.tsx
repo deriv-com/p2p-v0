@@ -146,7 +146,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 25000,
+          duration: 2500,
         })
       } else {
         console.error("Failed to toggle follow status:", result.message)
