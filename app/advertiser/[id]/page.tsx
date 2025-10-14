@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParam} from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
