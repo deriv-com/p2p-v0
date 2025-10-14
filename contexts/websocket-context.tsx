@@ -211,7 +211,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClient.connect().catch((error) => {
       console.error("Failed to connect WebSocket:", error)
     })
-  }, [socketToken])
+  }, [])
 
   const joinChannel = (channel: string, id: number) => {
     wsClientRef.current?.joinChannel(channel, id)
