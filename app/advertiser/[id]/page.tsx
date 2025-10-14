@@ -291,7 +291,7 @@ export default function AdvertiserProfilePage() {
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
                         <div
-                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-slate-1200 ${
+                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border- ${
                           profile?.is_online ? "bg-buy" : "bg-gray-400"
                         }`}
                       />
