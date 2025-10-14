@@ -33,8 +33,7 @@ export function CurrencyFilter({
       filtered = filtered.filter((currency) => {
         const codeMatch = currency?.code?.toLowerCase().includes(query)
         const nameMatch = currency?.name?.toLowerCase().includes(query)
-        const wordMatch = currency.name?
-          .toLowerCase()
+        const wordMatch = currency.name?.toLowerCase()
           .split(" ")
           .some((word) => word.startsWith(query))
         return codeMatch || nameMatch || wordMatch
