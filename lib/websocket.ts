@@ -24,7 +24,7 @@ export class WebSocketClient {
       return Promise.resolve(this.socket)
     }
 
-    if (this.socket && this.currentToken !== socketToken) {
+    if (this.socket) {
       this.disconnect()
     }
 
