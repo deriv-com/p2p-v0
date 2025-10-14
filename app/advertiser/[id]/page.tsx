@@ -255,11 +255,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   const handleBack = () => {
-    if (onBack) {
-      onBack()
-    } else {
-      router.push("/")
-    }
+    router
   }
 
   if (isLoading) {
