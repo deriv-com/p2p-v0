@@ -98,7 +98,7 @@ export default function BuySellPage() {
       setCurrency(currencies[0]?.code)
     }
    
-  }, [searchParams, setActiveTab, setSelectedAccountCurrency])
+  }, [searchParams, setCurrency, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
     if (paymentMethodsInitialized) {
