@@ -183,7 +183,7 @@ export default function PaymentMethodsFilter({
       </div>
 
       {filteredPaymentMethods.length > 0 && (
-        <div className="flex items-center space-x-3 mb-4 pb-3">
+        <div className="flex items-center space-x-3 mb-4">
           <Checkbox
             id="select-all"
             checked={isAllSelected}
