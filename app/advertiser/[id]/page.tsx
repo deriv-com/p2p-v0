@@ -254,7 +254,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   const handleBack = () => {
-    router
+    router.back()
   }
 
   if (isLoading) {
