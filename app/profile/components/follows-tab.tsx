@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,6 +18,7 @@ interface FollowUser {
 }
 
 export default function FollowsTab() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [following, setFollowing] = useState<FollowUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
