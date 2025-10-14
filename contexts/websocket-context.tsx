@@ -186,7 +186,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const isConnectedRef = useRef(false)
 
   useEffect(() => {
-    // Only initialize once when token becomes available
     if (hasInitializedRef.current) return
 
     hasInitializedRef.current = true
