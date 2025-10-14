@@ -194,6 +194,10 @@ export default function Transfer({ onClose }: TransferProps) {
       return null
     }
 
+    if (sourceWalletData.currency === destinationWalletData.currency) {
+      return null
+    }
+
     const sourceCurrencyData = currenciesData.data[sourceWalletData.currency]
     const destinationCurrencyData = currenciesData.data[destinationWalletData.currency]
 
@@ -523,6 +527,7 @@ export default function Transfer({ onClose }: TransferProps) {
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -635,6 +640,7 @@ export default function Transfer({ onClose }: TransferProps) {
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
@@ -785,6 +791,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
