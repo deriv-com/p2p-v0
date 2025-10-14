@@ -130,8 +130,8 @@ export default function PaymentMethodsFilter({
     return Object.entries(groupedMethods)
       .sort(([typeA], [typeB]) => typeA.localeCompare(typeB))
       .map(([type, methods]) => (
-        <div key={type} className="space-y-3">
-          <h4 className="font-bold text-gray-900 text-sm">{getGroupTitle(type)}</h4>
+        <div key={type} className="space-y-3 border-t py-2">
+          <h4 className="text-grayscale-text-muted text-sm">{getGroupTitle(type)}</h4>
           <div className="flex flex-col gap-3">
             {methods.map((method) => (
               <div key={method.method} className="flex items-center space-x-3">
@@ -183,7 +183,7 @@ export default function PaymentMethodsFilter({
       </div>
 
       {filteredPaymentMethods.length > 0 && (
-        <div className="flex items-center space-x-3 mb-4 pb-3">
+        <div className="flex items-center space-x-3 mb-4">
           <Checkbox
             id="select-all"
             checked={isAllSelected}
@@ -194,13 +194,13 @@ export default function PaymentMethodsFilter({
             className="data-[state=checked]:bg-black border-black"
             disabled={isLoading || filteredPaymentMethods.length === 0}
           />
-          <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
-            Select all
+          <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
+            All payment method
           </label>
         </div>
       )}
 
-      <div className="space-y-4 max-h-60 overflow-y-auto">
+      <div className="space-y-2 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (

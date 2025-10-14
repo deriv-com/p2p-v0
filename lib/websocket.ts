@@ -20,11 +20,11 @@ export class WebSocketClient {
   public connect(): Promise<WebSocket> {
     const socketToken = this.getSocketToken()
 
-    if (this.socket && this.socket.readyState === WebSocket.OPEN && this.currentToken === socketToken) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return Promise.resolve(this.socket)
     }
 
-    if (this.socket && this.currentToken !== socketToken) {
+    if (this.socket) {
       this.disconnect()
     }
 

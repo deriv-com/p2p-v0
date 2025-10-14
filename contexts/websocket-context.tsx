@@ -23,12 +23,8 @@ export class WebSocketClient {
   public connect(): Promise<WebSocket> {
     const socketToken = this.getSocketToken()
 
-    if (this.socket && this.socket.readyState === WebSocket.OPEN && this.currentToken === socketToken) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return Promise.resolve(this.socket)
-    }
-
-    if (this.socket && this.currentToken !== socketToken) {
-      this.disconnect()
     }
 
     if (this.isConnecting) {
@@ -190,8 +186,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   const isConnectedRef = useRef(false)
 
   useEffect(() => {
-    // Only initialize once when token becomes available
-    if (!socketToken || hasInitializedRef.current) return
+    if (hasInitializedRef.current) return
 
     hasInitializedRef.current = true
 

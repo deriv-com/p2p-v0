@@ -178,11 +178,11 @@ export default function WalletSummary({
           <div className={cn("flex items-center gap-4", isMobile && "gap-2 flex-col text-center")}>
             <div className="flex-shrink-0">
               <Image
-                src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/p2p-3d.png"}
+                src={!isBalancesView && currencyLogo ? currencyLogo : "/icons/dp2p-wallet.png"}
                 alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
                 width={!isBalancesView ? 64 : 92}
                 height={!isBalancesView ? 64 : 92}
-                className={cn(!isBalancesView ? "w-16 h-16" : "w-16 h-16 md:w-24 md:h-24")}
+                className={cn(!isBalancesView ? "w-16 h-16" : "w-18 h-18 md:w-24 md:h-24")}
               />
             </div>
 

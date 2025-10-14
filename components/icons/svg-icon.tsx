@@ -7,8 +7,8 @@ interface SvgIconProps {
 
 export function SvgIcon({
   fill = "currentColor",
-  width = 20,
-  height = 20,
+  width = 25,
+  height = 25,
   src: SVGComponent
 }: SvgIconProps) {
   return (
