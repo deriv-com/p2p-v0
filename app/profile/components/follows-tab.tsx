@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -23,6 +23,10 @@ export default function FollowsTab() {
   const [isLoading, setIsLoading] = useState(true)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
+
+  const handleAdvertiserClick = (userId: number) => {
+    router.push(`/advertiser/${userId}`)
+  }
 
   const fetchFollowing = useCallback(async () => {
     try {
