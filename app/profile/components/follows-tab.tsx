@@ -104,7 +104,7 @@ export default function FollowsTab() {
         </div>
         <Button
             onClick={() => handleAdvertiserClick(user.user_id)}
-            className="hover:underline cursor-pointer font-normal"
+            className="hover:underline hover:bg-transparent cursor-pointer font-normal"
             size="sm"
             variant="ghost"
         >
