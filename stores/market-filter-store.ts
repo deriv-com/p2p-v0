@@ -22,7 +22,7 @@ interface MarketFilterState {
 
 const initialState = {
   activeTab: "sell" as const,
-  currency: "IDR",
+  currency: "",
   sortBy: "exchange_rate",
   filterOptions: { fromFollowing: false },
   selectedPaymentMethods: [] as string[],
