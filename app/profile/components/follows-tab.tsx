@@ -97,7 +97,12 @@ export default function FollowsTab() {
             {user.nickname?.charAt(0).toUpperCase()}
           </div>
         </div>
-        <div className="text-gray-900">{user.nickname}</div>
+        <Button
+            onClick={() => handleAdvertiserClick(user.user_id)}
+            className="hover:underline cursor-pointer"
+        >
+            {user.nickname}
+        </Button>
       </div>
       <Button
         variant="outline"
