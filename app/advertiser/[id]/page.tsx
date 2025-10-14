@@ -51,7 +51,11 @@ interface AdvertiserProfile {
   completion_average_30day: number
 }
 
-export default function AdvertiserProfilePage() {
+interface AdvertiserProfilePageProps {
+  onBack?: () => void
+}
+
+export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
@@ -249,6 +253,14 @@ export default function AdvertiserProfilePage() {
     return `Joined on ${formattedDate}`
   }
 
+  const handleBack = () => {
+    if (onBack) {
+      onBack()
+    } else {
+      router.push("/")
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="text-center py-8">
@@ -263,7 +275,7 @@ export default function AdvertiserProfilePage() {
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="text-center py-8">
           <p>{error}</p>
-          <Button onClick={() => router.back()} className="mt-4 text-white">
+          <Button onClick={handleBack} className="mt-4 text-white">
             Go Back
           </Button>
         </div>
@@ -277,12 +289,7 @@ export default function AdvertiserProfilePage() {
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
-              <Button
-                variant="ghost"
-                onClick={() => router.push("/")}
-                size="sm"
-                className="bg-grayscale-500 px-1 w-fit"
-              >
+              <Button variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
               </Button>
               <div className="flex-1 w-full">
@@ -290,7 +297,7 @@ export default function AdvertiserProfilePage() {
                   <div className="relative mr-[16px]">
                     <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
-                        <div
+                      <div
                         className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
                           profile?.is_online ? "bg-buy" : "bg-gray-400"
                         }`}
