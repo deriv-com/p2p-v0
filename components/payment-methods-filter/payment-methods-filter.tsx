@@ -195,7 +195,7 @@ export default function PaymentMethodsFilter({
             disabled={isLoading || filteredPaymentMethods.length === 0}
           />
           <label htmlFor="select-all" className="text-sm text-grayscale-100 cursor-pointer">
-            Select all
+            All payment method
           </label>
         </div>
       )}
