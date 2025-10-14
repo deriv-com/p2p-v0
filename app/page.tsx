@@ -398,20 +398,21 @@ export default function BuySellPage() {
                               <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                                 <div
-                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border-2 border-white ${
+                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
                                     ad.user?.is_online ? "bg-buy" : "bg-gray-400"
                                   }`} />
                               </div>
                               <div>
-                                <div className="flex items-center">
+                                <div className="flex items-center gap-1">
                                   <button
                                     onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                     className="hover:underline cursor-pointer"
                                   >
                                     {ad.user?.nickname}
                                   </button>
+                                  <Image src="/icons/verified-badge.png" className="cursor-pointer" alt="Verified" width={32} height={32} />
                                   {ad.user?.is_favourite && (
-                                    <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                    <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                       Following
                                     </span>
                                   )}
