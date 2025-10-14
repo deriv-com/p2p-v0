@@ -390,8 +390,12 @@ export default function BuySellPage() {
                         >
                           <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                              <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                                <div
+                                  className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
+                                    ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                  }`} />
                               </div>
                               <div>
                                 <div className="flex items-center">
@@ -401,10 +405,6 @@ export default function BuySellPage() {
                                   >
                                     {ad.user?.nickname}
                                   </button>
-                                  {ad.user?.is_online && <div
-                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
-                          profile?.is_online ? "bg-buy" : "bg-gray-400"
-                        }`}/>}
                                   {ad.user?.is_favourite && (
                                     <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                       Following
