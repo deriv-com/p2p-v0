@@ -11,10 +11,9 @@ interface UserInfoProps {
   recommendation: number
   joinDate: string
   tradeBand: string
-  isOnline?: boolean
 }
 
-export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand, isOnline }: UserInfoProps) {
+export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
 
   const isFullyVerified =
