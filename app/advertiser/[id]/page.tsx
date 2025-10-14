@@ -58,7 +58,6 @@ interface AdvertiserProfilePageProps {
 export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
-  const searchParams = useSearchParams()
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
