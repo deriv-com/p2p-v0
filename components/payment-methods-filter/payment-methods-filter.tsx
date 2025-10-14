@@ -200,7 +200,7 @@ export default function PaymentMethodsFilter({
         </div>
       )}
 
-      <div className="space-y-4 max-h-60 overflow-y-auto">
+      <div className="space-y-2 max-h-60 overflow-y-auto">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
         ) : filteredPaymentMethods.length === 0 ? (
