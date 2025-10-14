@@ -30,7 +30,7 @@ const tabsTriggerVariants = cva(
       variant: {
         default: "",
         underline:
-          "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-200 data-[state=active]:after:w-[%]",
+          "after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:h-0.5 after:w-0 after:bg-primary after:transition-all after:duration-200 data-[state=active]:after:w-[75%]",
       },
     },
     defaultVariants: {
