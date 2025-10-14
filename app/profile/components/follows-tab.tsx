@@ -105,6 +105,8 @@ export default function FollowsTab() {
         <Button
             onClick={() => handleAdvertiserClick(user.user_id)}
             className="hover:underline cursor-pointer"
+            size="sm"
+            variant=""
         >
             {user.nickname}
         </Button>
