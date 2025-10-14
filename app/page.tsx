@@ -398,7 +398,7 @@ export default function BuySellPage() {
                               <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                                 <div
-                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border-2 border-white ${
+                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
                                     ad.user?.is_online ? "bg-buy" : "bg-gray-400"
                                   }`} />
                               </div>
