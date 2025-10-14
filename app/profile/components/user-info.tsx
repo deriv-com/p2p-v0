@@ -27,7 +27,13 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-1">
-            <h2 className="text-base text-white font-bold">{username}</h2>
+            <h2 className="">{username}</h2>
+            <Button
+                onClick={() => handleAdvertiserClick(userId)}
+                className="text-base text-white font-bold"
+            >
+                {username}
+            </Button>
             {isFullyVerified && (
               <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification." />
             )}
