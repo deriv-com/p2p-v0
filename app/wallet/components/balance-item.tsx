@@ -17,7 +17,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
   return (
     <div
       onClick={onClick}
-      className="flex items-center justify-between h-[72px] w-full md:w-[444px] cursor-pointer transition-colors relative"
+      className="flex items-center justify-between h-[72px] w-full cursor-pointer transition-colors relative"
     >
       <div className="flex items-center gap-4 pl-0">
         <div className="flex-shrink-0">

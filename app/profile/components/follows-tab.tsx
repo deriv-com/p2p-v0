@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,11 +18,16 @@ interface FollowUser {
 }
 
 export default function FollowsTab() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [following, setFollowing] = useState<FollowUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const { showAlert } = useAlertDialog()
   const { toast } = useToast()
+
+  const handleAdvertiserClick = (userId: number) => {
+    router.push(`/advertiser/${userId}`)
+  }
 
   const fetchFollowing = useCallback(async () => {
     try {
@@ -91,13 +96,20 @@ export default function FollowsTab() {
 
   const UserCard = ({ user }: { user: FollowUser }) => (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         <div className="relative">
           <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
             {user.nickname?.charAt(0).toUpperCase()}
           </div>
         </div>
-        <div className="text-gray-900">{user.nickname}</div>
+        <Button
+            onClick={() => handleAdvertiserClick(user.user_id)}
+            className="hover:underline hover:bg-transparent cursor-pointer font-normal"
+            size="sm"
+            variant="ghost"
+        >
+            {user.nickname}
+        </Button>
       </div>
       <Button
         variant="outline"
