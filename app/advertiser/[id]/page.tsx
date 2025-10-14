@@ -319,8 +319,8 @@ export default function AdvertiserProfilePage() {
                       )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
-                      <span className="mr-[8px] hidden">{profile?.is_online ? "Online" : "Offline"}</span>
-                      <span className="opacity-[0.08] hidden">|</span>
+                      <span className="mr-[8px]">{profile?.is_online ? "Online" : "Offline"}</span>
+                      <span className="opacity-[0.08]">|</span>
                       <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">
