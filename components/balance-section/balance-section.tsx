@@ -26,7 +26,7 @@ export function BalanceSection() {
 
   return (
     <div className="mb-4">
-      <div className="text-white opacity-[0.72] text-xs mb-2">Total value</div>
+      <div className="text-white opacity-[0.72] text-xs mb-2">Est. Total value</div>
       <div className="text-white text-xl font-bold">{`${formatAmount(balance)} ${currency}`}</div>
     </div>
   )
