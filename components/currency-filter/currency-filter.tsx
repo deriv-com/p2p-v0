@@ -31,9 +31,9 @@ export function CurrencyFilter({
     if (searchQuery.trim()) {
       const query = searchQuery?.toLowerCase().trim()
       filtered = filtered.filter((currency) => {
-        const codeMatch = currency.code.toLowerCase().includes(query)
-        const nameMatch = currency.name.toLowerCase().includes(query)
-        const wordMatch = currency.name
+        const codeMatch = currency?.code?.toLowerCase().includes(query)
+        const nameMatch = currency?.name?.toLowerCase().includes(query)
+        const wordMatch = currency.name?
           .toLowerCase()
           .split(" ")
           .some((word) => word.startsWith(query))
