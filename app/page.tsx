@@ -94,6 +94,9 @@ export default function BuySellPage() {
       setSelectedAccountCurrency(currencyParam.toUpperCase())
     }
 
+    if(currencies.length > 0) {
+      setCurrency(currencies[0]?.code)
+    }
    
   }, [searchParams, setActiveTab, setSelectedAccountCurrency])
 
