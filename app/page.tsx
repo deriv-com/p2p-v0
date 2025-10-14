@@ -406,7 +406,7 @@ export default function BuySellPage() {
                                 <div className="flex items-center">
                                   <button
                                     onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                    className="hover:underline cursor-pointer mr-1"
+                                    className="hover:underline cursor-pointer"
                                   >
                                     {ad.user?.nickname}
                                   </button>
