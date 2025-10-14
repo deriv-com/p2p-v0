@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { fetchWalletsList, walletTransfer, getCurrencies, fetchTransactions } from "@/services/api/api-wallets"
-import { currencyLogoMapper } from "@/lib/utils"
+import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
@@ -321,7 +321,7 @@ export default function Transfer({ onClose }: TransferProps) {
   const formatBalance = (amount: string): string => {
     const num = Number.parseFloat(amount)
     if (isNaN(num)) return "0.00"
-    return num.toFixed(2)
+    return formatAmountWithDecimals(num.toFixed(2))
   }
 
   const getSourceWalletBalance = (): number => {
@@ -470,8 +470,8 @@ export default function Transfer({ onClose }: TransferProps) {
     const transferFee = calculateTransferFee()
     const amountReceive =
       transferFee && transferFee.feeAmount > 0
-        ? (Number.parseFloat(transferAmount || "0") - transferFee.feeAmount).toFixed(8)
-        : transferAmount || "0"
+        ? formatAmountWithDecimals((Number.parseFloat(transferAmount || "0") - transferFee.feeAmount).toFixed(8))
+        : formatAmountWithDecimals(Number.parseFloat(transferAmount || "0").toFixed(8))
 
     return (
       <div
@@ -501,7 +501,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -521,7 +521,9 @@ export default function Transfer({ onClose }: TransferProps) {
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -538,7 +540,8 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                   <span className="text-base font-normal text-slate-1200">
-                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                    {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0").toFixed(8))}{" "}
+                    {selectedCurrency || "USD"}
                   </span>
                 </div>
                 {transferFee && (
@@ -547,7 +550,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       Transfer fee ({transferFee.feePercentage}%)
                     </span>
                     <span className="text-base font-normal text-slate-1200">
-                      {transferFee.feeAmount.toFixed(8)} {getSourceWalletCurrency() || "USD"}
+                      {formatAmountWithDecimals(transferFee.feeAmount.toFixed(8))} {getSourceWalletCurrency() || "USD"}
                     </span>
                   </div>
                 )}
@@ -589,8 +592,8 @@ export default function Transfer({ onClose }: TransferProps) {
     const transferFee = calculateTransferFee()
     const amountReceive =
       transferFee && transferFee.feeAmount > 0
-        ? (Number.parseFloat(transferAmount || "0") - transferFee.feeAmount).toFixed(8)
-        : transferAmount || "0"
+        ? formatAmountWithDecimals((Number.parseFloat(transferAmount || "0") - transferFee.feeAmount).toFixed(8))
+        : formatAmountWithDecimals(Number.parseFloat(transferAmount || "0").toFixed(8))
 
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
@@ -611,7 +614,7 @@ export default function Transfer({ onClose }: TransferProps) {
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -631,7 +634,9 @@ export default function Transfer({ onClose }: TransferProps) {
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -648,7 +653,8 @@ export default function Transfer({ onClose }: TransferProps) {
                 <div className="flex items-center justify-between w-full">
                   <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                   <span className="text-base font-normal text-slate-1200">
-                    {formatBalance(transferAmount || "0")} {selectedCurrency || "USD"}
+                    {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0").toFixed(8))}{" "}
+                    {selectedCurrency || "USD"}
                   </span>
                 </div>
                 {transferFee && (
@@ -657,7 +663,7 @@ export default function Transfer({ onClose }: TransferProps) {
                       Transfer fee ({transferFee.feePercentage}%)
                     </span>
                     <span className="text-base font-normal text-slate-1200">
-                      {transferFee.feeAmount.toFixed(8)} {getSourceWalletCurrency() || "USD"}
+                      {formatAmountWithDecimals(transferFee.feeAmount.toFixed(8))} {getSourceWalletCurrency() || "USD"}
                     </span>
                   </div>
                 )}
@@ -740,7 +746,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -778,7 +784,9 @@ export default function Transfer({ onClose }: TransferProps) {
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
@@ -875,7 +883,7 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText = `${formatBalance(transferAmount || "0")} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+    const transferText = `${formatAmountWithDecimals(Number.parseFloat(transferAmount || "0").toFixed(2))} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
       <>
