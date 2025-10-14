@@ -209,7 +209,6 @@ export function formatAmountWithDecimals(amount: number | string): string {
   return decimal !== undefined ? `${wholeWithCommas}.${decimal}` : wholeWithCommas
 }
 
-
 export function formatDateTime(datetime) {
   const d = new Date(datetime)
 
