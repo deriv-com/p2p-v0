@@ -96,7 +96,7 @@ export default function FollowsTab() {
 
   const UserCard = ({ user }: { user: FollowUser }) => (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         <div className="relative">
           <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
             {user.nickname?.charAt(0).toUpperCase()}
@@ -104,7 +104,7 @@ export default function FollowsTab() {
         </div>
         <Button
             onClick={() => handleAdvertiserClick(user.user_id)}
-            className="hover:underline cursor-pointer"
+            className="hover:underline cursor-pointer font-normal"
             size="sm"
             variant="ghost"
         >
