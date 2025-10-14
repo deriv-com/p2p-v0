@@ -10,6 +10,10 @@ export interface Advertisement {
     is_favourite: boolean
     created_at: number
     rating_average?: number
+    is_online?: boolean
+    rating_average_lifetime?: number
+    order_count_lifetime?: number
+    completion_average_30day?: number
   }
   account_currency: string
   actual_maximum_order_amount: string
@@ -169,7 +173,7 @@ async function getAdvertiserFromAds(advertiserId: string | number): Promise<any>
       return {
         id: user.id,
         nickname: user.nickname || "Unknown",
-        is_online: true,
+        is_online: user.is_online || true,
         joined_date: `Joined ${Math.floor((Date.now() / 1000 - user.created_at) / (60 * 60 * 24))} days ago`,
         rating: user.user_rating_average || 0,
         rating_count: 0,
