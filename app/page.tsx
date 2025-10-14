@@ -410,7 +410,7 @@ export default function BuySellPage() {
                                   >
                                     {ad.user?.nickname}
                                   </button>
-                                  <Image onClick={handleClick} src="/icons/verified-badge.png" className="cursor-pointer" alt="Verified" width={32} height={32} />
+                                  <Image src="/icons/verified-badge.png" className="cursor-pointer" alt="Verified" width={32} height={32} />
                                   {ad.user?.is_favourite && (
                                     <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                       Following
