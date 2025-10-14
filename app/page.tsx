@@ -271,7 +271,7 @@ export default function BuySellPage() {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="border border-[##ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                          className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
                         >
                           <span>{currency}</span>
                           <Image
