@@ -399,7 +399,7 @@ export default function BuySellPage() {
                                     onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                     className="hover:underline cursor-pointer"
                                   >
-                                    {ad.user?.nickname || "Unknown"}
+                                    {ad.user?.nickname}
                                   </button>
                                   {ad.user?.is_online && <div className="ml-2 h-2 w-2 rounded-full bg-green-500"></div>}
                                   {ad.user?.is_favourite && (
