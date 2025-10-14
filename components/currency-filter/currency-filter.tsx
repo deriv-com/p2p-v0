@@ -29,7 +29,7 @@ export function CurrencyFilter({
     let filtered = currencies
 
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase().trim()
+      const query = searchQuery?.toLowerCase().trim()
       filtered = filtered.filter((currency) => {
         const codeMatch = currency.code.toLowerCase().includes(query)
         const nameMatch = currency.name.toLowerCase().includes(query)
