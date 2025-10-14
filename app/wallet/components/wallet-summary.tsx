@@ -182,7 +182,7 @@ export default function WalletSummary({
                 alt={!isBalancesView && externalSelectedCurrency ? `${externalSelectedCurrency} Logo` : "P2P Logo"}
                 width={!isBalancesView ? 64 : 92}
                 height={!isBalancesView ? 64 : 92}
-                className={cn(!isBalancesView ? "w-16 h-16" : "w-16 h-18 md:w-24 md:h-24")}
+                className={cn(!isBalancesView ? "w-16 h-16" : "w-18 h-18 md:w-24 md:h-24")}
               />
             </div>
 
