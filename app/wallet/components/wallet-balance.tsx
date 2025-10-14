@@ -139,7 +139,7 @@ export default function WalletBalance({ className }: WalletBalanceProps) {
 
         <div className="flex items-center justify-center gap-2">
           <h1 className="text-[32px] font-black text-black text-center leading-normal">
-            {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${selectedCurrency}`}
+            {isLoading ? "Loading..." : `${balance} ${selectedCurrency}`}
           </h1>
           <Button variant="ghost" size="sm" onClick={handleRefresh} aria-label="Refresh balance">
             <Image

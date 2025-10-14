@@ -341,12 +341,12 @@ export default function Transfer({ onClose }: TransferProps) {
 
   const getSourceWalletAmount = () => {
     const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
-    return wallet ? `${formatBalance(wallet.balance)} ${wallet.currency}` : ""
+    return wallet ? `${formatAmountWithDecimals(wallet.balance)} ${wallet.currency}` : ""
   }
 
   const getDestinationWalletAmount = () => {
     const wallet = wallets.find((w) => w.wallet_id === destinationWalletData?.id)
-    return wallet ? `${formatBalance(wallet.balance)} ${wallet.currency}` : ""
+    return wallet ? `${formatAmountWithDecimals(wallet.balance)} ${wallet.currency}` : ""
   }
 
   const getFilteredWallets = (type: WalletSelectorType) => {
@@ -400,7 +400,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={formatBalance(wallet.balance)}
+                    amount={formatAmountWithDecimals(wallet.balance)}
                     currency={wallet.currency}
                     icon={wallet.icon}
                     isSelected={selectedWalletId === wallet.wallet_id}
@@ -453,7 +453,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 >
                   <WalletDisplay
                     name={wallet.name}
-                    amount={formatBalance(wallet.balance)}
+                    amount={formatAmountWithDecimals(wallet.balance)}
                     currency={wallet.currency}
                     icon={getCurrencyImage(wallet.name, wallet.currency)}
                     isSelected={selectedWalletId === wallet.wallet_id}
@@ -831,7 +831,7 @@ export default function Transfer({ onClose }: TransferProps) {
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">
-                Amount cannot exceed available balance ({formatBalance(getSourceWalletBalance().toString())}{" "}
+                Amount cannot exceed available balance ({formatAmountWithDecimals(getSourceWalletBalance().toString())}{" "}
                 {selectedCurrency || "USD"})
               </p>
             )}

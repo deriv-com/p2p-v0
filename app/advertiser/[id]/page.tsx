@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter} from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -32,6 +32,7 @@ interface AdvertiserProfile {
   favourited_by_user_count: number
   is_blocked: boolean
   is_favourite: boolean
+  is_online?: boolean
   temp_ban_until: number | null
   trade_band: string
   order_count_lifetime: number
@@ -50,7 +51,11 @@ interface AdvertiserProfile {
   completion_average_30day: number
 }
 
-export default function AdvertiserProfilePage() {
+interface AdvertiserProfilePageProps {
+  onBack?: () => void
+}
+
+export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
   const { toast } = useToast()
@@ -248,6 +253,10 @@ export default function AdvertiserProfilePage() {
     return `Joined on ${formattedDate}`
   }
 
+  const handleBack = () => {
+    router.back()
+  }
+
   if (isLoading) {
     return (
       <div className="text-center py-8">
@@ -262,7 +271,7 @@ export default function AdvertiserProfilePage() {
       <div className="container mx-auto px-4 py-8 pt-20">
         <div className="text-center py-8">
           <p>{error}</p>
-          <Button onClick={() => router.back()} className="mt-4 text-white">
+          <Button onClick={handleBack} className="mt-4 text-white">
             Go Back
           </Button>
         </div>
@@ -276,23 +285,20 @@ export default function AdvertiserProfilePage() {
         <div className="flex flex-col md:flex-row justify-between">
           <div className="container mx-auto pb-6">
             <div className="bg-slate-75 p-6 rounded-none md:rounded-3xl flex flex-col md:items-start gap-4 mx-[-24px] mt-[-24px] md:mx-0 md:mt-0">
-              <Button
-                variant="ghost"
-                onClick={() => router.push("/")}
-                size="sm"
-                className="bg-grayscale-500 px-1 w-fit"
-              >
+              <Button variant="ghost" onClick={handleBack} size="sm" className="bg-grayscale-500 px-1 w-fit">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
               </Button>
               <div className="flex-1 w-full">
                 <div className="flex flex-col md:flex-row gap-2 md:gap-0">
                   <div className="relative mr-[16px]">
-                    <div className="h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
+                    <div className="relative h-[56px] w-[56px] bg-grayscale-500 rounded-full flex items-center justify-center">
                       <Image src="/icons/user-icon-black.png" alt="User" width={32} height={32} />
+                      <div
+                        className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
+                          profile?.is_online ? "bg-buy" : "bg-gray-400"
+                        }`}
+                      />
                     </div>
-                    {profile?.isOnline && (
-                      <div className="absolute bottom-1 right-1 h-4 w-4 rounded-full bg-green-500 border-2 border-white"></div>
-                    )}
                   </div>
                   <div className="flex-1">
                     <div className="flex gap-1 items-center">
@@ -316,8 +322,8 @@ export default function AdvertiserProfilePage() {
                       )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
-                      <span className="mr-[8px] hidden">{profile?.isOnline ? "Online" : "Offline"}</span>
-                      <span className="opacity-[0.08] hidden">|</span>
+                      <span className="mr-[8px]">{profile?.is_online ? "Online" : "Offline"}</span>
+                      <span className="opacity-[0.08]">|</span>
                       <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2 gap-2">

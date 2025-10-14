@@ -242,16 +242,16 @@ export default function BuySellPage() {
                 <div>
                   <BalanceSection />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
-                    <TabsList className="w-full bg-transparent">
+                    <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
-                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
+                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="sell"
                         variant="underline"
                       >
                         Buy
                       </TabsTrigger>
                       <TabsTrigger
-                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none"
+                        className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="buy"
                         variant="underline"
                       >
@@ -260,30 +260,32 @@ export default function BuySellPage() {
                     </TabsList>
                   </Tabs>
                 </div>
-                <div>
-                  <CurrencyFilter
-                    currencies={currencies}
-                    selectedCurrency={currency}
-                    onCurrencySelect={handleCurrencySelect}
-                    title={activeTab === "sell" ? "You're paying with" : "You're receiving"}
-                    trigger={
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="border border-input bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl focus:border-black text-white"
-                      >
-                        <span>{currency}</span>
-                        <Image
-                          src="/icons/chevron-down-white.png"
-                          alt="Arrow"
-                          width={24}
-                          height={24}
-                          className="ml-2"
-                        />
-                      </Button>
-                    }
-                  />
-                </div>
+                {currencies.length > 0 && (
+                  <div>
+                    <CurrencyFilter
+                      currencies={currencies}
+                      selectedCurrency={currency}
+                      onCurrencySelect={handleCurrencySelect}
+                      title={activeTab === "sell" ? "You're paying with" : "You're receiving"}
+                      trigger={
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="border border-[#ffffff3d] bg-background font-normal px-3 bg-transparent hover:bg-transparent rounded-3xl text-white"
+                        >
+                          <span>{currency}</span>
+                          <Image
+                            src="/icons/chevron-down-white.png"
+                            alt="Arrow"
+                            width={24}
+                            height={24}
+                            className="ml-2"
+                          />
+                        </Button>
+                      }
+                    />
+                  </div>
+                )}
               </div>
             </div>
 
@@ -338,7 +340,7 @@ export default function BuySellPage() {
                   hasActiveFilters={hasActiveFilters}
                   trigger={
                     <Button
-                      variant="outline"
+                      variant={hasActiveFilters? "black": "outline"}
                       size="sm"
                       className="rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black min-w-fit rounded-3xl"
                     >
@@ -388,8 +390,12 @@ export default function BuySellPage() {
                         >
                           <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                              <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                                <div
+                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border-2 border-white ${
+                                    ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                  }`} />
                               </div>
                               <div>
                                 <div className="flex items-center">
@@ -397,7 +403,7 @@ export default function BuySellPage() {
                                     onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
                                     className="hover:underline cursor-pointer"
                                   >
-                                    {ad.user?.nickname || "Unknown"}
+                                    {ad.user?.nickname}
                                   </button>
                                   {ad.user?.is_favourite && (
                                     <span className="ml-2 px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">

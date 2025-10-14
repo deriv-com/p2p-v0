@@ -1,11 +1,10 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { cn, currencyLogoMapper } from "@/lib/utils"
+import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { getTotalBalance } from "@/services/api/api-auth"
 import { getCurrencies } from "@/services/api/api-wallets"
 import WalletSidebar from "./wallet-sidebar"
 import FullScreenIframeModal from "./full-screen-iframe-modal"
@@ -28,12 +27,18 @@ interface WalletSummaryProps {
   isBalancesView?: boolean
   selectedCurrency?: string | null
   onBack?: () => void
+  balance?: string
+  currency?: string
+  isLoading?: boolean
 }
 
 export default function WalletSummary({
   isBalancesView = true,
   selectedCurrency: externalSelectedCurrency = null,
   onBack,
+  balance: propBalance = "0.00",
+  currency: propCurrency = "USD",
+  isLoading: propIsLoading = true,
 }: WalletSummaryProps) {
   const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -41,13 +46,12 @@ export default function WalletSummary({
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
   const [currentStep, setCurrentStep] = useState<WalletStep>("summary")
   const [selectedCurrency, setSelectedCurrency] = useState("USD")
-  const [balance, setBalance] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
 
-  const displayCurrency = externalSelectedCurrency || selectedCurrency
+  const displayCurrency = externalSelectedCurrency || propCurrency
+  const formattedBalance = formatAmountWithDecimals(propBalance)
 
   const fetchCurrencies = async () => {
     try {
@@ -65,38 +69,6 @@ export default function WalletSummary({
     }
   }
 
-  const loadBalance = useCallback(async () => {
-    if (!userId) {
-      setIsLoading(false)
-      return
-    }
-
-    try {
-      const data = await getTotalBalance()
-      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-
-      if (p2pWallet?.balances?.length) {
-        const p2pBalance = p2pWallet.balances[0]
-        setBalance(Number.parseFloat(p2pBalance.balance) || 0)
-
-        if (p2pBalance.currency && !externalSelectedCurrency) {
-          setSelectedCurrency(p2pBalance.currency)
-        }
-      } else {
-        setBalance(0)
-      }
-      setIsLoading(false)
-    } catch (error) {
-      console.error("Error fetching P2P wallet balance:", error)
-      setBalance(0)
-      setIsLoading(false)
-    }
-  }, [userId, externalSelectedCurrency])
-
-  useEffect(() => {
-    loadBalance()
-  }, [loadBalance])
-
   useEffect(() => {
     fetchCurrencies()
   }, [])
@@ -107,7 +79,7 @@ export default function WalletSummary({
       setCurrentStep("chooseCurrency")
     } else {
       showAlert({
-        title: "Get started with P2P",
+        title: "Getting started with P2P",
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
@@ -125,7 +97,7 @@ export default function WalletSummary({
       setCurrentStep("chooseCurrency")
     } else {
       showAlert({
-        title: "Get started with P2P",
+        title: "Getting started with P2P",
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
@@ -143,7 +115,7 @@ export default function WalletSummary({
       setIsSidebarOpen(true)
     } else {
       showAlert({
-        title: "Get started with P2P",
+        title: "Getting started with P2P",
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
@@ -217,15 +189,15 @@ export default function WalletSummary({
             <div className={cn("flex flex-col", isMobile && "items-center")}>
               {isBalancesView ? (
                 <>
-                  <p className="text-xs font-normal text-white/72">Total value</p>
+                  <p className="text-xs font-normal text-white/72">Est. total value</p>
                   <p className="text-xl font-extrabold text-white">
-                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                    {propIsLoading ? "0.00 USD" : `${formattedBalance} ${displayCurrency}`}
                   </p>
                 </>
               ) : (
                 <>
                   <p className="text-[28px] font-extrabold text-slate-1200">
-                    {isLoading ? "Loading..." : `${Number(balance).toFixed(2)} ${displayCurrency}`}
+                    {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
                   </p>
                   <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
                 </>
@@ -254,13 +226,13 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? balance === 0
+                    ? propBalance === "0.00"
                       ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
                       : "border border-white bg-transparent hover:bg-white/10 text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
-                disabled={isBalancesView && balance === 0}
+                disabled={isBalancesView && propBalance === "0.00"}
                 aria-label="Transfer"
               >
                 <Image
@@ -268,13 +240,13 @@ export default function WalletSummary({
                   alt="Transfer"
                   width={14}
                   height={14}
-                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
+                  className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
                 />
               </Button>
               <span
                 className={cn(
                   "text-xs font-normal",
-                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
                 )}
               >
                 Transfer
@@ -287,13 +259,13 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? balance === 0
+                    ? propBalance === "0.00"
                       ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
                       : "border border-white bg-transparent hover:bg-white/10 text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleWithdrawClick}
-                disabled={isBalancesView && balance === 0}
+                disabled={isBalancesView && propBalance === "0.00"}
                 aria-label="Withdraw"
               >
                 <Image
@@ -301,13 +273,13 @@ export default function WalletSummary({
                   alt="Withdraw"
                   width={14}
                   height={14}
-                  className={cn(isBalancesView && balance === 0 && "opacity-25")}
+                  className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
                 />
               </Button>
               <span
                 className={cn(
                   "text-xs font-normal",
-                  isBalancesView ? (balance === 0 ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
                 )}
               >
                 Withdraw
@@ -341,6 +313,7 @@ export default function WalletSummary({
               onGoBack={handleGoBackToCurrency}
               onDirectDepositClick={handleDirectDepositClick}
               onDirectWithdrawClick={handleDirectWithdrawClick}
+              selectedCurrency={selectedCurrency}
             />
           </div>
         )}

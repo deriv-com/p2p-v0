@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { currencyLogoMapper } from "@/lib/utils"
+import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 
 interface BalanceItemProps {
   currency: string
@@ -12,16 +12,18 @@ interface BalanceItemProps {
 export default function BalanceItem({ currency, amount, onClick }: BalanceItemProps) {
   const logo = currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
 
+  const displayAmount = isNaN(Number(amount)) ? "0.00" : formatAmountWithDecimals(amount)
+
   return (
     <div
       onClick={onClick}
-      className="flex items-center justify-between h-[72px] w-full md:w-[444px] cursor-pointer transition-colors relative"
+      className="flex items-center justify-between h-[72px] w-full cursor-pointer transition-colors relative"
     >
       <div className="flex items-center gap-4 pl-0">
         <div className="flex-shrink-0">
           {logo ? (
             <Image
-              src={logo}
+              src={logo || "/placeholder.svg"}
               alt={`${currency} logo`}
               width={24}
               height={24}
@@ -38,7 +40,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
       </div>
 
       <div className="text-slate-1200 text-base font-normal pr-6">
-        {Number(amount).toFixed(2)} {currency}
+        {displayAmount} {currency}
       </div>
 
       <div className="absolute bottom-0 left-10 right-0 h-[1px] bg-grayscale-200" />

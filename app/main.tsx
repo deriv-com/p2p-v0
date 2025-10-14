@@ -22,6 +22,7 @@ export default function Main({
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
+  const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
 
   useEffect(() => {
@@ -59,25 +60,36 @@ export default function Main({
                 setVerificationStatus({
                   email_verified: onboardingStatus.verification.email_verified,
                   phone_verified: onboardingStatus.verification.phone_verified,
-                  kyc_verified: onboardingStatus.kyc.status,
-                  p2p_allowed: onboardingStatus.p2p.allowed,
+                  kyc_verified: onboardingStatus.kyc.status === "approved",
+                  p2p_allowed: onboardingStatus.p2p?.allowed,
                 })
 
+                setOnboardingStatus(onboardingStatus)
+
                 const currentUserId = useUserDataStore.getState().userId
-                if (!currentUserId && onboardingStatus.p2p.allowed) {
+                if (!currentUserId && onboardingStatus.p2p?.allowed) {
                   try {
                     await AuthAPI.createP2PUser()
+                    await AuthAPI.fetchUserIdAndStore()
                   } catch (error) {
                     console.error("Error creating P2P user:", error)
                   }
                 }
+
+                if (isMountedRef.current && !abortController.signal.aborted) {
+                  router.push(pathname)
+                }
               }
             } catch (error) {
               console.error("Error fetching onboarding status:", error)
+              if (isMountedRef.current && !abortController.signal.aborted) {
+                router.push(pathname)
+              }
             }
-          }
-          if (isMountedRef.current && !abortController.signal.aborted) {
-            router.push(pathname)
+          } else {
+            if (isMountedRef.current && !abortController.signal.aborted) {
+              router.push(pathname)
+            }
           }
         }
       } catch (error) {
@@ -96,7 +108,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, setVerificationStatus])
+  }, [pathname, router, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>

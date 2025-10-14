@@ -6,7 +6,7 @@ import { formatAmount } from "@/lib/utils"
 
 export function BalanceSection() {
   const [balance, setBalance] = useState<string>("0.00")
-  const [currency, setCurrency] = useState<string>("")
+  const [currency, setCurrency] = useState<string>("USD")
 
   useEffect(() => {
     const fetchBalance = async () => {
@@ -14,11 +14,8 @@ export function BalanceSection() {
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
-        if (p2pWallet?.balances?.length) {
-          const p2pBalance = p2pWallet.balances[0]
-          setBalance(p2pBalance.balance)
-          setCurrency(p2pBalance.currency)
-        }
+        setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
+        setCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
       } catch (error) {
         console.error("Failed to fetch balance:", error)
       }
