@@ -28,9 +28,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
 
   const handleDateClick = (date: Date) => {
     if (!selected.from || (selected.from && selected.to)) {
-
-        onSelect({ from: date, to: undefined })
-
+      onSelect({ from: date, to: undefined })
     } else if (selected.from && !selected.to) {
       if (date < selected.from) {
         onSelect({ from: date, to: selected.from })
@@ -55,6 +53,10 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
     return date > selected.from && date < selected.to
   }
 
+  const isToday = (date: Date) => {
+    return isSameDay(date, new Date())
+  }
+
   const renderMonth = (month: Date, isPrevVisible, isNextVisible) => {
     const monthStart = startOfMonth(month)
     const monthEnd = endOfMonth(month)
@@ -66,23 +68,27 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
     return (
       <div className="flex-1">
         <div className="flex">
-          {isPrevVisible && (<Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
-            className="p-2"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>)}
+          {isPrevVisible && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentMonth(subMonths(currentMonth, 1))}
+              className="p-2"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          )}
           <div className="text-center text-grayscale-600 mb-4 m-auto">{format(month, "MMM yyyy")}</div>
-          {isNextVisible && (<Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
-            className="p-2"
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>)}
+          {isNextVisible && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setCurrentMonth(addMonths(currentMonth, 1))}
+              className="p-2"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          )}
         </div>
         <div className="grid grid-cols-7 gap-1 mb-2">
           {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
@@ -98,6 +104,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
           {days.map((date) => {
             const isSelected = isDateSelected(date)
             const inRange = isDateInRange(date)
+            const today = isToday(date)
 
             return (
               <Button
@@ -106,13 +113,16 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
                 size="sm"
                 onClick={() => handleDateClick(date)}
                 className={cn(
-                  "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
+                  "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600 relative",
                   isSelected && "bg-black text-white hover:bg-black hover:text-white",
                   inRange && "bg-gray-100 hover:text-white text-grayscale-600",
                   !isSameMonth(date, month) && "text-gray-300",
                 )}
               >
-                {format(date, "d")}
+                <span className="flex flex-col items-center gap-0.5">
+                  {format(date, "d")}
+                  {today && <span className={cn("w-1 h-1 rounded-full", isSelected ? "bg-white" : "bg-black")} />}
+                </span>
               </Button>
             )
           })}

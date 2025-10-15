@@ -49,6 +49,10 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
     return date > selected.from && date < selected.to
   }
 
+  const isToday = (date: Date) => {
+    return isSameDay(date, new Date())
+  }
+
   const monthStart = startOfMonth(currentMonth)
   const monthEnd = endOfMonth(currentMonth)
   const days = eachDayOfInterval({ start: monthStart, end: monthEnd })
@@ -95,6 +99,7 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
         {days.map((date) => {
           const isSelected = isDateSelected(date)
           const inRange = isDateInRange(date)
+          const today = isToday(date)
 
           return (
             <Button
@@ -103,13 +108,16 @@ export function SingleMonthCalendar({ selected, onSelect }: SingleMonthCalendarP
               variant="ghost"
               onClick={() => handleDateClick(date)}
               className={cn(
-                  "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600",
-                  isSelected && "bg-black text-white hover:bg-black hover:text-white",
-                  inRange && "bg-gray-100 hover:text-white text-grayscale-600",
-                  !isSameMonth(date, currentMonth) && "text-gray-300",
-                )}
+                "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600 relative",
+                isSelected && "bg-black text-white hover:bg-black hover:text-white",
+                inRange && "bg-gray-100 hover:text-white text-grayscale-600",
+                !isSameMonth(date, currentMonth) && "text-gray-300",
+              )}
             >
-              {format(date, "d")}
+              <span className="flex flex-col items-center gap-0.5">
+                {format(date, "d")}
+                {today && <span className={cn("w-1 h-1 rounded-full", isSelected ? "bg-white" : "bg-black")} />}
+              </span>
             </Button>
           )
         })}
