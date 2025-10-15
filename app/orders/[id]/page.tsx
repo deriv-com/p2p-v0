@@ -494,22 +494,6 @@ export default function OrderDetailsPage() {
                     </Button>
                   </div>
                 )}
-                <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
-                    <Button
-                      className="flex-1"
-                      onClick={handleShowPaymentReceivedConfirmation}
-                      disabled={isConfirmLoading}
-                    >
-                      {isConfirmLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
-                      ) : (
-                        "I've received payment"
-                      )}
-                    </Button>
-                  </div>
                 {order.status === "completed" && order.is_reviewable && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
