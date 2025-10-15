@@ -86,7 +86,7 @@ export default function OrderDetailsPage() {
 
   const showOrderDetails = () => {
     if(isMobile) {
-
+      setShowDetailsSidebar(true)
     } else {
       showAlert({
         title: "Order details",
