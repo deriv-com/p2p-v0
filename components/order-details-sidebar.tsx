@@ -16,32 +16,18 @@ interface OrderDetailsSidebarProps {
 
 export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDetailsSidebarProps) {
   const isMobile = useIsMobile()
-  const { showAlert, hideAlert } = useAlertDialog()
+  const { showAlert, hideAlert } = useAlertDialog(
 
-  useEffect(() => {
-    if (isOpen && isMobile === false) {
-      showAlert({
-        title: "Order details",
-        content: (
-          <div className="overflow-auto max-h-[70vh]">
-            <OrderDetails order={order} />
-          </div>
-        ),
-      })
-    }
-  }, [isOpen, isMobile, order, showAlert, hideAlert])
-
-  useEffect(() => {
-    if (isMobile === false && !isOpen) {
-      return () => {
-        hideAlert()
-      }
-    }
-  }, [isMobile, isOpen, hideAlert])
-
-  if (isMobile === undefined) return null
-  if (!isMobile) return null
-  if (!isOpen) return null
+  if(!isMobile) {
+    showAlert({
+      title: "Order details",
+      content: (
+        <div className="overflow-auto max-h-[70vh]">
+          <OrderDetails order={order} />
+        </div>
+      ),
+    })
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
