@@ -112,11 +112,11 @@ export const PaymentReceivedConfirmationSidebar = ({
             <div className="space-y-4">
               <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading}>
                 <InputOTPGroup className="gap-2">
-                  <InputOTPSlot index={0} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={1} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={2} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={3} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={4} className="w-12 h-12 text-lg" />
+                  <InputOTPSlot index={0} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={1} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={2} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={3} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={4} className="w-12 h-12 text-lg bg-transparent" />
                   <InputOTPSlot index={5} className="w-12 h-12 text-lg" />
                 </InputOTPGroup>
               </InputOTP>
