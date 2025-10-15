@@ -101,7 +101,7 @@ export const PaymentReceivedConfirmationSidebar = ({
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full p-0">
         <div className="flex flex-col h-full md:max-w-xl md:mx-auto">
-          <SheetHeader className="p-4 border-b">
+          <SheetHeader className="p-4">
             <div className="flex items-center justify-between">
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
