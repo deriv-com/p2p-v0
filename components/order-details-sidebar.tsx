@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
 import { OrderDetails } from "@/components/order-details"
 import Image from "next/image"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { useEffect } from "react"
 
 interface OrderDetailsSidebarProps {
   isOpen: boolean
@@ -12,6 +15,35 @@ interface OrderDetailsSidebarProps {
 }
 
 export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDetailsSidebarProps) {
+  const isMobile = useIsMobile()
+  const { showAlert, hideAlert } = useAlertDialog()
+
+  useEffect(() => {
+    if (isOpen && isMobile === false) {
+      // Desktop: use alert dialog
+      showAlert({
+        title: "Order details",
+        content: (
+          <div className="overflow-auto max-h-[70vh]">
+            <OrderDetails order={order} />
+          </div>
+        ),
+      })
+    } else if (!isOpen && isMobile === false) {
+      hideAlert()
+    }
+  }, [isOpen, isMobile, order, showAlert, hideAlert])
+
+  useEffect(() => {
+    if (isMobile === false && !isOpen) {
+      return () => {
+        hideAlert()
+      }
+    }
+  }, [isMobile, isOpen, hideAlert])
+
+  if (isMobile === undefined) return null
+  if (!isMobile) return null
   if (!isOpen) return null
 
   return (
