@@ -411,7 +411,6 @@ export async function completeOrder(orderId: string, otpValue: string): Promise<
       data = { success: true, errors: [] }
     }
 
-    // Return the full response including errors array
     return data
   } catch (error) {
     throw error
