@@ -16,7 +16,7 @@ interface OrderDetailsSidebarProps {
 
 export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDetailsSidebarProps) {
   const isMobile = useIsMobile()
-  const { showAlert, hideAlert } = useAlertDialog(
+  const { showAlert, hideAlert } = useAlertDialog()
 
   if(!isMobile) {
     showAlert({
