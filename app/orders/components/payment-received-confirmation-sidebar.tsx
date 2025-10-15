@@ -59,9 +59,8 @@ export const PaymentReceivedConfirmationSidebar = ({
       if (result.errors && result.errors.length > 0) {
         const error = result.errors[0]
 
-        // Check for InvalidOrExpiredVerificationCode error
         if (error.code === "InvalidOrExpiredVerificationCode") {
-          const attemptsLeft = error.details?.attempts_left || 0
+          const attemptsLeft = error.detail?.attempts_left || 0
           setError(`Incorrect code. You have ${attemptsLeft} attempt${attemptsLeft !== 1 ? "s" : ""} left.`)
         } else {
           setError(error.message || "An error occurred. Please try again.")
