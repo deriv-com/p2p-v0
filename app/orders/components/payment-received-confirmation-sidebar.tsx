@@ -77,7 +77,6 @@ export const PaymentReceivedConfirmationSidebar = ({
         onClose()
       }
     } catch (err) {
-      console.error("Error completing order:", err)
       setError("An error occurred. Please try again.")
       setOtpValue("")
     }
@@ -100,17 +99,15 @@ export const PaymentReceivedConfirmationSidebar = ({
                 onClose()
               },
             })
+        } else {
+          setError(error.message || "An error occurred. Please try again.")
         }
       } else {
           setResendTimer(59)
           setError(null)
       }
     } catch (err: any) {
-      
-      } else {
-        console.error("Error requesting OTP:", err)
-        setError("Failed to send verification code. Please try again.")
-      }
+        
     }
   }
 
