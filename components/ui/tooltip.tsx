@@ -38,7 +38,6 @@ const TooltipTrigger = React.forwardRef<
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    // Toggle by calling onOpenChange with a function that receives current state
     onOpenChange?.((prev) => !prev as any)
   }
 
