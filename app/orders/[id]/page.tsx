@@ -9,8 +9,6 @@ import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
-
-  const { showAlert, hideAlert } = useAlertDialog()
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
@@ -39,6 +37,7 @@ export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
+  const { showAlert, hideAlert } = useAlertDialog()
   const { toast } = useToast()
   const { setIsChatVisible } = useChatVisibilityStore()
   const userId = useUserDataStore((state) => state.userId)
