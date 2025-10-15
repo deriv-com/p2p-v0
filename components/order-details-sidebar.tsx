@@ -20,14 +20,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
 
   if(!isOpen) return
   if(isOpen && !isMobile) {
-    showAlert({
-      title: "Order details",
-      content: (
-        <div className="overflow-auto max-h-[70vh]">
-          <OrderDetails order={order} />
-        </div>
-      ),
-    })
+    
   }
 
   return (
