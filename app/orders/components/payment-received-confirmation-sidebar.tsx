@@ -166,7 +166,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               )}
             </div>
 
-            {!warning && (<div className="space-y-2">
+            <div className="space-y-2">
                   <p className="text-sm text-gray-600">Didn't receive the code?</p>
                   {resendTimer > 0 ? (
                     <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
@@ -180,8 +180,8 @@ export const PaymentReceivedConfirmationSidebar = ({
                       Resend code
                     </Button>
                   )}
-                </div>)
-            }
+                </div>
+            
           </div>
         </div>
       </SheetContent>
