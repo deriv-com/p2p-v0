@@ -67,13 +67,7 @@ export default function BlockedTab() {
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image
-                    src="/icons/success-checkmark.png"
-                    alt="Success"
-                    width={24}
-                    height={24}
-                    className="text-white"
-                  />
+                  <Image src="/icons/tick.jpg" alt="Success" width={24} height={24} className="text-white" />
                   <span>{`${user.nickname} unblocked.`}</span>
                 </div>
               ),
@@ -112,35 +106,37 @@ export default function BlockedTab() {
 
   return (
     <div className="space-y-4">
-      {(filteredBlockedUsers.length > 0 || searchQuery) && <div className="flex items-center justify-between gap-4">
-        <div className="relative w-full md:w-auto">
-          <Image
-            src="/icons/search-icon-custom.png"
-            alt="Search"
-            width={24}
-            height={24}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2"
-          />
-          <Input
-            placeholder="Search"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
-            autoComplete="off"
-            autoFocus
-          />
-          {searchQuery && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setSearchQuery("")}
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
-            >
-              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
-            </Button>
-          )}
+      {(filteredBlockedUsers.length > 0 || searchQuery) && (
+        <div className="flex items-center justify-between gap-4">
+          <div className="relative w-full md:w-auto">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            />
+            <Input
+              placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
+              autoComplete="off"
+              autoFocus
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+              >
+                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              </Button>
+            )}
+          </div>
         </div>
-      </div>}
+      )}
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (

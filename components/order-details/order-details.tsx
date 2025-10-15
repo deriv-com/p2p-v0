@@ -50,13 +50,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
               toast({
                 description: (
                   <div className="flex items-center gap-2">
-                    <Image
-                      src="/icons/success-checkmark.png"
-                      alt="Success"
-                      width={24}
-                      height={24}
-                      className="text-white"
-                    />
+                    <Image src="/icons/tick.jpg" alt="Success" width={24} height={24} className="text-white" />
                     <span>The text has been copied to your clipboard.</span>
                   </div>
                 ),
