@@ -435,7 +435,7 @@ export async function sendChatMessage(
         attachment,
         data: {
           is_proof_of_transfer: isPOT,
-        }
+        },
       })
     } else {
       body = JSON.stringify({
@@ -451,8 +451,6 @@ export async function sendChatMessage(
       headers,
       body,
     })
-
-
 
     if (!response.ok) {
       throw new Error(`Error sending message: ${response.statusText}`)
@@ -473,14 +471,89 @@ export async function sendChatMessage(
       success: true,
       message: data.data ||
         data.message || {
-        id: Date.now().toString(),
-        orderId,
-        senderId: 0,
-        content: message,
-        time,
-        isRead: false,
-      },
+          id: Date.now().toString(),
+          orderId,
+          senderId: 0,
+          content: message,
+          time,
+          isRead: false,
+        },
     }
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function requestOrderCompletionOtp(orderId: string): Promise<{ success: boolean; message?: string }> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/request-completion-otp`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+
+    const response = await fetch(url, {
+      method: "POST",
+      credentials: "include",
+      headers,
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error requesting OTP: ${response.statusText}`)
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      data = { success: true }
+    }
+
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function verifyOrderCompletionOtp(
+  orderId: string,
+  otp: string,
+): Promise<{ success: boolean; message?: string; errors?: any[] }> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/verify-completion-otp`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const body = JSON.stringify({
+      data: {
+        otp,
+      },
+    })
+
+    const response = await fetch(url, {
+      method: "POST",
+      credentials: "include",
+      headers,
+      body,
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error verifying OTP: ${response.statusText}`)
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      data = { success: true, errors: [] }
+    }
+
+    return data
   } catch (error) {
     throw error
   }
@@ -498,6 +571,8 @@ export const OrdersAPI = {
   reviewOrder,
   sendChatMessage,
   completeOrder,
+  requestOrderCompletionOtp,
+  verifyOrderCompletionOtp,
 
   getOrderByIdMock: async (orderId: string): Promise<Order> => {
     await new Promise((resolve) => setTimeout(resolve, 500))

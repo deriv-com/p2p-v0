@@ -30,6 +30,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
+import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
 
 export default function OrderDetailsPage() {
   const params = useParams()
@@ -51,6 +52,7 @@ export default function OrderDetailsPage() {
   const [showComplaintForm, setShowComplaintForm] = useState(false)
   const [showChat, setShowChat] = useState(false)
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
+  const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
@@ -127,6 +129,7 @@ export default function OrderDetailsPage() {
       const result = await OrdersAPI.completeOrder(orderId)
       if (result.errors.length == 0) {
         fetchOrderDetails()
+        setShowPaymentReceivedConfirmation(false)
       }
     } catch (err) {
       console.error("Error completing order:", err)
@@ -271,6 +274,10 @@ export default function OrderDetailsPage() {
 
   const handleShowPaymentConfirmation = () => {
     setShowPaymentConfirmation(true)
+  }
+
+  const handleShowPaymentReceivedConfirmation = () => {
+    setShowPaymentReceivedConfirmation(true)
   }
 
   if (error) {
@@ -477,7 +484,11 @@ export default function OrderDetailsPage() {
                     (order.status === "pending_release" || order.status === "timed_out") &&
                     order.user.id == userId)) && (
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
-                    <Button className="flex-1" onClick={handleConfirmOrder} disabled={isConfirmLoading}>
+                    <Button
+                      className="flex-1"
+                      onClick={handleShowPaymentReceivedConfirmation}
+                      disabled={isConfirmLoading}
+                    >
                       {isConfirmLoading ? (
                         <>
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
@@ -608,6 +619,13 @@ export default function OrderDetailsPage() {
         onConfirm={handlePayOrder}
         order={order}
         isLoading={isPaymentLoading}
+      />
+      <PaymentReceivedConfirmationSidebar
+        isOpen={showPaymentReceivedConfirmation}
+        onClose={() => setShowPaymentReceivedConfirmation(false)}
+        onConfirm={handleConfirmOrder}
+        orderId={orderId}
+        isLoading={isConfirmLoading}
       />
     </div>
   )
