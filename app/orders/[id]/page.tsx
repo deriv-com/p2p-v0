@@ -480,7 +480,7 @@ export default function OrderDetailsPage() {
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
                     <Button
                       className="flex-1"
-                      onClick={handleShowPaymentReceivedConfirmation}
+                      onClick={handleConfirmOrder}
                       disabled={isConfirmLoading}
                     >
                       {isConfirmLoading ? (
