@@ -52,6 +52,18 @@ export const PaymentReceivedConfirmationSidebar = ({
     return () => clearInterval(timer)
   }, [isOpen, resendTimer])
 
+   const handleConfirmOrder = async (value) => {
+    try {
+      const result = await OrdersAPI.completeOrder(orderId, value)
+      if (result.errors.length == 0) {
+        fetchOrderDetails()
+        setShowPaymentReceivedConfirmation(false)
+      }
+    } catch (err) {
+      console.error("Error completing order:", err)
+    }
+  }
+
   const handleRequestOtp = async () => {
     try {
       await OrdersAPI.requestOrderCompletionOtp(orderId)
@@ -72,7 +84,7 @@ export const PaymentReceivedConfirmationSidebar = ({
     setOtpValue(value)
     setError(null)
     if (value.length === 6) {
-      onConfirm
+      handleConfirmOrder(value)
     }
   }
 
