@@ -95,7 +95,6 @@ export const PaymentReceivedConfirmationSidebar = ({
               confirmText: "Got it",
               type: "warning",
               onConfirm: () => {
-                hideAlert()
                 onClose()
               },
             })
