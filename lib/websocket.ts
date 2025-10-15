@@ -38,7 +38,7 @@ export class WebSocketClient {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
-        this.socket = new WebSocket(url)
+        this.socket = new WebSocket(url, protocols)
         this.currentToken = socketToken
 
         this.socket.onopen = () => {
@@ -130,7 +130,9 @@ export class WebSocketClient {
 
   public disconnect(): void {
     if (this.socket) {
-      this.socket.close()
+      if (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN) {
+        this.socket.close()
+      }
       this.socket = null
       this.isConnecting = false
       this.currentToken = null
@@ -151,7 +153,7 @@ let wsClientInstance: WebSocketClient | null = null
 
 export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
   if (!wsClientInstance) {
-      wsClientInstance = new WebSocketClient(options)
+    wsClientInstance = new WebSocketClient(options)
   }
   return wsClientInstance
 }
