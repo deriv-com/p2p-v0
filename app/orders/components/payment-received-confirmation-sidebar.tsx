@@ -85,22 +85,28 @@ export const PaymentReceivedConfirmationSidebar = ({
 
   const handleRequestOtp = async () => {
     try {
-      await OrdersAPI.requestOrderCompletionOtp(orderId)
-      setResendTimer(59)
-      setError(null)
+      const result = await OrdersAPI.requestOrderCompletionOtp(orderId)
+      if (result.errors && result.errors.length > 0) {
+          const error = result.errors[0]
+          if (error.code === "OrderCompleteVerificationTempLock") {
+            showAlert({
+              title: "Too many failed attempts",
+              description:
+                "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
+              confirmText: "Got it",
+              type: "warning",
+              onConfirm: () => {
+                hideAlert()
+                onClose()
+              },
+            })
+        }
+      } else {
+          setResendTimer(59)
+          setError(null)
+      }
     } catch (err: any) {
-      if (err?.error?.code === "OrderCompleteVerificationTempLock") {
-        showAlert({
-          title: "Too many failed attempts",
-          description:
-            "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
-          confirmText: "Got it",
-          type: "warning",
-          onConfirm: () => {
-            hideAlert()
-            onClose()
-          },
-        })
+      
       } else {
         console.error("Error requesting OTP:", err)
         setError("Failed to send verification code. Please try again.")
