@@ -117,7 +117,7 @@ export const PaymentReceivedConfirmationSidebar = ({
                   <InputOTPSlot index={2} className="w-12 h-12 text-lg bg-transparent" />
                   <InputOTPSlot index={3} className="w-12 h-12 text-lg bg-transparent" />
                   <InputOTPSlot index={4} className="w-12 h-12 text-lg bg-transparent" />
-                  <InputOTPSlot index={5} className="w-12 h-12 text-lg" />
+                  <InputOTPSlot index={5} className="w-12 h-12 text-lg bg-transparent" />
                 </InputOTPGroup>
               </InputOTP>
 
