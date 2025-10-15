@@ -64,8 +64,6 @@ export const PaymentReceivedConfirmationSidebar = ({
   }
 
   const handleVerifyAndComplete = async () => {
-    if (otpValue.length !== 6) return
-
     setIsVerifying(true)
     setError(null)
 
