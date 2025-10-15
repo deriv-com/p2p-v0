@@ -18,6 +18,7 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
   const isMobile = useIsMobile()
   const { showAlert, hideAlert } = useAlertDialog()
 
+  if(!isOpen) return
   if(isOpen && !isMobile) {
     showAlert({
       title: "Order details",
