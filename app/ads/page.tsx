@@ -200,7 +200,7 @@ export default function AdsPage() {
                 className="font-bold text-base leading-4 tracking-[0%] text-center"
               >
                 <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
-                Create ads
+                Create ad
               </Button>
             )}
             {getHideMyAdsComponent()}
