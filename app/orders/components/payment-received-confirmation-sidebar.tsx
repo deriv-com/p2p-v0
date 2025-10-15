@@ -63,25 +63,6 @@ export const PaymentReceivedConfirmationSidebar = ({
     }
   }
 
-  const handleVerifyAndComplete = async () => {
-    setIsVerifying(true)
-    setError(null)
-
-    try {
-      const result = await OrdersAPI.verifyOrderCompletionOtp(orderId, otpValue)
-      if (result.success) {
-        onConfirm()
-      } else {
-        setError(result.message || "Invalid verification code. Please try again.")
-      }
-    } catch (err) {
-      console.error("Error verifying OTP:", err)
-      setError("Failed to verify code. Please try again.")
-    } finally {
-      setIsVerifying(false)
-    }
-  }
-
   const handleResendCode = async () => {
     if (resendTimer > 0) return
     await handleRequestOtp()
