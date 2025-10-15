@@ -169,20 +169,20 @@ export const PaymentReceivedConfirmationSidebar = ({
             </div>
 
             {!warning && <div className="space-y-2">
-              <p className="text-sm text-gray-600">Didn't receive the code?</p>
-              {resendTimer > 0 ? (
-                <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
-              ) : (
-                <Button
-                  variant="ghost"
-                  onClick={handleResendCode}
-                  className="p-0 hover:bg-transparent underline font-normal text-gray-600"
-                  size="sm"
-                >
-                  Resend code
-                </Button>
-              )}
-            </div>
+                  <p className="text-sm text-gray-600">Didn't receive the code?</p>
+                  {resendTimer > 0 ? (
+                    <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
+                  ) : (
+                    <Button
+                      variant="ghost"
+                      onClick={handleResendCode}
+                      className="p-0 hover:bg-transparent underline font-normal text-gray-600"
+                      size="sm"
+                    >
+                      Resend code
+                    </Button>
+                  )}
+                </div>
             }
           </div>
         </div>
