@@ -92,7 +92,11 @@ export const PaymentReceivedConfirmationSidebar = ({
       <SheetContent className="w-full p-0 sm:max-w-none" hideCloseButton>
         <div className="flex flex-col h-full sm:max-w-none md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4">
-            <div className="flex items-center justify-between"></div>
+            <div className="flex items-center justify-between">
+              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+              </Button>
+            </di
           </SheetHeader>
 
           <div className="flex-1 p-6 space-y-6">
