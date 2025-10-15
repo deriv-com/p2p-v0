@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
 import { OrderDetails } from "@/components/order-details"
 import Image from "next/image"
-import { useEffect } from "react"
 
 interface OrderDetailsSidebarProps {
   isOpen: boolean
