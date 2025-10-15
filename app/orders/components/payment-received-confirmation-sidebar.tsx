@@ -57,7 +57,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       const result = await OrdersAPI.completeOrder(orderId, value)
       if (result.errors.length == 0) {
         fetchOrderDetails()
-        setShowPaymentReceivedConfirmation(false)
+        onClose()
       }
     } catch (err) {
       console.error("Error completing order:", err)
