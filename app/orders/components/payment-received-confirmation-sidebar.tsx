@@ -25,6 +25,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [otpValue, setOtpValue] = useState("")
   const [resendTimer, setResendTimer] = useState(59)
   const [error, setError] = useState<string | null>(null)
+  const [warning, setError] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
   const userData = useUserDataStore((state) => state.userData)
 
