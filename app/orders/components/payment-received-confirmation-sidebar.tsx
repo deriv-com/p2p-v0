@@ -92,8 +92,6 @@ export const PaymentReceivedConfirmationSidebar = ({
   const handleOtpChange = (value: string) => {
     setOtpValue(value)
     setError(null)
-
-    // Automatically verify when all 6 digits are entered
     if (value.length === 6) {
       handleVerifyAndComplete()
     }
