@@ -89,7 +89,7 @@ export const PaymentReceivedConfirmationSidebar = ({
 
   return (
     <Sheet open={isOpen}>
-      <SheetContent className="w-full p-0 sm:max-w-none">
+      <SheetContent className="w-full p-0 sm:max-w-none" hideCloseButton>
         <div className="flex flex-col h-full sm:max-w-none md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4">
             <div className="flex items-center justify-between"></div>
