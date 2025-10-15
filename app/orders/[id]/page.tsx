@@ -37,7 +37,7 @@ export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
-  const { showAlert, hideAlert } = useAlertDialog()
+  const { showAlert } = useAlertDialog()
   const { toast } = useToast()
   const { setIsChatVisible } = useChatVisibilityStore()
   const userId = useUserDataStore((state) => state.userId)
