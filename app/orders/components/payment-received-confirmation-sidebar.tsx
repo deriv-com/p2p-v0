@@ -30,7 +30,6 @@ export const PaymentReceivedConfirmationSidebar = ({
 
   useEffect(() => {
     if (isOpen) {
-      // Request OTP when sidebar opens
       handleRequestOtp()
       setOtpValue("")
       setError(null)
