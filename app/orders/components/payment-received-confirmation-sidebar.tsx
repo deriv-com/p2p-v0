@@ -24,10 +24,11 @@ export const PaymentReceivedConfirmationSidebar = ({
   isLoading = false,
 }: PaymentReceivedConfirmationSidebarProps) => {
   const [otpValue, setOtpValue] = useState("")
-  const [resendTimer, setResendTimer] = useState(59)
+  const [resendTimer, setResendTimer] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
+  const [otpRequested, setOtpRequested] = useState(false)
   const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)
 
@@ -40,7 +41,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   }, [isOpen])
 
   useEffect(() => {
-    if (!isOpen || resendTimer <= 0) return
+    if (!isOpen || resendTimer <= 0 || !otpRequested) return
 
     const timer = setInterval(() => {
       setResendTimer((prev) => {
@@ -53,7 +54,7 @@ export const PaymentReceivedConfirmationSidebar = ({
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isOpen, resendTimer])
+  }, [isOpen, resendTimer, otpRequested])
 
   const handleConfirmOrder = async (value) => {
     try {
@@ -85,27 +86,31 @@ export const PaymentReceivedConfirmationSidebar = ({
     try {
       const result = await OrdersAPI.requestOrderCompletionOtp(orderId)
       if (result.errors && result.errors.length > 0) {
-          const error = result.errors[0]
-          if (error.code === "OrderCompleteVerificationTempLock") {
-            showAlert({
-              title: "Too many failed attempts",
-              description:
-                "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
-              confirmText: "Got it",
-              type: "warning",
-              onConfirm: () => {
-                onClose()
-              },
-            })
+        const error = result.errors[0]
+        if (error.code === "OrderCompleteVerificationTempLock") {
+          setOtpRequested(false)
+          showAlert({
+            title: "Too many failed attempts",
+            description:
+              "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
+            confirmText: "Got it",
+            type: "warning",
+            onConfirm: () => {
+              onClose()
+            },
+          })
         } else {
+          setOtpRequested(false)
           setError(error.message || "An error occurred. Please try again.")
         }
       } else {
-          setResendTimer(59)
-          setError(null)
+        setOtpRequested(true)
+        setResendTimer(59)
+        setError(null)
       }
     } catch (err: any) {
-        setError("An error occurred. Please try again.")
+      setOtpRequested(false)
+      setError("An error occurred. Please try again.")
     }
   }
 
@@ -166,22 +171,23 @@ export const PaymentReceivedConfirmationSidebar = ({
               )}
             </div>
 
-            <div className="space-y-2">
-                  <p className="text-sm text-gray-600">Didn't receive the code?</p>
-                  {resendTimer > 0 ? (
-                    <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
-                  ) : (
-                    <Button
-                      variant="ghost"
-                      onClick={handleResendCode}
-                      className="p-0 hover:bg-transparent underline font-normal text-gray-600"
-                      size="sm"
-                    >
-                      Resend code
-                    </Button>
-                  )}
-                </div>
-            
+            {otpRequested && (
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">Didn't receive the code?</p>
+                {resendTimer > 0 ? (
+                  <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    onClick={handleResendCode}
+                    className="p-0 hover:bg-transparent underline font-normal text-gray-600"
+                    size="sm"
+                  >
+                    Resend code
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </SheetContent>
