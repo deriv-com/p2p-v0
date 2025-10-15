@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import Image from "next/imag
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
@@ -89,7 +89,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   }
 
   return (
-    <Sheet open={isOpen}>
+    <Sheet open={isOpen} onOpenChange={}>
       <SheetContent className="w-full p-0 sm:max-w-none" hideCloseButton>
         <div className="flex flex-col h-full sm:max-w-none md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4">
