@@ -66,13 +66,6 @@ const AdPaymentMethods = () => {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
 
-        if (result.data && result.data.id) {
-          const newMethodId = Number(result.data.id)
-          if (!isNaN(newMethodId) && selectedPaymentMethodIds.length < 3) {
-            togglePaymentMethod(newMethodId)
-          }
-        }
-
         if (isMobile) {
           setShowPaymentDetailsSheet(false)
           setShowAddPaymentSheet(false)
