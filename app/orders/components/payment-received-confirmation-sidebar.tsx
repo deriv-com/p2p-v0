@@ -5,7 +5,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { OrdersAPI } from "@/services/api"
-import { ChevronLeft, HelpCircle } from "lucide-react"
 
 interface PaymentReceivedConfirmationSidebarProps {
   isOpen: boolean
@@ -103,14 +102,8 @@ export const PaymentReceivedConfirmationSidebar = ({
         <div className="flex flex-col h-full md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4 border-b">
             <div className="flex items-center justify-between">
-              <Button variant="ghost" onClick={onClose} className="p-0 h-auto hover:bg-transparent">
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
-              </Button>
-              <Button variant="ghost" className="p-0 h-auto hover:bg-transparent">
-                <HelpCircle className="h-6 w-6" />
               </Button>
             </div>
           </SheetHeader>
