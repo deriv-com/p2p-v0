@@ -62,6 +62,8 @@ export const PaymentReceivedConfirmationSidebar = ({
         if (error.code === "InvalidOrExpiredVerificationCode") {
           const attemptsLeft = error.detail?.attempts_left || 0
           setError(`Incorrect code. You have ${attemptsLeft} attempt${attemptsLeft !== 1 ? "s" : ""} left.`)
+        } else if(error.code === "OrderCompleteVerificationTempLock") {
+        
         } else {
           setError(error.message || "An error occurred. Please try again.")
         }
