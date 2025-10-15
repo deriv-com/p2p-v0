@@ -57,7 +57,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
               <span>Payment method added.</span>
             </div>
           ),

@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useRef, type ReactNode } from "react"
+import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import type { WebSocketMessage } from "./websocket-message"
 import type { WebSocketOptions } from "./websocket-options"
@@ -27,6 +27,10 @@ export class WebSocketClient {
       return Promise.resolve(this.socket)
     }
 
+    if (this.socket) {
+      this.disconnect()
+    }
+
     if (this.isConnecting) {
       return Promise.reject(new Error("Connection already in progress"))
     }
@@ -37,7 +41,7 @@ export class WebSocketClient {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
         const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
-        this.socket = new WebSocket(url)
+        this.socket = new WebSocket(url, protocols)
         this.currentToken = socketToken
 
         this.socket.onopen = () => {
@@ -129,7 +133,9 @@ export class WebSocketClient {
 
   public disconnect(): void {
     if (this.socket) {
-      this.socket.close()
+      if (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN) {
+        this.socket.close()
+      }
       this.socket = null
       this.isConnecting = false
       this.currentToken = null
@@ -179,11 +185,10 @@ interface WebSocketProviderProps {
 }
 
 export function WebSocketProvider({ children }: WebSocketProviderProps) {
-  const socketToken = useUserDataStore((state) => state.socketToken)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const hasInitializedRef = useRef(false)
-  const isConnectedRef = useRef(false)
+  const [isConnected, setIsConnected] = useState(false)
 
   useEffect(() => {
     if (hasInitializedRef.current) return
@@ -192,17 +197,17 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     const wsClient = getWebSocketClient({
       onOpen: () => {
-        isConnectedRef.current = true
+        setIsConnected(true)
       },
       onMessage: (data) => {
         subscribersRef.current.forEach((callback) => callback(data))
       },
       onClose: () => {
-        isConnectedRef.current = false
+        setIsConnected(false)
       },
       onError: (error) => {
         console.error("WebSocket error:", error)
-        isConnectedRef.current = false
+        setIsConnected(false)
       },
     })
 
@@ -211,6 +216,12 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClient.connect().catch((error) => {
       console.error("Failed to connect WebSocket:", error)
     })
+
+    return () => {
+      if (wsClientRef.current) {
+        wsClientRef.current.disconnect()
+      }
+    }
   }, [])
 
   const joinChannel = (channel: string, id: number) => {
@@ -242,7 +253,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
   }
 
   const value: WebSocketContextType = {
-    isConnected: isConnectedRef.current,
+    isConnected,
     joinChannel,
     leaveChannel,
     getChatHistory,

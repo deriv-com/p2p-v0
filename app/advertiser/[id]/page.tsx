@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter} from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -141,7 +141,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
               {isFollowing ? <span>Successfully unfollowed</span> : <span>Successfully followed</span>}
             </div>
           ),
@@ -179,13 +179,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
               toast({
                 description: (
                   <div className="flex items-center gap-2">
-                    <Image
-                      src="/icons/success-checkmark.png"
-                      alt="Success"
-                      width={24}
-                      height={24}
-                      className="text-white"
-                    />
+                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
                     {isBlocked ? (
                       <span>{profile?.nickname} unblocked.</span>
                     ) : (
@@ -224,7 +218,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
               <span>{profile?.nickname} unblocked.</span>
             </div>
           ),

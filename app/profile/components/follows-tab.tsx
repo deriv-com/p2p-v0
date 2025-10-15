@@ -72,13 +72,7 @@ export default function FollowsTab() {
             toast({
               description: (
                 <div className="flex items-center gap-2">
-                  <Image
-                    src="/icons/success-checkmark.png"
-                    alt="Success"
-                    width={24}
-                    height={24}
-                    className="text-white"
-                  />
+                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
                   <span>{`${user.nickname} unfollowed.`}</span>
                 </div>
               ),
@@ -103,12 +97,12 @@ export default function FollowsTab() {
           </div>
         </div>
         <Button
-            onClick={() => handleAdvertiserClick(user.user_id)}
-            className="hover:underline hover:bg-transparent cursor-pointer font-normal"
-            size="sm"
-            variant="ghost"
+          onClick={() => handleAdvertiserClick(user.user_id)}
+          className="hover:underline hover:bg-transparent cursor-pointer font-normal"
+          size="sm"
+          variant="ghost"
         >
-            {user.nickname}
+          {user.nickname}
         </Button>
       </div>
       <Button
@@ -164,7 +158,9 @@ export default function FollowsTab() {
         ) : (
           <EmptyState
             title={searchQuery ? "No matching name" : "Not following anyone yet"}
-            description={searchQuery ? `There is no result for ${searchQuery}.` : "Start following users to see them here."}
+            description={
+              searchQuery ? `There is no result for ${searchQuery}.` : "Start following users to see them here."
+            }
             redirectToAds={false}
           />
         )}

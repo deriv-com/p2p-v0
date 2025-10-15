@@ -165,7 +165,7 @@ export default function PaymentMethodsTab() {
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
               <span>Payment method updated.</span>
             </div>
           ),
@@ -231,7 +231,7 @@ export default function PaymentMethodsTab() {
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/success-checkmark.png" alt="Success" width={24} height={24} className="text-white" />
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
               <span>Payment method deleted.</span>
             </div>
           ),
@@ -279,7 +279,9 @@ export default function PaymentMethodsTab() {
   )
 
   if (!userId) {
-    return (<EmptyState title="No payment methods yet" description="Start adding payment methods" redirectToAds={false} />)
+    return (
+      <EmptyState title="No payment methods yet" description="Start adding payment methods" redirectToAds={false} />
+    )
   }
 
   if (isLoading) {
@@ -360,7 +362,7 @@ export default function PaymentMethodsTab() {
                           Edit
                         </DropdownMenuItem>
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px] cursor-pointer"
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
                           <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />

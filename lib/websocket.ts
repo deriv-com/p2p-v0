@@ -6,7 +6,6 @@ export class WebSocketClient {
   private socket: WebSocket | null = null
   private options: WebSocketOptions
   private isConnecting = false
-  private currentToken: string | null = null
 
   constructor(options: WebSocketOptions = {}) {
     this.options = options
@@ -18,8 +17,6 @@ export class WebSocketClient {
   }
 
   public connect(): Promise<WebSocket> {
-    const socketToken = this.getSocketToken()
-
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       return Promise.resolve(this.socket)
     }
@@ -37,9 +34,7 @@ export class WebSocketClient {
     return new Promise((resolve, reject) => {
       try {
         const url = process.env.NEXT_PUBLIC_SOCKET_URL
-        const protocols = socketToken && socketToken.trim() ? [socketToken] : undefined
         this.socket = new WebSocket(url)
-        this.currentToken = socketToken
 
         this.socket.onopen = () => {
           this.isConnecting = false
@@ -70,7 +65,6 @@ export class WebSocketClient {
 
         this.socket.onclose = (event) => {
           this.isConnecting = false
-          this.currentToken = null
           if (this.options.onClose) {
             this.options.onClose(event, this.socket!)
           }
@@ -130,10 +124,11 @@ export class WebSocketClient {
 
   public disconnect(): void {
     if (this.socket) {
-      this.socket.close()
+      if (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN) {
+        this.socket.close()
+      }
       this.socket = null
       this.isConnecting = false
-      this.currentToken = null
     }
   }
 
@@ -151,7 +146,7 @@ let wsClientInstance: WebSocketClient | null = null
 
 export function getWebSocketClient(options?: WebSocketOptions): WebSocketClient {
   if (!wsClientInstance) {
-      wsClientInstance = new WebSocketClient(options)
+    wsClientInstance = new WebSocketClient(options)
   }
   return wsClientInstance
 }
