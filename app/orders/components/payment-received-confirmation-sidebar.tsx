@@ -91,7 +91,7 @@ export const PaymentReceivedConfirmationSidebar = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-md p-0">
+      <SheetContent className="w-full p-0">
         <div className="flex flex-col h-full">
           <SheetHeader className="p-4 border-b">
             <div className="flex items-center justify-between">
