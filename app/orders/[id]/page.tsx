@@ -86,7 +86,7 @@ export default function OrderDetailsPage() {
 
   const showOrderDetails = () => {
     if(isMobile) {
-    
+
     } else {
       showAlert({
         title: "Order details",
@@ -399,7 +399,7 @@ export default function OrderDetailsPage() {
                             {formatAmount(order.payment_amount)} {order?.payment_currency}
                           </p>
                         </div>
-                        <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
+                        <button className="flex items-center text-sm" onClick={showOrderDetails}>
                           View order details
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
