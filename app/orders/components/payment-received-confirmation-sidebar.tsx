@@ -72,7 +72,7 @@ export const PaymentReceivedConfirmationSidebar = ({
     setOtpValue(value)
     setError(null)
     if (value.length === 6) {
-      handleVerifyAndComplete()
+      onConfirm
     }
   }
 
