@@ -20,7 +20,6 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
 
   useEffect(() => {
     if (isOpen && isMobile === false) {
-      // Desktop: use alert dialog
       showAlert({
         title: "Order details",
         content: (
