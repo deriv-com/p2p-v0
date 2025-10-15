@@ -606,7 +606,7 @@ export default function OrderDetailsPage() {
         onSubmit={handleSubmitReview}
         recommendLabel={`Would you recommend this ${counterpartyLabel.toLowerCase()}?`}
       />
-      <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
+      {isMobile && <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
       <PaymentConfirmationSidebar
         isOpen={showPaymentConfirmation}
         onClose={() => setShowPaymentConfirmation(false)}
