@@ -12,7 +12,13 @@ const Tooltip = ({ children, ...props }: React.ComponentProps<typeof TooltipPrim
   const [open, setOpen] = useState(false)
 
   return (
-    <TooltipPrimitive.Root open={open} onOpenChange={setOpen} {...props}>
+    <TooltipPrimitive.Root
+      open={open}
+      onOpenChange={setOpen}
+      delayDuration={Number.POSITIVE_INFINITY}
+      disableHoverableContent
+      {...props}
+    >
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child) && child.type === TooltipTrigger) {
           return React.cloneElement(child, { onOpenChange: setOpen } as any)
@@ -29,16 +35,15 @@ const TooltipTrigger = React.forwardRef<
     onOpenChange?: (open: boolean) => void
   }
 >(({ children, onOpenChange, ...props }, ref) => {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const handleClick = () => {
-    const newState = !isOpen
-    setIsOpen(newState)
-    onOpenChange?.(newState)
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    // Toggle by calling onOpenChange with a function that receives current state
+    onOpenChange?.((prev) => !prev as any)
   }
 
   return (
-    <TooltipPrimitive.Trigger ref={ref} onClick={handleClick} {...props}>
+    <TooltipPrimitive.Trigger ref={ref} onClick={handleClick} onPointerDown={(e) => e.preventDefault()} {...props}>
       {children}
     </TooltipPrimitive.Trigger>
   )
