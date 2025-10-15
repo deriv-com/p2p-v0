@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import type { Order } from "@/services/api/api-orders"
 import { OrderDetails } from "@/components/order-details"
 import Image from "next/image"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useEffect } from "react"
 
@@ -15,14 +14,6 @@ interface OrderDetailsSidebarProps {
 }
 
 export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDetailsSidebarProps) {
-  const isMobile = useIsMobile()
-  const { showAlert, hideAlert } = useAlertDialog()
-
-  if(!isOpen) return
-  if(isOpen && !isMobile) {
-    
-  }
-
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-end z-50">
       <div className="bg-white w-full max-w-md h-full flex flex-col">
