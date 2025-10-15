@@ -55,12 +55,26 @@ export const PaymentReceivedConfirmationSidebar = ({
   const handleConfirmOrder = async (value) => {
     try {
       const result = await OrdersAPI.completeOrder(orderId, value)
-      if (result.errors.length == 0) {
+
+      if (result.errors && result.errors.length > 0) {
+        const error = result.errors[0]
+
+        // Check for InvalidOrExpiredVerificationCode error
+        if (error.code === "InvalidOrExpiredVerificationCode") {
+          const attemptsLeft = error.details?.attempts_left || 0
+          setError(`Incorrect code. You have ${attemptsLeft} attempt${attemptsLeft !== 1 ? "s" : ""} left.`)
+        } else {
+          setError(error.message || "An error occurred. Please try again.")
+        }
+        setOtpValue("")
+      } else {
         onConfirm()
         onClose()
       }
     } catch (err) {
       console.error("Error completing order:", err)
+      setError("An error occurred. Please try again.")
+      setOtpValue("")
     }
   }
 
@@ -136,7 +150,12 @@ export const PaymentReceivedConfirmationSidebar = ({
               {resendTimer > 0 ? (
                 <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
               ) : (
-                <Button variant="ghost" onClick={handleResendCode} className="p-0 hover:bg-transparent underline font-normal text-gray-600" size="sm">
+                <Button
+                  variant="ghost"
+                  onClick={handleResendCode}
+                  className="p-0 hover:bg-transparent underline font-normal text-gray-600"
+                  size="sm"
+                >
                   Resend code
                 </Button>
               )}

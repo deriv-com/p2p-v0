@@ -383,7 +383,7 @@ export async function reviewOrder(
   }
 }
 
-export async function completeOrder(orderId: string, otpValue: string): Promise<{ success: boolean }> {
+export async function completeOrder(orderId: string, otpValue: string): Promise<{ success: boolean; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/complete`
     const headers = {
@@ -397,14 +397,10 @@ export async function completeOrder(orderId: string, otpValue: string): Promise<
       headers,
       body: JSON.stringify({
         data: {
-          verification_code: otpValue
-          }
-      })
+          verification_code: otpValue,
+        },
+      }),
     })
-
-    if (!response.ok) {
-      throw new Error(`Error completing order: ${response.statusText}`)
-    }
 
     const responseText = await response.text()
     let data
@@ -412,9 +408,10 @@ export async function completeOrder(orderId: string, otpValue: string): Promise<
     try {
       data = JSON.parse(responseText)
     } catch (e) {
-      data = { success: true }
+      data = { success: true, errors: [] }
     }
 
+    // Return the full response including errors array
     return data
   } catch (error) {
     throw error
