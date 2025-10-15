@@ -84,6 +84,21 @@ export default function OrderDetailsPage() {
     return unsubscribe
   }, [orderId, subscribe])
 
+  const showOrderDetails = () => {
+    if(isMobile) {
+    
+    } else {
+      showAlert({
+        title: "Order details",
+        content: (
+          <div className="overflow-auto max-h-[70vh]">
+            <OrderDetails order={order} />
+          </div>
+        ),
+      })
+    }
+  }
+
   const fetchOrderDetails = async () => {
     setIsLoading(true)
     setError(null)
