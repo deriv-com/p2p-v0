@@ -486,7 +486,7 @@ export async function sendChatMessage(
 
 export async function requestOrderCompletionOtp(orderId: string): Promise<{ success: boolean; message?: string }> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/request-completion-otp`
+    const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/verification`
     const headers = {
       ...AUTH.getAuthHeader(),
       "Content-Type": "application/json",
