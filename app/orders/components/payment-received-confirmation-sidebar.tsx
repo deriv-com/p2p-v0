@@ -34,7 +34,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       handleRequestOtp()
       setOtpValue("")
       setError(null)
-      setWarning()
+      setWarning(null)
     }
   }, [isOpen])
 
@@ -139,6 +139,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               </InputOTP>
 
               {error && <p className="text-error text-sm">{error}</p>}
+              {warning && <p className="text-gray text-sm">{warning}</p>}
 
               {isVerifying && (
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
