@@ -499,10 +499,6 @@ export async function requestOrderCompletionOtp(orderId: string): Promise<{ succ
       headers,
     })
 
-    if (!response.ok) {
-      throw new Error(`Error requesting OTP: ${response.statusText}`)
-    }
-
     const responseText = await response.text()
     let data
 
@@ -513,6 +509,7 @@ export async function requestOrderCompletionOtp(orderId: string): Promise<{ succ
     }
 
     return data
+    
   } catch (error) {
     throw error
   }
