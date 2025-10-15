@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { OrdersAPI } from "@/services/api"
 
@@ -23,9 +24,12 @@ export const PaymentReceivedConfirmationSidebar = ({
   isLoading = false,
 }: PaymentReceivedConfirmationSidebarProps) => {
   const [otpValue, setOtpValue] = useState("")
-  const [resendTimer, setResendTimer] = useState(59)
+  const [resendTimer, setResendTimer] = useState(0)
   const [error, setError] = useState<string | null>(null)
+  const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
+  const [otpRequested, setOtpRequested] = useState(false)
+  const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   }, [isOpen])
 
   useEffect(() => {
-    if (!isOpen || resendTimer <= 0) return
+    if (!isOpen || resendTimer <= 0 || !otpRequested) return
 
     const timer = setInterval(() => {
       setResendTimer((prev) => {
@@ -50,28 +54,63 @@ export const PaymentReceivedConfirmationSidebar = ({
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [isOpen, resendTimer])
+  }, [isOpen, resendTimer, otpRequested])
 
-   const handleConfirmOrder = async (value) => {
+  const handleConfirmOrder = async (value) => {
     try {
       const result = await OrdersAPI.completeOrder(orderId, value)
-      if (result.errors.length == 0) {
-        fetchOrderDetails()
-        setShowPaymentReceivedConfirmation(false)
+
+      if (result.errors && result.errors.length > 0) {
+        const error = result.errors[0]
+
+        if (error.code === "InvalidOrExpiredVerificationCode") {
+          const attemptsLeft = error.detail?.attempts_left || 0
+          setError(`Incorrect code. You have ${attemptsLeft} attempt${attemptsLeft !== 1 ? "s" : ""} left.`)
+        } else if (error.code === "OrderCompleteVerificationTempLock") {
+          setWarning("Max attempts reached.")
+        } else {
+          setError(error.message || "An error occurred. Please try again.")
+        }
+        setOtpValue("")
+      } else {
+        onConfirm()
+        onClose()
       }
     } catch (err) {
-      console.error("Error completing order:", err)
+      setError("An error occurred. Please try again.")
+      setOtpValue("")
     }
   }
 
   const handleRequestOtp = async () => {
     try {
-      await OrdersAPI.requestOrderCompletionOtp(orderId)
-      setResendTimer(59)
-      setError(null)
-    } catch (err) {
-      console.error("Error requesting OTP:", err)
-      setError("Failed to send verification code. Please try again.")
+      const result = await OrdersAPI.requestOrderCompletionOtp(orderId)
+      if (result.errors && result.errors.length > 0) {
+        const error = result.errors[0]
+        if (error.code === "OrderCompleteVerificationTempLock") {
+          setOtpRequested(false)
+          showAlert({
+            title: "Too many failed attempts",
+            description:
+              "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
+            confirmText: "Got it",
+            type: "warning",
+            onConfirm: () => {
+              onClose()
+            },
+          })
+        } else {
+          setOtpRequested(false)
+          setError(error.message || "An error occurred. Please try again.")
+        }
+      } else {
+        setOtpRequested(true)
+        setResendTimer(59)
+        setError(null)
+      }
+    } catch (err: any) {
+      setOtpRequested(false)
+      setError("An error occurred. Please try again.")
     }
   }
 
@@ -90,8 +129,8 @@ export const PaymentReceivedConfirmationSidebar = ({
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full p-0">
-        <div className="flex flex-col h-full sm:max-w-unset md:max-w-xl md:mx-auto">
+      <SheetContent className="w-full p-0 sm:max-w-none" hideCloseButton>
+        <div className="flex flex-col h-full sm:max-w-none md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4">
             <div className="flex items-center justify-between">
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
@@ -112,16 +151,17 @@ export const PaymentReceivedConfirmationSidebar = ({
             <div className="space-y-4">
               <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading}>
                 <InputOTPGroup className="gap-2">
-                  <InputOTPSlot index={0} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={1} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={2} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={3} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={4} className="w-12 h-12 text-lg" />
-                  <InputOTPSlot index={5} className="w-12 h-12 text-lg" />
+                  <InputOTPSlot index={0} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={1} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={2} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={3} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={4} className="w-12 h-12 text-lg bg-transparent" />
+                  <InputOTPSlot index={5} className="w-12 h-12 text-lg bg-transparent" />
                 </InputOTPGroup>
               </InputOTP>
 
               {error && <p className="text-error text-sm">{error}</p>}
+              {warning && <p className="text-gray-600 text-sm">{warning}</p>}
 
               {isVerifying && (
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
@@ -131,16 +171,23 @@ export const PaymentReceivedConfirmationSidebar = ({
               )}
             </div>
 
-            <div className="space-y-2">
-              <p className="text-sm text-gray-600">Didn't receive the code?</p>
-              {resendTimer > 0 ? (
-                <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
-              ) : (
-                <Button variant="ghost" onClick={handleResendCode} className="p-0" size="sm">
-                  Resend code
-                </Button>
-              )}
-            </div>
+            {otpRequested && (
+              <div className="space-y-2">
+                <p className="text-sm text-gray-600">Didn't receive the code?</p>
+                {resendTimer > 0 ? (
+                  <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    onClick={handleResendCode}
+                    className="p-0 hover:bg-transparent underline font-normal text-gray-600"
+                    size="sm"
+                  >
+                    Resend code
+                  </Button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </SheetContent>
