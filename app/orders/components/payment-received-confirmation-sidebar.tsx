@@ -25,7 +25,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [otpValue, setOtpValue] = useState("")
   const [resendTimer, setResendTimer] = useState(59)
   const [error, setError] = useState<string | null>(null)
-  const [warning, setError] = useState<string | null>(null)
+  const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
   const userData = useUserDataStore((state) => state.userData)
 
@@ -64,7 +64,7 @@ export const PaymentReceivedConfirmationSidebar = ({
           const attemptsLeft = error.detail?.attempts_left || 0
           setError(`Incorrect code. You have ${attemptsLeft} attempt${attemptsLeft !== 1 ? "s" : ""} left.`)
         } else if(error.code === "OrderCompleteVerificationTempLock") {
-        
+            setWarning("Max attempts reached.")
         } else {
           setError(error.message || "An error occurred. Please try again.")
         }
