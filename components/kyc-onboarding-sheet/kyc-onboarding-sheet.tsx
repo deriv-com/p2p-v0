@@ -28,7 +28,7 @@ function KycOnboardingSheet() {
       title: "Proof of identity",
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/kyc-poi`,
+      link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
       id: "poa",
