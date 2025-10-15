@@ -185,7 +185,6 @@ interface WebSocketProviderProps {
 }
 
 export function WebSocketProvider({ children }: WebSocketProviderProps) {
-  const socketToken = useUserDataStore((state) => state.socketToken)
   const wsClientRef = useRef<WebSocketClient | null>(null)
   const subscribersRef = useRef<Set<(data: any) => void>>(new Set())
   const hasInitializedRef = useRef(false)
