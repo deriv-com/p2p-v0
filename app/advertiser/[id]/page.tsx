@@ -179,7 +179,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
               toast({
                 description: (
                   <div className="flex items-center gap-2">
-                    <Image src="/icons/tick.jpg" alt="Success" width={24} height={24} className="text-white" />
+                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
                     {isBlocked ? (
                       <span>{profile?.nickname} unblocked.</span>
                     ) : (
