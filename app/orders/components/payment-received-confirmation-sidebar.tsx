@@ -106,7 +106,7 @@ export const PaymentReceivedConfirmationSidebar = ({
 
           <div className="flex-1 p-6 space-y-6">
             <div>
-              <SheetTitle className="text-2xl font-bold mb-4 ">Confirm payment received</SheetTitle>
+              <SheetTitle className="text-2xl font-bold mb-4 text-slate-1200">Confirm payment received</SheetTitle>
               <p className="text-sm text-gray-600">
                 Enter the 6-digit code sent to <span className="font-semibold">{userData?.email || "your email"}</span>.
                 This step verifies your identity before releasing payment to the other party.
