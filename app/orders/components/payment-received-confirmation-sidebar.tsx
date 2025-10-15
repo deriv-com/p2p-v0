@@ -107,7 +107,7 @@ export const PaymentReceivedConfirmationSidebar = ({
           setError(null)
       }
     } catch (err: any) {
-        
+        setError("An error occurred. Please try again.")
     }
   }
 
