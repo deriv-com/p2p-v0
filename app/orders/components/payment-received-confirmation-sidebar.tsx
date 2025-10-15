@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
+import Image from "next/imag
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
@@ -96,7 +97,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
                 <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
               </Button>
-            </di
+            </div>
           </SheetHeader>
 
           <div className="flex-1 p-6 space-y-6">
