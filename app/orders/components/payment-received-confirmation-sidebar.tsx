@@ -28,7 +28,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   const [error, setError] = useState<string | null>(null)
   const [warning, setWarning] = useState<string | null>(null)
   const [isVerifying, setIsVerifying] = useState(false)
-  const { showAlert, hideAlert } = useAlertDialog()
+  const { showAlert } = useAlertDialog()
   const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
