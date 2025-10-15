@@ -106,6 +106,9 @@ export const PaymentReceivedConfirmationSidebar = ({
               <Button variant="ghost" onClick={onClose} className="p-0 h-auto hover:bg-transparent">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
+              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
+                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+              </Button>
               <Button variant="ghost" className="p-0 h-auto hover:bg-transparent">
                 <HelpCircle className="h-6 w-6" />
               </Button>
