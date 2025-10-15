@@ -136,7 +136,7 @@ export const PaymentReceivedConfirmationSidebar = ({
               {resendTimer > 0 ? (
                 <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
               ) : (
-                <Button variant="ghost" onClick={handleResendCode} className="p-0 hover:bg-transparent underline font-normal" size="sm">
+                <Button variant="ghost" onClick={handleResendCode} className="p-0 hover:bg-transparent underline font-normal text-gray-600" size="sm">
                   Resend code
                 </Button>
               )}
