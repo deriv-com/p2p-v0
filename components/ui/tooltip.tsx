@@ -4,29 +4,23 @@ import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
 
 import { cn } from "@/lib/utils"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useState } from "react"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
 const Tooltip = ({ children, ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) => {
-  const isMobile = useIsMobile()
   const [open, setOpen] = useState(false)
 
-  if (isMobile) {
-    return (
-      <TooltipPrimitive.Root open={open} onOpenChange={setOpen} {...props}>
-        {React.Children.map(children, (child) => {
-          if (React.isValidElement(child) && child.type === TooltipTrigger) {
-            return React.cloneElement(child, { onOpenChange: setOpen } as any)
-          }
-          return child
-        })}
-      </TooltipPrimitive.Root>
-    )
-  }
-
-  return <TooltipPrimitive.Root {...props}>{children}</TooltipPrimitive.Root>
+  return (
+    <TooltipPrimitive.Root open={open} onOpenChange={setOpen} {...props}>
+      {React.Children.map(children, (child) => {
+        if (React.isValidElement(child) && child.type === TooltipTrigger) {
+          return React.cloneElement(child, { onOpenChange: setOpen } as any)
+        }
+        return child
+      })}
+    </TooltipPrimitive.Root>
+  )
 }
 
 const TooltipTrigger = React.forwardRef<
@@ -35,27 +29,16 @@ const TooltipTrigger = React.forwardRef<
     onOpenChange?: (open: boolean) => void
   }
 >(({ children, onOpenChange, ...props }, ref) => {
-  const isMobile = useIsMobile()
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClick = () => {
-    if (isMobile) {
-      const newState = !isOpen
-      setIsOpen(newState)
-      onOpenChange?.(newState)
-    }
-  }
-
-  if (isMobile) {
-    return (
-      <TooltipPrimitive.Trigger ref={ref} onClick={handleClick} {...props}>
-        {children}
-      </TooltipPrimitive.Trigger>
-    )
+    const newState = !isOpen
+    setIsOpen(newState)
+    onOpenChange?.(newState)
   }
 
   return (
-    <TooltipPrimitive.Trigger ref={ref} {...props}>
+    <TooltipPrimitive.Trigger ref={ref} onClick={handleClick} {...props}>
       {children}
     </TooltipPrimitive.Trigger>
   )
