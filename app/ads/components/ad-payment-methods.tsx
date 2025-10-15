@@ -65,6 +65,7 @@ const AdPaymentMethods = () => {
       if (result.success) {
         const data = await ProfileAPI.getUserPaymentMethods()
         setPaymentMethods(data)
+
         if (isMobile) {
           setShowPaymentDetailsSheet(false)
           setShowAddPaymentSheet(false)

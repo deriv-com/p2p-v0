@@ -299,7 +299,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           router.push("/ads")
           showAlert({
             title: "Ad created",
-            description: `You've successfully created Ad (${(result.data.type)?.toUpperCase()} ${result.data.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`,
+            description: `You've successfully created AdvertId: ${result.data.id}.\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`,
             confirmText: "OK",
             type: "success",
           })
