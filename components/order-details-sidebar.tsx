@@ -28,8 +28,6 @@ export default function OrderDetailsSidebar({ isOpen, onClose, order }: OrderDet
           </div>
         ),
       })
-    } else if (!isOpen && isMobile === false) {
-      hideAlert()
     }
   }, [isOpen, isMobile, order, showAlert, hideAlert])
 
