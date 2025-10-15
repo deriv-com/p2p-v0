@@ -1,6 +1,5 @@
 "use client"
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
@@ -52,11 +51,11 @@ export const PaymentReceivedConfirmationSidebar = ({
     return () => clearInterval(timer)
   }, [isOpen, resendTimer])
 
-   const handleConfirmOrder = async (value) => {
+  const handleConfirmOrder = async (value) => {
     try {
       const result = await OrdersAPI.completeOrder(orderId, value)
       if (result.errors.length == 0) {
-        fetchOrderDetails()
+        onConfirm()
         onClose()
       }
     } catch (err) {
@@ -89,15 +88,11 @@ export const PaymentReceivedConfirmationSidebar = ({
   }
 
   return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full p-0">
-        <div className="flex flex-col h-full sm:max-w-unset md:max-w-xl md:mx-auto">
+    <Sheet open={isOpen}>
+      <SheetContent className="w-full p-0 sm:max-w-none">
+        <div className="flex flex-col h-full sm:max-w-none md:max-w-xl md:mx-auto">
           <SheetHeader className="p-4">
-            <div className="flex items-center justify-between">
-              <Button variant="ghost" onClick={onClose} size="sm" className="bg-grayscale-300 px-1">
-                <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
-              </Button>
-            </div>
+            <div className="flex items-center justify-between"></div>
           </SheetHeader>
 
           <div className="flex-1 p-6 space-y-6">
