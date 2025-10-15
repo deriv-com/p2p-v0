@@ -383,7 +383,7 @@ export async function reviewOrder(
   }
 }
 
-export async function completeOrder(orderId: string): Promise<{ success: boolean }> {
+export async function completeOrder(orderId: string, otpValue: string): Promise<{ success: boolean }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/complete`
     const headers = {
@@ -395,6 +395,9 @@ export async function completeOrder(orderId: string): Promise<{ success: boolean
       method: "POST",
       credentials: "include",
       headers,
+      body: JSON.stringify({
+        verification_code: otpValue
+      })
     })
 
     if (!response.ok) {

@@ -140,21 +140,6 @@ export default function OrderDetailsPage() {
     }
   }
 
-  const handleConfirmOrder = async () => {
-    setIsConfirmLoading(true)
-    try {
-      const result = await OrdersAPI.completeOrder(orderId)
-      if (result.errors.length == 0) {
-        fetchOrderDetails()
-        setShowPaymentReceivedConfirmation(false)
-      }
-    } catch (err) {
-      console.error("Error completing order:", err)
-    } finally {
-      setIsConfirmLoading(false)
-    }
-  }
-
   const handleSubmitReview = () => {
     setShowRatingSidebar(false)
   }
@@ -634,7 +619,10 @@ export default function OrderDetailsPage() {
       <PaymentReceivedConfirmationSidebar
         isOpen={showPaymentReceivedConfirmation}
         onClose={() => setShowPaymentReceivedConfirmation(false)}
-        onConfirm={handleConfirmOrder}
+        onConfirm={() => {
+          fetchOrderDetails()
+          setShowPaymentReceivedConfirmation(false)
+        }}
         orderId={orderId}
         isLoading={isConfirmLoading}
       />
