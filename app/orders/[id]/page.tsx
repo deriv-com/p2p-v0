@@ -8,6 +8,7 @@ import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
@@ -36,6 +37,7 @@ export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
+  const { showAlert } = useAlertDialog()
   const { toast } = useToast()
   const { setIsChatVisible } = useChatVisibilityStore()
   const userId = useUserDataStore((state) => state.userId)
@@ -83,6 +85,21 @@ export default function OrderDetailsPage() {
 
     return unsubscribe
   }, [orderId, subscribe])
+
+  const showOrderDetails = () => {
+    if(isMobile) {
+      setShowDetailsSidebar(true)
+    } else {
+      showAlert({
+        title: "Order details",
+        content: (
+          <div className="overflow-auto max-h-[70vh]">
+            <OrderDetails order={order} />
+          </div>
+        ),
+      })
+    }
+  }
 
   const fetchOrderDetails = async () => {
     setIsLoading(true)
@@ -384,7 +401,7 @@ export default function OrderDetailsPage() {
                             {formatAmount(order.payment_amount)} {order?.payment_currency}
                           </p>
                         </div>
-                        <button className="flex items-center text-sm" onClick={() => setShowDetailsSidebar(true)}>
+                        <button className="flex items-center text-sm" onClick={showOrderDetails}>
                           View order details
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
@@ -606,7 +623,7 @@ export default function OrderDetailsPage() {
         onSubmit={handleSubmitReview}
         recommendLabel={`Would you recommend this ${counterpartyLabel.toLowerCase()}?`}
       />
-      <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
+      {isMobile && <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />}
       <PaymentConfirmationSidebar
         isOpen={showPaymentConfirmation}
         onClose={() => setShowPaymentConfirmation(false)}
