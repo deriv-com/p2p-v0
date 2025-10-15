@@ -34,7 +34,7 @@ export const PaymentReceivedConfirmationSidebar = ({
       handleRequestOtp()
       setOtpValue("")
       setError(null)
-      setError(null)
+      setWarning(null)
     }
   }, [isOpen])
 
