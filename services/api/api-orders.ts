@@ -517,48 +517,6 @@ export async function requestOrderCompletionOtp(orderId: string): Promise<{ succ
   }
 }
 
-export async function verifyOrderCompletionOtp(
-  orderId: string,
-  otp: string,
-): Promise<{ success: boolean; message?: string; errors?: any[] }> {
-  try {
-    const url = `${API.baseUrl}${API.endpoints.orders}/${orderId}/verify-completion-otp`
-    const headers = {
-      ...AUTH.getAuthHeader(),
-      "Content-Type": "application/json",
-    }
-    const body = JSON.stringify({
-      data: {
-        otp,
-      },
-    })
-
-    const response = await fetch(url, {
-      method: "POST",
-      credentials: "include",
-      headers,
-      body,
-    })
-
-    if (!response.ok) {
-      throw new Error(`Error verifying OTP: ${response.statusText}`)
-    }
-
-    const responseText = await response.text()
-    let data
-
-    try {
-      data = JSON.parse(responseText)
-    } catch (e) {
-      data = { success: true, errors: [] }
-    }
-
-    return data
-  } catch (error) {
-    throw error
-  }
-}
-
 export const OrdersAPI = {
   getOrders,
   getOrderById,
@@ -572,7 +530,6 @@ export const OrdersAPI = {
   sendChatMessage,
   completeOrder,
   requestOrderCompletionOtp,
-  verifyOrderCompletionOtp,
 
   getOrderByIdMock: async (orderId: string): Promise<Order> => {
     await new Promise((resolve) => setTimeout(resolve, 500))
