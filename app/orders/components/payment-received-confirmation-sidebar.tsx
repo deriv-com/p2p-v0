@@ -89,6 +89,16 @@ export const PaymentReceivedConfirmationSidebar = ({
     await handleRequestOtp()
   }
 
+  const handleOtpChange = (value: string) => {
+    setOtpValue(value)
+    setError(null)
+
+    // Automatically verify when all 6 digits are entered
+    if (value.length === 6) {
+      handleVerifyAndComplete()
+    }
+  }
+
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
       <SheetContent className="w-full p-0">
@@ -114,7 +124,7 @@ export const PaymentReceivedConfirmationSidebar = ({
             </div>
 
             <div className="space-y-4">
-              <InputOTP maxLength={6} value={otpValue} onChange={(value) => setOtpValue(value)}>
+              <InputOTP maxLength={6} value={otpValue} onChange={handleOtpChange} disabled={isVerifying || isLoading}>
                 <InputOTPGroup className="gap-2">
                   <InputOTPSlot index={0} className="w-12 h-12 text-lg" />
                   <InputOTPSlot index={1} className="w-12 h-12 text-lg" />
@@ -126,6 +136,13 @@ export const PaymentReceivedConfirmationSidebar = ({
               </InputOTP>
 
               {error && <p className="text-error text-sm">{error}</p>}
+
+              {isVerifying && (
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"></div>
+                  <span>Verifying...</span>
+                </div>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -138,24 +155,6 @@ export const PaymentReceivedConfirmationSidebar = ({
                 </Button>
               )}
             </div>
-          </div>
-
-          <div className="p-4 pt-0">
-            <Button
-              variant="default"
-              onClick={handleVerifyAndComplete}
-              disabled={otpValue.length !== 6 || isVerifying || isLoading}
-              className="w-full"
-            >
-              {isVerifying || isLoading ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                  Verifying...
-                </>
-              ) : (
-                "Confirm"
-              )}
-            </Button>
           </div>
         </div>
       </SheetContent>
