@@ -396,7 +396,7 @@ export async function completeOrder(orderId: string, otpValue: string): Promise<
       credentials: "include",
       headers,
       body: JSON.stringify({
-        verification_codeotpValue
+        verification_code: otpValue
       })
     })
 
