@@ -7,13 +7,12 @@ import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
-import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { ChevronDown } from "lucide-react"
 
 interface PaymentMethod {
   id: number
@@ -35,7 +34,6 @@ const AdPaymentMethods = () => {
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -127,10 +125,6 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const handleDropdownOpenChange = (open: boolean) => {
-    setIsDropdownOpen(open)
-  }
-
   const handleCheckboxToggle = (methodId: number, e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
@@ -159,73 +153,52 @@ const AdPaymentMethods = () => {
     )
   }
 
+  const selectedMethods = paymentMethods.filter((method) => selectedPaymentMethodIds.includes(method.id))
+
   return (
     <>
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
         <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
 
-        <Select open={isDropdownOpen} onOpenChange={handleDropdownOpenChange}>
-          <SelectTrigger className="w-full md:w-[360px] h-[56px] rounded-lg border border-gray-300 focus:border-black data-[state=open]:border-black">
-            <SelectValue>
-              {selectedPaymentMethodIds.length > 0
-                ? `Selected (${selectedPaymentMethodIds.length})`
-                : "Select payment methods"}
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent className="w-[360px]">
-            {paymentMethods.map((method) => {
-              const isSelected = selectedPaymentMethodIds.includes(method.id)
-              const displayDetails = getMethodDisplayDetails(method)
-              const isMaxReached = selectedPaymentMethodIds.length >= 3
-              const isDisabled = isMaxReached && !isSelected
+        <Button
+          variant="outline"
+          className="w-full md:w-[360px] h-[56px] rounded-lg border border-gray-300 hover:border-black justify-between bg-transparent"
+          onClick={handleShowAddPaymentMethod}
+        >
+          <span>
+            {selectedPaymentMethodIds.length > 0
+              ? `Selected (${selectedPaymentMethodIds.length})`
+              : "Select payment methods"}
+          </span>
+          <ChevronDown className="h-4 w-4 opacity-50" />
+        </Button>
 
+        {selectedMethods.length > 0 && (
+          <div className="mt-4 space-y-2">
+            {selectedMethods.map((method) => {
+              const displayDetails = getMethodDisplayDetails(method)
               return (
-                <SelectItem
+                <div
                   key={method.id}
-                  value={method.id.toString()}
-                  className={`cursor-pointer ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
-                  onSelect={(e) => e.preventDefault()}
+                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50"
                 >
-                  <div className="flex items-center justify-between w-full gap-3">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div
-                        className={`w-4 h-4 flex items-center justify-center rounded border ${
-                          isSelected ? "bg-black border-black" : "border-gray-300"
-                        }`}
-                        onClick={(e) => handleCheckboxToggle(method.id, e)}
-                      >
-                        {isSelected && <Check className="h-3 w-3 text-white" />}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                        <div className="flex flex-col">
-                          <span className="font-medium text-sm">{getCategoryDisplayName(method.type)}</span>
-                          <span className="text-xs text-gray-600">{displayDetails.primary}</span>
-                        </div>
-                      </div>
-                    </div>
+                  <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
+                  <div className="flex flex-col flex-1">
+                    <span className="font-medium text-sm">{getCategoryDisplayName(method.type)}</span>
+                    <span className="text-xs text-gray-600">{displayDetails.primary}</span>
                   </div>
-                </SelectItem>
+                  <button
+                    onClick={() => togglePaymentMethod(method.id)}
+                    className="text-red-500 hover:text-red-700 text-sm"
+                  >
+                    Remove
+                  </button>
+                </div>
               )
             })}
-
-            <SelectItem
-              value="add-new"
-              className="cursor-pointer border-t mt-2 pt-2"
-              onSelect={(e) => {
-                e.preventDefault()
-                setIsDropdownOpen(false)
-                handleShowAddPaymentMethod()
-              }}
-            >
-              <div className="flex items-center gap-2">
-                <Image src="/icons/plus_icon.png" alt="Add payment method" width={14} height={14} />
-                <span className="text-sm">Add payment method</span>
-              </div>
-            </SelectItem>
-          </SelectContent>
-        </Select>
+          </div>
+        )}
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic mt-4">No payment methods are added yet</p>}
 
