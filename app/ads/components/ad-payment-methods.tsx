@@ -192,20 +192,31 @@ const AdPaymentMethods = () => {
       <div className="flex-1 overflow-y-auto space-y-3 mb-6">
         {paymentMethods.map((method) => {
           const isSelected = tempSelectedIds.includes(method.id)
+          const accountNumber = method.fields?.account_number || method.fields?.bank_account_number || ""
+          const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
+
           return (
             <div
               key={method.id}
               className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
+              onClick={() => {
+                const isCurrentlySelected = tempSelectedIds.includes(method.id)
+                if (!isCurrentlySelected && tempSelectedIds.length >= 3) {
+                  return
+                }
+                setTempSelectedIds((prev) =>
+                  isCurrentlySelected ? prev.filter((id) => id !== method.id) : [...prev, method.id],
+                )
+              }}
             >
               <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
-                <p className="text-sm text-gray-600 truncate">{getPaymentMethodDetails(method)}</p>
+                <p className="font-medium text-base">{method.display_name}</p>
+                <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
               </div>
               <Checkbox
                 className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                 checked={isSelected}
-                onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
               />
             </div>
           )
