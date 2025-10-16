@@ -182,7 +182,7 @@ export default function OrderChat({
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            </
+            </div>
           ) : (
             messages.map((msg) => (
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
