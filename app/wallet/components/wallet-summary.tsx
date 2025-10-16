@@ -237,7 +237,6 @@ export default function WalletSummary({
                   alt="Transfer"
                   width={14}
                   height={14}
-                  className={cn(isBalancesView && "opacity-25")}
                 />
               </Button>
               <span
