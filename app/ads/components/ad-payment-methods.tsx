@@ -94,7 +94,12 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const handleShowAddPaymentMethod = () => {
+  const handleShowAddPaymentMethod = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
+
     if (isMobile) {
       setShowAddPaymentSheet(true)
     } else {
@@ -174,11 +179,11 @@ const AdPaymentMethods = () => {
   return (
     <>
       <div className="mb-6">
-
         <Button
           variant="outline"
           className="w-full md:w-[360px] h-[56px] rounded-lg border border-gray-300 hover:border-black justify-between bg-transparent"
           onClick={handleShowAddPaymentMethod}
+          type="button"
         >
           <span className="truncate">{getSelectedMethodsText()}</span>
           <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 ml-2" />
