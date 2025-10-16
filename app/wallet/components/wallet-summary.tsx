@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies } from "@/services/api/api-wallets"
@@ -190,9 +191,11 @@ export default function WalletSummary({
               {isBalancesView ? (
                 <>
                   <p className="text-xs font-normal text-white/72">Est. total value</p>
-                  <p className="text-xl font-extrabold text-white">
-                    {propIsLoading ? "0.00 USD" : `${formattedBalance} ${displayCurrency}`}
-                  </p>
+                  {propIsLoading ? (
+                    <Skeleton className="h-7 w-32 bg-white/20" />
+                  ) : (
+                    <p className="text-xl font-extrabold text-white">{`${formattedBalance} ${displayCurrency}`}</p>
+                  )}
                 </>
               ) : (
                 <>
@@ -206,7 +209,7 @@ export default function WalletSummary({
           </div>
 
           <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
-            <div className="flex flex-col items-center gap-2">
+            <div className="hidden flex-col items-center gap-2">
               <Button
                 size="icon"
                 className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
@@ -226,13 +229,10 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? propBalance === "0.00"
-                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
-                      : "border border-white bg-transparent hover:bg-white/10 text-white"
+                    ? "bg-[#FF444F] hover:bg-[#E63946] text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
-                disabled={isBalancesView && propBalance === "0.00"}
                 aria-label="Transfer"
               >
                 <Image
@@ -240,20 +240,19 @@ export default function WalletSummary({
                   alt="Transfer"
                   width={14}
                   height={14}
-                  className={cn(isBalancesView && propBalance === "0.00" && "opacity-25")}
                 />
               </Button>
               <span
                 className={cn(
                   "text-xs font-normal",
-                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  isBalancesView ? "text-white" : "text-slate-1200",
                 )}
               >
                 Transfer
               </span>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="hidden flex-col items-center gap-2">
               <Button
                 size="icon"
                 className={cn(
