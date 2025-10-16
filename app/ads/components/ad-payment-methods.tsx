@@ -50,7 +50,7 @@ const AdPaymentMethods = () => {
   }, [])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked && selectedPaymentMethodIds.length >= 3) {
+    if (checked && tempSelectedIds.length >= 3) {
       return
     }
 
