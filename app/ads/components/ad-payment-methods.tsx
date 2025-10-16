@@ -6,7 +6,7 @@ import { useState, useEffect } from "react"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { ProfileAPI } from "@/services/api"
-import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
+import { getCategoryDisplayName } from "@/lib/utils"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
 import { Sheet, SheetContent } from "@/components/ui/sheet"
@@ -137,6 +137,25 @@ const AdPaymentMethods = () => {
     togglePaymentMethod(methodId)
   }
 
+  const selectedMethods = paymentMethods.filter((method) => selectedPaymentMethodIds.includes(method.id))
+
+  const getSelectedMethodsText = () => {
+    if (selectedMethods.length === 0) {
+      return "Select payment methods"
+    }
+
+    if (selectedMethods.length === 1) {
+      return getCategoryDisplayName(selectedMethods[0].type)
+    }
+
+    if (selectedMethods.length === 2) {
+      return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)}`
+    }
+
+    // For 3 methods, show first two and "+1"
+    return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)} +1`
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -153,8 +172,6 @@ const AdPaymentMethods = () => {
     )
   }
 
-  const selectedMethods = paymentMethods.filter((method) => selectedPaymentMethodIds.includes(method.id))
-
   return (
     <>
       <div className="mb-6">
@@ -166,39 +183,9 @@ const AdPaymentMethods = () => {
           className="w-full md:w-[360px] h-[56px] rounded-lg border border-gray-300 hover:border-black justify-between bg-transparent"
           onClick={handleShowAddPaymentMethod}
         >
-          <span>
-            {selectedPaymentMethodIds.length > 0
-              ? `Selected (${selectedPaymentMethodIds.length})`
-              : "Select payment methods"}
-          </span>
-          <ChevronDown className="h-4 w-4 opacity-50" />
+          <span className="truncate">{getSelectedMethodsText()}</span>
+          <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 ml-2" />
         </Button>
-
-        {selectedMethods.length > 0 && (
-          <div className="mt-4 space-y-2">
-            {selectedMethods.map((method) => {
-              const displayDetails = getMethodDisplayDetails(method)
-              return (
-                <div
-                  key={method.id}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg bg-gray-50"
-                >
-                  <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
-                  <div className="flex flex-col flex-1">
-                    <span className="font-medium text-sm">{getCategoryDisplayName(method.type)}</span>
-                    <span className="text-xs text-gray-600">{displayDetails.primary}</span>
-                  </div>
-                  <button
-                    onClick={() => togglePaymentMethod(method.id)}
-                    className="text-red-500 hover:text-red-700 text-sm"
-                  >
-                    Remove
-                  </button>
-                </div>
-              )
-            })}
-          </div>
-        )}
 
         {paymentMethods.length === 0 && <p className="text-gray-500 italic mt-4">No payment methods are added yet</p>}
 
