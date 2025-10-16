@@ -226,9 +226,7 @@ export default function WalletSummary({
                 className={cn(
                   "h-12 w-12 rounded-full p-0",
                   isBalancesView
-                    ? propBalance === "0.00"
-                      ? "border border-[#FFFFFF3D] bg-transparent text-[#FFFFFF3D]"
-                      : "border border-white bg-transparent hover:bg-white/10 text-white"
+                    ? "bg-[#FF444F] hover:bg-[#E63946] text-white"
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
