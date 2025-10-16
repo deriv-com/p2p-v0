@@ -230,7 +230,6 @@ export default function WalletSummary({
                     : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
                 )}
                 onClick={handleTransferClick}
-                disabled={isBalancesView && propBalance === "0.00"}
                 aria-label="Transfer"
               >
                 <Image
