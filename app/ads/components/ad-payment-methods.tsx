@@ -166,20 +166,6 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const handleToggleTempSelection = (methodId: number) => {
-    setTempSelectedIds((prev) => {
-      const isSelected = prev.includes(methodId)
-      if (isSelected) {
-        return prev.filter((id) => id !== methodId)
-      } else {
-        if (prev.length >= 3) {
-          return prev
-        }
-        return [...prev, methodId]
-      }
-    })
-  }
-
   const handleConfirmSelection = () => {
     setSelectedPaymentMethodIds(tempSelectedIds)
     setShowPaymentSelectionSheet(false)
@@ -219,14 +205,13 @@ const AdPaymentMethods = () => {
             <div
               key={method.id}
               className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
-              onClick={() => handleToggleTempSelection(method.id)}
             >
               <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
                 <p className="text-sm text-gray-600 truncate">{getPaymentMethodDetails(method)}</p>
               </div>
-              <Checkbox checked={isSelected} />
+              <Checkbox checked={isSelected} onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)} />
             </div>
           )
         })}
