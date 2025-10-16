@@ -235,6 +235,7 @@ const AdPaymentMethods = () => {
           className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors"
           onClick={handleShowAddPaymentMethod}
           type="button"
+          variant=""
         >
           <Plus className="w-6 h-6" />
           <span className="text-base font-medium">Add payment method</span>
