@@ -58,6 +58,29 @@ interface Transaction {
   }
 }
 
+interface CurrencyData {
+  type: "cryptocurrency" | "fiat" | "stablecoin"
+  fee: {
+    transfer: {
+      crypto_percentage: number
+      fiat_percentage: number
+      stablecoin_percentage: number
+    }
+  }
+  label: string
+  decimal: {
+    maximum: number
+    minimum: number
+  }
+  [key: string]: any
+}
+
+interface CurrenciesResponse {
+  data: {
+    [currencyCode: string]: CurrencyData
+  }
+}
+
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
@@ -65,6 +88,7 @@ export default function Transfer({ onClose }: TransferProps) {
   const [step, setStep] = useState<TransferStep>("chooseCurrency")
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
@@ -93,6 +117,14 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   const handleCurrencySelect = (currency: string) => {
+    setDestinationWalletData(null)
+    if (sourceWalletData) {
+      setSourceWalletData({
+        id: sourceWalletData.id,
+        name: sourceWalletData.name,
+        currency: currency,
+      })
+    }
     setSelectedCurrency(currency)
     toEnterAmount()
   }
@@ -102,6 +134,7 @@ export default function Transfer({ onClose }: TransferProps) {
       try {
         const response = await getCurrencies()
         if (response?.data) {
+          setCurrenciesData(response as CurrenciesResponse)
           const currencyList = Object.entries(response.data).map(([code, data]: [string, any]) => ({
             code,
             name: data.label,
@@ -155,6 +188,43 @@ export default function Transfer({ onClose }: TransferProps) {
 
     loadWallets()
   }, [selectedCurrency])
+
+  const calculateTransferFee = (): { feeAmount: number; feePercentage: number } | null => {
+    if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
+      return null
+    }
+
+    if (sourceWalletData.currency === destinationWalletData.currency) {
+      return null
+    }
+
+    const sourceCurrencyData = currenciesData.data[sourceWalletData.currency]
+    const destinationCurrencyData = currenciesData.data[destinationWalletData.currency]
+
+    if (!sourceCurrencyData || !destinationCurrencyData) {
+      return null
+    }
+
+    const sourceType = sourceCurrencyData.type
+    let feePercentage = 0
+
+    if (sourceType === "cryptocurrency") {
+      feePercentage = destinationCurrencyData.fee.transfer.crypto_percentage
+    } else if (sourceType === "fiat") {
+      feePercentage = destinationCurrencyData.fee.transfer.fiat_percentage
+    } else if (sourceType === "stablecoin") {
+      feePercentage = destinationCurrencyData.fee.transfer.stablecoin_percentage
+    }
+
+    if (feePercentage === 0) {
+      return null
+    }
+
+    const amount = Number.parseFloat(transferAmount)
+    const feeAmount = (amount * feePercentage) / 100
+
+    return { feeAmount, feePercentage }
+  }
 
   const handleTransferClick = () => {
     toConfirm()
@@ -250,6 +320,12 @@ export default function Transfer({ onClose }: TransferProps) {
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
+  }
+
+  const formatBalance = (amount: string): string => {
+    const num = Number.parseFloat(amount)
+    if (isNaN(num)) return "0.00"
+    return formatAmountWithDecimals(num)
   }
 
   const getSourceWalletBalance = (): number => {
@@ -395,6 +471,12 @@ export default function Transfer({ onClose }: TransferProps) {
   const renderDesktopConfirmPopup = () => {
     if (!showDesktopConfirmPopup) return null
 
+    const transferFee = calculateTransferFee()
+    const amountReceive =
+      transferFee && transferFee.feeAmount > 0
+        ? formatAmountWithDecimals(Number.parseFloat(transferAmount || "0") - transferFee.feeAmount)
+        : formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))
+
     return (
       <div
         className="fixed inset-0 bg-black/50 z-50 hidden md:flex items-center justify-center"
@@ -414,55 +496,75 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6 text-left">Confirm transfer</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">Confirm transfer</h2>
             <div className="mb-6">
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-                <div className="flex items-center gap-3">
-                  {sourceWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                        alt={sourceWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">From</span>
+                  <div className="flex items-center gap-3">
+                    {sourceWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          alt={sourceWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-                <div className="flex items-center gap-3">
-                  {destinationWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
-                          "/placeholder.svg"
-                        }
-                        alt={destinationWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">To</span>
+                  <div className="flex items-center gap-3">
+                    {destinationWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          alt={destinationWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-                <span className="block text-base font-normal text-slate-1200">
-                  {formatAmountWithDecimals(transferAmount || "0")} {selectedCurrency || "USD"}
-                </span>
+              <div className="h-1 bg-[#F6F7F8]  mt-4 mb-0"></div>
+              <div className={`flex flex-col justify-center ${transferFee ? "h-[104px] gap-2" : "h-[72px]"}`}>
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
+                  </span>
+                </div>
+                {transferFee && (
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-base font-normal text-grayscale-text-muted">
+                      Transfer fee ({transferFee.feePercentage}%)
+                    </span>
+                    <span className="text-base font-normal text-slate-1200">
+                      {formatAmountWithDecimals(transferFee.feeAmount)} {getSourceWalletCurrency() || "USD"}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="h-1 bg-[#F6F7F8]"></div>
+              <div className="h-[72px] flex items-center">
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {amountReceive} {selectedCurrency || "USD"}
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="space-y-2 mt-12">
               <Button
@@ -488,6 +590,12 @@ export default function Transfer({ onClose }: TransferProps) {
   const renderMobileConfirmSheet = () => {
     if (!showMobileConfirmSheet) return null
 
+    const transferFee = calculateTransferFee()
+    const amountReceive =
+      transferFee && transferFee.feeAmount > 0
+        ? formatAmountWithDecimals(Number.parseFloat(transferAmount || "0") - transferFee.feeAmount)
+        : formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))
+
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
         <div
@@ -498,55 +606,75 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">Confirm transfer</h1>
+            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-8 ml-4 ">Confirm transfer</h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">From</span>
-                <div className="flex items-center gap-3">
-                  {sourceWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                        alt={sourceWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">From</span>
+                  <div className="flex items-center gap-3">
+                    {sourceWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          alt={sourceWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
               <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">To</span>
-                <div className="flex items-center gap-3">
-                  {destinationWalletData && (
-                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                      <Image
-                        src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                          "/placeholder.svg" ||
-                          "/placeholder.svg"
-                        }
-                        alt={destinationWalletData.currency}
-                        width={24}
-                        height={24}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  )}
-                  <span className="block text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                <div className="flex items-center justify-between">
+                  <span className="text-base font-normal text-grayscale-text-muted">To</span>
+                  <div className="flex items-center gap-3">
+                    {destinationWalletData && (
+                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                        <Image
+                          src={
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          alt={destinationWalletData.currency}
+                          width={24}
+                          height={24}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    )}
+                    <span className="text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
+                  </div>
                 </div>
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
-              <div className="mb-4">
-                <span className="block text-base font-normal text-grayscale-text-muted mb-1">Amount</span>
-                <span className="block text-base font-normal text-slate-1200">
-                  {formatAmountWithDecimals(transferAmount || "0")} {selectedCurrency || "USD"}
-                </span>
+              <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
+              <div className={`flex flex-col justify-center ${transferFee ? "h-[104px] gap-2" : "h-[72px]"}`}>
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
+                  </span>
+                </div>
+                {transferFee && (
+                  <div className="flex items-center justify-between w-full">
+                    <span className="text-base font-normal text-grayscale-text-muted">
+                      Transfer fee ({transferFee.feePercentage}%)
+                    </span>
+                    <span className="text-base font-normal text-slate-1200">
+                      {formatAmountWithDecimals(transferFee.feeAmount)} {getSourceWalletCurrency() || "USD"}
+                    </span>
+                  </div>
+                )}
               </div>
-              <div className="h-px bg-gray-200 mb-4"></div>
+              <div className="h-1 bg-[#F6F7F8]"></div>
+              <div className="h-[72px] flex items-center">
+                <div className="flex items-center justify-between w-full">
+                  <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                  <span className="text-base font-normal text-slate-1200">
+                    {amountReceive} {selectedCurrency || "USD"}
+                  </span>
+                </div>
+              </div>
             </div>
             <div className="space-y-3 mt-8">
               <Button
@@ -567,6 +695,11 @@ export default function Transfer({ onClose }: TransferProps) {
       return "/icons/p2p-logo.png"
     }
     return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
+  }
+
+  const getSourceWalletCurrency = () => {
+    const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
+    return wallet?.currency || ""
   }
 
   if (step === "chooseCurrency") {
@@ -611,7 +744,7 @@ export default function Transfer({ onClose }: TransferProps) {
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -649,10 +782,7 @@ export default function Transfer({ onClose }: TransferProps) {
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg"
-                      }
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
@@ -749,7 +879,7 @@ export default function Transfer({ onClose }: TransferProps) {
   }
 
   if (step === "success") {
-    const transferText = `${formatAmountWithDecimals(transferAmount || "0")} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+    const transferText = `${formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
 
     return (
       <>
