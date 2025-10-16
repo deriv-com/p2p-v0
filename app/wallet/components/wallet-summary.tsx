@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { Skeleton } from "@/components/ui/skeleton"
 import { cn, currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getCurrencies } from "@/services/api/api-wallets"
@@ -190,9 +191,11 @@ export default function WalletSummary({
               {isBalancesView ? (
                 <>
                   <p className="text-xs font-normal text-white/72">Est. total value</p>
-                  <p className="text-xl font-extrabold text-white">
-                    {propIsLoading ? "0.00 USD" : `${formattedBalance} ${displayCurrency}`}
-                  </p>
+                  {propIsLoading ? (
+                    <Skeleton className="h-7 w-32 bg-white/20" />
+                  ) : (
+                    <p className="text-xl font-extrabold text-white">{`${formattedBalance} ${displayCurrency}`}</p>
+                  )}
                 </>
               ) : (
                 <>
