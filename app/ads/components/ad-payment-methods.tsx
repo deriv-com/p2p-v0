@@ -196,27 +196,21 @@ const AdPaymentMethods = () => {
           const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
 
           return (
-            <div
-              key={method.id}
-              className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
-              onClick={() => {
-                const isCurrentlySelected = tempSelectedIds.includes(method.id)
-                if (!isCurrentlySelected && tempSelectedIds.length >= 3) {
-                  return
-                }
-                setTempSelectedIds((prev) =>
-                  isCurrentlySelected ? prev.filter((id) => id !== method.id) : [...prev, method.id],
-                )
-              }}
-            >
+            <div key={method.id} className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg">
               <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
                 <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
               </div>
               <Checkbox
-                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px] pointer-events-none"
+                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                 checked={isSelected}
+                onCheckedChange={(checked) => {
+                  if (checked && tempSelectedIds.length >= 3) {
+                    return
+                  }
+                  setTempSelectedIds((prev) => (checked ? [...prev, method.id] : prev.filter((id) => id !== method.id)))
+                }}
               />
             </div>
           )
