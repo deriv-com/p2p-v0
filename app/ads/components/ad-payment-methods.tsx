@@ -211,11 +211,11 @@ const AdPaymentMethods = () => {
             >
               <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
               <div className="flex-1 min-w-0">
-                <p className="font-medium text-base">{method.display_name}</p>
+                <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
                 <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
               </div>
               <Checkbox
-                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px] pointer-events-none"
                 checked={isSelected}
               />
             </div>
