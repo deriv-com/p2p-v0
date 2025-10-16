@@ -192,7 +192,7 @@ const AdPaymentMethods = () => {
       <div className="flex-1 overflow-y-auto space-y-3 mb-6">
         {paymentMethods.map((method) => {
           const isSelected = tempSelectedIds.includes(method.id)
-          const accountNumber = method.fields?.account.value || method.fields?.bank_name.display_name || ""
+          const accountNumber = method.fields?.account.value || method.fields?.bank_name.value || ""
           const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
 
           return (
