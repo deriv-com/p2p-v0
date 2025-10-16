@@ -211,7 +211,8 @@ const AdPaymentMethods = () => {
                 <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
                 <p className="text-sm text-gray-600 truncate">{getPaymentMethodDetails(method)}</p>
               </div>
-              <Checkbox checked={isSelected} onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)} />
+              <Checkbox 
+                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"checked={isSelected} onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)} />
             </div>
           )
         })}
