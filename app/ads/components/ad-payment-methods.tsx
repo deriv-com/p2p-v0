@@ -242,10 +242,6 @@ const AdPaymentMethods = () => {
           <span className="truncate">{getSelectedMethodsText()}</span>
           <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 ml-2" />
         </Button>
-
-        {selectedPaymentMethodIds.length >= 3 && (
-          <p className="text-amber-600 text-xs mt-2">Maximum of 3 payment methods reached</p>
-        )}
       </div>
 
       <Sheet open={showPaymentSelectionSheet} onOpenChange={setShowPaymentSelectionSheet}>
