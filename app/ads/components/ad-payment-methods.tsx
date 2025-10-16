@@ -242,7 +242,7 @@ const AdPaymentMethods = () => {
       </div>
 
       <Button
-        className="w-full h-14 rounded-full bg-pink-200 hover:bg-pink-300 text-white text-base font-medium disabled:opacity-50"
+        className="w-full h-14 rounded-full disabled:opacity-50"
         onClick={handleConfirmSelection}
         disabled={tempSelectedIds.length === 0}
         type="button"
