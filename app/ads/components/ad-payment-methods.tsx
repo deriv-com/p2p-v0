@@ -178,21 +178,7 @@ const AdPaymentMethods = () => {
     if (selectedMethods.length === 0) {
       return "Select payment methods"
     }
-
-    const getMethodText = (method: PaymentMethod) => {
-      const accountNumber = method.fields?.account_number || method.fields?.bank_account_number || ""
-      return `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
-    }
-
-    if (selectedMethods.length === 1) {
-      return getMethodText(selectedMethods[0])
-    }
-
-    if (selectedMethods.length === 2) {
-      return `${getMethodText(selectedMethods[0])}, ${getMethodText(selectedMethods[1])}`
-    }
-
-    return `${getMethodText(selectedMethods[0])}, ${getMethodText(selectedMethods[1])} +1`
+    return `Selected(${selectedMethods.length})`
   }
 
   const getPaymentMethodDetails = (method: PaymentMethod) => {
