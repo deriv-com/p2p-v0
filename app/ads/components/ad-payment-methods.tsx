@@ -203,7 +203,7 @@ const AdPaymentMethods = () => {
                 <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
               </div>
               <Checkbox
-                id={method.code}
+                id={method.id}
                 className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                 checked={isSelected}
                 onCheckedChange={(checked) => {
