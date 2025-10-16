@@ -179,15 +179,20 @@ const AdPaymentMethods = () => {
       return "Select payment methods"
     }
 
+    const getMethodText = (method: PaymentMethod) => {
+      const accountNumber = method.fields?.account_number || method.fields?.bank_account_number || ""
+      return `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
+    }
+
     if (selectedMethods.length === 1) {
-      return getCategoryDisplayName(selectedMethods[0].type)
+      return getMethodText(selectedMethods[0])
     }
 
     if (selectedMethods.length === 2) {
-      return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)}`
+      return `${getMethodText(selectedMethods[0])}, ${getMethodText(selectedMethods[1])}`
     }
 
-    return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)} +1`
+    return `${getMethodText(selectedMethods[0])}, ${getMethodText(selectedMethods[1])} +1`
   }
 
   const getPaymentMethodDetails = (method: PaymentMethod) => {
@@ -211,13 +216,17 @@ const AdPaymentMethods = () => {
                 <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
                 <p className="text-sm text-gray-600 truncate">{getPaymentMethodDetails(method)}</p>
               </div>
-              <Checkbox className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]" checked={isSelected} onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)} />
+              <Checkbox
+                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                checked={isSelected}
+                onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
+              />
             </div>
           )
         })}
 
         <Button
-          className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors"
+          className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors bg-transparent"
           onClick={handleShowAddPaymentMethod}
           type="button"
           variant="outline"
