@@ -155,12 +155,7 @@ const AdPaymentMethods = () => {
     } else {
       showAlert({
         title: "Payment method",
-        description: (
-          <div className="flex flex-col">
-            <p className="text-sm text-gray-600 mb-6">Select up to 3</p>
-            <PaymentSelectionContent />
-          </div>
-        ),
+        description: <PaymentSelectionContent />,
         showCloseButton: true,
       })
     }
@@ -187,57 +182,75 @@ const AdPaymentMethods = () => {
     return `${displayName}${accountNumber ? ` - ${accountNumber}` : ""}`
   }
 
-  const PaymentSelectionContent = () => (
-    <>
-      <div className="flex-1 overflow-y-auto space-y-3 mb-6">
-        {paymentMethods.map((method) => {
-          const isSelected = tempSelectedIds.includes(method.id)
-          const accountNumber = method.fields?.account.value || method.fields?.bank_name.value || ""
-          const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
+  const PaymentSelectionContent = () => {
+    console.log("[v0] PaymentSelectionContent render, tempSelectedIds:", tempSelectedIds)
 
-          return (
-            <div key={method.id} className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg">
-              <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
-                <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
+    return (
+      <>
+        <div className="flex-1 overflow-y-auto space-y-3 mb-6">
+          {paymentMethods.map((method) => {
+            const isSelected = tempSelectedIds.includes(method.id)
+            const accountNumber = method.fields?.account.value || method.fields?.bank_name.value || ""
+            const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
+
+            console.log("[v0] Rendering method:", method.id, "isSelected:", isSelected)
+
+            return (
+              <div key={method.id} className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg">
+                <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
+                  <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
+                </div>
+                <Checkbox
+                  id={`payment-method-${method.id}`}
+                  className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                  checked={isSelected}
+                  onCheckedChange={(checked) => {
+                    console.log(
+                      "[v0] Checkbox clicked, method:",
+                      method.id,
+                      "checked:",
+                      checked,
+                      "current tempSelectedIds:",
+                      tempSelectedIds,
+                    )
+                    if (checked && tempSelectedIds.length >= 3) {
+                      return
+                    }
+                    setTempSelectedIds((prev) => {
+                      const newIds = checked ? [...prev, method.id] : prev.filter((id) => id !== method.id)
+                      console.log("[v0] New tempSelectedIds:", newIds)
+                      return newIds
+                    })
+                  }}
+                />
               </div>
-              <Checkbox
-                id={method.id}
-                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
-                checked={isSelected}
-                onCheckedChange={(checked) => {
-                  if (checked && tempSelectedIds.length >= 3) {
-                    return
-                  }
-                  setTempSelectedIds((prev) => (checked ? [...prev, method.id] : prev.filter((id) => id !== method.id)))
-                }}
-              />
-            </div>
-          )
-        })}
+            )
+          })}
+
+          <Button
+            className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors bg-transparent"
+            onClick={handleShowAddPaymentMethod}
+            type="button"
+            variant="outline"
+          >
+            <Plus className="w-6 h-6" />
+            <span className="text-base font-medium">Add payment method</span>
+          </Button>
+        </div>
 
         <Button
-          className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors bg-transparent"
-          onClick={handleShowAddPaymentMethod}
+          className="w-full h-14 rounded-full disabled:opacity-50"
+          onClick={handleConfirmSelection}
+          disabled={tempSelectedIds.length === 0}
           type="button"
-          variant="outline"
         >
-          <Plus className="w-6 h-6" />
-          <span className="text-base font-medium">Add payment method</span>
+          Confirm
         </Button>
-      </div>
-
-      <Button
-        className="w-full h-14 rounded-full disabled:opacity-50"
-        onClick={handleConfirmSelection}
-        disabled={tempSelectedIds.length === 0}
-        type="button"
-      >
-        Confirm
-      </Button>
-    </>
-  )
+      </>
+    )
+  }
 
   if (isLoading) {
     return (
