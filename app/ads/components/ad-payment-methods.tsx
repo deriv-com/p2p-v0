@@ -226,7 +226,7 @@ const AdPaymentMethods = () => {
                 <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
                 <p className="text-sm text-gray-600 truncate">{getPaymentMethodDetails(method)}</p>
               </div>
-              <Checkbox checked={isSelected} onCheckedChange={() => handleToggleTempSelection(method.id)} />
+              <Checkbox checked={isSelected} />
             </div>
           )
         })}
