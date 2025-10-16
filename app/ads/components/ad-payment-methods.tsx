@@ -12,9 +12,8 @@ import { usePaymentSelection } from "./payment-selection-context"
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { Button } from "@/components/ui/button"
-import { ChevronDown, Plus, X } from "lucide-react"
+import { ChevronDown, Plus } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
-import { AlertDialog, AlertDialogContent, AlertDialogTitle, AlertDialogDescription } from "@/components/ui/alert-dialog"
 
 interface PaymentMethod {
   id: number
@@ -37,7 +36,6 @@ const AdPaymentMethods = () => {
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showPaymentSelectionSheet, setShowPaymentSelectionSheet] = useState(false)
-  const [showPaymentSelectionDialog, setShowPaymentSelectionDialog] = useState(false)
   const [tempSelectedIds, setTempSelectedIds] = useState<number[]>([])
 
   useEffect(() => {
@@ -155,7 +153,16 @@ const AdPaymentMethods = () => {
     if (isMobile) {
       setShowPaymentSelectionSheet(true)
     } else {
-      setShowPaymentSelectionDialog(true)
+      showAlert({
+        title: "Payment method",
+        description: (
+          <div className="flex flex-col h-[500px]">
+            <p className="text-sm text-gray-600 mb-6">Select up to 3</p>
+            <PaymentSelectionContent />
+          </div>
+        ),
+        showCloseButton: true,
+      })
     }
   }
 
@@ -176,7 +183,7 @@ const AdPaymentMethods = () => {
   const handleConfirmSelection = () => {
     setSelectedPaymentMethodIds(tempSelectedIds)
     setShowPaymentSelectionSheet(false)
-    setShowPaymentSelectionDialog(false)
+    hideAlert()
   }
 
   const selectedMethods = paymentMethods.filter((method) => selectedPaymentMethodIds.includes(method.id))
@@ -278,25 +285,6 @@ const AdPaymentMethods = () => {
           <p className="text-amber-600 text-xs mt-2">Maximum of 3 payment methods reached</p>
         )}
       </div>
-
-      <AlertDialog open={showPaymentSelectionDialog} onOpenChange={setShowPaymentSelectionDialog}>
-        <AlertDialogContent className="max-w-[600px] max-h-[80vh] p-6">
-          <div className="flex items-center justify-between mb-2">
-            <AlertDialogTitle className="text-2xl font-bold">Payment method</AlertDialogTitle>
-            <button
-              onClick={() => setShowPaymentSelectionDialog(false)}
-              className="rounded-full p-2 hover:bg-gray-100 transition-colors"
-              type="button"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-          <AlertDialogDescription className="text-sm text-gray-600 mb-6">Select up to 3</AlertDialogDescription>
-          <div className="flex flex-col h-[500px]">
-            <PaymentSelectionContent />
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
 
       <Sheet open={showPaymentSelectionSheet} onOpenChange={setShowPaymentSelectionSheet}>
         <SheetContent side="bottom" className="w-full h-[90vh] rounded-t-3xl">
