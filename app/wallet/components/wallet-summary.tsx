@@ -206,7 +206,7 @@ export default function WalletSummary({
           </div>
 
           <div className={cn("flex items-center gap-[66px] px-[33px]", isMobile && "flex-row justify-center w-full")}>
-            <div className="flex flex-col items-center gap-2">
+            <div className="hidden flex-col items-center gap-2">
               <Button
                 size="icon"
                 className="h-12 w-12 rounded-full bg-[#FF444F] hover:bg-[#E63946] text-white p-0"
@@ -253,7 +253,7 @@ export default function WalletSummary({
               </span>
             </div>
 
-            <div className="flex flex-col items-center gap-2">
+            <div className="hidden flex-col items-center gap-2">
               <Button
                 size="icon"
                 className={cn(
