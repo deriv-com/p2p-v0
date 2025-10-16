@@ -21,28 +21,28 @@ function KycOnboardingSheet() {
       title: "Set up your profile",
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details`,
+      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
     },
     {
       id: "poi",
       title: "Proof of identity",
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/kyc-poi`,
+      link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
       id: "poa",
       title: "Proof of address",
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/kyc-poa`,
+      link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
       id: "phone",
       title: "Phone number",
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details`,
+      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
     },
   ]
 
