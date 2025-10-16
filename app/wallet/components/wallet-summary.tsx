@@ -245,7 +245,7 @@ export default function WalletSummary({
               <span
                 className={cn(
                   "text-xs font-normal",
-                  isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
+                  isBalancesView ? "text-white" : "text-slate-1200",
                 )}
               >
                 Transfer
