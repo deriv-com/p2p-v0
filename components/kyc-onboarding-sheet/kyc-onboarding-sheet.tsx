@@ -42,7 +42,7 @@ function KycOnboardingSheet() {
       title: "Phone number",
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
-      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details`,
+      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
     },
   ]
 
