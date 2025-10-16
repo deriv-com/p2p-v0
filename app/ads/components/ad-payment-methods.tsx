@@ -54,7 +54,8 @@ const AdPaymentMethods = () => {
       return
     }
 
-    togglePaymentMethod(methodId)
+    if(checked)
+      setTempSelectedIds(methodId)
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
