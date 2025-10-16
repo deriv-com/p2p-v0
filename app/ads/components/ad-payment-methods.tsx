@@ -156,7 +156,7 @@ const AdPaymentMethods = () => {
       showAlert({
         title: "Payment method",
         description: (
-          <div className="flex flex-col h-[500px]">
+          <div className="flex flex-col">
             <p className="text-sm text-gray-600 mb-6">Select up to 3</p>
             <PaymentSelectionContent />
           </div>
