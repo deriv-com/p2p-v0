@@ -129,18 +129,6 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const handleCheckboxToggle = (methodId: number, e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    const isSelected = selectedPaymentMethodIds.includes(methodId)
-    if (!isSelected && selectedPaymentMethodIds.length >= 3) {
-      return
-    }
-
-    togglePaymentMethod(methodId)
-  }
-
   const handleOpenPaymentSelection = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
