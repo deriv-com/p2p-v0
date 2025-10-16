@@ -9,10 +9,11 @@ import { ProfileAPI } from "@/services/api"
 import { getCategoryDisplayName } from "@/lib/utils"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { Button } from "@/components/ui/button"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, Plus } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface PaymentMethod {
   id: number
@@ -26,7 +27,7 @@ interface PaymentMethod {
 
 const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
+  const { selectedPaymentMethodIds, togglePaymentMethod, setSelectedPaymentMethodIds } = usePaymentSelection()
   const [isLoading, setIsLoading] = useState(true)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert, hideAlert } = useAlertDialog()
@@ -34,6 +35,8 @@ const AdPaymentMethods = () => {
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
+  const [showPaymentSelectionSheet, setShowPaymentSelectionSheet] = useState(false)
+  const [tempSelectedIds, setTempSelectedIds] = useState<number[]>([])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -142,6 +145,32 @@ const AdPaymentMethods = () => {
     togglePaymentMethod(methodId)
   }
 
+  const handleOpenPaymentSelection = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setTempSelectedIds([...selectedPaymentMethodIds])
+    setShowPaymentSelectionSheet(true)
+  }
+
+  const handleToggleTempSelection = (methodId: number) => {
+    setTempSelectedIds((prev) => {
+      const isSelected = prev.includes(methodId)
+      if (isSelected) {
+        return prev.filter((id) => id !== methodId)
+      } else {
+        if (prev.length >= 3) {
+          return prev
+        }
+        return [...prev, methodId]
+      }
+    })
+  }
+
+  const handleConfirmSelection = () => {
+    setSelectedPaymentMethodIds(tempSelectedIds)
+    setShowPaymentSelectionSheet(false)
+  }
+
   const selectedMethods = paymentMethods.filter((method) => selectedPaymentMethodIds.includes(method.id))
 
   const getSelectedMethodsText = () => {
@@ -158,6 +187,12 @@ const AdPaymentMethods = () => {
     }
 
     return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)} +1`
+  }
+
+  const getPaymentMethodDetails = (method: PaymentMethod) => {
+    const displayName = getCategoryDisplayName(method.type)
+    const accountNumber = method.fields?.account_number || method.fields?.bank_account_number || ""
+    return `${displayName}${accountNumber ? ` - ${accountNumber}` : ""}`
   }
 
   if (isLoading) {
@@ -182,7 +217,7 @@ const AdPaymentMethods = () => {
         <Button
           variant="outline"
           className="w-full md:w-[360px] h-[56px] rounded-lg border border-gray-300 hover:border-black justify-between bg-transparent"
-          onClick={handleShowAddPaymentMethod}
+          onClick={handleOpenPaymentSelection}
           type="button"
         >
           <span className="truncate">{getSelectedMethodsText()}</span>
@@ -193,6 +228,53 @@ const AdPaymentMethods = () => {
           <p className="text-amber-600 text-xs mt-2">Maximum of 3 payment methods reached</p>
         )}
       </div>
+
+      <Sheet open={showPaymentSelectionSheet} onOpenChange={setShowPaymentSelectionSheet}>
+        <SheetContent side="bottom" className="w-full h-[90vh] rounded-t-3xl">
+          <div className="flex flex-col h-full">
+            <SheetTitle className="text-2xl font-bold mb-2">Payment method</SheetTitle>
+            <p className="text-sm text-gray-600 mb-6">Select up to 3</p>
+
+            <div className="flex-1 overflow-y-auto space-y-3 mb-6">
+              {paymentMethods.map((method) => {
+                const isSelected = tempSelectedIds.includes(method.id)
+                return (
+                  <div
+                    key={method.id}
+                    className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors"
+                    onClick={() => handleToggleTempSelection(method.id)}
+                  >
+                    <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
+                      <p className="text-sm text-gray-600 truncate">{getPaymentMethodDetails(method)}</p>
+                    </div>
+                    <Checkbox checked={isSelected} onCheckedChange={() => handleToggleTempSelection(method.id)} />
+                  </div>
+                )
+              })}
+
+              <button
+                className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors"
+                onClick={handleShowAddPaymentMethod}
+                type="button"
+              >
+                <Plus className="w-6 h-6" />
+                <span className="text-base font-medium">Add payment method</span>
+              </button>
+            </div>
+
+            <Button
+              className="w-full h-14 rounded-full bg-pink-200 hover:bg-pink-300 text-white text-base font-medium disabled:opacity-50"
+              onClick={handleConfirmSelection}
+              disabled={tempSelectedIds.length === 0}
+              type="button"
+            >
+              Confirm
+            </Button>
+          </div>
+        </SheetContent>
+      </Sheet>
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
         <SheetContent side="right" className="w-full h-full">
