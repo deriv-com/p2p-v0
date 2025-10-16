@@ -183,7 +183,7 @@ const AdPaymentMethods = () => {
 
   const getPaymentMethodDetails = (method: PaymentMethod) => {
     const displayName = getCategoryDisplayName(method.type)
-    const accountNumber = method.fields?.account_number || method.fields?.bank_account_number || ""
+    const accountNumber = method.fields?.account || method.fields?.bank_name || ""
     return `${displayName}${accountNumber ? ` - ${accountNumber}` : ""}`
   }
 
@@ -192,7 +192,7 @@ const AdPaymentMethods = () => {
       <div className="flex-1 overflow-y-auto space-y-3 mb-6">
         {paymentMethods.map((method) => {
           const isSelected = tempSelectedIds.includes(method.id)
-          const accountNumber = method.fields?.account_number || method.fields?.bank_account_number || ""
+          const accountNumber = method.fields?.account || method.fields?.bank_name || ""
           const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
 
           return (
