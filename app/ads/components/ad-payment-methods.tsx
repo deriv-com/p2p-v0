@@ -152,7 +152,6 @@ const AdPaymentMethods = () => {
       return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)}`
     }
 
-    // For 3 methods, show first two and "+1"
     return `${getCategoryDisplayName(selectedMethods[0].type)}, ${getCategoryDisplayName(selectedMethods[1].type)} +1`
   }
 
@@ -184,8 +183,6 @@ const AdPaymentMethods = () => {
           <span className="truncate">{getSelectedMethodsText()}</span>
           <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 ml-2" />
         </Button>
-
-        {paymentMethods.length === 0 && <p className="text-gray-500 italic mt-4">No payment methods are added yet</p>}
 
         {selectedPaymentMethodIds.length >= 3 && (
           <p className="text-amber-600 text-xs mt-2">Maximum of 3 payment methods reached</p>
