@@ -28,7 +28,6 @@ interface PaymentMethod {
 const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const { selectedPaymentMethodIds, togglePaymentMethod, setSelectedPaymentMethodIds } = usePaymentSelection()
-  const [isLoading, setIsLoading] = useState(true)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
@@ -45,8 +44,6 @@ const AdPaymentMethods = () => {
         setPaymentMethods(data)
       } catch (error) {
         setPaymentMethods([])
-      } finally {
-        setIsLoading(false)
       }
     }
 
