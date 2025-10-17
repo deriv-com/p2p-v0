@@ -341,7 +341,7 @@ export default function BuySellPage() {
                       className={cn("rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl", 
                       hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent")}
                     >
-                      {hasActiveFilters ? <Image src="/icons/filter-icon-white.png" alt="Filter" width={20} height={20} /> : <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />}
+                      {hasActiveFilters ? <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} /> : <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />}
                     </Button>
                   }
                 />
