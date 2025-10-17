@@ -54,7 +54,7 @@ export default function Main({
             const newUrl = new URL(window.location.href)
             newUrl.searchParams.delete("token")
             window.history.replaceState({}, "", newUrl.toString())
-          } catch (error) 
+          } catch (error) {
             if (!isPublic) {
               router.push("/login")
             }
