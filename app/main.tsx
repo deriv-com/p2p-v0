@@ -43,26 +43,18 @@ export default function Main({
       try {
         const token = searchParams.get("token")
         if (token) {
-          console.log("[v0] Token found in URL, invalidating existing session")
           try {
-            // Invalidate any existing session
             await AuthAPI.logout()
           } catch (error) {
-            console.log("[v0] No existing session to invalidate")
+            console.log(error)
           }
 
-          // Verify the token
           try {
-            console.log("[v0] Verifying token")
             await AuthAPI.verifyToken(token)
-            console.log("[v0] Token verified successfully")
-
-            // Remove token from URL
             const newUrl = new URL(window.location.href)
             newUrl.searchParams.delete("token")
             window.history.replaceState({}, "", newUrl.toString())
-          } catch (error) {
-            console.error("[v0] Token verification failed:", error)
+          } catch (error) 
             if (!isPublic) {
               router.push("/login")
             }
