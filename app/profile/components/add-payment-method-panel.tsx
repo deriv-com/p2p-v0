@@ -108,10 +108,11 @@ export default function AddPaymentMethodPanel({
     onBack?.()
   }
 
-  const validateInput = (value: string) => {
-    const allowedPattern = /^[a-zA-Z0-9 ]+$/;
-    return allowedPattern.test(value)
-  }
+const validateInput = (value: string) => {
+  const allowedPattern = /^[a-zA-Z0-9]+$/;
+  return allowedPattern.test(value);
+};
+
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
