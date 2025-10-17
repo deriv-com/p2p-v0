@@ -313,9 +313,10 @@ export default function BuySellPage() {
                   isLoading={isLoadingPaymentMethods}
                   trigger={
                     <Button
-                      variant={hasFilteredPaymentMethods ? "black" : "outline"}
+                      variant="outline"
                       size="sm"
-                      className="rounded-md border border-input bg-background font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
+                      className={cn("rounded-md border border-input bg-background font-normal w-full justify-between px-3rounded-3xl",
+                      hasFilteredPaymentMethods ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent")}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
