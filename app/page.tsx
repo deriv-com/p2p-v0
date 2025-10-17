@@ -65,6 +65,10 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
+  const hasFilteredPaymentMethods =
+    paymentMethods.length > 0 &&
+    selectedPaymentMethods.length < paymentMethods.length &&
+    selectedPaymentMethods.length > 0
 
   useEffect(() => {
     const operation = searchParams.get("operation")
@@ -309,7 +313,7 @@ export default function BuySellPage() {
                   isLoading={isLoadingPaymentMethods}
                   trigger={
                     <Button
-                      variant="outline"
+                      variant={hasFilteredPaymentMethods ? "black" : "outline"}
                       size="sm"
                       className="rounded-md border border-input bg-background font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
                     >
