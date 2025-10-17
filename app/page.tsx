@@ -316,7 +316,7 @@ export default function BuySellPage() {
                       variant="outline"
                       size="sm"
                       className={cn("rounded-md border border-input font-normal w-full justify-between px-3rounded-3xl",
-                      hasFilteredPaymentMethods ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent")}
+                      hasFilteredPaymentMethods ? "bg-black hover:bg-black text-white" : "bg-transparent hover:bg-transparent")}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
@@ -339,7 +339,7 @@ export default function BuySellPage() {
                       variant={ ? "black" : "outline"}
                       size="sm"
                       className={cn("rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl", 
-                      hasActiveFilters ? "" : "bg-background hover:bg-transparent")}
+                      hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent")}
                     >
                       <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
                     </Button>
