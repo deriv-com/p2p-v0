@@ -127,12 +127,12 @@ const validateInput = (value: string) => {
       if (!value && field.required) {
         newErrors[field.name] = `${field.label} is required`
       } else if (value && !validateInput(value)) {
-        newErrors[field.name] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        newErrors[field.name] = "Only letters and numbers are allowed."
       }
     })
 
     if (instructions && !validateInput(instructions)) {
-      newErrors.instructions = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+      newErrors.instructions = "Only letters and numbers are allowed."
     }
 
     setErrors(newErrors)
@@ -154,7 +154,7 @@ const validateInput = (value: string) => {
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [name]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        [name]: "Only letters and numbers are allowed.",
       }))
     }
   }
@@ -173,7 +173,7 @@ const validateInput = (value: string) => {
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        instructions: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        instructions: "Only letters and numbers are allowed.",
       }))
     }
   }
