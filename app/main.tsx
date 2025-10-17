@@ -40,53 +40,47 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
-        const response = await AuthAPI.getSession()
+        const isAuthenticated = await AuthAPI.getSession()
 
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
 
-        if (response?.errors && !isPublic) {
+        if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
           router.push("/login")
-        } else {
-          if (!response?.errors) {
-            await AuthAPI.fetchUserIdAndStore()
+        } else if (isAuthenticated) {
+          await AuthAPI.fetchUserIdAndStore()
 
-            try {
-              const onboardingStatus = await AuthAPI.getOnboardingStatus()
+          try {
+            const onboardingStatus = await AuthAPI.getOnboardingStatus()
 
-              if (isMountedRef.current && !abortController.signal.aborted) {
-                setVerificationStatus({
-                  email_verified: onboardingStatus.verification.email_verified,
-                  phone_verified: onboardingStatus.verification.phone_verified,
-                  kyc_verified: onboardingStatus.kyc.status === "approved",
-                  p2p_allowed: onboardingStatus.p2p?.allowed,
-                })
+            if (isMountedRef.current && !abortController.signal.aborted) {
+              setVerificationStatus({
+                email_verified: onboardingStatus.verification.email_verified,
+                phone_verified: onboardingStatus.verification.phone_verified,
+                kyc_verified: onboardingStatus.kyc.status === "approved",
+                p2p_allowed: onboardingStatus.p2p?.allowed,
+              })
 
-                setOnboardingStatus(onboardingStatus)
+              setOnboardingStatus(onboardingStatus)
 
-                const currentUserId = useUserDataStore.getState().userId
-                if (!currentUserId && onboardingStatus.p2p?.allowed) {
-                  try {
-                    await AuthAPI.createP2PUser()
-                    await AuthAPI.fetchUserIdAndStore()
-                  } catch (error) {
-                    console.error("Error creating P2P user:", error)
-                  }
-                }
-
-                if (isMountedRef.current && !abortController.signal.aborted) {
-                  router.push(pathname)
+              const currentUserId = useUserDataStore.getState().userId
+              if (!currentUserId && onboardingStatus.p2p?.allowed) {
+                try {
+                  await AuthAPI.createP2PUser()
+                  await AuthAPI.fetchUserIdAndStore()
+                } catch (error) {
+                  console.error("Error creating P2P user:", error)
                 }
               }
-            } catch (error) {
-              console.error("Error fetching onboarding status:", error)
+
               if (isMountedRef.current && !abortController.signal.aborted) {
                 router.push(pathname)
               }
             }
-          } else {
+          } catch (error) {
+            console.error("Error fetching onboarding status:", error)
             if (isMountedRef.current && !abortController.signal.aborted) {
               router.push(pathname)
             }
