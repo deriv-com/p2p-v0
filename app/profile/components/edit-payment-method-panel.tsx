@@ -76,7 +76,7 @@ export default function EditPaymentMethodPanel({
   }, [paymentMethod])
 
   const validateInput = (value: string) => {
-    const allowedPattern = /^[a-zA-Z0-9\s\-.@_+#(),:;']+$/
+     const allowedPattern = /^[a-zA-Z0-9]+$/;
     return allowedPattern.test(value)
   }
 
@@ -94,7 +94,7 @@ export default function EditPaymentMethodPanel({
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [fieldName]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        [fieldName]: "Only letters and numbers are allowed."
       }))
     }
   }
@@ -108,7 +108,7 @@ export default function EditPaymentMethodPanel({
       if (!value && fieldConfig.required) {
         newErrors[fieldName] = `${fieldConfig.display_name} is required`
       } else if (value && !validateInput(value)) {
-        newErrors[fieldName] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        newErrors[fieldName] = "Only letters and numbers are allowed."
       }
     })
 
