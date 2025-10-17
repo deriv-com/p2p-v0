@@ -50,12 +50,14 @@ const AdPaymentMethods = () => {
   }, [])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked && tempSelectedIds.length >= 3) {
-      return
+    if (checked) {
+      if (tempSelectedIds.length >= 3) {
+        return
+      }
+      setTempSelectedIds([...tempSelectedIds, methodId])
+    } else {
+      setTempSelectedIds(tempSelectedIds.filter((id) => id !== methodId))
     }
-
-    if(checked)
-      setTempSelectedIds(methodId)
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -188,7 +190,7 @@ const AdPaymentMethods = () => {
                 <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
               </div>
               <Checkbox
-                id={method.id}
+                id={`payment-method-${method.id}`}
                 className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
                 checked={isSelected}
                 onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
