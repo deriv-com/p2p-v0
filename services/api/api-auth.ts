@@ -77,7 +77,7 @@ export interface CreateP2PUserResponse {
 }
 
 const getAuthHeader = () => ({
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 })
 
 /**
@@ -142,7 +142,7 @@ export async function getSession(): Promise<VerificationResponse> {
       credentials: "include",
     })
 
-    if (!response.ok) {
+    if (response.status !== 200) {
       return {
         errors: ["User not authenticated."],
       }
