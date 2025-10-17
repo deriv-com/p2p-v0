@@ -77,7 +77,7 @@ export interface CreateP2PUserResponse {
 }
 
 const getAuthHeader = () => ({
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 })
 
 /**
@@ -133,28 +133,48 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
 }
 
 /**
+ * Verify token from URL parameter
+ */
+export async function verifyToken(token: string): Promise<VerificationResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/v1/auth/token/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Enable-Session": "true",
+      },
+      credentials: "include",
+      body: JSON.stringify({ token }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const result = await response.json()
+    const { data } = result
+
+    return data
+  } catch (error) {
+    console.error("Token verification error:", error)
+    throw new Error("Failed to verify token. Please try again.")
+  }
+}
+
+/**
  * Check if user is authenticated
  */
-export async function getSession(): Promise<VerificationResponse> {
+export async function getSession(): Promise<boolean> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/session`, {
       method: "GET",
       credentials: "include",
     })
 
-    if (!response.ok) {
-      return {
-        errors: ["User not authenticated."],
-      }
-    }
-
-    const result = await response.json()
-    return result
+    return response.status === 200
   } catch (error) {
     console.error(error)
-    return {
-      errors: ["User not authenticated."],
-    }
+    return false
   }
 }
 

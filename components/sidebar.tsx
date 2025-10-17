@@ -105,7 +105,7 @@ export default function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
         </div>
-        <Link prefetch href={`https://${getHomeUrl()}/dashboard/userprofile`}>
+        <Link prefetch href={`https://${getHomeUrl()}/dashboard/profile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
         </Link>
       </div>
