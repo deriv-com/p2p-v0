@@ -1,18 +1,17 @@
 "use client"
 
-import type React from "react"
-
 import { useState, useEffect } from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { ProfileAPI } from "@/services/api"
-import { getCategoryDisplayName } from "@/lib/utils"
+import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour } from "@/lib/utils"
+import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
-import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet"
+import { Sheet, SheetContent } from "@/components/ui/sheet"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { Button } from "@/components/ui/button"
-import { ChevronDown, Plus } from "lucide-react"
-import { Checkbox } from "@/components/ui/checkbox"
 
 interface PaymentMethod {
   id: number
@@ -26,15 +25,14 @@ interface PaymentMethod {
 
 const AdPaymentMethods = () => {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
-  const { selectedPaymentMethodIds, togglePaymentMethod, setSelectedPaymentMethodIds } = usePaymentSelection()
+  const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
+  const [isLoading, setIsLoading] = useState(true)
   const [isAddingMethod, setIsAddingMethod] = useState(false)
   const { showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
-  const [showPaymentSelectionSheet, setShowPaymentSelectionSheet] = useState(false)
-  const [tempSelectedIds, setTempSelectedIds] = useState<number[]>([])
 
   useEffect(() => {
     const fetchPaymentMethods = async () => {
@@ -43,6 +41,8 @@ const AdPaymentMethods = () => {
         setPaymentMethods(data)
       } catch (error) {
         setPaymentMethods([])
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -50,14 +50,11 @@ const AdPaymentMethods = () => {
   }, [])
 
   const handleCheckboxChange = (methodId: number, checked: boolean) => {
-    if (checked) {
-      if (tempSelectedIds.length >= 3) {
-        return
-      }
-      setTempSelectedIds([...tempSelectedIds, methodId])
-    } else {
-      setTempSelectedIds(tempSelectedIds.filter((id) => id !== methodId))
+    if (checked && selectedPaymentMethodIds.length >= 3) {
+      return
     }
+
+    togglePaymentMethod(methodId)
   }
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -96,12 +93,7 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const handleShowAddPaymentMethod = (e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-
+  const handleShowAddPaymentMethod = () => {
     if (isMobile) {
       setShowAddPaymentSheet(true)
     } else {
@@ -132,118 +124,87 @@ const AdPaymentMethods = () => {
     }
   }
 
-  const handleOpenPaymentSelection = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setTempSelectedIds([...selectedPaymentMethodIds])
-
-    if (isMobile) {
-      setShowPaymentSelectionSheet(true)
-    } else {
-      showAlert({
-        title: "Payment method",
-        description: (
-          <div className="flex flex-col">
-            <p className="text-sm text-gray-600 mb-6">Select up to 3</p>
-            <PaymentSelectionContent />
-          </div>
-        ),
-        showCloseButton: true,
-      })
-    }
-  }
-
-  const handleConfirmSelection = () => {
-    setSelectedPaymentMethodIds(tempSelectedIds)
-    setShowPaymentSelectionSheet(false)
-    hideAlert()
-  }
-
-  const selectedMethods = paymentMethods.filter((method) => selectedPaymentMethodIds.includes(method.id))
-
-  const getSelectedMethodsText = () => {
-    if (selectedMethods.length === 0) {
-      return "Select payment methods"
-    }
-    return `Selected(${selectedMethods.length})`
-  }
-
-  const getPaymentMethodDetails = (method: PaymentMethod) => {
-    const displayName = getCategoryDisplayName(method.type)
-    const accountNumber = method.fields?.account.value || method.fields?.bank_name.value || ""
-    return `${displayName}${accountNumber ? ` - ${accountNumber}` : ""}`
-  }
-
-  const PaymentSelectionContent = () => (
-    <>
-      <div className="flex-1 overflow-y-auto space-y-3 mb-6">
-        {paymentMethods.map((method) => {
-          const isSelected = tempSelectedIds.includes(method.id)
-          const accountNumber = method.fields?.account.value || method.fields?.bank_name.value || ""
-          const methodDetails = `${method.display_name}${accountNumber ? ` - ${accountNumber}` : ""}`
-
-          return (
-            <div key={method.id} className="flex items-center gap-4 p-4 bg-gray-100 rounded-lg">
-              <div className="w-3 h-3 rounded-full bg-blue-500 flex-shrink-0" />
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-base">{getCategoryDisplayName(method.type)}</p>
-                <p className="text-sm text-gray-600 truncate">{methodDetails}</p>
-              </div>
-              <Checkbox
-                id={`payment-method-${method.id}`}
-                className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
-                checked={isSelected}
-                onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
-              />
-            </div>
-          )
-        })}
-
-        <Button
-          className="flex items-center gap-4 p-4 border border-gray-300 rounded-lg w-full hover:bg-gray-50 transition-colors bg-transparent"
-          onClick={handleShowAddPaymentMethod}
-          type="button"
-          variant="outline"
-        >
-          <Plus className="w-6 h-6" />
-          <span className="text-base font-medium">Add payment method</span>
-        </Button>
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <CustomShimmer className="h-6 w-48" />
+          <CustomShimmer className="h-4 w-64" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <CustomShimmer className="h-24 w-full" />
+          <CustomShimmer className="h-24 w-full" />
+          <CustomShimmer className="h-24 w-full" />
+        </div>
       </div>
-
-      <Button
-        className="w-full h-14 rounded-full disabled:opacity-50"
-        onClick={handleConfirmSelection}
-        disabled={tempSelectedIds.length === 0}
-        type="button"
-      >
-        Confirm
-      </Button>
-    </>
-  )
+    )
+  }
 
   return (
     <>
       <div className="mb-6">
-        <Button
-          variant="outline"
-          className="w-full md:w-[360px] h-[56px] rounded-lg border border-gray-300 hover:border-black justify-between bg-transparent"
-          onClick={handleOpenPaymentSelection}
-          type="button"
-        >
-          <span className="truncate">{getSelectedMethodsText()}</span>
-          <ChevronDown className="h-4 w-4 opacity-50 flex-shrink-0 ml-2" />
-        </Button>
-      </div>
+        <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
+        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
 
-      <Sheet open={showPaymentSelectionSheet} onOpenChange={setShowPaymentSelectionSheet}>
-        <SheetContent side="bottom" className="w-full h-[90vh] rounded-t-3xl">
-          <div className="flex flex-col h-full">
-            <SheetTitle className="text-2xl font-bold mb-2">Payment method</SheetTitle>
-            <p className="text-sm text-gray-600 mb-6">Select up to 3</p>
-            <PaymentSelectionContent />
+        <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
+          <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
+            {paymentMethods.map((method) => {
+              const isSelected = selectedPaymentMethodIds.includes(method.id)
+              const displayDetails = getMethodDisplayDetails(method)
+              const isMaxReached = selectedPaymentMethodIds.length >= 3
+              const isDisabled = isMaxReached && !isSelected
+
+              return (
+                <Card
+                  key={method.id}
+                  className={`cursor-pointer transition-all duration-200 border-0 hover:shadow-md flex-shrink-0 w-64 md:w-auto ${
+                    isDisabled ? "bg-gray-100 opacity-50 cursor-not-allowed" : "bg-grayscale-300"
+                  }`}
+                >
+                  <CardContent className="p-2">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2 ml-2">
+                        <div className={`${getPaymentMethodColour(method.type)} rounded-full w-3 h-3`} />
+                        <span className="font-bold tex-sm text-gray-700">{getCategoryDisplayName(method.type)}</span>
+                      </div>
+                      <Checkbox
+                        checked={isSelected}
+                        onCheckedChange={(checked) => handleCheckboxChange(method.id, !!checked)}
+                        disabled={isDisabled}
+                        className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-sm tracking-wide text-neutral-10">{displayDetails.primary}</div>
+                      <div className="text-sm text-neutral-7">{displayDetails.secondary}</div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
+
+            <Card
+              className="cursor-pointer transition-all duration-200 hover:shadow-md flex-shrink-0 w-64 md:w-auto border border-grayscale-400 bg-white"
+              onClick={handleShowAddPaymentMethod}
+            >
+              <CardContent className="p-4 h-full flex items-center justify-center">
+                <div className="text-center">
+                  <Image
+                    src="/icons/plus_icon.png"
+                    alt="Add payment method"
+                    width={14}
+                    height={24}
+                    className="mx-auto mb-2"
+                  />
+                  <p className="text-sm text-neutral-10">Add payment method</p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </SheetContent>
-      </Sheet>
+        </div>
+
+        {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
+      </div>
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
         <SheetContent side="right" className="w-full h-full">
