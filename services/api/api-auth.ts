@@ -135,26 +135,17 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
 /**
  * Check if user is authenticated
  */
-export async function getSession(): Promise<VerificationResponse> {
+export async function getSession(): Promise<boolean> {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/session`, {
       method: "GET",
       credentials: "include",
     })
 
-    if (response.status !== 200) {
-      return {
-        errors: ["User not authenticated."],
-      }
-    }
-
-    const result = await response.json()
-    return result
+    return response.status === 200
   } catch (error) {
     console.error(error)
-    return {
-      errors: ["User not authenticated."],
-    }
+    return false
   }
 }
 
