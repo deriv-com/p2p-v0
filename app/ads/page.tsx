@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
@@ -13,8 +15,9 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 interface StatusData {
   success: "create" | "update"
@@ -30,6 +33,7 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId } = useUserDataStore()
+  const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -188,6 +192,7 @@ export default function AdsPage() {
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
+        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
         <div className="flex-none container mx-auto">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-0 md:m-0">
             All ads
@@ -198,6 +203,7 @@ export default function AdsPage() {
                 onClick={() => router.push("/ads/create")}
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center"
+                disabled={!!tempBanUntil}
               >
                 <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
                 Create ad

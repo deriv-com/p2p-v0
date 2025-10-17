@@ -5,6 +5,8 @@ import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
 import { getTotalBalance } from "@/services/api/api-auth"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface Balance {
   wallet_id: string
@@ -19,6 +21,8 @@ export default function WalletPage() {
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const { userData } = useUserDataStore()
+  const tempBanUntil = userData?.temp_ban_until
 
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
@@ -77,6 +81,12 @@ export default function WalletPage() {
             isLoading={isLoading}
           />
         </div>
+
+        {tempBanUntil && (
+          <div className="w-full px-6 md:px-0 mt-4">
+            <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+          </div>
+        )}
 
         <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
           {displayBalances ? (

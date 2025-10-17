@@ -23,6 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -53,6 +54,7 @@ export default function OrdersPage() {
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
+  const tempBanUntil = userData?.temp_ban_until
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -390,6 +392,11 @@ export default function OrdersPage() {
               </Button>
             )}
           </div>
+          {tempBanUntil && (
+            <div className="mt-4">
+              <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+            </div>
+          )}
           <div className="my-4 self-end">
             {activeTab === "past" && (
               <DateFilter
