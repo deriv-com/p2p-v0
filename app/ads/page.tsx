@@ -219,6 +219,7 @@ export default function AdsPage() {
                 onClick={() => router.push("/ads/create")}
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center"
+                disabled={!!tempBanUntil}
               >
                 <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
                 Create ad
