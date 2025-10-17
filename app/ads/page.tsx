@@ -15,12 +15,31 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { Alert } from "@/components/ui/alert"
+import { formatDateTime } from "@/lib/utils"
 
 interface StatusData {
   success: "create" | "update"
   type: string
   id: string
   showStatusModal: boolean
+}
+
+interface TemporaryBanAlertProps {
+  tempBanUntil: number
+}
+
+const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
+  const banUntil = formatDateTime(tempBanUntil)
+
+  return (
+    <Alert variant="warning" className="flex items-start gap-2 mb-6">
+      <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
+      <div className="text-sm mt-[2px]">
+        {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
+      </div>
+    </Alert>
+  )
 }
 
 export default function AdsPage() {
@@ -30,6 +49,7 @@ export default function AdsPage() {
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId } = useUserDataStore()
+  const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -188,6 +208,7 @@ export default function AdsPage() {
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
+        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
         <div className="flex-none container mx-auto">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-0 md:m-0">
             All ads
