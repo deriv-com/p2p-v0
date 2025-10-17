@@ -47,7 +47,7 @@ export default function ProfilePage() {
         if (responseData && responseData.data) {
           const data = responseData.data
 
-          const joinDate = new Date(data.created_at)
+          const joinDate = new Date(data.regist)
           const now = new Date()
           const diff = now.getTime() - joinDate.getTime()
           const days = Math.floor(diff / (1000 * 60 * 60 * 24))
