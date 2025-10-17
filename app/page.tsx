@@ -321,7 +321,7 @@ export default function BuySellPage() {
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
                       </span>
-                      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
+                      {hasFilteredPaymentMethods ? <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} /> : <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />}
                     </Button>
                   }
                 />
