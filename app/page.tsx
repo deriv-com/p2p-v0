@@ -315,7 +315,7 @@ export default function BuySellPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className={cn("rounded-md border border-input font-normal w-full justify-between px-3rounded-3xl",
+                      className={cn("rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
                       hasFilteredPaymentMethods ? "bg-black hover:bg-black text-white" : "bg-transparent hover:bg-transparent")}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
