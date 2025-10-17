@@ -133,6 +133,35 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
 }
 
 /**
+ * Verify token from URL parameter
+ */
+export async function verifyToken(token: string): Promise<VerificationResponse> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/v1/auth/token/verify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Enable-Session": "true",
+      },
+      credentials: "include",
+      body: JSON.stringify({ token }),
+    })
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
+    const result = await response.json()
+    const { data } = result
+
+    return data
+  } catch (error) {
+    console.error("Token verification error:", error)
+    throw new Error("Failed to verify token. Please try again.")
+  }
+}
+
+/**
  * Check if user is authenticated
  */
 export async function getSession(): Promise<boolean> {

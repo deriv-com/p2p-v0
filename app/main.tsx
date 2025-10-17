@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useEffect, useState, useRef } from "react"
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
@@ -18,6 +18,7 @@ export default function Main({
 }>) {
   const pathname = usePathname()
   const router = useRouter()
+  const searchParams = useSearchParams()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
@@ -40,6 +41,35 @@ export default function Main({
       abortControllerRef.current = abortController
 
       try {
+        const token = searchParams.get("token")
+        if (token) {
+          console.log("[v0] Token found in URL, invalidating existing session")
+          try {
+            // Invalidate any existing session
+            await AuthAPI.logout()
+          } catch (error) {
+            console.log("[v0] No existing session to invalidate")
+          }
+
+          // Verify the token
+          try {
+            console.log("[v0] Verifying token")
+            await AuthAPI.verifyToken(token)
+            console.log("[v0] Token verified successfully")
+
+            // Remove token from URL
+            const newUrl = new URL(window.location.href)
+            newUrl.searchParams.delete("token")
+            window.history.replaceState({}, "", newUrl.toString())
+          } catch (error) {
+            console.error("[v0] Token verification failed:", error)
+            if (!isPublic) {
+              router.push("/login")
+            }
+            return
+          }
+        }
+
         const isAuthenticated = await AuthAPI.getSession()
 
         if (abortController.signal.aborted || !isMountedRef.current) {
@@ -102,7 +132,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, setVerificationStatus, setOnboardingStatus])
+  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
