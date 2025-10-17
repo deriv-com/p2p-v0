@@ -137,7 +137,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/v1/auth/token/verify`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
