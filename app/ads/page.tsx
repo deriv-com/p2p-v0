@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
@@ -13,33 +15,15 @@ import { StatusBanner } from "@/components/ui/status-banner"
 import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { Alert } from "@/components/ui/alert"
-import { formatDateTime } from "@/lib/utils"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 interface StatusData {
   success: "create" | "update"
   type: string
   id: string
   showStatusModal: boolean
-}
-
-interface TemporaryBanAlertProps {
-  tempBanUntil: number
-}
-
-const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(tempBanUntil)
-
-  return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6">
-      <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-      <div className="text-sm mt-[2px]">
-        {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
-      </div>
-    </Alert>
-  )
 }
 
 export default function AdsPage() {

@@ -15,30 +15,17 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
-import { Alert } from "@/components/ui/alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 interface TemporaryBanAlertProps {
   tempBanUntil: number
-}
-
-const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(tempBanUntil)
-
-  return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6">
-      <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-      <div className="text-sm mt-[2px]">
-        {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
-      </div>
-    </Alert>
-  )
 }
 
 export default function BuySellPage() {

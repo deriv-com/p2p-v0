@@ -6,19 +6,21 @@ import TradeLimits from "./components/trade-limits"
 import StatsTabs from "./components/stats-tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { showWarningDialog } = useAlertDialog()
   const { userData: user } = useUserDataStore()
+  const tempBanUntil = user?.temp_ban_until
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const url = `${process.env.NEXT_PUBLIC_BASE_URL}/users/me`
         const headers = {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         }
 
         const response = await fetch(url, {
@@ -113,6 +115,7 @@ export default function ProfilePage() {
   return (
     <>
       <div className="px-3 pt-3 md:pt-0">
+        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
