@@ -336,9 +336,10 @@ export default function BuySellPage() {
                   hasActiveFilters={hasActiveFilters}
                   trigger={
                     <Button
-                      variant={hasActiveFilters ? "black" : "outline"}
+                      variant={ ? "black" : "outline"}
                       size="sm"
-                      className="rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black min-w-fit rounded-3xl"
+                      className={cn("rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl", 
+                      hasActiveFilters ? "" : "bg-background hover:bg-transparent")}
                     >
                       <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
                     </Button>
