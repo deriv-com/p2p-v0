@@ -85,12 +85,12 @@ interface CurrenciesResponse {
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
-export default function Transfer({ onClose, stepVal="chooseCurrency" }: TransferProps) {
+export default function Transfer({ currencySelected, onClose, stepVal="chooseCurrency" }: TransferProps) {
   const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(currencySelected)
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
   const [showMobileConfirmSheet, setShowMobileConfirmSheet] = useState(false)
