@@ -8,6 +8,7 @@ import { RateInput } from "./ui/rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
+import { getSettings } from "@/services/api/api-auth"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -21,6 +22,11 @@ interface ValidationErrors {
   fixedRate?: string
   minAmount?: string
   maxAmount?: string
+}
+
+interface PriceRange {
+  lowestPrice: number | null
+  highestPrice: number | null
 }
 
 export default function AdDetailsForm({
@@ -44,6 +50,7 @@ export default function AdDetailsForm({
     minAmount: false,
     maxAmount: false,
   })
+  const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
 
   const isFormValid = () => {
     const hasValues = !!totalAmount && !!fixedRate && !!minAmount && !!maxAmount
@@ -56,6 +63,44 @@ export default function AdDetailsForm({
       setForCurrency(currenciesProp[0].code)
     }
   }, [currenciesProp, forCurrency])
+
+  useEffect(() => {
+    const fetchPriceRange = async () => {
+      if (!buyCurrency || !forCurrency) return
+
+      try {
+        const response = await getSettings()
+        const availableAdverts = response.available_adverts || {}
+
+        const adverts = availableAdverts[buyCurrency] || []
+        const matchingAdverts = adverts.filter((advert: any) => advert.payment_currency === forCurrency)
+
+        if (matchingAdverts.length > 0) {
+          const rates = matchingAdverts
+            .map((advert: any) => ({
+              min: advert.minimum_exchange_rate,
+              max: advert.maximum_exchange_rate,
+            }))
+            .filter((rate: any) => rate.min != null && rate.max != null)
+
+          if (rates.length > 0) {
+            const lowestPrice = Math.min(...rates.map((r: any) => r.min))
+            const highestPrice = Math.max(...rates.map((r: any) => r.max))
+            setPriceRange({ lowestPrice, highestPrice })
+          } else {
+            setPriceRange({ lowestPrice: null, highestPrice: null })
+          }
+        } else {
+          setPriceRange({ lowestPrice: null, highestPrice: null })
+        }
+      } catch (error) {
+        console.error("Error fetching price range:", error)
+        setPriceRange({ lowestPrice: null, highestPrice: null })
+      }
+    }
+
+    fetchPriceRange()
+  }, [buyCurrency, forCurrency])
 
   useEffect(() => {
     if (initialData) {
@@ -255,6 +300,33 @@ export default function AdDetailsForm({
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
+
+          {priceRange.lowestPrice !== null && priceRange.highestPrice !== null && (
+            <div className="flex items-center gap-4 mb-4 p-4 bg-grayscale-50 rounded-lg">
+              <div className="flex-1">
+                <div className="text-sm text-grayscale-600 mb-1">Lowest price:</div>
+                <div className="text-lg font-bold">
+                  {priceRange.lowestPrice.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-base font-normal">{forCurrency}</span>
+                </div>
+              </div>
+              <div className="w-px h-12 bg-grayscale-200" />
+              <div className="flex-1">
+                <div className="text-sm text-grayscale-600 mb-1">Highest price:</div>
+                <div className="text-lg font-bold">
+                  {priceRange.highestPrice.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-base font-normal">{forCurrency}</span>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 border-b border-grayscale-200 pb-6">
             <div>
               <RateInput
