@@ -347,7 +347,7 @@ export default function AdDetailsForm({
                   <span className="text-xs font-normal">{forCurrency}</span>
                 </div>
               </div>
-              <div className="w-px h-12 bg-grayscale-200" />
+              <div className="w-px h-6 bg-grayscale-200" />
               <div className="flex-1 flex justify-between">
                 <div className="text-xs">Highest price:</div>
                 <div className="text-base font-bold">
