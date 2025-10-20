@@ -226,12 +226,7 @@ export default function WalletSummary({
             <div className="flex flex-col items-center gap-2">
               <Button
                 size="icon"
-                className={cn(
-                  "h-12 w-12 rounded-full p-0",
-                  isBalancesView
-                    ? "bg-[#FF444F] hover:bg-[#E63946] text-white"
-                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
-                )}
+                className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
                 onClick={handleTransferClick}
                 aria-label="Transfer"
               >
