@@ -229,7 +229,7 @@ export default function OrderChat({
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
                   ) : (
-                    <div className={cn("text-xs mt-1 text-grayscale-text-muted")}>{msg.time && formatDateTime(msg.time)}</div>
+                    <div className={cn("text-xs mt-1 text-grayscale-text-muted", msg.sender_is_self && "justify-self-end")}>{msg.time && formatDateTime(msg.time)}</div>
                   )}
                 </div>
               </div>
