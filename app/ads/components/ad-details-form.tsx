@@ -142,6 +142,18 @@ export default function AdDetailsForm({
         errors.fixedRate = "Rate is required"
       } else if (rate <= 0) {
         errors.fixedRate = "Rate must be greater than 0"
+      } else if (priceRange.lowestPrice !== null && priceRange.highestPrice !== null) {
+        if (rate < priceRange.lowestPrice) {
+          errors.fixedRate = `Rate must be at least ${priceRange.lowestPrice.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} ${forCurrency}`
+        } else if (rate > priceRange.highestPrice) {
+          errors.fixedRate = `Rate must not exceed ${priceRange.highestPrice.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })} ${forCurrency}`
+        }
       }
     }
 
@@ -167,7 +179,7 @@ export default function AdDetailsForm({
     }
 
     setFormErrors(errors)
-  }, [totalAmount, fixedRate, minAmount, maxAmount, touched])
+  }, [totalAmount, fixedRate, minAmount, maxAmount, touched, priceRange, forCurrency])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
