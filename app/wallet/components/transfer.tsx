@@ -496,7 +496,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">Confirm transfer</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">Review and confirm</h2>
             <div className="mb-6">
               <div className="mb-4">
                 <div className="flex items-center justify-between">
