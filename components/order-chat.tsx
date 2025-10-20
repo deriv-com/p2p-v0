@@ -287,7 +287,7 @@ export default function OrderChat({
 
 function formatLastSeen(timestamp: number): string {
   const now = Date.now()
-  const lastSeenDate = new Date(timestam)
+  const lastSeenDate = new Date(timestamp)
   const diffMs = now - lastSeenDate.getTime()
   const diffMins = Math.floor(diffMs / 60000)
   const diffHours = Math.floor(diffMins / 60)
