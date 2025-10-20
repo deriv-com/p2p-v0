@@ -225,7 +225,7 @@ export function formatDateTime(datetime) {
 }
 
 export function formatTime(timestamp: number): string {
-  const date = new Date(timesta)
+  const date = new Date(timestamp)
 
   return date.toLocaleTimeString("en-US", {
     hour: "numeric",
