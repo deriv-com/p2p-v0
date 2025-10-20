@@ -360,7 +360,7 @@ export default function AdDetailsForm({
               </div>
             </div>
           )}
-          <div className="border-b border-grayscale-200"></div>
+          <div className="border-b border-grayscale-200 mt-6"></div>
         </div>
 
         <div>
