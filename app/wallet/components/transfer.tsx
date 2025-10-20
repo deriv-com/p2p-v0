@@ -10,6 +10,7 @@ import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 
 interface TransferProps {
+  currencySelected?: string
   onClose: () => void
   stepVal: string
 }
