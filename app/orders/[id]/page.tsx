@@ -87,7 +87,7 @@ export default function OrderDetailsPage() {
   }, [orderId, subscribe])
 
   const showOrderDetails = () => {
-    if(isMobile) {
+    if (isMobile) {
       setShowDetailsSidebar(true)
     } else {
       showAlert({
@@ -318,6 +318,11 @@ export default function OrderDetailsPage() {
         : "buyer"
 
   if (isMobile && showChat && order) {
+    const counterpartyOnlineStatus =
+      order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+    const counterpartyLastOnlineAt =
+      order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
+
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
@@ -326,6 +331,8 @@ export default function OrderDetailsPage() {
             counterpartyName={counterpartyNickname || "User"}
             counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
             isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+            counterpartyOnlineStatus={counterpartyOnlineStatus}
+            counterpartyLastOnlineAt={counterpartyLastOnlineAt}
             onNavigateToOrderDetails={() => {
               setShowChat(false)
               setIsChatVisible(false)
@@ -549,6 +556,12 @@ export default function OrderDetailsPage() {
                   counterpartyName={counterpartyNickname || "User"}
                   counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
                   isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+                  counterpartyOnlineStatus={
+                    order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+                  }
+                  counterpartyLastOnlineAt={
+                    order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
+                  }
                 />
               </div>
             </div>
@@ -608,7 +621,9 @@ export default function OrderDetailsPage() {
         onSubmit={handleSubmitReview}
         recommendLabel={`Would you recommend this ${counterpartyLabel.toLowerCase()}?`}
       />
-      {isMobile && <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />}
+      {isMobile && (
+        <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
+      )}
       <PaymentConfirmationSidebar
         isOpen={showPaymentConfirmation}
         onClose={() => setShowPaymentConfirmation(false)}

@@ -224,6 +224,16 @@ export function formatDateTime(datetime) {
     .replace(",", "")
 }
 
+export function formatTime(timestamp: number): string {
+  const date = new Date(timestamp)
+
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  })
+}
+
 export async function copyToClipboard(text: string): Promise<boolean> {
   try {
     await navigator.clipboard.writeText(text)
