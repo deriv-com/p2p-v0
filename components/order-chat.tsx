@@ -232,7 +232,7 @@ export default function OrderChat({
               {Object.entries(groupMessagesByDate(messages)).map(([dateKey, dateMessages]) => (
                 <div key={dateKey}>
                   <div className="flex justify-center my-4">
-                    <div className="bg-gray-200 text-grayscale-text-muted text-xs px-3 py-1 rounded-full">
+                    <div className="xt-grayscale-text-muted text-xs px-3 py-1 rounded-full">
                       {formatDateHeader(dateKey)}
                     </div>
                   </div>
