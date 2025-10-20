@@ -11,7 +11,7 @@ import TransactionDetails from "./transaction-details"
 
 interface TransferProps {
   onClose: () => void
-  step: s
+  step
 }
 
 interface Currency {
