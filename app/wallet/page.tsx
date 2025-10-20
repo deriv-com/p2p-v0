@@ -83,33 +83,33 @@ export default function WalletPage() {
 
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
-        <div className="w-full flex flex-col items-center">
-          <div className="w-full mt-0">
-            <WalletSummary
-              isBalancesView={displayBalances}
-              selectedCurrency={selectedCurrency}
-              onBack={handleBackToBalances}
-              balance={totalBalance}
-              currency={balanceCurrency}
-              isLoading={isLoading}
-              onTransferClick={handleTransferClick}
-            />
-          </div>
-
-          {tempBanUntil && (
-            <div className="w-full px-6 md:px-0 mt-4">
-              <TemporaryBanAlert tempBanUntil={tempBanUntil} />
-            </div>
-          )}
-
-          <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
-            {displayBalances ? (
-              <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
-            ) : (
-              <TransactionsTab selectedCurrency={selectedCurrency} />
-            )}
-          </div>
+      <div className="w-full flex flex-col items-center">
+        <div className="w-full mt-0">
+          <WalletSummary
+            isBalancesView={displayBalances}
+            selectedCurrency={selectedCurrency}
+            onBack={handleBackToBalances}
+            balance={totalBalance}
+            currency={balanceCurrency}
+            isLoading={isLoading}
+            onTransferClick={handleTransferClick}
+          />
         </div>
+
+        {tempBanUntil && (
+          <div className="w-full px-6 md:px-0 mt-4">
+            <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+          </div>
+        )}
+
+        <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
+          {displayBalances ? (
+            <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
+          ) : (
+            <TransactionsTab selectedCurrency={selectedCurrency} />
+          )}
+        </div>
+      </div>
     </div>
   )
 }
