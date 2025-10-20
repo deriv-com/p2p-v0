@@ -15,12 +15,14 @@ export interface Order {
       id: number
       nickname: string
       is_online?: boolean
+      last_online_at?: number
     }
   }
   user: {
     id: number
     nickname: string
     is_online?: boolean
+    last_online_at?: number
   }
   price: Value
   paymentMethod: string
@@ -554,12 +556,14 @@ export const OrdersAPI = {
           id: 123,
           nickname: "Mariana_Rueda",
           is_online: true,
+          last_online_at: Date.now(),
         },
       },
       user: {
         id: 0,
         nickname: "Buyer",
         is_online: false,
+        last_online_at: Date.now(),
       },
       price: {
         value: "1450000",

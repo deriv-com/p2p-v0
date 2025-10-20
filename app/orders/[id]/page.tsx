@@ -320,6 +320,8 @@ export default function OrderDetailsPage() {
   if (isMobile && showChat && order) {
     const counterpartyOnlineStatus =
       order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+    const counterpartyLastOnlineAt =
+      order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
 
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
@@ -330,6 +332,7 @@ export default function OrderDetailsPage() {
             counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
             isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
             counterpartyOnlineStatus={counterpartyOnlineStatus}
+            counterpartyLastOnlineAt={counterpartyLastOnlineAt}
             onNavigateToOrderDetails={() => {
               setShowChat(false)
               setIsChatVisible(false)
@@ -555,6 +558,9 @@ export default function OrderDetailsPage() {
                   isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
                   counterpartyOnlineStatus={
                     order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+                  }
+                  counterpartyLastOnlineAt={
+                    order?.advert.user.id == userId ? order?.user?.last_online_at : order?.advert?.user?.last_online_at
                   }
                 />
               </div>
