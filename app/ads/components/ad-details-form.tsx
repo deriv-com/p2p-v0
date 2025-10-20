@@ -349,7 +349,7 @@ export default function AdDetailsForm({
               </div>
               <div className="w-px h-12 bg-grayscale-200" />
               <div className="flex-1 flex justify-between">
-                <div className="text-xs text-grayscale-600 mb-1">Highest price:</div>
+                <div className="text-xs mb-1">Highest price:</div>
                 <div className="text-base font-bold">
                   {priceRange.highestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
