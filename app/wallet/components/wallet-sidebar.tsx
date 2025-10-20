@@ -19,7 +19,7 @@ interface WalletSidebarProps {
   onP2PTransferClick?: () => void
   onAccountTransferClick?: () => void
   currencies: Currency[]
-  transferStep: strin
+  transferStep
 }
 
 export default function WalletSidebar({
