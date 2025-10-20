@@ -27,8 +27,8 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
-  counterpartyOnlineStatus?: boolean
   onNavigateToOrderDetails: () => void
+  counterpartyOnlineStatus?: boolean
 }
 
 export default function OrderChat({
@@ -36,8 +36,8 @@ export default function OrderChat({
   counterpartyName,
   counterpartyInitial,
   isClosed,
-  counterpartyOnlineStatus,
   onNavigateToOrderDetails,
+  counterpartyOnlineStatus,
 }: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
@@ -156,12 +156,9 @@ export default function OrderChat({
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-sm text-slate-500">
-            {counterpartyOnlineStatus !== undefined
-              ? counterpartyOnlineStatus
-                ? "Online"
-                : "Offline"
-              : "Seen " + formatLastSeen(new Date())}
+          <div className="text-sm text-slate-500 flex items-center gap-1">
+            <div className={`w-2 h-2 rounded-full ${counterpartyOnlineStatus ? "bg-buy" : "bg-gray-400"}`} />
+            <span>{counterpartyOnlineStatus ? "Online" : "Offline"}</span>
           </div>
         </div>
       </div>

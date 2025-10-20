@@ -557,9 +557,9 @@ export const OrdersAPI = {
         },
       },
       user: {
-        id: 456,
-        nickname: "Buyer_User",
-        is_online: true,
+        id: 0,
+        nickname: "Buyer",
+        is_online: false,
       },
       price: {
         value: "1450000",

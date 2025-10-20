@@ -1,25 +1,10 @@
 "use client"
 
-import { AccordionContent } from "@/components/ui/accordion"
-
-import { AccordionTrigger } from "@/components/ui/accordion"
-
-import { AccordionItem } from "@/components/ui/accordion"
-
-import { Accordion } from "@/components/ui/accordion"
-
-export const runtime = "edge"
-import { X, ChevronRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { OrdersAPI } from "@/services/api"
-```typescript file="app/orders/[id]/page.tsx"
-"use client"
-
 export const runtime = "edge"
 
 import { useState, useEffect } from "react"
-import { useParams } from 'next/navigation'
-import { X, ChevronRight } from 'lucide-react'
+import { useParams } from "next/navigation"
+import { X, ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -102,7 +87,7 @@ export default function OrderDetailsPage() {
   }, [orderId, subscribe])
 
   const showOrderDetails = () => {
-    if(isMobile) {
+    if (isMobile) {
       setShowDetailsSidebar(true)
     } else {
       showAlert({
@@ -261,7 +246,7 @@ export default function OrderDetailsPage() {
       const minutes = Math.floor(diff / 60000)
       const seconds = Math.floor((diff % 60000) / 1000)
 
-      setTimeLeft(\`${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}\`)
+      setTimeLeft(`${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`)
       return true
     }
 
@@ -307,7 +292,6 @@ export default function OrderDetailsPage() {
   const orderType =
     order?.type === "buy" ? (order?.user.id == userId ? "Buy" : "Sell") : order?.user.id == userId ? "Sell" : "Buy"
   const counterpartyNickname = order?.advert.user.id == userId ? order?.user?.nickname : order?.advert?.user?.nickname
-  const counterpartyOnlineStatus = order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
   const counterpartyLabel =
     order?.type === "sell"
       ? order?.advert.user.id == userId
@@ -334,6 +318,9 @@ export default function OrderDetailsPage() {
         : "buyer"
 
   if (isMobile && showChat && order) {
+    const counterpartyOnlineStatus =
+      order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
@@ -359,7 +346,7 @@ export default function OrderDetailsPage() {
         <Navigation
           isBackBtnVisible={false}
           isVisible={false}
-          title={\`${orderType} ${order?.advert?.account_currency}\`}
+          title={`${orderType} ${order?.advert?.account_currency}`}
           redirectUrl={"/orders"}
         />
       )}
@@ -375,309 +362,279 @@ export default function OrderDetailsPage() {
               <div className="w-full lg:w-1/2 rounded-lg">
                 <div
                   className={cn(
-                    \`${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
+                    `${getStatusBadgeStyle(order.status, order.type)} p-4 flex justify-between items-center rounded-none lg:rounded-lg mb-[24px] mt-[-16px] lg:mt-[0] mx-[-24px] lg:mx-[0]`,
                     order.status === "pending_payment" || order.status === "pending_release"
                       ? "justify-between"
                       : "justify-center",
-)}
+                  )}
                 >
                   <div className="flex items-center">
-                    <span className="font-bold">
-{
-  formatStatus(true, order.status, order.type)
-}
-</span>
-</div>
-{
-  ;(order.status === "pending_payment" || order.status === "pending_release") && (
-    <div className="flex items-center">
-      <span>Time left:&nbsp;</span>
-      <span className="font-bold">{timeLeft}</span>
-    </div>
-  )
-}
-</div>
-                <div className="p-4 border rounded-lg mb-[24px]">
-{
-  order.status === "completed" ? (
-    <OrderDetails order={order} setShowChat={setShowChat} />
-  ) : (
-    <>
-      <div className="flex justify-between items-start mb-4">
-        <div>
-          <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
-          <p className="font-bold">
-            {formatAmount(order.payment_amount)} {order?.payment_currency}
-          </p>
-        </div>
-        <button className="flex items-center text-sm" onClick={showOrderDetails}>
-          View order details
-          <ChevronRight className="h-4 w-4 ml-1" />
-        </button>
-      </div>
-      <div className="flex justify-between items-end">
-        <div>
-          <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
-          <p className="font-bold">{counterpartyNickname}</p>
-        </div>
-        {isMobile && (
-          <Button
-            onClick={() => {
-              setShowChat(true)
-              setIsChatVisible(true)
-            }}
-            className="text-slate-500 hover:text-slate-700"
-            variant="ghost"
-            size="sm"
-          >
-            <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-          </Button>
-        )}
-      </div>
-    </>
-  )
-}
-</div>
-{
-  order.status !== "completed" && (
-    <div className="space-y-6 mt-4">
-      <div className="space-y-4">
-        {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
-        {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
-        <div className="bg-orange-50 rounded-[16px] p-[16px]">
-          <div className="flex items-start gap-2">
-            <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} className="-mt-[2px]" />
-            <p className="text-sm text-grayscale-100">
-              Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
-            </p>
-          </div>
-        </div>
-
-        {order?.payment_method_details && order.payment_method_details.length > 0 && (
-          <div className="bg-white border rounded-lg mt-6">
-            <Accordion type="single" collapsible className="w-full">
-              {order.payment_method_details.map((method, index) => (
-                <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
-                  <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}></div>
-                      <span className="text-sm">{method.display_name}</span>
+                    <span className="font-bold">{formatStatus(true, order.status, order.type)}</span>
+                  </div>
+                  {(order.status === "pending_payment" || order.status === "pending_release") && (
+                    <div className="flex items-center">
+                      <span>Time left:&nbsp;</span>
+                      <span className="font-bold">{timeLeft}</span>
                     </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-4 pb-4">
-                    <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+                  )}
+                </div>
+                <div className="p-4 border rounded-lg mb-[24px]">
+                  {order.status === "completed" ? (
+                    <OrderDetails order={order} setShowChat={setShowChat} />
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <p className="text-slate-500 text-sm">{youPayReceiveLabel}</p>
+                          <p className="font-bold">
+                            {formatAmount(order.payment_amount)} {order?.payment_currency}
+                          </p>
+                        </div>
+                        <button className="flex items-center text-sm" onClick={showOrderDetails}>
+                          View order details
+                          <ChevronRight className="h-4 w-4 ml-1" />
+                        </button>
+                      </div>
+                      <div className="flex justify-between items-end">
+                        <div>
+                          <p className="text-slate-500 text-sm">{counterpartyLabel}</p>
+                          <p className="font-bold">{counterpartyNickname}</p>
+                        </div>
+                        {isMobile && (
+                          <Button
+                            onClick={() => {
+                              setShowChat(true)
+                              setIsChatVisible(true)
+                            }}
+                            className="text-slate-500 hover:text-slate-700"
+                            variant="ghost"
+                            size="sm"
+                          >
+                            <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                          </Button>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </div>
+                {order.status !== "completed" && (
+                  <div className="space-y-6 mt-4">
+                    <div className="space-y-4">
+                      {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
+                      {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
+                      <div className="bg-orange-50 rounded-[16px] p-[16px]">
+                        <div className="flex items-start gap-2">
+                          <Image
+                            src="/icons/warning-icon-new.png"
+                            alt="Warning"
+                            height={24}
+                            width={24}
+                            className="-mt-[2px]"
+                          />
+                          <p className="text-sm text-grayscale-100">
+                            Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
+                          </p>
+                        </div>
+                      </div>
 
-{
-  ;((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
-    (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
-    <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-      <Button variant="outline" className="flex-1 bg-transparent" onClick={() => setShowCancelConfirmation(true)}>
-        Cancel order
-      </Button>
-      <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
-        I've paid
-      </Button>
-    </div>
-  )
-}
-{
-  ;((order.type === "buy" &&
-    (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
-    order.advert.user.id == userId) ||
-    (order.type === "sell" &&
-      (order.status === "pending_release" || order.status === "timed_out") &&
-      order.user.id == userId)) && (
-    <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
-      <Button className="flex-1" onClick={handleShowPaymentReceivedConfirmation} disabled={isConfirmLoading}>
-        {isConfirmLoading ? (
-          <>
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-            Processing...
-          </>
-        ) : (
-          "I've received payment"
-        )}
-      </Button>
-    </div>
-  )
-}
-{
-  order.status === "completed" && order.is_reviewable && (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
-        <div className="flex-shrink-0">
-          <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
-        </div>
-        <p className="text-sm text-grayscale-100">
-          You have until {formatRatingDeadline(order.order_review_expires_at)} to rate this transaction.
-        </p>
-      </div>
-      <div className="pt-2 flex justify-end">
-        <Button variant="outline" onClick={() => setShowRatingSidebar(true)} className="flex-auto md:flex-none">
-          Rate transaction
-        </Button>
-      </div>
-    </div>
-  )
-}
-{
-  order.status === "completed" && !order.is_reviewable && order.rating && (
-    <div className="space-y-1 mt-[24px]">
-      <h2 className="text-base font-bold">Your transaction rating</h2>
-      <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
-        <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
-        {order.recommend && (
-          <div className="flex items-center gap-2">
-            <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={16} />
-            <span className="text-sm">Recommended</span>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
-{
-  order.status === "timed_out" && (
-    <div className="py-4 flex justify-end flex-auto md:flex-none">
-      <Button variant="outline" onClick={() => setShowComplaintForm(true)} className="flex-auto md:flex-1">
-        Complain
-      </Button>
-    </div>
-  )
-}
-</div>
+                      {order?.payment_method_details && order.payment_method_details.length > 0 && (
+                        <div className="bg-white border rounded-lg mt-6">
+                          <Accordion type="single" collapsible className="w-full">
+                            {order.payment_method_details.map((method, index) => (
+                              <AccordionItem key={index} value={`payment-method-${index}`} className="border-b-0">
+                                <AccordionTrigger className="px-4 py-3 hover:no-underline">
+                                  <div className="flex items-center gap-3">
+                                    <div
+                                      className={`w-2 h-2 ${getPaymentMethodColour(method.type)} rounded-full`}
+                                    ></div>
+                                    <span className="text-sm">{method.display_name}</span>
+                                  </div>
+                                </AccordionTrigger>
+                                <AccordionContent className="px-4 pb-4">
+                                  <div className="space-y-4">{renderPaymentMethodFields(method.fields)}</div>
+                                </AccordionContent>
+                              </AccordionItem>
+                            ))}
+                          </Accordion>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
+                  (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
+                  <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
+                    <Button
+                      variant="outline"
+                      className="flex-1 bg-transparent"
+                      onClick={() => setShowCancelConfirmation(true)}
+                    >
+                      Cancel order
+                    </Button>
+                    <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
+                      I've paid
+                    </Button>
+                  </div>
+                )}
+                {((order.type === "buy" &&
+                  (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
+                  order.advert.user.id == userId) ||
+                  (order.type === "sell" &&
+                    (order.status === "pending_release" || order.status === "timed_out") &&
+                    order.user.id == userId)) && (
+                  <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                    <Button
+                      className="flex-1"
+                      onClick={handleShowPaymentReceivedConfirmation}
+                      disabled={isConfirmLoading}
+                    >
+                      {isConfirmLoading ? (
+                        <>
+                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                          Processing...
+                        </>
+                      ) : (
+                        "I've received payment"
+                      )}
+                    </Button>
+                  </div>
+                )}
+                {order.status === "completed" && order.is_reviewable && (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
+                      <div className="flex-shrink-0">
+                        <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
+                      </div>
+                      <p className="text-sm text-grayscale-100">
+                        You have until {formatRatingDeadline(order.order_review_expires_at)} to rate this transaction.
+                      </p>
+                    </div>
+                    <div className="pt-2 flex justify-end">
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowRatingSidebar(true)}
+                        className="flex-auto md:flex-none"
+                      >
+                        Rate transaction
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {order.status === "completed" && !order.is_reviewable && order.rating && (
+                  <div className="space-y-1 mt-[24px]">
+                    <h2 className="text-base font-bold">Your transaction rating</h2>
+                    <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
+                      <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
+                      {order.recommend && (
+                        <div className="flex items-center gap-2">
+                          <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={16} />
+                          <span className="text-sm">Recommended</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {order.status === "timed_out" && (
+                  <div className="py-4 flex justify-end flex-auto md:flex-none">
+                    <Button
+                      variant="outline"
+                      onClick={() => setShowComplaintForm(true)}
+                      className="flex-auto md:flex-1"
+                    >
+                      Complain
+                    </Button>
+                  </div>
+                )}
+              </div>
               <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
                 <OrderChat
-                  orderId=
-{
-  orderId
-}
-\
-                  counterpartyName=
-{
-  counterpartyNickname || "User"
-}
-\
-                  counterpartyInitial=
-{
-  ;(counterpartyNickname || "U")[0].toUpperCase()
-}
-\
-                  isClosed=
-{
-  ["cancelled\", \"completed\", \"refunded\"].includes(order?.status)}\
-                  counterpartyOnlineStatus={counterpartyOnlineStatus}
+                  orderId={orderId}
+                  counterpartyName={counterpartyNickname || "User"}
+                  counterpartyInitial={(counterpartyNickname || "U")[0].toUpperCase()}
+                  isClosed={["cancelled", "completed", "refunded"].includes(order?.status)}
+                  counterpartyOnlineStatus={
+                    order?.advert.user.id == userId ? order?.user?.is_online : order?.advert?.user?.is_online
+                  }
                 />
               </div>
             </div>
-          </div>\
-  )
-}
-</div>
-
-{
-  showCancelConfirmation && (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Cancelling your order?</h2>
-          <button onClick={() => setShowCancelConfirmation(false)} className="text-slate-500 hover:text-slate-700">
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-
-        <p className="text-grayscale-100 mb-6">Don't cancel if you've already paid.</p>
-
-        <div className="space-y-3">
-          <Button onClick={() => setShowCancelConfirmation(false)} className="w-full">
-            Keep order
-          </Button>
-          <Button
-            variant="outline"
-            onClick={async () => {
-              setShowCancelConfirmation(false)
-              try {
-                const result = await OrdersAPI.cancelOrder(orderId)
-                if (result.success) {
-                  fetchOrderDetails()
-                }
-              } catch (error) {
-                console.error("Failed to cancel order:", error)
-              }
-            }}
-            className="w-full"
-          >
-            Cancel order
-          </Button>
-        </div>
+          </div>
+        )}
       </div>
-    </div>
-  )
-}
-;(
-  <ComplaintForm
-    isOpen={showComplaintForm}
-    onClose={() => setShowComplaintForm(false)}
-    onSubmit={handleSubmitComplaint}
-    orderId={orderId}
-    type={complainType}
-  />
-) < RatingSidebar
-isOpen = { showRatingSidebar }
-\
-        onClose=
-{
-  ;() => setShowRatingSidebar(false)
-}
-orderId = { orderId }
-onSubmit = { handleSubmitReview }
-\
-        recommendLabel=
-{
-  ;`Would you recommend this ${counterpartyLabel.toLowerCase()}?`
-}
-;/>
-{
-  isMobile && (
-    <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
-  )
-}
-;(
-  <PaymentConfirmationSidebar
-    isOpen={showPaymentConfirmation}
-    onClose={() => setShowPaymentConfirmation(false)}
-    onConfirm={handlePayOrder}
-    order={order}
-    isLoading={isPaymentLoading}
-  />
-) < PaymentReceivedConfirmationSidebar
-isOpen = { showPaymentReceivedConfirmation }
-\
-        onClose=
-{
-  ;() => setShowPaymentReceivedConfirmation(false)
-}
-\
-        onConfirm=
-{
-  ;() => {
-    fetchOrderDetails()
-    setShowPaymentReceivedConfirmation(false)
-  }
-}
-orderId = { orderId }
-isLoading={isConfirmLoading}
+
+      {showCancelConfirmation && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold">Cancelling your order?</h2>
+              <button onClick={() => setShowCancelConfirmation(false)} className="text-slate-500 hover:text-slate-700">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <p className="text-grayscale-100 mb-6">Don't cancel if you've already paid.</p>
+
+            <div className="space-y-3">
+              <Button onClick={() => setShowCancelConfirmation(false)} className="w-full">
+                Keep order
+              </Button>
+              <Button
+                variant="outline"
+                onClick={async () => {
+                  setShowCancelConfirmation(false)
+                  try {
+                    const result = await OrdersAPI.cancelOrder(orderId)
+                    if (result.success) {
+                      fetchOrderDetails()
+                    }
+                  } catch (error) {
+                    console.error("Failed to cancel order:", error)
+                  }
+                }}
+                className="w-full"
+              >
+                Cancel order
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ComplaintForm
+        isOpen={showComplaintForm}
+        onClose={() => setShowComplaintForm(false)}
+        onSubmit={handleSubmitComplaint}
+        orderId={orderId}
+        type={complainType}
       />
-</div>
+      <RatingSidebar
+        isOpen={showRatingSidebar}
+        onClose={() => setShowRatingSidebar(false)}
+        orderId={orderId}
+        onSubmit={handleSubmitReview}
+        recommendLabel={`Would you recommend this ${counterpartyLabel.toLowerCase()}?`}
+      />
+      {isMobile && (
+        <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
+      )}
+      <PaymentConfirmationSidebar
+        isOpen={showPaymentConfirmation}
+        onClose={() => setShowPaymentConfirmation(false)}
+        onConfirm={handlePayOrder}
+        order={order}
+        isLoading={isPaymentLoading}
+      />
+      <PaymentReceivedConfirmationSidebar
+        isOpen={showPaymentReceivedConfirmation}
+        onClose={() => setShowPaymentReceivedConfirmation(false)}
+        onConfirm={() => {
+          fetchOrderDetails()
+          setShowPaymentReceivedConfirmation(false)
+        }}
+        orderId={orderId}
+        isLoading={isConfirmLoading}
+      />
+    </div>
   )
 }
