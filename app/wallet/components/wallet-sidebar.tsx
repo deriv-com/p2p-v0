@@ -12,7 +12,7 @@ interface Currency {
 }
 
 interface WalletSidebarProps {
-  currencySelected?
+  currencySelected?: string
   isOpen: boolean
   onClose: () => void
   onDirectDepositClick: (currency: string) => void
