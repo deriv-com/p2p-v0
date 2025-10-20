@@ -27,6 +27,7 @@ type OrderChatProps = {
   counterpartyName: string
   counterpartyInitial: string
   isClosed: boolean
+  counterpartyOnlineStatus?: boolean
   onNavigateToOrderDetails: () => void
 }
 
@@ -35,6 +36,7 @@ export default function OrderChat({
   counterpartyName,
   counterpartyInitial,
   isClosed,
+  counterpartyOnlineStatus,
   onNavigateToOrderDetails,
 }: OrderChatProps) {
   const [message, setMessage] = useState("")
@@ -154,7 +156,13 @@ export default function OrderChat({
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
+          <div className="text-sm text-slate-500">
+            {counterpartyOnlineStatus !== undefined
+              ? counterpartyOnlineStatus
+                ? "Online"
+                : "Offline"
+              : "Seen " + formatLastSeen(new Date())}
+          </div>
         </div>
       </div>
       <div className="h-full overflow-auto">
@@ -189,9 +197,7 @@ export default function OrderChat({
                 <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
-                      <div
-                        className="bg-slate-75 p-[8px] rounded-[4px] text-xs"
-                      >
+                      <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
                         <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                           {msg.attachment.name}
                         </a>

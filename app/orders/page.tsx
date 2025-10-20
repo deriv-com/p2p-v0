@@ -331,6 +331,8 @@ export default function OrdersPage() {
       selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
     const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
     const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
+    const counterpartyOnlineStatus =
+      selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.is_online : selectedOrder?.advert?.user?.is_online
 
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
@@ -340,6 +342,7 @@ export default function OrdersPage() {
             counterpartyName={counterpartyName}
             counterpartyInitial={counterpartyInitial}
             isClosed={isClosed}
+            counterpartyOnlineStatus={counterpartyOnlineStatus}
             onNavigateToOrderDetails={() => {
               router.push(`/orders/${selectedOrder.id}`)
             }}

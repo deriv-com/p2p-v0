@@ -14,7 +14,13 @@ export interface Order {
     user: {
       id: number
       nickname: string
+      is_online?: boolean
     }
+  }
+  user: {
+    id: number
+    nickname: string
+    is_online?: boolean
   }
   price: Value
   paymentMethod: string
@@ -509,7 +515,6 @@ export async function requestOrderCompletionOtp(orderId: string): Promise<{ succ
     }
 
     return data
-    
   } catch (error) {
     throw error
   }
@@ -548,15 +553,21 @@ export const OrdersAPI = {
         user: {
           id: 123,
           nickname: "Mariana_Rueda",
+          is_online: true,
         },
+      },
+      user: {
+        id: 456,
+        nickname: "Buyer_User",
+        is_online: true,
       },
       price: {
         value: "1450000",
         currency: "IDR",
       },
       paymentMethod: "Bank Transfer",
-      createdAt: new Date().toISOString(),
-      expiresAt: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      expires_at: new Date().toISOString(),
       payment_currency: "IDR",
       is_reviewable: true,
       rating: 0,
