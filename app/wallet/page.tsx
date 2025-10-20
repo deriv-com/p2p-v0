@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
-import Transfer from "./components/transfer"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -66,12 +65,6 @@ export default function WalletPage() {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setTotalBalance(null)
-    loadBalanceData()
-  }
-
-  const handleCloseTransfer = () => {
-    setDisplayBalances(true)
-    setSelectedCurrency(null)
     loadBalanceData()
   }
 
