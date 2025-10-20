@@ -11,7 +11,7 @@ import TransactionDetails from "./transaction-details"
 
 interface TransferProps {
   onClose: () => void
-  step
+  stepVal: string
 }
 
 interface Currency {
@@ -85,8 +85,8 @@ interface CurrenciesResponse {
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
-export default function Transfer({ onClose }: TransferProps) {
-  const [step, setStep] = useState<TransferStep>("chooseCurrency")
+export default function Transfer({ onClose, stepVal="chooseCurrency" }: TransferProps) {
+  const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
