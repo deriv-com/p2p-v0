@@ -52,6 +52,7 @@ if (operation === "TRANSFER") {
     <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
       <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
         <Transfer
+          currencySelected={currencySelected}
           onSendClick={onP2PTransferClick}
           onReceiveClick={onAccountTransferClick}
           currencies={currencies}
