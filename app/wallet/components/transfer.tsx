@@ -10,7 +10,9 @@ import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
 
 interface TransferProps {
+  currencySelected?: string
   onClose: () => void
+  stepVal: string
 }
 
 interface Currency {
@@ -84,17 +86,16 @@ interface CurrenciesResponse {
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
-export default function Transfer({ onClose }: TransferProps) {
-  const [step, setStep] = useState<TransferStep>("chooseCurrency")
+export default function Transfer({ currencySelected, onClose, stepVal="chooseCurrency" }: TransferProps) {
+  const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
   const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(null)
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>(currencySelected)
   const [showMobileSheet, setShowMobileSheet] = useState<WalletSelectorType>(null)
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
   const [showMobileConfirmSheet, setShowMobileConfirmSheet] = useState(false)
   const [showDesktopConfirmPopup, setShowDesktopConfirmPopup] = useState(false)
-
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
@@ -496,7 +497,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">Confirm transfer</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">Review and confirm</h2>
             <div className="mb-6">
               <div className="mb-4">
                 <div className="flex items-center justify-between">
@@ -573,13 +574,6 @@ export default function Transfer({ onClose }: TransferProps) {
               >
                 Confirm
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => setShowDesktopConfirmPopup(false)}
-                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-              >
-                Back
-              </Button>
             </div>
           </div>
         </div>
@@ -606,7 +600,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-8 ml-4 ">Confirm transfer</h1>
+            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-8 ml-4 ">Review and confirm</h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
                 <div className="flex items-center justify-between">

@@ -226,28 +226,13 @@ export default function WalletSummary({
             <div className="flex flex-col items-center gap-2">
               <Button
                 size="icon"
-                className={cn(
-                  "h-12 w-12 rounded-full p-0",
-                  isBalancesView
-                    ? "bg-[#FF444F] hover:bg-[#E63946] text-white"
-                    : "border border-slate-1200 bg-transparent hover:bg-black/10 text-slate-1200",
-                )}
+                className="h-12 w-12 rounded-full p-0 bg-[#FF444F] hover:bg-[#E63946] text-white"
                 onClick={handleTransferClick}
                 aria-label="Transfer"
               >
-                <Image
-                  src={isBalancesView ? "/icons/transfer-white.png" : "/icons/transfer-black.png"}
-                  alt="Transfer"
-                  width={14}
-                  height={14}
-                />
+                <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
               </Button>
-              <span
-                className={cn(
-                  "text-xs font-normal",
-                  isBalancesView ? "text-white" : "text-slate-1200",
-                )}
-              >
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 Transfer
               </span>
             </div>
@@ -316,8 +301,8 @@ export default function WalletSummary({
             />
           </div>
         )}
-
         <WalletSidebar
+          currencySelected={selectedCurrency}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
@@ -325,6 +310,7 @@ export default function WalletSummary({
           onP2PTransferClick={handleSendTransferClick}
           onAccountTransferClick={handleReceiveTransferClick}
           currencies={currencies}
+          transferStep={isBalancesView ? "chooseCurrency" : "enterAmount"}
         />
 
         <FullScreenIframeModal
