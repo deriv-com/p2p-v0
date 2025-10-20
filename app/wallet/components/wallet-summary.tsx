@@ -40,7 +40,6 @@ export default function WalletSummary({
   balance: propBalance = "0.00",
   currency: propCurrency = "USD",
   isLoading: propIsLoading = true,
-  onTransferClick,
 }: WalletSummaryProps) {
   const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
