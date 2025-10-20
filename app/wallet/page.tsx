@@ -70,7 +70,6 @@ export default function WalletPage() {
   }
 
   const handleCloseTransfer = () => {
-    setShowTransfer(false)
     setDisplayBalances(true)
     setSelectedCurrency(null)
     loadBalanceData()
