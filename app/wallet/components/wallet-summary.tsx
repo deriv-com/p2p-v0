@@ -31,7 +31,6 @@ interface WalletSummaryProps {
   balance?: string
   currency?: string
   isLoading?: boolean
-  onTransferClick?: () => void
 }
 
 export default function WalletSummary({
