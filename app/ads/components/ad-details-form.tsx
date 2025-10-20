@@ -355,7 +355,7 @@ export default function AdDetailsForm({
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
-                  <span className="text-base font-normal">{forCurrency}</span>
+                  <span className="text-xs font-normal">{forCurrency}</span>
                 </div>
               </div>
             </div>
