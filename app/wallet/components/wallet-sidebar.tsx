@@ -56,7 +56,7 @@ if (operation === "TRANSFER") {
           onReceiveClick={onAccountTransferClick}
           currencies={currencies}
           onClose={onClose}
-          stepVal={}
+          stepVal={transferStep}
         />
       </div>
     </div>
