@@ -301,7 +301,6 @@ export default function WalletSummary({
             />
           </div>
         )}
-
         <WalletSidebar
           currencySelected={selectedCurrency}
           isOpen={isSidebarOpen}
