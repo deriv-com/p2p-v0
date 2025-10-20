@@ -190,7 +190,7 @@ export default function OrderChat({
                   {msg.attachment && (
                     <div className={`${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
                       <div
-                        className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
+                        className="bg-slate-75 p-[8px] rounded-[4px] text-xs"
                       >
                         <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                           {msg.attachment.name}
