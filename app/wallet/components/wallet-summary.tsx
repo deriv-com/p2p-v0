@@ -237,7 +237,7 @@ export default function WalletSummary({
                 aria-label="Transfer"
               >
                 <Image
-                  src"/icons/transfer-white.png"
+                  src="/icons/transfer-white.png"
                   alt="Transfer"
                   width={14}
                   height={14}
