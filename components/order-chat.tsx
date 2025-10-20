@@ -206,7 +206,15 @@ export default function OrderChat({
               <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
                 <div className="max-w-[80%] rounded-lg pb-[16px]">
                   {msg.attachment && (
-                    <div className={`${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
+                    <div
+                      className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}
+                    >
+                      {!msg.sender_is_self && (
+                        <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-gray-400 -translate-x-full" />
+                      )}
+                      {msg.sender_is_self && (
+                        <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                      )}
                       <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
                         <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
                           {msg.attachment.name}
@@ -217,8 +225,14 @@ export default function OrderChat({
                   {msg.message && (
                     <div className="flex items-center">
                       <div
-                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
+                        className={`relative break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
                       >
+                        {!msg.sender_is_self && (
+                          <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-gray-400 -translate-x-full" />
+                        )}
+                        {msg.sender_is_self && (
+                          <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                        )}
                         {msg.message}
                       </div>
                       {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
@@ -229,7 +243,14 @@ export default function OrderChat({
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
                   ) : (
-                    <div className={cn("text-xs mt-1 text-grayscale-text-muted justify-self-start", msg.sender_is_self && "justify-self-end")}>{msg.time && formatDateTime(msg.time)}</div>
+                    <div
+                      className={cn(
+                        "text-xs mt-1 text-grayscale-text-muted justify-self-start",
+                        msg.sender_is_self && "justify-self-end",
+                      )}
+                    >
+                      {msg.time && formatDateTime(msg.time)}
+                    </div>
                   )}
                 </div>
               </div>
