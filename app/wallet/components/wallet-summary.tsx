@@ -114,11 +114,11 @@ export default function WalletSummary({
 
   const handleTransferClick = () => {
     if (userId) {
-      if (isBalancesView) {
+      if (isBalancesView && onTransferClick) {
+        onTransferClick()
+      } else {
         setCurrentOperation("TRANSFER")
         setIsSidebarOpen(true)
-      } else {
-        onTransferClick()
       }
     } else {
       showAlert({
@@ -236,12 +236,7 @@ export default function WalletSummary({
                 onClick={handleTransferClick}
                 aria-label="Transfer"
               >
-                <Image
-                  src="/icons/transfer-white.png"
-                  alt="Transfer"
-                  width={14}
-                  height={14}
-                />
+                <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
               </Button>
               <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 Transfer
