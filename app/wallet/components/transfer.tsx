@@ -573,13 +573,6 @@ export default function Transfer({ onClose }: TransferProps) {
               >
                 Confirm
               </Button>
-              <Button
-                variant="outline"
-                onClick={() => setShowDesktopConfirmPopup(false)}
-                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
-              >
-                Back
-              </Button>
             </div>
           </div>
         </div>
