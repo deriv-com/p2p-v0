@@ -337,7 +337,7 @@ export default function AdDetailsForm({
           </div>
           {priceRange.lowestPrice !== null && priceRange.highestPrice !== null && (
             <div className="flex items-center gap-4 mb-4 p-4 bg-grayscale-500 rounded-lg">
-              <div className="flex-1">
+              <div className="flex-1 flex justify-between">
                 <div className="text-xs text-grayscale-600 mb-1">Lowest price:</div>
                 <div className="text-base font-bold">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
