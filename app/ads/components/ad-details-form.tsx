@@ -338,13 +338,13 @@ export default function AdDetailsForm({
           {priceRange.lowestPrice !== null && priceRange.highestPrice !== null && (
             <div className="flex items-center gap-4 mb-4 p-4 bg-grayscale-500 rounded-lg text-slate-1200">
               <div className="flex-1 flex justify-between">
-                <div className="text-xs mb-1">Lowest price:</div>
+                <div className="text-xs">Lowest price:</div>
                 <div className="text-base font-bold">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
-                  <span className="text-base font-normal">{forCurrency}</span>
+                  <span className="text-xs font-normal">{forCurrency}</span>
                 </div>
               </div>
               <div className="w-px h-12 bg-grayscale-200" />
