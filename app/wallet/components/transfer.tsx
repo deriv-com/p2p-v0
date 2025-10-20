@@ -74,6 +74,7 @@ interface CurrencyData {
     maximum: number
     minimum: number
   }
+  min_amount_per_transaction?: number
   [key: string]: any
 }
 
@@ -86,7 +87,7 @@ interface CurrenciesResponse {
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
-export default function Transfer({ currencySelected, onClose, stepVal="chooseCurrency" }: TransferProps) {
+export default function Transfer({ currencySelected, onClose, stepVal = "chooseCurrency" }: TransferProps) {
   const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -337,7 +338,21 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
   const isAmountValid = (amount: string): boolean => {
     const numAmount = Number.parseFloat(amount)
     const sourceBalance = getSourceWalletBalance()
+
+    if (!isNaN(numAmount) && selectedCurrency && currenciesData) {
+      const currencyData = currenciesData.data[selectedCurrency]
+      const minAmount = currencyData?.min_amount_per_transaction || 0
+
+      return numAmount > 0 && numAmount >= minAmount && numAmount <= sourceBalance
+    }
+
     return !isNaN(numAmount) && numAmount > 0 && numAmount <= sourceBalance
+  }
+
+  const getMinimumAmount = (): number => {
+    if (!selectedCurrency || !currenciesData) return 0
+    const currencyData = currenciesData.data[selectedCurrency]
+    return currencyData?.min_amount_per_transaction || 0
   }
 
   const getSourceWalletAmount = () => {
@@ -506,7 +521,7 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -526,7 +541,9 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -609,7 +626,7 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -629,7 +646,9 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -738,7 +757,7 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -776,7 +795,9 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
@@ -825,8 +846,10 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">
-                Amount cannot exceed available balance ({formatAmountWithDecimals(getSourceWalletBalance().toString())}{" "}
-                {selectedCurrency || "USD"})
+                {Number.parseFloat(transferAmount) < getMinimumAmount()
+                  ? `Minimum transfer amount is ${formatAmountWithDecimals(getMinimumAmount())} ${selectedCurrency || "USD"}`
+                  : `Amount cannot exceed available balance (${formatAmountWithDecimals(getSourceWalletBalance().toString())}{" "}
+                ${selectedCurrency || "USD"})`}
               </p>
             )}
             <div className="hidden md:block absolute top-full right-0 mt-6">
