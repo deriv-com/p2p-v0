@@ -228,11 +228,7 @@ export default function OrderChat({
                       Message not sent: {getChatErrorMessage(msg.tags)}
                     </div>
                   ) : (
-                    <div
-                      className="text-xs mt-1 text-grayscale-text-muted"
-                    >
-                      {msg.time && formatDateTime(msg.time)}
-                    </div>
+                    <div className="text-xs mt-1 text-grayscale-text-muted">{msg.time && formatDateTime(msg.time)}</div>
                   )}
                 </div>
               </div>
@@ -256,14 +252,26 @@ export default function OrderChat({
                 disabled={isSending}
                 className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
               />
-              <Button
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
-                onClick={() => fileInputRef.current?.click()}
-                variant="ghost"
-                size="sm"
-              >
-                <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
-              </Button>
+              {message.trim() ? (
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={handleSendMessage}
+                  variant="ghost"
+                  size="sm"
+                  disabled={isSending}
+                >
+                  <Image src="/icons/send-icon.png" alt="Send message" width={20} height={20} className="h-5 w-5" />
+                </Button>
+              ) : (
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="ghost"
+                  size="sm"
+                >
+                  <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
+                </Button>
+              )}
               <Input
                 type="file"
                 ref={fileInputRef}
