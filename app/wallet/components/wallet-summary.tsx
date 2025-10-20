@@ -190,7 +190,7 @@ export default function WalletSummary({
             <div className={cn("flex flex-col", isMobile && "items-center")}>
               {isBalancesView ? (
                 <>
-                  <p className="text-xs font-normal text-white/72">Est. total value</p>
+                  <p className="text-xs font-normal text-white/72 mb-1">Est. total value</p>
                   {propIsLoading ? (
                     <Skeleton className="h-7 w-32 bg-white/20" />
                   ) : (
