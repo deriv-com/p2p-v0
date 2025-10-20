@@ -12,6 +12,7 @@ interface Currency {
 }
 
 interface WalletSidebarProps {
+  currencySelected?
   isOpen: boolean
   onClose: () => void
   onDirectDepositClick: (currency: string) => void
@@ -23,6 +24,7 @@ interface WalletSidebarProps {
 }
 
 export default function WalletSidebar({
+  currencySelected,
   isOpen,
   onClose,
   onDirectDepositClick,
