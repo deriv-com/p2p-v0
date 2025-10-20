@@ -22,7 +22,6 @@ export default function WalletPage() {
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [showTransfer, setShowTransfer] = useState(false)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
@@ -92,7 +91,6 @@ export default function WalletPage() {
             balance={totalBalance}
             currency={balanceCurrency}
             isLoading={isLoading}
-            onTransferClick={handleTransferClick}
           />
         </div>
 
