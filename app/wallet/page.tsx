@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
+import Transfer from "./components/transfer"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -21,6 +22,7 @@ export default function WalletPage() {
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [showTransfer, setShowTransfer] = useState(false)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
@@ -58,6 +60,7 @@ export default function WalletPage() {
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
     setTotalBalance(balance)
+    setShowTransfer(true)
     setDisplayBalances(false)
   }
 
@@ -65,37 +68,51 @@ export default function WalletPage() {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setTotalBalance(null)
+    setShowTransfer(false)
+    loadBalanceData()
+  }
+
+  const handleCloseTransfer = () => {
+    setShowTransfer(false)
+    setDisplayBalances(true)
+    setSelectedCurrency(null)
     loadBalanceData()
   }
 
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
-      <div className="w-full flex flex-col items-center">
-        <div className="w-full mt-0">
-          <WalletSummary
-            isBalancesView={displayBalances}
-            selectedCurrency={selectedCurrency}
-            onBack={handleBackToBalances}
-            balance={totalBalance}
-            currency={balanceCurrency}
-            isLoading={isLoading}
-          />
+      {showTransfer ? (
+        <div className="fixed inset-0 z-50 bg-background">
+          <Transfer onClose={handleCloseTransfer} />
         </div>
-
-        {tempBanUntil && (
-          <div className="w-full px-6 md:px-0 mt-4">
-            <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+      ) : (
+        <div className="w-full flex flex-col items-center">
+          <div className="w-full mt-0">
+            <WalletSummary
+              isBalancesView={displayBalances}
+              selectedCurrency={selectedCurrency}
+              onBack={handleBackToBalances}
+              balance={totalBalance}
+              currency={balanceCurrency}
+              isLoading={isLoading}
+            />
           </div>
-        )}
 
-        <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
-          {displayBalances ? (
-            <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
-          ) : (
-            <TransactionsTab selectedCurrency={selectedCurrency} />
+          {tempBanUntil && (
+            <div className="w-full px-6 md:px-0 mt-4">
+              <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+            </div>
           )}
+
+          <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
+            {displayBalances ? (
+              <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
+            ) : (
+              <TransactionsTab selectedCurrency={selectedCurrency} />
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
