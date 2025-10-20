@@ -69,10 +69,6 @@ export default function WalletPage() {
     loadBalanceData()
   }
 
-  const handleTransferClick = () => {
-    setShowTransfer(true)
-  }
-
   const handleCloseTransfer = () => {
     setShowTransfer(false)
     setDisplayBalances(true)
