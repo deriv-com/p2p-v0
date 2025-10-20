@@ -155,6 +155,11 @@ export default function OrderChat({
         )}
         <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
+          <div
+            className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
+              counterpartyOnlineStatus ? "bg-buy" : "bg-gray-400"
+            }`}
+          />
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
