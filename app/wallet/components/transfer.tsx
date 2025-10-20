@@ -606,7 +606,7 @@ export default function Transfer({ onClose }: TransferProps) {
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-8 ml-4 ">Confirm transfer</h1>
+            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-8 ml-4 ">Review and confirm</h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
                 <div className="flex items-center justify-between">
