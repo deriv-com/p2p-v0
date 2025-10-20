@@ -5,8 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const today = new Date()
-
 export interface AvailablePaymentMethod {
   id: number
   method: string
