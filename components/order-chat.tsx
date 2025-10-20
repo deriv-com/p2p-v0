@@ -153,7 +153,7 @@ export default function OrderChat({
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
           </Button>
         )}
-        <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
+        <div className="relative w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
           <div
             className={`absolute bottom-0 right-1 h-3 w-3 rounded-full border-2 border-white ${
@@ -164,7 +164,6 @@ export default function OrderChat({
         <div>
           <div className="font-medium">{counterpartyName}</div>
           <div className="text-sm text-slate-500 flex items-center gap-1">
-            <div className={`w-2 h-2 rounded-full ${counterpartyOnlineStatus ? "bg-buy" : "bg-gray-400"}`} />
             <span>
               {counterpartyOnlineStatus
                 ? "Online"
