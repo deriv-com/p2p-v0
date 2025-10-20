@@ -163,7 +163,7 @@ export default function OrderChat({
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-sm text-slate-500 flex items-center gap-1">
+          <div className="text-xs text-slate-500 flex items-center gap-1">
             <span>
               {counterpartyOnlineStatus
                 ? "Online"
