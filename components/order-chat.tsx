@@ -260,7 +260,7 @@ export default function OrderChat({
                   size="sm"
                   disabled={isSending}
                 >
-                  <Image src="/icons/send-icon.png" alt="Send message" width={20} height={20} className="h-5 w-5" />
+                  <Image src="/icons/send-message.png" alt="Send message" width={20} height={20} className="h-5 w-5" />
                 </Button>
               ) : (
                 <Button
