@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { getChatErrorMessage, formatTime, today } from "@/lib/utils"
+import { getChatErrorMessage, formatTime } from "@/lib/utils"
 
 type Message = {
   attachment: {
