@@ -31,6 +31,7 @@ interface WalletSummaryProps {
   balance?: string
   currency?: string
   isLoading?: boolean
+  onTransferClick?: () => void
 }
 
 export default function WalletSummary({
@@ -40,6 +41,7 @@ export default function WalletSummary({
   balance: propBalance = "0.00",
   currency: propCurrency = "USD",
   isLoading: propIsLoading = true,
+  onTransferClick,
 }: WalletSummaryProps) {
   const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
@@ -112,8 +114,12 @@ export default function WalletSummary({
 
   const handleTransferClick = () => {
     if (userId) {
-      setCurrentOperation("TRANSFER")
-      setIsSidebarOpen(true)
+      if (onTransferClick) {
+        onTransferClick()
+      } else {
+        setCurrentOperation("TRANSFER")
+        setIsSidebarOpen(true)
+      }
     } else {
       showAlert({
         title: "Getting started with P2P",
@@ -237,12 +243,7 @@ export default function WalletSummary({
                   height={14}
                 />
               </Button>
-              <span
-                className={cn(
-                  "text-xs font-normal",
-                  isBalancesView ? "text-white" : "text-slate-1200",
-                )}
-              >
+              <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
                 Transfer
               </span>
             </div>

@@ -60,7 +60,6 @@ export default function WalletPage() {
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
     setTotalBalance(balance)
-    setShowTransfer(true)
     setDisplayBalances(false)
   }
 
@@ -68,8 +67,11 @@ export default function WalletPage() {
     setDisplayBalances(true)
     setSelectedCurrency(null)
     setTotalBalance(null)
-    setShowTransfer(false)
     loadBalanceData()
+  }
+
+  const handleTransferClick = () => {
+    setShowTransfer(true)
   }
 
   const handleCloseTransfer = () => {
@@ -95,6 +97,7 @@ export default function WalletPage() {
               balance={totalBalance}
               currency={balanceCurrency}
               isLoading={isLoading}
+              onTransferClick={handleTransferClick}
             />
           </div>
 
