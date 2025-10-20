@@ -115,10 +115,10 @@ export default function WalletSummary({
   const handleTransferClick = () => {
     if (userId) {
       if (isBalancesView) {
-        onTransferClick()
-      } else {
         setCurrentOperation("TRANSFER")
         setIsSidebarOpen(true)
+      } else {
+        onTransferClick()
       }
     } else {
       showAlert({
