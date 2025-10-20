@@ -303,6 +303,7 @@ export default function WalletSummary({
         )}
 
         <WalletSidebar
+          currencySelected={selectedCurrency}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
           onDirectDepositClick={currentOperation === "DEPOSIT" ? handleDirectDepositClick : handleDirectWithdrawClick}
