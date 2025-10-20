@@ -163,7 +163,7 @@ export default function OrderChat({
     return date.toLocaleDateString("en-US", {
       month: "long",
       day: "numeric",
-      year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
+      year: "numeric",
     })
   }
 
