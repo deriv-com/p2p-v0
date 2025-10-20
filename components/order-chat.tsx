@@ -229,7 +229,7 @@ export default function OrderChat({
                     </div>
                   ) : (
                     <div
-                      className={`text-xs mt-1 ${msg.sender_is_self ? "text-grayscale-text-muted text-right" : "text-neutral-7"}`}
+                      className=text-xs mt-1 text-grayscale-text-muted"
                     >
                       {msg.time && formatDateTime(msg.time)}
                     </div>
