@@ -145,7 +145,7 @@ export default function OrderChat({
     const groups: { [key: string]: Message[] } = {}
 
     messages.forEach((msg) => {
-      const date = new Date(msg.time * 1000)
+      const date = new Date(msg.time)
       const dateKey = date.toDateString()
 
       if (!groups[dateKey]) {
