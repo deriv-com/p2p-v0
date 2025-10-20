@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
+import { getChatErrorMessage, formatTime, today } from "@/lib/utils"
 
 type Message = {
   attachment: {
@@ -161,10 +161,10 @@ export default function OrderChat({
     const date = new Date(dateString)
 
     return date.toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
-      })
+      month: "long",
+      day: "numeric",
+      year: date.getFullYear() !== today.getFullYear() ? "numeric" : undefined,
+    })
   }
 
   return (
@@ -283,7 +283,7 @@ export default function OrderChat({
                               msg.sender_is_self && "justify-self-end",
                             )}
                           >
-                            {msg.time && formatDateTime(msg.time)}
+                            {msg.time && formatTime(msg.time)}
                           </div>
                         )}
                       </div>

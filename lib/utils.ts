@@ -5,6 +5,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export const today = new Date()
+
 export interface AvailablePaymentMethod {
   id: number
   method: string
@@ -222,6 +224,16 @@ export function formatDateTime(datetime) {
       hour12: false,
     })
     .replace(",", "")
+}
+
+export function formatTime(timestamp: number): string {
+  const date = new Date(timestamp * 1000)
+
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  })
 }
 
 export async function copyToClipboard(text: string): Promise<boolean> {
