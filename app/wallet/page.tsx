@@ -83,11 +83,6 @@ export default function WalletPage() {
 
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
-      {showTransfer ? (
-        <div className="fixed inset-0 z-50 bg-background">
-          <Transfer onClose={handleCloseTransfer} step="enterAmount"/>
-        </div>
-      ) : (
         <div className="w-full flex flex-col items-center">
           <div className="w-full mt-0">
             <WalletSummary
@@ -115,7 +110,6 @@ export default function WalletPage() {
             )}
           </div>
         </div>
-      )}
     </div>
   )
 }
