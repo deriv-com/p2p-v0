@@ -29,6 +29,7 @@ export default function WalletSidebar({
   onP2PTransferClick = () => {},
   onAccountTransferClick = () => {},
   currencies,
+  transferStep
 }: WalletSidebarProps) {
   if (!isOpen) return null
 
