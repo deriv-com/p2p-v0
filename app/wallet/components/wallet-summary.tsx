@@ -114,12 +114,8 @@ export default function WalletSummary({
 
   const handleTransferClick = () => {
     if (userId) {
-      if (isBalancesView) {
-        setCurrentOperation("TRANSFER")
-        setIsSidebarOpen(true)
-      } else {
-        onTransferClick?.()
-      }
+      setCurrentOperation("TRANSFER")
+      setIsSidebarOpen(true)
     } else {
       showAlert({
         title: "Getting started with P2P",
