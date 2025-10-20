@@ -96,7 +96,6 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
   const [showDesktopWalletPopup, setShowDesktopWalletPopup] = useState<WalletSelectorType>(null)
   const [showMobileConfirmSheet, setShowMobileConfirmSheet] = useState(false)
   const [showDesktopConfirmPopup, setShowDesktopConfirmPopup] = useState(false)
-
   const [transferAmount, setTransferAmount] = useState<string | null>(null)
   const [sourceWalletData, setSourceWalletData] = useState<WalletData | null>(null)
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
