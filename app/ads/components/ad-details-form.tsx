@@ -337,9 +337,9 @@ export default function AdDetailsForm({
           </div>
           {priceRange.lowestPrice !== null && priceRange.highestPrice !== null && (
             <div className="flex items-center gap-4 mb-4 p-4 bg-grayscale-50 rounded-lg">
-              <div className="flex-1">
+              <div className="flex-1 flex">
                 <div className="text-sm text-grayscale-600 mb-1">Lowest price:</div>
-                <div className="text-lg font-bold">
+                <div className="text-base font-bold">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -348,9 +348,9 @@ export default function AdDetailsForm({
                 </div>
               </div>
               <div className="w-px h-12 bg-grayscale-200" />
-              <div className="flex-1">
+              <div className="flex-1 flex">
                 <div className="text-sm text-grayscale-600 mb-1">Highest price:</div>
-                <div className="text-lg font-bold">
+                <div className="text-base font-bold">
                   {priceRange.highestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
