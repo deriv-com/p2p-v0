@@ -113,7 +113,6 @@ body {
 
   body {
     @apply bg-background text-foreground;
-    /* Disable left/right swipe gestures in WebView */
     overscroll-behavior-x: none;
     touch-action: pan-y;
     overflow-x: hidden;
