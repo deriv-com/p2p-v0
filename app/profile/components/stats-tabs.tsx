@@ -48,12 +48,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       const result = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (result.success) {
-        if (isMobile) {
-          setShowPaymentDetailsSheet(false)
-          setShowAddPaymentSheet(false)
-        } else {
-          setShowAddPaymentPanel(false)
-        }
+        setShowAddPaymentPanel(false)
 
         toast({
           description: (
