@@ -71,35 +71,35 @@ export const OrderDetails = ({ order, setShowChat }) => {
     <div className={cn("space-y-4", !isBlockLayout && "md:space-y-1")} data-testid="order-details-container">
 
       <OrderDetailItem label="Order ID" value={order.id} testId="order-id-item" hasCopy={true} 
-        isBlockLayout={order.status === "completed" || isMobile}/>
+        isBlockLayout={isBlockLayout}/>
 
       <OrderDetailItem
         label={`Exchange rate (1 ${order?.advert?.account_currency})`}
         value={`${exchangeRateValue} ${order.payment_currency}`}
         testId="exchange-rate-item"
-        isBlockLayout={order.status === "completed" || isMobile}
+        isBlockLayout={isBlockLayout}
       />
 
       <OrderDetailItem
         label={order.type === "buy" ? "You pay" : "You receive"}
         value={`${formatAmount(order.payment_amount)} ${order.payment_currency}`}
         testId="payment-amount-item"
-        isBlockLayout={order.status === "completed" || isMobile}
+        isBlockLayout={isBlockLayout}
       />
 
       <OrderDetailItem
         label={order.type === "buy" ? "You receive" : "You send"}
         value={`${formatAmount(order.amount)} ${order.advert?.account_currency}`}
         testId="amount-item"
-        isBlockLayout={order.status === "completed" || isMobile}
+        isBlockLayout={isBlockLayout}
       />
 
       <OrderDetailItem label="Order time" value={formatDateTime(order.created_at)} testId="order-time-item" 
-        isBlockLayout={order.status === "completed" || isMobile} />
+        isBlockLayout={isBlockLayout} />
 
       <div className="flex md:block items-end justify-between">
         <OrderDetailItem label={counterpartyLabel} value={counterpartyNickname || ""} testId="counterparty-item" 
-        isBlockLayout={order.status === "completed" || isMobile}/>
+        isBlockLayout={isBlockLayout}/>
         {order.status === "completed" && isMobile && (
           <Button
             onClick={() => {
