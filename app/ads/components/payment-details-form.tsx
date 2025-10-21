@@ -218,6 +218,12 @@ export default function PaymentDetailsForm({
       id: initialData.id,
       paymentMethods,
       payment_method_ids: selectedPaymentMethodIds,
+      payment_method_names: selectedPaymentMethodIds
+        .map((id) => {
+          const method = userPaymentMethods.find((m) => m.id === id)
+          return method?.display_name || ""
+        })
+        .filter(Boolean),
       instructions,
     }
 
