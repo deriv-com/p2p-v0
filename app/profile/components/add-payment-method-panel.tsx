@@ -317,7 +317,11 @@ export default function AddPaymentMethodPanel({
               </Button>
             ))
           ) : (
-            <div className="text-center py-8 text-gray-500">No payment methods found</div>
+            <EmptyState
+              title="Payment method unavailable"
+              description="Search for a different payment method."
+              redirectToAds={false}
+            />
           )}
         </div>
       </>
