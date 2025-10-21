@@ -909,7 +909,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
             )}
-            <div className="flex gap-2 mt-3">
+            <div className="flex gap-2 mt-6">
               <Button
                 className="flex-1 text-grayscale-600 font-normal"
                 onClick={() => handlePercentageClick(25)}
