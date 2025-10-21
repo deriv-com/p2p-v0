@@ -44,7 +44,7 @@ function PanelWrapper({ onClose, children }: PanelWrapperProps) {
           isMobile ? "inset-0 w-full" : "w-full"
         }`}
       >
-        <div className="max-w-xl mx-auto flex flex-col w-full>
+        <div className="max-w-xl mx-auto flex flex-col w-full">
           <div className="flex items-center justify-between px-4 py-3">
             <h2 className="text-xl font-bold">Edit payment details</h2>
             <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
