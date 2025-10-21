@@ -9,6 +9,7 @@ import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import { getSettings } from "@/services/api/api-auth"
+import { getCurrencies } from "@/services/api/api-wallets"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 
 interface AdDetailsFormProps {
@@ -28,6 +29,22 @@ interface ValidationErrors {
 interface PriceRange {
   lowestPrice: number | null
   highestPrice: number | null
+}
+
+interface CurrencyData {
+  type: "cryptocurrency" | "fiat" | "stablecoin"
+  label: string
+  decimal: {
+    maximum: number
+    minimum: number
+  }
+  [key: string]: any
+}
+
+interface CurrenciesResponse {
+  data: {
+    [currencyCode: string]: CurrencyData
+  }
 }
 
 export default function AdDetailsForm({
@@ -53,12 +70,39 @@ export default function AdDetailsForm({
   })
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
+  const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
+
+  const getDecimalPlaces = (value: string): number => {
+    const decimalPart = value.split(".")[1]
+    return decimalPart ? decimalPart.length : 0
+  }
+
+  const getDecimalConstraints = (currency: string): { minimum: number; maximum: number } | null => {
+    if (!currency || !currenciesData) return null
+    const currencyData = currenciesData.data[currency]
+    return currencyData?.decimal || null
+  }
 
   const isFormValid = () => {
     const hasValues = !!totalAmount && !!fixedRate && !!minAmount && !!maxAmount
     const hasNoErrors = Object.keys(formErrors).length === 0
     return hasValues && hasNoErrors
   }
+
+  useEffect(() => {
+    const loadCurrencies = async () => {
+      try {
+        const response = await getCurrencies()
+        if (response?.data) {
+          setCurrenciesData(response as CurrenciesResponse)
+        }
+      } catch (error) {
+        console.error("Error fetching currencies:", error)
+      }
+    }
+
+    loadCurrencies()
+  }, [])
 
   useEffect(() => {
     if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
@@ -324,6 +368,20 @@ export default function AdDetailsForm({
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
+                  if (value === "") {
+                    setFixedRate("")
+                    setTouched((prev) => ({ ...prev, fixedRate: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(forCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setFixedRate(value)
                   setTouched((prev) => ({ ...prev, fixedRate: true }))
                 }}
@@ -338,6 +396,20 @@ export default function AdDetailsForm({
               <CurrencyInput
                 value={totalAmount}
                 onValueChange={(value) => {
+                  if (value === "") {
+                    setTotalAmount("")
+                    setTouched((prev) => ({ ...prev, totalAmount: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setTotalAmount(value)
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
@@ -402,6 +474,20 @@ export default function AdDetailsForm({
               <CurrencyInput
                 value={minAmount}
                 onValueChange={(value) => {
+                  if (value === "") {
+                    setMinAmount("")
+                    setTouched((prev) => ({ ...prev, minAmount: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setMinAmount(value)
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
@@ -419,6 +505,20 @@ export default function AdDetailsForm({
               <CurrencyInput
                 value={maxAmount}
                 onValueChange={(value) => {
+                  if (value === "") {
+                    setMaxAmount("")
+                    setTouched((prev) => ({ ...prev, maxAmount: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setMaxAmount(value)
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
