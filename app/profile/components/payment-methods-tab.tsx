@@ -233,9 +233,20 @@ export default function PaymentMethodsTab() {
         })
         fetchPaymentMethods()
       } else {
+        let errorMessage = "You can't delete this payment method"
+
+        if (result.errors && result.errors.length > 0) {
+          const errorCode = result.errors[0].code
+
+          if (errorCode === "PaymentMethodUsedByOpenOrder") {
+            errorMessage = "This payment method is currently being used by an open order and cannot be modified."
+          } else if (result.errors[0].message) {
+            errorMessage = result.errors[0].message
+          }
+        }
         showAlert({
           title: "You can't delete this payment method",
-          description: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
+          description: errorMessage,
           confirmText: "OK",
           type: "error",
         })
