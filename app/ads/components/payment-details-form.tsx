@@ -382,12 +382,6 @@ export default function PaymentDetailsForm({
                     (initialData.type === "sell" && selectedPaymentMethodIds.length === 0)) && (
                     <p className="text-destructive text-xs mt-1">At least one payment method is required</p>
                   )}
-                {((initialData.type === "buy" && paymentMethods.length >= MAX_PAYMENT_METHODS) ||
-                  (initialData.type === "sell" && selectedPaymentMethodIds.length >= MAX_PAYMENT_METHODS)) && (
-                  <p className="text-amber-600 text-xs mt-1">
-                    Maximum of {MAX_PAYMENT_METHODS} payment methods reached
-                  </p>
-                )}
               </div>
 
               <div>
