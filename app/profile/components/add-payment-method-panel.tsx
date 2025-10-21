@@ -263,7 +263,7 @@ export default function AddPaymentMethodPanel({
               variant="ghost"
               size="lg"
               onClick={() => handleMethodSelect(paymentMethod)}
-              className="w-full p-4 justify-start gap-3 h-auto border-b border-grayscale-500 hover:bg-transparent"
+              className="w-full p-4 rounded-none justify-start gap-3 h-auto border-b border-grayscale-500 hover:bg-transparent"
             >
               <Image
                 src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
