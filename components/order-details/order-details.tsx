@@ -40,7 +40,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
   })
 
   return (
-    <div className="space-y-[16px]" data-testid="order-details-container">
+    <div className="space-y-[16px] md:space-y-1" data-testid="order-details-container">
       <div className="flex items-end justify-between">
         <OrderDetailItem label="Order ID" value={order.id} testId="order-id-item" />
         <Button
