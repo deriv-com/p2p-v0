@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { getTotalBalance } from "@/services/api/api-auth"
-import { formatAmount } from "@/lib/utils"
+import { formatAmountWithDecimals } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export function BalanceSection() {
