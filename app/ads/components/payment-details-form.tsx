@@ -204,10 +204,7 @@ export default function PaymentDetailsForm({
   const [selectedPaymentMethodIds, setSelectedPaymentMethodIds] = useState<string[]>([])
 
   const isFormValid = () => {
-    if (initialData.type === "sell") {
-      return selectedPaymentMethodIds.length > 0
-    }
-    return paymentMethods.length > 0
+    return selectedPaymentMethodIds.length > 0
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -220,7 +217,7 @@ export default function PaymentDetailsForm({
     const formData = {
       id: initialData.id,
       paymentMethods,
-      payment_method_ids: initialData.type === "sell" ? selectedPaymentMethodIds : [],
+      payment_method_ids: selectedPaymentMethodIds,
       instructions,
     }
 
