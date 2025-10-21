@@ -185,13 +185,6 @@ export default function PaymentDetailsForm({
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
-  useEffect(() => {
-    if (initialData.payment_method_ids && Array.isArray(initialData.payment_method_ids)) {
-      const ids = initialData.payment_method_ids.map(String)
-      setSelectedPaymentMethodIds(ids)
-    }
-  }, [initialData.payment_method_ids, setSelectedPaymentMethodIds])
-
   const isFormValid = () => {
     return selectedPaymentMethodIds.length > 0
   }
