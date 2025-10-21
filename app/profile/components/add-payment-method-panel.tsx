@@ -10,6 +10,8 @@ import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
 
+import EmptyState from "@/components/empty-state"
+
 interface AddPaymentMethodPanelProps {
   onAdd: (method: string, fields: Record<string, string>) => void
   isLoading: boolean
