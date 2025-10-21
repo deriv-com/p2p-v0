@@ -96,7 +96,7 @@ export default function OrderDetailsPage() {
             <OrderDetails order={order} />
           </div>
         ),
-        cancelText: "Got it"
+        cancelText: "Got it",
         type: "warning"
       })
     }
