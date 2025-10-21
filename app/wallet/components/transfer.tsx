@@ -911,6 +911,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             )}
             <div className="flex gap-2 mt-3">
               <Button
+                className="flex-1"
                 onClick={() => handlePercentageClick(25)}
                 size="sm"
                 variant="outline"
@@ -918,6 +919,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 25%
               </Button>
               <Button
+                className="flex-1"
                 onClick={() => handlePercentageClick(50)}
                 size="sm"
                 variant="outline"
@@ -925,6 +927,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 50%
               </Button>
               <Button
+                className="flex-1"
                 onClick={() => handlePercentageClick(75)}
                 size="sm"
                 variant="outline"
