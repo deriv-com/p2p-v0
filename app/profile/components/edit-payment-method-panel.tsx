@@ -75,12 +75,7 @@ export default function EditPaymentMethodPanel({
     )
   }, [paymentMethod])
 
-  const validateInput = (value: string, isInstructions = false) => {
-    if (isInstructions) {
-      // Allow any characters for instructions field
-      return true
-    }
-    // Only letters and numbers for other fields
+  const validateInput = (value: string) => {
     const allowedPattern = /^[a-zA-Z0-9]+$/
     return allowedPattern.test(value)
   }

@@ -108,12 +108,7 @@ export default function AddPaymentMethodPanel({
     onBack?.()
   }
 
-  const validateInput = (value: string, isInstructions = false) => {
-    if (isInstructions) {
-      // Allow any characters for instructions field
-      return true
-    }
-    // Only letters and numbers for other fields
+  const validateInput = (value: string) => {
     const allowedPattern = /^[a-zA-Z0-9]+$/
     return allowedPattern.test(value)
   }
@@ -134,8 +129,6 @@ export default function AddPaymentMethodPanel({
         newErrors[field.name] = "Only letters and numbers are allowed."
       }
     })
-
-    // No validation error for instructions field format
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -171,8 +164,6 @@ export default function AddPaymentMethodPanel({
         return newErrors
       })
     }
-
-    // Instructions field allows all characters including spaces and symbols
   }
 
   const handleSubmit = (e: React.FormEvent) => {
