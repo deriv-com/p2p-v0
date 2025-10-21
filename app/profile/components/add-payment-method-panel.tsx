@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
+import { PanelWrapper } from "@/components/ui/panel-wrapper"
 
 interface AddPaymentMethodPanelProps {
   onAdd: (method: string, fields: Record<string, string>) => void
@@ -16,6 +17,7 @@ interface AddPaymentMethodPanelProps {
   onMethodSelect?: (method: string) => void
   onBack?: () => void
   selectedMethod?: string
+  onClose?: () => void
 }
 
 export default function AddPaymentMethodPanel({
@@ -25,6 +27,7 @@ export default function AddPaymentMethodPanel({
   onMethodSelect,
   onBack,
   selectedMethod: selectedMethodProp,
+  onClose,
 }: AddPaymentMethodPanelProps) {
   const [selectedMethodState, setSelectedMethodState] = useState<string>("")
   const selectedMethod = selectedMethodProp || selectedMethodState
@@ -215,6 +218,15 @@ export default function AddPaymentMethodPanel({
   }
 
   if (isLoadingMethods) {
+    if (onClose) {
+      return (
+        <PanelWrapper onClose={onClose}>
+          <div className="flex items-center justify-center py-8">
+            <div className="text-gray-500">Loading payment methods...</div>
+          </div>
+        </PanelWrapper>
+      )
+    }
     return (
       <div className="flex items-center justify-center py-8">
         <div className="text-gray-500">Loading payment methods...</div>
@@ -223,6 +235,15 @@ export default function AddPaymentMethodPanel({
   }
 
   if (availablePaymentMethods.length === 0 && !isLoadingMethods) {
+    if (onClose) {
+      return (
+        <PanelWrapper onClose={onClose}>
+          <div className="flex items-center justify-center py-8">
+            <div className="text-gray-500">No payment methods available</div>
+          </div>
+        </PanelWrapper>
+      )
+    }
     return (
       <div className="flex items-center justify-center py-8">
         <div className="text-gray-500">No payment methods available</div>
@@ -231,9 +252,10 @@ export default function AddPaymentMethodPanel({
   }
 
   if (!showMethodDetails && !selectedMethodProp) {
-    return (
-      <div className="w-full">
-        <div className="space-y-3">
+    const methodSelectionContent = (
+      <>
+        <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
+        <div className="p-4 space-y-3">
           {availablePaymentMethods.map((paymentMethod) => (
             <Button
               key={paymentMethod.method}
@@ -253,14 +275,28 @@ export default function AddPaymentMethodPanel({
             </Button>
           ))}
         </div>
-      </div>
+      </>
     )
+
+    if (onClose) {
+      return <PanelWrapper onClose={onClose}>{methodSelectionContent}</PanelWrapper>
+    }
+
+    return <div className="w-full">{methodSelectionContent}</div>
   }
 
-  return (
-    <div className="w-full h-[calc(100%-60px)]">
-      <form onSubmit={handleSubmit} className="flex flex-col h-full">
-        <div className="flex-1 space-y-6 overflow-y-auto">
+  const formContent = (
+    <>
+      <div className="flex items-center gap-4 px-4 pb-0">
+        {onBack && (
+          <Button variant="ghost" size="sm" onClick={handleBackToMethodList} className="bg-grayscale-300 px-1 -ml-3">
+            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+          </Button>
+        )}
+        <h2 className="text-2xl font-bold">Add payment details</h2>
+      </div>
+      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+        <div className="p-4 space-y-4">
           {selectedMethodFields.length > 0 && (
             <div className="space-y-4">
               {selectedMethodFields.map((field) => (
@@ -296,18 +332,24 @@ export default function AddPaymentMethodPanel({
             <div className="flex justify-end mt-1 text-xs text-gray-500">{charCount}/300</div>
           </div>
         </div>
-
-        <div className="mt-auto pt-6 flex-shrink-0">
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            disabled={isLoading || !selectedMethod || !isFormValid()}
-            className="w-full"
-          >
-            {isLoading ? "Adding..." : "Add"}
-          </Button>
-        </div>
       </form>
-    </div>
+
+      <div className="p-4">
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          disabled={isLoading || !selectedMethod || !isFormValid()}
+          className="w-full"
+        >
+          {isLoading ? "Adding..." : "Add"}
+        </Button>
+      </div>
+    </>
   )
+
+  if (onClose) {
+    return <PanelWrapper onClose={onClose}>{formContent}</PanelWrapper>
+  }
+
+  return <div className="w-full h-[calc(100%-60px)]">{formContent}</div>
 }
