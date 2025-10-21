@@ -233,19 +233,19 @@ export default function PaymentDetailsForm({
 
   const handleShowPaymentSelection = () => {
     setTempSelectedPaymentMethods(selectedPaymentMethodIds)
-      showAlert({
-        title: "Payment method",
-        description: (
-          <PaymentSelectionContent
-            paymentMethods={userPaymentMethods}
-            tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-            setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-            setSelectedPaymentMethods={setSelectedPaymentMethodIds}
-            hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-          />
-        ),
-      })
+    showAlert({
+      title: "Payment method",
+      description: (
+        <PaymentSelectionContent
+          paymentMethods={userPaymentMethods}
+          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          setSelectedPaymentMethods={setSelectedPaymentMethodIds}
+          hideAlert={hideAlert}
+          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+        />
+      ),
+    })
   }
 
   const handleAddPaymentMethodClick = () => {
@@ -325,7 +325,7 @@ export default function PaymentDetailsForm({
                   onClick={() => handleShowPaymentSelection(initialData.type === "buy")}
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-500">{getSelectedPaymentMethodsText(initialData.type === "buy")}</span>
+                    <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
                     <ChevronRight className="h-5 w-5 text-gray-400" />
                   </div>
                 </div>
