@@ -104,7 +104,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             </div>
             {showStatsSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
-                <div className="flex items-center gap-4 px-4 py-3 border-b">
+                <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -113,9 +113,9 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   >
                     <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
                   </Button>
-                  <h2 className="text-xl font-bold">Stats</h2>
                 </div>
                 <div className="m-4">
+                  <h2 className="text-xl font-bold">Stats</h2>
                   <StatsGrid stats={stats} />
                 </div>
               </div>
