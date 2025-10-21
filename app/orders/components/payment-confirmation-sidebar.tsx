@@ -166,7 +166,7 @@ export const PaymentConfirmationSidebar = ({
               variant="default"
               onClick={handleSubmit}
               disabled={!selectedFile || isLoading || isUploadLoading}
-              className="w-full"
+              className="w-full md:w-auto"
             >
               {isLoading || isUploadLoading ? (
                 <>
