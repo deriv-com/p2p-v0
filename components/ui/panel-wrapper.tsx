@@ -6,6 +6,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 
 interface PanelWrapperProps {
+  onBack?: () => void
   onClose: () => void
   children: React.ReactNode
 }
