@@ -935,7 +935,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 75%
               </Button>
               <Button
-                className="flex-1 text-grayscale-600 font-normal"
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200"
                 onClick={() => handlePercentageClick(100)}
                 size="sm"
                 variant="outline"
