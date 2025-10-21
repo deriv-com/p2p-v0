@@ -1,7 +1,7 @@
 "use client"
 
 import type * as React from "react"
-import { useState, useEffect } from "react"
+import { useCallback, useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
@@ -9,6 +9,7 @@ import Image from "next/image"
 import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
+import EmptyState from "@/components/empty-state"
 
 interface AddPaymentMethodPanelProps {
   onAdd: (method: string, fields: Record<string, string>) => void
@@ -39,6 +40,7 @@ export default function AddPaymentMethodPanel({
   const [charCount, setCharCount] = useState(0)
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [isLoadingMethods, setIsLoadingMethods] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     const fetchAvailablePaymentMethods = async () => {
@@ -87,6 +89,7 @@ export default function AddPaymentMethodPanel({
       setErrors({})
       setTouched({})
       setInstructions("")
+      setSearchQuery("")
     }
   }, [])
 
@@ -101,6 +104,11 @@ export default function AddPaymentMethodPanel({
     }
   }
 
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchQuery(value)
+  }, [])
+
   const handleBackToMethodList = () => {
     setShowMethodDetails(false)
     setSelectedMethodState("")
@@ -108,6 +116,7 @@ export default function AddPaymentMethodPanel({
     setErrors({})
     setTouched({})
     setInstructions("")
+    setSearchQuery("")
     onBack?.()
   }
 
@@ -252,28 +261,69 @@ export default function AddPaymentMethodPanel({
   }
 
   if (!showMethodDetails && !selectedMethodProp) {
+    const filteredPaymentMethods = availablePaymentMethods.filter((method) =>
+      method.display_name.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+
     const methodSelectionContent = (
       <>
         <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
-        <div className="p-4 space-y-3 overflow-y-auto">
-          {availablePaymentMethods.map((paymentMethod) => (
-            <Button
-              key={paymentMethod.method}
-              type="button"
-              variant="ghost"
-              size="lg"
-              onClick={() => handleMethodSelect(paymentMethod)}
-              className="w-full p-4 justify-start gap-3 h-auto rounded-lg bg-grayscale-500"
-            >
-              <Image
-                src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
-                alt={paymentMethod.display_name}
-                width={24}
-                height={24}
-              />
-              <span className="text-sm font-normal text-slate-1200">{paymentMethod.display_name}</span>
-            </Button>
-          ))}
+        <div className="p-4 pb-2">
+          <div className="relative">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            />
+            <Input
+              placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
+              autoComplete="off"
+              autoFocus
+            />
+            {searchQuery && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
+              >
+                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              </Button>
+            )}
+          </div>
+        </div>
+        <div className="p-4 pt-2 space-y-3 overflow-y-auto mb-8">
+          {filteredPaymentMethods.length > 0 ? (
+            filteredPaymentMethods.map((paymentMethod) => (
+              <Button
+                key={paymentMethod.method}
+                type="button"
+                variant="ghost"
+                size="lg"
+                onClick={() => handleMethodSelect(paymentMethod)}
+                className="w-full p-4 rounded-none justify-start gap-3 h-auto border-b border-grayscale-500 hover:bg-transparent"
+              >
+                <Image
+                  src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
+                  alt={paymentMethod.display_name}
+                  width={24}
+                  height={24}
+                />
+                <span className="text-sm font-normal text-slate-1200">{paymentMethod.display_name}</span>
+              </Button>
+            ))
+          ) : (
+            <EmptyState
+              title="Payment method unavailable"
+              description="Search for a different payment method."
+              redirectToAds={false}
+            />
+          )}
         </div>
       </>
     )
@@ -287,12 +337,7 @@ export default function AddPaymentMethodPanel({
 
   const formContent = (
     <>
-      <div className="flex items-center gap-4 px-4 pb-0">
-        {onBack && (
-          <Button variant="ghost" size="sm" onClick={handleBackToMethodList} className="bg-grayscale-300 px-1 -ml-3">
-            <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
-          </Button>
-        )}
+      <div className="flex items-center gap-4 p-4 pb-0">
         <h2 className="text-2xl font-bold">Add payment details</h2>
       </div>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
@@ -334,12 +379,12 @@ export default function AddPaymentMethodPanel({
         </div>
       </form>
 
-      <div className="p-4">
+      <div className="p-4 flex justify-end">
         <Button
           type="button"
           onClick={handleSubmit}
           disabled={isLoading || !selectedMethod || !isFormValid()}
-          className="w-full"
+          className="w-full md:w-auto"
         >
           {isLoading ? "Adding..." : "Add"}
         </Button>
@@ -348,7 +393,11 @@ export default function AddPaymentMethodPanel({
   )
 
   if (onClose) {
-    return <PanelWrapper onClose={onClose}>{formContent}</PanelWrapper>
+    return (
+      <PanelWrapper onBack={handleBackToMethodList} onClose={onClose}>
+        {formContent}
+      </PanelWrapper>
+    )
   }
 
   return <div className="w-full h-[calc(100%-60px)]">{formContent}</div>
