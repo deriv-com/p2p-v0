@@ -84,7 +84,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    tShowAddPaymentPanel(true)
+    setShowAddPaymentPanel(true)
   }
 
   return (
