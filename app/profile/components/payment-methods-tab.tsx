@@ -209,6 +209,7 @@ export default function PaymentMethodsTab() {
     showDeleteDialog({
       title: `Delete payment method?`,
       description: "Are you sure you want to delete this payment method?",
+      cancelText: "No"
       confirmText: "Yes, delete",
       onConfirm: () => {
         confirmDeletePaymentMethod(id)
