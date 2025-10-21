@@ -93,8 +93,7 @@ const PaymentSelectionContent = ({
         {paymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {paymentMethods.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">No payment methods found</p>
-            {!isBuyAdvert && <p className="text-sm text-gray-500">Add a payment method to continue</p>}
+            <p className="text-gray-600 mb-4">No payment methods found</p
           </div>
         ) : (
           paymentMethods.map((method) => {
