@@ -15,7 +15,7 @@ const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps
       <p className="text-sm font-bold">{value}</p>
       {hasCopy && <Button
         onClick={async () => {
-          const success = await copyToClipboard(String(order.id))
+          const success = await copyToClipboard(String(value))
           if (success) {
             toast({
               description: (
