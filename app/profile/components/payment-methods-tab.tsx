@@ -183,7 +183,7 @@ export default function PaymentMethodsTab() {
         showAlert({
           title: "You can't update this payment method",
           description: errorMessage,
-          confirmText: "OK",
+          confirmText: "Got it",
           type: "error",
         })
       }
@@ -193,7 +193,7 @@ export default function PaymentMethodsTab() {
       showAlert({
         title: "You can't update this payment method",
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: "OK",
+        confirmText: "Got it",
         type: "error",
       })
     } finally {
@@ -248,7 +248,7 @@ export default function PaymentMethodsTab() {
         showAlert({
           title: "You can't delete this payment method",
           description: errorMessage,
-          confirmText: "OK",
+          confirmText: "Got it",
           type: "error",
         })
       }
@@ -258,7 +258,7 @@ export default function PaymentMethodsTab() {
       showAlert({
         title: "You can't delete this payment method",
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: "OK",
+        confirmText: "Got it",
         type: "error",
       })
     }
