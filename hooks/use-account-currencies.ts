@@ -6,6 +6,10 @@ import { getCurrencies } from "@/services/api/api-auth"
 export interface AccountCurrency {
   code: string
   name: string
+  decimal?: {
+    maximum: number
+    minimum: number
+  }
 }
 
 export function useAccountCurrencies() {
@@ -23,6 +27,7 @@ export function useAccountCurrencies() {
           .map((code) => ({
             code,
             name: code,
+            decimal: response[code]?.decimal,
           }))
           .sort((a, b) => {
             if (a.code === "USD") return -1

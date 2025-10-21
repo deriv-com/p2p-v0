@@ -54,6 +54,17 @@ export default function AdDetailsForm({
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
 
+  const getDecimalPlaces = (value: string): number => {
+    const decimalPart = value.split(".")[1]
+    return decimalPart ? decimalPart.length : 0
+  }
+
+  const getDecimalConstraints = (currency: string): { minimum: number; maximum: number } | null => {
+    if (!currency || !accountCurrencies || accountCurrencies.length === 0) return null
+    const currencyData = accountCurrencies.find((c) => c.code === currency)
+    return currencyData?.decimal || null
+  }
+
   const isFormValid = () => {
     const hasValues = !!totalAmount && !!fixedRate && !!minAmount && !!maxAmount
     const hasNoErrors = Object.keys(formErrors).length === 0
@@ -324,6 +335,20 @@ export default function AdDetailsForm({
                 label="Fixed price"
                 value={fixedRate}
                 onChange={(value) => {
+                  if (value === "") {
+                    setFixedRate("")
+                    setTouched((prev) => ({ ...prev, fixedRate: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setFixedRate(value)
                   setTouched((prev) => ({ ...prev, fixedRate: true }))
                 }}
@@ -338,6 +363,20 @@ export default function AdDetailsForm({
               <CurrencyInput
                 value={totalAmount}
                 onValueChange={(value) => {
+                  if (value === "") {
+                    setTotalAmount("")
+                    setTouched((prev) => ({ ...prev, totalAmount: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setTotalAmount(value)
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
@@ -402,6 +441,20 @@ export default function AdDetailsForm({
               <CurrencyInput
                 value={minAmount}
                 onValueChange={(value) => {
+                  if (value === "") {
+                    setMinAmount("")
+                    setTouched((prev) => ({ ...prev, minAmount: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setMinAmount(value)
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
@@ -419,6 +472,20 @@ export default function AdDetailsForm({
               <CurrencyInput
                 value={maxAmount}
                 onValueChange={(value) => {
+                  if (value === "") {
+                    setMaxAmount("")
+                    setTouched((prev) => ({ ...prev, maxAmount: true }))
+                    return
+                  }
+
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
+                  if (decimalConstraints) {
+                    const decimalPlaces = getDecimalPlaces(value)
+                    if (decimalPlaces > decimalConstraints.maximum) {
+                      return
+                    }
+                  }
+
                   setMaxAmount(value)
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
