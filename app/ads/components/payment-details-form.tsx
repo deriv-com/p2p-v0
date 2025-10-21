@@ -223,7 +223,7 @@ export default function PaymentDetailsForm({
       paymentMethods,
       ...(initialData.type === "sell"
         ? { payment_method_ids: selectedPaymentMethodIds }
-        : { payment_method_names: paymentMethodNames }),
+        : { paymentMethods: paymentMethodNames }),
       instructions,
     }
 
