@@ -1,5 +1,7 @@
 "use client"
 import Image from "next/image"
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -359,10 +361,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
       const minAmount = currencyData?.limit?.transfer?.min_amount_per_transaction || 0
       const decimalConstraints = getDecimalConstraints()
 
-      // Check decimal places validation
       if (decimalConstraints) {
         const decimalPlaces = getDecimalPlaces(amount)
-        if (decimalPlaces < decimalConstraints.minimum || decimalPlaces > decimalConstraints.maximum) {
+        if (decimalPlaces < decimalConstraints.minimum) {
           return false
         }
       }
@@ -381,14 +382,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     const sourceBalance = getSourceWalletBalance()
     const decimalConstraints = getDecimalConstraints()
 
-    // Check decimal places first
     if (decimalConstraints) {
       const decimalPlaces = getDecimalPlaces(transferAmount)
       if (decimalPlaces < decimalConstraints.minimum) {
         return `Amount must have at least ${decimalConstraints.minimum} decimal place${decimalConstraints.minimum > 1 ? "s" : ""}`
-      }
-      if (decimalPlaces > decimalConstraints.maximum) {
-        return `Amount cannot have more than ${decimalConstraints.maximum} decimal place${decimalConstraints.maximum > 1 ? "s" : ""}`
       }
     }
 
@@ -577,7 +574,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -597,7 +594,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -680,7 +679,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -701,6 +700,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -769,6 +769,29 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     return wallet?.currency || ""
   }
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    // Allow empty input
+    if (value === "") {
+      setTransferAmount("")
+      return
+    }
+
+    // Check decimal constraints
+    const decimalConstraints = getDecimalConstraints()
+    if (decimalConstraints) {
+      const decimalPlaces = getDecimalPlaces(value)
+
+      // Prevent input if it exceeds maximum decimal places
+      if (decimalPlaces > decimalConstraints.maximum) {
+        return // Don't update state, effectively blocking the input
+      }
+    }
+
+    setTransferAmount(value)
+  }
+
   if (step === "chooseCurrency") {
     return (
       <ChooseCurrencyStep
@@ -811,7 +834,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -849,7 +872,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
@@ -888,7 +913,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 type="number"
                 placeholder="0.00"
                 value={transferAmount || ""}
-                onChange={(e) => setTransferAmount(e.target.value)}
+                onChange={handleAmountChange}
                 className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
                 max={getSourceWalletBalance()}
               />
