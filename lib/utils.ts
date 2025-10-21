@@ -198,7 +198,7 @@ export function formatAmount(amount: string): string {
   return amount?.replace(/\B(?=(\d{3})+(?!\d))/g, ",") ?? "0.00"
 }
 
-export function formatAmountWithDecimals(amount: number | string): string {
+export function formatAmountWithDecimals(amount: number | string, decimals = 2): string {
   const strAmount = String(amount)
 
   if (Number(strAmount) === 0) return "0.00"
@@ -206,7 +206,16 @@ export function formatAmountWithDecimals(amount: number | string): string {
   const [whole, decimal] = strAmount.split(".")
   const wholeWithCommas = Number(whole).toLocaleString("en-US")
 
-  return decimal !== undefined ? `${wholeWithCommas}.${decimal}` : wholeWithCommas
+  if (decimals === 0) {
+    return wholeWithCommas
+  }
+
+  if (decimal !== undefined) {
+    const truncatedDecimal = decimal.slice(0, decimals)
+    return `${wholeWithCommas}.${truncatedDecimal.padEnd(decimals, "0")}`
+  }
+
+  return `${wholeWithCommas}.${"0".repeat(decimals)}`
 }
 
 export function formatDateTime(datetime) {

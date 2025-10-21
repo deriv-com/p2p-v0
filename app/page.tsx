@@ -369,7 +369,7 @@ export default function BuySellPage() {
               <>
                 <div className="md:block">
                   <Table>
-                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-1">
                       <TableRow className="text-xs">
                         <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
                           Advertisers
@@ -407,7 +407,6 @@ export default function BuySellPage() {
                                   </button>
                                   <Image
                                     src="/icons/verified-badge.png"
-                                    className="cursor-pointer"
                                     alt="Verified"
                                     width={32}
                                     height={32}

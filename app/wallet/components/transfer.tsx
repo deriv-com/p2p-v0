@@ -1,5 +1,7 @@
 "use client"
 import Image from "next/image"
+import type React from "react"
+
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -74,6 +76,11 @@ interface CurrencyData {
     maximum: number
     minimum: number
   }
+  limit: {
+    transfer: {
+      min_amount_per_transaction?: number
+    }
+  }
   [key: string]: any
 }
 
@@ -86,7 +93,7 @@ interface CurrenciesResponse {
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
 
-export default function Transfer({ currencySelected, onClose, stepVal="chooseCurrency" }: TransferProps) {
+export default function Transfer({ currencySelected, onClose, stepVal = "chooseCurrency" }: TransferProps) {
   const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -334,10 +341,53 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
     return wallet ? Number.parseFloat(wallet.balance) : 0
   }
 
+  const getDecimalPlaces = (value: string): number => {
+    const decimalPart = value.split(".")[1]
+    return decimalPart ? decimalPart.length : 0
+  }
+
+  const getDecimalConstraints = (): { minimum: number; maximum: number } | null => {
+    if (!selectedCurrency || !currenciesData) return null
+    const currencyData = currenciesData.data[selectedCurrency]
+    return currencyData?.decimal || null
+  }
+
   const isAmountValid = (amount: string): boolean => {
     const numAmount = Number.parseFloat(amount)
     const sourceBalance = getSourceWalletBalance()
+
+    if (!isNaN(numAmount) && selectedCurrency && currenciesData) {
+      const currencyData = currenciesData.data[selectedCurrency]
+      const minAmount = currencyData?.limit?.transfer?.min_amount_per_transaction || 0
+
+      return numAmount > 0 && numAmount >= minAmount && numAmount <= sourceBalance
+    }
+
     return !isNaN(numAmount) && numAmount > 0 && numAmount <= sourceBalance
+  }
+
+  const getAmountErrorMessage = (): string => {
+    if (!transferAmount) return ""
+
+    const numAmount = Number.parseFloat(transferAmount)
+    const minAmount = getMinimumAmount()
+    const sourceBalance = getSourceWalletBalance()
+
+    if (numAmount < minAmount) {
+      return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}.`
+    }
+
+    if (numAmount > sourceBalance) {
+      return `Amount cannot exceed available balance ${formatAmountWithDecimals(sourceBalance.toString())} ${selectedCurrency || "USD"}.`
+    }
+
+    return ""
+  }
+
+  const getMinimumAmount = (): number => {
+    if (!selectedCurrency || !currenciesData) return 0
+    const currencyData = currenciesData.data[selectedCurrency]
+    return currencyData?.limit?.transfer?.min_amount_per_transaction || 0
   }
 
   const getSourceWalletAmount = () => {
@@ -506,7 +556,7 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -609,7 +659,7 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -696,6 +746,39 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
     return wallet?.currency || ""
   }
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+
+    if (value === "") {
+      setTransferAmount("")
+      return
+    }
+
+    const decimalConstraints = getDecimalConstraints()
+    if (decimalConstraints) {
+      const decimalPlaces = getDecimalPlaces(value)
+
+      if (decimalPlaces > decimalConstraints.maximum) {
+        return
+      }
+    }
+
+    setTransferAmount(value)
+  }
+
+  const handlePercentageClick = (percentage: number) => {
+    const sourceBalance = getSourceWalletBalance()
+    const calculatedAmount = (sourceBalance * percentage) / 100
+
+    const decimalConstraints = getDecimalConstraints()
+    if (decimalConstraints) {
+      const formattedAmount = calculatedAmount.toFixed(decimalConstraints.maximum)
+      setTransferAmount(formattedAmount)
+    } else {
+      setTransferAmount(calculatedAmount.toFixed(2))
+    }
+  }
+
   if (step === "chooseCurrency") {
     return (
       <ChooseCurrencyStep
@@ -738,7 +821,7 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -809,13 +892,13 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
             </div>
           </div>
           <div className="mb-6 px-2 relative">
-            <h2 className="text-slate-1200 text-base font-normal mb-2">Amount</h2>
+            <h2 className="text-slate-1200 text-sm font-normal mb-2">Amount</h2>
             <div className="relative">
               <Input
                 type="number"
                 placeholder="0.00"
                 value={transferAmount || ""}
-                onChange={(e) => setTransferAmount(e.target.value)}
+                onChange={handleAmountChange}
                 className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
                 max={getSourceWalletBalance()}
               />
@@ -824,11 +907,42 @@ export default function Transfer({ currencySelected, onClose, stepVal="chooseCur
               </span>
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
-              <p className="text-red-500 text-sm mt-1">
-                Amount cannot exceed available balance ({formatAmountWithDecimals(getSourceWalletBalance().toString())}{" "}
-                {selectedCurrency || "USD"})
-              </p>
+              <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
             )}
+            <div className="flex gap-2 mt-6">
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(25)}
+                size="sm"
+                variant="outline"
+              >
+                25%
+              </Button>
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(50)}
+                size="sm"
+                variant="outline"
+              >
+                50%
+              </Button>
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(75)}
+                size="sm"
+                variant="outline"
+              >
+                75%
+              </Button>
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(100)}
+                size="sm"
+                variant="outline"
+              >
+                100%
+              </Button>
+            </div>
             <div className="hidden md:block absolute top-full right-0 mt-6">
               <Button
                 onClick={handleTransferClick}
