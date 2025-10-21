@@ -220,10 +220,9 @@ export default function PaymentDetailsForm({
 
     const formData = {
       id: initialData.id,
-      paymentMethods,
       ...(initialData.type === "sell"
         ? { payment_method_ids: selectedPaymentMethodIds }
-        : { paymentMethods: paymentMethodNames }),
+        : { paymentMethods }),
       instructions,
     }
 
