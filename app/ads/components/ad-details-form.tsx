@@ -60,8 +60,8 @@ export default function AdDetailsForm({
   }
 
   const getDecimalConstraints = (currency: string): { minimum: number; maximum: number } | null => {
-    if (!currency || !currenciesData || Object.keys(currenciesData).length === 0) return null
-    const currencyData = currenciesData[currency]
+    if (!currency || !accountCurrencies || Object.keys(accountCurrencies).length === 0) return null
+    const currencyData = accountCurrencies[currency]
     return currencyData?.decimal || null
   }
 
