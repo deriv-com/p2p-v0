@@ -173,7 +173,7 @@ export default function PaymentMethodsTab() {
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
 
-          if (errorCode === "PaymentMethodUsedByOpenOrder") {
+          if (errorCode === "PaymentMethodInUseByOrder") {
             errorMessage = "This payment method is currently being used by an open order and cannot be modified."
           } else if (result.errors[0].message) {
             errorMessage = result.errors[0].message
