@@ -8,7 +8,6 @@ import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
-import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "@/services/api"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
@@ -33,13 +32,7 @@ export default function PaymentMethodsTab() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
-  const [statusModal, setStatusModal] = useState({
-    show: false,
-    type: "error" as "success" | "error",
-    title: "",
-    message: "",
-  })
-  const { showDeleteDialog } = useAlertDialog()
+  const { showDeleteDialog, showAlert } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -187,21 +180,21 @@ export default function PaymentMethodsTab() {
           }
         }
 
-        setStatusModal({
-          show: true,
-          type: "error",
+        showAlert({
           title: "Failed to update payment method",
-          message: errorMessage,
+          description: errorMessage,
+          confirmText: "OK",
+          type: "error",
         })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
-      setStatusModal({
-        show: true,
-        type: "error",
+      showAlert({
         title: "Failed to update payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        confirmText: "OK",
+        type: "error",
       })
     } finally {
       setEditPanel({
@@ -240,27 +233,23 @@ export default function PaymentMethodsTab() {
         })
         fetchPaymentMethods()
       } else {
-        setStatusModal({
-          show: true,
-          type: "error",
+        showAlert({
           title: "Failed to delete payment method",
-          message: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
+          description: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
+          confirmText: "OK",
+          type: "error",
         })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
-      setStatusModal({
-        show: true,
-        type: "error",
+      showAlert({
         title: "Failed to delete payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        confirmText: "OK",
+        type: "error",
       })
     }
-  }
-
-  const closeStatusModal = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
   }
 
   const bankTransfers = paymentMethods.filter((method) => method.category === "bank_transfer")
@@ -428,15 +417,6 @@ export default function PaymentMethodsTab() {
           onClose={() => setEditPanel({ show: false, paymentMethod: null })}
           onSave={handleSavePaymentMethod}
           isLoading={isEditing}
-        />
-      )}
-
-      {statusModal.show && (
-        <CustomStatusModal
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          onClose={closeStatusModal}
         />
       )}
     </div>
