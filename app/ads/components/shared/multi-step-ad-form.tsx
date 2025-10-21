@@ -162,6 +162,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                   }
                   return convertToSnakeCase(methodName)
                 })
+
+                // Wait for userPaymentMethods to be loaded before converting
+                if (userPaymentMethods.length > 0) {
+                  const matchedIds = paymentMethodNames
+                    .map((methodName) => {
+                      const method = userPaymentMethods.find((m) => m.method === methodName)
+                      return method?.id
+                    })
+                    .filter((id): id is string => !!id)
+
+                  setSelectedPaymentMethodIds(matchedIds)
+                }
               } else {
                 paymentMethodIds = data.payment_method_ids
                   .map((id: any) => Number(id))
@@ -203,7 +215,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
       loadInitialData()
     }
-  }, [mode, adId, setSelectedPaymentMethodIds])
+  }, [mode, adId, setSelectedPaymentMethodIds, userPaymentMethods])
 
   const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
 
