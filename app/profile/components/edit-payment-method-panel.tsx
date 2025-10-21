@@ -75,8 +75,13 @@ export default function EditPaymentMethodPanel({
     )
   }, [paymentMethod])
 
-  const validateInput = (value: string) => {
-     const allowedPattern = /^[a-zA-Z0-9]+$/;
+  const validateInput = (value: string, isInstructions = false) => {
+    if (isInstructions) {
+      // Allow any characters for instructions field
+      return true
+    }
+    // Only letters and numbers for other fields
+    const allowedPattern = /^[a-zA-Z0-9]+$/
     return allowedPattern.test(value)
   }
 
@@ -91,10 +96,14 @@ export default function EditPaymentMethodPanel({
       })
     }
 
+    if (fieldName === "instructions") {
+      return
+    }
+
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [fieldName]: "Only letters and numbers are allowed."
+        [fieldName]: "Only letters and numbers are allowed.",
       }))
     }
   }
@@ -104,10 +113,10 @@ export default function EditPaymentMethodPanel({
 
     Object.entries(paymentMethod.details).forEach(([fieldName, fieldConfig]) => {
       const value = fieldValues[fieldName]?.trim()
-      
+
       if (!value && fieldConfig.required) {
         newErrors[fieldName] = `${fieldConfig.display_name} is required`
-      } else if (value && !validateInput(value)) {
+      } else if (value && fieldName !== "instructions" && !validateInput(value)) {
         newErrors[fieldName] = "Only letters and numbers are allowed."
       }
     })
@@ -171,9 +180,7 @@ export default function EditPaymentMethodPanel({
                       maxLength={300}
                       variant="floating"
                     />
-                    {errors[fieldName] && (
-                      <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>
-                    )}
+                    {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
                     <div className="flex justify-end mt-1 text-xs text-gray-500">
                       {(fieldValues[fieldName] || "").length}/300
                     </div>
@@ -189,9 +196,7 @@ export default function EditPaymentMethodPanel({
                       required
                       variant="floating"
                     />
-                    {errors[fieldName] && (
-                      <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>
-                    )}
+                    {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
                   </div>
                 )}
               </div>
@@ -201,12 +206,7 @@ export default function EditPaymentMethodPanel({
       </form>
 
       <div className="p-4">
-        <Button
-          type="button"
-          onClick={handleSubmit}
-          disabled={isLoading || !isFormValid()}
-          className="w-full"
-        >
+        <Button type="button" onClick={handleSubmit} disabled={isLoading || !isFormValid()} className="w-full">
           {isLoading ? "Saving..." : "Save changes"}
         </Button>
       </div>
