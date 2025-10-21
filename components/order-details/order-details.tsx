@@ -7,6 +7,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import type { OrderDetailItemProps } from "./types"
+import { cn } from "@/lib/utils"
 
 const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps) => {
   const { toast } = useToast()
