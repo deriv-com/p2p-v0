@@ -174,7 +174,7 @@ export default function PaymentMethodsTab() {
           const errorCode = result.errors[0].code
 
           if (errorCode === "PaymentMethodUsedByOpenOrder") {
-            errorMessage = "This payment method is in use by these sell ad(s): [advert_id], so it can’t be deleted."
+            errorMessage = "This payment method is currently being used by an open order and cannot be modified."
           } else if (result.errors[0].message) {
             errorMessage = result.errors[0].message
           }
@@ -234,7 +234,7 @@ export default function PaymentMethodsTab() {
         fetchPaymentMethods()
       } else {
         showAlert({
-          title: "Failed to delete payment method",
+          title: "You can't delete this payment method",
           description: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
           confirmText: "OK",
           type: "error",
@@ -244,7 +244,7 @@ export default function PaymentMethodsTab() {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       showAlert({
-        title: "Failed to delete payment method",
+        title: "You can't delete this payment method",
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
         confirmText: "OK",
         type: "error",
