@@ -206,9 +206,9 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   >
                     <Image src="/icons/arrow-left-icon.png" alt="Close" width={24} height={24} />
                   </Button>
-                  <h2 className="text-xl font-bold">Blocked</h2>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
+                  <h2 className="text-xl font-bold">Blocked</h2>
                   <BlockedTab />
                 </div>
               </div>
