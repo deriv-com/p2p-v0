@@ -23,6 +23,9 @@ export function PanelWrapper({ onClose, children }: PanelWrapperProps) {
       >
         <div className="max-w-xl mx-auto flex flex-col w-full h-full">
           <div className="flex items-center justify-end px-4 py-3">
+            <Button variant="ghost" size="sm" onClick={handleBackToMethodList} className="bg-grayscale-300 px-1 -ml-3">
+              <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
+            </Button>
             <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
               <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
             </Button>
