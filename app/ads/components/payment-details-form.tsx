@@ -177,45 +177,11 @@ export default function PaymentDetailsForm({
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
   const [instructions, setInstructions] = useState(initialData.instructions || "")
   const [touched, setTouched] = useState(false)
-  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<PaymentMethod[]>([])
-
-  const [selectedPaymentMethodIds, setSelectedPaymentMethodIds] = useState<string[]>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
-
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
-      try {
-        const headers = {
-          "Content-Type": "application/json",
-        }
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/available-payment-methods`, {
-          headers,
-          credentials: "include",
-        })
-        const responseData = await response.json()
-
-        if (responseData && responseData.data && Array.isArray(responseData.data)) {
-          setAvailablePaymentMethods(responseData.data)
-        } else {
-          setAvailablePaymentMethods([])
-        }
-      } catch {
-        setAvailablePaymentMethods([])
-      }
-    }
-
-    fetchPaymentMethods()
-  }, [])
-
-  useEffect(() => {
-    if (initialData.type === "sell") {
-      fetchUserPaymentMethods()
-    }
-  }, [initialData.type])
 
   const fetchUserPaymentMethods = async () => {
     try {
@@ -230,6 +196,12 @@ export default function PaymentDetailsForm({
       console.error("Error fetching payment methods:", error)
     }
   }
+
+  useEffect(() => {
+    fetchUserPaymentMethods()
+  }, [])
+
+  const [selectedPaymentMethodIds, setSelectedPaymentMethodIds] = useState<string[]>([])
 
   const isFormValid = () => {
     if (initialData.type === "sell") {
@@ -261,16 +233,17 @@ export default function PaymentDetailsForm({
 
   const handleShowPaymentSelection = (isBuyAdvert: boolean) => {
     if (isBuyAdvert) {
-      setTempSelectedPaymentMethods(paymentMethods)
+      setTempSelectedPaymentMethods(selectedPaymentMethodIds)
       showAlert({
         title: "Payment method",
         description: (
           <PaymentSelectionContent
-            paymentMethods={availablePaymentMethods}
+            paymentMethods={userPaymentMethods}
             tempSelectedPaymentMethods={tempSelectedPaymentMethods}
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-            setSelectedPaymentMethods={setPaymentMethods}
+            setSelectedPaymentMethods={setSelectedPaymentMethodIds}
             hideAlert={hideAlert}
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
             isBuyAdvert={true}
           />
         ),
@@ -330,8 +303,8 @@ export default function PaymentDetailsForm({
   }
 
   const getSelectedPaymentMethodsText = (isBuyAdvert: boolean) => {
-    const selectedIds = isBuyAdvert ? paymentMethods : selectedPaymentMethodIds
-    const methods = isBuyAdvert ? availablePaymentMethods : userPaymentMethods
+    const selectedIds = selectedPaymentMethodIds
+    const methods = userPaymentMethods
 
     if (selectedIds.length === 0) return "Select payment"
     if (selectedIds.length === 1) {
