@@ -503,7 +503,7 @@ export default function OrderDetailsPage() {
                     </Button>
                   </div>
                 )}
-                {order.status === "completed" && order.is_reviewable && (
+                {order.status === "completed" && order.is_reviewable && !!order.disputed_at && (
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 p-[16px] bg-blue-50 rounded-2xl mt-[24px]">
                       <div className="flex-shrink-0">
