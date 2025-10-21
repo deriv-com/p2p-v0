@@ -478,8 +478,7 @@ export default function PaymentDetailsForm({
               )}
 
               {initialData.type === "sell" && (
-                <div className="mb-6">
-                  <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
+                <div className="mb-6"
                   <div
                     className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={handleShowPaymentSelection}
