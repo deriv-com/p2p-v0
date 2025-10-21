@@ -208,7 +208,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold">Blocked</h2>
+                  <h2 className="text-2xl font-bold mb-4">Blocked</h2>
                   <BlockedTab />
                 </div>
               </div>
