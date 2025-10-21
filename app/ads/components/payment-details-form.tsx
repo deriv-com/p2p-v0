@@ -302,19 +302,27 @@ export default function PaymentDetailsForm({
   }
 
   useEffect(() => {
+    const paymentMethodNames = selectedPaymentMethodIds
+      .map((id) => {
+        const method = userPaymentMethods.find((m) => m.id === id)
+        return method?.method || ""
+      })
+      .filter(Boolean)
+
     const event = new CustomEvent("paymentFormValidationChange", {
       detail: {
         isValid: isFormValid(),
         formData: {
           paymentMethods,
           payment_method_ids: selectedPaymentMethodIds,
+          payment_method_names: paymentMethodNames,
           instructions,
         },
       },
       bubbles: true,
     })
     document.dispatchEvent(event)
-  }, [paymentMethods, selectedPaymentMethodIds, instructions])
+  }, [paymentMethods, selectedPaymentMethodIds, instructions, userPaymentMethods])
 
   return (
     <>
