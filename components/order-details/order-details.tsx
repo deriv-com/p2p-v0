@@ -41,31 +41,8 @@ export const OrderDetails = ({ order, setShowChat }) => {
 
   return (
     <div className="space-y-[16px] md:space-y-1" data-testid="order-details-container">
-      <div className="flex items-end justify-between">
-        <OrderDetailItem label="Order ID" value={order.id} testId="order-id-item" />
-        <Button
-          onClick={async () => {
-            const success = await copyToClipboard(String(order.id))
-            if (success) {
-              toast({
-                description: (
-                  <div className="flex items-center gap-2">
-                    <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    <span>The text has been copied to your clipboard.</span>
-                  </div>
-                ),
-                className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-                duration: 2500,
-              })
-            }
-          }}
-          variant="ghost"
-          size="sm"
-          className="p-0 h-auto"
-        >
-          <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
-        </Button>
-      </div>
+
+      <OrderDetailItem label="Order ID" value={order.id} testId="order-id-item" hasCopy={true} />
 
       <OrderDetailItem
         label={`Exchange rate (1 ${order?.advert?.account_currency})`}
