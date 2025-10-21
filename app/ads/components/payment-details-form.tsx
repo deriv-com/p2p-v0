@@ -376,12 +376,7 @@ export default function PaymentDetailsForm({
                     <span className="text-gray-500">{getSelectedPaymentMethodsText(initialData.type === "buy")}</span>
                     <ChevronRight className="h-5 w-5 text-gray-400" />
                   </div>
-                </div>
-                {touched &&
-                  ((initialData.type === "buy" && paymentMethods.length === 0) ||
-                    (initialData.type === "sell" && selectedPaymentMethodIds.length === 0)) && (
-                    <p className="text-destructive text-xs mt-1">At least one payment method is required</p>
-                  )}
+                </div
               </div>
 
               <div>
