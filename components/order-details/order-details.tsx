@@ -8,8 +8,10 @@ import { copyToClipboard, formatAmount, formatDateTime } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import type { OrderDetailItemProps } from "./types"
 
-const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps) => (
-  <div className="md:flex md:justify-between md:items-center md:border-b md:py-4" data-testid={testId}>
+const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps) => {
+  const { toast } = useToast()
+  
+  return (<div className="md:flex md:justify-between md:items-center md:border-b md:py-4" data-testid={testId}>
     <h3 className="text-sm text-slate-500 mb-1">{label}</h3>
     <div className="md:flex md:gap-2">
       <p className="text-sm font-bold">{value}</p>
@@ -36,8 +38,8 @@ const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps
         <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
       </Button>}
     </div>
-  </div>
-)
+  </div>)
+}
 
 export const OrderDetails = ({ order, setShowChat }) => {
   const { toast } = useToast()
