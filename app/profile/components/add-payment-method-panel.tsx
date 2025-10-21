@@ -296,7 +296,7 @@ export default function AddPaymentMethodPanel({
             )}
           </div>
         </div>
-        <div className="p-4 pt-2 space-y-3 overflow-y-auto mb-">
+        <div className="p-4 pt-2 space-y-3 overflow-y-auto mb-8">
           {filteredPaymentMethods.length > 0 ? (
             filteredPaymentMethods.map((paymentMethod) => (
               <Button
