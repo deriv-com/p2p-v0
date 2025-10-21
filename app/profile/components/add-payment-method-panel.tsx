@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { Search, X } from "lucide-react"
 import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
@@ -39,6 +40,7 @@ export default function AddPaymentMethodPanel({
   const [charCount, setCharCount] = useState(0)
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [isLoadingMethods, setIsLoadingMethods] = useState(true)
+  const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
     const fetchAvailablePaymentMethods = async () => {
@@ -87,6 +89,7 @@ export default function AddPaymentMethodPanel({
       setErrors({})
       setTouched({})
       setInstructions("")
+      setSearchQuery("")
     }
   }, [])
 
@@ -108,6 +111,7 @@ export default function AddPaymentMethodPanel({
     setErrors({})
     setTouched({})
     setInstructions("")
+    setSearchQuery("")
     onBack?.()
   }
 
@@ -252,28 +256,57 @@ export default function AddPaymentMethodPanel({
   }
 
   if (!showMethodDetails && !selectedMethodProp) {
+    const filteredPaymentMethods = availablePaymentMethods.filter((method) =>
+      method.display_name.toLowerCase().includes(searchQuery.toLowerCase()),
+    )
+
     const methodSelectionContent = (
       <>
         <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
-        <div className="p-4 space-y-3 overflow-y-auto">
-          {availablePaymentMethods.map((paymentMethod) => (
-            <Button
-              key={paymentMethod.method}
-              type="button"
-              variant="ghost"
-              size="lg"
-              onClick={() => handleMethodSelect(paymentMethod)}
-              className="w-full p-4 rounded-none justify-start gap-3 h-auto border-b border-grayscale-500 hover:bg-transparent"
-            >
-              <Image
-                src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
-                alt={paymentMethod.display_name}
-                width={24}
-                height={24}
-              />
-              <span className="text-sm font-normal text-slate-1200">{paymentMethod.display_name}</span>
-            </Button>
-          ))}
+        <div className="p-4 pb-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search payment methods"
+              className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
+          </div>
+        </div>
+        <div className="p-4 pt-2 space-y-3 overflow-y-auto">
+          {filteredPaymentMethods.length > 0 ? (
+            filteredPaymentMethods.map((paymentMethod) => (
+              <Button
+                key={paymentMethod.method}
+                type="button"
+                variant="ghost"
+                size="lg"
+                onClick={() => handleMethodSelect(paymentMethod)}
+                className="w-full p-4 rounded-none justify-start gap-3 h-auto border-b border-grayscale-500 hover:bg-transparent"
+              >
+                <Image
+                  src={getPaymentMethodIcon(paymentMethod.type) || "/placeholder.svg"}
+                  alt={paymentMethod.display_name}
+                  width={24}
+                  height={24}
+                />
+                <span className="text-sm font-normal text-slate-1200">{paymentMethod.display_name}</span>
+              </Button>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">No payment methods found</div>
+          )}
         </div>
       </>
     )
@@ -343,7 +376,11 @@ export default function AddPaymentMethodPanel({
   )
 
   if (onClose) {
-    return <PanelWrapper onBack={handleBackToMethodList} onClose={onClose}>{formContent}</PanelWrapper>
+    return (
+      <PanelWrapper onBack={handleBackToMethodList} onClose={onClose}>
+        {formContent}
+      </PanelWrapper>
+    )
   }
 
   return <div className="w-full h-[calc(100%-60px)]">{formContent}</div>
