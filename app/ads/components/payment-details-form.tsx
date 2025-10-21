@@ -231,8 +231,6 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const MAX_PAYMENT_METHODS = 3
-
   const isFormValid = () => {
     if (initialData.type === "sell") {
       return selectedPaymentMethodIds.length > 0
