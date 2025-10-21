@@ -276,7 +276,7 @@ export default function OrderDetailsPage() {
   }
 
   const handleCancelOrder = () => {
-    showWarningDialog({
+    showAlert({
       title: "Cancelling your order?",
       description: "Don't cancel if you've already paid.",
       confirmText: "Cancel order",
