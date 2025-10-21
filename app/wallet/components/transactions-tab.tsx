@@ -5,6 +5,7 @@ import { fetchTransactions } from "@/services/api/api-wallets"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
+import { formatAmountWithDecimals } from "@/lib/utils"
 
 interface Transaction {
   transaction_id: number
@@ -222,7 +223,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
@@ -243,7 +244,8 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                         </div>
 
                         <div className={`${display.amountColor} text-base font-normal mr-6`}>
-                          {transaction.metadata.transaction_net_amount} {transaction.metadata.transaction_currency}
+                          {formatAmountWithDecimals(transaction.metadata.transaction_net_amount)}{" "}
+                          {transaction.metadata.transaction_currency}
                         </div>
                       </div>
 
