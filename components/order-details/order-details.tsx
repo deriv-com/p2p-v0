@@ -74,6 +74,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
         label={`Exchange rate (1 ${order?.advert?.account_currency})`}
         value={`${exchangeRateValue} ${order.payment_currency}`}
         testId="exchange-rate-item"
+        isBlockLayout={order}
       />
 
       <OrderDetailItem
