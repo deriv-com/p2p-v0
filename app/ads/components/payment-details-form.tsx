@@ -43,7 +43,6 @@ const PaymentSelectionContent = ({
   hideAlert,
   setSelectedPaymentMethods,
   handleAddPaymentMethodClick,
-  isBuyAdvert = false,
 }: {
   paymentMethods: (UserPaymentMethod | PaymentMethod)[]
   tempSelectedPaymentMethods: string[]
@@ -51,7 +50,6 @@ const PaymentSelectionContent = ({
   hideAlert: () => void
   setSelectedPaymentMethods: (methods: string[]) => void
   handleAddPaymentMethodClick?: () => void
-  isBuyAdvert?: boolean
 }) => {
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
@@ -244,7 +242,7 @@ export default function PaymentDetailsForm({
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setSelectedPaymentMethods={setSelectedPaymentMethodIds}
             hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
           />
         ),
       })
@@ -285,7 +283,7 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const getSelectedPaymentMethodsText = (isBuyAdvert: boolean) => {
+  const getSelectedPaymentMethodsText = ) => {
     const selectedIds = selectedPaymentMethodIds
     const methods = userPaymentMethods
 
