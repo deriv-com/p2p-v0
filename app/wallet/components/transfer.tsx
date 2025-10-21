@@ -910,30 +910,34 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
             )}
             <div className="flex gap-2 mt-3">
-              <button
+              <Button
                 onClick={() => handlePercentageClick(25)}
-                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+                size="sm"
+                variant="outline"
               >
                 25%
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => handlePercentageClick(50)}
-                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+                size="sm"
+                variant="outline"
               >
                 50%
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => handlePercentageClick(75)}
-                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+                size="sm"
+                variant="outline"
               >
                 75%
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => handlePercentageClick(100)}
-                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+                size="sm"
+                variant="outline"
               >
                 100%
-              </button>
+              </Button>
             </div>
             <div className="hidden md:block absolute top-full right-0 mt-6">
               <Button
