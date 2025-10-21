@@ -9,7 +9,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import type { OrderDetailItemProps } from "./types"
 
 const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps) => (
-  <div className="md:flex md:justify-between md:items-center md:border-b py-4" data-testid={testId}>
+  <div className="md:flex md:justify-between md:items-center md:border-b md:py-4" data-testid={testId}>
     <h3 className="text-sm text-slate-500 mb-1">{label}</h3>
     <div>
       <p className="text-sm font-bold">{value}</p>
