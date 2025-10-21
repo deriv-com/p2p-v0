@@ -21,7 +21,7 @@ interface StatsTabsProps {
 
 export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const isMobile = useIsMobile()
-  const { showAlert, hideAlert } = useAlertDialog()
+  const { showAlert } = useAlertDialog()
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [refreshKey, setRefreshKey] = useState(0)
   const [showStatsSidebar, setShowStatsSidebar] = useState(false)
@@ -32,6 +32,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
+  const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -47,12 +48,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       const result = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (result.success) {
-        if (isMobile) {
-          setShowPaymentDetailsSheet(false)
-          setShowAddPaymentSheet(false)
-        } else {
-          hideAlert()
-        }
+        setShowAddPaymentPanel(false)
 
         toast({
           description: (
@@ -88,34 +84,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    if (isMobile) {
-      setShowAddPaymentSheet(true)
-    } else {
-      showAlert({
-        title: "Select a payment method",
-        description: (
-          <AddPaymentMethodPanel
-            onAdd={handleAddPaymentMethod}
-            isLoading={isAddingPaymentMethod}
-            onMethodSelect={(method) => {
-              showAlert({
-                title: "Add payment details",
-                description: (
-                  <AddPaymentMethodPanel
-                    onAdd={handleAddPaymentMethod}
-                    isLoading={isAddingPaymentMethod}
-                    selectedMethod={method}
-                    onBack={() => handleShowAddPaymentMethod()}
-                  />
-                ),
-                showCloseButton: true,
-              })
-            }}
-          />
-        ),
-        showCloseButton: true,
-      })
-    }
+    setShowAddPaymentPanel(true)
   }
 
   return (
@@ -324,39 +293,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
         )}
       </div>
 
-      <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
-        <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
-            <div className="my-4 font-bold text-xl">Select a payment method</div>
-            <AddPaymentMethodPanel
-              onAdd={handleAddPaymentMethod}
-              isLoading={isAddingPaymentMethod}
-              onMethodSelect={(method) => {
-                setSelectedMethodForDetails(method)
-                setShowAddPaymentSheet(false)
-                setShowPaymentDetailsSheet(true)
-              }}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
-        <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
-            <div className="my-4 font-bold text-xl">Add payment details</div>
-            <AddPaymentMethodPanel
-              onAdd={handleAddPaymentMethod}
-              isLoading={isAddingPaymentMethod}
-              selectedMethod={selectedMethodForDetails}
-              onBack={() => {
-                setShowPaymentDetailsSheet(false)
-                setShowAddPaymentSheet(true)
-              }}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
+      {showAddPaymentPanel && (
+        <AddPaymentMethodPanel
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingPaymentMethod}
+          onClose={() => setShowAddPaymentPanel(false)}
+        />
+      )}
     </div>
   )
 }

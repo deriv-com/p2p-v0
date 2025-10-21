@@ -15,7 +15,6 @@ import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -140,9 +139,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
-  const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
-  const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
-  const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
+  const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
 
   const handleShowPaymentSelection = () => {
     showAlert({
@@ -280,12 +277,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       if (response.success) {
         await fetchUserPaymentMethods()
-        if (isMobile) {
-          setShowPaymentDetailsSheet(false)
-          setShowAddPaymentSheet(false)
-        } else {
-          hideAlert()
-        }
+        setShowAddPaymentPanel(false)
       } else {
         let title = "Unable to add payment method"
         let description = "There was an error when adding the payment method. Please try again."
@@ -309,36 +301,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleAddPaymentMethodClick = () => {
-    if (isMobile) {
-      setShowAddPaymentSheet(true)
-    } else {
-      showAlert({
-        title: "Select a payment method",
-        description: (
-          <AddPaymentMethodPanel
-            onAdd={handleAddPaymentMethod}
-            isLoading={isAddingPaymentMethod}
-            allowedPaymentMethods={ad?.payment_methods}
-            onMethodSelect={(method) => {
-              showAlert({
-                title: "Add payment details",
-                description: (
-                  <AddPaymentMethodPanel
-                    onAdd={handleAddPaymentMethod}
-                    isLoading={isAddingPaymentMethod}
-                    allowedPaymentMethods={ad?.payment_methods}
-                    selectedMethod={method}
-                    onBack={() => handleAddPaymentMethodClick()}
-                  />
-                ),
-                showCloseButton: true,
-              })
-            }}
-          />
-        ),
-        showCloseButton: true,
-      })
-    }
+    setShowAddPaymentPanel(true)
+    hideAlert()
   }
 
   const getSelectedPaymentMethodsText = () => {
@@ -517,41 +481,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         </div>
       </div>
 
-      <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
-        <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
-            <div className="my-4 font-bold text-xl">Select a payment method</div>
-            <AddPaymentMethodPanel
-              onAdd={handleAddPaymentMethod}
-              isLoading={isAddingPaymentMethod}
-              allowedPaymentMethods={ad?.payment_methods}
-              onMethodSelect={(method) => {
-                setSelectedMethodForDetails(method)
-                setShowAddPaymentSheet(false)
-                setShowPaymentDetailsSheet(true)
-              }}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
-
-      <Sheet open={showPaymentDetailsSheet} onOpenChange={setShowPaymentDetailsSheet}>
-        <SheetContent side="right" className="w-full h-full">
-          <div className="mt-4 h-[calc(100%-20px)] overflow-y-auto">
-            <div className="my-4 font-bold text-xl">Add payment details</div>
-            <AddPaymentMethodPanel
-              onAdd={handleAddPaymentMethod}
-              isLoading={isAddingPaymentMethod}
-              allowedPaymentMethods={ad?.payment_methods}
-              selectedMethod={selectedMethodForDetails}
-              onBack={() => {
-                setShowPaymentDetailsSheet(false)
-                setShowAddPaymentSheet(true)
-              }}
-            />
-          </div>
-        </SheetContent>
-      </Sheet>
+      {showAddPaymentPanel && (
+        <AddPaymentMethodPanel
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingPaymentMethod}
+          allowedPaymentMethods={ad?.payment_methods}
+          onClose={() => setShowAddPaymentPanel(false)}
+        />
+      )}
     </>
   )
 }
