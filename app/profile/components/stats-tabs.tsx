@@ -84,11 +84,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    if (isMobile) {
-      setShowAddPaymentSheet(true)
-    } else {
-      setShowAddPaymentPanel(true)
-    }
+    tShowAddPaymentPanel(true)
   }
 
   return (
