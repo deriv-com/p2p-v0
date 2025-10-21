@@ -1,6 +1,7 @@
 import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
+import { Suspense } from "react"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 import Main from "./main"
@@ -14,8 +15,8 @@ export const metadata: Metadata = {
   description: "Buy and sell on Deriv P2P to fund your trading account | Deriv",
   generator: "v0.dev",
   icons: {
-    icon: "/icons/dp2p.svg"
-  }
+    icon: "/icons/dp2p.svg",
+  },
 }
 
 export const viewport: Viewport = {
@@ -36,7 +37,9 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
             <Toaster />
-            <Main>{children}</Main>
+            <Suspense fallback={<div className="flex items-center justify-center h-screen">Loading...</div>}>
+              <Main>{children}</Main>
+            </Suspense>
           </AlertDialogProvider>
         </ThemeProvider>
       </body>

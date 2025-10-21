@@ -3,11 +3,10 @@
 import type React from "react"
 
 import { useState, useEffect } from "react"
-import Image from "next/image"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { PanelWrapper } from "@/components/ui/panel-wrapper"
 
 interface EditPaymentMethodPanelProps {
   onClose: () => void
@@ -26,34 +25,6 @@ interface EditPaymentMethodPanelProps {
       }
     >
   }
-}
-
-interface PanelWrapperProps {
-  onClose: () => void
-  children: React.ReactNode
-}
-
-function PanelWrapper({ onClose, children }: PanelWrapperProps) {
-  const isMobile = useIsMobile()
-
-  return (
-    <>
-      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
-      <div
-        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
-          isMobile ? "inset-0 w-full" : "w-full max-w-md"
-        }`}
-      >
-        <div className="flex items-center justify-between px-4 py-3 border-b">
-          <h2 className="text-xl font-bold">Edit payment details</h2>
-          <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
-            <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
-          </Button>
-        </div>
-        {children}
-      </div>
-    </>
-  )
 }
 
 export default function EditPaymentMethodPanel({
@@ -159,6 +130,7 @@ export default function EditPaymentMethodPanel({
 
   return (
     <PanelWrapper onClose={onClose}>
+      <h2 className="text-2xl font-bold p-4 pb-0">Edit payment details</h2>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="space-y-4">

@@ -21,7 +21,7 @@ function KycOnboardingSheet() {
       title: "Set up your profile",
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
-      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
+      link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details?is_from_p2p=true`,
     },
     {
       id: "poi",

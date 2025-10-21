@@ -24,6 +24,7 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const [showWallet, setShowWallet] = useState(true)
+  const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
   const userName = userData?.nickname ?? userData?.email
 
@@ -37,16 +38,21 @@ export default function Sidebar({ className }: SidebarProps) {
 
       if (userDataFromStore?.signup === "v1") {
         setShowWallet(false)
+        setIsV1Signup(true)
       } else {
         setShowWallet(true)
+        setIsV1Signup(false)
       }
     } catch (error) {
       setShowWallet(false)
+      setIsV1Signup(false)
     }
   }
 
+  const homeUrl = isV1Signup ? "staging-app.deriv.com" : getHomeUrl()
+
   const navItems = [
-    { name: "Back to Home", href: `https://${getHomeUrl()}/dashboard/home`, icon: HomeIcon },
+    { name: "Back to Home", href: `https://${homeUrl}/dashboard/home`, icon: HomeIcon },
     { name: "Market", href: "/", icon: MarketIcon },
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
@@ -105,7 +111,7 @@ export default function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
         </div>
-        <Link prefetch href={`https://${getHomeUrl()}/dashboard/userprofile`}>
+        <Link prefetch href={`https://${homeUrl}/dashboard/profile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
         </Link>
       </div>

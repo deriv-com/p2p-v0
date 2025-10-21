@@ -15,30 +15,17 @@ import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useCurrencyData } from "@/hooks/use-currency-data"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import Image from "next/image"
-import { formatDateTime, formatPaymentMethodName } from "@/lib/utils"
+import { formatPaymentMethodName } from "@/lib/utils"
 import EmptyState from "@/components/empty-state"
 import PaymentMethodsFilter from "@/components/payment-methods-filter/payment-methods-filter"
 import { useMarketFilterStore } from "@/stores/market-filter-store"
-import { Alert } from "@/components/ui/alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 interface TemporaryBanAlertProps {
   tempBanUntil: number
-}
-
-const TemporaryBanAlert = ({ tempBanUntil }: TemporaryBanAlertProps) => {
-  const banUntil = formatDateTime(tempBanUntil)
-
-  return (
-    <Alert variant="warning" className="flex items-start gap-2 mb-6">
-      <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-      <div className="text-sm mt-[2px]">
-        {`Your account is temporarily restricted. Some actions will be unavailable until ${banUntil}.`}
-      </div>
-    </Alert>
-  )
 }
 
 export default function BuySellPage() {
@@ -78,6 +65,10 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
+  const hasFilteredPaymentMethods =
+    paymentMethods.length > 0 &&
+    selectedPaymentMethods.length < paymentMethods.length &&
+    selectedPaymentMethods.length > 0
 
   useEffect(() => {
     const operation = searchParams.get("operation")
@@ -94,10 +85,9 @@ export default function BuySellPage() {
       setSelectedAccountCurrency(currencyParam.toUpperCase())
     }
 
-    if(currencies.length > 0) {
+    if (currencies.length > 0) {
       setCurrency(currencies[0]?.code)
     }
-   
   }, [searchParams, currencies, setActiveTab, setSelectedAccountCurrency])
 
   useEffect(() => {
@@ -325,12 +315,13 @@ export default function BuySellPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-md border border-input bg-background font-normal w-full justify-between hover:bg-transparent px-3 bg-transparent rounded-3xl"
+                      className={cn("rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
+                      hasFilteredPaymentMethods ? "bg-black hover:bg-black text-white" : "bg-transparent hover:bg-transparent")}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
                       </span>
-                      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
+                      {hasFilteredPaymentMethods ? <Image src="/icons/chevron-down-white.png" alt="Arrow" width={24} height={24} /> : <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />}
                     </Button>
                   }
                 />
@@ -345,11 +336,12 @@ export default function BuySellPage() {
                   hasActiveFilters={hasActiveFilters}
                   trigger={
                     <Button
-                      variant={hasActiveFilters? "black": "outline"}
+                      variant="outline"
                       size="sm"
-                      className="rounded-md border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black min-w-fit rounded-3xl"
+                      className={cn("rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl", 
+                      hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent")}
                     >
-                      <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                      {hasActiveFilters ? <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} /> : <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />}
                     </Button>
                   }
                 />
@@ -377,14 +369,16 @@ export default function BuySellPage() {
               <>
                 <div className="md:block">
                   <Table>
-                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-1">
                       <TableRow className="text-xs">
-                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Advertisers</TableHead>
+                        <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                          Advertisers
+                        </TableHead>
                         <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
                         <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
                           Payment methods
                         </TableHead>
-                        <TableHead className="text-right py-4 px-4"></TableHead>
+                        <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -393,14 +387,15 @@ export default function BuySellPage() {
                           className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
                           key={ad.id}
                         >
-                          <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                          <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                                 {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                                 <div
                                   className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
                                     ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                  }`} />
+                                  }`}
+                                />
                               </div>
                               <div>
                                 <div className="flex items-center gap-1">
@@ -410,8 +405,21 @@ export default function BuySellPage() {
                                   >
                                     {ad.user?.nickname}
                                   </button>
-                                  <Image src="/icons/verified-badge.png" className="cursor-pointer" alt="Verified" width={32} height={32} />
-                                  {ad.user.trade_band === "bronze" && <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} className="mr-1" />}
+                                  <Image
+                                    src="/icons/verified-badge.png"
+                                    alt="Verified"
+                                    width={32}
+                                    height={32}
+                                  />
+                                  {ad.user.trade_band === "bronze" && (
+                                    <Image
+                                      src="/icons/bronze.png"
+                                      alt="Bronze"
+                                      width={18}
+                                      height={18}
+                                      className="mr-1"
+                                    />
+                                  )}
                                   {ad.user?.is_favourite && (
                                     <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                       Following
@@ -486,7 +494,7 @@ export default function BuySellPage() {
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="p-2 lg:p-4 text-right align-middle row-start-3 whitespace-nowrap">
+                          <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
                             {userId != ad.user.id && (
                               <Button
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}

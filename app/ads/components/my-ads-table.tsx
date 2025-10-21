@@ -198,13 +198,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     <>
       <div className="w-full">
         <Table>
-          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-1">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Ad type</TableHead>
+              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">Ad type</TableHead>
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Available amount</TableHead>
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Payment methods</TableHead>
               <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal"></TableHead>
+              <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
@@ -223,7 +223,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     !isActive || hiddenAdverts ? "opacity-60" : "",
                   )}
                 >
-                  <TableCell className="p-2 lg:p-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
+                  <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
                     <div className="flex justify-between md:block">
                       <div className="mb-1 flex justify-normal ">
                         <span
@@ -281,7 +281,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-1 whitespace-nowrap">
+                  <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
                     {isMobile ? (
                       <Button
                         variant="ghost"

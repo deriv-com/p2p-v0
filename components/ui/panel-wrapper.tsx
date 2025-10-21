@@ -1,0 +1,35 @@
+"use client"
+
+import type React from "react"
+import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import Image from "next/image"
+
+interface PanelWrapperProps {
+  onClose: () => void
+  children: React.ReactNode
+}
+
+export function PanelWrapper({ onClose, children }: PanelWrapperProps) {
+  const isMobile = useIsMobile()
+
+  return (
+    <>
+      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
+      <div
+        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+          isMobile ? "inset-0 w-full" : "w-full"
+        }`}
+      >
+        <div className="max-w-xl mx-auto flex flex-col w-full h-full">
+          <div className="flex items-center justify-end px-4 py-3">
+            <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
+              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+            </Button>
+          </div>
+          {children}
+        </div>
+      </div>
+    </>
+  )
+}

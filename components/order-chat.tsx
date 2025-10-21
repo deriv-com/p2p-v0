@@ -5,9 +5,10 @@ import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocketContext } from "@/contexts/websocket-context"
-import { getChatErrorMessage, formatDateTime } from "@/lib/utils"
+import { getChatErrorMessage, formatTime } from "@/lib/utils"
 
 type Message = {
   attachment: {
@@ -28,6 +29,8 @@ type OrderChatProps = {
   counterpartyInitial: string
   isClosed: boolean
   onNavigateToOrderDetails: () => void
+  counterpartyOnlineStatus?: boolean
+  counterpartyLastOnlineAt?: number
 }
 
 export default function OrderChat({
@@ -36,6 +39,8 @@ export default function OrderChat({
   counterpartyInitial,
   isClosed,
   onNavigateToOrderDetails,
+  counterpartyOnlineStatus,
+  counterpartyLastOnlineAt,
 }: OrderChatProps) {
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
@@ -136,6 +141,32 @@ export default function OrderChat({
     })
   }
 
+  const groupMessagesByDate = (messages: Message[]) => {
+    const groups: { [key: string]: Message[] } = {}
+
+    messages.forEach((msg) => {
+      const date = new Date(msg.time)
+      const dateKey = date.toDateString()
+
+      if (!groups[dateKey]) {
+        groups[dateKey] = []
+      }
+      groups[dateKey].push(msg)
+    })
+
+    return groups
+  }
+
+  const formatDateHeader = (dateString: string): string => {
+    const date = new Date(dateString)
+
+    return date.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    })
+  }
+
   return (
     <div className="flex flex-col h-full overflow-auto">
       <div className="flex items-center p-4 border-b">
@@ -149,12 +180,25 @@ export default function OrderChat({
             <Image src="/icons/arrow-left-icon.png" alt="Back" width={24} height={24} />
           </Button>
         )}
-        <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
+        <div className="relative w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold mr-3">
           {counterpartyInitial}
+          <div
+            className={`absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white ${
+              counterpartyOnlineStatus ? "bg-buy" : "bg-gray-400"
+            }`}
+          />
         </div>
         <div>
           <div className="font-medium">{counterpartyName}</div>
-          <div className="text-sm text-slate-500">Seen {formatLastSeen(new Date())}</div>
+          <div className="text-xs text-slate-500 flex items-center gap-1">
+            <span>
+              {counterpartyOnlineStatus
+                ? "Online"
+                : counterpartyLastOnlineAt
+                  ? `Seen ${formatLastSeen(counterpartyLastOnlineAt)}`
+                  : "Offline"}
+            </span>
+          </div>
         </div>
       </div>
       <div className="h-full overflow-auto">
@@ -164,7 +208,7 @@ export default function OrderChat({
               <div className="flex-shrink-0">
                 <Image src="/icons/warning-icon-new.png" className="-mt-[2px]" alt="Warning" width={24} height={24} />
               </div>
-              <div className="text-sm text-grayscale-100">
+              <div className="text-sm text-slate-1200">
                 <span className="font-bold">Important:</span>
                 <span className="ml-1">
                   Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
@@ -181,47 +225,73 @@ export default function OrderChat({
         <div className="flex-1 overflow-y-auto p-4">
           {isLoading ? (
             <div className="flex justify-center items-center h-full">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
             </div>
           ) : (
-            messages.map((msg) => (
-              <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
-                <div className="max-w-[80%] rounded-lg pb-[16px]">
-                  {msg.attachment && (
-                    <div className={`${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}>
-                      <div
-                        className={`${msg.sender_is_self ? "opacity-70" : ""} bg-white p-[8px] rounded-[4px] text-xs`}
-                      >
-                        <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
-                          {msg.attachment.name}
-                        </a>
+            <>
+              {Object.entries(groupMessagesByDate(messages)).map(([dateKey, dateMessages]) => (
+                <div key={dateKey}>
+                  <div className="flex justify-center my-4">
+                    <div className="text-grayscale-text-muted text-xs px-3 py-1 rounded-full">
+                      {formatDateHeader(dateKey)}
+                    </div>
+                  </div>
+                  {dateMessages.map((msg) => (
+                    <div key={msg.id} className={`flex ${msg.sender_is_self ? "justify-end" : "justify-start"}`}>
+                      <div className="max-w-[80%] rounded-lg pb-[16px]">
+                        {msg.attachment && (
+                          <div
+                            className={`relative ${msg.sender_is_self ? "bg-slate-200" : "bg-gray-400"} p-[16px] rounded-[8px]`}
+                          >
+                            {!msg.sender_is_self && (
+                              <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-gray-400 -translate-x-full" />
+                            )}
+                            {msg.sender_is_self && (
+                              <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                            )}
+                            <div className="bg-slate-75 p-[8px] rounded-[4px] text-xs">
+                              <a href={msg.attachment.url} target="_blank" download rel="noreferrer">
+                                {msg.attachment.name}
+                              </a>
+                            </div>
+                          </div>
+                        )}
+                        {msg.message && (
+                          <div className="flex items-center">
+                            <div
+                              className={`relative break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
+                            >
+                              {!msg.sender_is_self && (
+                                <div className="absolute left-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-gray-400 -translate-x-full" />
+                              )}
+                              {msg.sender_is_self && (
+                                <div className="absolute right-0 top-[16px] w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-l-[8px] border-l-slate-200 translate-x-full" />
+                              )}
+                              {msg.message}
+                            </div>
+                            {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
+                          </div>
+                        )}
+                        {msg.rejected && msg.tags ? (
+                          <div className="text-xs text-error-text mt-[4px]">
+                            Message not sent: {getChatErrorMessage(msg.tags)}
+                          </div>
+                        ) : (
+                          <div
+                            className={cn(
+                              "text-xs mt-1 text-grayscale-text-muted justify-self-start",
+                              msg.sender_is_self && "justify-self-end",
+                            )}
+                          >
+                            {msg.time && formatTime(msg.time)}
+                          </div>
+                        )}
                       </div>
                     </div>
-                  )}
-                  {msg.message && (
-                    <div className="flex items-center">
-                      <div
-                        className={`break-words ${msg.sender_is_self ? (msg.rejected ? "bg-slate-200 opacity-50" : "bg-slate-200") : "bg-gray-400"} p-[16px] rounded-[8px] flex-1`}
-                      >
-                        {msg.message}
-                      </div>
-                      {msg.rejected && <Image src="/icons/info-icon.png" alt="Error" width={24} height={24} />}
-                    </div>
-                  )}
-                  {msg.rejected && msg.tags ? (
-                    <div className="text-xs text-error-text mt-[4px]">
-                      Message not sent: {getChatErrorMessage(msg.tags)}
-                    </div>
-                  ) : (
-                    <div
-                      className={`text-xs mt-1 ${msg.sender_is_self ? "text-default-button-text text-right" : "text-neutral-7"}`}
-                    >
-                      {msg.time && formatDateTime(msg.time)}
-                    </div>
-                  )}
+                  ))}
                 </div>
-              </div>
-            ))
+              ))}
+            </>
           )}
           <div ref={messagesEndRef} />
         </div>
@@ -241,14 +311,26 @@ export default function OrderChat({
                 disabled={isSending}
                 className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
               />
-              <Button
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
-                onClick={() => fileInputRef.current?.click()}
-                variant="ghost"
-                size="sm"
-              >
-                <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
-              </Button>
+              {message.trim() ? (
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={handleSendMessage}
+                  variant="ghost"
+                  size="sm"
+                  disabled={isSending}
+                >
+                  <Image src="/icons/send-message.png" alt="Send message" width={20} height={20} className="h-5 w-5" />
+                </Button>
+              ) : (
+                <Button
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 h-auto"
+                  onClick={() => fileInputRef.current?.click()}
+                  variant="ghost"
+                  size="sm"
+                >
+                  <Image src="/icons/paperclip-icon.png" alt="Attach file" width={20} height={20} className="h-5 w-5" />
+                </Button>
+              )}
               <Input
                 type="file"
                 ref={fileInputRef}
@@ -270,9 +352,10 @@ export default function OrderChat({
   )
 }
 
-function formatLastSeen(date: Date): string {
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
+function formatLastSeen(timestamp: number): string {
+  const now = Date.now()
+  const lastSeenDate = new Date(timestamp)
+  const diffMs = now - lastSeenDate.getTime()
   const diffMins = Math.floor(diffMs / 60000)
   const diffHours = Math.floor(diffMins / 60)
   const diffDays = Math.floor(diffHours / 24)
@@ -282,5 +365,5 @@ function formatLastSeen(date: Date): string {
   if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`
   if (diffDays < 7) return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`
 
-  return date.toLocaleDateString()
+  return lastSeenDate.toLocaleDateString()
 }

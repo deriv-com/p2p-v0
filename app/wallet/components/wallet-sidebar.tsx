@@ -12,6 +12,7 @@ interface Currency {
 }
 
 interface WalletSidebarProps {
+  currencySelected?: string
   isOpen: boolean
   onClose: () => void
   onDirectDepositClick: (currency: string) => void
@@ -19,9 +20,11 @@ interface WalletSidebarProps {
   onP2PTransferClick?: () => void
   onAccountTransferClick?: () => void
   currencies: Currency[]
+  transferStep: string
 }
 
 export default function WalletSidebar({
+  currencySelected,
   isOpen,
   onClose,
   onDirectDepositClick,
@@ -29,6 +32,7 @@ export default function WalletSidebar({
   onP2PTransferClick = () => {},
   onAccountTransferClick = () => {},
   currencies,
+  transferStep,
 }: WalletSidebarProps) {
   if (!isOpen) return null
 
@@ -50,10 +54,12 @@ if (operation === "TRANSFER") {
     <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
       <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
         <Transfer
+          currencySelected={currencySelected}
           onSendClick={onP2PTransferClick}
           onReceiveClick={onAccountTransferClick}
           currencies={currencies}
           onClose={onClose}
+          stepVal={transferStep}
         />
       </div>
     </div>

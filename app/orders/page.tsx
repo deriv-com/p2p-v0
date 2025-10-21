@@ -23,6 +23,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -53,6 +54,7 @@ export default function OrdersPage() {
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
+  const tempBanUntil = userData?.temp_ban_until
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -290,7 +292,7 @@ export default function OrdersPage() {
                         {Number(order.rating).toFixed(1)}
                       </div>
                     )}
-                    {order.is_reviewable > 0 && (
+                    {order.is_reviewable > 0 && !order.disputed_at && (
                       <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
                         Rate
                       </Button>
@@ -329,6 +331,12 @@ export default function OrdersPage() {
       selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
     const counterpartyInitial = counterpartyName.charAt(0).toUpperCase()
     const isClosed = ["cancelled", "completed", "refunded"].includes(selectedOrder?.status)
+    const counterpartyOnlineStatus =
+      selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.is_online : selectedOrder?.advert?.user?.is_online
+    const counterpartyLastOnlineAt =
+      selectedOrder?.advert.user.id == userId
+        ? selectedOrder?.user?.last_online_at
+        : selectedOrder?.advert?.user?.last_online_at
 
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
@@ -338,6 +346,8 @@ export default function OrdersPage() {
             counterpartyName={counterpartyName}
             counterpartyInitial={counterpartyInitial}
             isClosed={isClosed}
+            counterpartyOnlineStatus={counterpartyOnlineStatus}
+            counterpartyLastOnlineAt={counterpartyLastOnlineAt}
             onNavigateToOrderDetails={() => {
               router.push(`/orders/${selectedOrder.id}`)
             }}
@@ -390,6 +400,11 @@ export default function OrdersPage() {
               </Button>
             )}
           </div>
+          {tempBanUntil && (
+            <div className="mt-4">
+              <TemporaryBanAlert tempBanUntil={tempBanUntil} />
+            </div>
+          )}
           <div className="my-4 self-end">
             {activeTab === "past" && (
               <DateFilter
