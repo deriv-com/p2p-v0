@@ -121,7 +121,7 @@ export const PaymentConfirmationSidebar = ({
               <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
             </Alert>
           </div>
-          <div className="flex-1 p-4 space-y-6 overflow-y-auto">
+          <div className="flex-1 md:flex-none p-4 space-y-6 overflow-y-auto">
             <p className="text-sm text-gray-600">
               Ensure you've paid {amount} {currencySymbol} to {sellerName} and upload the receipt as proof of payment.
             </p>
@@ -163,7 +163,7 @@ export const PaymentConfirmationSidebar = ({
 
             {fileError && <div className="text-error text-xs">{fileError}</div>}
           </div>
-          <div className="p-4 pt-0 flex justify-end">
+          <div className="p-4 pt-0 md:pt-4 flex justify-end">
             <Button
               variant="default"
               onClick={handleSubmit}
