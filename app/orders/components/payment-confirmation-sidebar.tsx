@@ -5,13 +5,13 @@ import type React from "react"
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import Image from "next/image"
 import { formatAmount } from "@/lib/utils"
 import type { Order } from "@/services/api/api-orders"
 import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
 import { cn } from "@/lib/utils"
+import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
@@ -32,6 +32,7 @@ export const PaymentConfirmationSidebar = ({
   const [isUploadLoading, setIsUploadLoading] = useState<boolean>(false)
   const [fileError, setFileError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const isMobile = useIsMobile()
 
   if (!order) return null
 
@@ -94,19 +95,35 @@ export const PaymentConfirmationSidebar = ({
   const amount = formatAmount(order.payment_amount)
   const sellerName = order.type === "buy" ? order.advert?.user?.nickname : order.user?.nickname
 
-  return (
-    <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent className="w-full sm:max-w-md p-0">
-        <div className="flex flex-col h-full">
-          <SheetHeader className="p-4 border-b">
-            <div className="flex items-center justify-between">
-              <SheetTitle className="text-xl font-bold">Confirm your payment</SheetTitle>
-            </div>
-          </SheetHeader>
+  if (!isOpen) return null
 
-          <div className="flex-1 p-4 space-y-6">
+  return (
+    <>
+      <div className="fixed inset-0 z-40 bg-black/80" onClick={onClose} />
+      <div
+        className={`fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col ${
+          isMobile ? "inset-0 w-full" : "w-full"
+        }`}
+      >
+        <div className="max-w-xl mx-auto flex flex-col w-full h-full">
+          <div className="flex items-center justify-end px-4 py-3">
+            <Button variant="ghost" size="sm" onClick={onClose} className="bg-grayscale-300 px-1">
+              <Image src="/icons/close-circle.png" alt="Close" width={24} height={24} />
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-4 p-4 pb-0">
+            <h2 className="text-2xl font-bold">Confirm your payment</h2>
+          </div>
+          <div className="px-4">
+            <Alert variant="warning" className="flex items-center gap-2 mt-4 mb-0">
+              <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
+              <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
+            </Alert>
+          </div>
+          <div className="flex-1 md:flex-none p-4 space-y-2 overflow-y-auto">
             <p className="text-sm text-gray-600">
-              Ensure you've paid {currencySymbol} {amount} to {sellerName} and upload the receipt as proof of payment.
+              Ensure you've paid {amount} {currencySymbol} to {sellerName} and upload the receipt as proof of payment.
             </p>
 
             <div
@@ -137,7 +154,7 @@ export const PaymentConfirmationSidebar = ({
                 <div className="flex flex-col items-center">
                   <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer">
                     <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
-                    <span className="my-2 text-sm font-bold text-neutral-10">Upload file</span>
+                    <span className="my-2 text-sm font-bold text-neutral-10">Upload proof of payment</span>
                   </label>
                   <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB)</p>
                 </div>
@@ -145,14 +162,14 @@ export const PaymentConfirmationSidebar = ({
             </div>
 
             {fileError && <div className="text-error text-xs">{fileError}</div>}
-
-            <Alert variant="warning" className="flex items-start gap-2 mb-6">
-              <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-              <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
-            </Alert>
           </div>
-          <div className="p-4 pt-0">
-            <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading || isUploadLoading} className="w-full">
+          <div className="p-4 pt-0 md:pt-4 flex justify-end">
+            <Button
+              variant="default"
+              onClick={handleSubmit}
+              disabled={!selectedFile || isLoading || isUploadLoading}
+              className="w-full md:w-auto"
+            >
               {isLoading || isUploadLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
@@ -164,7 +181,7 @@ export const PaymentConfirmationSidebar = ({
             </Button>
           </div>
         </div>
-      </SheetContent>
-    </Sheet>
+      </div>
+    </>
   )
 }

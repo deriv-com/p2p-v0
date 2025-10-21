@@ -4,7 +4,7 @@ export const runtime = "edge"
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
-import { X, ChevronRight } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import Navigation from "@/components/navigation"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
@@ -37,7 +37,7 @@ export default function OrderDetailsPage() {
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
-  const { showAlert } = useAlertDialog()
+  const { showAlert, showWarningDialog } = useAlertDialog()
   const { toast } = useToast()
   const { setIsChatVisible } = useChatVisibilityStore()
   const userId = useUserDataStore((state) => state.userId)
@@ -45,7 +45,6 @@ export default function OrderDetailsPage() {
   const [order, setOrder] = useState<Order | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [timeLeft, setTimeLeft] = useState<string>("--:--")
-  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false)
   const [isPaymentLoading, setIsPaymentLoading] = useState(false)
   const [isConfirmLoading, setIsConfirmLoading] = useState(false)
   const [showDetailsSidebar, setShowDetailsSidebar] = useState(false)
@@ -97,6 +96,8 @@ export default function OrderDetailsPage() {
             <OrderDetails order={order} />
           </div>
         ),
+        cancelText: "Got it",
+        type: "warning"
       })
     }
   }
@@ -274,6 +275,26 @@ export default function OrderDetailsPage() {
 
   const handleShowPaymentReceivedConfirmation = () => {
     setShowPaymentReceivedConfirmation(true)
+  }
+
+  const handleCancelOrder = () => {
+    showAlert({
+      title: "Cancelling your order?",
+      description: "Don't cancel if you've already paid.",
+      confirmText: "Cancel order",
+      cancelText: "Keep order",
+      onConfirm: async () => {
+        try {
+          const result = await OrdersAPI.cancelOrder(orderId)
+          if (result.success) {
+            fetchOrderDetails()
+          }
+        } catch (error) {
+          console.error("Failed to cancel order:", error)
+        }
+      },
+      type: "warning"
+    })
   }
 
   if (error) {
@@ -468,11 +489,7 @@ export default function OrderDetailsPage() {
                 {((order.type === "buy" && order.status === "pending_payment" && order.user.id == userId) ||
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
                   <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
-                    <Button
-                      variant="outline"
-                      className="flex-1 bg-transparent"
-                      onClick={() => setShowCancelConfirmation(true)}
-                    >
+                    <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder}>
                       Cancel order
                     </Button>
                     <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
@@ -568,44 +585,6 @@ export default function OrderDetailsPage() {
           </div>
         )}
       </div>
-
-      {showCancelConfirmation && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 relative">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">Cancelling your order?</h2>
-              <button onClick={() => setShowCancelConfirmation(false)} className="text-slate-500 hover:text-slate-700">
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <p className="text-grayscale-100 mb-6">Don't cancel if you've already paid.</p>
-
-            <div className="space-y-3">
-              <Button onClick={() => setShowCancelConfirmation(false)} className="w-full">
-                Keep order
-              </Button>
-              <Button
-                variant="outline"
-                onClick={async () => {
-                  setShowCancelConfirmation(false)
-                  try {
-                    const result = await OrdersAPI.cancelOrder(orderId)
-                    if (result.success) {
-                      fetchOrderDetails()
-                    }
-                  } catch (error) {
-                    console.error("Failed to cancel order:", error)
-                  }
-                }}
-                className="w-full"
-              >
-                Cancel order
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <ComplaintForm
         isOpen={showComplaintForm}
