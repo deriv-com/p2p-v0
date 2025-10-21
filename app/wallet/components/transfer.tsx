@@ -380,14 +380,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     const numAmount = Number.parseFloat(transferAmount)
     const minAmount = getMinimumAmount()
     const sourceBalance = getSourceWalletBalance()
-    const decimalConstraints = getDecimalConstraints()
-
-    if (decimalConstraints) {
-      const decimalPlaces = getDecimalPlaces(transferAmount)
-      if (decimalPlaces < decimalConstraints.minimum) {
-        return `Amount must have at least ${decimalConstraints.minimum} decimal place${decimalConstraints.minimum > 1 ? "s" : ""}`
-      }
-    }
 
     if (numAmount < minAmount) {
       return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}`
