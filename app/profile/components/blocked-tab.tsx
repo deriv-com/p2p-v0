@@ -145,7 +145,7 @@ export default function BlockedTab() {
           filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
         ) : (
           <EmptyState
-            title={searchQuery ? "No matching name" : "No blocked users"}
+            title={searchQuery ? "No matching name" : "No blocked users yet"}
             description={searchQuery ? `There is no result for ${searchQuery}.` : "Users you block will appear here."}
             redirectToAds={false}
           />
