@@ -242,7 +242,7 @@ export default function PaymentDetailsForm({
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setSelectedPaymentMethods={setSelectedPaymentMethodIds}
             hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
           />
         ),
       })
