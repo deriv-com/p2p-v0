@@ -14,7 +14,6 @@ export interface AccountCurrency {
 
 export function useAccountCurrencies() {
   const [accountCurrencies, setAccountCurrencies] = useState<AccountCurrency[]>([])
-  const [currenciesData, setCurrenciesData] = useState<CurrenciesData>({})
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -23,8 +22,6 @@ export function useAccountCurrencies() {
       try {
         setIsLoading(true)
         const response = await getCurrencies()
-
-        setCurrenciesData(response)
 
         const currencyList = Object.keys(response)
           .map((code) => ({
@@ -53,8 +50,7 @@ export function useAccountCurrencies() {
   }, [])
 
   return {
-    accountCurrencies,
-    currenciesData,
+    accountCurrencies
     isLoading,
     error,
   }
