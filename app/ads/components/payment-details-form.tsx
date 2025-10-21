@@ -221,7 +221,7 @@ export default function PaymentDetailsForm({
       payment_method_names: selectedPaymentMethodIds
         .map((id) => {
           const method = userPaymentMethods.find((m) => m.id === id)
-          return method?.display_name || ""
+          return method?.method || ""
         })
         .filter(Boolean),
       instructions,
