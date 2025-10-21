@@ -478,7 +478,7 @@ export default function PaymentDetailsForm({
               )}
 
               {initialData.type === "sell" && (
-                <div className="mb-6"
+                <div className="mb-6">
                   <div
                     className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                     onClick={handleShowPaymentSelection}
