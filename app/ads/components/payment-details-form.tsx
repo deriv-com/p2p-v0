@@ -93,7 +93,7 @@ const PaymentSelectionContent = ({
         {paymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {paymentMethods.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">No payment methods found</p
+            <p className="text-gray-600 mb-4">No payment methods found</p>
           </div>
         ) : (
           paymentMethods.map((method) => {
@@ -233,9 +233,8 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const handleShowPaymentSelection = (isBuyAdvert: boolean) => {
-    if (isBuyAdvert) {
-      setTempSelectedPaymentMethods(selectedPaymentMethodIds)
+  const handleShowPaymentSelection = () => {
+    setTempSelectedPaymentMethods(selectedPaymentMethodIds)
       showAlert({
         title: "Payment method",
         description: (
@@ -245,28 +244,10 @@ export default function PaymentDetailsForm({
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setSelectedPaymentMethods={setSelectedPaymentMethodIds}
             hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-            isBuyAdvert={true}
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick
           />
         ),
       })
-    } else {
-      setTempSelectedPaymentMethods(selectedPaymentMethodIds)
-      showAlert({
-        title: "Payment method",
-        description: (
-          <PaymentSelectionContent
-            paymentMethods={userPaymentMethods}
-            tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-            setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-            setSelectedPaymentMethods={setSelectedPaymentMethodIds}
-            hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-            isBuyAdvert={false}
-          />
-        ),
-      })
-    }
   }
 
   const handleAddPaymentMethodClick = () => {
