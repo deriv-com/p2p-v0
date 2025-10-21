@@ -11,7 +11,7 @@ interface PanelWrapperProps {
   children: React.ReactNode
 }
 
-export function PanelWrapper({ onClose, children }: PanelWrapperProps) {
+export function PanelWrapper({ onBack, onClose, children }: PanelWrapperProps) {
   const isMobile = useIsMobile()
 
   return (
