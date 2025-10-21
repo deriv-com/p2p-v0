@@ -911,7 +911,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             )}
             <div className="flex gap-2 mt-6">
               <Button
-                className="flex-1 text-grayscale-600 font-normal border-grayscale-200"
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
                 onClick={() => handlePercentageClick(25)}
                 size="sm"
                 variant="outline"
