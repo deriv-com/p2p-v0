@@ -291,6 +291,7 @@ export default function OrderDetailsPage() {
           console.error("Failed to cancel order:", error)
         }
       },
+      type: "warning"
     })
   }
 
