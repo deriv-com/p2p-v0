@@ -9,7 +9,6 @@ import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import { getSettings } from "@/services/api/api-auth"
-import { getCurrencies } from "@/services/api/api-wallets"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 
 interface AdDetailsFormProps {
@@ -31,22 +30,6 @@ interface PriceRange {
   highestPrice: number | null
 }
 
-interface CurrencyData {
-  type: "cryptocurrency" | "fiat" | "stablecoin"
-  label: string
-  decimal: {
-    maximum: number
-    minimum: number
-  }
-  [key: string]: any
-}
-
-interface CurrenciesResponse {
-  data: {
-    [currencyCode: string]: CurrencyData
-  }
-}
-
 export default function AdDetailsForm({
   onNext,
   initialData,
@@ -60,7 +43,7 @@ export default function AdDetailsForm({
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
   const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
-  const { accountCurrencies } = useAccountCurrencies()
+  const { accountCurrencies, currenciesData } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
     totalAmount: false,
@@ -70,7 +53,6 @@ export default function AdDetailsForm({
   })
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
-  const [currenciesData, setCurrenciesData] = useState<CurrenciesResponse | null>(null)
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -78,8 +60,8 @@ export default function AdDetailsForm({
   }
 
   const getDecimalConstraints = (currency: string): { minimum: number; maximum: number } | null => {
-    if (!currency || !currenciesData) return null
-    const currencyData = currenciesData.data[currency]
+    if (!currency || !currenciesData || Object.keys(currenciesData).length === 0) return null
+    const currencyData = currenciesData[currency]
     return currencyData?.decimal || null
   }
 
@@ -88,21 +70,6 @@ export default function AdDetailsForm({
     const hasNoErrors = Object.keys(formErrors).length === 0
     return hasValues && hasNoErrors
   }
-
-  useEffect(() => {
-    const loadCurrencies = async () => {
-      try {
-        const response = await getCurrencies()
-        if (response?.data) {
-          setCurrenciesData(response as CurrenciesResponse)
-        }
-      } catch (error) {
-        console.error("Error fetching currencies:", error)
-      }
-    }
-
-    loadCurrencies()
-  }, [])
 
   useEffect(() => {
     if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
