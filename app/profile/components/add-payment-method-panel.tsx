@@ -264,23 +264,31 @@ export default function AddPaymentMethodPanel({
       <>
         <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
         <div className="p-4 pb-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input
-              type="text"
+          <div className="relative mb-4">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={24}
+              height={24}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2"
+            />
+            <Input
+              placeholder="Search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search payment methods"
-              className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              onChange={handleSearchChange}
+              className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
+              autoComplete="off"
+              autoFocus
             />
             {searchQuery && (
-              <button
-                type="button"
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
               >
-                <X className="h-5 w-5" />
-              </button>
+                <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+              </Button>
             )}
           </div>
         </div>
