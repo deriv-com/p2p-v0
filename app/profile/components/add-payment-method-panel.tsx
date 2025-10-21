@@ -343,7 +343,7 @@ export default function AddPaymentMethodPanel({
   )
 
   if (onClose) {
-    return <PanelWrapper onClose={onClose}>{formContent}</PanelWrapper>
+    return <PanelWrapper onBack={handleBackToMethodList} onClose={onClose}>{formContent}</PanelWrapper>
   }
 
   return <div className="w-full h-[calc(100%-60px)]">{formContent}</div>
