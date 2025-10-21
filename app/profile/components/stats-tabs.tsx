@@ -303,7 +303,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           isLoading={isAddingPaymentMethod}
           onClose={() => setShowAddPaymentPanel(false)}
         />
-      )
+      )}
     </div>
   )
 }
