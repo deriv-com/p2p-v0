@@ -29,6 +29,7 @@ export const PaymentConfirmationSidebar = ({
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [isUploadLoading, setIsUploadLoading] = useState<boolean>(false)
   const [fileError, setFileError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -70,10 +71,12 @@ export const PaymentConfirmationSidebar = ({
     if (!selectedFile) return
 
     try {
+      setIsUploadLoading(true)
       const base64 = await fileToBase64(selectedFile)
       await OrdersAPI.sendChatMessage(order.id, "", base64, true)
 
       onConfirm()
+      setIsUploadLoading(false)
     } catch (error) {
       console.error("Error uploading file to chat:", error)
     }
@@ -149,8 +152,8 @@ export const PaymentConfirmationSidebar = ({
             </Alert>
           </div>
           <div className="p-4 pt-0">
-            <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading} className="w-full">
-              {isLoading ? (
+            <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading || isUploadLoading} className="w-full">
+              {isLoading || isUploadLoading? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
