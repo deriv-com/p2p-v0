@@ -8,7 +8,6 @@ import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
-import CustomStatusModal from "./ui/custom-status-modal"
 import { ProfileAPI } from "@/services/api"
 import EditPaymentMethodPanel from "./edit-payment-method-panel"
 import { Card, CardContent } from "@/components/ui/card"
@@ -33,13 +32,7 @@ export default function PaymentMethodsTab() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const { toast } = useToast()
-  const [statusModal, setStatusModal] = useState({
-    show: false,
-    type: "error" as "success" | "error",
-    title: "",
-    message: "",
-  })
-  const { showDeleteDialog } = useAlertDialog()
+  const { showDeleteDialog, showAlert } = useAlertDialog()
 
   const [editPanel, setEditPanel] = useState({
     show: false,
@@ -175,33 +168,33 @@ export default function PaymentMethodsTab() {
 
         fetchPaymentMethods()
       } else {
-        let errorMessage = "Failed to update payment method. Please try again."
+        let errorMessage = "You can't update this payment method"
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
 
-          if (errorCode === "PaymentMethodUsedByOpenOrder") {
+          if (errorCode === "PaymentMethodInUseByOrder") {
             errorMessage = "This payment method is currently being used by an open order and cannot be modified."
           } else if (result.errors[0].message) {
             errorMessage = result.errors[0].message
           }
         }
 
-        setStatusModal({
-          show: true,
+        showAlert({
+          title: "You can't update this payment method",
+          description: errorMessage,
+          confirmText: "Got it",
           type: "error",
-          title: "Failed to update payment method",
-          message: errorMessage,
         })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
-      setStatusModal({
-        show: true,
+      showAlert({
+        title: "You can't update this payment method",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        confirmText: "Got it",
         type: "error",
-        title: "Failed to update payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
       })
     } finally {
       setEditPanel({
@@ -214,8 +207,9 @@ export default function PaymentMethodsTab() {
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     showDeleteDialog({
-      title: `Delete ${name}?`,
+      title: `Delete payment method?`,
       description: "Are you sure you want to delete this payment method?",
+      cancelText: "No",
       confirmText: "Yes, delete",
       onConfirm: () => {
         confirmDeletePaymentMethod(id)
@@ -240,27 +234,34 @@ export default function PaymentMethodsTab() {
         })
         fetchPaymentMethods()
       } else {
-        setStatusModal({
-          show: true,
+        let errorMessage = "You can't delete this payment method"
+
+        if (result.errors && result.errors.length > 0) {
+          const errorCode = result.errors[0].code
+
+          if (errorCode === "PaymentMethodInUseByOrder") {
+            errorMessage = "This payment method is currently being used by an open order and cannot be deleted."
+          } else if (result.errors[0].message) {
+            errorMessage = result.errors[0].message
+          }
+        }
+        showAlert({
+          title: "You can't delete this payment method",
+          description: errorMessage,
+          confirmText: "Got it",
           type: "error",
-          title: "Failed to delete payment method",
-          message: (result.errors && result.errors[0]?.message) || "An error occurred. Please try again.",
         })
       }
     } catch (error) {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
-      setStatusModal({
-        show: true,
+      showAlert({
+        title: "You can't delete this payment method",
+        description: error instanceof Error ? error.message : "An error occurred. Please try again.",
+        confirmText: "Got it",
         type: "error",
-        title: "Failed to delete payment method",
-        message: error instanceof Error ? error.message : "An error occurred. Please try again.",
       })
     }
-  }
-
-  const closeStatusModal = () => {
-    setStatusModal((prev) => ({ ...prev, show: false }))
   }
 
   const bankTransfers = paymentMethods.filter((method) => method.category === "bank_transfer")
@@ -428,15 +429,6 @@ export default function PaymentMethodsTab() {
           onClose={() => setEditPanel({ show: false, paymentMethod: null })}
           onSave={handleSavePaymentMethod}
           isLoading={isEditing}
-        />
-      )}
-
-      {statusModal.show && (
-        <CustomStatusModal
-          type={statusModal.type}
-          title={statusModal.title}
-          message={statusModal.message}
-          onClose={closeStatusModal}
         />
       )}
     </div>
