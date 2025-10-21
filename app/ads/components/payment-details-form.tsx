@@ -35,6 +35,8 @@ interface PaymentDetailsFormProps {
   onSubmit: (data: Partial<AdFormData>, errors?: Record<string, string>) => void
   initialData: Partial<AdFormData>
   onBottomSheetOpenChange?: (isOpen: boolean) => void
+  userPaymentMethods: UserPaymentMethod[]
+  onRefetchPaymentMethods: () => Promise<void>
 }
 
 const PaymentSelectionContent = ({
@@ -170,35 +172,18 @@ export default function PaymentDetailsForm({
   onSubmit,
   initialData,
   onBottomSheetOpenChange,
+  userPaymentMethods,
+  onRefetchPaymentMethods,
 }: PaymentDetailsFormProps) {
   const isMobile = useIsMobile()
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
   const [instructions, setInstructions] = useState(initialData.instructions || "")
   const [touched, setTouched] = useState(false)
-  const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
-
-  const fetchUserPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      setUserPaymentMethods(response || [])
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }
-
-  useEffect(() => {
-    fetchUserPaymentMethods()
-  }, [])
 
   const isFormValid = () => {
     return selectedPaymentMethodIds.length > 0
@@ -220,7 +205,9 @@ export default function PaymentDetailsForm({
 
     const formData = {
       id: initialData.id,
-      ...(initialData.type === "sell" ? { payment_method_ids: selectedPaymentMethodIds } : { paymentMethods: paymentMethodNames }),
+      ...(initialData.type === "sell"
+        ? { payment_method_ids: selectedPaymentMethodIds }
+        : { paymentMethods: paymentMethodNames }),
       instructions,
     }
 
@@ -259,7 +246,7 @@ export default function PaymentDetailsForm({
       const response = await ProfileAPI.addPaymentMethod(method, fields)
 
       if (response.success) {
-        await fetchUserPaymentMethods()
+        await onRefetchPaymentMethods()
         setShowAddPaymentPanel(false)
       } else {
         let title = "Unable to add payment method"

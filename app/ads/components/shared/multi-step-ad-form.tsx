@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
-import { AdsAPI } from "@/services/api"
+import { AdsAPI, ProfileAPI } from "@/services/api"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
@@ -22,6 +22,15 @@ interface MultiStepAdFormProps {
   mode: "create" | "edit"
   adId?: string
   initialType?: "buy" | "sell"
+}
+
+interface UserPaymentMethod {
+  id: string
+  type: string
+  display_name: string
+  fields: Record<string, any>
+  is_enabled: number
+  method: string
 }
 
 const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
@@ -69,6 +78,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
+  const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
 
   const formDataRef = useRef({})
 
@@ -84,6 +94,24 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       .replace(/\s+/g, "_")
       .replace(/[^a-z0-9_]/g, "")
   }
+
+  const fetchUserPaymentMethods = async () => {
+    try {
+      const response = await ProfileAPI.getUserPaymentMethods()
+
+      if (response.error) {
+        return
+      }
+
+      setUserPaymentMethods(response || [])
+    } catch (error) {
+      console.error("Error fetching payment methods:", error)
+    }
+  }
+
+  useEffect(() => {
+    fetchUserPaymentMethods()
+  }, [])
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -512,6 +540,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 isSubmitting={isSubmitting}
                 isEditMode={mode === "edit"}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
+                userPaymentMethods={userPaymentMethods}
+                onRefetchPaymentMethods={fetchUserPaymentMethods}
               />
             ) : (
               <div className="space-y-6">
