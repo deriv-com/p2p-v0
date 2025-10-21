@@ -1,7 +1,7 @@
 "use client"
 
 import type * as React from "react"
-import { useState, useEffect } from "react"
+import { useCallback, useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
