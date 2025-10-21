@@ -269,7 +269,7 @@ export default function AddPaymentMethodPanel({
       <>
         <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
         <div className="p-4 pb-2">
-          <div className="relative mb-4">
+          <div className="relative">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
