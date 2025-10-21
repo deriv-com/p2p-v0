@@ -407,7 +407,6 @@ export default function BuySellPage() {
                                   </button>
                                   <Image
                                     src="/icons/verified-badge.png"
-                                    className="cursor-pointer"
                                     alt="Verified"
                                     width={32}
                                     height={32}
