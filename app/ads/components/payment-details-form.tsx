@@ -223,14 +223,13 @@ export default function PaymentDetailsForm({
   }
 
   const handleShowPaymentSelection = () => {
-    setTempSelectedPaymentMethods(selectedPaymentMethodIds)
     showAlert({
       title: "Payment method",
       description: (
         <PaymentSelectionContent
           paymentMethods={userPaymentMethods}
-          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          tempSelectedPaymentMethods={selectedPaymentMethodIds}
+          setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
           setSelectedPaymentMethods={setSelectedPaymentMethodIds}
           hideAlert={hideAlert}
           handleAddPaymentMethodClick={handleAddPaymentMethodClick}
