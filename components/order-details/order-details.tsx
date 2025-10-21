@@ -11,7 +11,7 @@ import type { OrderDetailItemProps } from "./types"
 const OrderDetailItem = ({ label, value, testId }: OrderDetailItemProps) => (
   <div className="md:flex md:justify-between md:items-center md:border-b py-4" data-testid={testId}>
     <h3 className="text-sm text-slate-500 mb-1">{label}</h3>
-    <p className="text-base font-bold">{value}</p>
+    <p className="text-sm font-bold">{value}</p>
   </div>
 )
 
