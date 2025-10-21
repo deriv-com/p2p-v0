@@ -358,7 +358,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
     if (!isNaN(numAmount) && selectedCurrency && currenciesData) {
       const currencyData = currenciesData.data[selectedCurrency]
-      const minAmount = currencyData?.limit?.transfer?.min_amount_per_transaction || 
+      const minAmount = currencyData?.limit?.transfer?.min_amount_per_transaction || 0
 
       return numAmount > 0 && numAmount >= minAmount && numAmount <= sourceBalance
     }
