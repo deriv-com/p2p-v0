@@ -9,10 +9,10 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import type { OrderDetailItemProps } from "./types"
 import { cn } from "@/lib/utils"
 
-const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps) => {
+const OrderDetailItem = ({ hasCopy, label, value, testId, isBlockLayout }: OrderDetailItemProps) => {
   const { toast } = useToast()
 
-  return (<div className="md:flex md:justify-between md:items-center md:border-b md:py-4" data-testid={testId}>
+  return (<div className={cn("md:flex md:justify-between md:items-center md:border-b md:py-4")} data-testid={testId}>
     <h3 className="text-sm text-slate-500">{label}</h3>
     <div className="flex justify-between md:justify-start md:gap-2">
       <p className="text-sm font-bold">{value}</p>
