@@ -65,6 +65,13 @@ export default function AdDetailsForm({
     return currencyData?.decimal || null
   }
 
+  const truncateToMaxDecimals = (value: string, maxDecimals: number): string => {
+    if (!value || value === "") return value
+    const parts = value.split(".")
+    if (parts.length === 1) return value
+    return `${parts[0]}.${parts[1].substring(0, maxDecimals)}`
+  }
+
   const isFormValid = () => {
     const hasValues = !!totalAmount && !!fixedRate && !!minAmount && !!maxAmount
     const hasNoErrors = Object.keys(formErrors).length === 0
@@ -196,6 +203,52 @@ export default function AdDetailsForm({
 
     setFormErrors(errors)
   }, [totalAmount, fixedRate, minAmount, maxAmount, touched, priceRange, forCurrency])
+
+  useEffect(() => {
+    if (!buyCurrency) return
+
+    const decimalConstraints = getDecimalConstraints(buyCurrency)
+    if (!decimalConstraints) return
+
+    const maxDecimals = decimalConstraints.maximum
+
+    // Validate and truncate totalAmount if needed
+    if (totalAmount && getDecimalPlaces(totalAmount) > maxDecimals) {
+      const truncated = truncateToMaxDecimals(totalAmount, maxDecimals)
+      setTotalAmount(truncated)
+      setTouched((prev) => ({ ...prev, totalAmount: true }))
+    }
+
+    // Validate and truncate minAmount if needed
+    if (minAmount && getDecimalPlaces(minAmount) > maxDecimals) {
+      const truncated = truncateToMaxDecimals(minAmount, maxDecimals)
+      setMinAmount(truncated)
+      setTouched((prev) => ({ ...prev, minAmount: true }))
+    }
+
+    // Validate and truncate maxAmount if needed
+    if (maxAmount && getDecimalPlaces(maxAmount) > maxDecimals) {
+      const truncated = truncateToMaxDecimals(maxAmount, maxDecimals)
+      setMaxAmount(truncated)
+      setTouched((prev) => ({ ...prev, maxAmount: true }))
+    }
+  }, [buyCurrency, accountCurrencies])
+
+  useEffect(() => {
+    if (!forCurrency) return
+
+    const decimalConstraints = getDecimalConstraints(forCurrency)
+    if (!decimalConstraints) return
+
+    const maxDecimals = decimalConstraints.maximum
+
+    // Validate and truncate fixedRate if needed
+    if (fixedRate && getDecimalPlaces(fixedRate) > maxDecimals) {
+      const truncated = truncateToMaxDecimals(fixedRate, maxDecimals)
+      setFixedRate(truncated)
+      setTouched((prev) => ({ ...prev, fixedRate: true }))
+    }
+  }, [forCurrency, accountCurrencies])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
