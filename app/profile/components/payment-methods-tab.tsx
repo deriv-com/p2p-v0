@@ -168,7 +168,7 @@ export default function PaymentMethodsTab() {
 
         fetchPaymentMethods()
       } else {
-        let errorMessage = "Failed to update payment method. Please try again."
+        let errorMessage = "You can't update this payment method"
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
@@ -181,7 +181,7 @@ export default function PaymentMethodsTab() {
         }
 
         showAlert({
-          title: "Failed to update payment method",
+          title: "You can't update this payment method",
           description: errorMessage,
           confirmText: "OK",
           type: "error",
@@ -191,7 +191,7 @@ export default function PaymentMethodsTab() {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       showAlert({
-        title: "Failed to update payment method",
+        title: "You can't update this payment method",
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
         confirmText: "OK",
         type: "error",
