@@ -43,7 +43,7 @@ export default function AdDetailsForm({
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
   const [forCurrency, setForCurrency] = useState(initialData?.forCurrency?.toString() || "")
-  const { accountCurrencies, currenciesData } = useAccountCurrencies()
+  const { accountCurrencies } = useAccountCurrencies()
   const [formErrors, setFormErrors] = useState<ValidationErrors>({})
   const [touched, setTouched] = useState({
     totalAmount: false,
