@@ -374,11 +374,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     const sourceBalance = getSourceWalletBalance()
 
     if (numAmount < minAmount) {
-      return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}`
+      return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}.`
     }
 
     if (numAmount > sourceBalance) {
-      return `Amount cannot exceed available balance ${formatAmountWithDecimals(sourceBalance.toString())} ${selectedCurrency || "USD"}`
+      return `Amount cannot exceed available balance ${formatAmountWithDecimals(sourceBalance.toString())} ${selectedCurrency || "USD"}.`
     }
 
     return ""
