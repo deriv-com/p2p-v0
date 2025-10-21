@@ -321,6 +321,7 @@ export default function PaymentDetailsForm({
                   variant="outline"
                   className="w-full justify-between px-4 rounded-lg bg-transparent"
                   onClick={() => handleShowPaymentSelection(initialData.type === "buy")}
+                  type="button"
                 >
                   <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
                   <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
