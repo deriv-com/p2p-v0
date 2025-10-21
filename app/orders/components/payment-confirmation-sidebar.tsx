@@ -161,7 +161,7 @@ export const PaymentConfirmationSidebar = ({
 
             {fileError && <div className="text-error text-xs">{fileError}</div>}
           </div>
-          <div className="p-4 pt-0">
+          <div className="p-4 pt-0 flex justify-end">
             <Button
               variant="default"
               onClick={handleSubmit}
