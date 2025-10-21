@@ -341,7 +341,7 @@ export default function AdDetailsForm({
                     return
                   }
 
-                  const decimalConstraints = getDecimalConstraints(forCurrency)
+                  const decimalConstraints = getDecimalConstraints(buyCurrency)
                   if (decimalConstraints) {
                     const decimalPlaces = getDecimalPlaces(value)
                     if (decimalPlaces > decimalConstraints.maximum) {
