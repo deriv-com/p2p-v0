@@ -319,7 +319,7 @@ export default function PaymentDetailsForm({
               <div className="mb-6">
                 <Button
                   variant="outline"
-                  className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:"
+                  className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent"
                   onClick={() => handleShowPaymentSelection(initialData.type === "buy")}
                   type="button"
                 >
