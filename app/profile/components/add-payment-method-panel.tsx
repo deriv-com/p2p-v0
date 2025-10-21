@@ -280,7 +280,7 @@ export default function AddPaymentMethodPanel({
               placeholder="Search"
               value={searchQuery}
               onChange={handleSearchChange}
-              className="text-base pl-10 pr-10 h-14 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
+              className="text-base pl-10 pr-10 h-14 border-grayscale-500 focus:border-grayscale-500   rounded-lg"
               autoComplete="off"
               autoFocus
             />
