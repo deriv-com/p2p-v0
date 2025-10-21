@@ -302,6 +302,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
   const handleAddPaymentMethodClick = () => {
     setShowAddPaymentPanel(true)
+    hideAlert
   }
 
   const getSelectedPaymentMethodsText = () => {
