@@ -556,7 +556,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -576,7 +576,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -659,7 +661,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -679,7 +681,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -766,6 +770,19 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     setTransferAmount(value)
   }
 
+  const handlePercentageClick = (percentage: number) => {
+    const sourceBalance = getSourceWalletBalance()
+    const calculatedAmount = (sourceBalance * percentage) / 100
+
+    const decimalConstraints = getDecimalConstraints()
+    if (decimalConstraints) {
+      const formattedAmount = calculatedAmount.toFixed(decimalConstraints.maximum)
+      setTransferAmount(formattedAmount)
+    } else {
+      setTransferAmount(calculatedAmount.toFixed(2))
+    }
+  }
+
   if (step === "chooseCurrency") {
     return (
       <ChooseCurrencyStep
@@ -808,7 +825,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -846,7 +863,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}
@@ -896,6 +915,32 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
             )}
+            <div className="flex gap-2 mt-3">
+              <button
+                onClick={() => handlePercentageClick(25)}
+                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+              >
+                25%
+              </button>
+              <button
+                onClick={() => handlePercentageClick(50)}
+                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+              >
+                50%
+              </button>
+              <button
+                onClick={() => handlePercentageClick(75)}
+                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+              >
+                75%
+              </button>
+              <button
+                onClick={() => handlePercentageClick(100)}
+                className="flex-1 h-12 rounded-full bg-grayscale-500 text-slate-1200 text-base font-normal hover:bg-grayscale-600 transition-colors"
+              >
+                100%
+              </button>
+            </div>
             <div className="hidden md:block absolute top-full right-0 mt-6">
               <Button
                 onClick={handleTransferClick}
