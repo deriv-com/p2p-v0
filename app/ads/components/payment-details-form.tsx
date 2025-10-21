@@ -310,9 +310,8 @@ export default function PaymentDetailsForm({
       detail: {
         isValid: isFormValid(),
         formData: {
-          paymentMethods,
           payment_method_ids: selectedPaymentMethodIds,
-          payment_method_names: paymentMethodNames,
+          paymentMethods: paymentMethodNames,
           instructions,
         },
       },
