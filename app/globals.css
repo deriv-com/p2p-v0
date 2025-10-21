@@ -113,7 +113,7 @@ body {
 
   body {
     @apply bg-background text-foreground;
-  overscroll-behavior-x: none;
+    overscroll-behavior-x: none;
     touch-action: pan-y;
   }
 }
