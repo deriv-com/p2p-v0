@@ -207,7 +207,7 @@ export default function PaymentMethodsTab() {
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     showDeleteDialog({
-      title: `Delete ${name}?`,
+      title: `Delete payment method?`,
       description: "Are you sure you want to delete this payment method?",
       confirmText: "Yes, delete",
       onConfirm: () => {
