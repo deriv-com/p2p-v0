@@ -50,7 +50,7 @@ export function useAccountCurrencies() {
   }, [])
 
   return {
-    accountCurrencies
+    accountCurrencies,
     isLoading,
     error,
   }
