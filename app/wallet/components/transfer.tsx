@@ -846,8 +846,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               <p className="text-red-500 text-sm mt-1">
                 {Number.parseFloat(transferAmount) < getMinimumAmount()
                   ? `Minimum transfer amount is ${formatAmountWithDecimals(getMinimumAmount())} ${selectedCurrency || "USD"}`
-                  : `Amount cannot exceed available balance (${formatAmountWithDecimals(getSourceWalletBalance().toString())
-                ${selectedCurrency || "USD"})`}
+                  : `Amount cannot exceed available balance ${formatAmountWithDecimals(getSourceWalletBalance().toString())}
+                ${selectedCurrency || "USD"}`}
               </p>
             )}
             <div className="hidden md:block absolute top-full right-0 mt-6">
