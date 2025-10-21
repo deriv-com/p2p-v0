@@ -35,7 +35,7 @@ export function BalanceSection() {
       {isLoading ? (
         <Skeleton className="h-7 w-32 bg-white/20" />
       ) : (
-        <div className="text-white text-xl font-bold">{`${formatAmount(balance)} ${currency}`}</div>
+        <div className="text-white text-xl font-bold">{`${formatAmountWithDecimals(balance)} ${currency}`}</div>
       )}
     </div>
   )
