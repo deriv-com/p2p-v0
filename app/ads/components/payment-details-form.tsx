@@ -242,7 +242,7 @@ export default function PaymentDetailsForm({
             setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
             setSelectedPaymentMethods={setSelectedPaymentMethodIds}
             hideAlert={hideAlert}
-            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick
           />
         ),
       })
@@ -283,7 +283,7 @@ export default function PaymentDetailsForm({
     }
   }
 
-  const getSelectedPaymentMethodsText = ) => {
+  const getSelectedPaymentMethodsText = () => {
     const selectedIds = selectedPaymentMethodIds
     const methods = userPaymentMethods
 
