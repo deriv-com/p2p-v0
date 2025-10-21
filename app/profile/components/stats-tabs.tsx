@@ -180,8 +180,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-
-                  <h2 className="text-xl font-bold">Follows</h2>
+                  <h2 className="text-2xl font-bold">Follows</h2>
                   <FollowsTab />
                 </div>
               </div>
