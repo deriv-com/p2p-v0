@@ -13,6 +13,7 @@ import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } fr
 import { ProfileAPI } from "@/services/api"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { usePaymentSelection } from "./payment-selection-context"
 
 interface PaymentMethod {
   display_name: string
@@ -179,6 +180,7 @@ export default function PaymentDetailsForm({
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
+  const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
   const fetchUserPaymentMethods = async () => {
     try {
@@ -197,8 +199,6 @@ export default function PaymentDetailsForm({
   useEffect(() => {
     fetchUserPaymentMethods()
   }, [])
-
-  const [selectedPaymentMethodIds, setSelectedPaymentMethodIds] = useState<string[]>([])
 
   const isFormValid = () => {
     return selectedPaymentMethodIds.length > 0
