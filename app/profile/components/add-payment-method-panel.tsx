@@ -287,7 +287,7 @@ export default function AddPaymentMethodPanel({
 
   const formContent = (
     <>
-      <div className="flex items-center gap-4 px-4 pb-0">
+      <div className="flex items-center gap-4 p-4 pb-0">
         <h2 className="text-2xl font-bold">Add payment details</h2>
       </div>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
