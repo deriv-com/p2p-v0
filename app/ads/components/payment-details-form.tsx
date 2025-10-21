@@ -317,15 +317,14 @@ export default function PaymentDetailsForm({
           <div className="max-w-[800px] mx-auto h-full flex flex-col">
             <div>
               <div className="mb-6">
-                <div
-                  className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+                <Button
+                  variant="outline"
+                  className="w-full justify-between px-4 rounded-lg bg-transparent"
                   onClick={() => handleShowPaymentSelection(initialData.type === "buy")}
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
-                    <ChevronRight className="h-5 w-5 text-gray-400" />
-                  </div>
-                </div>
+                  <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
+                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+                </Button>
               </div>
 
               <div>
