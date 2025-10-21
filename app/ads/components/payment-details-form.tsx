@@ -140,7 +140,7 @@ const PaymentSelectionContent = ({
           })
         )}
 
-        {!isBuyAdvert && handleAddPaymentMethodClick && (
+        {handleAddPaymentMethodClick && (
           <div
             className="bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             onClick={() => {
