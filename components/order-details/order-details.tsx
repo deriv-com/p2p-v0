@@ -65,7 +65,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
   })
 
   return (
-    <div data-testid="order-details-container">
+    <div className="space-y-4 md:space-y-1" data-testid="order-details-container">
 
       <OrderDetailItem label="Order ID" value={order.id} testId="order-id-item" hasCopy={true} />
 
