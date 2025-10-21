@@ -65,8 +65,10 @@ export const OrderDetails = ({ order, setShowChat }) => {
     maximumFractionDigits: 2,
   })
 
+  const isBlockLayout = order.status === "completed" || isMobile
+
   return (
-    <div className="space-y-4 md:space-y-1" data-testid="order-details-container">
+    <div className={cn("space-y-4", !isBlockLayout && "md:space-y-1")} data-testid="order-details-container">
 
       <OrderDetailItem label="Order ID" value={order.id} testId="order-id-item" hasCopy={true} 
         isBlockLayout={order.status === "completed" || isMobile}/>
