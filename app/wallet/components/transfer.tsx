@@ -770,20 +770,17 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
 
-    // Allow empty input
     if (value === "") {
       setTransferAmount("")
       return
     }
 
-    // Check decimal constraints
     const decimalConstraints = getDecimalConstraints()
     if (decimalConstraints) {
       const decimalPlaces = getDecimalPlaces(value)
 
-      // Prevent input if it exceeds maximum decimal places
       if (decimalPlaces > decimalConstraints.maximum) {
-        return // Don't update state, effectively blocking the input
+        return
       }
     }
 
