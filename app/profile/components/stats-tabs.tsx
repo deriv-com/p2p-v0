@@ -132,7 +132,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             </div>
             {showPaymentMethodsSidebar && (
               <div className="fixed inset-y-0 right-0 z-50 bg-white shadow-xl flex flex-col inset-0 w-full">
-                <div className="flex items-center gap-4 px-4 py-3 justify-end">
+                <div className="flex items-center gap-4 px-4 py-3">
                   <Button
                     variant="ghost"
                     size="sm"
