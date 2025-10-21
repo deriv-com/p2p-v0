@@ -12,18 +12,6 @@ export interface AccountCurrency {
   }
 }
 
-export interface CurrenciesData {
-  [currencyCode: string]: {
-    type?: "cryptocurrency" | "fiat" | "stablecoin"
-    label?: string
-    decimal?: {
-      maximum: number
-      minimum: number
-    }
-    [key: string]: any
-  }
-}
-
 export function useAccountCurrencies() {
   const [accountCurrencies, setAccountCurrencies] = useState<AccountCurrency[]>([])
   const [currenciesData, setCurrenciesData] = useState<CurrenciesData>({})
