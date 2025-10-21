@@ -88,7 +88,7 @@ export const OrderDetails = ({ order, setShowChat }) => {
 
       <OrderDetailItem label="Order time" value={formatDateTime(order.created_at)} testId="order-time-item" />
 
-      <div className="flex md:flex items-end justify-between">
+      <div className="flex md:flex- items-end justify-between">
         <OrderDetailItem label={counterpartyLabel} value={counterpartyNickname || ""} testId="counterparty-item" />
         {order.status === "completed" && isMobile && (
           <Button
