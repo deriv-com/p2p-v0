@@ -211,16 +211,19 @@ export default function PaymentDetailsForm({
     const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
+    const paymentMethodNames = selectedPaymentMethodIds
+      .map((id) => {
+        const method = userPaymentMethods.find((m) => m.id === id)
+        return method?.method || ""
+      })
+      .filter(Boolean)
+
     const formData = {
       id: initialData.id,
       paymentMethods,
-      payment_method_ids: selectedPaymentMethodIds,
-      payment_method_names: selectedPaymentMethodIds
-        .map((id) => {
-          const method = userPaymentMethods.find((m) => m.id === id)
-          return method?.method || ""
-        })
-        .filter(Boolean),
+      ...(initialData.type === "sell"
+        ? { payment_method_ids: selectedPaymentMethodIds }
+        : { payment_method_names: paymentMethodNames }),
       instructions,
     }
 
