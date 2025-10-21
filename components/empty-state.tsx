@@ -52,9 +52,9 @@ export default function EmptyState({
         height={88}
       />
       {title && <p className="text-lg text-neutral-10 mt-2 font-bold">{title}</p>}
-      {description && <p className="text-base text-neutral-7 mb-[10px] mt-[8px]">{description}</p>}
+      {description && <p className="text-base text-neutral-7 mb-[10px] mt-2">{description}</p>}
       {redirectToAds && (
-        <Button onClick={createAd} className="mt-">
+        <Button onClick={createAd} className="mt-4">
           Create ad
         </Button>
       )}
