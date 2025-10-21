@@ -115,7 +115,7 @@ export const PaymentConfirmationSidebar = ({
           <div className="flex items-center gap-4 p-4 pb-0">
             <h2 className="text-2xl font-bold">Confirm your payment</h2>
           </div>
-            <Alert variant="warning" className="flex items-start gap-2 mt-4 mb-0">
+            <Alert variant="warning" className="flex items-center gap-2 mt-4 mb-0">
               <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
               <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
             </Alert>
