@@ -332,7 +332,7 @@ export default function AddPaymentMethodPanel({
         </div>
       </form>
 
-      <div className="p-4">
+      <div className="p-4 flex justify-end">
         <Button
           type="button"
           onClick={handleSubmit}
