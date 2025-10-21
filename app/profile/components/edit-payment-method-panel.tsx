@@ -168,7 +168,7 @@ export default function EditPaymentMethodPanel({
         </div>
       </form>
 
-      <div className="p-4 justify-end">
+      <div className="p-4 flex justify-end">
         <Button type="button" onClick={handleSubmit} disabled={isLoading || !isFormValid()} className="w-full md:w-auto">
           {isLoading ? "Saving..." : "Save changes"}
         </Button>
