@@ -389,12 +389,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
       }
     }
 
-    // Check minimum amount
     if (numAmount < minAmount) {
       return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}`
     }
 
-    // Check maximum amount (balance)
     if (numAmount > sourceBalance) {
       return `Amount cannot exceed available balance ${formatAmountWithDecimals(sourceBalance.toString())} ${selectedCurrency || "USD"}`
     }
