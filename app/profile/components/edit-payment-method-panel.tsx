@@ -156,7 +156,7 @@ export default function EditPaymentMethodPanel({
 
   return (
     <PanelWrapper onClose={onClose}>
-      <h2 className="text-xl font-bold">Edit payment details</h2>
+      <h2 className="text-xl font-bold px-">Edit payment details</h2>
       <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="space-y-4">
