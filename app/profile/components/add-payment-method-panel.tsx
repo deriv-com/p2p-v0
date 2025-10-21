@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
-import Image from "next/image
+import Image from "next/image"
 import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
@@ -102,6 +102,11 @@ export default function AddPaymentMethodPanel({
       setShowMethodDetails(true)
     }
   }
+
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setSearchQuery(value)
+  }, [])
 
   const handleBackToMethodList = () => {
     setShowMethodDetails(false)
