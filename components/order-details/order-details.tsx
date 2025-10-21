@@ -35,7 +35,7 @@ const OrderDetailItem = ({ hasCopy, label, value, testId }: OrderDetailItemProps
       >
         <Image src="/icons/copy-icon.png" alt="Copy" width={24} height={24} className="text-slate-500" />
       </Button>}
-    </>
+    </div>
   </div>
 )
 
