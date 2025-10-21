@@ -143,6 +143,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [showAddPaymentSheet, setShowAddPaymentSheet] = useState(false)
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
+  const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
 
   const handleShowPaymentSelection = () => {
     showAlert({
@@ -284,7 +285,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           setShowPaymentDetailsSheet(false)
           setShowAddPaymentSheet(false)
         } else {
-          hideAlert()
+          setShowAddPaymentPanel(false)
         }
       } else {
         let title = "Unable to add payment method"
@@ -312,32 +313,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     if (isMobile) {
       setShowAddPaymentSheet(true)
     } else {
-      showAlert({
-        title: "Select a payment method",
-        description: (
-          <AddPaymentMethodPanel
-            onAdd={handleAddPaymentMethod}
-            isLoading={isAddingPaymentMethod}
-            allowedPaymentMethods={ad?.payment_methods}
-            onMethodSelect={(method) => {
-              showAlert({
-                title: "Add payment details",
-                description: (
-                  <AddPaymentMethodPanel
-                    onAdd={handleAddPaymentMethod}
-                    isLoading={isAddingPaymentMethod}
-                    allowedPaymentMethods={ad?.payment_methods}
-                    selectedMethod={method}
-                    onBack={() => handleAddPaymentMethodClick()}
-                  />
-                ),
-                showCloseButton: true,
-              })
-            }}
-          />
-        ),
-        showCloseButton: true,
-      })
+      setShowAddPaymentPanel(true)
     }
   }
 
@@ -516,6 +492,15 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
           )}
         </div>
       </div>
+
+      {!isMobile && showAddPaymentPanel && (
+        <AddPaymentMethodPanel
+          onAdd={handleAddPaymentMethod}
+          isLoading={isAddingPaymentMethod}
+          allowedPaymentMethods={ad?.payment_methods}
+          onClose={() => setShowAddPaymentPanel(false)}
+        />
+      )}
 
       <Sheet open={showAddPaymentSheet} onOpenChange={setShowAddPaymentSheet}>
         <SheetContent side="right" className="w-full h-full">

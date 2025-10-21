@@ -255,7 +255,7 @@ export default function AddPaymentMethodPanel({
     const methodSelectionContent = (
       <>
         <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
-        <div className="p-4 space-y-3 overflow-y-auto mb-8">
+        <div className="p-4 space-y-3 overflow-y-auto">
           {availablePaymentMethods.map((paymentMethod) => (
             <Button
               key={paymentMethod.method}
