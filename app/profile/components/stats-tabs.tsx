@@ -115,7 +115,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4">
-                  <h2 className="text-2xl font-bold">Stats</h2>
+                  <h2 className="text-2xl font-bold mb-4">Stats</h2>
                   <StatsGrid stats={stats} />
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold">Payment methods</h2>
+                  <h2 className="text-2xl font-bold mb-4">Payment methods</h2>
                   <PaymentMethodsTab key={refreshKey} />
                 </div>
                 <div className="p-4">
@@ -180,7 +180,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold">Follows</h2>
+                  <h2 className="text-2xl font-bold mb-4">Follows</h2>
                   <FollowsTab />
                 </div>
               </div>
