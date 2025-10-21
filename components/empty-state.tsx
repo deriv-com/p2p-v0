@@ -48,8 +48,8 @@ export default function EmptyState({
       <Image
         src={icon || "/icons/search-icon.svg"}
         alt="No ads found"
-        width={56}
-        height={56}
+        width={88}
+        height={88}
       />
       {title && <p className="text-lg text-neutral-10 mt-[24px] font-bold">{title}</p>}
       {description && <p className="text-base text-neutral-7 mb-[10px] mt-[8px]">{description}</p>}
