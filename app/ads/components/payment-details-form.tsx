@@ -329,15 +329,10 @@ export default function PaymentDetailsForm({
               </div>
 
               <div>
-                <h3 className="text-base font-bold leading-6 tracking-normal mb-4">
-                  {initialData.type === "sell"
-                    ? "Advertisers' instructions and contact details"
-                    : "Instructions (Optional)"}
-                </h3>
                 <Textarea
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
-                  placeholder="Advertisers' instructions (Optional)"
+                  placeholder="Advertiser's instructions (Optional)"
                   className="min-h-[120px] resize-none"
                   maxLength={300}
                 />
