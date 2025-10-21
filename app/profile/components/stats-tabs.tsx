@@ -302,7 +302,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
         )}
       </div>
 
-      {!isMobile && showAddPaymentPanel && (
+      {showAddPaymentPanel && (
         <AddPaymentMethodPanel
           onAdd={handleAddPaymentMethod}
           isLoading={isAddingPaymentMethod}
