@@ -56,6 +56,10 @@ const PaymentSelectionContent = ({
 }) => {
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
+  useEffect(() => {
+    setSelectedPMs(tempSelectedPaymentMethods)
+  }, [tempSelectedPaymentMethods])
+
   const handlePaymentMethodToggle = (methodId: string) => {
     setSelectedPMs((prev) => {
       const newSelection = prev.includes(methodId)
@@ -184,13 +188,6 @@ export default function PaymentDetailsForm({
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
-
-  useEffect(() => {
-    if (initialData.payment_method_ids && Array.isArray(initialData.payment_method_ids)) {
-      const paymentMethodIds = initialData.payment_method_ids.map((id: any) => String(id))
-      setSelectedPaymentMethodIds(paymentMethodIds)
-    }
-  }, [initialData.payment_method_ids, setSelectedPaymentMethodIds])
 
   const isFormValid = () => {
     return selectedPaymentMethodIds.length > 0
