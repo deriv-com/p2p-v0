@@ -374,7 +374,7 @@ export default function PaymentDetailsForm({
                     <span className="text-gray-500">{getSelectedPaymentMethodsText(initialData.type === "buy")}</span>
                     <ChevronRight className="h-5 w-5 text-gray-400" />
                   </div>
-                </div
+                </div>
               </div>
 
               <div>
