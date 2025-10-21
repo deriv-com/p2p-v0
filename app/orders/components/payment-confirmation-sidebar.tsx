@@ -153,7 +153,7 @@ export const PaymentConfirmationSidebar = ({
           </div>
           <div className="p-4 pt-0">
             <Button variant="default" onClick={handleSubmit} disabled={!selectedFile || isLoading || isUploadLoading} className="w-full">
-              {isLoading || isUploadLoading? (
+              {isLoading || isUploadLoading ? (
                 <>
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                   Processing...
