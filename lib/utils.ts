@@ -415,7 +415,7 @@ export const currencyLogoMapper = {
 
 export const getHomeUrl = (isV1Signup = false, section = "home") => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
-  let baseUrl = ""
+  let baseUrl = "", url = ""
   
   if(isV1Signup) {
     baseUrl = isProduction ? "app.deriv.com" : "staging-app.deriv.com"
@@ -424,10 +424,10 @@ export const getHomeUrl = (isV1Signup = false, section = "home") => {
   }
 
   if(section === "profile") {
-  
+    url = 
   } else {
   
   }
   
-  return baseUrl
+  return url
 }
