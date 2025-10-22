@@ -390,7 +390,7 @@ export default function PaymentMethodsTab() {
                       {getEWalletIcon()}
                       <div className="flex-1 min-w-0 text-sm">
                         <div className="text-neutral-10">{method.name}</div>
-                        <div className="text-neutral-7">{method.details?.account?.value || `ID: ${method.id}`}</div>
+                        <div className="text-neutral-7 text-xs">{method.details?.account?.value || `ID: ${method.id}`}</div>
                       </div>
                     </div>
                     <DropdownMenu>
