@@ -107,22 +107,16 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
-  html, body {
+  html,
+  body {
     @apply bg-background text-foreground;
     overflow-x: hidden !important;
     overscroll-behavior-x: none !important;
     touch-action: pan-y !important;
+    position: relative; /* Prevents unwanted scroll shifts on mobile */
   }
-  html, body {
-  overflow-x: hidden;
 }
-body {
-  position: relative
-}
+
 
 }
 
