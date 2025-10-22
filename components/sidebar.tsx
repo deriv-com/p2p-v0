@@ -53,7 +53,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const profileUrl = getHomeUrl(isV1Signup, "profile")
 
   const navItems = [
-    { name: "Back to Home", href: getHomeUrl(isV1Signup, "home"), icon: HomeIcon },
+    { name: "Back to Home", href: homeUrl, icon: HomeIcon },
     { name: "Market", href: "/", icon: MarketIcon },
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
