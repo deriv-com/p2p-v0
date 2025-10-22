@@ -380,6 +380,36 @@ export async function getTotalBalance(): Promise<TotalBalanceResponse> {
 }
 
 /**
+ * Get balance from users/me endpoint (for V1 signup users)
+ */
+export async function getUserBalance(): Promise<{ amount: string; currency: string }> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user balance: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    const balances = result?.data?.balances || []
+
+    // Get balance from balances[0].amount
+    const firstBalance = balances[0] || {}
+    return {
+      amount: firstBalance.amount || "0.00",
+      currency: firstBalance.currency || "USD",
+    }
+  } catch (error) {
+    console.error("Error fetching user balance:", error)
+    throw error
+  }
+}
+
+/**
  * Get list of available countries
  */
 export async function getCountries(): Promise<CountriesResponse> {

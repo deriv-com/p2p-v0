@@ -235,7 +235,7 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
                 <div>
-                  <BalanceSection />
+                  <BalanceSection isV1Signup={isV1Signup} />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
@@ -315,13 +315,21 @@ export default function BuySellPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className={cn("rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
-                      hasFilteredPaymentMethods ? "bg-black hover:bg-black text-white" : "bg-transparent hover:bg-transparent")}
+                      className={cn(
+                        "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
+                        hasFilteredPaymentMethods
+                          ? "bg-black hover:bg-black text-white"
+                          : "bg-transparent hover:bg-transparent",
+                      )}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
                         {getPaymentMethodsDisplayText()}
                       </span>
-                      {hasFilteredPaymentMethods ? <Image src="/icons/chevron-down-white.png" alt="Arrow" width={24} height={24} /> : <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />}
+                      {hasFilteredPaymentMethods ? (
+                        <Image src="/icons/chevron-down-white.png" alt="Arrow" width={24} height={24} />
+                      ) : (
+                        <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
+                      )}
                     </Button>
                   }
                 />
@@ -338,10 +346,16 @@ export default function BuySellPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className={cn("rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl", 
-                      hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent")}
+                      className={cn(
+                        "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
+                        hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
+                      )}
                     >
-                      {hasActiveFilters ? <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} /> : <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />}
+                      {hasActiveFilters ? (
+                        <Image src="/icons/filter-icon-white.png" alt="Filter" width={16} height={16} />
+                      ) : (
+                        <Image src="/icons/filter-icon.png" alt="Filter" width={20} height={20} />
+                      )}
                     </Button>
                   }
                 />
@@ -405,12 +419,7 @@ export default function BuySellPage() {
                                   >
                                     {ad.user?.nickname}
                                   </button>
-                                  <Image
-                                    src="/icons/verified-badge.png"
-                                    alt="Verified"
-                                    width={32}
-                                    height={32}
-                                  />
+                                  <Image src="/icons/verified-badge.png" alt="Verified" width={32} height={32} />
                                   {ad.user.trade_band === "bronze" && (
                                     <Image
                                       src="/icons/bronze.png"
