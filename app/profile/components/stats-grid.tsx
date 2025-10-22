@@ -72,7 +72,7 @@ export default function StatsGrid({ stats }) {
             <TabsList className="w-full">
               <TabsTrigger
                 value="last30days"
-                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 text-sm"
+                className="w-full"
               >
                 Last 30 days
               </TabsTrigger>
