@@ -50,7 +50,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }
 
   const homeUrl = isV1Signup ? "https://staging-app.deriv.com" : `https://${getHomeUrl()}/dashboard/home`
-  const profileUrl = isV1Signup ? "https://staging-app.deriv.com" : `https://${getHomeUrl()}/dashboard/profile`
+  const profileUrl = isV1Signup ? "https://staging-app.deriv.com/account/personal-details?platform=p2p-v2" : `https://${getHomeUrl()}/dashboard/profile`
 
   const navItems = [
     { name: "Back to Home", href: homeUrl, icon: HomeIcon },
