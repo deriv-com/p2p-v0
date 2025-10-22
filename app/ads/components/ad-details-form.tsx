@@ -294,7 +294,7 @@ export default function AdDetailsForm({
                   {type === "buy" ? "Buy currency" : "Sell currency"}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
-                  <SelectTrigger className="w-full h-14 rounded-lg">
+                  <SelectTrigger className="w-full h-14 rounded-lg" disabled>
                     <SelectValue>{buyCurrency}</SelectValue>
                   </SelectTrigger>
                   <SelectContent>
