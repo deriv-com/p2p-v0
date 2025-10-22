@@ -217,12 +217,12 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           </div>
         ) : (
           <Tabs defaultValue="stats">
-            <TabsList className="w-full md:w-auto mb-4 bg-transparent">
+            <TabsList className="w-full md:w-auto mb-2 bg-transparent">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-black data-[state=active]:shadow-none"
+                  className="w-full px-4 py-2 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-black data-[state=active]:shadow-none"
                 >
                   {tab.label}
                 </TabsTrigger>

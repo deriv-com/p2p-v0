@@ -224,6 +224,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
+    const balances = result?.data?.balances
 
     if (userId) {
       useUserDataStore.getState().setUserId(userId.toString())
@@ -242,6 +243,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           signup: result.data.signup,
           wallet_id: result.data.wallet_id,
           temp_ban_until: tempBanUntil,
+          balances: balances,
         })
       }
     }
@@ -375,6 +377,36 @@ export async function getTotalBalance(): Promise<TotalBalanceResponse> {
     return result.data
   } catch (error) {
     console.error("Error fetching total balance:", error)
+    throw error
+  }
+}
+
+/**
+ * Get balance from users/me endpoint (for V1 signup users)
+ */
+export async function getUserBalance(): Promise<{ amount: string; currency: string }> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
+      method: "GET",
+      credentials: "include",
+      headers: getAuthHeader(),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch user balance: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    const balances = result?.data?.balances || []
+
+    // Get balance from balances[0].amount
+    const firstBalance = balances[0] || {}
+    return {
+      amount: firstBalance.amount || "0.00",
+      currency: firstBalance.currency || "USD",
+    }
+  } catch (error) {
+    console.error("Error fetching user balance:", error)
     throw error
   }
 }

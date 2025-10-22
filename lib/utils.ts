@@ -413,8 +413,29 @@ export const currencyLogoMapper = {
   TRX: "/icons/trx-logo.png",
 }
 
-export const getHomeUrl = () => {
+export const getHomeUrl = (isV1Signup = false, section = "") => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
-  const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
-  return baseUrl
+  let baseUrl = "", url = ""
+  
+  if(isV1Signup) {
+    baseUrl = isProduction ? "app.deriv.com" : "staging-app.deriv.com"
+  } else {
+    baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+  }
+
+  if(section === "profile") {
+    if(isV1Signup)
+      url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
+    else 
+      url = `https://${baseUrl}/dashboard/profile`
+  } else if(section === "home") {
+    if(isV1Signup)
+      url = `https://${baseUrl}`
+    else 
+      url = `https://${baseUrl}/dashboard/home`
+  } else {
+     url = baseUrl
+  }
+  
+  return url
 }
