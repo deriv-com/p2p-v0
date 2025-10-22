@@ -214,7 +214,19 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   }
 
   const handleShowPaymentSelection = () => {
-    // Function implementation here
+    showAlert({
+      title: "Payment method",
+      description: (
+        <PaymentSelectionContent
+          userPaymentMethods={userPaymentMethods}
+          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          setSelectedPaymentMethods={setSelectedPaymentMethods}
+          hideAlert={hideAlert}
+          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+        />
+      ),
+    })
   }
 
   if (!isOpen && !isAnimating) return null
