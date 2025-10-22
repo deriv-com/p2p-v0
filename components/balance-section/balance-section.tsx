@@ -21,7 +21,7 @@ export function BalanceSection({ isV1Signup = false, className }: BalanceSection
     const fetchBalance = async () => {
       setIsLoading(true)
       try {
-        if (!isV1Signup) {
+        if(isV1Signup) {
           const balances = userData?.balances || []
           const firstBalance = balances[0] || {}
           setBalance(firstBalance.amount || "0.00")
