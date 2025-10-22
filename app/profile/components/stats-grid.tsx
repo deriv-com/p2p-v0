@@ -69,16 +69,16 @@ export default function StatsGrid({ stats }) {
       <div className="bg-transparent rounded-lg">
         <div>
           <Tabs defaultValue="last30days" className="w-full">
-            <TabsList className="bg-[#F5F5F5] rounded-lg p-2 h-auto ">
+            <TabsList className="bg-[#F5F5F5] rounded-lg p-1 h-auto ">
               <TabsTrigger
                 value="last30days"
-                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 "
+                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 text-sm"
               >
                 Last 30 days
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 "
+                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 text-sm"
               >
                 Lifetime
               </TabsTrigger>
