@@ -430,7 +430,7 @@ export const getHomeUrl = (isV1Signup = false, section = "home") => {
       url = `https://${baseUrl}/dashboard/profile`
   } else {
     if(isV1Signup)
-      url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
+      url = `https://${baseUrl}`
     else 
       url = `https://${baseUrl}/dashboard/profile`
   }
