@@ -106,15 +106,11 @@ body {
   }
 }
 
-@layer base {
-  html,
-  body {
-    @apply bg-background text-foreground;
-    overflow-x: hidden !important;
-    overscroll-behavior-x: none !important;
-    touch-action: pan-y !important;
-    position: relative;
-  }
+html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative
 }
 
 
