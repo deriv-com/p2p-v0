@@ -422,5 +422,6 @@ export const getHomeUrl = (isV1Signup = false) => {
   } else {
     baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
   }
+  
   return baseUrl
 }
