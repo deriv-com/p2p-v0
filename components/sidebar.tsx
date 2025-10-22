@@ -52,7 +52,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const homeUrl = isV1Signup ? "https://staging-app.deriv.com" : `https://${getHomeUrl()}/dashboard/home`
 
   const navItems = [
-    { name: "Back to Home", href: `https://${homeUrl}/dashboard/home`, icon: HomeIcon },
+    { name: "Back to Home", href: homeUrl, icon: HomeIcon },
     { name: "Market", href: "/", icon: MarketIcon },
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
@@ -111,7 +111,7 @@ export default function Sidebar({ className }: SidebarProps) {
           </h2>
           <div className="text-xs text-slate-1400">{userData?.email || ""}</div>
         </div>
-        <Link prefetch href={`https://${getHomeUrl}/dashboard/profile`}>
+        <Link prefetch href={`https://${getHomeUrl()}/dashboard/profile`}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
         </Link>
       </div>
