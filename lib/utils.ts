@@ -415,6 +415,7 @@ export const currencyLogoMapper = {
 
 export const getHomeUrl = () => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
+  const profileUrl = isV1Signup ? "https://staging-app.deriv.com/account/personal-details?platform=p2p-v2" : `https://${getHomeUrl()}/dashboard/profile`
   const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
   return baseUrl
 }
