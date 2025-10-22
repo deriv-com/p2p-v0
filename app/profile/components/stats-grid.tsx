@@ -72,13 +72,13 @@ export default function StatsGrid({ stats }) {
             <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto ">
               <TabsTrigger
                 value="last30days"
-                className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 "
+                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 "
               >
                 Last 30 days
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 "
+                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 "
               >
                 Lifetime
               </TabsTrigger>
