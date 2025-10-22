@@ -418,6 +418,7 @@ export const getHomeUrl = (isV1Signup: boolean) => {
 
   if(isV1Signup) {
     const baseUrl = isProduction ? "app.deriv.com" : "staging-app.deriv.com"
+    return baseUrl
   }
   const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
   return baseUrl
