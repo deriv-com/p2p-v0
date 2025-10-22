@@ -27,7 +27,6 @@ export function BalanceSection({ isV1Signup = false, className }: BalanceSection
           setBalance(firstBalance.amount || "0.00")
           setCurrency(firstBalance.currency || "USD")
         } else {
-          // For other users, use existing getTotalBalance logic
           const data = await getTotalBalance()
           const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
