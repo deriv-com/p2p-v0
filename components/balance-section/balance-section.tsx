@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { getTotalBalance, getUserBalance } from "@/services/api/api-auth"
+import { getTotalBalance } from "@/services/api/api-auth"
 import { formatAmountWithDecimals } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface BalanceSectionProps {
   isV1Signup?: boolean
@@ -14,16 +15,17 @@ export function BalanceSection({ isV1Signup = false, className }: BalanceSection
   const [balance, setBalance] = useState<string>("0.00")
   const [currency, setCurrency] = useState<string>("USD")
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const userData = useUserDataStore((state) => state.userData)
 
   useEffect(() => {
     const fetchBalance = async () => {
       setIsLoading(true)
       try {
         if (isV1Signup) {
-          // For V1 signup users, fetch from users/me endpoint
-          const data = await getUserBalance()
-          setBalance(data.amount)
-          setCurrency(data.currency)
+          const balances = userData?.balances || []
+          const firstBalance = balances[0] || {}
+          setBalance(firstBalance.amount || "0.00")
+          setCurrency(firstBalance.currency || "USD")
         } else {
           // For other users, use existing getTotalBalance logic
           const data = await getTotalBalance()
@@ -40,7 +42,7 @@ export function BalanceSection({ isV1Signup = false, className }: BalanceSection
     }
 
     fetchBalance()
-  }, [isV1Signup])
+  }, [isV1Signup, userData])
 
   return (
     <div className={className || "mb-4"}>

@@ -11,6 +11,7 @@ export interface UserData {
   wallet_id?: string
   temp_ban_until?: number | null
   is_online?: boolean
+  balances?: Array<{ amount: string; currency: string }>
 }
 
 export interface VerificationStatus {

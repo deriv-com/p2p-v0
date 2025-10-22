@@ -224,6 +224,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const brandClientId = result?.data?.brand_client_id
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
+    const balances = result?.data?.balances
 
     if (userId) {
       useUserDataStore.getState().setUserId(userId.toString())
@@ -242,6 +243,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           signup: result.data.signup,
           wallet_id: result.data.wallet_id,
           temp_ban_until: tempBanUntil,
+          balances: balances,
         })
       }
     }
