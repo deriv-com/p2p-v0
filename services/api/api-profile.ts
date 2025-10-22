@@ -458,7 +458,6 @@ export async function getFavouriteUsers(): Promise<[]> {
   }
 }
 
-// New function to fetch followers (users who favourited the current user)
 export async function getFollowers(): Promise<[]> {
   try {
     const headers = {
