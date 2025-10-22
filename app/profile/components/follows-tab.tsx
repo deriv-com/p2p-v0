@@ -1,17 +1,16 @@
 "use client"
 
 import type React from "react"
+
 import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { getFavouriteUsers, getFollowers } from "@/services/api/api-profile"
 import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
-import EmptyState from "@/components/empty-state"
 import { useToast } from "@/hooks/use-toast"
+import FollowUserList from "./follow-user-list"
 
 interface FollowUser {
   nickname: string
@@ -76,6 +75,10 @@ export default function FollowsTab() {
     setSearchQuery(value)
   }, [])
 
+  const handleClearSearch = useCallback(() => {
+    setSearchQuery("")
+  }, [])
+
   const handleFollowToggle = (user: FollowUser, isCurrentlyFollowing: boolean) => {
     if (isCurrentlyFollowing) {
       showAlert({
@@ -107,7 +110,6 @@ export default function FollowsTab() {
         },
       })
     } else {
-      // Follow the user
       toggleFavouriteAdvertiser(user.user_id, true)
         .then((result) => {
           if (result.success) {
@@ -130,38 +132,7 @@ export default function FollowsTab() {
     }
   }
 
-  const UserCard = ({ user, showFollowButton }: { user: FollowUser; showFollowButton: boolean }) => {
-    // Check if this user is in the following list
-    const isFollowing = following.some((f) => f.user_id === user.user_id)
-
-    return (
-      <div className="flex items-center justify-between py-4">
-        <div className="flex items-center gap-1">
-          <div className="relative">
-            <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
-              {user.nickname?.charAt(0).toUpperCase()}
-            </div>
-          </div>
-          <Button
-            onClick={() => handleAdvertiserClick(user.user_id)}
-            className="hover:underline hover:bg-transparent cursor-pointer font-normal"
-            size="sm"
-            variant="ghost"
-          >
-            {user.nickname}
-          </Button>
-        </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => handleFollowToggle(user, showFollowButton ? true : isFollowing)}
-          className="rounded-full px-4 py-1 text-sm"
-        >
-          {showFollowButton || isFollowing ? "Following" : "Follow"}
-        </Button>
-      </div>
-    )
-  }
+  const followingUserIds = useMemo(() => following.map((user) => user.user_id), [following])
 
   const isLoading = activeTab === "follows" ? isLoadingFollowing : isLoadingFollowers
 
@@ -183,104 +154,40 @@ export default function FollowsTab() {
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="follows" className="mt-4">
-          {(filteredUsers.length > 0 || searchQuery) && (
-            <div className="flex items-center justify-between gap-4 mb-4">
-              <div className="relative w-full md:w-auto">
-                <Image
-                  src="/icons/search-icon-custom.png"
-                  alt="Search"
-                  width={24}
-                  height={24}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2"
-                />
-                <Input
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
-                  autoComplete="off"
-                  autoFocus
-                />
-                {searchQuery && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
-                  >
-                    <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-
-          <div className="space-y-0 divide-y divide-gray-100">
-            {isLoading ? (
-              <div className="py-8 text-center text-gray-500">Loading...</div>
-            ) : filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => <UserCard key={user.user_id} user={user} showFollowButton={true} />)
-            ) : (
-              <EmptyState
-                title={searchQuery ? "No matching name" : "Not following anyone yet"}
-                description={
-                  searchQuery ? `There is no result for ${searchQuery}.` : "Start following users to see them here."
-                }
-                redirectToAds={false}
-              />
-            )}
-          </div>
+        <TabsContent value="follows">
+          <FollowUserList
+            users={filteredUsers}
+            isLoading={isLoading}
+            searchQuery={searchQuery}
+            onSearchChange={handleSearchChange}
+            onClearSearch={handleClearSearch}
+            onUserClick={handleAdvertiserClick}
+            onFollowToggle={handleFollowToggle}
+            followingUserIds={followingUserIds}
+            emptyTitle="Not following anyone yet"
+            emptyDescription="Start following users to see them here."
+            searchEmptyTitle="No matching name"
+            searchEmptyDescription={`There is no result for ${searchQuery}.`}
+            showFollowingButton={true}
+          />
         </TabsContent>
 
-        <TabsContent value="followers" className="mt-4">
-          {(filteredUsers.length > 0 || searchQuery) && (
-            <div className="flex items-center justify-between gap-4 mb-4">
-              <div className="relative w-full md:w-auto">
-                <Image
-                  src="/icons/search-icon-custom.png"
-                  alt="Search"
-                  width={24}
-                  height={24}
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2"
-                />
-                <Input
-                  placeholder="Search"
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
-                  autoComplete="off"
-                  autoFocus
-                />
-                {searchQuery && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setSearchQuery("")}
-                    className="absolute right-0 top-1/2 transform -translate-y-1/2 hover:bg-transparent"
-                  >
-                    <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
-                  </Button>
-                )}
-              </div>
-            </div>
-          )}
-
-          <div className="space-y-0 divide-y divide-gray-100">
-            {isLoading ? (
-              <div className="py-8 text-center text-gray-500">Loading...</div>
-            ) : filteredUsers.length > 0 ? (
-              filteredUsers.map((user) => <UserCard key={user.user_id} user={user} showFollowButton={false} />)
-            ) : (
-              <EmptyState
-                title={searchQuery ? "No matching name" : "No followers yet"}
-                description={
-                  searchQuery ? `There is no result for ${searchQuery}.` : "When users follow you, they'll appear here."
-                }
-                redirectToAds={false}
-              />
-            )}
-          </div>
+        <TabsContent value="followers">
+          <FollowUserList
+            users={filteredUsers}
+            isLoading={isLoading}
+            searchQuery={searchQuery}
+            onSearchChange={handleSearchChange}
+            onClearSearch={handleClearSearch}
+            onUserClick={handleAdvertiserClick}
+            onFollowToggle={handleFollowToggle}
+            followingUserIds={followingUserIds}
+            emptyTitle="No followers yet"
+            emptyDescription="When users follow you, they'll appear here."
+            searchEmptyTitle="No matching name"
+            searchEmptyDescription={`There is no result for ${searchQuery}.`}
+            showFollowingButton={false}
+          />
         </TabsContent>
       </Tabs>
     </div>
