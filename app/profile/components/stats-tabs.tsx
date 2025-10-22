@@ -217,7 +217,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           </div>
         ) : (
           <Tabs defaultValue="stats">
-            <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
+            <TabsList className="w-full md:w-auto mb-4 bg-transparent">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
