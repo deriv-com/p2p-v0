@@ -111,13 +111,14 @@ body {
     @apply border-border;
   }
 
-  body {
+  html, body {
     @apply bg-background text-foreground;
-    overscroll-behavior-x: none;
-    touch-action: pan-y;
-    overflow-x: hidden;
+    overflow-x: hidden !important;
+    overscroll-behavior-x: none !important;
+    touch-action: pan-y !important;
   }
 }
+
 
 .filter-to-primary {
   filter: invert(67%) sepia(87%) saturate(1231%) hue-rotate(152deg) brightness(103%) contrast(103%);
