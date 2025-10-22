@@ -63,7 +63,7 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
-  const isV1Signup = userData?.signup !== "v1"
+  const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
