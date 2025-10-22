@@ -433,6 +433,11 @@ export const getHomeUrl = (isV1Signup = false, section) => {
       url = `https://${baseUrl}`
     else 
       url = `https://${baseUrl}/dashboard/home`
+  } else {
+    if(isV1Signup)
+      url = `https://${baseUrl}`
+    else 
+      url = `https://${baseUrl}/dashboard/home`
   }
   
   return url
