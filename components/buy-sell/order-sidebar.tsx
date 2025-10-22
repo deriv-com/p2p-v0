@@ -169,7 +169,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const minLimit = ad.minimum_order_amount || "0.00"
       const maxLimit = ad.actual_maximum_order_amount || "0.00"
 
-        console.log("orderType:", orderType, "numAmount:", numAmount, "p2pBalance:", p2pBalance);
+  
 
       
 
