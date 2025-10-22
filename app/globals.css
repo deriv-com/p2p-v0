@@ -113,7 +113,7 @@ body {
     overflow-x: hidden !important;
     overscroll-behavior-x: none !important;
     touch-action: pan-y !important;
-    position: relative; /* Prevents unwanted scroll shifts on mobile */
+    position: relative;
   }
 }
 
