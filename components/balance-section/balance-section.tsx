@@ -41,7 +41,7 @@ export function BalanceSection({ isV1Signup = false, className }: BalanceSection
     }
 
     fetchBalance()
-  }, [isV1Signup, userData])
+  }, [isV1Signup]) // Updated dependency array to include isV1Signup
 
   return (
     <div className={className || "mb-4"}>
