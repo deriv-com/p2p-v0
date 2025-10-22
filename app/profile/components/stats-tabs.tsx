@@ -222,7 +222,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-primary data-[state=active]:shadow-none"
+                  className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-black data-[state=active]:shadow-none"
                 >
                   {tab.label}
                 </TabsTrigger>
