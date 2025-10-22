@@ -222,7 +222,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+                  className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-primary data-[state=active]:shadow-none"
                 >
                   {tab.label}
                 </TabsTrigger>
