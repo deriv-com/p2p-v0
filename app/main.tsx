@@ -44,12 +44,6 @@ export default function Main({
         const token = searchParams.get("token")
         if (token) {
           try {
-            await AuthAPI.logout()
-          } catch (error) {
-            console.log(error)
-          }
-
-          try {
             await AuthAPI.verifyToken(token)
             const newUrl = new URL(window.location.href)
             newUrl.searchParams.delete("token")
