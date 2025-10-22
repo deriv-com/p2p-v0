@@ -78,7 +78,7 @@ export default function StatsGrid({ stats }) {
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="py-2 px-4 rounded-lg transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700 text-sm"
+                className="w-full"
               >
                 Lifetime
               </TabsTrigger>
