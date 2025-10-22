@@ -139,16 +139,14 @@ export default function FollowsTab() {
   return (
     <div className="space-y-4">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full bg-transparent p-0 h-auto border-b border-gray-200 rounded-none justify-start">
+        <TabsList className="w-full">
           <TabsTrigger
             value="follows"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold"
           >
             Follows ({following.length})
           </TabsTrigger>
           <TabsTrigger
             value="followers"
-            className="rounded-none border-b-2 border-transparent data-[state=active]:border-black data-[state=active]:bg-transparent data-[state=active]:shadow-none px-4 py-3 font-semibold"
           >
             Followers ({followers.length})
           </TabsTrigger>
