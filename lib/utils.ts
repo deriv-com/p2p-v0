@@ -413,7 +413,7 @@ export const currencyLogoMapper = {
   TRX: "/icons/trx-logo.png",
 }
 
-export const getHomeUrl = (isV1Signup = false, section) => {
+export const getHomeUrl = (isV1Signup = false, section = "") => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "", url = ""
   
