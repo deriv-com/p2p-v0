@@ -117,6 +117,13 @@ body {
     overscroll-behavior-x: none !important;
     touch-action: pan-y !important;
   }
+  html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative
+}
+
 }
 
 
