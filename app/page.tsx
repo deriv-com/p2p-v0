@@ -63,14 +63,12 @@ export default function BuySellPage() {
   const userData = useUserDataStore((state) => state.userData)
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
-  const isV1Signup = userData?.signup === "v1"
+  const isV1Signup = userData?.signup == "v1"
   const tempBanUntil = userData?.temp_ban_until
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
-
-  const shouldShowBalance = !isV1Signup || (isV1Signup && userData?.balances)
 
   useEffect(() => {
     const operation = searchParams.get("operation")
@@ -237,7 +235,7 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
                 <div>
-                  {shouldShowBalance && <BalanceSection isV1Signup={isV1Signup} />}
+                  <BalanceSection isV1Signup={isV1Signup} />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
