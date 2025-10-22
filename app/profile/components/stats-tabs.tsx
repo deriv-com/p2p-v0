@@ -217,12 +217,12 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           </div>
         ) : (
           <Tabs defaultValue="stats">
-            <TabsList className="bg-[#F5F5F5] rounded-2xl p-2 h-auto">
+            <TabsList className="w-full md:w-auto mb-4 bg-transparent">
               {tabs.map((tab) => (
                 <TabsTrigger
                   key={tab.id}
                   value={tab.id}
-                  className="py-2 px-4 rounded-xl transition-all font-normal text-base data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-sm data-[state=inactive]:bg-transparent data-[state=inactive]:text-slate-500 hover:text-slate-700"
+                  className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-black data-[state=active]:shadow-none"
                 >
                   {tab.label}
                 </TabsTrigger>
@@ -260,14 +260,14 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </div>
                 </div>
               ) : (
-                <div className="relative rounded-lg border py-4">
+                <div className="relative">
                   <StatsGrid stats={stats} />
                 </div>
               )}
             </TabsContent>
 
             <TabsContent value="payment" className="mt-4">
-              <div className="relative rounded-lg border p-4">
+              <div className="relative">
                 <div className="flex justify-end mb-4">
                   <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
                     <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
@@ -279,13 +279,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             </TabsContent>
 
             <TabsContent value="follows" className="mt-4">
-              <div className="relative rounded-lg border p-4">
+              <div className="relative">
                 <FollowsTab />
               </div>
             </TabsContent>
 
             <TabsContent value="blocked" className="mt-4">
-              <div className="relative rounded-lg border p-4">
+              <div className="relative">
                 <BlockedTab />
               </div>
             </TabsContent>

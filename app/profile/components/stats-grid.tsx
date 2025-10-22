@@ -12,7 +12,7 @@ interface StatCardProps {
 
 function StatCard({ tab, title, value }: StatCardProps) {
   return (
-    <div className="flex flex-row-reverse justify-between md:border-b border-slate-200 md:flex-col md:border-none pt-6 pb-2">
+    <div className="flex flex-row-reverse justify-between border-b md:border-none border-slate-200 md:flex-col pt-6 pb-2">
       <div className="font-bold text-black text-base leading-6 tracking-normal">
         {value}
       </div>
@@ -66,19 +66,17 @@ export default function StatsGrid({ stats }) {
 
   return (
     <TooltipProvider>
-      <div className="bg-transparent rounded-lg md:px-4">
+      <div className="bg-transparent rounded-lg">
         <div>
-          <Tabs defaultValue="last30days" className="w-full">
-            <TabsList className="w-full md:w-auto mb-4 bg-transparent">
+          <Tabs defaultValue="last30days">
+            <TabsList>
               <TabsTrigger
                 value="last30days"
-                className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-primary data-[state=active]:shadow-none"
               >
                 Last 30 days
               </TabsTrigger>
               <TabsTrigger
                 value="lifetime"
-                className="w-full p-4 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-primary data-[state=active]:shadow-none"
               >
                 Lifetime
               </TabsTrigger>
