@@ -458,6 +458,29 @@ export async function getFavouriteUsers(): Promise<[]> {
   }
 }
 
+// New function to fetch followers (users who favourited the current user)
+export async function getFollowers(): Promise<[]> {
+  try {
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const response = await fetch(`${API.baseUrl}/user-favourited-by`, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error(`Error fetching followers: ${response.statusText}`)
+    }
+
+    const result = await response.json()
+    return result.data || []
+  } catch (error) {
+    throw error
+  }
+}
+
 export async function getBlockedUsers(): Promise<[]> {
   try {
     const headers = {
