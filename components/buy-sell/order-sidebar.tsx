@@ -174,7 +174,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       if (numAmount < minLimit || numAmount > maxLimit) {
         setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
-      } else if (orderType !== "buy" && numAmount > p2pBalance) {
+      } else if (orderType === "buy" && numAmount > p2pBalance) {
 
         setValidationError("Insufficient balance. Add funds to your wallet before creating an order")
       } else {
