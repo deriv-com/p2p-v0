@@ -413,7 +413,7 @@ export const currencyLogoMapper = {
   TRX: "/icons/trx-logo.png",
 }
 
-export const getHomeUrl = (isV1Signup = false, section = "home") => {
+export const getHomeUrl = (isV1Signup = false, section) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "", url = ""
   
@@ -428,7 +428,7 @@ export const getHomeUrl = (isV1Signup = false, section = "home") => {
       url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
     else 
       url = `https://${baseUrl}/dashboard/profile`
-  } else {
+  } else if(section === "home") {
     if(isV1Signup)
       url = `https://${baseUrl}`
     else 
