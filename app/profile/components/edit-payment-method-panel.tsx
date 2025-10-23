@@ -156,7 +156,7 @@ export default function EditPaymentMethodPanel({
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
                       label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
-                      required={field.required}
+                      required={fieldConfig.required}
                       variant="floating"
                     />
                     {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
