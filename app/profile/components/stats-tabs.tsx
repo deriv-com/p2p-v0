@@ -271,7 +271,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 <div className="flex justify-end mb-4">
                   <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
                     <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
-                    Add payment
+                    Add payment method
                   </Button>
                 </div>
                 <PaymentMethodsTab key={refreshKey} />
