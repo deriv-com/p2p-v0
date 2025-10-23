@@ -50,7 +50,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
           </div>
           {joinDate && <div className="text-xs text-white opacity-[0.72]">{joinDate}</div>}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
-            {recommendation && (
               <div className="flex items-center text-white">
                 <div className="flex items-center">
                   <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
@@ -59,8 +58,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
                   </span>
                 </div>
               </div>
-            )}
-            {rating && (
               <>
                 <div className="mx-4 h-4 w-px bg-black opacity-[0.08]"></div>
                 <div className="flex items-center">
@@ -68,7 +65,6 @@ export default function UserInfo({ username, rating, joinDate, recommendation, t
                   <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
                 </div>
               </>
-            )}
           </div>
         </div>
       </div>
