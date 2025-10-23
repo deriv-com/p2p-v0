@@ -11,7 +11,7 @@ import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
 import { getTotalBalance } from "@/services/api/api-auth"
-import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
+import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber, cn } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -378,9 +378,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       value={amount}
                       onChange={handleAmountChange}
                       type="number"
-                      className={`[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0 ${
-                        validationError ? "border-red-500 focus:border-red-500 focus-visible:ring-0" : ""
-                      }`}
+                      className={cn(
+                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0",
+                        validationError && "border-red-500 focus:border-red-500 focus-visible:ring-0",
+                      )}
                       step="any"
                       inputMode="decimal"
                       onKeyDown={(e) => {
