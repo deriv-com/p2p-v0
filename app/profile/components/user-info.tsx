@@ -13,15 +13,24 @@ interface UserInfoProps {
   recommendation: number
   joinDate: string
   tradeBand: string
+  isLoading?: boolean
 }
 
-export default function UserInfo({ username, email, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
+export default function UserInfo({
+  username,
+  email,
+  rating,
+  joinDate,
+  recommendation,
+  tradeBand,
+  isLoading,
+}: UserInfoProps) {
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
 
   const isFullyVerified =
     verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified
 
-  const displayName = username ? username : null
+  const displayName = isLoading ? null : username || email
 
   return (
     <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
