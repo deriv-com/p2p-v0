@@ -127,7 +127,7 @@ export default function EditPaymentMethodPanel({
   return (
     <PanelWrapper onClose={onClose}>
       <h2 className="text-2xl font-bold p-4 pb-0">Edit payment details</h2>
-      <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto">
+      <form onSubmit={handleSubmit} className="overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="space-y-4">
             {Object.entries(paymentMethod.details).map(([fieldName, fieldConfig]) => (
@@ -156,7 +156,7 @@ export default function EditPaymentMethodPanel({
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
                       label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
-                      required
+                      required={fieldConfig.required}
                       variant="floating"
                     />
                     {errors[fieldName] && <p className="mt-1 text-xs text-red-500">{errors[fieldName]}</p>}
