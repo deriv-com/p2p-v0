@@ -121,7 +121,7 @@ export default function ProfilePage() {
             <UserInfo
               username={userData?.username}
               rating={userData?.rating}
-              recommendation={userData?.recommendation}
+              recommendation={userData?.recommendation ?? null}
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}
