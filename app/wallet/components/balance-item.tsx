@@ -6,10 +6,11 @@ import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 interface BalanceItemProps {
   currency: string
   amount: string
+  label?: string
   onClick?: () => void
 }
 
-export default function BalanceItem({ currency, amount, onClick }: BalanceItemProps) {
+export default function BalanceItem({ currency, amount, label, onClick }: BalanceItemProps) {
   const logo = currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
 
   const displayAmount = isNaN(Number(amount)) ? "0.00" : formatAmountWithDecimals(amount)
@@ -36,7 +37,7 @@ export default function BalanceItem({ currency, amount, onClick }: BalanceItemPr
           )}
         </div>
 
-        <div className="text-slate-1200 text-base font-normal">{currency}</div>
+        <div className="text-slate-1200 text-base font-normal">{label || currency}</div>
       </div>
 
       <div className="text-slate-1200 text-base font-normal pr-6">

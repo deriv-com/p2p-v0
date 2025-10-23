@@ -5,6 +5,7 @@ import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
 import { getTotalBalance } from "@/services/api/api-auth"
+import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 
@@ -12,6 +13,7 @@ interface Balance {
   wallet_id: string
   amount: string
   currency: string
+  label: string
 }
 
 export default function WalletPage() {
@@ -27,6 +29,9 @@ export default function WalletPage() {
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
     try {
+      const currenciesResponse = await getCurrencies()
+      const currenciesData = currenciesResponse?.data || {}
+
       const data = await getTotalBalance()
       const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
@@ -39,6 +44,7 @@ export default function WalletPage() {
             wallet_id: p2pWallet.id,
             amount: String(wallet.balance || "0"),
             currency: wallet.currency,
+            label: currenciesData[wallet.currency]?.label || wallet.currency,
           }))
           setP2pBalances(balancesList)
         }
