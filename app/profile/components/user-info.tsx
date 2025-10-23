@@ -4,6 +4,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import Image from "next/image"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface UserInfoProps {
   username: string
