@@ -187,7 +187,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   return (
     <>
       <div className="py-0 space-y-6 mx-auto overflow-hidden">
-        <div className="flex gap-2 hidden">
+        <div className="flex gap-2">
           {filters.map((filter) => (
             <Button
               key={filter}
