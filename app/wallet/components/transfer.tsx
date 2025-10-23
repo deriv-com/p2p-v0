@@ -171,16 +171,26 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
           const processedWallets: ProcessedWallet[] = []
 
           response.data.wallets.forEach((wallet: any) => {
-            const matchingBalance = wallet.balances.find((balance: any) => balance.currency === selectedCurrency)
-            const balanceValue = matchingBalance ? matchingBalance.balance : "0"
+            wallet.balances.forEach((balance: any) => {
+              // If wallet type is p2p, only add USD currency
+              if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
+                return
+              }
 
-            processedWallets.push({
-              wallet_id: wallet.wallet_id,
-              name: (wallet.type || "").toLowerCase() === "p2p" ? "P2P Wallet" : `Trading Wallet`,
-              balance: balanceValue,
-              currency: selectedCurrency,
-              icon: "/icons/usd-flag.png",
-              type: wallet.type,
+              // Get currency label from currencies data
+              const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
+
+              // Construct wallet name based on type
+              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
+
+              processedWallets.push({
+                wallet_id: wallet.wallet_id,
+                name: walletName,
+                balance: balance.balance,
+                currency: balance.currency,
+                icon: "/icons/usd-flag.png",
+                type: wallet.type,
+              })
             })
           })
 
@@ -197,7 +207,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     }
 
     loadWallets()
-  }, [selectedCurrency])
+  }, [selectedCurrency, currenciesData])
 
   const calculateTransferFee = (): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
@@ -579,6 +589,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -654,7 +665,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-slate-1200 text-[20px] font-extrabold mb-8 ml-4 ">Review and confirm</h1>
+            <h1 className="text-slate-1200 text-center text-[20px] font-extrabold mb-8 ml-4 ">Review and confirm</h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
                 <div className="flex items-center justify-between">
@@ -684,6 +695,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -866,6 +878,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
                       alt={destinationWalletData.currency}
