@@ -120,8 +120,8 @@ export default function ProfilePage() {
           <div className="flex-1 order-1">
             <UserInfo
               username={userData?.username}
-              rating={userData?.rating ?? null}
-              recommendation={userData?.recommendation ?? null}
+              rating={userData?.rating}
+              recommendation={userData?.recommendation}
               joinDate={userData?.joinDate}
               realName={userData?.realName}
               isVerified={userData?.isVerified}
