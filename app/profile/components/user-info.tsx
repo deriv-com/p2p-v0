@@ -21,6 +21,8 @@ export default function UserInfo({ username, email, rating, joinDate, recommenda
   const isFullyVerified =
     verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified
 
+  const displayName = username || email
+
   return (
     <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-center gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
       <div className="flex flex-col md:flex-row items-start gap-4">
@@ -29,7 +31,11 @@ export default function UserInfo({ username, email, rating, joinDate, recommenda
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-1">
-            {email ? <h2 className="text-base text-white font-bold">{username ?? email}</h2> : <Skeleton className="h-7 w-32 bg-white/20" />}
+            {displayName ? (
+              <h2 className="text-base text-white font-bold">{displayName}</h2>
+            ) : (
+              <Skeleton className="h-7 w-32 bg-white/20" />
+            )}
             {isFullyVerified && (
               <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification." />
             )}
@@ -52,21 +58,21 @@ export default function UserInfo({ username, email, rating, joinDate, recommenda
           </div>
           {joinDate && <div className="text-xs text-white opacity-[0.72]">{joinDate}</div>}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
-              <div className="flex items-center text-white">
-                <div className="flex items-center">
-                  <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
-                  <span className="text-white opacity-[0.72]">
-                    {recommendation ? recommendation : "Not recommended yet"}
-                  </span>
-                </div>
+            <div className="flex items-center text-white">
+              <div className="flex items-center">
+                <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
+                <span className="text-white opacity-[0.72]">
+                  {recommendation ? recommendation : "Not recommended yet"}
+                </span>
               </div>
-              <>
-                <div className="mx-4 h-4 w-px bg-black opacity-[0.08]"></div>
-                <div className="flex items-center">
-                  <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
-                  <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
-                </div>
-              </>
+            </div>
+            <>
+              <div className="mx-4 h-4 w-px bg-black opacity-[0.08]"></div>
+              <div className="flex items-center">
+                <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
+                <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
+              </div>
+            </>
           </div>
         </div>
       </div>
