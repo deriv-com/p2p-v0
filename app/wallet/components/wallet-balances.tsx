@@ -6,6 +6,7 @@ import BalanceItem from "./balance-item"
 interface Balance {
   amount: string
   currency: string
+  label: string
 }
 
 interface WalletBalancesProps {
@@ -64,6 +65,7 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
               key={wallet.currency}
               currency={wallet.currency}
               amount={wallet.amount}
+              label={wallet.label}
               onClick={() => onBalanceClick?.(wallet.currency, wallet.amount)}
             />
           ))}

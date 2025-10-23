@@ -21,6 +21,7 @@ interface Currency {
   code: string
   name: string
   logo: string
+  label: string
 }
 
 interface ProcessedWallet {
@@ -147,6 +148,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             code,
             name: data.label,
             logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+            label: data.label,
           }))
           setCurrencies(currencyList)
         }
@@ -556,7 +558,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -576,7 +578,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -659,7 +663,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     {sourceWalletData && (
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                           alt={sourceWalletData.currency}
                           width={24}
                           height={24}
@@ -679,7 +683,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                         <Image
                           src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg"
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -821,7 +827,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 {sourceWalletData ? (
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                       alt={sourceWalletData.currency}
                       width={24}
                       height={24}
@@ -859,7 +865,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                     <Image
                       src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg"
+                      }
                       alt={destinationWalletData.currency}
                       width={24}
                       height={24}

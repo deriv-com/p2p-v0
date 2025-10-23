@@ -19,6 +19,7 @@ interface Currency {
   code: string
   name: string
   logo: string
+  label: string
 }
 
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
@@ -62,6 +63,7 @@ export default function WalletSummary({
           code,
           name: data.label,
           logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+          label: data.label, // Added label field to currencyList
         }))
         setCurrencies(currencyList)
       }
