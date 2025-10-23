@@ -29,7 +29,7 @@ export default function UserInfo({ username, email, rating, joinDate, recommenda
         </div>
         <div className="flex flex-col flex-1 gap-1">
           <div className="flex items-center gap-1">
-            {(username && email) ? <h2 className="text-base text-white font-bold">{username ?? email}</h2> : <Skeleton className="h-7 w-32 bg-white/20" />}
+            {(username || email) ? <h2 className="text-base text-white font-bold">{username ?? email}</h2> : <Skeleton className="h-7 w-32 bg-white/20" />}
             {isFullyVerified && (
               <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification." />
             )}
