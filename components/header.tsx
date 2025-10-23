@@ -23,13 +23,6 @@ export default function Header() {
 
   return (
     <header className="flex justify-between items-center px-3 md:px-[24px] py-3 bg-slate-1200 -mb-px md:mb-0">
-
-
-
-
-
-
-
       <div className="md:hidden">
         <MobileSidebarTrigger />
       </div>
