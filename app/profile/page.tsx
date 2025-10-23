@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const { showWarningDialog } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
+  const userEmail = user?.temp_ban_until
 
   useEffect(() => {
     const fetchUserData = async () => {
