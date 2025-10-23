@@ -5,6 +5,7 @@ import { fetchTransactions } from "@/services/api/api-wallets"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 import { formatAmountWithDecimals } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 interface Transaction {
   transaction_id: number
@@ -186,7 +187,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   return (
     <>
       <div className="py-0 space-y-6 mx-auto overflow-hidden">
-        {/* <div className="flex gap-2">
+        <div className="hidden gap-2">
           {filters.map((filter) => (
             <Button
               key={filter}
@@ -200,7 +201,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
               {filter}
             </Button>
           ))}
-        </div> */}
+        </div>
 
         <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
           {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
