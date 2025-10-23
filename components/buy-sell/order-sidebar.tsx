@@ -16,6 +16,7 @@ import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -142,22 +143,37 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const [p2pBalance, setP2pBalance] = useState<number>(0)
+  const userData = useUserDataStore((state) => state.userData)
+
+  const fetchP2PBalance = async () => {
+    try {
+      const isV1Signup = userData?.signup === "v1"
+
+      if (isV1Signup) {
+        const usdBalance = userData?.balances?.find((balance) => balance.currency === "USD")
+        const balance = usdBalance?.amount ?? "0.00"
+        setP2pBalance(Number.parseFloat(balance))
+      } else {
+        const data = await getTotalBalance()
+        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+        const balance = p2pWallet?.total_balance?.approximate_total_balance ?? "0.00"
+        setP2pBalance(Number.parseFloat(balance))
+      }
+    } catch (error) {
+      console.error("Error fetching P2P balance:", error)
+      setP2pBalance(0)
+    }
+  }
 
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true)
       setOrderStatus(null)
-      fetchP2pBalance()
+      fetchP2PBalance()
     } else {
       setIsAnimating(false)
     }
   }, [isOpen])
-
-  useEffect(() => {
-    if (ad) {
-      fetchUserPaymentMethods()
-    }
-  }, [ad])
 
   useEffect(() => {
     if (ad && amount) {
@@ -169,51 +185,31 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       const minLimit = ad.minimum_order_amount || "0.00"
       const maxLimit = ad.actual_maximum_order_amount || "0.00"
 
-      if (numAmount < minLimit || numAmount > maxLimit) {
+      if (orderType === "buy" && numAmount > p2pBalance) {
+        setValidationError("Insufficient balance. Add funds to your wallet before creating an order.")
+      } else if (numAmount < minLimit || numAmount > maxLimit) {
         setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
-      } else if (orderType !== "buy" && numAmount > p2pBalance) {
-        setValidationError("Insufficient balance. Add funds to your wallet before creating an order")
       } else {
         setValidationError(null)
       }
     }
   }, [amount, ad, orderType, p2pBalance])
 
-  const fetchP2pBalance = async () => {
-    try {
-      const data = await getTotalBalance()
-      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-      const balance = p2pWallet?.total_balance?.approximate_total_balance ?? "0.00"
-      setP2pBalance(Number.parseFloat(balance))
-    } catch (error) {
-      console.error("Error fetching P2P balance:", error)
-      setP2pBalance(0)
-    }
+  const handleShowPaymentSelection = () => {
+    showAlert({
+      title: "Payment method",
+      description: (
+        <PaymentSelectionContent
+          userPaymentMethods={userPaymentMethods}
+          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          setSelectedPaymentMethods={setSelectedPaymentMethods}
+          hideAlert={hideAlert}
+          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+        />
+      ),
+    })
   }
-
-  const fetchUserPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      const buyerAcceptedMethods = ad?.payment_methods || []
-      const filteredMethods =
-        response?.filter((method: PaymentMethod) => {
-          return buyerAcceptedMethods.some(
-            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
-          )
-        }) || []
-
-      setUserPaymentMethods(filteredMethods)
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }
-
-  if (!isOpen && !isAnimating) return null
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value)
@@ -322,6 +318,36 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
 
+  const fetchUserPaymentMethods = async () => {
+    try {
+      const response = await ProfileAPI.getUserPaymentMethods()
+
+      if (response.error) {
+        return
+      }
+
+      const buyerAcceptedMethods = ad?.payment_methods || []
+      const filteredMethods =
+        response?.filter((method: PaymentMethod) => {
+          return buyerAcceptedMethods.some(
+            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
+          )
+        }) || []
+
+      setUserPaymentMethods(filteredMethods)
+    } catch (error) {
+      console.error("Error fetching payment methods:", error)
+    }
+  }
+
+  useEffect(() => {
+    if (ad) {
+      fetchUserPaymentMethods()
+    }
+  }, [ad])
+
+  if (!isOpen && !isAnimating) return null
+
   return (
     <>
       <div className="fixed inset-0 z-50 flex justify-end">
@@ -384,21 +410,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => {
-                        showAlert({
-                          title: "Payment method",
-                          description: (
-                            <PaymentSelectionContent
-                              userPaymentMethods={userPaymentMethods}
-                              tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-                              setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-                              setSelectedPaymentMethods={setSelectedPaymentMethods}
-                              hideAlert={hideAlert}
-                              handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-                            />
-                          ),
-                        })
-                      }}
+                      onClick={handleShowPaymentSelection}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
