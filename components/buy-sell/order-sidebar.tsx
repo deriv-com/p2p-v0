@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
+import { getTotalBalance } from "@/services/api/api-auth"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
@@ -140,27 +141,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
-
-  const handleShowPaymentSelection = () => {
-    showAlert({
-      title: "Payment method",
-      description: (
-        <PaymentSelectionContent
-          userPaymentMethods={userPaymentMethods}
-          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-          setSelectedPaymentMethods={setSelectedPaymentMethods}
-          hideAlert={hideAlert}
-          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-        />
-      ),
-    })
-  }
+  const [p2pBalance, setP2pBalance] = useState<number>(0)
 
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true)
       setOrderStatus(null)
+      fetchP2pBalance()
     } else {
       setIsAnimating(false)
     }
@@ -184,11 +171,25 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
 
       if (numAmount < minLimit || numAmount > maxLimit) {
         setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
+      } else if (orderType !== "buy" && numAmount > p2pBalance) {
+        setValidationError("Insufficient balance. Add funds to your wallet before creating an order")
       } else {
         setValidationError(null)
       }
     }
-  }, [amount, ad])
+  }, [amount, ad, orderType, p2pBalance])
+
+  const fetchP2pBalance = async () => {
+    try {
+      const data = await getTotalBalance()
+      const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+      const balance = p2pWallet?.total_balance?.approximate_total_balance ?? "0.00"
+      setP2pBalance(Number.parseFloat(balance))
+    } catch (error) {
+      console.error("Error fetching P2P balance:", error)
+      setP2pBalance(0)
+    }
+  }
 
   const fetchUserPaymentMethods = async () => {
     try {
@@ -383,7 +384,21 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={handleShowPaymentSelection}
+                      onClick={() => {
+                        showAlert({
+                          title: "Payment method",
+                          description: (
+                            <PaymentSelectionContent
+                              userPaymentMethods={userPaymentMethods}
+                              tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+                              setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+                              setSelectedPaymentMethods={setSelectedPaymentMethods}
+                              hideAlert={hideAlert}
+                              handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+                            />
+                          ),
+                        })
+                      }}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
