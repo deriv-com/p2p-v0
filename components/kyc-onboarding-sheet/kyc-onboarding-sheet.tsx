@@ -11,8 +11,8 @@ function KycOnboardingSheet() {
     (onboardingStatus?.p2p?.criteria?.find((c) => c.code === "deposit_enabled")?.passed &&
       onboardingStatus?.p2p?.criteria?.find((c) => c.code === "withdraw_enabled")?.passed) ||
     false
-  const isPoiCompleted = onboardingStatus?.kyc?.poa_status === "approved"
-  const isPoaCompleted = onboardingStatus?.kyc?.poi_status === "approved"
+  const isPoiCompleted = onboardingStatus?.kyc?.poi_status === "approved"
+  const isPoaCompleted = onboardingStatus?.kyc?.poa_status === "approved"
   const isPhoneCompleted = onboardingStatus?.p2p?.criteria?.find((c) => c.code === "phone_verified")?.passed || false
 
   const verificationSteps = [

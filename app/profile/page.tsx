@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const { showWarningDialog } = useAlertDialog()
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
+  const userEmail = user?.email
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -120,6 +121,7 @@ export default function ProfilePage() {
           <div className="flex-1 order-1">
             <UserInfo
               username={userData?.username}
+              email={userEmail}
               rating={userData?.rating}
               recommendation={userData?.recommendation}
               joinDate={userData?.joinDate}
