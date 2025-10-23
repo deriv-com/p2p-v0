@@ -7,13 +7,14 @@ import { useUserDataStore } from "@/stores/user-data-store"
 
 interface UserInfoProps {
   username: string
+  email: string
   rating: string
   recommendation: number
   joinDate: string
   tradeBand: string
 }
 
-export default function UserInfo({ username, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
+export default function UserInfo({ username, email, rating, joinDate, recommendation, tradeBand }: UserInfoProps) {
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
 
   const isFullyVerified =
