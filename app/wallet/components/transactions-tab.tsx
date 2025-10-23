@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 import { formatAmountWithDecimals } from "@/lib/utils"
@@ -187,7 +186,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   return (
     <>
       <div className="py-0 space-y-6 mx-auto overflow-hidden">
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           {filters.map((filter) => (
             <Button
               key={filter}
@@ -201,7 +200,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
               {filter}
             </Button>
           ))}
-        </div>
+        </div> */}
 
         <div className="space-y-6 h-[calc(100vh-16rem)] md:h-[calc(100vh-14rem)] overflow-y-scroll pb-16">
           {Object.entries(groupedTransactions).map(([dateKey, dateTransactions]) => (
@@ -223,7 +222,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
