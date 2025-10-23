@@ -314,6 +314,22 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
     hideAlert()
   }
 
+  const handleShowPaymentSelection = () => {
+    showAlert({
+      title: "Payment method",
+      description: (
+        <PaymentSelectionContent
+          userPaymentMethods={userPaymentMethods}
+          tempSelectedPaymentMethods={tempSelectedPaymentMethods}
+          setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
+          setSelectedPaymentMethods={setSelectedPaymentMethods}
+          hideAlert={hideAlert}
+          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+        />
+      ),
+    })
+  }
+
   const getSelectedPaymentMethodsText = () => {
     if (selectedPaymentMethods.length === 0) return "Select payment"
     if (selectedPaymentMethods.length === 1) {
@@ -392,21 +408,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => {
-                        showAlert({
-                          title: "Payment method",
-                          description: (
-                            <PaymentSelectionContent
-                              userPaymentMethods={userPaymentMethods}
-                              tempSelectedPaymentMethods={tempSelectedPaymentMethods}
-                              setTempSelectedPaymentMethods={setTempSelectedPaymentMethods}
-                              setSelectedPaymentMethods={setSelectedPaymentMethods}
-                              hideAlert={hideAlert}
-                              handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-                            />
-                          ),
-                        })
-                      }}
+                      onClick={handleShowPaymentSelection}
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
