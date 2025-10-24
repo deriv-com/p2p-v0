@@ -465,9 +465,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {p2pWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
-                    P2P Wallet
-                  </h3>
+                  <h3 className="text-base font-normal text-slate-1200">P2P Wallet</h3>
                   {p2pWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -491,9 +489,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               )}
               {tradingWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
-                    Trading Wallet
-                  </h3>
+                  <h3 className="text-base font-normal text-slate-1200 mt-2">Trading Wallet</h3>
                   {tradingWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -555,9 +551,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {p2pWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
-                    P2P Wallet
-                  </h3>
+                  <h3 className="text-base font-normal text-slate-1200">P2P Wallet</h3>
                   {p2pWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -581,9 +575,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               )}
               {tradingWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
-                    Trading Wallet
-                  </h3>
+                  <h3 className="text-base font-normal text-slate-1200 mt-2">Trading Wallet</h3>
                   {tradingWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -670,6 +662,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
@@ -780,6 +773,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
@@ -967,6 +961,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
