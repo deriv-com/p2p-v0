@@ -129,7 +129,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleDelete = (adId: string) => {
     setDrawerOpen(false)
-    hideAlert()
     showDeleteDialog({
       title: "Delete ad?",
       description: "You will not be able to restore it.",
@@ -154,7 +153,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               })
             }
           } else {
-              console.log("else")
             let description = "There was an error when deleting the advert. Please try again."
 
             if (result.errors && result.errors.length > 0) {
@@ -164,6 +162,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               }
             }
 
+            hideAlert()
             showAlert({
               title: "Unable to delete advert",
               description,
