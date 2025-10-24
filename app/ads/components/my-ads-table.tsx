@@ -158,9 +158,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             let description = "There was an error when deleting the advert. Please try again."
 
             if (result.errors && result.errors.length > 0) {
-              console.log("[v0] Errors array:", result.errors)
               const hasOpenOrdersError = result.errors.some((error) => error.code === "AdvertDeleteOpenOrders")
-              console.log("[v0] Has open orders error:", hasOpenOrdersError)
               if (hasOpenOrdersError) {
                 description = "The advert has ongoing orders."
               }
@@ -176,7 +174,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             }, 500)
           }
         } catch (error) {
-          console.log("[v0] Delete error:", error)
+          console.log("Delete error:", error)
         }
       },
     })
