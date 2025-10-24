@@ -173,7 +173,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 confirmText: "OK",
                 type: "warning",
               })
-            }, 100)
+            }, 500)
           }
         } catch (error) {
           console.log("[v0] Delete error:", error)
