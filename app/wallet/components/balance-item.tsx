@@ -30,7 +30,7 @@ export default function BalanceItem({ currency, amount, label, onClick }: Balanc
             {logo ? (
               <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center p-[2px]">
                 <Image
-                  src={logo || "/placeholder.svg"}
+                  src={logo}
                   alt={`${currency} logo`}
                   width={12}
                   height={12}
