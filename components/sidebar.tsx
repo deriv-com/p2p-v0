@@ -59,7 +59,7 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "My Ads", href: "/ads", icon: AdsIcon },
     ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
     { name: "P2P Profile", href: "/profile", icon: ProfileIcon },
-    { name: "P2P Help Centre", href: `https://deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
+    { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
   const hideOnMobile = ["Market", "Orders", "My Ads", "Wallet", "P2P Profile"]
