@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+import Image from "next/image"
 
 import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
@@ -169,8 +170,17 @@ export default function EditPaymentMethodPanel({
       </form>
 
       <div className="p-4 flex justify-end">
-        <Button type="button" onClick={handleSubmit} disabled={isLoading || !isFormValid()} className="w-full md:w-auto">
-          {isLoading ? "Saving..." : "Save changes"}
+        <Button
+          type="button"
+          onClick={handleSubmit}
+          disabled={isLoading || !isFormValid()}
+          className="w-full md:w-auto"
+        >
+          {isLoading ? (
+            <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+          ) : (
+            "Save changes"
+          )}
         </Button>
       </div>
     </PanelWrapper>

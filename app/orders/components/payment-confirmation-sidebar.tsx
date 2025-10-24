@@ -171,10 +171,7 @@ export const PaymentConfirmationSidebar = ({
               className="w-full md:w-auto"
             >
               {isLoading || isUploadLoading ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                  Processing...
-                </>
+                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
                 "Submit"
               )}

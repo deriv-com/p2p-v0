@@ -21,6 +21,7 @@ interface RatingContentProps {
   ratingLabel: string
   recommendLabel?: string
   onSubmit: () => void
+  isSubmitting: boolean
 }
 
 const RatingContent = ({
@@ -33,6 +34,7 @@ const RatingContent = ({
   ratingLabel,
   recommendLabel,
   onSubmit,
+  isSubmitting,
 }: RatingContentProps) => (
   <>
     <div className="flex-1 overflow-auto p-4 md:px-0">
@@ -65,10 +67,7 @@ const RatingContent = ({
           <div className="flex gap-4">
             <Button
               variant="outline"
-              className={cn(
-                  "border-opacity-10",
-                  recommend === true ? "bg-success-text hover:bg-success-text" : "",
-                )}
+              className={cn("border-opacity-10", recommend === true ? "bg-success-text hover:bg-success-text" : "")}
               size="sm"
               onClick={() => setRecommend(recommend === true ? null : true)}
             >
@@ -89,10 +88,7 @@ const RatingContent = ({
             </Button>
             <Button
               variant="outline"
-              className={cn(
-                  "border-opacity-10",
-                  recommend === false ? "bg-disputed-icon hover:bg-disputed-icon" : "",
-                )}
+              className={cn("border-opacity-10", recommend === false ? "bg-disputed-icon hover:bg-disputed-icon" : "")}
               size="sm"
               onClick={() => setRecommend(recommend === false ? null : false)}
             >
@@ -116,8 +112,12 @@ const RatingContent = ({
       </div>
     </div>
     <div className="p-4 md:px-0">
-      <Button onClick={onSubmit} disabled={rating === 0} className="w-full disabled:opacity-[0.24]">
-        Submit
+      <Button onClick={onSubmit} disabled={rating === 0 || isSubmitting} className="w-full disabled:opacity-[0.24]">
+        {isSubmitting ? (
+          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+        ) : (
+          "Submit"
+        )}
       </Button>
     </div>
   </>
@@ -135,6 +135,7 @@ export function RatingSidebar({
   const [rating, setRating] = useState(0)
   const [hoverRating, setHoverRating] = useState(0)
   const [recommend, setRecommend] = useState<boolean | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const isMobile = useIsMobile()
 
@@ -154,6 +155,7 @@ export function RatingSidebar({
     }
 
     try {
+      setIsSubmitting(true)
       const result = await OrdersAPI.reviewOrder(orderId, ratingData)
       if (result.errors.length === 0) {
         onSubmit?.()
@@ -163,6 +165,8 @@ export function RatingSidebar({
       setRecommend(null)
     } catch (error) {
       console.error("Error submitting rating:", error)
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -192,6 +196,7 @@ export function RatingSidebar({
             ratingLabel={ratingLabel}
             recommendLabel={recommendLabel}
             onSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
           />
         </DrawerContent>
       </Drawer>
@@ -199,12 +204,12 @@ export function RatingSidebar({
   }
 
   return (
-     <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
           <DialogTitle className="tracking-normal font-bold text-2xl">{title}</DialogTitle>
         </DialogHeader>
-         <RatingContent
+        <RatingContent
           rating={rating}
           setRating={setRating}
           hoverRating={hoverRating}
@@ -214,6 +219,7 @@ export function RatingSidebar({
           ratingLabel={ratingLabel}
           recommendLabel={recommendLabel}
           onSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
         />
       </DialogContent>
     </Dialog>

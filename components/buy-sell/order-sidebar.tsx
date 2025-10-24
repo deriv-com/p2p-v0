@@ -193,6 +193,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         setValidationError(null)
       }
     }
+
+    if (!amount) setTotalAmount(0)
   }, [amount, ad, orderType, p2pBalance])
 
   const handleShowPaymentSelection = () => {
@@ -493,10 +495,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     }
                   >
                     {isSubmitting ? (
-                      <span className="flex items-center justify-center">
-                        <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
-                        Processing...
-                      </span>
+                      <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                     ) : (
                       "Place order"
                     )}

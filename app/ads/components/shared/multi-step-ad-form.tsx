@@ -34,10 +34,6 @@ interface UserPaymentMethod {
 }
 
 const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
-  if (isSubmitting) {
-    return mode === "create" ? "Creating..." : "Saving..."
-  }
-
   if (currentStep === 0) {
     return "Next"
   }
@@ -502,7 +498,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const isButtonDisabled =
-    isSubmitting ||
     (currentStep === 0 && !adFormValid) ||
     (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
     (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
@@ -624,7 +619,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
                 <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                  {getButtonText(isSubmitting, currentStep, mode)}
+                  {isSubmitting ? (
+                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                  ) : (
+                    getButtonText(isSubmitting, currentStep, mode)
+                  )}
                 </Button>
               </div>
             </div>
@@ -634,7 +633,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
           <div className="hidden md:flex justify-end mt-8 px-6">
             <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
-              {getButtonText(isSubmitting, currentStep, mode)}
+              {isSubmitting ? (
+                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+              ) : (
+                getButtonText(isSubmitting, currentStep, mode)
+              )}
             </Button>
           </div>
         </div>

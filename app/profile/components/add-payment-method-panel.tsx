@@ -386,7 +386,11 @@ export default function AddPaymentMethodPanel({
           disabled={isLoading || !selectedMethod || !isFormValid()}
           className="w-full md:w-auto"
         >
-          {isLoading ? "Adding..." : "Add"}
+          {isLoading ? (
+            <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+          ) : (
+            "Add"
+          )}
         </Button>
       </div>
     </>
