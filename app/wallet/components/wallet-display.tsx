@@ -19,6 +19,8 @@ const getCurrencyImage = (walletName: string, currency: string) => {
 }
 
 export default function WalletDisplay({ name, amount, currency, onClick, isSelected }: WalletDisplayProps) {
+  const isP2PWallet = name.includes("P2P")
+
   return (
     <div
       className={`h-[76px] px-4 py-2 flex items-center self-stretch rounded-lg bg-grayscale-500 cursor-pointer hover:bg-gray-100 transition-colors ${
@@ -26,15 +28,32 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
       }`}
       onClick={onClick}
     >
-      <div className="w-8 h-8 flex-shrink-0">
-        <Image
-          src={getCurrencyImage(name, currency) }
-          alt={name}
-          width={32}
-          height={32}
-          className="rounded-full"
-        />
-      </div>
+      {isP2PWallet ? (
+        <div className="w-8 h-8 flex-shrink-0 relative">
+          <Image src="/icons/p2p-black.png" alt="P2P" width={28} height={28} className="rounded-full" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4">
+            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+              <Image
+                src={currencyLogoMapper[currency as keyof typeof currencyLogoMapper] }
+                alt={currency}
+                width={12}
+                height={12}
+                className="rounded-full"
+              />
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="w-8 h-8 flex-shrink-0">
+          <Image
+            src={getCurrencyImage(name, currency) }
+            alt={name}
+            width={32}
+            height={32}
+            className="rounded-full"
+          />
+        </div>
+      )}
 
       <div className="flex-1 ml-4">
         <h3 className="text-slate-1200 text-base font-normal">{name}</h3>

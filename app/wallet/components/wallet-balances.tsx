@@ -6,6 +6,7 @@ import BalanceItem from "./balance-item"
 interface Balance {
   amount: string
   currency: string
+  label: string
 }
 
 interface WalletBalancesProps {
@@ -16,10 +17,12 @@ interface WalletBalancesProps {
 
 export default function WalletBalances({ onBalanceClick, balances = [], isLoading = true }: WalletBalancesProps) {
   if (isLoading) {
-    return (<div className="text-center py-12">
-          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-          <p className="mt-2 text-slate-600">Loading assets...</p>
-        </div>)
+    return (
+      <div className="text-center py-12">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+        <p className="mt-2 text-slate-600">Loading assets...</p>
+      </div>
+    )
   }
 
   if (balances.length === 0) {
@@ -55,14 +58,17 @@ export default function WalletBalances({ onBalanceClick, balances = [], isLoadin
   return (
     <div className="w-full">
       <div className="flex flex-col md:grid md:grid-cols-2 gap-4">
-        {balances.map((wallet) => (
-          <BalanceItem
-            key={wallet.currency}
-            currency={wallet.currency}
-            amount={wallet.amount}
-            onClick={() => onBalanceClick?.(wallet.currency, wallet.amount)}
-          />
-        ))}
+        {balances
+          .filter((wallet) => wallet.currency === "USD")
+          .map((wallet) => (
+            <BalanceItem
+              key={wallet.currency}
+              currency={wallet.currency}
+              amount={wallet.amount}
+              label={`P2P ${wallet.label}`}
+              onClick={() => onBalanceClick?.(wallet.currency, wallet.amount)}
+            />
+          ))}
       </div>
     </div>
   )

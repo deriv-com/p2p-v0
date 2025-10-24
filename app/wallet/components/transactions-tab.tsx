@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { fetchTransactions } from "@/services/api/api-wallets"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 import { formatAmountWithDecimals } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 interface Transaction {
   transaction_id: number
@@ -187,7 +187,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   return (
     <>
       <div className="py-0 space-y-6 mx-auto overflow-hidden">
-        <div className="flex gap-2">
+        <div className="hidden gap-2">
           {filters.map((filter) => (
             <Button
               key={filter}
@@ -223,7 +223,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc }
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}

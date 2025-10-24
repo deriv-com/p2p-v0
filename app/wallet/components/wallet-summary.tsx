@@ -19,6 +19,7 @@ interface Currency {
   code: string
   name: string
   logo: string
+  label: string
 }
 
 type OperationType = "DEPOSIT" | "WITHDRAW" | "TRANSFER"
@@ -53,6 +54,7 @@ export default function WalletSummary({
 
   const displayCurrency = externalSelectedCurrency || propCurrency
   const formattedBalance = formatAmountWithDecimals(propBalance)
+  const displayCurrencyLabel = currencies.find((c) => c.code === displayCurrency)?.label || displayCurrency
 
   const fetchCurrencies = async () => {
     try {
@@ -62,6 +64,7 @@ export default function WalletSummary({
           code,
           name: data.label,
           logo: currencyLogoMapper[code as keyof typeof currencyLogoMapper],
+          label: data.label, // Added label field to currencyList
         }))
         setCurrencies(currencyList)
       }
@@ -202,7 +205,7 @@ export default function WalletSummary({
                   <p className="text-[28px] font-extrabold text-slate-1200">
                     {propIsLoading ? "Loading..." : `${formattedBalance} ${displayCurrency}`}
                   </p>
-                  <p className="text-sm font-normal text-grayscale-100">{displayCurrency}</p>
+                  <p className="text-sm font-normal text-grayscale-100">{displayCurrencyLabel}</p>
                 </>
               )}
             </div>
