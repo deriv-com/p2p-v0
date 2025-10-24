@@ -114,16 +114,7 @@ const RatingContent = ({
     <div className="p-4 md:px-0">
       <Button onClick={onSubmit} disabled={rating === 0 || isSubmitting} className="w-full disabled:opacity-[0.24]">
         {isSubmitting ? (
-          <span className="flex items-center justify-center gap-2">
-            <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QZKAlNXT19P0B7ymdwqqhawnsY2RAV.png"
-              alt="Loading"
-              width={20}
-              height={20}
-              className="animate-spin"
-            />
-            Submitting...
-          </span>
+          <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
         ) : (
           "Submit"
         )}

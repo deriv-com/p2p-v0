@@ -66,16 +66,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           className="w-full disabled:opacity-[0.24]"
         >
           {isSubmitting ? (
-            <span className="flex items-center justify-center gap-2">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QZKAlNXT19P0B7ymdwqqhawnsY2RAV.png"
-                alt="Loading"
-                width={20}
-                height={20}
-                className="animate-spin"
-              />
-              Submitting...
-            </span>
+            <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
           ) : (
             "Submit"
           )}
