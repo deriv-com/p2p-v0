@@ -257,7 +257,7 @@ export default function PaymentMethodsFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
+      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
       <PopoverContent className="w-80 p-4" align="end">
         <FilterContent />
       </PopoverContent>
