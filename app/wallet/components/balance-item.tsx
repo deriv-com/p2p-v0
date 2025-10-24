@@ -22,10 +22,10 @@ export default function BalanceItem({ currency, amount, label, onClick }: Balanc
     >
       <div className="flex items-center gap-4 pl-0">
         <div className="flex-shrink-0 relative w-7 h-7">
-          {/* P2P background icon - 28px */}
+    
           <Image src="/icons/p2p-black.png" alt="P2P" width={28} height={28} className="w-7 h-7 rounded-full" />
 
-          {/* Currency icon stacked below - 12px with 2px white border */}
+      
           <div className="absolute -bottom-1 left-1/2 -translate-x-1/2">
             {logo ? (
               <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center p-[2px]">
