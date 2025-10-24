@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 interface Country {
   code: string
@@ -52,12 +53,9 @@ export default function CountrySelection({ countries, selectedCountries, onCount
     if (isAllSelected) {
       return "All"
     }
-  
-      const countryNames = selectedCountries
-        .map((code) => countries.find((c) => c.code === code)?.name)
-        .join(", ")
-      return countryNames
-  
+
+    const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
+    return countryNames
   }
 
   const CountryList = () => (
@@ -73,7 +71,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         <Input
           placeholder="Search"
           value={searchTerm}
-          onChange={() => setSearchTerm("")}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
@@ -131,7 +129,13 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             onClick={() => setIsOpen(true)}
           >
             <span className="text-left font-normal">{getDisplayText()}</span>
-            <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+            <Image
+              src="/icons/chevron-down.png"
+              alt="Dropdown icon"
+              width={24}
+              height={24}
+              className={cn("ml-2 transition-transform duration-200", isOpen && "rotate-180")}
+            />
           </Button>
         </DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit">
@@ -156,7 +160,13 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           onClick={() => setIsOpen(!isOpen)}
         >
           <span className="text-left font-normal">{getDisplayText()}</span>
-          <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+          <Image
+            src="/icons/chevron-down.png"
+            alt="Dropdown icon"
+            width={24}
+            height={24}
+            className={cn("ml-2 transition-transform duration-200", isOpen && "rotate-180")}
+          />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-4" align="start">
