@@ -28,7 +28,7 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const { showDeleteDialog, showAlert } = useAlertDialog()
+  const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
@@ -155,17 +155,25 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           } else {
             let description = "There was an error when deleting the advert. Please try again."
 
-            if (result.errors.length > 0 && result.errors[0].code === "AdvertDeleteOpenOrders") {
-              description = "The advert has ongoing orders."
+            if (result.errors && result.errors.length > 0) {
+              const hasOpenOrdersError = result.errors.some((error) => error.code === "AdvertDeleteOpenOrders")
+              if (hasOpenOrdersError) {
+                description = "The advert has ongoing orders."
+              }
             }
-            showAlert({
-              title: "Unable to delete advert",
-              description,
-              confirmText: "OK",
-              type: "warning",
-            })
+
+            setTimeout(() => {
+              showAlert({
+                title: "Unable to delete advert",
+                description,
+                confirmText: "OK",
+                type: "warning",
+              })
+            }, 500)
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log("Delete error:", error)
+        }
       },
     })
   }
