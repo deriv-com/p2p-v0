@@ -13,7 +13,6 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
-import { Sheet, SheetContent } from "@/components/ui/sheet"
 
 interface StatsTabsProps {
   stats?: any
@@ -68,7 +67,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
         if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
           title = "Duplicate payment method"
-          description = "A payment method with the same values already exists. Add a new one."
+          description = "A payment method with the same values already exists.\nAdd a new one."
         }
         showAlert({
           title,
