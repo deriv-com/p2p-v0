@@ -193,6 +193,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
         setValidationError(null)
       }
     }
+
+    if(!amount) setTotalAmount()
   }, [amount, ad, orderType, p2pBalance])
 
   const handleShowPaymentSelection = () => {
