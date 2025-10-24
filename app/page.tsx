@@ -274,7 +274,7 @@ export default function BuySellPage() {
                             alt="Arrow"
                             width={24}
                             height={24}
-                            className="ml-2"
+                            className="ml-2 transition-transform duration-200 [.data-open_&]:rotate-180"
                           />
                         </Button>
                       }
