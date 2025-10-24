@@ -97,7 +97,7 @@ export default function OrderDetailsPage() {
           </div>
         ),
         cancelText: "Got it",
-        type: "warning"
+        type: "warning",
       })
     }
   }
@@ -293,7 +293,7 @@ export default function OrderDetailsPage() {
           console.error("Failed to cancel order:", error)
         }
       },
-      type: "warning"
+      type: "warning",
     })
   }
 
@@ -497,12 +497,15 @@ export default function OrderDetailsPage() {
                     </Button>
                   </div>
                 )}
-                {((order.type === "buy" &&
-                  (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
-                  order.advert.user.id == userId) ||
-                  (order.type === "sell" &&
-                    (order.status === "pending_release" || order.status === "timed_out") &&
-                    order.user.id == userId)) && (
+                {/* For buy orders - buyer sees "Awaiting seller's confirmation", seller sees "Confirm payment" */}
+                {order.type === "buy" && order.status === "pending_release" && order.user.id == userId && (
+                  <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                    <Button className="flex-1" disabled>
+                      Awaiting seller's confirmation
+                    </Button>
+                  </div>
+                )}
+                {order.type === "buy" && order.status === "pending_release" && order.advert.user.id == userId && (
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
                     <Button
                       className="flex-1"
@@ -510,10 +513,28 @@ export default function OrderDetailsPage() {
                       disabled={isConfirmLoading}
                     >
                       {isConfirmLoading ? (
-                        <>
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
-                        </>
+                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
+                      ) : (
+                        "Confirm payment"
+                      )}
+                    </Button>
+                  </div>
+                )}
+                {/* For sell orders and other statuses - keep existing logic */}
+                {((order.type === "sell" &&
+                  (order.status === "pending_release" || order.status === "timed_out") &&
+                  order.user.id == userId) ||
+                  (order.type === "buy" &&
+                    (order.status === "timed_out" || order.status === "disputed") &&
+                    order.advert.user.id == userId)) && (
+                  <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
+                    <Button
+                      className="flex-1"
+                      onClick={handleShowPaymentReceivedConfirmation}
+                      disabled={isConfirmLoading}
+                    >
+                      {isConfirmLoading ? (
+                        <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                       ) : (
                         "I've received payment"
                       )}
