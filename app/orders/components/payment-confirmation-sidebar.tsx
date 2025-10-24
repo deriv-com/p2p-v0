@@ -171,10 +171,16 @@ export const PaymentConfirmationSidebar = ({
               className="w-full md:w-auto"
             >
               {isLoading || isUploadLoading ? (
-                <>
-                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
+                <span className="flex items-center justify-center gap-2">
+                  <Image
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QZKAlNXT19P0B7ymdwqqhawnsY2RAV.png"
+                    alt="Loading"
+                    width={20}
+                    height={20}
+                    className="animate-spin"
+                  />
                   Processing...
-                </>
+                </span>
               ) : (
                 "Submit"
               )}

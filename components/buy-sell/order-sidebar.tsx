@@ -194,7 +194,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       }
     }
 
-    if(!amount) setTotalAmount(0)
+    if (!amount) setTotalAmount(0)
   }, [amount, ad, orderType, p2pBalance])
 
   const handleShowPaymentSelection = () => {
@@ -495,8 +495,14 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                     }
                   >
                     {isSubmitting ? (
-                      <span className="flex items-center justify-center">
-                        <span className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></span>
+                      <span className="flex items-center justify-center gap-2">
+                        <Image
+                          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QZKAlNXT19P0B7ymdwqqhawnsY2RAV.png"
+                          alt="Loading"
+                          width={20}
+                          height={20}
+                          className="animate-spin"
+                        />
                         Processing...
                       </span>
                     ) : (

@@ -45,22 +45,40 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
       <div className="flex-1 p-4 md:px-0 space-y-6">
         <RadioGroup value={selectedOption} onValueChange={setSelectedOption}>
           {COMPLAINT_OPTIONS.filter((option) => option.type === type).map((option) => (
-              <div key={option.id} className="flex items-start space-x-3">
-                <RadioGroupItem value={option.value} id={option.id} className="mt-1 border-grayscale-100 text-black" />
-                <Label htmlFor={option.id} className="font-normal text-base leading-relaxed cursor-pointer flex-1 text-grayscale-100">
-                  {option.label}
-                </Label>
-              </div>
-            )
-          )}
+            <div key={option.id} className="flex items-start space-x-3">
+              <RadioGroupItem value={option.value} id={option.id} className="mt-1 border-grayscale-100 text-black" />
+              <Label
+                htmlFor={option.id}
+                className="font-normal text-base leading-relaxed cursor-pointer flex-1 text-grayscale-100"
+              >
+                {option.label}
+              </Label>
+            </div>
+          ))}
         </RadioGroup>
-        <div className="text-base">
-          If your issue isn't listed, contact us via live chat for help.
-        </div>
+        <div className="text-base">If your issue isn't listed, contact us via live chat for help.</div>
       </div>
 
       <div className="p-4 md:px-0">
-        <Button onClick={handleSubmit} disabled={!selectedOption || isSubmitting} className="w-full disabled:opacity-[0.24]">Submit
+        <Button
+          onClick={handleSubmit}
+          disabled={!selectedOption || isSubmitting}
+          className="w-full disabled:opacity-[0.24]"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center gap-2">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-QZKAlNXT19P0B7ymdwqqhawnsY2RAV.png"
+                alt="Loading"
+                width={20}
+                height={20}
+                className="animate-spin"
+              />
+              Submitting...
+            </span>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </div>
     </div>
@@ -87,7 +105,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
         <DialogHeader>
           <DialogTitle className="tracking-normal font-bold text-2xl">Submit a complaint</DialogTitle>
         </DialogHeader>
-         <ComplaintContent />
+        <ComplaintContent />
       </DialogContent>
     </Dialog>
   )
