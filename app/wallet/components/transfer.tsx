@@ -37,6 +37,7 @@ interface WalletData {
   id: string
   name: string
   currency: string
+  balance: string
 }
 
 interface Transaction {
@@ -132,6 +133,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
         id: sourceWalletData.id,
         name: sourceWalletData.name,
         currency: currency,
+        balance: sourceWalletData.balance,
       })
     }
     setSelectedCurrency(currency)
@@ -198,7 +200,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
           const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
           if (p2pWallet && !sourceWalletData) {
-            setSourceWalletData({ id: p2pWallet.wallet_id, name: p2pWallet.name, currency: p2pWallet.currency })
+            setSourceWalletData({
+              id: p2pWallet.wallet_id,
+              name: p2pWallet.name,
+              currency: p2pWallet.currency,
+              balance: p2pWallet.balance,
+            })
           }
         }
       } catch (error) {
@@ -327,9 +334,19 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
     if (type === "from") {
-      setSourceWalletData({ id: wallet.wallet_id, name: wallet.name, currency: wallet.currency })
+      setSourceWalletData({
+        id: wallet.wallet_id,
+        name: wallet.name,
+        currency: wallet.currency,
+        balance: wallet.balance,
+      })
     } else if (type === "to") {
-      setDestinationWalletData({ id: wallet.wallet_id, name: wallet.name, currency: wallet.currency })
+      setDestinationWalletData({
+        id: wallet.wallet_id,
+        name: wallet.name,
+        currency: wallet.currency,
+        balance: wallet.balance,
+      })
     }
 
     setShowMobileSheet(null)
@@ -403,13 +420,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const getSourceWalletAmount = () => {
-    const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
-    return wallet ? `${formatAmountWithDecimals(wallet.balance)} ${wallet.currency}` : ""
+    return sourceWalletData ? `${formatAmountWithDecimals(sourceWalletData.balance)} ${sourceWalletData.currency}` : ""
   }
 
   const getDestinationWalletAmount = () => {
-    const wallet = wallets.find((w) => w.wallet_id === destinationWalletData?.id)
-    return wallet ? `${formatAmountWithDecimals(wallet.balance)} ${wallet.currency}` : ""
+    return destinationWalletData
+      ? `${formatAmountWithDecimals(destinationWalletData.balance)} ${destinationWalletData.currency}`
+      : ""
   }
 
   const getFilteredWallets = (type: WalletSelectorType) => {
@@ -581,6 +598,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -686,6 +704,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg"
@@ -870,6 +889,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
