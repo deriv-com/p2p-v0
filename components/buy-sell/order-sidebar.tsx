@@ -194,7 +194,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       }
     }
 
-    if(!amount) setTotalAmount()
+    if(!amount) setTotalAmount(0)
   }, [amount, ad, orderType, p2pBalance])
 
   const handleShowPaymentSelection = () => {
