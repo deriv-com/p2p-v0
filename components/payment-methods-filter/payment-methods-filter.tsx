@@ -155,20 +155,6 @@ export default function PaymentMethodsFilter({
       ))
   }
 
-  const enhancedTrigger = trigger ? (
-    <div
-      className={cn(
-        "inline-flex",
-        "[&_img[alt='Arrow']]:transition-transform [&_img[alt='Arrow']]:duration-200",
-        isOpen && "[&_img[alt='Arrow']]:rotate-180",
-      )}
-    >
-      {trigger}
-    </div>
-  ) : (
-    trigger
-  )
-
   const FilterContent = () => (
     <div className="w-full">
       <div className="relative mb-4">
@@ -258,7 +244,7 @@ export default function PaymentMethodsFilter({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-        <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">Payment method</h3>
