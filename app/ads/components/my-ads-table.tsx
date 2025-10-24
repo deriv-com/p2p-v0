@@ -28,7 +28,7 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const { showDeleteDialog, showAlert, hideAlert} = useAlertDialog()
+  const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
@@ -138,6 +138,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         try {
           const result = await AdsAPI.deleteAd(adId)
 
+          console.log("[v0] Delete result:", result)
+
           if (result.success) {
             if (onAdDeleted) {
               onAdDeleted()
@@ -156,20 +158,26 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
             let description = "There was an error when deleting the advert. Please try again."
 
             if (result.errors && result.errors.length > 0) {
+              console.log("[v0] Errors array:", result.errors)
               const hasOpenOrdersError = result.errors.some((error) => error.code === "AdvertDeleteOpenOrders")
+              console.log("[v0] Has open orders error:", hasOpenOrdersError)
               if (hasOpenOrdersError) {
                 description = "The advert has ongoing orders."
               }
             }
 
-            showAlert({
-              title: "Unable to delete advert",
-              description,
-              confirmText: "OK",
-              type: "warning",
-            })
+            setTimeout(() => {
+              showAlert({
+                title: "Unable to delete advert",
+                description,
+                confirmText: "OK",
+                type: "warning",
+              })
+            }, 100)
           }
-        } catch (error) {}
+        } catch (error) {
+          console.log("[v0] Delete error:", error)
+        }
       },
     })
   }
