@@ -28,7 +28,7 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const { showDeleteDialog, showAlert, } = useAlertDialog()
+  const { showDeleteDialog, showAlert, hideAlert} = useAlertDialog()
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
@@ -129,6 +129,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleDelete = (adId: string) => {
     setDrawerOpen(false)
+    hideAlert()
     showDeleteDialog({
       title: "Delete ad?",
       description: "You will not be able to restore it.",
@@ -137,16 +138,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       onConfirm: async () => {
         try {
           const result = await AdsAPI.deleteAd(adId)
-
-          console.log("[v0] Delete result:", result)
-          console.log("[v0] Result success:", result.success)
-          console.log("[v0] Result errors:", result.errors)
-
-          if (result.errors && result.errors.length > 0) {
-            console.log("[v0] First error:", result.errors[0])
-            console.log("[v0] Error code:", result.errors[0].code)
-            console.log("[v0] Error message:", result.errors[0].message)
-          }
 
           if (result.success) {
             if (onAdDeleted) {
