@@ -640,25 +640,26 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="flex items-center gap-3">
                     {sourceWalletData &&
                       (sourceWalletData.name.includes("P2P") ? (
-                        <div className="relative w-7 h-7 flex-shrink-0">
+                        <div className="relative w-[21px] h-[21px] flex-shrink-0">
                           <Image
                             src="/icons/p2p-black.png"
                             alt="P2P"
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 rounded-full"
+                            width={21}
+                            height={21}
+                            className="w-[21px] h-[21px] rounded-full"
                           />
                           <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                            <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
-                                width={12}
-                                height={12}
-                                className="w-3 h-3 rounded-full"
+                                width={9}
+                                height={9}
+                                className="w-[9px] h-[9px] rounded-full"
                               />
                             </div>
                           </div>
@@ -686,16 +687,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="flex items-center gap-3">
                     {destinationWalletData &&
                       (destinationWalletData.name.includes("P2P") ? (
-                        <div className="relative w-7 h-7 flex-shrink-0">
+                        <div className="relative w-[21px] h-[21px] flex-shrink-0">
                           <Image
                             src="/icons/p2p-black.png"
                             alt="P2P"
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 rounded-full"
+                            width={21}
+                            height={21}
+                            className="w-[21px] h-[21px] rounded-full"
                           />
                           <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                            <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
@@ -703,9 +704,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
-                                width={12}
-                                height={12}
-                                className="w-3 h-3 rounded-full"
+                                width={9}
+                                height={9}
+                                className="w-[9px] h-[9px] rounded-full"
                               />
                             </div>
                           </div>
@@ -799,25 +800,26 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="flex items-center gap-3">
                     {sourceWalletData &&
                       (sourceWalletData.name.includes("P2P") ? (
-                        <div className="relative w-7 h-7 flex-shrink-0">
+                        <div className="relative w-[21px] h-[21px] flex-shrink-0">
                           <Image
                             src="/icons/p2p-black.png"
                             alt="P2P"
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 rounded-full"
+                            width={21}
+                            height={21}
+                            className="w-[21px] h-[21px] rounded-full"
                           />
                           <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                            <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
-                                width={12}
-                                height={12}
-                                className="w-3 h-3 rounded-full"
+                                width={9}
+                                height={9}
+                                className="w-[9px] h-[9px] rounded-full"
                               />
                             </div>
                           </div>
@@ -845,16 +847,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="flex items-center gap-3">
                     {destinationWalletData &&
                       (destinationWalletData.name.includes("P2P") ? (
-                        <div className="relative w-7 h-7 flex-shrink-0">
+                        <div className="relative w-[21px] h-[21px] flex-shrink-0">
                           <Image
                             src="/icons/p2p-black.png"
                             alt="P2P"
-                            width={28}
-                            height={28}
-                            className="w-7 h-7 rounded-full"
+                            width={21}
+                            height={21}
+                            className="w-[21px] h-[21px] rounded-full"
                           />
                           <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                            <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
@@ -862,9 +864,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
-                                width={12}
-                                height={12}
-                                className="w-3 h-3 rounded-full"
+                                width={9}
+                                height={9}
+                                className="w-[9px] h-[9px] rounded-full"
                               />
                             </div>
                           </div>
@@ -1014,24 +1016,24 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 <div className="text-grayscale-text-muted text-base font-normal">From</div>
                 {sourceWalletData ? (
                   sourceWalletData.name.includes("P2P") ? (
-                    <div className="relative w-7 h-7 flex-shrink-0">
+                    <div className="relative w-[21px] h-[21px] flex-shrink-0">
                       <Image
                         src="/icons/p2p-black.png"
                         alt="P2P"
-                        width={28}
-                        height={28}
-                        className="w-7 h-7 rounded-full"
+                        width={21}
+                        height={21}
+                        className="w-[21px] h-[21px] rounded-full"
                       />
                       <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                        <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                        <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
                               getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
                             }
                             alt={sourceWalletData.currency}
-                            width={12}
-                            height={12}
-                            className="w-3 h-3 rounded-full"
+                            width={9}
+                            height={9}
+                            className="w-[9px] h-[9px] rounded-full"
                           />
                         </div>
                       </div>
@@ -1076,16 +1078,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 <div className="text-grayscale-text-muted text-base font-normal">To</div>
                 {destinationWalletData ? (
                   destinationWalletData.name.includes("P2P") ? (
-                    <div className="relative w-7 h-7 flex-shrink-0">
+                    <div className="relative w-[21px] h-[21px] flex-shrink-0">
                       <Image
                         src="/icons/p2p-black.png"
                         alt="P2P"
-                        width={28}
-                        height={28}
-                        className="w-7 h-7 rounded-full"
+                        width={21}
+                        height={21}
+                        className="w-[21px] h-[21px] rounded-full"
                       />
                       <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
-                        <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                        <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
@@ -1093,9 +1095,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
-                            width={12}
-                            height={12}
-                            className="w-3 h-3 rounded-full"
+                            width={9}
+                            height={9}
+                            className="w-[9px] h-[9px] rounded-full"
                           />
                         </div>
                       </div>
