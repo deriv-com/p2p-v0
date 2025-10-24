@@ -10,11 +10,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
-import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
+import { getTotalBalance } from "@/services/api/api-auth"
+import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber, cn } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { useUserDataStore } from "@/stores/user-data-store"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -140,6 +142,58 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const [p2pBalance, setP2pBalance] = useState<number>(0)
+  const userData = useUserDataStore((state) => state.userData)
+
+  const fetchP2PBalance = async () => {
+    try {
+      const isV1Signup = userData?.signup === "v1"
+
+      if (isV1Signup) {
+        const usdBalance = userData?.balances?.find((balance) => balance.currency === "USD")
+        const balance = usdBalance?.amount ?? "0.00"
+        setP2pBalance(Number.parseFloat(balance))
+      } else {
+        const data = await getTotalBalance()
+        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+        const balance = p2pWallet?.total_balance?.approximate_total_balance ?? "0.00"
+        setP2pBalance(Number.parseFloat(balance))
+      }
+    } catch (error) {
+      console.error("Error fetching P2P balance:", error)
+      setP2pBalance(0)
+    }
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsAnimating(true)
+      setOrderStatus(null)
+      fetchP2PBalance()
+    } else {
+      setIsAnimating(false)
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    if (ad && amount) {
+      const numAmount = Number.parseFloat(amount)
+      const exchangeRate = ad.exchange_rate || 0
+      const total = numAmount * exchangeRate
+      setTotalAmount(total)
+
+      const minLimit = ad.minimum_order_amount || "0.00"
+      const maxLimit = ad.actual_maximum_order_amount || "0.00"
+
+      if (orderType === "buy" && numAmount > p2pBalance) {
+        setValidationError("Insufficient balance. Add funds to your wallet before creating an order.")
+      } else if (numAmount < minLimit || numAmount > maxLimit) {
+        setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
+      } else {
+        setValidationError(null)
+      }
+    }
+  }, [amount, ad, orderType, p2pBalance])
 
   const handleShowPaymentSelection = () => {
     showAlert({
@@ -156,63 +210,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
       ),
     })
   }
-
-  useEffect(() => {
-    if (isOpen) {
-      setIsAnimating(true)
-      setOrderStatus(null)
-    } else {
-      setIsAnimating(false)
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    if (ad) {
-      fetchUserPaymentMethods()
-    }
-  }, [ad])
-
-  useEffect(() => {
-    if (ad && amount) {
-      const numAmount = Number.parseFloat(amount)
-      const exchangeRate = ad.exchange_rate || 0
-      const total = numAmount * exchangeRate
-      setTotalAmount(total)
-
-      const minLimit = ad.minimum_order_amount || "0.00"
-      const maxLimit = ad.actual_maximum_order_amount || "0.00"
-
-      if (numAmount < minLimit || numAmount > maxLimit) {
-        setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
-      } else {
-        setValidationError(null)
-      }
-    }
-  }, [amount, ad])
-
-  const fetchUserPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      const buyerAcceptedMethods = ad?.payment_methods || []
-      const filteredMethods =
-        response?.filter((method: PaymentMethod) => {
-          return buyerAcceptedMethods.some(
-            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
-          )
-        }) || []
-
-      setUserPaymentMethods(filteredMethods)
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }
-
-  if (!isOpen && !isAnimating) return null
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(e.target.value)
@@ -321,6 +318,36 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
 
+  const fetchUserPaymentMethods = async () => {
+    try {
+      const response = await ProfileAPI.getUserPaymentMethods()
+
+      if (response.error) {
+        return
+      }
+
+      const buyerAcceptedMethods = ad?.payment_methods || []
+      const filteredMethods =
+        response?.filter((method: PaymentMethod) => {
+          return buyerAcceptedMethods.some(
+            (buyerMethod: string) => method.method.toLowerCase() === buyerMethod.toLowerCase(),
+          )
+        }) || []
+
+      setUserPaymentMethods(filteredMethods)
+    } catch (error) {
+      console.error("Error fetching payment methods:", error)
+    }
+  }
+
+  useEffect(() => {
+    if (ad) {
+      fetchUserPaymentMethods()
+    }
+  }, [ad])
+
+  if (!isOpen && !isAnimating) return null
+
   return (
     <>
       <div className="fixed inset-0 z-50 flex justify-end">
@@ -351,7 +378,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
                       value={amount}
                       onChange={handleAmountChange}
                       type="number"
-                      className="[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0"
+                      className={cn(
+                        "[&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none px-4 py-0",
+                        validationError && "border-red-500 focus:border-red-500 focus-visible:ring-0",
+                      )}
                       step="any"
                       inputMode="decimal"
                       onKeyDown={(e) => {
