@@ -4,10 +4,12 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { fetchWalletsList, walletTransfer, getCurrencies, fetchTransactions } from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
+import TransactionDetails from "./transaction-details"
 
 interface TransferProps {
   currencySelected?: string
@@ -597,8 +599,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
-                           || "/placeholder.svg"}
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -705,8 +708,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
-                           || "/placeholder.svg"}
+                          }
                           alt={destinationWalletData.currency}
                           width={24}
                           height={24}
@@ -867,4 +871,210 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   </>
                 )}
               </div>
-              <\
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
+            </div>
+            <div className="h-2"></div>
+            <div
+              className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
+              onClick={() => {
+                if (window.innerWidth < 768) {
+                  setShowMobileSheet("to")
+                } else {
+                  setShowDesktopWalletPopup("to")
+                }
+              }}
+            >
+              <div className="flex flex-col items-start gap-1 w-10">
+                <div className="text-grayscale-text-muted text-base font-normal">To</div>
+                {destinationWalletData ? (
+                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
+                    <Image
+                      src={
+                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
+                        "/placeholder.svg" ||
+                        "/placeholder.svg" ||
+                        "/placeholder.svg" ||
+                        "/placeholder.svg"
+                      }
+                      alt={destinationWalletData.currency}
+                      width={24}
+                      height={24}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
+                )}
+              </div>
+              <div className="flex-1 mt-6">
+                {destinationWalletData && (
+                  <>
+                    <div className="text-slate-1200 text-base font-bold">{destinationWalletData.name}</div>
+                    <div className="text-grayscale-600 text-sm font-normal">{getDestinationWalletAmount()}</div>
+                  </>
+                )}
+              </div>
+              <Image src="/icons/chevron-down.png" alt="Dropdown" width={24} height={24} />
+            </div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleInterchange}
+                className="p-0 bg-white rounded-full shadow-sm"
+              >
+                <Image src="/icons/button-switch.png" alt="Switch" width={48} height={48} />
+              </Button>
+            </div>
+          </div>
+          <div className="mb-6 px-2 relative">
+            <h2 className="text-slate-1200 text-sm font-normal mb-2">Amount</h2>
+            <div className="relative">
+              <Input
+                type="number"
+                placeholder="0.00"
+                value={transferAmount || ""}
+                onChange={handleAmountChange}
+                className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
+                max={getSourceWalletBalance()}
+              />
+              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
+                {selectedCurrency || "USD"}
+              </span>
+            </div>
+            {transferAmount && !isAmountValid(transferAmount) && (
+              <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
+            )}
+            <div className="flex gap-2 mt-6">
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(25)}
+                size="sm"
+                variant="outline"
+              >
+                25%
+              </Button>
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(50)}
+                size="sm"
+                variant="outline"
+              >
+                50%
+              </Button>
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(75)}
+                size="sm"
+                variant="outline"
+              >
+                75%
+              </Button>
+              <Button
+                className="flex-1 text-grayscale-600 font-normal border-grayscale-200 hover:bg-transparent"
+                onClick={() => handlePercentageClick(100)}
+                size="sm"
+                variant="outline"
+              >
+                100%
+              </Button>
+            </div>
+            <div className="hidden md:block absolute top-full right-0 mt-6">
+              <Button
+                onClick={handleTransferClick}
+                disabled={
+                  !transferAmount ||
+                  transferAmount.trim() === "" ||
+                  !sourceWalletData ||
+                  !destinationWalletData ||
+                  !isAmountValid(transferAmount)
+                }
+                className="flex h-12 w-24 min-h-12 max-h-12 px-7 justify-center items-center gap-2"
+              >
+                Transfer
+              </Button>
+            </div>
+          </div>
+          <div className="flex-1"></div>
+          <div className="mt-auto md:hidden">
+            <Button
+              onClick={handleTransferClick}
+              disabled={
+                !transferAmount ||
+                transferAmount.trim() === "" ||
+                !sourceWalletData ||
+                !destinationWalletData ||
+                !isAmountValid(transferAmount)
+              }
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+            >
+              Transfer
+            </Button>
+          </div>
+        </div>
+        {renderMobileSheet("from")}
+        {renderMobileSheet("to")}
+        {renderDesktopWalletPopup("from")}
+        {renderDesktopWalletPopup("to")}
+        {renderMobileConfirmSheet()}
+        {renderDesktopConfirmPopup()}
+      </div>
+    )
+  }
+
+  if (step === "success") {
+    const transferText = `${formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+
+    return (
+      <>
+        <div
+          className="absolute inset-0 flex flex-col h-full p-6"
+          style={{
+            background:
+              "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), #181C25",
+          }}
+        >
+          <div className="flex-1 flex flex-col items-center justify-center text-center">
+            <div className="mb-6">
+              <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
+            </div>
+            <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
+            <p className="text-white text-center text-base font-normal">{transferText}</p>
+            <div className="hidden md:flex gap-4 mt-6">
+              <Button
+                onClick={handleViewDetails}
+                className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+              >
+                View details
+              </Button>
+              <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+                Got it
+              </Button>
+            </div>
+          </div>
+          <div className="block md:hidden w-full space-y-3">
+            <Button
+              onClick={handleDoneClick}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+            >
+              Got it
+            </Button>
+            <Button
+              onClick={handleViewDetails}
+              className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+            >
+              View details
+            </Button>
+          </div>
+        </div>
+
+        {selectedTransaction && (
+          <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
+        )}
+      </>
+    )
+  }
+
+  return null
+}
