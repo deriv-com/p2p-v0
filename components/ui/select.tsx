@@ -1,5 +1,9 @@
 "use client"
 
+import { SelectScrollDownButton } from "@/components/ui/select"
+
+import { SelectScrollUpButton } from "@/components/ui/select"
+
 import * as React from "react"
 import * as SelectPrimitive from "@radix-ui/react-select"
 import Image from "next/image"
@@ -19,7 +23,7 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-8 w-full items-center justify-between rounded-3xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:border-[#000000] data-[state=open]:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "group flex h-8 w-full items-center justify-between rounded-3xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:border-[#000000] data-[state=open]:border-[#000000] disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
       className,
     )}
     {...props}
@@ -31,40 +35,32 @@ const SelectTrigger = React.forwardRef<
         alt="Dropdown icon"
         width={24}
         height={24}
-        className="ml-[8px] transition-transform duration-200 data-[state=open]:rotate-180"
+        className="ml-[8px] transition-transform duration-200 group-data-[state=open]:rotate-180"
       />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName
 
-const SelectScrollUpButton = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollUpButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollUpButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollUpButton
-    ref={ref}
-    className={cn("flex cursor-default items-center justify-center py-1", className)}
-    {...props}
-  >
-    <Image src="/icons/chevron-down.png" alt="Scroll up" width={18} height={18} className="opacity-70 rotate-180" />
-  </SelectPrimitive.ScrollUpButton>
+const SelectGrouped = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Group>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Group>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Group ref={ref} className={cn("group", className)} {...props}>
+    {children}
+  </SelectPrimitive.Group>
 ))
-SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName
+SelectGrouped.displayName = SelectPrimitive.Group.displayName
 
-const SelectScrollDownButton = React.forwardRef<
-  React.ElementRef<typeof SelectPrimitive.ScrollDownButton>,
-  React.ComponentPropsWithoutRef<typeof SelectPrimitive.ScrollDownButton>
->(({ className, ...props }, ref) => (
-  <SelectPrimitive.ScrollDownButton
-    ref={ref}
-    className={cn("flex cursor-default items-center justify-center py-1", className)}
-    {...props}
-  >
-    <Image src="/icons/chevron-down.png" alt="Scroll down" width={18} height={18} className="opacity-70" />
-  </SelectPrimitive.ScrollDownButton>
+const SelectValueGrouped = React.forwardRef<
+  React.ElementRef<typeof SelectPrimitive.Value>,
+  React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>
+>(({ className, children, ...props }, ref) => (
+  <SelectPrimitive.Value ref={ref} className={cn("group", className)} {...props}>
+    {children}
+  </SelectPrimitive.Value>
 ))
-SelectScrollDownButton.displayName = SelectPrimitive.ScrollDownButton.displayName
+SelectValueGrouped.displayName = SelectPrimitive.Value.displayName
 
 const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,
@@ -82,7 +78,7 @@ const SelectContent = React.forwardRef<
       position={position}
       {...props}
     >
-      <SelectScrollUpButton />
+      <SelectPrimitive.ScrollUpButton />
       <SelectPrimitive.Viewport
         className={cn(
           "p-1",
@@ -92,7 +88,7 @@ const SelectContent = React.forwardRef<
       >
         {children}
       </SelectPrimitive.Viewport>
-      <SelectScrollDownButton />
+      <SelectPrimitive.ScrollDownButton />
     </SelectPrimitive.Content>
   </SelectPrimitive.Portal>
 ))
