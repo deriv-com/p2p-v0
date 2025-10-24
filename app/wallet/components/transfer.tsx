@@ -414,21 +414,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
   const getFilteredWallets = (type: WalletSelectorType) => {
     if (type === "from" && destinationWalletData) {
-      const destinationWallet = wallets.find((w) => w.wallet_id === destinationWalletData.id)
-      if (destinationWallet?.type?.toLowerCase() === "p2p") {
-        return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
-      } else {
-        return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
-      }
+      return wallets.filter((w) => w.name !== destinationWalletData.name)
     }
 
     if (type === "to" && sourceWalletData) {
-      const sourceWallet = wallets.find((w) => w.wallet_id === sourceWalletData.id)
-      if (sourceWallet?.type?.toLowerCase() === "p2p") {
-        return wallets.filter((w) => w.type?.toLowerCase() !== "p2p")
-      } else {
-        return wallets.filter((w) => w.type?.toLowerCase() === "p2p")
-      }
+      return wallets.filter((w) => w.name !== sourceWalletData.name)
     }
 
     return wallets
@@ -590,6 +580,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                             "/placeholder.svg" ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
                           alt={destinationWalletData.currency}
@@ -695,6 +686,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg"
                           }
@@ -878,6 +870,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg"
                       }
