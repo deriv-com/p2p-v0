@@ -932,9 +932,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const getCurrencyImage = (walletName: string, currency: string) => {
-    if (walletName.includes("P2P")) {
-      return "/icons/p2p-logo.png"
-    }
     return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
   }
 
