@@ -26,7 +26,17 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
   const [currentMonth, setCurrentMonth] = React.useState(new Date())
   const nextMonth = addMonths(currentMonth, 1)
 
+  const isFutureDate = (date: Date) => {
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+    const checkDate = new Date(date)
+    checkDate.setHours(0, 0, 0, 0)
+    return checkDate > today
+  }
+
   const handleDateClick = (date: Date) => {
+    if (isFutureDate(date)) return
+
     if (!selected.from || (selected.from && selected.to)) {
       onSelect({ from: date, to: undefined })
     } else if (selected.from && !selected.to) {
@@ -105,6 +115,7 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
             const isSelected = isDateSelected(date)
             const inRange = isDateInRange(date)
             const today = isToday(date)
+            const isFuture = isFutureDate(date)
 
             return (
               <Button
@@ -112,11 +123,13 @@ export function DualMonthCalendar({ selected, onSelect, handleCustomRangeApply }
                 variant="ghost"
                 size="sm"
                 onClick={() => handleDateClick(date)}
+                disabled={isFuture}
                 className={cn(
                   "font-normal rounded-md hover:bg-gray-100 transition-colors text-grayscale-600 relative",
                   isSelected && "bg-black text-white hover:bg-black hover:text-white",
                   inRange && "bg-gray-100 hover:text-white text-grayscale-600",
                   !isSameMonth(date, month) && "text-gray-300",
+                  isFuture && "opacity-50 cursor-not-allowed hover:bg-transparent",
                 )}
               >
                 <span className="flex flex-col items-center gap-0.5">
