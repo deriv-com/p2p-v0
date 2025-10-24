@@ -76,20 +76,6 @@ export function CurrencyFilter({
     }
   }, [])
 
-  const enhancedTrigger = trigger ? (
-    <div
-      className={cn(
-        "inline-flex",
-        "[&_img[alt='Arrow']]:transition-transform [&_img[alt='Arrow']]:duration-200",
-        isOpen && "[&_img[alt='Arrow']]:rotate-180",
-      )}
-    >
-      {trigger}
-    </div>
-  ) : (
-    trigger
-  )
-
   const CurrencyList = () => (
     <div className="w-full h-full">
       <div className="relative mb-4 md:mb-0">
@@ -152,7 +138,7 @@ export function CurrencyFilter({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-        <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">{title}</h3>
