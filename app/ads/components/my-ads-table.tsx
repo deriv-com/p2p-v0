@@ -28,7 +28,7 @@ interface MyAdsTableProps {
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
   const router = useRouter()
   const { toast } = useToast()
-  const { showDeleteDialog, showAlert } = useAlertDialog()
+  const { showDeleteDialog, showAlert, } = useAlertDialog()
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
