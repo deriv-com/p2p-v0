@@ -15,10 +15,10 @@ export default function TradeLimits({
   sellLimit,
   userData,
 }: TradeLimitsProps) {
-  const buyMax = userData?.daily_limits?.buy ?? buyLimit?.max
-  const buyRemaining = userData?.daily_limits_remaining?.buy ?? buyLimit?.current
-  const sellMax = userData?.daily_limits?.sell ?? sellLimit?.max
-  const sellRemaining = userData?.daily_limits_remaining?.sell ?? sellLimit?.current
+  const buyMax = userData?.daily_limits?.buy ?? "0.00"
+  const buyRemaining = userData?.daily_limits_remaining?.buy ?? "0.00"
+  const sellMax = userData?.daily_limits?.sell ?? "0.00"
+  const sellRemaining = userData?.daily_limits_remaining?.sell ?? "0.00"
   const buyPercentage = (buyRemaining / buyMax) * 100
   const sellPercentage = (sellRemaining / sellMax) * 100
 
