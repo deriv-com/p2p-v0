@@ -274,7 +274,7 @@ export default function BuySellPage() {
                             alt="Arrow"
                             width={24}
                             height={24}
-                            className="ml-2 transition-transform duration-200 [.data-open_&]:rotate-180"
+                            className="ml-2 transition-transform duration-200"
                           />
                         </Button>
                       }
@@ -326,9 +326,21 @@ export default function BuySellPage() {
                         {getPaymentMethodsDisplayText()}
                       </span>
                       {hasFilteredPaymentMethods ? (
-                        <Image src="/icons/chevron-down-white.png" alt="Arrow" width={24} height={24} />
+                        <Image
+                          src="/icons/chevron-down-white.png"
+                          alt="Arrow"
+                          width={24}
+                          height={24}
+                          className="transition-transform duration-200"
+                        />
                       ) : (
-                        <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} />
+                        <Image
+                          src="/icons/chevron-down.png"
+                          alt="Arrow"
+                          width={24}
+                          height={24}
+                          className="transition-transform duration-200"
+                        />
                       )}
                     </Button>
                   }

@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useMemo, useCallback } from "react"
+import { useState, useMemo, useCallback, cloneElement } from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -135,10 +135,14 @@ export function CurrencyFilter({
     </div>
   )
 
+  const enhancedTrigger = cloneElement(trigger, {
+    className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"),
+  })
+
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">{title}</h3>
@@ -151,7 +155,7 @@ export function CurrencyFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
       <PopoverContent className="w-80 h-80 p-4" align="end">
         <CurrencyList />
       </PopoverContent>
