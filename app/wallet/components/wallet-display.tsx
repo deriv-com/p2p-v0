@@ -34,7 +34,7 @@ export default function WalletDisplay({ name, amount, currency, onClick, isSelec
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/4">
             <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
               <Image
-                src={currencyLogoMapper[currency as keyof typeof currencyLogoMapper] || "/placeholder.svg"}
+                src={currencyLogoMapper[currency as keyof typeof currencyLogoMapper] }
                 alt={currency}
                 width={12}
                 height={12}
