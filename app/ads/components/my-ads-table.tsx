@@ -138,6 +138,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         try {
           const result = await AdsAPI.deleteAd(adId)
 
+          console.log("[v0] Delete result:", result)
+          console.log("[v0] Result success:", result.success)
+          console.log("[v0] Result errors:", result.errors)
+
+          if (result.errors && result.errors.length > 0) {
+            console.log("[v0] First error:", result.errors[0])
+            console.log("[v0] Error code:", result.errors[0].code)
+            console.log("[v0] Error message:", result.errors[0].message)
+          }
+
           if (result.success) {
             if (onAdDeleted) {
               onAdDeleted()
