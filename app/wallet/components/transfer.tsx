@@ -447,6 +447,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     const title = type === "from" ? "From" : "To"
     const selectedWalletName = type === "from" ? sourceWalletData?.name : destinationWalletData?.name
 
+    const filteredWallets = getFilteredWallets(type)
+    const p2pWallets = filteredWallets.filter((w) => w.type?.toLowerCase() === "p2p")
+    const tradingWallets = filteredWallets.filter((w) => w.type?.toLowerCase() !== "p2p")
+
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileSheet(null)}>
         <div
@@ -459,25 +463,58 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
             </div>
             <h2 className="text-slate-1200 text-[20px] font-extrabold mb-6 text-center">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-              {getFilteredWallets(type).map((wallet) => (
-                <div
-                  key={wallet.wallet_id}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    handleWalletSelect(wallet, type)
-                    setShowMobileSheet(null)
-                  }}
-                >
-                  <WalletDisplay
-                    name={wallet.name}
-                    amount={formatAmountWithDecimals(wallet.balance)}
-                    currency={wallet.currency}
-                    icon={wallet.icon}
-                    isSelected={selectedWalletName === wallet.name}
-                    onClick={() => {}}
-                  />
-                </div>
-              ))}
+              {p2pWallets.length > 0 && (
+                <>
+                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
+                    P2P Wallet
+                  </h3>
+                  {p2pWallets.map((wallet) => (
+                    <div
+                      key={wallet.wallet_id}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        handleWalletSelect(wallet, type)
+                        setShowMobileSheet(null)
+                      }}
+                    >
+                      <WalletDisplay
+                        name={wallet.name}
+                        amount={formatAmountWithDecimals(wallet.balance)}
+                        currency={wallet.currency}
+                        icon={wallet.icon}
+                        isSelected={selectedWalletName === wallet.name}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
+              {tradingWallets.length > 0 && (
+                <>
+                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
+                    Trading Wallet
+                  </h3>
+                  {tradingWallets.map((wallet) => (
+                    <div
+                      key={wallet.wallet_id}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        handleWalletSelect(wallet, type)
+                        setShowMobileSheet(null)
+                      }}
+                    >
+                      <WalletDisplay
+                        name={wallet.name}
+                        amount={formatAmountWithDecimals(wallet.balance)}
+                        currency={wallet.currency}
+                        icon={wallet.icon}
+                        isSelected={selectedWalletName === wallet.name}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -490,6 +527,10 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
     const title = type === "from" ? "From" : "To"
     const selectedWalletName = type === "from" ? sourceWalletData?.name : destinationWalletData?.name
+
+    const filteredWallets = getFilteredWallets(type)
+    const p2pWallets = filteredWallets.filter((w) => w.type?.toLowerCase() === "p2p")
+    const tradingWallets = filteredWallets.filter((w) => w.type?.toLowerCase() !== "p2p")
 
     return (
       <div
@@ -512,25 +553,58 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
           <div className="p-8">
             <h2 className="text-slate-1200 text-[24px] font-extrabold mb-6">{title}</h2>
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
-              {getFilteredWallets(type).map((wallet) => (
-                <div
-                  key={wallet.wallet_id}
-                  className="cursor-pointer"
-                  onClick={() => {
-                    handleWalletSelect(wallet, type)
-                    setShowDesktopWalletPopup(null)
-                  }}
-                >
-                  <WalletDisplay
-                    name={wallet.name}
-                    amount={formatAmountWithDecimals(wallet.balance)}
-                    currency={wallet.currency}
-                    icon={getCurrencyImage(wallet.name, wallet.currency)}
-                    isSelected={selectedWalletName === wallet.name}
-                    onClick={() => {}}
-                  />
-                </div>
-              ))}
+              {p2pWallets.length > 0 && (
+                <>
+                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
+                    P2P Wallet
+                  </h3>
+                  {p2pWallets.map((wallet) => (
+                    <div
+                      key={wallet.wallet_id}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        handleWalletSelect(wallet, type)
+                        setShowDesktopWalletPopup(null)
+                      }}
+                    >
+                      <WalletDisplay
+                        name={wallet.name}
+                        amount={formatAmountWithDecimals(wallet.balance)}
+                        currency={wallet.currency}
+                        icon={getCurrencyImage(wallet.name, wallet.currency)}
+                        isSelected={selectedWalletName === wallet.name}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
+              {tradingWallets.length > 0 && (
+                <>
+                  <h3 className="text-base font-normal" style={{ color: "#181C25" }}>
+                    Trading Wallet
+                  </h3>
+                  {tradingWallets.map((wallet) => (
+                    <div
+                      key={wallet.wallet_id}
+                      className="cursor-pointer"
+                      onClick={() => {
+                        handleWalletSelect(wallet, type)
+                        setShowDesktopWalletPopup(null)
+                      }}
+                    >
+                      <WalletDisplay
+                        name={wallet.name}
+                        amount={formatAmountWithDecimals(wallet.balance)}
+                        currency={wallet.currency}
+                        icon={getCurrencyImage(wallet.name, wallet.currency)}
+                        isSelected={selectedWalletName === wallet.name}
+                        onClick={() => {}}
+                      />
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -596,6 +670,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
@@ -705,6 +780,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <Image
                           src={
                             getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                            "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
                             "/placeholder.svg" ||
@@ -891,6 +967,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <Image
                       src={
                         getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                        "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
                         "/placeholder.svg" ||
