@@ -638,17 +638,44 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 <div className="flex items-center justify-between">
                   <span className="text-base font-normal text-grayscale-text-muted">From</span>
                   <div className="flex items-center gap-3">
-                    {sourceWalletData && (
-                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                          alt={sourceWalletData.currency}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    {sourceWalletData &&
+                      (sourceWalletData.name.includes("P2P") ? (
+                        <div className="relative w-7 h-7 flex-shrink-0">
+                          <Image
+                            src="/icons/p2p-black.png"
+                            alt="P2P"
+                            width={28}
+                            height={28}
+                            className="w-7 h-7 rounded-full"
+                          />
+                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                              <Image
+                                src={
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
+                                alt={sourceWalletData.currency}
+                                width={12}
+                                height={12}
+                                className="w-3 h-3 rounded-full"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
+                            alt={sourceWalletData.currency}
+                            width={24}
+                            height={24}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
                     <span className="text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
                   </div>
                 </div>
@@ -657,26 +684,47 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 <div className="flex items-center justify-between">
                   <span className="text-base font-normal text-grayscale-text-muted">To</span>
                   <div className="flex items-center gap-3">
-                    {destinationWalletData && (
-                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg"
-                          }
-                          alt={destinationWalletData.currency}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    {destinationWalletData &&
+                      (destinationWalletData.name.includes("P2P") ? (
+                        <div className="relative w-7 h-7 flex-shrink-0">
+                          <Image
+                            src="/icons/p2p-black.png"
+                            alt="P2P"
+                            width={28}
+                            height={28}
+                            className="w-7 h-7 rounded-full"
+                          />
+                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                              <Image
+                                src={
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
+                                  "/placeholder.svg"
+                                }
+                                alt={destinationWalletData.currency}
+                                width={12}
+                                height={12}
+                                className="w-3 h-3 rounded-full"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
+                              "/placeholder.svg"
+                            }
+                            alt={destinationWalletData.currency}
+                            width={24}
+                            height={24}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
                     <span className="text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
                   </div>
                 </div>
@@ -749,17 +797,44 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 <div className="flex items-center justify-between">
                   <span className="text-base font-normal text-grayscale-text-muted">From</span>
                   <div className="flex items-center gap-3">
-                    {sourceWalletData && (
-                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                          alt={sourceWalletData.currency}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    {sourceWalletData &&
+                      (sourceWalletData.name.includes("P2P") ? (
+                        <div className="relative w-7 h-7 flex-shrink-0">
+                          <Image
+                            src="/icons/p2p-black.png"
+                            alt="P2P"
+                            width={28}
+                            height={28}
+                            className="w-7 h-7 rounded-full"
+                          />
+                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                              <Image
+                                src={
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
+                                alt={sourceWalletData.currency}
+                                width={12}
+                                height={12}
+                                className="w-3 h-3 rounded-full"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
+                            alt={sourceWalletData.currency}
+                            width={24}
+                            height={24}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
                     <span className="text-base font-normal text-slate-1200">{sourceWalletData?.name}</span>
                   </div>
                 </div>
@@ -768,26 +843,47 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 <div className="flex items-center justify-between">
                   <span className="text-base font-normal text-grayscale-text-muted">To</span>
                   <div className="flex items-center gap-3">
-                    {destinationWalletData && (
-                      <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
-                        <Image
-                          src={
-                            getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg" ||
-                            "/placeholder.svg"
-                          }
-                          alt={destinationWalletData.currency}
-                          width={24}
-                          height={24}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
+                    {destinationWalletData &&
+                      (destinationWalletData.name.includes("P2P") ? (
+                        <div className="relative w-7 h-7 flex-shrink-0">
+                          <Image
+                            src="/icons/p2p-black.png"
+                            alt="P2P"
+                            width={28}
+                            height={28}
+                            className="w-7 h-7 rounded-full"
+                          />
+                          <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                            <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                              <Image
+                                src={
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
+                                  "/placeholder.svg"
+                                }
+                                alt={destinationWalletData.currency}
+                                width={12}
+                                height={12}
+                                className="w-3 h-3 rounded-full"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
+                          <Image
+                            src={
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
+                              "/placeholder.svg"
+                            }
+                            alt={destinationWalletData.currency}
+                            width={24}
+                            height={24}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                      ))}
                     <span className="text-base font-normal text-slate-1200">{destinationWalletData?.name}</span>
                   </div>
                 </div>
@@ -836,7 +932,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const getCurrencyImage = (walletName: string, currency: string) => {
-    if (walletName === "P2P Wallet") {
+    if (walletName.includes("P2P")) {
       return "/icons/p2p-logo.png"
     }
     return currencyLogoMapper[currency as keyof typeof currencyLogoMapper]
@@ -920,15 +1016,40 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               <div className="flex flex-col items-start gap-1 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">From</div>
                 {sourceWalletData ? (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
-                    <Image
-                      src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
-                      alt={sourceWalletData.currency}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  sourceWalletData.name.includes("P2P") ? (
+                    <div className="relative w-7 h-7 flex-shrink-0">
+                      <Image
+                        src="/icons/p2p-black.png"
+                        alt="P2P"
+                        width={28}
+                        height={28}
+                        className="w-7 h-7 rounded-full"
+                      />
+                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                        <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                          <Image
+                            src={
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
+                            alt={sourceWalletData.currency}
+                            width={12}
+                            height={12}
+                            className="w-3 h-3 rounded-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
+                      <Image
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
+                        alt={sourceWalletData.currency}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )
                 ) : (
                   <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
                 )}
@@ -957,24 +1078,46 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               <div className="flex flex-col items-start gap-1 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">To</div>
                 {destinationWalletData ? (
-                  <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
-                    <Image
-                      src={
-                        getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg" ||
-                        "/placeholder.svg"
-                      }
-                      alt={destinationWalletData.currency}
-                      width={24}
-                      height={24}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                  destinationWalletData.name.includes("P2P") ? (
+                    <div className="relative w-7 h-7 flex-shrink-0">
+                      <Image
+                        src="/icons/p2p-black.png"
+                        alt="P2P"
+                        width={28}
+                        height={28}
+                        className="w-7 h-7 rounded-full"
+                      />
+                      <div className="absolute -bottom-1 left-1/2 transform -translate-x-1/2">
+                        <div className="w-[14px] h-[14px] rounded-full bg-white flex items-center justify-center">
+                          <Image
+                            src={
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
+                              "/placeholder.svg"
+                            }
+                            alt={destinationWalletData.currency}
+                            width={12}
+                            height={12}
+                            className="w-3 h-3 rounded-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
+                      <Image
+                        src={
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
+                          "/placeholder.svg"
+                        }
+                        alt={destinationWalletData.currency}
+                        width={24}
+                        height={24}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )
                 ) : (
                   <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
                 )}
