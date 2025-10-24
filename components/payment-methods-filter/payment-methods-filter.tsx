@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import type React from "react"
 
 import type { ReactElement } from "react"
 import { useCallback, useState, useMemo } from "react"
@@ -155,18 +155,19 @@ export default function PaymentMethodsFilter({
       ))
   }
 
-  const enhancedTrigger = trigger
-    ? React.cloneElement(trigger as ReactElement, {
-        children: React.Children.map((trigger as ReactElement).props.children, (child) => {
-          if (React.isValidElement(child) && child.type === Image && child.props.alt === "Arrow") {
-            return React.cloneElement(child as ReactElement, {
-              className: cn(child.props.className, "transition-transform duration-200", isOpen && "rotate-180"),
-            })
-          }
-          return child
-        }),
-      })
-    : trigger
+  const enhancedTrigger = trigger ? (
+    <div
+      className={cn(
+        "inline-flex",
+        "[&_img[alt='Arrow']]:transition-transform [&_img[alt='Arrow']]:duration-200",
+        isOpen && "[&_img[alt='Arrow']]:rotate-180",
+      )}
+    >
+      {trigger}
+    </div>
+  ) : (
+    trigger
+  )
 
   const FilterContent = () => (
     <div className="w-full">
