@@ -174,15 +174,15 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
           response.data.wallets.forEach((wallet: any) => {
             wallet.balances.forEach((balance: any) => {
-              // If wallet type is p2p, only add USD currency
+
               if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
                 return
               }
 
-              // Get currency label from currencies data
+
               const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
 
-              // Construct wallet name based on type
+
               const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
               processedWallets.push({
