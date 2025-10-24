@@ -132,8 +132,26 @@ export function getMethodDisplayDetails(method: {
   }
 }
 
-export function formatStatus(isDetailed: boolean, status: string, type: string): string {
+export function formatStatus(
+  isDetailed: boolean,
+  status: string,
+  type: string,
+  userId?: string,
+  orderUserId?: string,
+  advertUserId?: string,
+): string {
   if (!status) return ""
+
+  if (status.toLowerCase() === "pending_release" && type === "buy" && userId && orderUserId && advertUserId) {
+    // If current user is the buyer (order.user.id == userId)
+    if (userId === orderUserId) {
+      return "Awaiting seller's confirmation"
+    }
+    // If current user is the seller (order.advert.user.id == userId)
+    if (userId === advertUserId) {
+      return "Confirm payment"
+    }
+  }
 
   const statusMap: Record<string, string> = {
     refunded: "Refunded",
@@ -415,27 +433,24 @@ export const currencyLogoMapper = {
 
 export const getHomeUrl = (isV1Signup = false, section = "") => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
-  let baseUrl = "", url = ""
-  
-  if(isV1Signup) {
+  let baseUrl = "",
+    url = ""
+
+  if (isV1Signup) {
     baseUrl = isProduction ? "app.deriv.com" : "staging-app.deriv.com"
   } else {
     baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
   }
 
-  if(section === "profile") {
-    if(isV1Signup)
-      url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
-    else 
-      url = `https://${baseUrl}/dashboard/profile`
-  } else if(section === "home") {
-    if(isV1Signup)
-      url = `https://${baseUrl}`
-    else 
-      url = `https://${baseUrl}/dashboard/home`
+  if (section === "profile") {
+    if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
+    else url = `https://${baseUrl}/dashboard/profile`
+  } else if (section === "home") {
+    if (isV1Signup) url = `https://${baseUrl}`
+    else url = `https://${baseUrl}/dashboard/home`
   } else {
-     url = baseUrl
+    url = baseUrl
   }
-  
+
   return url
 }
