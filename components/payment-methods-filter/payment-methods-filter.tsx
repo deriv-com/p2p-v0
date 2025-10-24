@@ -1,6 +1,8 @@
 "use client"
 
-import type React from "react"
+import React from "react"
+
+import type { ReactElement } from "react"
 import { useCallback, useState, useMemo } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -10,6 +12,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import EmptyState from "@/components/empty-state"
+import { cn } from "@/lib/utils"
 
 export interface PaymentMethod {
   display_name: string
@@ -22,7 +25,7 @@ interface PaymentMethodsFilterProps {
   selectedMethods: string[]
   onSelectionChange: (selectedMethods: string[]) => void
   isLoading?: boolean
-  trigger: React.ReactElement
+  trigger: ReactElement
 }
 
 export default function PaymentMethodsFilter({
@@ -152,6 +155,19 @@ export default function PaymentMethodsFilter({
       ))
   }
 
+  const enhancedTrigger = trigger
+    ? React.cloneElement(trigger as ReactElement, {
+        children: React.Children.map((trigger as ReactElement).props.children, (child) => {
+          if (React.isValidElement(child) && child.type === Image && child.props.alt === "Arrow") {
+            return React.cloneElement(child as ReactElement, {
+              className: cn(child.props.className, "transition-transform duration-200", isOpen && "rotate-180"),
+            })
+          }
+          return child
+        }),
+      })
+    : trigger
+
   const FilterContent = () => (
     <div className="w-full">
       <div className="relative mb-4">
@@ -241,7 +257,7 @@ export default function PaymentMethodsFilter({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">Payment method</h3>
@@ -254,7 +270,7 @@ export default function PaymentMethodsFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
       <PopoverContent className="w-80 p-4" align="end">
         <FilterContent />
       </PopoverContent>

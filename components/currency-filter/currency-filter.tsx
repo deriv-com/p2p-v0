@@ -1,6 +1,8 @@
 "use client"
 
-import type React from "react"
+import React from "react"
+
+import type { ReactElement } from "react"
 
 import { useState, useMemo, useCallback } from "react"
 import Image from "next/image"
@@ -33,7 +35,8 @@ export function CurrencyFilter({
       filtered = filtered.filter((currency) => {
         const codeMatch = currency?.code?.toLowerCase().includes(query)
         const nameMatch = currency?.name?.toLowerCase().includes(query)
-        const wordMatch = currency?.name?.toLowerCase()
+        const wordMatch = currency?.name
+          ?.toLowerCase()
           .split(" ")
           .some((word) => word.startsWith(query))
         return codeMatch || nameMatch || wordMatch
@@ -74,6 +77,19 @@ export function CurrencyFilter({
       setSearchQuery("")
     }
   }, [])
+
+  const enhancedTrigger = trigger
+    ? React.cloneElement(trigger as ReactElement, {
+        children: React.Children.map((trigger as ReactElement).props.children, (child) => {
+          if (React.isValidElement(child) && child.type === Image && child.props.alt === "Arrow") {
+            return React.cloneElement(child as ReactElement, {
+              className: cn(child.props.className, "transition-transform duration-200", isOpen && "rotate-180"),
+            })
+          }
+          return child
+        }),
+      })
+    : trigger
 
   const CurrencyList = () => (
     <div className="w-full h-full">
@@ -137,7 +153,7 @@ export function CurrencyFilter({
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
-        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-[90vh] p-[16px] rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">{title}</h3>
@@ -150,7 +166,7 @@ export function CurrencyFilter({
 
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
-      <PopoverTrigger asChild>{trigger}</PopoverTrigger>
+      <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
       <PopoverContent className="w-80 h-80 p-4" align="end">
         <CurrencyList />
       </PopoverContent>
