@@ -13,7 +13,9 @@ interface StatCardProps {
 function StatCard({ tab, title, value }: StatCardProps) {
   return (
     <div className="flex flex-row-reverse justify-between border-b md:border-none border-slate-200 md:flex-col pt-6 pb-2">
-      <div className="font-bold text-black text-base leading-6 tracking-normal">{value}</div>
+      <div className="font-bold text-black text-base leading-6 tracking-normal">
+        {value}
+      </div>
       <div className="flex items-center text-slate-500 mb-2 font-normal text-xs leading-5 tracking-normal">
         {title}
         {title === "Trade partners" && (
@@ -62,93 +64,49 @@ export default function StatsGrid({ stats }) {
     })
   }
 
-  const formatTimeAverage = (seconds: number | null | undefined) => {
-    if (!seconds || seconds <= 0) return "-"
-    const mins = seconds / 60
-    if (mins < 1) return "< 1 min"
-    return `${Math.floor(mins)} min${Math.floor(mins) > 1 ? "s" : ""}`
-  }
-
   return (
     <TooltipProvider>
       <div className="bg-transparent rounded-lg">
         <div>
           <Tabs defaultValue="last30days">
             <TabsList>
-              <TabsTrigger value="last30days">Last 30 days</TabsTrigger>
-              <TabsTrigger value="lifetime">Lifetime</TabsTrigger>
+              <TabsTrigger
+                value="last30days"
+              >
+                Last 30 days
+              </TabsTrigger>
+              <TabsTrigger
+                value="lifetime"
+              >
+                Lifetime
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
-                <StatCard
-                  title="Sell completion"
-                  value={
-                    stats?.statistics_30day?.completion_rate_sell
-                      ? `${stats.statistics_30day.completion_rate_sell}% (${stats.statistics_30day.completion_count_sell})`
-                      : "-"
-                  }
-                />
-                <StatCard
-                  title="Buy completion"
-                  value={
-                    stats?.statistics_30day?.completion_rate_buy
-                      ? `${stats.statistics_30day.completion_rate_buy}% (${stats.statistics_30day.completion_count_buy})`
-                      : "-"
-                  }
-                />
+                <StatCard title="Sell completion" value={stats?.statistics_30day?.completion_rate_sell ? `${stats.statistics_30day.completion_rate_sell}% (${stats.statistics_30day.completion_count_sell})` : "-"} />
+                <StatCard title="Buy completion" value={stats?.statistics_30day?.completion_rate_buy ? `${stats.statistics_30day.completion_rate_buy}% (${stats.statistics_30day.completion_count_buy})` : "-"} />
                 <StatCard title="Total orders" value={stats?.statistics_30day?.completion_count_all ?? "0"} />
-                <StatCard title="Avg. pay time" value={formatTimeAverage(stats?.statistics_30day?.buy_time_average)} />
-                <StatCard
-                  title="Avg. release time"
-                  value={formatTimeAverage(stats?.statistics_30day?.release_time_average)}
-                />
+                <StatCard title="Avg. pay time" value={stats?.statistics_30day?.buy_time_average ?? "-"} />
+                <StatCard title="Avg. release time" value={stats?.statistics_30day?.release_time_average ?? "-"} />
                 <StatCard
                   tab="last30days"
                   title="Trade volume"
-                  value={
-                    stats?.statistics_30day?.completion_amount_all > 0
-                      ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD`
-                      : "0.00 USD"
-                  }
+                  value={stats?.statistics_30day?.completion_amount_all > 0 ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD` : "0.00 USD"}
                 />
               </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
-                <StatCard
-                  title="Sell completion"
-                  value={
-                    stats?.statistics_lifetime?.completion_rate_sell
-                      ? `${stats.statistics_lifetime.completion_rate_sell}% (${stats.statistics_lifetime.completion_count_sell})`
-                      : "-"
-                  }
-                />
-                <StatCard
-                  title="Buy completion"
-                  value={
-                    stats?.statistics_lifetime?.completion_rate_buy
-                      ? `${stats.statistics_lifetime.completion_rate_buy}% (${stats.statistics_lifetime.completion_count_buy})`
-                      : "-"
-                  }
-                />
+                <StatCard title="Sell completion" value={stats?.statistics_lifetime?.completion_rate_sell ? `${stats.statistics_lifetime.completion_rate_sell}% (${stats.statistics_lifetime.completion_count_sell})` : "-"} />
+                <StatCard title="Buy completion" value={stats?.statistics_lifetime?.completion_rate_buy ? `${stats.statistics_lifetime.completion_rate_buy}% (${stats.statistics_lifetime.completion_count_buy})` : "-"} />
                 <StatCard title="Total orders" value={stats?.statistics_lifetime?.completion_count_all ?? "0"} />
-                <StatCard
-                  title="Avg. pay time"
-                  value={formatTimeAverage(stats?.statistics_lifetime?.buy_time_average)}
-                />
-                <StatCard
-                  title="Avg. release time"
-                  value={formatTimeAverage(stats?.statistics_lifetime?.release_time_average)}
-                />
+                <StatCard title="Avg. pay time" value={stats?.statistics_lifetime?.buy_time_average ?? "-"} />
+                <StatCard title="Avg. release time" value={stats?.statistics_lifetime?.release_time_average ?? "-"} />
                 <StatCard title="Trade partners" value={stats?.statistics_lifetime?.partner_count ?? "0"} />
                 <StatCard
                   tab="lifetime"
                   title="Trade volume"
-                  value={
-                    stats?.statistics_lifetime?.completion_amount_all > 0
-                      ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD`
-                      : "0.00 USD"
-                  }
+                  value={stats?.statistics_lifetime?.completion_amount_all > 0 ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD` : "0.00 USD"}
                 />
               </div>
             </TabsContent>
