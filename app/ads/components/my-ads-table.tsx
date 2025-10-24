@@ -162,7 +162,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               }
             }
 
-            hideAlert()
             showAlert({
               title: "Unable to delete advert",
               description,
