@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -56,6 +56,7 @@ export default function BuySellPage() {
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+  const balanceFetchedRef = useRef(false)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -70,7 +71,10 @@ export default function BuySellPage() {
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
 
-  const fetchBalance = async () => {
+  const fetchBalance = useCallback(async () => {
+    if (balanceFetchedRef.current) return
+    balanceFetchedRef.current = true
+
     setIsLoadingBalance(true)
     try {
       if (isV1Signup) {
@@ -92,11 +96,12 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }
+  }, [isV1Signup, userData?.balances])
 
   useEffect(() => {
+    balanceFetchedRef.current = false
     fetchBalance()
-  }, [isV1Signup, userData])
+  }, [fetchBalance])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
