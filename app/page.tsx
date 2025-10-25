@@ -96,7 +96,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [isV1Signup, userData?.balances])
+  }, [userData])
 
   useEffect(() => {
     balanceFetchedRef.current = false
