@@ -10,7 +10,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { createOrder } from "@/services/api/api-orders"
 import { ProfileAPI } from "@/services/api"
-import { getTotalBalance } from "@/services/api/api-auth"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber, cn } from "@/lib/utils"
 import Image from "next/image"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
@@ -23,6 +22,7 @@ interface OrderSidebarProps {
   onClose: () => void
   ad: Advertisement | null
   orderType: "buy" | "sell"
+  p2pBalance: number
 }
 
 interface PaymentMethod {
@@ -127,7 +127,7 @@ const PaymentSelectionContent = ({
   )
 }
 
-export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSidebarProps) {
+export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
@@ -142,34 +142,12 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType }: OrderSi
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
-  const [p2pBalance, setP2pBalance] = useState<number>(0)
   const userData = useUserDataStore((state) => state.userData)
-
-  const fetchP2PBalance = async () => {
-    try {
-      const isV1Signup = userData?.signup === "v1"
-
-      if (isV1Signup) {
-        const usdBalance = userData?.balances?.find((balance) => balance.currency === "USD")
-        const balance = usdBalance?.amount ?? "0.00"
-        setP2pBalance(Number.parseFloat(balance))
-      } else {
-        const data = await getTotalBalance()
-        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-        const balance = p2pWallet?.total_balance?.approximate_total_balance ?? "0.00"
-        setP2pBalance(Number.parseFloat(balance))
-      }
-    } catch (error) {
-      console.error("Error fetching P2P balance:", error)
-      setP2pBalance(0)
-    }
-  }
 
   useEffect(() => {
     if (isOpen) {
       setIsAnimating(true)
       setOrderStatus(null)
-      fetchP2PBalance()
     } else {
       setIsAnimating(false)
     }
