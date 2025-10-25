@@ -153,6 +153,17 @@ export function formatStatus(
     }
   }
 
+  if (status.toLowerCase() === "pending_release" && type === "sell" && userId && orderUserId && advertUserId) {
+    // If current user is the seller (order.advert.user.id == userId)
+    if (userId === advertUserId) {
+      return "Awaiting buyer's confirmation"
+    }
+    // If current user is the buyer (order.user.id == userId)
+    if (userId === orderUserId) {
+      return "Confirm payment"
+    }
+  }
+
   const statusMap: Record<string, string> = {
     refunded: "Refunded",
     cancelled: isDetailed ? "Order cancelled" : "Cancelled",
