@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import { getSettings } from "@/services/api/api-auth"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
+import Image from "next/image"
+import { currencyLogoMapper } from "@/lib/utils"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -295,12 +297,49 @@ export default function AdDetailsForm({
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg" disabled>
-                    <SelectValue>{buyCurrency}</SelectValue>
+                    <SelectValue>
+                      <div className="flex items-center gap-2">
+                        {currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] ? (
+                          <Image
+                            src={
+                              currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
+                            }
+                            alt={`${buyCurrency} logo`}
+                            width={20}
+                            height={20}
+                            className="w-5 h-5 rounded-full object-contain"
+                          />
+                        ) : (
+                          <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs font-semibold text-gray-600">
+                            {buyCurrency.charAt(0)}
+                          </div>
+                        )}
+                        <span>{buyCurrency}</span>
+                      </div>
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {accountCurrencies.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
-                        {currency.code}
+                        <div className="flex items-center gap-2">
+                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ? (
+                            <Image
+                              src={
+                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg"
+                              }
+                              alt={`${currency.code} logo`}
+                              width={20}
+                              height={20}
+                              className="w-5 h-5 rounded-full object-contain"
+                            />
+                          ) : (
+                            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs font-semibold text-gray-600">
+                              {currency.code.charAt(0)}
+                            </div>
+                          )}
+                          <span>{currency.code}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -311,12 +350,49 @@ export default function AdDetailsForm({
                 <label className="block mb-2 text-black text-sm font-normal leading-5">For</label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg">
-                    <SelectValue>{forCurrency}</SelectValue>
+                    <SelectValue>
+                      <div className="flex items-center gap-2">
+                        {currencyLogoMapper[forCurrency as keyof typeof currencyLogoMapper] ? (
+                          <Image
+                            src={
+                              currencyLogoMapper[forCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
+                            }
+                            alt={`${forCurrency} logo`}
+                            width={20}
+                            height={20}
+                            className="w-5 h-5 rounded-full object-contain"
+                          />
+                        ) : (
+                          <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs font-semibold text-gray-600">
+                            {forCurrency.charAt(0)}
+                          </div>
+                        )}
+                        <span>{forCurrency}</span>
+                      </div>
+                    </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
                     {currenciesProp.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
-                        {currency.code}
+                        <div className="flex items-center gap-2">
+                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ? (
+                            <Image
+                              src={
+                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg"
+                              }
+                              alt={`${currency.code} logo`}
+                              width={20}
+                              height={20}
+                              className="w-5 h-5 rounded-full object-contain"
+                            />
+                          ) : (
+                            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs font-semibold text-gray-600">
+                              {currency.code.charAt(0)}
+                            </div>
+                          )}
+                          <span>{currency.code}</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
