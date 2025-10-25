@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -56,7 +56,7 @@ export default function BuySellPage() {
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
-  const balanceFetchedRef = useRef(false)
+  const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
@@ -71,11 +71,21 @@ export default function BuySellPage() {
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
 
-  const fetchBalance = useCallback(async () => {
-    if (balanceFetchedRef.current) return
-    balanceFetchedRef.current = true
+  const balancesKey = useMemo(() => {
+    if (isV1Signup) {
+      return JSON.stringify(userData?.balances || [])
+    }
+    return isV1Signup ? "v1" : "v2"
+  }, [isV1Signup, userData?.balances])
 
+  const fetchBalance = useCallback(async () => {
+    if (fetchedForRef.current === balancesKey) {
+      return
+    }
+
+    fetchedForRef.current = balancesKey
     setIsLoadingBalance(true)
+
     try {
       if (isV1Signup) {
         const balances = userData?.balances || []
@@ -96,10 +106,9 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [userData])
+  }, [balancesKey, isV1Signup, userData?.balances])
 
   useEffect(() => {
-    balanceFetchedRef.current = false
     fetchBalance()
   }, [fetchBalance])
 
