@@ -135,42 +135,17 @@ export function getMethodDisplayDetails(method: {
 export function formatStatus(
   isDetailed: boolean,
   status: string,
-  type: string,
-  userId?: string,
-  orderUserId?: string,
-  advertUserId?: string,
+  isBuyer: boolean
 ): string {
   if (!status) return ""
-
-  if (status.toLowerCase() === "pending_release" && type === "buy" && userId && orderUserId && advertUserId) {
-    // If current user is the buyer (order.user.id == userId)
-    if (userId === orderUserId) {
-      return "Awaiting seller's confirmation"
-    }
-    // If current user is the seller (order.advert.user.id == userId)
-    if (userId === advertUserId) {
-      return "Confirm payment"
-    }
-  }
-
-  if (status.toLowerCase() === "pending_release" && type === "sell" && userId && orderUserId && advertUserId) {
-    // If current user is the seller (order.advert.user.id == userId)
-    if (userId === advertUserId) {
-      return "Awaiting buyer's confirmation"
-    }
-    // If current user is the buyer (order.user.id == userId)
-    if (userId === orderUserId) {
-      return "Confirm payment"
-    }
-  }
 
   const statusMap: Record<string, string> = {
     refunded: "Refunded",
     cancelled: isDetailed ? "Order cancelled" : "Cancelled",
     timed_out: isDetailed ? "Order expired" : "Expired",
     completed: isDetailed ? "Order complete" : "Completed",
-    pending_payment: type === "buy" ? "Complete payment" : "Awaiting payment",
-    pending_release: type === "buy" ? "Waiting seller's confirmation" : "Confirm payment",
+    pending_payment: isBuyer ? "Complete payment" : "Awaiting payment",
+    pending_release: isBuyer ? "Waiting seller's confirmation" : "Confirm payment",
     disputed: "Under dispute",
   }
 
