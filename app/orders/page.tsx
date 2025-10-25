@@ -274,7 +274,7 @@ export default function OrdersPage() {
                   <div
                     className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
-                    {formatStatus(false, order.status, order.type)}
+                    {formatStatus(false, order.status, getPayReceiveLabel(order) === "You pay: ")}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
