@@ -35,7 +35,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button variant="outline" className={`w-full h-14 rounded-lg justify-between ${className} font-normal`}>
+          <Button variant="outline" className={`w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black ${className} font-normal`}>
             <span>{selectedOption?.label || "Order time limit"}</span>
             <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
           </Button>
@@ -49,7 +49,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
               <Button
                 key={option.value}
                 variant={value === option.value ? "black" : "ghost"}
-                className="w-full justify-start rounded-sm font-normal opacity-72"
+                className="w-full justify-start rounded-sm font-normal opacity-72 text-base"
                 onClick={() => handleSelect(option.value)}
               >
                 {option.label}
@@ -63,12 +63,12 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
 
   return (
     <Select value={value.toString()} onValueChange={(selectedValue) => onValueChange(Number(selectedValue))} >
-      <SelectTrigger className={`w-[70%] h-[56px] rounded-lg ${className}`}>
+      <SelectTrigger className={`w-[70%] h-[56px] text-base rounded-lg ${className}`}>
         <SelectValue>{selectedOption?.label}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         {TIME_LIMIT_OPTIONS.map((option) => (
-          <SelectItem key={option.value} value={option.value.toString()}>
+          <SelectItem key={option.value} value={option.value.toString()} className="text-base">
             {option.label}
           </SelectItem>
         ))}

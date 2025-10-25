@@ -16,7 +16,7 @@ import Image from "next/image"
 import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
 import { useToast } from "@/hooks/use-toast"
-import { getCountries, type Country } from "@/services/api/api-auth"
+import { getSettings, type Country } from "@/services/api/api-auth"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -113,12 +113,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     const fetchCountries = async () => {
       try {
         setIsLoadingCountries(true)
-        const response = await getCountries()
-        setCountries(response)
+        const response = await getSettings()
+        const countriesData = response.countries || []
+        setCountries(countriesData)
 
         const uniqueCurrencies = Array.from(
           new Set(
-            response
+            countriesData
               .filter((country: Country) => country.fixed_rate === "enabled")
               .map((country: Country) => country.currency)
               .filter((currency): currency is string => !!currency),
