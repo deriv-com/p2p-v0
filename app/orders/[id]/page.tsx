@@ -501,7 +501,7 @@ export default function OrderDetailsPage() {
                   (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
                   order.advert.user.id == userId) ||
                   (order.type === "sell" &&
-                    (order.status === "pending_release" || order.status === "timed_out") &&
+                    (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
                     order.user.id == userId)) && (
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
                     <Button
