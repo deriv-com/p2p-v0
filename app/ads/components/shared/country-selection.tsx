@@ -125,7 +125,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         <DrawerTrigger asChild>
           <Button
             variant="outline"
-            className="w-full h-[56px] justify-between px-4 rounded-lg bg-transparent"
+            className="w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black"
             onClick={() => setIsOpen(true)}
           >
             <span className="text-left font-normal">{getDisplayText()}</span>
