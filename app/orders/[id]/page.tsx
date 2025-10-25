@@ -393,7 +393,7 @@ export default function OrderDetailsPage() {
                   )}
                 >
                   <div className="flex items-center">
-                    <span className="font-bold">{formatStatus(true, order.status, order.type, counterpartyLabel === "Seller")}</span>
+                    <span className="font-bold">{formatStatus(true, order.status, counterpartyLabel === "Seller")}</span>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
                     <div className="flex items-center">
