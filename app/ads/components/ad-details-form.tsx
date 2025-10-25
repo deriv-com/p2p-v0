@@ -363,7 +363,7 @@ export default function AdDetailsForm({
                     {currenciesProp.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         <div className="flex items-center gap-2">
-                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ? (
+                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
