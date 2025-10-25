@@ -374,10 +374,6 @@ export default function AdDetailsForm({
                               height={20}
                               className="w-5 h-5 rounded-full object-contain"
                             />
-                          ) : (
-                            <div className="w-5 h-5 rounded-full bg-gray-200 flex items-center justify-center text-xs font-semibold text-gray-600">
-                              {currency.code.charAt(0)}
-                            </div>
                           )}
                           <span>{currency.code}</span>
                         </div>
