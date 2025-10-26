@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,7 +17,8 @@ interface BlockedUser {
   user_id: number
 }
 
-export default function BlockedTab() {
+export default function BlockedTab() {  
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -82,6 +83,10 @@ export default function BlockedTab() {
       },
     })
   }
+  
+  const onUserClick = (userId: number) => {
+    router.push(`/advertiser/${userId}`)
+  }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
     <div className="flex items-center justify-between py-4">
@@ -91,7 +96,14 @@ export default function BlockedTab() {
             {user.nickname?.charAt(0).toUpperCase()}
           </div>
         </div>
-        <div className="text-gray-900">{user.nickname}</div>
+        <Button
+            onClick={() => onUserClick(user.user_id)}
+            className="hover:underline hover:bg-transparent cursor-pointer font-normal"
+            size="sm"
+            variant="ghost"
+            >
+            {user.nickname}
+        </Button>
       </div>
       <Button
         variant="outline"
