@@ -134,7 +134,6 @@ export default function BlockedTab() {
               onChange={handleSearchChange}
               className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
               autoComplete="off"
-              autoFocus
             />
             {searchQuery && (
               <Button
