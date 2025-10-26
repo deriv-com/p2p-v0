@@ -40,7 +40,7 @@ export default function StatsContent({ profile }: StatsContentProps) {
   const getDuration = (duration: number | null | undefined) => {
     if (duration == null || duration <= 0) return "-"
 
-    const newDuration = duration / 60 / 60
+    const newDuration = duration / 60
     if (newDuration < 1) return "< 1 min"
 
     return newDuration.toFixed(2).toString() + " mins"
