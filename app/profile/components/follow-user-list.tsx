@@ -78,7 +78,7 @@ export default function FollowUserList({
     <div className="mt-4">
       {(users.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4 mb-4">
-          <div className="relative w-full md:w-auto">
+          <div className="relative w-full md:w-[50%]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
