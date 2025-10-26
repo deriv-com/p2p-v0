@@ -153,7 +153,7 @@ export default function BlockedTab() {
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading ads...</p>
+            <p className="mt-2 text-slate-600">Loading users...</p>
           </div>
         ) : filteredBlockedUsers.length > 0 ? (
           filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
