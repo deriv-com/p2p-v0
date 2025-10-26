@@ -90,7 +90,7 @@ export default function BlockedTab() {
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-">
         <div className="relative">
           <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
             {user.nickname?.charAt(0).toUpperCase()}
