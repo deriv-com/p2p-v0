@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import { useRouter } from "next/navigation"
 import { useCallback, useState, useEffect, useMemo } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -17,7 +17,8 @@ interface BlockedUser {
   user_id: number
 }
 
-export default function BlockedTab() {
+export default function BlockedTab() {  
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [blockedUsers, setBlockedUsers] = useState<BlockedUser[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -82,16 +83,27 @@ export default function BlockedTab() {
       },
     })
   }
+  
+  const onUserClick = (userId: number) => {
+    router.push(`/advertiser/${userId}`)
+  }
 
   const UserCard = ({ user }: { user: BlockedUser }) => (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1">
         <div className="relative">
           <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm">
             {user.nickname?.charAt(0).toUpperCase()}
           </div>
         </div>
-        <div className="text-gray-900">{user.nickname}</div>
+        <Button
+            onClick={() => onUserClick(user.user_id)}
+            className="hover:underline hover:bg-transparent cursor-pointer font-normal"
+            size="sm"
+            variant="ghost"
+            >
+            {user.nickname}
+        </Button>
       </div>
       <Button
         variant="outline"
@@ -108,7 +120,7 @@ export default function BlockedTab() {
     <div className="space-y-4">
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-auto">
+          <div className="relative w-full md:w-[50%]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
@@ -122,7 +134,6 @@ export default function BlockedTab() {
               onChange={handleSearchChange}
               className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
               autoComplete="off"
-              autoFocus
             />
             {searchQuery && (
               <Button
@@ -140,7 +151,10 @@ export default function BlockedTab() {
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
-          <div className="py-8 text-center text-gray-500">Loading...</div>
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+            <p className="mt-2 text-slate-600">Loading users...</p>
+          </div>
         ) : filteredBlockedUsers.length > 0 ? (
           filteredBlockedUsers.map((user) => <UserCard key={user.user_id} user={user} />)
         ) : (

@@ -78,7 +78,7 @@ export default function FollowUserList({
     <div className="mt-4">
       {(users.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4 mb-4">
-          <div className="relative w-full md:w-auto">
+          <div className="relative w-full md:w-[50%]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
@@ -92,7 +92,6 @@ export default function FollowUserList({
               onChange={onSearchChange}
               className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"
               autoComplete="off"
-              autoFocus
             />
             {searchQuery && (
               <Button
@@ -110,7 +109,10 @@ export default function FollowUserList({
 
       <div className="space-y-0 divide-y divide-gray-100">
         {isLoading ? (
-          <div className="py-8 text-center text-gray-500">Loading...</div>
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+            <p className="mt-2 text-slate-600">Loading users...</p>
+          </div>
         ) : users.length > 0 ? (
           users.map((user) => <UserCard key={user.user_id} user={user} />)
         ) : (

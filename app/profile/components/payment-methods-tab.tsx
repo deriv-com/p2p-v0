@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import { useState, useEffect, useCallback } from "react"
-import { MoreVertical } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
@@ -336,7 +335,7 @@ export default function PaymentMethodsTab() {
           <h3 className="text-base font-bold mb-4">Bank transfer</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none border-0 border-b rounded-none">
                 <CardContent className="p-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-start gap-1 flex-1 min-w-0">
@@ -351,7 +350,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="left" align="center" className="w-[160px]">
@@ -383,7 +382,7 @@ export default function PaymentMethodsTab() {
           <h3 className="text-base font-bold mb-4">E-wallets</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden shadow-none">
+              <Card key={method.id} variant="default" className="overflow-hidden shadow-none border-0 border-b rounded-none">
                 <CardContent className="p-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-start gap-1 flex-1 min-w-0">
@@ -396,7 +395,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <MoreVertical className="h-5 w-5 text-gray-500" />
+                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="left" align="center" className="w-[160px]">
