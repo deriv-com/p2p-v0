@@ -351,7 +351,7 @@ export default function PaymentMethodsTab() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                          <Image src="/icons/verical.svg" alt="Edit" width={24} height={24} />
+                          <Image src="/icons/verical.svg" alt="Options" width={24} height={24} />
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="left" align="center" className="w-[160px]">
