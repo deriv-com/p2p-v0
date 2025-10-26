@@ -120,7 +120,7 @@ export default function BlockedTab() {
     <div className="space-y-4">
       {(filteredBlockedUsers.length > 0 || searchQuery) && (
         <div className="flex items-center justify-between gap-4">
-          <div className="relative w-full md:w-auto">
+          <div className="relative w-full  md:w-[50%]">
             <Image
               src="/icons/search-icon-custom.png"
               alt="Search"
