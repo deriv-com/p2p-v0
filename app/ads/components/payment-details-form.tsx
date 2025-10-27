@@ -349,7 +349,6 @@ export default function PaymentDetailsForm({
     if (initialData.type === "buy") {
       paymentMethodNames = selectedPaymentMethodIds
     } else {
-      // For sell ads, map IDs to method names from userPaymentMethods
       paymentMethodNames = selectedPaymentMethodIds
         .map((id) => {
           const method = userPaymentMethods.find((m) => m.id === id)
@@ -447,7 +446,6 @@ export default function PaymentDetailsForm({
     let paymentMethodNames: string[] = []
 
     if (initialData.type === "buy") {
-      // For buy ads, selectedPaymentMethodIds already contains method names
       paymentMethodNames = selectedPaymentMethodIds
     } else {
       // For sell ads, map IDs to method names from userPaymentMethods
