@@ -579,11 +579,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       if (response?.data?.exchange_rate) {
         return Number.parseFloat(response.data.exchange_rate)
       }
+
+      return 0
     } catch (error) {
       console.error("Error fetching minimum amount exchange rate:", error)
+      return 0
     }
-
-    return 0
   }, [])
 
   const handleWalletSelect = async (wallet: ProcessedWallet, type: WalletSelectorType) => {
@@ -616,14 +617,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
 
-    if (destinationWalletData) {
-      const sourceMin = await calculateMinimumInputValue(destinationWalletData.currency)
-      setSourceMinAmount(sourceMin)
-    }
-    if (tempSource) {
-      const destMin = await calculateMinimumInputValue(tempSource.currency)
-      setDestinationMinAmount(destMin)
-    }
+    const tempMinAmount = sourceMinAmount
+    setSourceMinAmount(destinationMinAmount)
+    setDestinationMinAmount(tempMinAmount)
   }
 
   const formatAmountByCurrency = useCallback(
@@ -665,10 +661,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       const currencyData = currenciesData.data[selectedCurrency]
       const minAmount = currencyData?.limit?.transfer?.min_amount_per_transaction || 0
 
-      const effectiveMinAmount =
-        selectedAmountCurrency === "source"
-          ? Math.max(minAmount, sourceMinAmount)
-          : Math.max(minAmount, destinationMinAmount)
+      let effectiveMinAmount = minAmount
+      if (selectedAmountCurrency === "source" && sourceMinAmount > 0) {
+        effectiveMinAmount = Math.max(minAmount, sourceMinAmount)
+      } else if (selectedAmountCurrency === "destination" && destinationMinAmount > 0) {
+        effectiveMinAmount = Math.max(minAmount, destinationMinAmount)
+      }
 
       return numAmount > 0 && numAmount >= effectiveMinAmount && numAmount <= sourceBalance
     }
@@ -683,16 +681,19 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     const minAmount = getMinimumAmount()
     const sourceBalance = getSourceWalletBalance()
 
-    const effectiveMinAmount =
-      selectedAmountCurrency === "source"
-        ? Math.max(minAmount, sourceMinAmount)
-        : Math.max(minAmount, destinationMinAmount)
+    let effectiveMinAmount = minAmount
+    let effectiveCurrency = selectedCurrency || "USD"
 
-    const effectiveCurrency =
-      selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency
+    if (selectedAmountCurrency === "source" && sourceMinAmount > 0) {
+      effectiveMinAmount = Math.max(minAmount, sourceMinAmount)
+      effectiveCurrency = sourceWalletData?.currency || effectiveCurrency
+    } else if (selectedAmountCurrency === "destination" && destinationMinAmount > 0) {
+      effectiveMinAmount = Math.max(minAmount, destinationMinAmount)
+      effectiveCurrency = destinationWalletData?.currency || effectiveCurrency
+    }
 
     if (numAmount < effectiveMinAmount) {
-      return `Minimum transfer is ${formatAmountWithDecimals(effectiveMinAmount)} ${effectiveCurrency || selectedCurrency || "USD"}`
+      return `Minimum transfer is ${formatAmountByCurrency(effectiveMinAmount, effectiveCurrency)} ${effectiveCurrency}`
     }
 
     if (numAmount > sourceBalance) {
