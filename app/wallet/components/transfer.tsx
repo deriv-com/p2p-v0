@@ -146,6 +146,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [showCurrencySwitcher, setShowCurrencySwitcher] = useState(false)
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
+  const [sourceMinAmount, setSourceMinAmount] = useState<number>(0)
+  const [destinationMinAmount, setDestinationMinAmount] = useState<number>(0)
+
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => {
     if (window.innerWidth >= 768) {
@@ -562,7 +565,28 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     onClose()
   }
 
-  const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
+  const calculateMinimumInputValue = useCallback(async (currency: string): Promise<number> => {
+    if (currency === "USD") {
+      return 1
+    }
+
+    try {
+      const response = await fetchExchangeRate({
+        source_currency: "USD",
+        destination_currency: currency,
+      })
+
+      if (response?.data?.exchange_rate) {
+        return Number.parseFloat(response.data.exchange_rate)
+      }
+    } catch (error) {
+      console.error("Error fetching minimum amount exchange rate:", error)
+    }
+
+    return 0
+  }, [])
+
+  const handleWalletSelect = async (wallet: ProcessedWallet, type: WalletSelectorType) => {
     if (type === "from") {
       setSourceWalletData({
         id: wallet.wallet_id,
@@ -570,6 +594,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         currency: wallet.currency,
         balance: wallet.balance,
       })
+      const minAmount = await calculateMinimumInputValue(wallet.currency)
+      setSourceMinAmount(minAmount)
     } else if (type === "to") {
       setDestinationWalletData({
         id: wallet.wallet_id,
@@ -577,16 +603,27 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
         currency: wallet.currency,
         balance: wallet.balance,
       })
+      const minAmount = await calculateMinimumInputValue(wallet.currency)
+      setDestinationMinAmount(minAmount)
     }
 
     setShowMobileSheet(null)
     setShowDesktopWalletPopup(null)
   }
 
-  const handleInterchange = () => {
+  const handleInterchange = async () => {
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
+
+    if (destinationWalletData) {
+      const sourceMin = await calculateMinimumInputValue(destinationWalletData.currency)
+      setSourceMinAmount(sourceMin)
+    }
+    if (tempSource) {
+      const destMin = await calculateMinimumInputValue(tempSource.currency)
+      setDestinationMinAmount(destMin)
+    }
   }
 
   const formatAmountByCurrency = useCallback(
@@ -628,7 +665,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       const currencyData = currenciesData.data[selectedCurrency]
       const minAmount = currencyData?.limit?.transfer?.min_amount_per_transaction || 0
 
-      return numAmount > 0 && numAmount >= minAmount && numAmount <= sourceBalance
+      const effectiveMinAmount =
+        selectedAmountCurrency === "source"
+          ? Math.max(minAmount, sourceMinAmount)
+          : Math.max(minAmount, destinationMinAmount)
+
+      return numAmount > 0 && numAmount >= effectiveMinAmount && numAmount <= sourceBalance
     }
 
     return !isNaN(numAmount) && numAmount > 0 && numAmount <= sourceBalance
@@ -641,8 +683,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     const minAmount = getMinimumAmount()
     const sourceBalance = getSourceWalletBalance()
 
-    if (numAmount < minAmount) {
-      return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}.`
+    const effectiveMinAmount =
+      selectedAmountCurrency === "source"
+        ? Math.max(minAmount, sourceMinAmount)
+        : Math.max(minAmount, destinationMinAmount)
+
+    const effectiveCurrency =
+      selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency
+
+    if (numAmount < effectiveMinAmount) {
+      return `Minimum transfer is ${formatAmountWithDecimals(effectiveMinAmount)} ${effectiveCurrency || selectedCurrency || "USD"}`
     }
 
     if (numAmount > sourceBalance) {
@@ -895,6 +945,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -948,6 +999,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -963,6 +1015,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1118,6 +1171,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1171,6 +1225,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1186,6 +1241,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1467,6 +1523,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1482,6 +1539,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
@@ -1536,7 +1594,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   placeholder="0.00"
                   value={transferAmount || ""}
                   onChange={handleAmountChange}
-                  className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
+                  className="h-12 px-4 border border-grayscale-200 rounded-lg text-base appearance-none"
                   max={getSourceWalletBalance()}
                 />
                 {!showCurrencySwitcher && (
