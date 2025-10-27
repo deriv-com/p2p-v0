@@ -8,6 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import { ProfileAPI } from "@/services/api"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
@@ -30,12 +31,155 @@ interface UserPaymentMethod {
   method: string
 }
 
+interface AvailablePaymentMethod {
+  display_name: string
+  type: string
+  method: string
+}
+
 interface PaymentDetailsFormProps {
   onSubmit: (data: Partial<AdFormData>, errors?: Record<string, string>) => void
   initialData: Partial<AdFormData>
   onBottomSheetOpenChange?: (isOpen: boolean) => void
   userPaymentMethods: UserPaymentMethod[]
+  availablePaymentMethods: AvailablePaymentMethod[]
   onRefetchPaymentMethods: () => Promise<void>
+}
+
+const FullPagePaymentSelection = ({
+  isOpen,
+  onClose,
+  paymentMethods,
+  selectedPaymentMethods,
+  onConfirm,
+  onAddPaymentMethod,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  paymentMethods: (UserPaymentMethod | AvailablePaymentMethod)[]
+  selectedPaymentMethods: string[]
+  onConfirm: (methods: string[]) => void
+  onAddPaymentMethod: () => void
+}) => {
+  const [localSelected, setLocalSelected] = useState<string[]>(selectedPaymentMethods)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  useEffect(() => {
+    if (isOpen) {
+      setLocalSelected(selectedPaymentMethods)
+      setSearchQuery("")
+    }
+  }, [isOpen, selectedPaymentMethods])
+
+  const getMethodId = (method: UserPaymentMethod | AvailablePaymentMethod) => {
+    return "id" in method ? method.id : method.method
+  }
+
+  const filteredMethods = paymentMethods.filter((method) => {
+    const displayName = method.display_name.toLowerCase()
+    const query = searchQuery.toLowerCase()
+    return displayName.includes(query)
+  })
+
+  const handleToggle = (methodId: string) => {
+    setLocalSelected((prev) => {
+      if (prev.includes(methodId)) {
+        return prev.filter((id) => id !== methodId)
+      } else if (prev.length < 3) {
+        return [...prev, methodId]
+      }
+      return prev
+    })
+  }
+
+  const handleConfirm = () => {
+    onConfirm(localSelected)
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 bg-white">
+      <div className="max-w-xl mx-auto flex flex-col w-full h-full">
+        <div className="flex items-center justify-end p-6 pb-4">
+          <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
+            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+        <div className="px-6 pb-4">
+          <h2 className="text-2xl font-bold mb-6">Payment method</h2>
+          <div className="relative">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={20}
+              height={20}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
+            />
+            <Input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
+            />
+          </div>
+        </div>
+        <div className="px-6 pb-4">
+          <p className="text-sm">Select up to 3</p>
+        </div>
+        <div className="flex-1 overflow-y-auto px-6 space-y-3">
+          {filteredMethods.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">No payment methods found</p>
+            </div>
+          ) : (
+            filteredMethods.map((method) => {
+              const methodId = getMethodId(method)
+              const isSelected = localSelected.includes(methodId)
+              const isDisabled = !isSelected && localSelected.length >= 3
+
+              return (
+                <div
+                  key={methodId}
+                  className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors ${
+                    isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => !isDisabled && handleToggle(methodId)}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`h-2 w-2 rounded-full ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
+                    />
+                    <span className="text-base text-slate-1200">{method.display_name}</span>
+                  </div>
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
+                      checked={isSelected}
+                      disabled={isDisabled}
+                      onCheckedChange={() => !isDisabled && handleToggle(methodId)}
+                      className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
+                    />
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+
+        <div className="p-6 pt-4 self-end">
+          <Button
+            onClick={handleConfirm}
+            disabled={localSelected.length === 0}
+            variant="primary"
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 const PaymentSelectionContent = ({
@@ -175,6 +319,7 @@ export default function PaymentDetailsForm({
   initialData,
   onBottomSheetOpenChange,
   userPaymentMethods,
+  availablePaymentMethods,
   onRefetchPaymentMethods,
 }: PaymentDetailsFormProps) {
   const isMobile = useIsMobile()
@@ -184,6 +329,7 @@ export default function PaymentDetailsForm({
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
+  const [showFullPageModal, setShowFullPageModal] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
@@ -198,12 +344,18 @@ export default function PaymentDetailsForm({
     const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
-    const paymentMethodNames = selectedPaymentMethodIds
-      .map((id) => {
-        const method = userPaymentMethods.find((m) => m.id === id)
-        return method?.method || ""
-      })
-      .filter(Boolean)
+    let paymentMethodNames: string[] = []
+
+    if (initialData.type === "buy") {
+      paymentMethodNames = selectedPaymentMethodIds
+    } else {
+      paymentMethodNames = selectedPaymentMethodIds
+        .map((id) => {
+          const method = userPaymentMethods.find((m) => m.id === id)
+          return method?.method || ""
+        })
+        .filter(Boolean)
+    }
 
     const formData = {
       id: initialData.id,
@@ -221,19 +373,23 @@ export default function PaymentDetailsForm({
   }
 
   const handleShowPaymentSelection = () => {
-    showAlert({
-      title: "Payment method",
-      description: (
-        <PaymentSelectionContent
-          paymentMethods={userPaymentMethods}
-          tempSelectedPaymentMethods={selectedPaymentMethodIds}
-          setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
-          setSelectedPaymentMethods={setSelectedPaymentMethodIds}
-          hideAlert={hideAlert}
-          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-        />
-      ),
-    })
+    if (initialData.type === "buy") {
+      setShowFullPageModal(true)
+    } else {
+      showAlert({
+        title: "Payment method",
+        description: (
+          <PaymentSelectionContent
+            paymentMethods={userPaymentMethods}
+            tempSelectedPaymentMethods={selectedPaymentMethodIds}
+            setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
+            setSelectedPaymentMethods={setSelectedPaymentMethodIds}
+            hideAlert={hideAlert}
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+          />
+        ),
+      })
+    }
   }
 
   const handleAddPaymentMethodClick = () => {
@@ -273,7 +429,7 @@ export default function PaymentDetailsForm({
 
   const getSelectedPaymentMethodsText = () => {
     const selectedIds = selectedPaymentMethodIds
-    const methods = userPaymentMethods
+    const methods = initialData.type === "buy" ? availablePaymentMethods : userPaymentMethods
 
     if (selectedIds.length === 0) return "Select payment"
     if (selectedIds.length === 1) {
@@ -287,12 +443,19 @@ export default function PaymentDetailsForm({
   }
 
   useEffect(() => {
-    const paymentMethodNames = selectedPaymentMethodIds
-      .map((id) => {
-        const method = userPaymentMethods.find((m) => m.id === id)
-        return method?.method || ""
-      })
-      .filter(Boolean)
+    let paymentMethodNames: string[] = []
+
+    if (initialData.type === "buy") {
+      paymentMethodNames = selectedPaymentMethodIds
+    } else {
+      // For sell ads, map IDs to method names from userPaymentMethods
+      paymentMethodNames = selectedPaymentMethodIds
+        .map((id) => {
+          const method = userPaymentMethods.find((m) => m.id === id)
+          return method?.method || ""
+        })
+        .filter(Boolean)
+    }
 
     const event = new CustomEvent("paymentFormValidationChange", {
       detail: {
@@ -306,7 +469,7 @@ export default function PaymentDetailsForm({
       bubbles: true,
     })
     document.dispatchEvent(event)
-  }, [paymentMethods, selectedPaymentMethodIds, instructions, userPaymentMethods])
+  }, [paymentMethods, selectedPaymentMethodIds, instructions, userPaymentMethods, initialData.type])
 
   return (
     <>
@@ -318,7 +481,7 @@ export default function PaymentDetailsForm({
                 <Button
                   variant="outline"
                   className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent max-h-none h-[56px]"
-                  onClick={() => handleShowPaymentSelection(initialData.type === "buy")}
+                  onClick={() => handleShowPaymentSelection()}
                   type="button"
                 >
                   <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
@@ -346,6 +509,15 @@ export default function PaymentDetailsForm({
           </div>
         </form>
       </div>
+
+      <FullPagePaymentSelection
+        isOpen={showFullPageModal}
+        onClose={() => setShowFullPageModal(false)}
+        paymentMethods={initialData.type === "buy" ? availablePaymentMethods : userPaymentMethods}
+        selectedPaymentMethods={selectedPaymentMethodIds}
+        onConfirm={(methods) => setSelectedPaymentMethodIds(methods)}
+        onAddPaymentMethod={handleAddPaymentMethodClick}
+      />
 
       {showAddPaymentPanel && (
         <AddPaymentMethodPanel

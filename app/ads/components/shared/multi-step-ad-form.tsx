@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
-import { AdsAPI, ProfileAPI } from "@/services/api"
+import { AdsAPI, ProfileAPI, BuySellAPI } from "@/services/api"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
@@ -30,6 +30,12 @@ interface UserPaymentMethod {
   display_name: string
   fields: Record<string, any>
   is_enabled: number
+  method: string
+}
+
+interface AvailablePaymentMethod {
+  display_name: string
+  type: string
   method: string
 }
 
@@ -75,8 +81,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
+  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
 
   const formDataRef = useRef({})
+  const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
 
   const steps = [
     { title: "Set Type and Price", completed: currentStep > 0 },
@@ -105,8 +113,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
   }
 
+  const fetchAvailablePaymentMethods = async () => {
+    try {
+      const methods = await BuySellAPI.getPaymentMethods()
+      setAvailablePaymentMethods(methods || [])
+    } catch (error) {
+      console.error("Error fetching available payment methods:", error)
+    }
+  }
+
   useEffect(() => {
     fetchUserPaymentMethods()
+    fetchAvailablePaymentMethods()
   }, [])
 
   useEffect(() => {
@@ -160,17 +178,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                   return convertToSnakeCase(methodName)
                 })
 
-                // Wait for userPaymentMethods to be loaded before converting
-                if (userPaymentMethods.length > 0) {
-                  const matchedIds = paymentMethodNames
-                    .map((methodName) => {
-                      const method = userPaymentMethods.find((m) => m.method === methodName)
-                      return method?.id
-                    })
-                    .filter((id): id is string => !!id)
-
-                  setSelectedPaymentMethodIds(matchedIds)
-                }
+                setSelectedPaymentMethodIds(paymentMethodNames)
               } else {
                 paymentMethodIds = data.payment_method_ids
                   .map((id: any) => Number(id))
@@ -212,7 +220,14 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
       loadInitialData()
     }
-  }, [mode, adId, setSelectedPaymentMethodIds, userPaymentMethods])
+  }, [mode, adId, setSelectedPaymentMethodIds])
+
+  useEffect(() => {
+    if (mode === "create" && formData.type && previousTypeRef.current && formData.type !== previousTypeRef.current) {
+      setSelectedPaymentMethodIds([])
+    }
+    previousTypeRef.current = formData.type as "buy" | "sell" | undefined
+  }, [formData.type, mode, setSelectedPaymentMethodIds])
 
   const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
 
@@ -549,6 +564,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 isEditMode={mode === "edit"}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
                 userPaymentMethods={userPaymentMethods}
+                availablePaymentMethods={availablePaymentMethods}
                 onRefetchPaymentMethods={fetchUserPaymentMethods}
               />
             ) : (
