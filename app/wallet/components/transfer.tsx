@@ -244,6 +244,48 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     loadWallets()
   }, [selectedCurrency, currenciesData])
 
+  const checkIfFeeExists = useCallback((): boolean => {
+    console.log("[v0] checkIfFeeExists called", {
+      hasCurrenciesData: !!currenciesData,
+      hasSourceWallet: !!sourceWalletData,
+      hasDestinationWallet: !!destinationWalletData,
+      sourceCurrency: sourceWalletData?.currency,
+      destinationCurrency: destinationWalletData?.currency,
+    })
+
+    if (!currenciesData || !sourceWalletData || !destinationWalletData) {
+      console.log("[v0] checkIfFeeExists: Missing required data")
+      return false
+    }
+
+    if (sourceWalletData.currency === destinationWalletData.currency) {
+      console.log("[v0] checkIfFeeExists: Same currency, no fee")
+      return false
+    }
+
+    const sourceCurrencyData = currenciesData.data[sourceWalletData.currency]
+    const destinationCurrencyData = currenciesData.data[destinationWalletData.currency]
+
+    if (!sourceCurrencyData || !destinationCurrencyData) {
+      console.log("[v0] checkIfFeeExists: Missing currency data")
+      return false
+    }
+
+    const sourceType = sourceCurrencyData.type
+    let feePercentage = 0
+
+    if (sourceType === "cryptocurrency") {
+      feePercentage = destinationCurrencyData.fee.transfer.crypto_percentage
+    } else if (sourceType === "fiat") {
+      feePercentage = destinationCurrencyData.fee.transfer.fiat_percentage
+    } else if (sourceType === "stablecoin") {
+      feePercentage = destinationCurrencyData.fee.transfer.stablecoin_percentage
+    }
+
+    console.log("[v0] checkIfFeeExists: Fee percentage", feePercentage)
+    return feePercentage > 0
+  }, [currenciesData, sourceWalletData, destinationWalletData])
+
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
       return null
@@ -334,23 +376,40 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   ])
 
   const fetchAndSetExchangeRate = useCallback(async () => {
-    if (!sourceWalletData || !destinationWalletData) return
+    console.log("[v0] fetchAndSetExchangeRate called", {
+      hasSourceWallet: !!sourceWalletData,
+      hasDestinationWallet: !!destinationWalletData,
+      sourceCurrency: sourceWalletData?.currency,
+      destinationCurrency: destinationWalletData?.currency,
+    })
+
+    if (!sourceWalletData || !destinationWalletData) {
+      console.log("[v0] fetchAndSetExchangeRate: Missing wallet data")
+      return
+    }
+
     if (sourceWalletData.currency === destinationWalletData.currency) {
+      console.log("[v0] fetchAndSetExchangeRate: Same currency")
       setExchangeRateData(null)
       return
     }
 
-    const feeInfo = calculateTransferFee()
-    if (!feeInfo) {
+    const feeExists = checkIfFeeExists()
+    console.log("[v0] fetchAndSetExchangeRate: Fee exists?", feeExists)
+
+    if (!feeExists) {
       setExchangeRateData(null)
       return
     }
 
     try {
+      console.log("[v0] fetchAndSetExchangeRate: Calling API")
       const response = await fetchExchangeRate({
         source_currency: sourceWalletData.currency,
         destination_currency: destinationWalletData.currency,
       })
+
+      console.log("[v0] fetchAndSetExchangeRate: API response", response)
 
       if (response?.data) {
         setExchangeRateData(response.data)
@@ -374,28 +433,38 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
         }, 1000)
       }
     } catch (error) {
-      console.error("Error fetching exchange rate:", error)
+      console.error("[v0] Error fetching exchange rate:", error)
     }
-  }, [sourceWalletData, destinationWalletData, calculateTransferFee])
+  }, [sourceWalletData, destinationWalletData, checkIfFeeExists])
 
   useEffect(() => {
+    console.log("[v0] Wallet change useEffect triggered", {
+      hasSourceWallet: !!sourceWalletData,
+      hasDestinationWallet: !!destinationWalletData,
+      hasCurrenciesData: !!currenciesData,
+    })
+
     if (!sourceWalletData || !destinationWalletData || !currenciesData) {
+      console.log("[v0] Wallet change useEffect: Missing data, resetting state")
       setShowCurrencySwitcher(false)
       setExchangeRateData(null)
       return
     }
 
     // Check if there's a transfer fee
-    const hasFee = calculateTransferFee() !== null
+    const hasFee = checkIfFeeExists()
+    console.log("[v0] Wallet change useEffect: Has fee?", hasFee)
 
     if (hasFee) {
       // Fetch exchange rate if fee exists
+      console.log("[v0] Wallet change useEffect: Fetching exchange rate")
       fetchAndSetExchangeRate()
     } else {
+      console.log("[v0] Wallet change useEffect: No fee, resetting state")
       setShowCurrencySwitcher(false)
       setExchangeRateData(null)
     }
-  }, [sourceWalletData, destinationWalletData, currenciesData, calculateTransferFee, fetchAndSetExchangeRate])
+  }, [sourceWalletData, destinationWalletData, currenciesData, checkIfFeeExists, fetchAndSetExchangeRate])
 
   useEffect(() => {
     const hasFee = calculateTransferFee() !== null
@@ -495,6 +564,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
+    console.log("[v0] handleWalletSelect called", { type, wallet: wallet.name, currency: wallet.currency })
+
     if (type === "from") {
       setSourceWalletData({
         id: wallet.wallet_id,
@@ -516,6 +587,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const handleInterchange = () => {
+    console.log("[v0] handleInterchange called")
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
@@ -816,6 +888,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -863,6 +936,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -878,6 +952,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
@@ -976,6 +1051,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1023,6 +1099,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1038,6 +1115,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
@@ -1254,6 +1332,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1269,6 +1348,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
