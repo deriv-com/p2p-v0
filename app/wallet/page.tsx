@@ -18,7 +18,7 @@ interface Balance {
 
 export default function WalletPage() {
   const [displayBalances, setDisplayBalances] = useState(true)
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>('')
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>('USD')
   const [totalBalance, setTotalBalance] = useState("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
