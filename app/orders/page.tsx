@@ -24,7 +24,6 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import Link from "next/link"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -240,84 +239,86 @@ export default function OrdersPage() {
           </TableHeader>
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
-              <Link key={order.id} href={`/orders/${order.id}`} className="contents">
-                <TableRow className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4">
-                  {activeTab === "past" && (
-                    <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
-                      {order.created_at ? formatDate(order.created_at) : ""}
-                    </TableCell>
-                  )}
-                  <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
+              <TableRow
+                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
+                key={order.id}
+                onClick={() => navigateToOrderDetails(order.id)}
+              >
+                {activeTab === "past" && (
+                  <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                    {order.created_at ? formatDate(order.created_at) : ""}
+                  </TableCell>
+                )}
+                <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
+                  <div>
+                    <div className="flex flex-row justify-between">
+                      <div className="font-bold">
+                        {getOrderType(order)}
+                        <span className="text-base">
+                          {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
+                        </span>
+                      </div>
+                      <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
+                    </div>
+                  </div>
+                </TableCell>
+                <TableCell className="py-0 px-4 align-top text-xs row-start-3">
+                  <div className="flex flex-row-reverse justify-end gap-[4px]">
                     <div>
-                      <div className="flex flex-row justify-between">
-                        <div className="font-bold">
-                          {getOrderType(order)}
-                          <span className="text-base">
-                            {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
-                          </span>
-                        </div>
-                        <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
-                      </div>
+                      {formatAmount(order.payment_amount)} {order.payment_currency}
                     </div>
+                    <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
+                  </div>
+                </TableCell>
+                <TableCell className="py-0 px-4align-top row-start-1">
+                  <div
+                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
+                  >
+                    {formatStatus(false, order.status, getPayReceiveLabel(order) === "You pay: ")}
+                  </div>
+                </TableCell>
+                {activeTab === "active" && (
+                  <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                    {(order.status === "pending_payment" || order.status === "pending_release") && (
+                      <TimeRemainingDisplay expiresAt={order.expires_at} />
+                    )}
                   </TableCell>
-                  <TableCell className="py-0 px-4 align-top text-xs row-start-3">
-                    <div className="flex flex-row-reverse justify-end gap-[4px]">
-                      <div>
-                        {formatAmount(order.payment_amount)} {order.payment_currency}
+                )}
+                {activeTab === "past" && (
+                  <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
+                    {order.rating > 0 && (
+                      <div className="flex">
+                        <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                        {Number(order.rating).toFixed(1)}
                       </div>
-                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
-                    </div>
+                    )}
+                    {order.is_reviewable > 0 && !order.disputed_at && (
+                      <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
+                        Rate
+                      </Button>
+                    )}
                   </TableCell>
-                  <TableCell className="py-0 px-4align-top row-start-1">
-                    <div
-                      className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
-                    >
-                      {formatStatus(false, order.status, getPayReceiveLabel(order) === "You pay: ")}
+                )}
+                <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
+                  <div className="flex flex-row items-center justify-between">
+                    <div className="text-xs">
+                      {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
                     </div>
-                  </TableCell>
-                  {activeTab === "active" && (
-                    <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
-                      {(order.status === "pending_payment" || order.status === "pending_release") && (
-                        <TimeRemainingDisplay expiresAt={order.expires_at} />
-                      )}
-                    </TableCell>
-                  )}
-                  {activeTab === "past" && (
-                    <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
-                      {order.rating > 0 && (
-                        <div className="flex">
-                          <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                          {Number(order.rating).toFixed(1)}
-                        </div>
-                      )}
-                      {order.is_reviewable > 0 && !order.disputed_at && (
-                        <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
-                          Rate
-                        </Button>
-                      )}
-                    </TableCell>
-                  )}
-                  <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
-                    <div className="flex flex-row items-center justify-between">
-                      <div className="text-xs">
-                        {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          onClick={(e) => {
-                            handleChatClick(e, order)
-                          }}
-                          className="text-slate-500 hover:text-slate-700 z-auto p-0"
-                          variant="ghost"
-                          size="sm"
-                        >
-                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                        </Button>
-                      </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={(e) => {
+                          handleChatClick(e, order)
+                        }}
+                        className="text-slate-500 hover:text-slate-700 z-auto p-0"
+                        variant="ghost"
+                        size="sm"
+                      >
+                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                      </Button>
                     </div>
-                  </TableCell>
-                </TableRow>
-              </Link>
+                  </div>
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>

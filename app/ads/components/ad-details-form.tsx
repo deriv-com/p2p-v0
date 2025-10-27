@@ -392,7 +392,7 @@ export default function AdDetailsForm({
             <div>
               <RateInput
                 currency={forCurrency}
-                label="Fixed price"
+                label={`Rate per ${buyCurrency}`}
                 value={fixedRate}
                 onChange={(value) => {
                   if (value === "") {
