@@ -842,6 +842,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -891,6 +892,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -906,6 +908,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1008,6 +1011,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1057,6 +1061,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1072,6 +1077,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1292,6 +1298,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1307,6 +1314,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
@@ -1372,12 +1380,18 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     }}
                     variant="outline"
                     size="sm"
-                    className="bg-transparent h-full"
+                    className="bg-transparent h-full gap-1"
                   >
-                    <ToggleGroupItem value="source" className="text-xs px-2 h-full">
+                    <ToggleGroupItem
+                      value="source"
+                      className="text-xs px-3 h-full rounded-lg border-0 data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50"
+                    >
                       {sourceWalletData?.currency}
                     </ToggleGroupItem>
-                    <ToggleGroupItem value="destination" className="text-xs px-2 h-full">
+                    <ToggleGroupItem
+                      value="destination"
+                      className="text-xs px-3 h-full rounded-lg border-0 data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50"
+                    >
                       {destinationWalletData?.currency}
                     </ToggleGroupItem>
                   </ToggleGroup>
