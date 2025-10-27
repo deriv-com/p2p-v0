@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -242,82 +243,83 @@ export default function OrdersPage() {
               <TableRow
                 className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4 relative"
                 key={order.id}
-                onClick={() => navigateToOrderDetails(order.id)}
               >
-                {activeTab === "past" && (
-                  <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
-                    {order.created_at ? formatDate(order.created_at) : ""}
-                  </TableCell>
-                )}
-                <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
-                  <div>
-                    <div className="flex flex-row justify-between">
-                      <div className="font-bold">
-                        {getOrderType(order)}
-                        <span className="text-base">
-                          {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
-                        </span>
-                      </div>
-                      <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="py-0 px-4 align-top text-xs row-start-3">
-                  <div className="flex flex-row-reverse justify-end gap-[4px]">
+                <Link href={`/orders/${order.id}`} className="contents">
+                  {activeTab === "past" && (
+                    <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
+                      {order.created_at ? formatDate(order.created_at) : ""}
+                    </TableCell>
+                  )}
+                  <TableCell className="py-0 px-4 align-top row-start-2 col-span-full">
                     <div>
-                      {formatAmount(order.payment_amount)} {order.payment_currency}
-                    </div>
-                    <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
-                  </div>
-                </TableCell>
-                <TableCell className="py-0 px-4 align-top row-start-1">
-                  <div
-                    className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
-                  >
-                    {formatStatus(false, order.status, getPayReceiveLabel(order) === "You pay: ")}
-                  </div>
-                </TableCell>
-                {activeTab === "active" && (
-                  <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
-                    {(order.status === "pending_payment" || order.status === "pending_release") && (
-                      <TimeRemainingDisplay expiresAt={order.expires_at} />
-                    )}
-                  </TableCell>
-                )}
-                {activeTab === "past" && (
-                  <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
-                    {order.rating > 0 && (
-                      <div className="flex">
-                        <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
-                        {Number(order.rating).toFixed(1)}
+                      <div className="flex flex-row justify-between">
+                        <div className="font-bold">
+                          {getOrderType(order)}
+                          <span className="text-base">
+                            {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
+                          </span>
+                        </div>
+                        <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
                       </div>
-                    )}
-                    {order.is_reviewable > 0 && !order.disputed_at && (
-                      <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
-                        Rate
-                      </Button>
-                    )}
+                    </div>
                   </TableCell>
-                )}
-                <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
-                  <div className="flex flex-row items-center justify-between">
-                    <div className="text-xs">
-                      {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
+                  <TableCell className="py-0 px-4 align-top text-xs row-start-3">
+                    <div className="flex flex-row-reverse justify-end gap-[4px]">
+                      <div>
+                        {formatAmount(order.payment_amount)} {order.payment_currency}
+                      </div>
+                      <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        onClick={(e) => {
-                          handleChatClick(e, order)
-                        }}
-                        className="text-slate-500 hover:text-slate-700 z-auto p-0"
-                        variant="ghost"
-                        size="sm"
-                      >
-                        <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
-                      </Button>
+                  </TableCell>
+                  <TableCell className="py-0 px-4 align-top row-start-1">
+                    <div
+                      className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
+                    >
+                      {formatStatus(false, order.status, getPayReceiveLabel(order) === "You pay: ")}
                     </div>
-                  </div>
-                </TableCell>
+                  </TableCell>
+                  {activeTab === "active" && (
+                    <TableCell className="py-0 px-4 align-top row-start-1 col-start-2 justify-self-end">
+                      {(order.status === "pending_payment" || order.status === "pending_release") && (
+                        <TimeRemainingDisplay expiresAt={order.expires_at} />
+                      )}
+                    </TableCell>
+                  )}
+                  {activeTab === "past" && (
+                    <TableCell className="py-0 px-4 align-top row-start-1 flex justify-end items-center">
+                      {order.rating > 0 && (
+                        <div className="flex">
+                          <Image src="/icons/star-icon.png" alt="Rating" width={20} height={20} className="mr-1" />
+                          {Number(order.rating).toFixed(1)}
+                        </div>
+                      )}
+                      {order.is_reviewable > 0 && !order.disputed_at && (
+                        <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
+                          Rate
+                        </Button>
+                      )}
+                    </TableCell>
+                  )}
+                  <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
+                    <div className="flex flex-row items-center justify-between">
+                      <div className="text-xs">
+                        {order.advert.user.id == userId ? order.user.nickname : order.advert.user.nickname}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          onClick={(e) => {
+                            handleChatClick(e, order)
+                          }}
+                          className="text-slate-500 hover:text-slate-700 z-auto p-0"
+                          variant="ghost"
+                          size="sm"
+                        >
+                          <Image src="/icons/chat-icon.png" alt="Chat" width={20} height={20} />
+                        </Button>
+                      </div>
+                    </div>
+                  </TableCell>
+                </Link>
               </TableRow>
             ))}
           </TableBody>
