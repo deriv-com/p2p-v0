@@ -5,9 +5,13 @@ const getAuthHeader = () => ({
 })
 
 export async function fetchTransactions(selectedCurrencyCode?: string) {
-  let url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions`
+  const userData = useUserDataStore.getState().userData
+
+  const walletId = userData?.wallet_id
+
+  let url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?wallet_id=${walletId}`
   if (selectedCurrencyCode) {
-    url += `?transaction_currency=${selectedCurrencyCode}`
+    url += `&transaction_currency=${selectedCurrencyCode}`
   }
 
   return fetch(url, {
