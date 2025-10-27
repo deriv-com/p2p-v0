@@ -84,6 +84,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
 
   const formDataRef = useRef({})
+  const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
 
   const steps = [
     { title: "Set Type and Price", completed: currentStep > 0 },
@@ -230,6 +231,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       loadInitialData()
     }
   }, [mode, adId, setSelectedPaymentMethodIds, userPaymentMethods])
+
+  useEffect(() => {
+    if (mode === "create" && formData.type && previousTypeRef.current && formData.type !== previousTypeRef.current) {
+      setSelectedPaymentMethodIds([])
+    }
+    previousTypeRef.current = formData.type as "buy" | "sell" | undefined
+  }, [formData.type, mode, setSelectedPaymentMethodIds])
 
   const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
 
