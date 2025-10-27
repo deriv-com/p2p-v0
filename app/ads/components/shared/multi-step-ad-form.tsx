@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import AdDetailsForm from "../ad-details-form"
 import PaymentDetailsForm from "../payment-details-form"
-import { AdsAPI, ProfileAPI } from "@/services/api"
+import { AdsAPI, ProfileAPI, BuySellAPI } from "@/services/api"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { Button } from "@/components/ui/button"
 import { ProgressSteps } from "./progress-steps"
@@ -30,6 +30,12 @@ interface UserPaymentMethod {
   display_name: string
   fields: Record<string, any>
   is_enabled: number
+  method: string
+}
+
+interface AvailablePaymentMethod {
+  display_name: string
+  type: string
   method: string
 }
 
@@ -75,6 +81,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
   const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
+  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
 
   const formDataRef = useRef({})
 
@@ -105,8 +112,18 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
   }
 
+  const fetchAvailablePaymentMethods = async () => {
+    try {
+      const methods = await BuySellAPI.getPaymentMethods()
+      setAvailablePaymentMethods(methods || [])
+    } catch (error) {
+      console.error("Error fetching available payment methods:", error)
+    }
+  }
+
   useEffect(() => {
     fetchUserPaymentMethods()
+    fetchAvailablePaymentMethods()
   }, [])
 
   useEffect(() => {
@@ -549,6 +566,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 isEditMode={mode === "edit"}
                 onBottomSheetOpenChange={handleBottomSheetOpenChange}
                 userPaymentMethods={userPaymentMethods}
+                availablePaymentMethods={availablePaymentMethods}
                 onRefetchPaymentMethods={fetchUserPaymentMethods}
               />
             ) : (

@@ -31,11 +31,18 @@ interface UserPaymentMethod {
   method: string
 }
 
+interface AvailablePaymentMethod {
+  display_name: string
+  type: string
+  method: string
+}
+
 interface PaymentDetailsFormProps {
   onSubmit: (data: Partial<AdFormData>, errors?: Record<string, string>) => void
   initialData: Partial<AdFormData>
   onBottomSheetOpenChange?: (isOpen: boolean) => void
   userPaymentMethods: UserPaymentMethod[]
+  availablePaymentMethods: AvailablePaymentMethod[]
   onRefetchPaymentMethods: () => Promise<void>
 }
 
@@ -49,7 +56,7 @@ const FullPagePaymentSelection = ({
 }: {
   isOpen: boolean
   onClose: () => void
-  paymentMethods: (UserPaymentMethod | PaymentMethod)[]
+  paymentMethods: (UserPaymentMethod | AvailablePaymentMethod)[]
   selectedPaymentMethods: string[]
   onConfirm: (methods: string[]) => void
   onAddPaymentMethod: () => void
@@ -64,7 +71,7 @@ const FullPagePaymentSelection = ({
     }
   }, [isOpen, selectedPaymentMethods])
 
-  const getMethodId = (method: UserPaymentMethod | PaymentMethod) => {
+  const getMethodId = (method: UserPaymentMethod | AvailablePaymentMethod) => {
     return "id" in method ? method.id : method.method
   }
 
@@ -317,6 +324,7 @@ export default function PaymentDetailsForm({
   initialData,
   onBottomSheetOpenChange,
   userPaymentMethods,
+  availablePaymentMethods,
   onRefetchPaymentMethods,
 }: PaymentDetailsFormProps) {
   const isMobile = useIsMobile()
@@ -420,7 +428,7 @@ export default function PaymentDetailsForm({
 
   const getSelectedPaymentMethodsText = () => {
     const selectedIds = selectedPaymentMethodIds
-    const methods = userPaymentMethods
+    const methods = initialData.type === "buy" ? availablePaymentMethods : userPaymentMethods
 
     if (selectedIds.length === 0) return "Select payment"
     if (selectedIds.length === 1) {
@@ -497,7 +505,7 @@ export default function PaymentDetailsForm({
       <FullPagePaymentSelection
         isOpen={showFullPageModal}
         onClose={() => setShowFullPageModal(false)}
-        paymentMethods={userPaymentMethods}
+        paymentMethods={initialData.type === "buy" ? availablePaymentMethods : userPaymentMethods}
         selectedPaymentMethods={selectedPaymentMethodIds}
         onConfirm={(methods) => setSelectedPaymentMethodIds(methods)}
         onAddPaymentMethod={handleAddPaymentMethodClick}
