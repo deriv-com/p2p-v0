@@ -51,6 +51,7 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
+  const [openingOrderId, setOpeningOrderId] = useState<string | null>(null)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
@@ -133,6 +134,11 @@ export default function OrdersPage() {
     }
   }
 
+  const navigateToOrderDetails = (orderId: string) => {
+    setOpeningOrderId(orderId)
+    router.push(`/orders/${orderId}`)
+  }
+
   const handleCheckPreviousOrders = () => {
     setShowPreviousOrders(true)
   }
@@ -148,10 +154,6 @@ export default function OrdersPage() {
       month: "short",
       year: "numeric",
     })
-  }
-
-  const navigateToOrderDetails = (orderId: string) => {
-    router.push(`/orders/${orderId}`)
   }
 
   const handleRateClick = (e: React.MouseEvent, order: Order) => {
@@ -240,10 +242,15 @@ export default function OrdersPage() {
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
               <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4"
+                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4 relative"
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
+                {openingOrderId === order.id && (
+                  <div className="absolute inset-0 bg-white/80 rounded-lg flex items-center justify-center z-10">
+                    <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+                  </div>
+                )}
                 {activeTab === "past" && (
                   <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
@@ -270,7 +277,7 @@ export default function OrdersPage() {
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="py-0 px-4align-top row-start-1">
+                <TableCell className="py-0 px-4 align-top row-start-1">
                   <div
                     className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
