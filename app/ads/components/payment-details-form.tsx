@@ -102,13 +102,13 @@ const FullPagePaymentSelection = ({
   return (
     <div className="fixed inset-0 z-50 bg-white">
       <div className="max-w-xl mx-auto flex flex-col w-full h-full">
-        <div className="flex items-center justify-between p-6 pb-4">
-          <h2 className="text-2xl font-bold">Payment method</h2>
+        <div className="flex items-center justify-end p-6 pb-4">
           <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
         <div className="px-6 pb-4">
+          <h2 className="text-2xl font-bold">Payment method</h2>
           <div className="relative">
             <Image
               src="/icons/search-icon-custom.png"
