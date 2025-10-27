@@ -2,10 +2,17 @@
 import Image from "next/image"
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { fetchWalletsList, walletTransfer, getCurrencies, fetchTransactions } from "@/services/api/api-wallets"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import {
+  fetchWalletsList,
+  walletTransfer,
+  getCurrencies,
+  fetchTransactions,
+  fetchExchangeRate,
+} from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
@@ -92,8 +99,25 @@ interface CurrenciesResponse {
   }
 }
 
+interface ExchangeRateData {
+  source: string
+  destination: string
+  display_rate: string
+  rate_token: string
+  exchange_rate: string
+}
+
+interface TransferFeeCalculation {
+  transferAmount: number
+  transferFee: number
+  youllReceive: number
+  youllReceiveConverted: number
+  feePercentage: number
+}
+
 type TransferStep = "chooseCurrency" | "enterAmount" | "success"
 type WalletSelectorType = "from" | "to" | null
+type CurrencyToggleType = "source" | "destination"
 
 export default function Transfer({ currencySelected, onClose, stepVal = "chooseCurrency" }: TransferProps) {
   const [step, setStep] = useState<TransferStep>(stepVal)
@@ -111,6 +135,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
   const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+
+  const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
+  const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
+  const [countdown, setCountdown] = useState<number>(30)
+  const [transferFeeCalculation, setTransferFeeCalculation] = useState<TransferFeeCalculation | null>(null)
+  const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const toEnterAmount = () => setStep("enterAmount")
   const toConfirm = () => {
@@ -174,14 +204,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
           response.data.wallets.forEach((wallet: any) => {
             wallet.balances.forEach((balance: any) => {
-
               if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
                 return
               }
 
-
               const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
-
 
               const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
@@ -216,7 +243,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     loadWallets()
   }, [selectedCurrency, currenciesData])
 
-  const calculateTransferFee = (): { feeAmount: number; feePercentage: number } | null => {
+  const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
       return null
     }
@@ -251,7 +278,117 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     const feeAmount = (amount * feePercentage) / 100
 
     return { feeAmount, feePercentage }
-  }
+  }, [currenciesData, sourceWalletData, destinationWalletData, transferAmount])
+
+  const calculateTransferFeeWithExchangeRate = useCallback((): TransferFeeCalculation | null => {
+    if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount || !exchangeRateData) {
+      return null
+    }
+
+    const feeInfo = calculateTransferFee()
+    if (!feeInfo) return null
+
+    const amount = Number.parseFloat(transferAmount)
+    const exchangeRate = Number.parseFloat(exchangeRateData.exchange_rate)
+    const fee = feeInfo.feePercentage
+
+    let calculation: TransferFeeCalculation
+
+    if (selectedAmountCurrency === "source") {
+      // User entered amount in source currency
+      const transferFee = amount * (fee / 100)
+      const youllReceive = amount * (1 - fee / 100)
+      const youllReceiveConverted = youllReceive * exchangeRate
+
+      calculation = {
+        transferAmount: amount,
+        transferFee,
+        youllReceive,
+        youllReceiveConverted,
+        feePercentage: fee,
+      }
+    } else {
+      // User entered amount in destination currency
+      const transferFee = (amount / exchangeRate) * (fee / 100)
+      const youllReceive = amount * (1 - fee / 100)
+      const youllReceiveConverted = amount / exchangeRate - (amount / exchangeRate) * (fee / 100)
+
+      calculation = {
+        transferAmount: amount,
+        transferFee,
+        youllReceive,
+        youllReceiveConverted,
+        feePercentage: fee,
+      }
+    }
+
+    return calculation
+  }, [
+    currenciesData,
+    sourceWalletData,
+    destinationWalletData,
+    transferAmount,
+    exchangeRateData,
+    selectedAmountCurrency,
+  ])
+
+  const fetchAndSetExchangeRate = useCallback(async () => {
+    if (!sourceWalletData || !destinationWalletData) return
+    if (sourceWalletData.currency === destinationWalletData.currency) {
+      setExchangeRateData(null)
+      return
+    }
+
+    const feeInfo = calculateTransferFee()
+    if (!feeInfo) {
+      setExchangeRateData(null)
+      return
+    }
+
+    try {
+      const response = await fetchExchangeRate({
+        source_currency: sourceWalletData.currency,
+        destination_currency: destinationWalletData.currency,
+      })
+
+      if (response?.data) {
+        setExchangeRateData(response.data)
+        setCountdown(30)
+
+        // Clear existing interval
+        if (countdownIntervalRef.current) {
+          clearInterval(countdownIntervalRef.current)
+        }
+
+        // Start countdown
+        countdownIntervalRef.current = setInterval(() => {
+          setCountdown((prev) => {
+            if (prev <= 1) {
+              // Refetch exchange rate when countdown reaches 0
+              fetchAndSetExchangeRate()
+              return 30
+            }
+            return prev - 1
+          })
+        }, 1000)
+      }
+    } catch (error) {
+      console.error("Error fetching exchange rate:", error)
+    }
+  }, [sourceWalletData, destinationWalletData])
+
+  useEffect(() => {
+    const calculation = calculateTransferFeeWithExchangeRate()
+    setTransferFeeCalculation(calculation)
+  }, [calculateTransferFeeWithExchangeRate])
+
+  useEffect(() => {
+    return () => {
+      if (countdownIntervalRef.current) {
+        clearInterval(countdownIntervalRef.current)
+      }
+    }
+  }, [])
 
   const handleTransferClick = () => {
     toConfirm()
@@ -351,12 +488,20 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
     setShowMobileSheet(null)
     setShowDesktopWalletPopup(null)
+
+    setTimeout(() => {
+      fetchAndSetExchangeRate()
+    }, 100)
   }
 
   const handleInterchange = () => {
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
+
+    setTimeout(() => {
+      fetchAndSetExchangeRate()
+    }, 100)
   }
 
   const formatBalance = (amount: string): string => {
@@ -652,7 +797,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -665,7 +812,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -695,7 +843,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -708,7 +858,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -802,7 +954,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -815,7 +969,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -845,7 +1000,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -858,7 +1015,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -968,6 +1127,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   if (step === "enterAmount") {
+    const hasFee = calculateTransferFee() !== null
+    const showCurrencySwitcher = hasFee && exchangeRateData
+
     return (
       <div className="absolute inset-0 flex flex-col h-full p-4 md:pt-5">
         <div className="flex justify-between items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
@@ -1008,7 +1170,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={9}
                             height={9}
@@ -1020,7 +1183,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   ) : (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) }
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -1069,7 +1232,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={9}
                             height={9}
@@ -1082,7 +1247,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -1126,9 +1293,31 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
                 max={getSourceWalletBalance()}
               />
-              <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
-                {selectedCurrency || "USD"}
-              </span>
+              {showCurrencySwitcher ? (
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                  <ToggleGroup
+                    type="single"
+                    value={selectedAmountCurrency}
+                    onValueChange={(value) => {
+                      if (value) setSelectedAmountCurrency(value as "source" | "destination")
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="bg-white"
+                  >
+                    <ToggleGroupItem value="source" className="text-xs px-2 h-8">
+                      {sourceWalletData?.currency}
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="destination" className="text-xs px-2 h-8">
+                      {destinationWalletData?.currency}
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+              ) : (
+                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
+                  {selectedCurrency || "USD"}
+                </span>
+              )}
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
               <p className="text-red-500 text-sm mt-1">{getAmountErrorMessage()}</p>
@@ -1167,6 +1356,40 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                 100%
               </Button>
             </div>
+
+            {transferFeeCalculation && (
+              <div className="mt-6 space-y-2">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-grayscale-text-muted">Transfer amount</span>
+                  <span className="text-slate-1200">
+                    {formatAmountWithDecimals(transferFeeCalculation.transferAmount)}{" "}
+                    {selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-grayscale-text-muted">
+                    Transfer fee ({transferFeeCalculation.feePercentage}%)
+                  </span>
+                  <span className="text-slate-1200">
+                    {formatAmountWithDecimals(transferFeeCalculation.transferFee)} {sourceWalletData?.currency}
+                  </span>
+                </div>
+                <div className="flex justify-between items-start text-sm">
+                  <span className="text-grayscale-text-muted">You'll receive:</span>
+                  <div className="text-right">
+                    <div className="text-slate-1200 font-medium">
+                      {formatAmountWithDecimals(transferFeeCalculation.youllReceive)} {destinationWalletData?.currency}{" "}
+                      ({countdown}s)
+                    </div>
+                    <div className="text-grayscale-600 text-xs">
+                      {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                      {sourceWalletData?.currency}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="hidden md:block absolute top-full right-0 mt-6">
               <Button
                 onClick={handleTransferClick}
