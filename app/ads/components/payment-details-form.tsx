@@ -172,7 +172,7 @@ const FullPagePaymentSelection = ({
           <Button
             onClick={handleConfirm}
             disabled={localSelected.length === 0}
-            className="w-full rounded-lg"
+            className="w-full"
           >
             Confirm
           </Button>
