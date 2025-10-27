@@ -12,7 +12,7 @@ import {
   getCurrencies,
   fetchExchangeRate,
   walletExchangeTransfer,
-  fetchTransactionByReferenceId, // Added import for new API function
+  fetchTransactionByReferenceId,
 } from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
@@ -116,7 +116,7 @@ interface TransferFeeCalculation {
   feePercentage: number
 }
 
-type TransferStep = "chooseCurrency" | "enterAmount" | "success" | "unsuccessful" // Added "unsuccessful" step type
+type TransferStep = "chooseCurrency" | "enterAmount" | "success" | "unsuccessful"
 type WalletSelectorType = "from" | "to" | null
 type CurrencyToggleType = "source" | "destination"
 
@@ -137,7 +137,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
   const [requestId, setRequestId] = useState<string | null>(null)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
-  const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null) // Added state for error message
+  const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null)
 
   const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
   const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
@@ -158,7 +158,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
   }
   const toSuccess = () => setStep("success")
-  const toUnsuccessful = () => setStep("unsuccessful") // Added function to navigate to unsuccessful step
+  const toUnsuccessful = () => setStep("unsuccessful")
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
@@ -947,6 +947,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1001,6 +1002,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1016,6 +1018,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1173,6 +1176,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1227,6 +1231,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1242,6 +1247,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1525,6 +1531,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1540,6 +1547,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
