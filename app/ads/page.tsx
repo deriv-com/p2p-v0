@@ -150,12 +150,21 @@ export default function AdsPage() {
   }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
 
   const handleHideMyAds = async (value: boolean) => {
+    const previousValue = hiddenAdverts
+    setHiddenAdverts(value)
+
     try {
       await hideMyAds(value)
-      setHiddenAdverts(value)
     } catch (error) {
       console.error("Failed to hide/show ads:", error)
-      setHiddenAdverts(value)
+      setHiddenAdverts(previousValue)
+
+      showAlert({
+        title: `Unable to ${value ? "hide" : "show"} your ads`,
+        description: `Failed to ${value ? "hide" : "show"} your ads. Please try again.`,
+        confirmText: "OK",
+        type: "warning",
+      })
     }
   }
 
