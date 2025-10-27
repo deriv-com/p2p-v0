@@ -4,7 +4,6 @@ import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -25,6 +24,7 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import Link from "next/link"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -134,10 +134,6 @@ export default function OrdersPage() {
     }
   }
 
-  const navigateToOrderDetails = (orderId: string) => {
-    router.push(`/orders/${orderId}`)
-  }
-
   const handleCheckPreviousOrders = () => {
     setShowPreviousOrders(true)
   }
@@ -153,6 +149,10 @@ export default function OrdersPage() {
       month: "short",
       year: "numeric",
     })
+  }
+
+  const navigateToOrderDetails = (orderId: string) => {
+    router.push(`/orders/${orderId}`)
   }
 
   const handleRateClick = (e: React.MouseEvent, order: Order) => {
@@ -240,11 +240,8 @@ export default function OrdersPage() {
           </TableHeader>
           <TableBody className="lg:[&_tr:last-child]:border-1 grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white font-normal text-sm">
             {orders.map((order) => (
-              <TableRow
-                className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4 relative"
-                key={order.id}
-              >
-                <Link href={`/orders/${order.id}`} className="contents">
+              <Link key={order.id} href={`/orders/${order.id}`} className="contents">
+                <TableRow className="grid grid-cols-[2fr_1fr] border rounded-lg cursor-pointer gap-2 py-4">
                   {activeTab === "past" && (
                     <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                       {order.created_at ? formatDate(order.created_at) : ""}
@@ -271,7 +268,7 @@ export default function OrdersPage() {
                       <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                     </div>
                   </TableCell>
-                  <TableCell className="py-0 px-4 align-top row-start-1">
+                  <TableCell className="py-0 px-4align-top row-start-1">
                     <div
                       className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                     >
@@ -319,8 +316,8 @@ export default function OrdersPage() {
                       </div>
                     </div>
                   </TableCell>
-                </Link>
-              </TableRow>
+                </TableRow>
+              </Link>
             ))}
           </TableBody>
         </Table>
