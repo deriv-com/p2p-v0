@@ -127,7 +127,7 @@ const FullPagePaymentSelection = ({
           </div>
         </div>
         <div className="px-6 pb-4">
-          <p className="text-sm text-grayscale-text-muted">Select up to 3</p>
+          <p className="text-sm">Select up to 3</p>
         </div>
         <div className="flex-1 overflow-y-auto px-6 space-y-3">
           {filteredMethods.length === 0 ? (
