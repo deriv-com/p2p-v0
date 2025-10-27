@@ -45,6 +45,7 @@ const PaymentSelectionContent = ({
   hideAlert,
   setSelectedPaymentMethods,
   handleAddPaymentMethodClick,
+  showConfirmButton = true,
 }: {
   paymentMethods: (UserPaymentMethod | PaymentMethod)[]
   tempSelectedPaymentMethods: string[]
@@ -52,6 +53,7 @@ const PaymentSelectionContent = ({
   hideAlert: () => void
   setSelectedPaymentMethods: (methods: string[]) => void
   handleAddPaymentMethodClick?: () => void
+  showConfirmButton?: boolean
 }) => {
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
@@ -156,16 +158,18 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      <Button
-        className="w-full mt-12"
-        disabled={selectedPMs.length == 0}
-        onClick={() => {
-          setSelectedPaymentMethods(selectedPMs)
-          hideAlert()
-        }}
-      >
-        Confirm
-      </Button>
+      {showConfirmButton && (
+        <Button
+          className="w-full mt-12"
+          disabled={selectedPMs.length == 0}
+          onClick={() => {
+            setSelectedPaymentMethods(selectedPMs)
+            hideAlert()
+          }}
+        >
+          Confirm
+        </Button>
+      )}
     </div>
   )
 }
@@ -286,6 +290,11 @@ export default function PaymentDetailsForm({
     return `Selected (${selectedIds.length})`
   }
 
+  const handleInlineConfirm = () => {
+    // Validation is already handled by the button's disabled state
+    // The selected payment methods are already in the context
+  }
+
   useEffect(() => {
     const paymentMethodNames = selectedPaymentMethodIds
       .map((id) => {
@@ -314,17 +323,40 @@ export default function PaymentDetailsForm({
         <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1">
           <div className="max-w-[800px] mx-auto h-full flex flex-col">
             <div>
-              <div className="mb-6">
-                <Button
-                  variant="outline"
-                  className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent max-h-none h-[56px]"
-                  onClick={() => handleShowPaymentSelection(initialData.type === "buy")}
-                  type="button"
-                >
-                  <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
-                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
-                </Button>
-              </div>
+              {initialData.type === "buy" ? (
+                <div className="mb-6">
+                  <h3 className="text-base font-bold mb-4">Payment methods</h3>
+                  <PaymentSelectionContent
+                    paymentMethods={userPaymentMethods}
+                    tempSelectedPaymentMethods={selectedPaymentMethodIds}
+                    setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
+                    setSelectedPaymentMethods={setSelectedPaymentMethodIds}
+                    hideAlert={() => {}}
+                    handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+                    showConfirmButton={false}
+                  />
+                  <Button
+                    type="button"
+                    className="w-full mt-6"
+                    disabled={selectedPaymentMethodIds.length === 0}
+                    onClick={handleInlineConfirm}
+                  >
+                    Confirm
+                  </Button>
+                </div>
+              ) : (
+                <div className="mb-6">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent max-h-none h-[56px]"
+                    onClick={() => handleShowPaymentSelection()}
+                    type="button"
+                  >
+                    <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
+                    <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+                  </Button>
+                </div>
+              )}
 
               <div>
                 <Textarea
