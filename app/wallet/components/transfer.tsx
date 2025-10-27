@@ -302,8 +302,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     if (selectedAmountCurrency === "source") {
       // User entered amount in source currency
       const transferFee = amount * (fee / 100)
-      const youllReceiveConverted = amount * (1 - fee / 100)
-      const youllReceive = youllReceive * exchangeRate
+      const youllReceive = amount * (1 - fee / 100)
+      const youllReceiveConverted = youllReceive * exchangeRate
 
       calculation = {
         transferAmount: amount,
