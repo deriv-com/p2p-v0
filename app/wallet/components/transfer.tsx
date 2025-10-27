@@ -10,9 +10,9 @@ import {
   fetchWalletsList,
   walletTransfer,
   getCurrencies,
-  fetchTransactions,
   fetchExchangeRate,
-  walletExchangeTransfer, // Added import for new exchange transfer API
+  walletExchangeTransfer,
+  fetchTransactionByReferenceId, // Added import for new API function
 } from "@/services/api/api-wallets"
 import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
@@ -135,6 +135,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   const [destinationWalletData, setDestinationWalletData] = useState<WalletData | null>(null)
 
   const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
+  const [requestId, setRequestId] = useState<string | null>(null)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
   const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
@@ -451,7 +452,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     }
 
     try {
-      const requestId = crypto.randomUUID()
+      const generatedRequestId = crypto.randomUUID()
+      setRequestId(generatedRequestId)
 
       const isSameWallet = sourceWalletData.id === destinationWalletData.id
 
@@ -467,7 +469,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
           amount: transferAmount,
           source_currency: sourceWalletData.currency,
           destination_wallet_id: destinationWalletData.id,
-          request_id: requestId,
+          request_id: generatedRequestId,
           source_wallet_id: sourceWalletData.id,
           destination_currency: destinationWalletData.currency,
           rate_token: exchangeRateData.rate_token,
@@ -480,7 +482,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
           amount: transferAmount,
           currency: selectedCurrency || "USD",
           destination_wallet_id: destinationWalletData.id,
-          request_id: requestId,
+          request_id: generatedRequestId,
           source_wallet_id: sourceWalletData.id,
         }
 
@@ -503,24 +505,20 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const handleViewDetails = async () => {
-    if (!externalReferenceId) {
-      console.error("No external reference ID available")
+    if (!requestId) {
+      console.error("No request ID available")
       return
     }
 
     try {
-      const response = await fetchTransactions()
+      const response = await fetchTransactionByReferenceId(requestId)
 
-      if (response?.data?.transactions) {
-        const matchingTransaction = response.data.transactions.find(
-          (transaction: Transaction) => transaction.metadata.external_reference_id === externalReferenceId,
-        )
-
-        if (matchingTransaction) {
-          setSelectedTransaction(matchingTransaction)
-        } else {
-          console.error("Transaction not found with external_reference_id:", externalReferenceId)
-        }
+      if (response?.data?.transactions && response.data.transactions.length > 0) {
+        // Get the first transaction from the response
+        const transaction = response.data.transactions[0]
+        setSelectedTransaction(transaction)
+      } else {
+        console.error("Transaction not found with reference_id:", requestId)
       }
     } catch (error) {
       console.error("Error fetching transaction details:", error)
@@ -539,6 +537,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     setDestinationWalletData(null)
     setSelectedCurrency(null)
     setExternalReferenceId(null)
+    setRequestId(null)
 
     onClose()
   }
@@ -862,6 +861,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -910,6 +910,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -925,6 +926,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg"
@@ -1057,6 +1059,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1105,6 +1108,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1120,6 +1124,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg"
@@ -1378,6 +1383,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1393,6 +1399,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||

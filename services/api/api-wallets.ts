@@ -222,3 +222,22 @@ export async function walletExchangeTransfer(params: {
     return null
   }
 }
+
+export async function fetchTransactionByReferenceId(referenceId: string): Promise<any> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?reference_id=${referenceId}`
+    const headers = getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
+      credentials: "include",
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error fetching transaction by reference ID:", error)
+    return null
+  }
+}
