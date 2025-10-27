@@ -140,6 +140,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
   const [countdown, setCountdown] = useState<number>(30)
   const [transferFeeCalculation, setTransferFeeCalculation] = useState<TransferFeeCalculation | null>(null)
+  const [showCurrencySwitcher, setShowCurrencySwitcher] = useState(false)
   const countdownIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   const toEnterAmount = () => setStep("enterAmount")
@@ -375,7 +376,31 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     } catch (error) {
       console.error("Error fetching exchange rate:", error)
     }
-  }, [sourceWalletData, destinationWalletData])
+  }, [sourceWalletData, destinationWalletData, calculateTransferFee])
+
+  useEffect(() => {
+    if (!sourceWalletData || !destinationWalletData || !currenciesData) {
+      setShowCurrencySwitcher(false)
+      setExchangeRateData(null)
+      return
+    }
+
+    // Check if there's a transfer fee
+    const hasFee = calculateTransferFee() !== null
+
+    if (hasFee) {
+      // Fetch exchange rate if fee exists
+      fetchAndSetExchangeRate()
+    } else {
+      setShowCurrencySwitcher(false)
+      setExchangeRateData(null)
+    }
+  }, [sourceWalletData, destinationWalletData, currenciesData, calculateTransferFee, fetchAndSetExchangeRate])
+
+  useEffect(() => {
+    const hasFee = calculateTransferFee() !== null
+    setShowCurrencySwitcher(hasFee && exchangeRateData !== null)
+  }, [exchangeRateData, calculateTransferFee])
 
   useEffect(() => {
     const calculation = calculateTransferFeeWithExchangeRate()
@@ -488,20 +513,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
 
     setShowMobileSheet(null)
     setShowDesktopWalletPopup(null)
-
-    setTimeout(() => {
-      fetchAndSetExchangeRate()
-    }, 100)
   }
 
   const handleInterchange = () => {
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
-
-    setTimeout(() => {
-      fetchAndSetExchangeRate()
-    }, 100)
   }
 
   const formatBalance = (amount: string): string => {
@@ -798,6 +815,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -844,6 +862,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -859,6 +878,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -955,6 +975,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1001,6 +1022,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1016,6 +1038,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1127,9 +1150,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   if (step === "enterAmount") {
-    const hasFee = calculateTransferFee() !== null
-    const showCurrencySwitcher = hasFee && exchangeRateData
-
     return (
       <div className="absolute inset-0 flex flex-col h-full p-4 md:pt-5">
         <div className="flex justify-between items-center mb-6 md:max-w-[608px] md:mx-auto md:w-full">
@@ -1233,6 +1253,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1248,6 +1269,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
