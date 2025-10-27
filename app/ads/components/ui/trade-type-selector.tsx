@@ -16,10 +16,10 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
         onValueChange={(type) => !isEditMode && onChange(type)}
       >
         <TabsList className="w-full md:min-w-[270px]">
-          <TabsTrigger className="w-full data-[state=active]:font-bold" value="buy">
+          <TabsTrigger className="w-full" value="buy">
             I want to buy
           </TabsTrigger>
-          <TabsTrigger className="w-full data-[state=active]:font-bold" value="sell">
+          <TabsTrigger className="w-full s" value="sell">
             I want to sell
           </TabsTrigger>
         </TabsList>
