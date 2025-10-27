@@ -116,7 +116,7 @@ interface TransferFeeCalculation {
   feePercentage: number
 }
 
-type TransferStep = "chooseCurrency" | "enterAmount" | "success"
+type TransferStep = "chooseCurrency" | "enterAmount" | "success" | "unsuccessful" // Added "unsuccessful" step type
 type WalletSelectorType = "from" | "to" | null
 type CurrencyToggleType = "source" | "destination"
 
@@ -137,6 +137,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
   const [requestId, setRequestId] = useState<string | null>(null)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+  const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null) // Added state for error message
 
   const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
   const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
@@ -154,6 +155,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     }
   }
   const toSuccess = () => setStep("success")
+  const toUnsuccessful = () => setStep("unsuccessful") // Added function to navigate to unsuccessful step
   const goBack = () => {
     if (step === "enterAmount") setStep("chooseCurrency")
     else if (step === "chooseCurrency") onClose()
@@ -489,7 +491,15 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
         result = await walletTransfer(transferParams)
       }
 
-      if (!result?.data?.errors || result.data.errors.length === 0) {
+      if (result?.errors && result.errors.length > 0) {
+        // Error case: extract message from first error
+        const errorMessage = result.errors[0]?.message || "An error occurred during the transfer."
+        setTransferErrorMessage(errorMessage)
+        setShowDesktopConfirmPopup(false)
+        setShowMobileConfirmSheet(false)
+        toUnsuccessful()
+      } else if (!result?.data?.errors || result.data.errors.length === 0) {
+        // Success case
         if (result?.data?.external_reference_id) {
           setExternalReferenceId(result.data.external_reference_id)
         }
@@ -497,10 +507,19 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
         setShowMobileConfirmSheet(false)
         toSuccess()
       } else {
-        console.error("Transfer failed with errors:", result.data.errors)
+        // Fallback error case
+        const errorMessage = result.data.errors[0]?.message || "An error occurred during the transfer."
+        setTransferErrorMessage(errorMessage)
+        setShowDesktopConfirmPopup(false)
+        setShowMobileConfirmSheet(false)
+        toUnsuccessful()
       }
     } catch (error) {
       console.error("Error during transfer:", error)
+      setTransferErrorMessage("An unexpected error occurred. Please try again.")
+      setShowDesktopConfirmPopup(false)
+      setShowMobileConfirmSheet(false)
+      toUnsuccessful()
     }
   }
 
@@ -862,6 +881,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -911,6 +931,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -926,6 +947,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1060,6 +1082,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1109,6 +1132,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1124,6 +1148,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1384,6 +1409,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1399,6 +1425,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
@@ -1656,6 +1683,53 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
           <TransactionDetails transaction={selectedTransaction} onClose={handleCloseTransactionDetails} />
         )}
       </>
+    )
+  }
+
+  if (step === "unsuccessful") {
+    const transferText = `We couldn't process your transfer. Please try again. ${transferErrorMessage || ""}`
+
+    return (
+      <div
+        className="absolute inset-0 flex flex-col h-full p-6"
+        style={{
+          background:
+            "radial-gradient(108.21% 50% at 52.05% 0%, rgba(255, 68, 79, 0.24) 0%, rgba(255, 68, 79, 0.00) 100%), #181C25",
+        }}
+      >
+        <div className="flex-1 flex flex-col items-center justify-center text-center">
+          <div className="mb-6">
+            <Image src="/icons/success-transfer.png" alt="Unsuccessful" width={256} height={256} />
+          </div>
+          <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer unsuccessful</h1>
+          <p className="text-white text-center text-base font-normal">{transferText}</p>
+          <div className="hidden md:flex gap-4 mt-6">
+            <Button
+              onClick={handleDoneClick}
+              className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+            >
+              Not now
+            </Button>
+            <Button onClick={toEnterAmount} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
+              Try again
+            </Button>
+          </div>
+        </div>
+        <div className="block md:hidden w-full space-y-3">
+          <Button
+            onClick={toEnterAmount}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+          >
+            Try again
+          </Button>
+          <Button
+            onClick={handleDoneClick}
+            className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
+          >
+            Not now
+          </Button>
+        </div>
+      </div>
     )
   }
 
