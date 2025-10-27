@@ -190,3 +190,35 @@ export async function fetchExchangeRate(params: {
     return null
   }
 }
+
+export async function walletExchangeTransfer(params: {
+  amount: string
+  source_currency: string
+  destination_wallet_id: string
+  request_id: string
+  source_wallet_id: string
+  destination_currency: string
+  rate_token: string
+  exchange_rate: string
+}): Promise<any> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transfers/exchange`
+    const headers = getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        ...headers,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(params),
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error in exchange transfer:", error)
+    return null
+  }
+}
