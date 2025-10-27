@@ -51,7 +51,6 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
-  const [openingOrderId, setOpeningOrderId] = useState<string | null>(null)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
@@ -135,7 +134,6 @@ export default function OrdersPage() {
   }
 
   const navigateToOrderDetails = (orderId: string) => {
-    setOpeningOrderId(orderId)
     router.push(`/orders/${orderId}`)
   }
 
@@ -246,11 +244,6 @@ export default function OrdersPage() {
                 key={order.id}
                 onClick={() => navigateToOrderDetails(order.id)}
               >
-                {openingOrderId === order.id && (
-                  <div className="absolute inset-0 bg-white/80 rounded-lg flex items-center justify-center z-10">
-                    <div className="inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-                  </div>
-                )}
                 {activeTab === "past" && (
                   <TableCell className="py-0 px-4 align-top text-slate-600 text-xs row-start-4 col-span-full">
                     {order.created_at ? formatDate(order.created_at) : ""}
