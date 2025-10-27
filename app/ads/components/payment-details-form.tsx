@@ -168,12 +168,12 @@ const FullPagePaymentSelection = ({
           )}
         </div>
 
-        <div className="p-6 pt-4">
+        <div className="p-6 pt-4 self-end">
           <Button
             onClick={handleConfirm}
             disabled={localSelected.length === 0}
             className="w-full"
-            variant=""
+            variant="primary"
           >
             Confirm
           </Button>
