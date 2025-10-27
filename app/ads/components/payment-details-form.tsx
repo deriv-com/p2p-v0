@@ -101,16 +101,13 @@ const FullPagePaymentSelection = ({
 
   return (
     <div className="fixed inset-0 z-50 bg-white">
-      <div className="h-full flex flex-col max-w-[800px] mx-auto">
-        {/* Header with close button */}
+      <div className="max-w-xl mx-auto flex flex-col w-full h-full">
         <div className="flex items-center justify-between p-6 pb-4">
           <h2 className="text-2xl font-bold">Payment method</h2>
           <Button onClick={onClose} variant="ghost" size="sm" className="p-0 hover:bg-transparent">
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
-
-        {/* Search input */}
         <div className="px-6 pb-4">
           <div className="relative">
             <Image
@@ -129,13 +126,9 @@ const FullPagePaymentSelection = ({
             />
           </div>
         </div>
-
-        {/* Select up to 3 text */}
         <div className="px-6 pb-4">
           <p className="text-sm text-grayscale-text-muted">Select up to 3</p>
         </div>
-
-        {/* Payment methods list */}
         <div className="flex-1 overflow-y-auto px-6 space-y-3">
           {filteredMethods.length === 0 ? (
             <div className="text-center py-8">
