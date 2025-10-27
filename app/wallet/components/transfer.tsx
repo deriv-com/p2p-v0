@@ -244,48 +244,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     loadWallets()
   }, [selectedCurrency, currenciesData])
 
-  const checkIfFeeExists = useCallback((): boolean => {
-    console.log("[v0] checkIfFeeExists called", {
-      hasCurrenciesData: !!currenciesData,
-      hasSourceWallet: !!sourceWalletData,
-      hasDestinationWallet: !!destinationWalletData,
-      sourceCurrency: sourceWalletData?.currency,
-      destinationCurrency: destinationWalletData?.currency,
-    })
-
-    if (!currenciesData || !sourceWalletData || !destinationWalletData) {
-      console.log("[v0] checkIfFeeExists: Missing required data")
-      return false
-    }
-
-    if (sourceWalletData.currency === destinationWalletData.currency) {
-      console.log("[v0] checkIfFeeExists: Same currency, no fee")
-      return false
-    }
-
-    const sourceCurrencyData = currenciesData.data[sourceWalletData.currency]
-    const destinationCurrencyData = currenciesData.data[destinationWalletData.currency]
-
-    if (!sourceCurrencyData || !destinationCurrencyData) {
-      console.log("[v0] checkIfFeeExists: Missing currency data")
-      return false
-    }
-
-    const sourceType = sourceCurrencyData.type
-    let feePercentage = 0
-
-    if (sourceType === "cryptocurrency") {
-      feePercentage = destinationCurrencyData.fee.transfer.crypto_percentage
-    } else if (sourceType === "fiat") {
-      feePercentage = destinationCurrencyData.fee.transfer.fiat_percentage
-    } else if (sourceType === "stablecoin") {
-      feePercentage = destinationCurrencyData.fee.transfer.stablecoin_percentage
-    }
-
-    console.log("[v0] checkIfFeeExists: Fee percentage", feePercentage)
-    return feePercentage > 0
-  }, [currenciesData, sourceWalletData, destinationWalletData])
-
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
       return null
@@ -376,40 +334,23 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   ])
 
   const fetchAndSetExchangeRate = useCallback(async () => {
-    console.log("[v0] fetchAndSetExchangeRate called", {
-      hasSourceWallet: !!sourceWalletData,
-      hasDestinationWallet: !!destinationWalletData,
-      sourceCurrency: sourceWalletData?.currency,
-      destinationCurrency: destinationWalletData?.currency,
-    })
-
-    if (!sourceWalletData || !destinationWalletData) {
-      console.log("[v0] fetchAndSetExchangeRate: Missing wallet data")
-      return
-    }
-
+    if (!sourceWalletData || !destinationWalletData) return
     if (sourceWalletData.currency === destinationWalletData.currency) {
-      console.log("[v0] fetchAndSetExchangeRate: Same currency")
       setExchangeRateData(null)
       return
     }
 
-    const feeExists = checkIfFeeExists()
-    console.log("[v0] fetchAndSetExchangeRate: Fee exists?", feeExists)
-
-    if (!feeExists) {
+    const feeInfo = calculateTransferFee()
+    if (!feeInfo) {
       setExchangeRateData(null)
       return
     }
 
     try {
-      console.log("[v0] fetchAndSetExchangeRate: Calling API")
       const response = await fetchExchangeRate({
         source_currency: sourceWalletData.currency,
         destination_currency: destinationWalletData.currency,
       })
-
-      console.log("[v0] fetchAndSetExchangeRate: API response", response)
 
       if (response?.data) {
         setExchangeRateData(response.data)
@@ -433,43 +374,57 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
         }, 1000)
       }
     } catch (error) {
-      console.error("[v0] Error fetching exchange rate:", error)
+      console.error("Error fetching exchange rate:", error)
     }
-  }, [sourceWalletData, destinationWalletData, checkIfFeeExists])
+  }, [sourceWalletData, destinationWalletData, calculateTransferFee])
 
   useEffect(() => {
-    console.log("[v0] Wallet change useEffect triggered", {
-      hasSourceWallet: !!sourceWalletData,
-      hasDestinationWallet: !!destinationWalletData,
-      hasCurrenciesData: !!currenciesData,
-    })
-
     if (!sourceWalletData || !destinationWalletData || !currenciesData) {
-      console.log("[v0] Wallet change useEffect: Missing data, resetting state")
       setShowCurrencySwitcher(false)
       setExchangeRateData(null)
       return
     }
 
-    // Check if there's a transfer fee
-    const hasFee = checkIfFeeExists()
-    console.log("[v0] Wallet change useEffect: Has fee?", hasFee)
+    const sourceCurrencyData = currenciesData.data[sourceWalletData.currency]
+    const destinationCurrencyData = currenciesData.data[destinationWalletData.currency]
+
+    if (!sourceCurrencyData || !destinationCurrencyData) {
+      setShowCurrencySwitcher(false)
+      setExchangeRateData(null)
+      return
+    }
+
+    // Check if currencies are different
+    if (sourceWalletData.currency === destinationWalletData.currency) {
+      setShowCurrencySwitcher(false)
+      setExchangeRateData(null)
+      return
+    }
+
+    const sourceType = sourceCurrencyData.type
+    let feePercentage = 0
+
+    if (sourceType === "cryptocurrency") {
+      feePercentage = destinationCurrencyData.fee.transfer.crypto_percentage
+    } else if (sourceType === "fiat") {
+      feePercentage = destinationCurrencyData.fee.transfer.fiat_percentage
+    } else if (sourceType === "stablecoin") {
+      feePercentage = destinationCurrencyData.fee.transfer.stablecoin_percentage
+    }
+
+    const hasFee = feePercentage > 0
 
     if (hasFee) {
+      setShowCurrencySwitcher(true)
       // Fetch exchange rate if fee exists
-      console.log("[v0] Wallet change useEffect: Fetching exchange rate")
       fetchAndSetExchangeRate()
     } else {
-      console.log("[v0] Wallet change useEffect: No fee, resetting state")
       setShowCurrencySwitcher(false)
       setExchangeRateData(null)
     }
-  }, [sourceWalletData, destinationWalletData, currenciesData, checkIfFeeExists, fetchAndSetExchangeRate])
+  }, [sourceWalletData, destinationWalletData, currenciesData, fetchAndSetExchangeRate])
 
-  useEffect(() => {
-    const hasFee = calculateTransferFee() !== null
-    setShowCurrencySwitcher(hasFee && exchangeRateData !== null)
-  }, [exchangeRateData, calculateTransferFee])
+  // This was causing the toggle to disappear when amount was not entered
 
   useEffect(() => {
     const calculation = calculateTransferFeeWithExchangeRate()
@@ -564,8 +519,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const handleWalletSelect = (wallet: ProcessedWallet, type: WalletSelectorType) => {
-    console.log("[v0] handleWalletSelect called", { type, wallet: wallet.name, currency: wallet.currency })
-
     if (type === "from") {
       setSourceWalletData({
         id: wallet.wallet_id,
@@ -587,7 +540,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   }
 
   const handleInterchange = () => {
-    console.log("[v0] handleInterchange called")
     const tempSource = sourceWalletData
     setSourceWalletData(destinationWalletData)
     setDestinationWalletData(tempSource)
@@ -1459,34 +1411,40 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
               </Button>
             </div>
 
-            {transferFeeCalculation && (
+            {showCurrencySwitcher && (
               <div className="mt-6 space-y-2">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-grayscale-text-muted">Transfer amount</span>
-                  <span className="text-slate-1200">
-                    {formatAmountWithDecimals(transferFeeCalculation.transferAmount)}{" "}
-                    {selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}
+                <div className="flex justify-between items-center">
+                  <span className="text-black/50 text-xs font-normal">Transfer amount</span>
+                  <span className="text-[#181C25] text-xs font-normal">
+                    {transferFeeCalculation
+                      ? `${formatAmountWithDecimals(transferFeeCalculation.transferAmount)} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
+                      : "-"}
                   </span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-grayscale-text-muted">
-                    Transfer fee ({transferFeeCalculation.feePercentage}%)
+                <div className="flex justify-between items-center">
+                  <span className="text-black/50 text-xs font-normal">
+                    Transfer fee ({transferFeeCalculation?.feePercentage || 0}%)
                   </span>
-                  <span className="text-slate-1200">
-                    {formatAmountWithDecimals(transferFeeCalculation.transferFee)} {sourceWalletData?.currency}
+                  <span className="text-[#181C25] text-xs font-normal">
+                    {transferFeeCalculation
+                      ? `${formatAmountWithDecimals(transferFeeCalculation.transferFee)} ${sourceWalletData?.currency}`
+                      : "-"}
                   </span>
                 </div>
-                <div className="flex justify-between items-start text-sm">
-                  <span className="text-grayscale-text-muted">You'll receive:</span>
+                <div className="flex justify-between items-start">
+                  <span className="text-black/50 text-xs font-normal">You'll receive:</span>
                   <div className="text-right">
-                    <div className="text-slate-1200 font-medium">
-                      {formatAmountWithDecimals(transferFeeCalculation.youllReceive)} {destinationWalletData?.currency}{" "}
-                      ({countdown}s)
+                    <div className="text-[#181C25] text-xs font-normal">
+                      {transferFeeCalculation && exchangeRateData
+                        ? `${formatAmountWithDecimals(transferFeeCalculation.youllReceive)} ${destinationWalletData?.currency} (${countdown}s)`
+                        : "-"}
                     </div>
-                    <div className="text-grayscale-600 text-xs">
-                      {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
-                      {sourceWalletData?.currency}
-                    </div>
+                    {transferFeeCalculation && (
+                      <div className="text-black/50 text-xs font-normal mt-1">
+                        {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                        {sourceWalletData?.currency}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
