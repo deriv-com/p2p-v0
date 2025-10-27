@@ -8,6 +8,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
 import { getCategoryDisplayName, formatPaymentMethodName, maskAccountNumber } from "@/lib/utils"
 import { ProfileAPI } from "@/services/api"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
@@ -38,6 +39,147 @@ interface PaymentDetailsFormProps {
   onRefetchPaymentMethods: () => Promise<void>
 }
 
+const FullPagePaymentSelection = ({
+  isOpen,
+  onClose,
+  paymentMethods,
+  selectedPaymentMethods,
+  onConfirm,
+  onAddPaymentMethod,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  paymentMethods: (UserPaymentMethod | PaymentMethod)[]
+  selectedPaymentMethods: string[]
+  onConfirm: (methods: string[]) => void
+  onAddPaymentMethod: () => void
+}) => {
+  const [localSelected, setLocalSelected] = useState<string[]>(selectedPaymentMethods)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  useEffect(() => {
+    if (isOpen) {
+      setLocalSelected(selectedPaymentMethods)
+      setSearchQuery("")
+    }
+  }, [isOpen, selectedPaymentMethods])
+
+  const getMethodId = (method: UserPaymentMethod | PaymentMethod) => {
+    return "id" in method ? method.id : method.method
+  }
+
+  const filteredMethods = paymentMethods.filter((method) => {
+    const displayName = method.display_name.toLowerCase()
+    const query = searchQuery.toLowerCase()
+    return displayName.includes(query)
+  })
+
+  const handleToggle = (methodId: string) => {
+    setLocalSelected((prev) => {
+      if (prev.includes(methodId)) {
+        return prev.filter((id) => id !== methodId)
+      } else if (prev.length < 3) {
+        return [...prev, methodId]
+      }
+      return prev
+    })
+  }
+
+  const handleConfirm = () => {
+    onConfirm(localSelected)
+    onClose()
+  }
+
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 z-50 bg-white">
+      <div className="h-full flex flex-col max-w-[800px] mx-auto">
+        {/* Header with close button */}
+        <div className="flex items-center justify-between p-6 pb-4">
+          <h2 className="text-2xl font-bold">Payment method</h2>
+          <Button onClick={onClose} variant="ghost" size="sm" className="p-0 hover:bg-transparent">
+            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+          </Button>
+        </div>
+
+        {/* Search input */}
+        <div className="px-6 pb-4">
+          <div className="relative">
+            <Image
+              src="/icons/search-icon-custom.png"
+              alt="Search"
+              width={20}
+              height={20}
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
+            />
+            <Input
+              type="text"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 h-12 bg-grayscale-500 border-grayscale-500 focus-visible:ring-0 focus-visible:ring-offset-0"
+            />
+          </div>
+        </div>
+
+        {/* Select up to 3 text */}
+        <div className="px-6 pb-4">
+          <p className="text-sm text-grayscale-text-muted">Select up to 3</p>
+        </div>
+
+        {/* Payment methods list */}
+        <div className="flex-1 overflow-y-auto px-6 space-y-3">
+          {filteredMethods.length === 0 ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600">No payment methods found</p>
+            </div>
+          ) : (
+            filteredMethods.map((method) => {
+              const methodId = getMethodId(method)
+              const isSelected = localSelected.includes(methodId)
+              const isDisabled = !isSelected && localSelected.length >= 3
+
+              return (
+                <div
+                  key={methodId}
+                  className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors ${
+                    isDisabled ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={() => !isDisabled && handleToggle(methodId)}
+                >
+                  <div className="flex items-center gap-3">
+                    <div
+                      className={`h-2 w-2 rounded-full ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
+                    />
+                    <span className="text-base text-slate-1200">{method.display_name}</span>
+                  </div>
+                  <Checkbox
+                    checked={isSelected}
+                    disabled={isDisabled}
+                    className="border-2 border-grayscale-300 data-[state=checked]:bg-black data-[state=checked]:border-black w-5 h-5 rounded-sm"
+                  />
+                </div>
+              )
+            })
+          )}
+        </div>
+
+        {/* Confirm button */}
+        <div className="p-6 pt-4">
+          <Button
+            onClick={handleConfirm}
+            disabled={localSelected.length === 0}
+            className="w-full h-12 bg-coral-500 hover:bg-coral-600 text-white rounded-lg disabled:bg-coral-300 disabled:opacity-50"
+          >
+            Confirm
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const PaymentSelectionContent = ({
   paymentMethods,
   tempSelectedPaymentMethods,
@@ -45,7 +187,6 @@ const PaymentSelectionContent = ({
   hideAlert,
   setSelectedPaymentMethods,
   handleAddPaymentMethodClick,
-  showConfirmButton = true,
 }: {
   paymentMethods: (UserPaymentMethod | PaymentMethod)[]
   tempSelectedPaymentMethods: string[]
@@ -53,7 +194,6 @@ const PaymentSelectionContent = ({
   hideAlert: () => void
   setSelectedPaymentMethods: (methods: string[]) => void
   handleAddPaymentMethodClick?: () => void
-  showConfirmButton?: boolean
 }) => {
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
@@ -158,18 +298,16 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      {showConfirmButton && (
-        <Button
-          className="w-full mt-12"
-          disabled={selectedPMs.length == 0}
-          onClick={() => {
-            setSelectedPaymentMethods(selectedPMs)
-            hideAlert()
-          }}
-        >
-          Confirm
-        </Button>
-      )}
+      <Button
+        className="w-full mt-12"
+        disabled={selectedPMs.length == 0}
+        onClick={() => {
+          setSelectedPaymentMethods(selectedPMs)
+          hideAlert()
+        }}
+      >
+        Confirm
+      </Button>
     </div>
   )
 }
@@ -188,6 +326,7 @@ export default function PaymentDetailsForm({
   const [tempSelectedPaymentMethods, setTempSelectedPaymentMethods] = useState<string[]>([])
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const [isAddingPaymentMethod, setIsAddingPaymentMethod] = useState(false)
+  const [showFullPageModal, setShowFullPageModal] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
 
@@ -225,19 +364,23 @@ export default function PaymentDetailsForm({
   }
 
   const handleShowPaymentSelection = () => {
-    showAlert({
-      title: "Payment method",
-      description: (
-        <PaymentSelectionContent
-          paymentMethods={userPaymentMethods}
-          tempSelectedPaymentMethods={selectedPaymentMethodIds}
-          setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
-          setSelectedPaymentMethods={setSelectedPaymentMethodIds}
-          hideAlert={hideAlert}
-          handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-        />
-      ),
-    })
+    if (initialData.type === "buy") {
+      setShowFullPageModal(true)
+    } else {
+      showAlert({
+        title: "Payment method",
+        description: (
+          <PaymentSelectionContent
+            paymentMethods={userPaymentMethods}
+            tempSelectedPaymentMethods={selectedPaymentMethodIds}
+            setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
+            setSelectedPaymentMethods={setSelectedPaymentMethodIds}
+            hideAlert={hideAlert}
+            handleAddPaymentMethodClick={handleAddPaymentMethodClick}
+          />
+        ),
+      })
+    }
   }
 
   const handleAddPaymentMethodClick = () => {
@@ -290,11 +433,6 @@ export default function PaymentDetailsForm({
     return `Selected (${selectedIds.length})`
   }
 
-  const handleInlineConfirm = () => {
-    // Validation is already handled by the button's disabled state
-    // The selected payment methods are already in the context
-  }
-
   useEffect(() => {
     const paymentMethodNames = selectedPaymentMethodIds
       .map((id) => {
@@ -323,40 +461,17 @@ export default function PaymentDetailsForm({
         <form id="payment-details-form" onSubmit={handleSubmit} className="flex-1">
           <div className="max-w-[800px] mx-auto h-full flex flex-col">
             <div>
-              {initialData.type === "buy" ? (
-                <div className="mb-6">
-                  <h3 className="text-base font-bold mb-4">Payment methods</h3>
-                  <PaymentSelectionContent
-                    paymentMethods={userPaymentMethods}
-                    tempSelectedPaymentMethods={selectedPaymentMethodIds}
-                    setTempSelectedPaymentMethods={setSelectedPaymentMethodIds}
-                    setSelectedPaymentMethods={setSelectedPaymentMethodIds}
-                    hideAlert={() => {}}
-                    handleAddPaymentMethodClick={handleAddPaymentMethodClick}
-                    showConfirmButton={false}
-                  />
-                  <Button
-                    type="button"
-                    className="w-full mt-6"
-                    disabled={selectedPaymentMethodIds.length === 0}
-                    onClick={handleInlineConfirm}
-                  >
-                    Confirm
-                  </Button>
-                </div>
-              ) : (
-                <div className="mb-6">
-                  <Button
-                    variant="outline"
-                    className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent max-h-none h-[56px]"
-                    onClick={() => handleShowPaymentSelection()}
-                    type="button"
-                  >
-                    <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
-                    <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
-                  </Button>
-                </div>
-              )}
+              <div className="mb-6">
+                <Button
+                  variant="outline"
+                  className="w-full justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent max-h-none h-[56px]"
+                  onClick={() => handleShowPaymentSelection()}
+                  type="button"
+                >
+                  <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
+                  <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
+                </Button>
+              </div>
 
               <div>
                 <Textarea
@@ -378,6 +493,15 @@ export default function PaymentDetailsForm({
           </div>
         </form>
       </div>
+
+      <FullPagePaymentSelection
+        isOpen={showFullPageModal}
+        onClose={() => setShowFullPageModal(false)}
+        paymentMethods={userPaymentMethods}
+        selectedPaymentMethods={selectedPaymentMethodIds}
+        onConfirm={(methods) => setSelectedPaymentMethodIds(methods)}
+        onAddPaymentMethod={handleAddPaymentMethodClick}
+      />
 
       {showAddPaymentPanel && (
         <AddPaymentMethodPanel
