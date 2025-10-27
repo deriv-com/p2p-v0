@@ -589,11 +589,20 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
     setDestinationWalletData(tempSource)
   }
 
-  const formatBalance = (amount: string): string => {
-    const num = Number.parseFloat(amount)
-    if (isNaN(num)) return "0.00"
-    return formatAmountWithDecimals(num)
-  }
+  const formatAmountByCurrency = useCallback(
+    (amount: number | string, currencyCode: string): string => {
+      if (!currenciesData) return formatAmountWithDecimals(amount)
+
+      const currencyData = currenciesData.data[currencyCode]
+      if (!currencyData?.decimal?.maximum) return formatAmountWithDecimals(amount)
+
+      const numAmount = typeof amount === "string" ? Number.parseFloat(amount) : amount
+      if (isNaN(numAmount)) return "0.00"
+
+      return numAmount.toFixed(currencyData.decimal.maximum)
+    },
+    [currenciesData],
+  )
 
   const getSourceWalletBalance = (): number => {
     const wallet = wallets.find((w) => w.wallet_id === sourceWalletData?.id)
@@ -884,6 +893,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -935,6 +945,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -950,6 +961,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -976,7 +988,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <div className="flex items-center justify-between w-full">
                       <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                       <span className="text-base font-normal text-slate-1200">
-                        {formatAmountWithDecimals(transferFeeCalculation.transferAmount)}{" "}
+                        {formatAmountByCurrency(
+                          transferFeeCalculation.transferAmount,
+                          selectedAmountCurrency === "source"
+                            ? sourceWalletData?.currency || ""
+                            : destinationWalletData?.currency || "",
+                        )}{" "}
                         {selectedAmountCurrency === "source"
                           ? sourceWalletData?.currency
                           : destinationWalletData?.currency}
@@ -987,7 +1004,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         Transfer fee ({transferFeeCalculation.feePercentage}%)
                       </span>
                       <span className="text-base font-normal text-slate-1200">
-                        {formatAmountWithDecimals(transferFeeCalculation.transferFee)} {sourceWalletData?.currency}
+                        {formatAmountByCurrency(transferFeeCalculation.transferFee, sourceWalletData?.currency || "")}{" "}
+                        {sourceWalletData?.currency}
                       </span>
                     </div>
                   </div>
@@ -997,11 +1015,18 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <span className="text-base font-normal text-grayscale-text-muted">You'll receive</span>
                       <div className="text-right">
                         <div className="text-base font-normal text-slate-1200">
-                          ≈{formatAmountWithDecimals(transferFeeCalculation.youllReceive)}{" "}
+                          ≈
+                          {formatAmountByCurrency(
+                            transferFeeCalculation.youllReceive,
+                            destinationWalletData?.currency || "",
+                          )}{" "}
                           {destinationWalletData?.currency} ({countdown}s)
                         </div>
                         <div className="text-base font-normal text-grayscale-text-muted mt-1">
-                          {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                          {formatAmountByCurrency(
+                            transferFeeCalculation.youllReceiveConverted,
+                            sourceWalletData?.currency || "",
+                          )}{" "}
                           {sourceWalletData?.currency}
                         </div>
                       </div>
@@ -1088,6 +1113,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1139,6 +1165,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1154,6 +1181,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
@@ -1180,7 +1208,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     <div className="flex items-center justify-between w-full">
                       <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
                       <span className="text-base font-normal text-slate-1200">
-                        {formatAmountWithDecimals(transferFeeCalculation.transferAmount)}{" "}
+                        {formatAmountByCurrency(
+                          transferFeeCalculation.transferAmount,
+                          selectedAmountCurrency === "source"
+                            ? sourceWalletData?.currency || ""
+                            : destinationWalletData?.currency || "",
+                        )}{" "}
                         {selectedAmountCurrency === "source"
                           ? sourceWalletData?.currency
                           : destinationWalletData?.currency}
@@ -1191,7 +1224,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                         Transfer fee ({transferFeeCalculation.feePercentage}%)
                       </span>
                       <span className="text-base font-normal text-slate-1200">
-                        {formatAmountWithDecimals(transferFeeCalculation.transferFee)} {sourceWalletData?.currency}
+                        {formatAmountByCurrency(transferFeeCalculation.transferFee, sourceWalletData?.currency || "")}{" "}
+                        {sourceWalletData?.currency}
                       </span>
                     </div>
                   </div>
@@ -1201,11 +1235,18 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <span className="text-base font-normal text-grayscale-text-muted">You'll receive</span>
                       <div className="text-right">
                         <div className="text-base font-normal text-slate-1200">
-                          ≈{formatAmountWithDecimals(transferFeeCalculation.youllReceive)}{" "}
+                          ≈
+                          {formatAmountByCurrency(
+                            transferFeeCalculation.youllReceive,
+                            destinationWalletData?.currency || "",
+                          )}{" "}
                           {destinationWalletData?.currency} ({countdown}s)
                         </div>
                         <div className="text-base font-normal text-grayscale-text-muted mt-1">
-                          {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                          {formatAmountByCurrency(
+                            transferFeeCalculation.youllReceiveConverted,
+                            sourceWalletData?.currency || "",
+                          )}{" "}
                           {sourceWalletData?.currency}
                         </div>
                       </div>
@@ -1418,6 +1459,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1433,6 +1475,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
@@ -1573,7 +1616,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <span className="text-black/50 text-xs font-normal">Transfer amount</span>
                   <span className="text-[#181C25] text-xs font-normal">
                     {transferFeeCalculation
-                      ? `${formatAmountWithDecimals(transferFeeCalculation.transferAmount)} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
+                      ? `${formatAmountByCurrency(
+                          transferFeeCalculation.transferAmount,
+                          selectedAmountCurrency === "source"
+                            ? sourceWalletData?.currency || ""
+                            : destinationWalletData?.currency || "",
+                        )} ${selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency}`
                       : "-"}
                   </span>
                 </div>
@@ -1583,7 +1631,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   </span>
                   <span className="text-[#181C25] text-xs font-normal">
                     {transferFeeCalculation
-                      ? `${formatAmountWithDecimals(transferFeeCalculation.transferFee)} ${sourceWalletData?.currency}`
+                      ? `${formatAmountByCurrency(transferFeeCalculation.transferFee, sourceWalletData?.currency || "")} ${sourceWalletData?.currency}`
                       : "-"}
                   </span>
                 </div>
@@ -1592,12 +1640,15 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   <div className="text-right">
                     <div className="text-[#181C25] text-xs font-normal">
                       {transferFeeCalculation && exchangeRateData
-                        ? `${formatAmountWithDecimals(transferFeeCalculation.youllReceive)} ${destinationWalletData?.currency} (${countdown}s)`
+                        ? `${formatAmountByCurrency(transferFeeCalculation.youllReceive, destinationWalletData?.currency || "")} ${destinationWalletData?.currency} (${countdown}s)`
                         : "-"}
                     </div>
                     {transferFeeCalculation && (
                       <div className="text-black/50 text-xs font-normal mt-1">
-                        {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                        {formatAmountByCurrency(
+                          transferFeeCalculation.youllReceiveConverted,
+                          sourceWalletData?.currency || "",
+                        )}{" "}
                         {sourceWalletData?.currency}
                       </div>
                     )}
