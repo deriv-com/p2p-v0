@@ -793,11 +793,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   const renderDesktopConfirmPopup = () => {
     if (!showDesktopConfirmPopup) return null
 
-    const transferFee = calculateTransferFee()
-    const amountReceive =
-      transferFee && transferFee.feeAmount > 0
-        ? formatAmountWithDecimals(Number.parseFloat(transferAmount || "0") - transferFee.feeAmount)
-        : formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))
+    const hasTransferFee = transferFeeCalculation !== null
 
     return (
       <div
@@ -840,10 +836,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -891,10 +883,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -911,10 +899,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg" ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -928,34 +912,70 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   </div>
                 </div>
               </div>
-              <div className="h-1 bg-[#F6F7F8]  mt-4 mb-0"></div>
-              <div className={`flex flex-col justify-center ${transferFee ? "h-[104px] gap-2" : "h-[72px]"}`}>
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
-                  <span className="text-base font-normal text-slate-1200">
-                    {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
-                  </span>
-                </div>
-                {transferFee && (
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-base font-normal text-grayscale-text-muted">
-                      Transfer fee ({transferFee.feePercentage}%)
-                    </span>
-                    <span className="text-base font-normal text-slate-1200">
-                      {formatAmountWithDecimals(transferFee.feeAmount)} {getSourceWalletCurrency() || "USD"}
-                    </span>
+
+              {hasTransferFee && transferFeeCalculation && (
+                <>
+                  <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
+                  <div className="flex flex-col justify-center gap-2 py-4">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(transferFeeCalculation.transferAmount)}{" "}
+                        {selectedAmountCurrency === "source"
+                          ? sourceWalletData?.currency
+                          : destinationWalletData?.currency}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        Transfer fee ({transferFeeCalculation.feePercentage}%)
+                      </span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(transferFeeCalculation.transferFee)} {sourceWalletData?.currency}
+                      </span>
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className="h-1 bg-[#F6F7F8]"></div>
-              <div className="h-[72px] flex items-center">
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
-                  <span className="text-base font-normal text-slate-1200">
-                    {amountReceive} {selectedCurrency || "USD"}
-                  </span>
-                </div>
-              </div>
+                  <div className="h-1 bg-[#F6F7F8]"></div>
+                  <div className="py-4">
+                    <div className="flex items-start justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">You'll receive</span>
+                      <div className="text-right">
+                        <div className="text-base font-normal text-slate-1200">
+                          ≈{formatAmountWithDecimals(transferFeeCalculation.youllReceive)}{" "}
+                          {destinationWalletData?.currency} ({countdown}s)
+                        </div>
+                        <div className="text-base font-normal text-grayscale-text-muted mt-1">
+                          {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                          {sourceWalletData?.currency}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {!hasTransferFee && (
+                <>
+                  <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
+                  <div className="h-[72px] flex items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="h-1 bg-[#F6F7F8]"></div>
+                  <div className="h-[72px] flex items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="space-y-2 mt-12">
               <Button
@@ -974,11 +994,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
   const renderMobileConfirmSheet = () => {
     if (!showMobileConfirmSheet) return null
 
-    const transferFee = calculateTransferFee()
-    const amountReceive =
-      transferFee && transferFee.feeAmount > 0
-        ? formatAmountWithDecimals(Number.parseFloat(transferAmount || "0") - transferFee.feeAmount)
-        : formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))
+    const hasTransferFee = transferFeeCalculation !== null
 
     return (
       <div className="fixed inset-0 bg-black/50 z-50 md:hidden" onClick={() => setShowMobileConfirmSheet(false)}>
@@ -1012,10 +1028,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1063,10 +1075,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
-                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1083,10 +1091,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg" ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg" ||
-                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1100,34 +1104,70 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                   </div>
                 </div>
               </div>
-              <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
-              <div className={`flex flex-col justify-center ${transferFee ? "h-[104px] gap-2" : "h-[72px]"}`}>
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
-                  <span className="text-base font-normal text-slate-1200">
-                    {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
-                  </span>
-                </div>
-                {transferFee && (
-                  <div className="flex items-center justify-between w-full">
-                    <span className="text-base font-normal text-grayscale-text-muted">
-                      Transfer fee ({transferFee.feePercentage}%)
-                    </span>
-                    <span className="text-base font-normal text-slate-1200">
-                      {formatAmountWithDecimals(transferFee.feeAmount)} {getSourceWalletCurrency() || "USD"}
-                    </span>
+
+              {hasTransferFee && transferFeeCalculation && (
+                <>
+                  <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
+                  <div className="flex flex-col justify-center gap-2 py-4">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(transferFeeCalculation.transferAmount)}{" "}
+                        {selectedAmountCurrency === "source"
+                          ? sourceWalletData?.currency
+                          : destinationWalletData?.currency}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        Transfer fee ({transferFeeCalculation.feePercentage}%)
+                      </span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(transferFeeCalculation.transferFee)} {sourceWalletData?.currency}
+                      </span>
+                    </div>
                   </div>
-                )}
-              </div>
-              <div className="h-1 bg-[#F6F7F8]"></div>
-              <div className="h-[72px] flex items-center">
-                <div className="flex items-center justify-between w-full">
-                  <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
-                  <span className="text-base font-normal text-slate-1200">
-                    {amountReceive} {selectedCurrency || "USD"}
-                  </span>
-                </div>
-              </div>
+                  <div className="h-1 bg-[#F6F7F8]"></div>
+                  <div className="py-4">
+                    <div className="flex items-start justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">You'll receive</span>
+                      <div className="text-right">
+                        <div className="text-base font-normal text-slate-1200">
+                          ≈{formatAmountWithDecimals(transferFeeCalculation.youllReceive)}{" "}
+                          {destinationWalletData?.currency} ({countdown}s)
+                        </div>
+                        <div className="text-base font-normal text-grayscale-text-muted mt-1">
+                          {formatAmountWithDecimals(transferFeeCalculation.youllReceiveConverted)}{" "}
+                          {sourceWalletData?.currency}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {!hasTransferFee && (
+                <>
+                  <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
+                  <div className="h-[72px] flex items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="h-1 bg-[#F6F7F8]"></div>
+                  <div className="h-[72px] flex items-center">
+                    <div className="flex items-center justify-between w-full">
+                      <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                      <span className="text-base font-normal text-slate-1200">
+                        {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="space-y-3 mt-8">
               <Button
@@ -1388,17 +1428,17 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     }}
                     variant="outline"
                     size="sm"
-                    className="bg-transparent h-full gap-1 border-0"
+                    className="bg-transparent h-full gap-1"
                   >
                     <ToggleGroupItem
                       value="source"
-                      className="text-base font-normal text-[#181C25] px-3 h-full rounded-lg border-0 shadow-none data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50 transition-colors"
+                      className="text-xs px-3 h-full rounded-lg border-0 data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50"
                     >
                       {sourceWalletData?.currency}
                     </ToggleGroupItem>
                     <ToggleGroupItem
                       value="destination"
-                      className="text-base font-normal text-[#181C25] px-3 h-full rounded-lg border-0 shadow-none data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50 transition-colors"
+                      className="text-xs px-3 h-full rounded-lg border-0 data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50"
                     >
                       {destinationWalletData?.currency}
                     </ToggleGroupItem>
