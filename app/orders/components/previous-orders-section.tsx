@@ -7,6 +7,7 @@ interface PreviousOrdersSectionProps {
 }
 
 export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   return (
     <div className="flex flex-col h-full">
       <div className="flex items-center gap-4 mb-6 px-3">
@@ -24,7 +25,7 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
         <h1 className="text-xl font-bold">Previous orders</h1>
         <div className="mt-8 bg-white rounded-lg p-4">
           <iframe
-            src="https://staging-p2p.deriv.com/orders?from=p2p-v2"
+            src={isProduction ? "https://-p2p.deriv.com/orders?from=p2p-v2" : "https://staging-p2p.deriv.com/orders?from=p2p-v2"} 
             className="w-full h-96 border-0 rounded-lg"
             title="Previous Orders"
             sandbox="allow-same-origin allow-scripts allow-forms"
