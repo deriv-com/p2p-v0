@@ -108,7 +108,7 @@ const FullPagePaymentSelection = ({
           </Button>
         </div>
         <div className="px-6 pb-4">
-          <h2 className="text-2xl font-bold">Payment method</h2>
+          <h2 className="text-2xl font-bold mb-6">Payment method</h2>
           <div className="relative">
             <Image
               src="/icons/search-icon-custom.png"
