@@ -349,12 +349,20 @@ export default function PaymentDetailsForm({
     const formValid = isFormValid()
     const errors = !formValid ? { paymentMethods: "At least one payment method is required" } : undefined
 
-    const paymentMethodNames = selectedPaymentMethodIds
-      .map((id) => {
-        const method = userPaymentMethods.find((m) => m.id === id)
-        return method?.method || ""
-      })
-      .filter(Boolean)
+    let paymentMethodNames: string[] = []
+
+    if (initialData.type === "buy") {
+      // For buy ads, selectedPaymentMethodIds already contains method names
+      paymentMethodNames = selectedPaymentMethodIds
+    } else {
+      // For sell ads, map IDs to method names from userPaymentMethods
+      paymentMethodNames = selectedPaymentMethodIds
+        .map((id) => {
+          const method = userPaymentMethods.find((m) => m.id === id)
+          return method?.method || ""
+        })
+        .filter(Boolean)
+    }
 
     const formData = {
       id: initialData.id,
@@ -442,12 +450,20 @@ export default function PaymentDetailsForm({
   }
 
   useEffect(() => {
-    const paymentMethodNames = selectedPaymentMethodIds
-      .map((id) => {
-        const method = userPaymentMethods.find((m) => m.id === id)
-        return method?.method || ""
-      })
-      .filter(Boolean)
+    let paymentMethodNames: string[] = []
+
+    if (initialData.type === "buy") {
+      // For buy ads, selectedPaymentMethodIds already contains method names
+      paymentMethodNames = selectedPaymentMethodIds
+    } else {
+      // For sell ads, map IDs to method names from userPaymentMethods
+      paymentMethodNames = selectedPaymentMethodIds
+        .map((id) => {
+          const method = userPaymentMethods.find((m) => m.id === id)
+          return method?.method || ""
+        })
+        .filter(Boolean)
+    }
 
     const event = new CustomEvent("paymentFormValidationChange", {
       detail: {
@@ -461,7 +477,7 @@ export default function PaymentDetailsForm({
       bubbles: true,
     })
     document.dispatchEvent(event)
-  }, [paymentMethods, selectedPaymentMethodIds, instructions, userPaymentMethods])
+  }, [paymentMethods, selectedPaymentMethodIds, instructions, userPaymentMethods, initialData.type])
 
   return (
     <>
