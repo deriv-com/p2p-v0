@@ -841,6 +841,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -889,6 +890,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -904,6 +906,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg"
@@ -1004,6 +1007,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1052,6 +1056,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg" ||
                                   "/placeholder.svg" ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1067,6 +1072,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
                               "/placeholder.svg"
@@ -1285,6 +1291,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg" ||
                               "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1300,6 +1307,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg" ||
                           "/placeholder.svg"
@@ -1338,17 +1346,24 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
           </div>
           <div className="mb-6 px-2 relative">
             <h2 className="text-slate-1200 text-sm font-normal mb-2">Amount</h2>
-            <div className="relative">
-              <Input
-                type="number"
-                placeholder="0.00"
-                value={transferAmount || ""}
-                onChange={handleAmountChange}
-                className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
-                max={getSourceWalletBalance()}
-              />
-              {showCurrencySwitcher ? (
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+            <div className="flex gap-2 items-center">
+              <div className="relative flex-1">
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  value={transferAmount || ""}
+                  onChange={handleAmountChange}
+                  className="h-12 px-4 border border-grayscale-200 rounded-lg text-base placeholder:text-grayscale-text-placeholder appearance-none"
+                  max={getSourceWalletBalance()}
+                />
+                {!showCurrencySwitcher && (
+                  <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
+                    {selectedCurrency || "USD"}
+                  </span>
+                )}
+              </div>
+              {showCurrencySwitcher && (
+                <div className="w-32 h-12 bg-black/[0.04] rounded-2xl p-2 flex items-center justify-center">
                   <ToggleGroup
                     type="single"
                     value={selectedAmountCurrency}
@@ -1357,20 +1372,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "chooseC
                     }}
                     variant="outline"
                     size="sm"
-                    className="bg-white"
+                    className="bg-transparent h-full"
                   >
-                    <ToggleGroupItem value="source" className="text-xs px-2 h-8">
+                    <ToggleGroupItem value="source" className="text-xs px-2 h-full">
                       {sourceWalletData?.currency}
                     </ToggleGroupItem>
-                    <ToggleGroupItem value="destination" className="text-xs px-2 h-8">
+                    <ToggleGroupItem value="destination" className="text-xs px-2 h-full">
                       {destinationWalletData?.currency}
                     </ToggleGroupItem>
                   </ToggleGroup>
                 </div>
-              ) : (
-                <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-grayscale-600">
-                  {selectedCurrency || "USD"}
-                </span>
               )}
             </div>
             {transferAmount && !isAmountValid(transferAmount) && (
