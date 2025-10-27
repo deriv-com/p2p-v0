@@ -161,18 +161,20 @@ const FullPagePaymentSelection = ({
                     />
                     <span className="text-base text-slate-1200">{method.display_name}</span>
                   </div>
-                  <Checkbox
-                    checked={isSelected}
-                    disabled={isDisabled}
-                    className="border-2 border-grayscale-300 data-[state=checked]:bg-black data-[state=checked]:border-black w-5 h-5 rounded-sm"
-                  />
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Checkbox
+                      checked={isSelected}
+                      disabled={isDisabled}
+                      onCheckedChange={() => !isDisabled && handleToggle(methodId)}
+                      className="border-2 border-grayscale-300 data-[state=checked]:bg-black data-[state=checked]:border-black w-5 h-5 rounded-sm"
+                    />
+                  </div>
                 </div>
               )
             })
           )}
         </div>
 
-        {/* Confirm button */}
         <div className="p-6 pt-4">
           <Button
             onClick={handleConfirm}
