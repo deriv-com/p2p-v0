@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { fetchTransactions } from "@/services/api/api-wallets"
+import { fetchTransactions, getCurrencies } from "@/services/api/api-wallets"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 import { formatAmountWithDecimals } from "@/lib/utils"
@@ -45,8 +45,24 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
+  const [currencies, setCurrencies] = useState<Record<string, any>>({})
 
   const filters = ["All", "Deposit", "Withdraw", "Transfer"]
+
+  useEffect(() => {
+    const loadCurrencies = async () => {
+      try {
+        const data = await getCurrencies()
+        if (data?.data) {
+          setCurrencies(data.data)
+        }
+      } catch (error) {
+        console.error("Error loading currencies:", error)
+      }
+    }
+
+    loadCurrencies()
+  }, [])
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -135,14 +151,16 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
     const isSourceP2P = source_wallet_type?.toLowerCase() === "p2p"
     const isDestinationP2P = destination_wallet_type?.toLowerCase() === "p2p"
 
+    const currencyLabel = currencies[transaction_currency]?.label || transaction_currency
+
     if (isSourceP2P && !isDestinationP2P) {
-      return `P2P ${transaction_currency} -> ${transaction_currency} Wallet`
+      return `P2P ${currencyLabel} -> ${currencyLabel} Wallet`
     } else if (!isSourceP2P && isDestinationP2P) {
-      return `${transaction_currency} Wallet -> P2P ${transaction_currency}`
+      return `${currencyLabel} Wallet -> P2P ${currencyLabel}`
     } else if (isSourceP2P && isDestinationP2P) {
-      return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
+      return `P2P ${currencyLabel} -> P2P ${currencyLabel}`
     } else {
-      return `${transaction_currency} Wallet`
+      return `${currencyLabel} Wallet`
     }
   }
 
@@ -223,7 +241,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc }
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
