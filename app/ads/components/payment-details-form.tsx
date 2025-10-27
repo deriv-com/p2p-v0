@@ -347,7 +347,6 @@ export default function PaymentDetailsForm({
     let paymentMethodNames: string[] = []
 
     if (initialData.type === "buy") {
-      // For buy ads, selectedPaymentMethodIds already contains method names
       paymentMethodNames = selectedPaymentMethodIds
     } else {
       // For sell ads, map IDs to method names from userPaymentMethods
