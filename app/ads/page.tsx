@@ -160,7 +160,7 @@ export default function AdsPage() {
       setHiddenAdverts(previousValue)
 
       showAlert({
-        title: "Error",
+        title: `Unable to ${value ? "hide" : "show"} your ads. Please try again.`,
         description: `Failed to ${value ? "hide" : "show"} your ads. Please try again.`,
         confirmText: "OK",
         type: "warning",
