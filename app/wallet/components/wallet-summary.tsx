@@ -313,7 +313,7 @@ export default function WalletSummary({
           onP2PTransferClick={handleSendTransferClick}
           onAccountTransferClick={handleReceiveTransferClick}
           currencies={currencies}
-          transferStep={isBalancesView ? "chooseCurrency" : "enterAmount"}
+          transferStep={ "enterAmount"}
         />
 
         <FullScreenIframeModal
