@@ -116,7 +116,7 @@ interface TransferFeeCalculation {
   feePercentage: number
 }
 
-type TransferStep = "chooseCurrency" | "enterAmount" | "success" | "unsuccessful" // Added "unsuccessful" step type
+type TransferStep = "chooseCurrency" | "enterAmount" | "success" | "unsuccessful"
 type WalletSelectorType = "from" | "to" | null
 type CurrencyToggleType = "source" | "destination"
 
