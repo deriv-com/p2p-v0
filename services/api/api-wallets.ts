@@ -1,7 +1,7 @@
 import { useUserDataStore } from "@/stores/user-data-store"
 
 const getAuthHeader = () => ({
-  "Content-Type": "application/json"
+  "Content-Type": "application/json",
 })
 
 export async function fetchTransactions(selectedCurrencyCode?: string) {
@@ -166,5 +166,78 @@ export async function fetchUserBalances(): Promise<any> {
   } catch (error) {
     console.error("Error fetching user balances:", error)
     throw error
+  }
+}
+
+export async function fetchExchangeRate(params: {
+  source_currency: string
+  destination_currency: string
+}): Promise<any> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/exchange-rate?source_currency=${params.source_currency}&destination_currency=${params.destination_currency}`
+    const headers = getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
+      credentials: "include",
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error fetching exchange rate:", error)
+    return null
+  }
+}
+
+export async function walletExchangeTransfer(params: {
+  amount: string
+  source_currency: string
+  destination_wallet_id: string
+  request_id: string
+  source_wallet_id: string
+  destination_currency: string
+  rate_token: string
+  exchange_rate: string
+}): Promise<any> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transfers/exchange`
+    const headers = getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        ...headers,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(params),
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error in exchange transfer:", error)
+    return null
+  }
+}
+
+export async function fetchTransactionByReferenceId(referenceId: string): Promise<any> {
+  try {
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/wallets/transactions?reference_id=${referenceId}`
+    const headers = getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers,
+      credentials: "include",
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.error("Error fetching transaction by reference ID:", error)
+    return null
   }
 }

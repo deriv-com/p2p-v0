@@ -38,9 +38,10 @@ interface TransactionsResponse {
 
 interface TransactionsTabProps {
   selectedCurrency?: string | null
+  currencies?: Record<string, any>
 }
 
-export default function TransactionsTab({ selectedCurrency }: TransactionsTabProps) {
+export default function TransactionsTab({ selectedCurrency, currencies = {} }: TransactionsTabProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
@@ -135,14 +136,16 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
     const isSourceP2P = source_wallet_type?.toLowerCase() === "p2p"
     const isDestinationP2P = destination_wallet_type?.toLowerCase() === "p2p"
 
+    const currencyLabel = currencies[transaction_currency]?.label || transaction_currency
+
     if (isSourceP2P && !isDestinationP2P) {
-      return `P2P ${transaction_currency} -> ${transaction_currency} Wallet`
+      return `P2P ${currencyLabel} -> ${currencyLabel} Wallet`
     } else if (!isSourceP2P && isDestinationP2P) {
-      return `${transaction_currency} Wallet -> P2P ${transaction_currency}`
+      return `${currencyLabel} Wallet -> P2P ${currencyLabel}`
     } else if (isSourceP2P && isDestinationP2P) {
-      return `P2P ${transaction_currency} -> P2P ${transaction_currency}`
+      return `P2P ${currencyLabel} -> P2P ${currencyLabel}`
     } else {
-      return `${transaction_currency} Wallet`
+      return `${currencyLabel} Wallet`
     }
   }
 
@@ -223,7 +226,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc }
+                                src={display.iconSrc}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
