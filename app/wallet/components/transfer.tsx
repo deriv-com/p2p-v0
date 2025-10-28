@@ -219,7 +219,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
 
               const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
-if(balance.balance==="USD"){
+if(balance.currency === "USD"){
               processedWallets.push({
                 wallet_id: wallet.wallet_id,
                 name: walletName,
