@@ -86,10 +86,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    const isFullyVerified =
-      verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified
-
-    if (!isFullyVerified) {
+    if (userId) {
       showAlert({
         title: "Complete verification to add payment methods",
         content: <KycOnboardingSheet />,
