@@ -231,7 +231,7 @@ const PaymentSelectionContent = ({
   }
 
   return (
-    <div className="flex flex-col h-[60vh] max-h-[60vh]">
+    <div className="flex flex-col h-[60vh] max-h-[600px]">
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
         {paymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {paymentMethods.length === 0 ? (
@@ -296,7 +296,7 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      <div className="py-4">
+      <div className="py-">
         <Button
           className="w-full"
           disabled={selectedPMs.length == 0}
