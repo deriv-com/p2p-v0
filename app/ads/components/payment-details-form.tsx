@@ -169,11 +169,7 @@ const FullPagePaymentSelection = ({
         </div>
 
         <div className="p-6 pt-4 self-end">
-          <Button
-            onClick={handleConfirm}
-            disabled={localSelected.length === 0}
-            variant="primary"
-          >
+          <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary">
             Confirm
           </Button>
         </div>
@@ -235,8 +231,8 @@ const PaymentSelectionContent = ({
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto">
-      <div className="flex-1 space-y-4">
+    <div className="flex flex-col h-[60vh] max-h-[600px]">
+      <div className="flex-1 overflow-y-auto space-y-4 pb-4">
         {paymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
         {paymentMethods.length === 0 ? (
           <div className="text-center py-8">
@@ -300,16 +296,18 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      <Button
-        className="w-full mt-12"
-        disabled={selectedPMs.length == 0}
-        onClick={() => {
-          setSelectedPaymentMethods(selectedPMs)
-          hideAlert()
-        }}
-      >
-        Confirm
-      </Button>
+      <div className="pt-4 border-t border-gray-200">
+        <Button
+          className="w-full"
+          disabled={selectedPMs.length == 0}
+          onClick={() => {
+            setSelectedPaymentMethods(selectedPMs)
+            hideAlert()
+          }}
+        >
+          Confirm
+        </Button>
+      </div>
     </div>
   )
 }
@@ -448,7 +446,6 @@ export default function PaymentDetailsForm({
     if (initialData.type === "buy") {
       paymentMethodNames = selectedPaymentMethodIds
     } else {
-      // For sell ads, map IDs to method names from userPaymentMethods
       paymentMethodNames = selectedPaymentMethodIds
         .map((id) => {
           const method = userPaymentMethods.find((m) => m.id === id)
