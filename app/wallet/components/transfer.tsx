@@ -212,7 +212,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
           response.data.wallets.forEach((wallet: any) => {
             if (!wallet.balances || wallet.balances.length === 0) {
-              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? "P2P USD" : "USD"
+              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? "P2P US Dollar" : "USD"
 
               processedWallets.push({
                 wallet_id: wallet.wallet_id,
