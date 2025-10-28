@@ -5,7 +5,7 @@ import type React from "react"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   fetchWalletsList,
   walletTransfer,
@@ -200,67 +200,59 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     loadCurrencies()
   }, [])
 
-useEffect(() => {
-  if (!selectedCurrency) return;
+  useEffect(() => {
+    if (!selectedCurrency) return
 
-  const loadWallets = async () => {
-    try {
-      const response = await fetchWalletsList();
+    const loadWallets = async () => {
+      try {
+        const response = await fetchWalletsList()
 
-      if (response?.data?.wallets) {
-        const processedWallets: ProcessedWallet[] = [];
+        if (response?.data?.wallets) {
+          const processedWallets: ProcessedWallet[] = []
 
-        response.data.wallets.forEach((wallet: any) => {
-          wallet.balances.forEach((balance: any) => {
-            if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
-              return;
-            }
+          response.data.wallets.forEach((wallet: any) => {
+            wallet.balances.forEach((balance: any) => {
+              if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
+                return
+              }
 
-            const currencyLabel =
-              currenciesData?.data?.[balance.currency]?.label || balance.currency;
+              const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
 
-            const walletName =
-              (wallet.type || "").toLowerCase() === "p2p"
-                ? `P2P ${currencyLabel}`
-                : currencyLabel;
+              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
 
+              if (balance.currency) {
+                processedWallets.push({
+                  wallet_id: wallet.wallet_id,
+                  name: walletName,
+                  balance: balance.balance,
+                  currency: balance.currency,
+                  icon: "/icons/usd-flag.png",
+                  type: wallet.type,
+                })
+              }
+            })
+          })
 
-            if (balance.currency) {
-              processedWallets.push({
-                wallet_id: wallet.wallet_id,
-                name: walletName,
-                balance: balance.balance,
-                currency: balance.currency,
-                icon: "/icons/usd-flag.png",
-                type: wallet.type,
-              });
-            }
-          });
-        });
+          setWallets(processedWallets)
 
-        setWallets(processedWallets);
+          const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
 
-        const p2pWallet = processedWallets.find(
-          (w) => w.type?.toLowerCase() === "p2p"
-        );
-
-        if (p2pWallet && !sourceWalletData) {
-          setSourceWalletData({
-            id: p2pWallet.wallet_id,
-            name: p2pWallet.name,
-            currency: p2pWallet.currency,
-            balance: p2pWallet.balance,
-          });
+          if (p2pWallet && !sourceWalletData) {
+            setSourceWalletData({
+              id: p2pWallet.wallet_id,
+              name: p2pWallet.name,
+              currency: p2pWallet.currency,
+              balance: p2pWallet.balance,
+            })
+          }
         }
+      } catch (error) {
+        console.error("Error fetching wallets:", error)
       }
-    } catch (error) {
-      console.error("Error fetching wallets:", error);
     }
-  };
 
-  loadWallets();
-}, [selectedCurrency, currenciesData]);
-
+    loadWallets()
+  }, [selectedCurrency, currenciesData])
 
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
@@ -926,7 +918,9 @@ useEffect(() => {
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -939,7 +933,8 @@ useEffect(() => {
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -969,7 +964,9 @@ useEffect(() => {
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -982,7 +979,9 @@ useEffect(() => {
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1121,7 +1120,9 @@ useEffect(() => {
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1134,7 +1135,8 @@ useEffect(() => {
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -1164,7 +1166,9 @@ useEffect(() => {
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1177,7 +1181,9 @@ useEffect(() => {
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1376,7 +1382,8 @@ useEffect(() => {
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={9}
                             height={9}
@@ -1388,7 +1395,7 @@ useEffect(() => {
                   ) : (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -1437,7 +1444,9 @@ useEffect(() => {
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={9}
                             height={9}
@@ -1450,7 +1459,9 @@ useEffect(() => {
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -1503,8 +1514,7 @@ useEffect(() => {
               </div>
               {showCurrencySwitcher && (
                 <div className="w-32 h-12 bg-black/[0.04] rounded-2xl p-2 flex items-center justify-center">
-                  <ToggleGroup
-                    type="single"
+                  <Tabs
                     value={selectedAmountCurrency}
                     onValueChange={(value) => {
                       if (value) {
@@ -1517,23 +1527,23 @@ useEffect(() => {
                         }
                       }
                     }}
-                    variant="outline"
-                    size="sm"
-                    className="bg-transparent h-full gap-1"
+                    className="w-full h-full"
                   >
-                    <ToggleGroupItem
-                      value="source"
-                      className="text-base px-3 h-full rounded-lg border-0 shadow-none data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50 text-[#181C25] font-normal"
-                    >
-                      {sourceWalletData?.currency}
-                    </ToggleGroupItem>
-                    <ToggleGroupItem
-                      value="destination"
-                      className="text-base px-3 h-full rounded-lg border-0 shadow-none data-[state=on]:bg-white data-[state=off]:bg-transparent hover:bg-white/50 text-[#181C25] font-normal"
-                    >
-                      {destinationWalletData?.currency}
-                    </ToggleGroupItem>
-                  </ToggleGroup>
+                    <TabsList className="bg-transparent h-full gap-1 w-full p-0">
+                      <TabsTrigger
+                        value="source"
+                        className="text-base px-3 h-full rounded-lg border-0 shadow-none data-[state=active]:bg-white data-[state=inactive]:bg-transparent hover:bg-white/50 text-[#181C25] font-normal flex-1"
+                      >
+                        {sourceWalletData?.currency}
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="destination"
+                        className="text-base px-3 h-full rounded-lg border-0 shadow-none data-[state=active]:bg-white data-[state=inactive]:bg-transparent hover:bg-white/50 text-[#181C25] font-normal flex-1"
+                      >
+                        {destinationWalletData?.currency}
+                      </TabsTrigger>
+                    </TabsList>
+                  </Tabs>
                 </div>
               )}
             </div>
