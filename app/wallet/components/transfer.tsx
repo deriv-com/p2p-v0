@@ -137,7 +137,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const [externalReferenceId, setExternalReferenceId] = useState<string | null>(null)
   const [requestId, setRequestId] = useState<string | null>(null)
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
-  const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null) // Added state for error message
+  const [transferErrorMessage, setTransferErrorMessage] = useState<string | null>(null)
 
   const [exchangeRateData, setExchangeRateData] = useState<ExchangeRateData | null>(null)
   const [selectedAmountCurrency, setSelectedAmountCurrency] = useState<"source" | "destination">("source")
