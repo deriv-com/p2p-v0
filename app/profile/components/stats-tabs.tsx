@@ -34,7 +34,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
-  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const userId = useUserDataStore((state) => state.userId)
 
   const tabs = [
     { id: "stats", label: "Stats" },
