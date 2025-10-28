@@ -167,7 +167,7 @@ export default function PaymentMethodsTab() {
 
         fetchPaymentMethods()
       } else {
-        let errorMessage = "You can't update this payment method"
+        let errorMessage = "Unable to update this payment method."
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
@@ -233,12 +233,14 @@ export default function PaymentMethodsTab() {
         })
         fetchPaymentMethods()
       } else {
-        let errorMessage = "Cannot delete this payment method"
+        let errorMessage = "Unable to delete this payment method."
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
 
           if (errorCode === "PaymentMethodInUseByOrder") {
+            errorMessage = "This payment method is linked to one of your orders and can't be deleted."
+          } else if (errorCode === "PaymentMethodInUseByAdvert") {
             errorMessage = "This payment method is linked to one of your ads and can't be deleted."
           } else if (result.errors[0].message) {
             errorMessage = result.errors[0].message
