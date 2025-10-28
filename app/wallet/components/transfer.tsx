@@ -225,7 +225,7 @@ useEffect(() => {
                 : currencyLabel;
 
 
-            if (balance.currency === "USD") {
+            if (balance.currency) {
               processedWallets.push({
                 wallet_id: wallet.wallet_id,
                 name: walletName,
