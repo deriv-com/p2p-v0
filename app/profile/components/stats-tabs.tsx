@@ -87,16 +87,15 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
   const handleShowAddPaymentMethod = () => {
     if (userId) {
+      setShowAddPaymentPanel(true)
+    } else {
       showAlert({
         title: "Complete verification to add payment methods",
         content: <KycOnboardingSheet />,
         confirmText: "OK",
         type: "warning",
       })
-      return
     }
-
-    setShowAddPaymentPanel(true)
   }
 
   return (
