@@ -90,10 +90,14 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       setShowAddPaymentPanel(true)
     } else {
       showAlert({
-        title: "Complete verification to add payment methods",
-        content: <KycOnboardingSheet />,
-        confirmText: "OK",
-        type: "warning",
+        title: "Getting started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined
       })
     }
   }
