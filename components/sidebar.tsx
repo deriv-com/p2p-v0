@@ -84,7 +84,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
-                {item.name === " Profile" && <div className="my-3 border-b border-grayscale-200"></div>}
+                {item.name === "Profile" && <div className="my-3 border-b border-grayscale-200"></div>}
                 <Link
                   prefetch
                   href={item.href}
