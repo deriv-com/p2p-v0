@@ -223,7 +223,6 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 type: wallet.type,
               })
             } else {
-              // Process existing balances
               wallet.balances.forEach((balance: any) => {
                 if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
                   return
