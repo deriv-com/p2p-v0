@@ -296,7 +296,7 @@ const PaymentSelectionContent = ({
           </div>
         )}
       </div>
-      <div className="ptmd:py-4">
+      <div className="pt-4 md:py-4">
         <Button
           className="w-full"
           disabled={selectedPMs.length == 0}
