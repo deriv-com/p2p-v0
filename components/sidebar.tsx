@@ -58,11 +58,11 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
     ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
-    { name: "P2P Profile", href: "/profile", icon: ProfileIcon },
+    { name: "Profile", href: "/profile", icon: ProfileIcon },
     { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
-  const hideOnMobile = ["Market", "Orders", "My Ads", "Wallet", "P2P Profile"]
+  const hideOnMobile = ["Market", "Orders", "My Ads", "Wallet", "Profile"]
 
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
@@ -84,7 +84,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
-                {item.name === "P2P Profile" && <div className="my-3 border-b border-grayscale-200"></div>}
+                {item.name === "Profile" && <div className="my-3 border-b border-grayscale-200"></div>}
                 <Link
                   prefetch
                   href={item.href}
