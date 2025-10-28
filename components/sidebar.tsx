@@ -58,7 +58,7 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "Orders", href: "/orders", icon: OrdersIcon },
     { name: "My Ads", href: "/ads", icon: AdsIcon },
     ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
-    { name: "P2P Profile", href: "/profile", icon: ProfileIcon },
+    { name: " Profile", href: "/profile", icon: ProfileIcon },
     { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
   ]
 
