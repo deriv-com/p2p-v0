@@ -224,7 +224,7 @@ useEffect(() => {
                 ? `P2P ${currencyLabel}`
                 : currencyLabel;
 
-            // ✅ Added missing indentation + braces style fix
+
             if (balance.currency === "USD") {
               processedWallets.push({
                 wallet_id: wallet.wallet_id,
