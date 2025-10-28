@@ -26,7 +26,7 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
         <div className="mt-8 bg-white rounded-lg p-4">
           <iframe
             src={isProduction ? "https://p2p.deriv.com/orders?from=p2p-v2" : "https://staging-p2p.deriv.com/orders?from=p2p-v2"} 
-            className="w-full h-96 border-0 rounded-lg"
+            className="w-full h-[96vh] border-0 rounded-lg"
             title="Previous Orders"
             sandbox="allow-same-origin allow-scripts allow-forms"
           />
