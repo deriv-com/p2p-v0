@@ -200,26 +200,32 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     loadCurrencies()
   }, [])
 
-  useEffect(() => {
-    if (!selectedCurrency) return
+useEffect(() => {
+  if (!selectedCurrency) return;
 
-    const loadWallets = async () => {
-      try {
-        const response = await fetchWalletsList()
+  const loadWallets = async () => {
+    try {
+      const response = await fetchWalletsList();
 
-        if (response?.data?.wallets) {
-          const processedWallets: ProcessedWallet[] = []
+      if (response?.data?.wallets) {
+        const processedWallets: ProcessedWallet[] = [];
 
-          response.data.wallets.forEach((wallet: any) => {
-            wallet.balances.forEach((balance: any) => {
-              if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
-                return
-              }
+        response.data.wallets.forEach((wallet: any) => {
+          wallet.balances.forEach((balance: any) => {
+            if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
+              return;
+            }
 
-              const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
+            const currencyLabel =
+              currenciesData?.data?.[balance.currency]?.label || balance.currency;
 
-              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
-if(balance.currency === "USD"){
+            const walletName =
+              (wallet.type || "").toLowerCase() === "p2p"
+                ? `P2P ${currencyLabel}`
+                : currencyLabel;
+
+            // ✅ Added missing indentation + braces style fix
+            if (balance.currency === "USD") {
               processedWallets.push({
                 wallet_id: wallet.wallet_id,
                 name: walletName,
@@ -227,29 +233,34 @@ if(balance.currency === "USD"){
                 currency: balance.currency,
                 icon: "/icons/usd-flag.png",
                 type: wallet.type,
-              })}
-            })
-          })
+              });
+            }
+          });
+        });
 
-          setWallets(processedWallets)
+        setWallets(processedWallets);
 
-          const p2pWallet = processedWallets.find((w) => w.type?.toLowerCase() === "p2p")
-          if (p2pWallet && !sourceWalletData) {
-            setSourceWalletData({
-              id: p2pWallet.wallet_id,
-              name: p2pWallet.name,
-              currency: p2pWallet.currency,
-              balance: p2pWallet.balance,
-            })
-          }
+        const p2pWallet = processedWallets.find(
+          (w) => w.type?.toLowerCase() === "p2p"
+        );
+
+        if (p2pWallet && !sourceWalletData) {
+          setSourceWalletData({
+            id: p2pWallet.wallet_id,
+            name: p2pWallet.name,
+            currency: p2pWallet.currency,
+            balance: p2pWallet.balance,
+          });
         }
-      } catch (error) {
-        console.error("Error fetching wallets:", error)
       }
+    } catch (error) {
+      console.error("Error fetching wallets:", error);
     }
+  };
 
-    loadWallets()
-  }, [selectedCurrency, currenciesData])
+  loadWallets();
+}, [selectedCurrency, currenciesData]);
+
 
   const calculateTransferFee = useCallback((): { feeAmount: number; feePercentage: number } | null => {
     if (!currenciesData || !sourceWalletData || !destinationWalletData || !transferAmount) {
