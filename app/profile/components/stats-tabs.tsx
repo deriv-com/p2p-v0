@@ -13,6 +13,8 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface StatsTabsProps {
   stats?: any
@@ -32,6 +34,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -83,6 +86,19 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
+    const isFullyVerified =
+      verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified
+
+    if (!isFullyVerified) {
+      showAlert({
+        title: "Complete verification to add payment methods",
+        content: <KycOnboardingSheet />,
+        confirmText: "OK",
+        type: "warning",
+      })
+      return
+    }
+
     setShowAddPaymentPanel(true)
   }
 
