@@ -211,26 +211,41 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           const processedWallets: ProcessedWallet[] = []
 
           response.data.wallets.forEach((wallet: any) => {
-            wallet.balances.forEach((balance: any) => {
-              if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
-                return
-              }
+            if (!wallet.balances || wallet.balances.length === 0) {
+              // Add default entry for wallets with no balances
+              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? "P2P USD" : "USD"
 
-              const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
+              processedWallets.push({
+                wallet_id: wallet.wallet_id,
+                name: walletName,
+                balance: "0",
+                currency: "USD",
+                icon: "/icons/usd-flag.png",
+                type: wallet.type,
+              })
+            } else {
+              // Process existing balances
+              wallet.balances.forEach((balance: any) => {
+                if ((wallet.type || "").toLowerCase() === "p2p" && balance.currency !== "USD") {
+                  return
+                }
 
-              const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
+                const currencyLabel = currenciesData?.data?.[balance.currency]?.label || balance.currency
 
-              if (balance.currency ==="USD") {
-                processedWallets.push({
-                  wallet_id: wallet.wallet_id,
-                  name: walletName,
-                  balance: balance.balance,
-                  currency: balance.currency,
-                  icon: "/icons/usd-flag.png",
-                  type: wallet.type,
-                })
-              }
-            })
+                const walletName = (wallet.type || "").toLowerCase() === "p2p" ? `P2P ${currencyLabel}` : currencyLabel
+
+                if (balance.currency === "USD") {
+                  processedWallets.push({
+                    wallet_id: wallet.wallet_id,
+                    name: walletName,
+                    balance: balance.balance,
+                    currency: balance.currency,
+                    icon: "/icons/usd-flag.png",
+                    type: wallet.type,
+                  })
+                }
+              })
+            }
           })
 
           setWallets(processedWallets)
@@ -919,6 +934,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -965,6 +981,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -980,6 +997,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1121,6 +1139,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={sourceWalletData.currency}
@@ -1167,6 +1186,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                               <Image
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg" ||
                                   "/placeholder.svg"
                                 }
                                 alt={destinationWalletData.currency}
@@ -1182,6 +1202,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1445,6 +1466,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                           <Image
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={destinationWalletData.currency}
@@ -1460,6 +1482,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                       <Image
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg" ||
                           "/placeholder.svg"
                         }
                         alt={destinationWalletData.currency}
