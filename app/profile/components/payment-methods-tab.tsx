@@ -167,7 +167,7 @@ export default function PaymentMethodsTab() {
 
         fetchPaymentMethods()
       } else {
-        let errorMessage = "You can't update this payment method"
+        let errorMessage = "Unable to update this payment method"
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
