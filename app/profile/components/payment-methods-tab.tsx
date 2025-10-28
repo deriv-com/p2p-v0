@@ -233,7 +233,7 @@ export default function PaymentMethodsTab() {
         })
         fetchPaymentMethods()
       } else {
-        let errorMessage = "Cannot delete this payment method"
+        let errorMessage = "Unable to delete this payment method."
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
