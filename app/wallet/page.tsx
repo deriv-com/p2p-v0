@@ -18,11 +18,12 @@ interface Balance {
 
 export default function WalletPage() {
   const [displayBalances, setDisplayBalances] = useState(true)
-  const [selectedCurrency, setSelectedCurrency] = useState<string | null>('USD')
+  const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState("USD")
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
@@ -30,7 +31,8 @@ export default function WalletPage() {
     setIsLoading(true)
     try {
       const currenciesResponse = await getCurrencies()
-      const currenciesData = currenciesResponse?.data || {}
+      const currencies = currenciesResponse?.data || {}
+      setCurrenciesData(currencies)
 
       const data = await getTotalBalance()
       const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
@@ -44,7 +46,7 @@ export default function WalletPage() {
             wallet_id: p2pWallet.id,
             amount: String(wallet.balance || "0"),
             currency: wallet.currency,
-            label: currenciesData[wallet.currency]?.label || wallet.currency,
+            label: currencies[wallet.currency]?.label || wallet.currency,
           }))
           setP2pBalances(balancesList)
         }
@@ -98,7 +100,7 @@ export default function WalletPage() {
           {displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
           ) : (
-            <TransactionsTab selectedCurrency={selectedCurrency} />
+            <TransactionsTab selectedCurrency={selectedCurrency} currencies={currenciesData} />
           )}
         </div>
       </div>

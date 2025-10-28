@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { fetchTransactions, getCurrencies } from "@/services/api/api-wallets"
+import { fetchTransactions } from "@/services/api/api-wallets"
 import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 import { formatAmountWithDecimals } from "@/lib/utils"
@@ -38,31 +38,16 @@ interface TransactionsResponse {
 
 interface TransactionsTabProps {
   selectedCurrency?: string | null
+  currencies?: Record<string, any>
 }
 
-export default function TransactionsTab({ selectedCurrency }: TransactionsTabProps) {
+export default function TransactionsTab({ selectedCurrency, currencies = {} }: TransactionsTabProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
   const [activeFilter, setActiveFilter] = useState("All")
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
-  const [currencies, setCurrencies] = useState<Record<string, any>>({})
 
   const filters = ["All", "Deposit", "Withdraw", "Transfer"]
-
-  useEffect(() => {
-    const loadCurrencies = async () => {
-      try {
-        const data = await getCurrencies()
-        if (data?.data) {
-          setCurrencies(data.data)
-        }
-      } catch (error) {
-        console.error("Error loading currencies:", error)
-      }
-    }
-
-    loadCurrencies()
-  }, [])
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -241,7 +226,7 @@ export default function TransactionsTab({ selectedCurrency }: TransactionsTabPro
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
