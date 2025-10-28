@@ -160,13 +160,6 @@ export default function AdDetailsForm({
         errors.fixedRate = "Rate is required"
       } else if (rate <= 0) {
         errors.fixedRate = "Rate must be greater than 0"
-      } else if (priceRange.highestPrice !== null) {
-        if (rate > priceRange.highestPrice) {
-          errors.fixedRate = `Rate must not exceed ${priceRange.highestPrice.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })} ${forCurrency}`
-        }
       }
     }
 
