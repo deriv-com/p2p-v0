@@ -324,9 +324,8 @@ export default function BuySellPage() {
                   </div>
                 )}
               </div>
-              {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             </div>
-
+            {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               {!isV1Signup && (
                 <div className="flex gap-2 mb-3 flex-1 hidden">
