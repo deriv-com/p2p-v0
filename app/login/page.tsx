@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import * as AuthAPI from "@/services/api/api-auth"
@@ -15,6 +15,15 @@ export default function LoginPage() {
   const [resendTimer, setResendTimer] = useState(59)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
+
+  useEffect(() => {
+    const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
+    const loginUrl = isProduction
+      ? "https://home.deriv.com/dashboard/login"
+      : "https://staging-home.deriv.com/dashboard/login"
+
+    window.location.href = loginUrl
+  }, [])
 
   const handleLogin = async () => {
     try {
@@ -150,23 +159,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white px-4 py-6">
-      <div className="max-w-md mx-auto mt-12">
-        <h1 className="text-4xl font-bold text-black mb-8">Welcome back!</h1>
-        <div className="mb-6">
-          <label className="block text-gray-600 mb-3">Email</label>
-          <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@email.com" />
-          {error && <p className="text-red-500 mt-2 text-sm">{error}</p>}
-        </div>
-        <Button onClick={handleLogin} disabled={!email.trim() || isLoading} className="w-full">
-          {isLoading ? "Logging in..." : "Log in"}
-        </Button>
-        <div className="mt-[2rem] text-center">
-          Don't have an account yet?{" "}
-          <a className="text-primary" href="https://home.deriv.com/dashboard" target="_blank" rel="noopener noreferrer">
-            Sign up
-          </a>
-        </div>
+    <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+        <p className="text-gray-600">Redirecting to login...</p>
       </div>
     </div>
   )
