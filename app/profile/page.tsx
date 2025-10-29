@@ -116,7 +116,6 @@ export default function ProfilePage() {
   return (
     <>
       <div className="px-3 pt-3 md:pt-0">
-        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
         <div className="flex flex-col md:flex-row gap-6 h-full">
           <div className="flex-1 order-1">
             <UserInfo
@@ -130,6 +129,7 @@ export default function ProfilePage() {
               isLoading={isLoading}
               tradeBand={userData?.trade_band}
             />
+            {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
               <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} userData={userData} />
             </div>
