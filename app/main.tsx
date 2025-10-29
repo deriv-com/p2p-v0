@@ -9,6 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getLoginUrl } from "@/lib/utils"
 import "./globals.css"
 
 export default function Main({
@@ -50,7 +51,7 @@ export default function Main({
             window.history.replaceState({}, "", newUrl.toString())
           } catch (error) {
             if (!isPublic) {
-              router.push("/login")
+              window.location.href = getLoginUrl()
             }
             return
           }
@@ -64,7 +65,7 @@ export default function Main({
 
         if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
-          router.push("/login")
+          window.location.href = getLoginUrl()
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
 

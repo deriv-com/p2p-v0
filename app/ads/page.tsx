@@ -176,6 +176,7 @@ export default function AdsPage() {
           checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
+          disabled={tempBanUntil}
         />
         <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
           Hide my ads
@@ -201,11 +202,11 @@ export default function AdsPage() {
         {showDeletedBanner && (
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
-        {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
         <div className="flex-none container mx-auto">
-          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-0 md:m-0">
+          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
             All ads
           </div>
+          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex items-center justify-between my-6">
             {ads.length > 0 && (
               <Button

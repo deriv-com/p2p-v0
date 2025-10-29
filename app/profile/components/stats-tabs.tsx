@@ -13,6 +13,8 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface StatsTabsProps {
   stats?: any
@@ -32,6 +34,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showPaymentDetailsSheet, setShowPaymentDetailsSheet] = useState(false)
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
+  const userId = useUserDataStore((state) => state.userId)
 
   const tabs = [
     { id: "stats", label: "Stats" },
@@ -83,7 +86,20 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    setShowAddPaymentPanel(true)
+    if (userId) {
+      setShowAddPaymentPanel(true)
+    } else {
+      showAlert({
+        title: "Getting started with P2P",
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined
+      })
+    }
   }
 
   return (

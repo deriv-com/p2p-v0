@@ -103,8 +103,8 @@ export function AlertDialogProvider({ children }: AlertDialogProviderProps) {
     return (
       <div className="p-6 overflow-y-auto">
         {config.title && <div className="mb-8 font-bold text-lg">{config.title}</div>}
-        {config.description && <div className="mb-8 text-grayscale-100">{config.description}</div>}
-        <div className="flex flex-col gap-2 mt-6">
+        {config.description && <div className="text-grayscale-100">{config.description}</div>}
+        <div className="flex flex-col gap-2 mt-8">
           {config.cancelText && (
             <Button onClick={handleCancel} variant="primary" className="w-full">
               {config.cancelText}

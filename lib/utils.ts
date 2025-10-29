@@ -132,11 +132,7 @@ export function getMethodDisplayDetails(method: {
   }
 }
 
-export function formatStatus(
-  isDetailed: boolean,
-  status: string,
-  isBuyer: boolean
-): string {
+export function formatStatus(isDetailed: boolean, status: string, isBuyer: boolean): string {
   if (!status) return ""
 
   const statusMap: Record<string, string> = {
@@ -439,4 +435,10 @@ export const getHomeUrl = (isV1Signup = false, section = "") => {
   }
 
   return url
+}
+
+export const getLoginUrl = () => {
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
+  const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
+  return `https://${baseUrl}/dashboard/login`
 }

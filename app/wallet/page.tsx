@@ -89,13 +89,11 @@ export default function WalletPage() {
             isLoading={isLoading}
           />
         </div>
-
         {tempBanUntil && (
-          <div className="w-full px-6 md:px-0 mt-4">
+          <div className="w-full px-4 md:px-0 mt-4">
             <TemporaryBanAlert tempBanUntil={tempBanUntil} />
           </div>
         )}
-
         <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
           {displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />

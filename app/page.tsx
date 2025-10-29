@@ -275,7 +275,7 @@ export default function BuySellPage() {
         <div className="flex-shrink-0">
           <div className="mb-4 md:mb-6 md:flex md:flex-col justify-between gap-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-0 md:m-0">
+              <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
                   <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
@@ -325,7 +325,7 @@ export default function BuySellPage() {
                 )}
               </div>
             </div>
-
+            {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               {!isV1Signup && (
                 <div className="flex gap-2 mb-3 flex-1 hidden">
@@ -418,7 +418,6 @@ export default function BuySellPage() {
           </div>
         </div>
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
-          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div>
             {isLoading ? (
               <div className="text-center py-12">
