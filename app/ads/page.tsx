@@ -176,6 +176,7 @@ export default function AdsPage() {
           checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
+          disabled={tempBanUntil}
         />
         <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
           Hide my ads
