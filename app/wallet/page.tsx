@@ -94,7 +94,6 @@ export default function WalletPage() {
             <TemporaryBanAlert tempBanUntil={tempBanUntil} />
           </div>
         )}
-
         <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
           {displayBalances ? (
             <WalletBalances onBalanceClick={handleBalanceClick} balances={p2pBalances} isLoading={isLoading} />
