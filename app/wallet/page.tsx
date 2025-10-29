@@ -89,7 +89,6 @@ export default function WalletPage() {
             isLoading={isLoading}
           />
         </div>
-
         {tempBanUntil && (
           <div className="w-full px-6 md:px-0 mt-4">
             <TemporaryBanAlert tempBanUntil={tempBanUntil} />
