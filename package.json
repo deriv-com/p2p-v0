@@ -51,6 +51,7 @@
     "cookie": "^1.0.2",
     "date-fns": "latest",
     "embla-carousel-react": "latest",
+    "html2canvas": "latest",
     "immer": "latest",
     "input-otp": "latest",
     "jest": "latest",
