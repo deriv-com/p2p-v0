@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { AdActionsMenu } from "./ad-actions-menu"
+import ShareAdPage from "./share-ad-page"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -32,6 +33,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
+  const [showShareView, setShowShareView] = useState(false)
+  const [adToShare, setAdToShare] = useState<string | null>(null)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -101,7 +104,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleShare = (ad: Ad) => {
     setDrawerOpen(false)
-    router.push(`/ads/share/${ad.id}`)
+    setAdToShare(ad.id)
+    setShowShareView(true)
+  }
+
+  const handleCloseShareView = () => {
+    setShowShareView(false)
+    setAdToShare(null)
   }
 
   const handleEdit = (ad: Ad) => {
@@ -205,6 +214,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         redirectToAds={true}
       />
     )
+  }
+
+  if (showShareView && adToShare) {
+    return <ShareAdPage adId={adToShare} onClose={handleCloseShareView} />
   }
 
   return (

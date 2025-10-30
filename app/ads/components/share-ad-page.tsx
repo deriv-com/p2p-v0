@@ -1,21 +1,20 @@
 "use client"
 
 import { useEffect, useState, useRef } from "react"
-import { useRouter } from "next/navigation"
 import Image from "next/image"
 import QRCode from "qrcode"
 import html2canvas from "html2canvas"
 import { AdsAPI } from "@/services/api"
 import type { Ad } from "@/types"
-import Navigation from "@/components/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { Button } from "@/components/ui/button"
 
 interface ShareAdPageProps {
   adId: string
+  onClose: () => void
 }
 
-export default function ShareAdPage({ adId }: ShareAdPageProps) {
-  const router = useRouter()
+export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
   const { toast } = useToast()
   const [ad, setAd] = useState<Ad | null>(null)
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
@@ -127,15 +126,16 @@ export default function ShareAdPage({ adId }: ShareAdPageProps) {
     }
   }
 
-  const handleClose = () => {
-    router.push("/ads")
-  }
-
   if (isLoading) {
     return (
-      <div className="fixed w-full h-full bg-white top-0 left-0">
-        <Navigation isVisible={false} onClose={handleClose} title="Share ad" />
-        <div className="flex items-center justify-center h-full">
+      <div className="fixed inset-0 bg-white z-50 flex flex-col">
+        <div className="flex items-center gap-4 p-4 border-b">
+          <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
+            <Image src="/icons/back-arrow.svg" alt="Back" width={20} height={20} />
+          </Button>
+          <h1 className="text-xl font-bold">Share ad</h1>
+        </div>
+        <div className="flex items-center justify-center flex-1">
           <Image src="/icons/spinner.png" alt="Loading" width={40} height={40} className="animate-spin" />
         </div>
       </div>
@@ -144,9 +144,14 @@ export default function ShareAdPage({ adId }: ShareAdPageProps) {
 
   if (!ad) {
     return (
-      <div className="fixed w-full h-full bg-white top-0 left-0">
-        <Navigation isVisible={false} onClose={handleClose} title="Share ad" />
-        <div className="flex items-center justify-center h-full">
+      <div className="fixed inset-0 bg-white z-50 flex flex-col">
+        <div className="flex items-center gap-4 p-4 border-b">
+          <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
+            <Image src="/icons/back-arrow.svg" alt="Back" width={20} height={20} />
+          </Button>
+          <h1 className="text-xl font-bold">Share ad</h1>
+        </div>
+        <div className="flex items-center justify-center flex-1">
           <p className="text-gray-500">Ad not found</p>
         </div>
       </div>
@@ -154,11 +159,16 @@ export default function ShareAdPage({ adId }: ShareAdPageProps) {
   }
 
   return (
-    <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-      <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 overflow-x-hidden overflow-y-auto h-full">
-        <Navigation isVisible={false} onClose={handleClose} title="Share ad" />
+    <div className="fixed inset-0 bg-white z-50 flex flex-col">
+      <div className="flex items-center gap-4 p-4 border-b">
+        <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
+          <Image src="/icons/back-arrow.svg" alt="Back" width={20} height={20} />
+        </Button>
+        <h1 className="text-xl font-bold">Share ad</h1>
+      </div>
 
-        <div className="px-6 py-6 space-y-6">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-[620px] mx-auto px-6 py-6 space-y-6">
           {/* Ad Card */}
           <div ref={cardRef} className="bg-gradient-to-br from-[#FF444F] to-[#FF6444] rounded-lg p-6 text-white">
             <div className="mb-6">
