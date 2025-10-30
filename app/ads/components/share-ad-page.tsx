@@ -142,7 +142,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
 
   return (
     <div className="fixed inset-0 z-50 bg-white">
-      <div className="max-w-xl mx-auto flex flex-col w-full h-full">
+      <div className="flex flex-col h-full max-w-xl mx-auto">
         <div className="flex items-center justify-end p-6 pb-4">
           <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
