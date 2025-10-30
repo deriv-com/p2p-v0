@@ -155,7 +155,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 <div className="flex items-center gap-3">
                   <span className="text-white text-sm font-normal min-w-[80px]">Limits</span>
                   <span className="text-white text-sm font-bold">
-                    {minAmount.toFixed(2)} - {maxAmount.toFixed(2)} {currency}
+                    {minAmount?.toFixed(2)} - {maxAmount.toFixed(2)} {currency}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
