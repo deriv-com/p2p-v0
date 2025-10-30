@@ -32,7 +32,7 @@ export function AdActionsMenu({
         >
           <Image src="/icons/exchange-icon.png" alt="Share" width={16} height={16} />
           Share
-        </But>
+        </Button>
       <Button
         variant="ghost"
         size="sm"
