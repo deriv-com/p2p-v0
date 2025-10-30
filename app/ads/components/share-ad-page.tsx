@@ -239,6 +239,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             </Button>
 
             <Button
+              variant="ghost"
               onClick={() => handleShare("twitter")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -254,6 +255,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             </Button>
 
             <Button
+              variant="ghost"
               onClick={() => handleShare("gmail")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -269,6 +271,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             </Button>
 
             <Button
+              variant="ghost"
               onClick={handleCopyLink}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -294,6 +297,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             </Button>
 
             <Button
+              variant="ghost"
               onClick={handleSaveImage}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
