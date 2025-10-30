@@ -17,7 +17,6 @@ import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { AdActionsMenu } from "./ad-actions-menu"
-import { ShareAdModal } from "./share-ad-modal"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -33,8 +32,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const isMobile = useIsMobile()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
-  const [shareModalOpen, setShareModalOpen] = useState(false)
-  const [adToShare, setAdToShare] = useState<Ad | null>(null)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -104,8 +101,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleShare = (ad: Ad) => {
     setDrawerOpen(false)
-    setAdToShare(ad)
-    setShareModalOpen(true)
+    router.push(`/ads/share/${ad.id}`)
   }
 
   const handleEdit = (ad: Ad) => {
@@ -357,8 +353,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           </div>
         </DrawerContent>
       </Drawer>
-
-      <ShareAdModal ad={adToShare} open={shareModalOpen} onOpenChange={setShareModalOpen} />
     </>
   )
 }

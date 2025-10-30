@@ -62,6 +62,7 @@
     "node-notifier": "8.0.1",
     "path": "latest",
     "pcre-to-regexp": "^1.1.0",
+    "qrcode": "latest",
     "react": "^19",
     "react-day-picker": "latest",
     "react-dom": "^19",
