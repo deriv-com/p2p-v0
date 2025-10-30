@@ -24,7 +24,6 @@ export function AdActionsMenu({
   const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
   return (
     <>
-      {onShare && (
         <Button
           variant="ghost"
           size="sm"
@@ -33,8 +32,7 @@ export function AdActionsMenu({
         >
           <Image src="/icons/exchange-icon.png" alt="Share" width={16} height={16} />
           Share
-        </Button>
-      )}
+        </But>
       <Button
         variant="ghost"
         size="sm"
