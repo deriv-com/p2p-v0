@@ -52,7 +52,6 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
     if (!cardRef.current) return
 
     try {
-      // Use html2canvas to convert the card to an image
       const html2canvas = (await import("html2canvas")).default
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#ffffff",
