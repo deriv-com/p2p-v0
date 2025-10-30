@@ -141,7 +141,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
   }
 
   return (
-    <div className="fixed inset-0 bg-white z-50 flex flex-col">
+    <div className="fixed inset-0 bg-white z-50 max-w-xl mx-auto flex flex-col w-full h-full">
       <div className="flex items-center gap-4 p-4 border-b">
         <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
           <Image src="/icons/back-arrow.svg" alt="Back" width={20} height={20} />
