@@ -22,7 +22,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
   const rate = ad.exchange_rate || ad.rate?.value || "N/A"
   const minAmount = ad.minimum_order_amount
   const maxAmount = ad.actual_maximum_order_amount
-  const currency = ad.account_currency || "USD"
+  const currency = ad.account_currency
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/ads/${ad.id}` : ""
 
