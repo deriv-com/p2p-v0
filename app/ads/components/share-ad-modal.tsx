@@ -168,8 +168,6 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                   <span className="text-white text-sm font-bold">{rate}</span>
                 </div>
               </div>
-
-              {/* QR Code */}
               <div className="flex flex-col items-center">
                 <div className="bg-white p-4 rounded-lg mb-3">
                   <div className="w-[140px] h-[140px] bg-white flex items-center justify-center">
@@ -185,8 +183,6 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
               </div>
             </div>
           </div>
-
-          {/* Share Options */}
           <div className="flex items-center justify-center gap-4 mt-6">
             <button
               onClick={() => handleShare("whatsapp")}
@@ -218,7 +214,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
               <span className="text-xs text-gray-600">Facebook</span>
             </button>
 
-            <button
+            <Button
               onClick={() => handleShare("telegram")}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
@@ -231,9 +227,9 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-600">Telegram</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("twitter")}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
@@ -246,9 +242,9 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-600">Twitter</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("gmail")}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
@@ -261,9 +257,9 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-600">Gmail</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={handleCopyLink}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
@@ -271,9 +267,9 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 <Image src="/icons/copy-icon.png" alt="Copy" width={20} height={20} />
               </div>
               <span className="text-xs text-gray-600">Copy link</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={handleSaveImage}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
