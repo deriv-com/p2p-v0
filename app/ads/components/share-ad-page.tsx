@@ -177,7 +177,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
 
               {qrCodeUrl && (
                 <>
-                  <div className="bg-white rounded-lg p-4 flex flex-col items-center w-fit mx-auto">
+                  <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
                     <Image src={qrCodeUrl} alt="QR Code" width={110} height={110} />
                   </div>
                   <p className="text-gray-600 text-sm mt-3 text-center">Scan this code to order via Deriv P2P</p>
