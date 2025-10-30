@@ -28,19 +28,19 @@ export function AdActionsMenu({
         variant="ghost"
         size="sm"
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
-        onClick={() => onShare(ad)}
+        onClick={() => onEdit(ad)}
       >
-        <Image src="/icons/exchange-icon.png" alt="Share" width={16} height={16} />
-        Share
+        <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
+        Edit
       </Button>
       <Button
         variant="ghost"
         size="sm"
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
-        onClick={() => onEdit(ad)}
+        onClick={() => onShare(ad)}
       >
-        <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
-        Edit
+        <Image src="/icons/exchange-icon.png" alt="Share" width={16} height={16} />
+        Share
       </Button>
       <Button
         variant="ghost"
