@@ -236,7 +236,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-[#EA4335] flex items-center justify-center">
-                  <Image src="/icons/gmail.svg" alt="Gmail" width={36} height={36} />
+                  <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Gmail</span>
               </Button>
