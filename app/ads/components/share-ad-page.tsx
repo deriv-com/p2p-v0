@@ -124,6 +124,15 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="text-center py-12">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+        <p className="mt-2 text-slate-600">Loading ads...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-white">
       <div className="flex flex-col h-full max-w-xl mx-auto">
