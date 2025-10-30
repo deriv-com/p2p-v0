@@ -193,7 +193,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
                 </div>
-                <span className="text-xs text-gray-700">WhatsApp</span>
+                <span className="text-xs font-normal text-gray-700">WhatsApp</span>
               </Button>
 
               <Button
