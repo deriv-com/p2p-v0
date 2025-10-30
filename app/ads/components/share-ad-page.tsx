@@ -214,7 +214,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-[#0088cc] flex items-center justify-center">
-                  <Image src="/icons/Telegram.svg" alt="Telegram" width={36} height={36} />
+                  <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Telegram</span>
               </Button>
@@ -225,12 +225,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
-                      fill="white"
-                    />
-                  </svg>
+                  <Image src="/icons/twitter.svg" alt="Twitter" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Twitter</span>
               </Button>
