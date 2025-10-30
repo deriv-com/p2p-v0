@@ -18,8 +18,8 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
 
   if (!ad) return null
 
-  const adType = ad.type || "Buy"
-  const rate = ad.exchange_rate || ad.rate?.value || "N/A"
+  const adType = ad.type
+  const rate = ad.exchange_rate
   const minAmount = ad.minimum_order_amount
   const maxAmount = ad.actual_maximum_order_amount
   const currency = ad.account_currency
