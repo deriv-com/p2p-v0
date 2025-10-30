@@ -254,7 +254,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
               <Button
                 variant="ghost"
                 onClick={handleSaveImage}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-auto"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                    <Image src="/icons/download.svg" alt="download" width={36} height={36} />
