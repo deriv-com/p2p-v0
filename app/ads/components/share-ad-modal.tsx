@@ -7,7 +7,7 @@ import type { Ad } from "../types"
 import { useToast } from "@/hooks/use-toast"
 
 interface ShareAdModalProps {
-  ad: Ad | null
+  ad: Ad
   open: boolean
   onOpenChange: (open: boolean) => void
 }
