@@ -2,6 +2,7 @@
 
 import { useRef } from "react"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"
 import type { Ad } from "../types"
 import { useToast } from "@/hooks/use-toast"
