@@ -140,18 +140,15 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
 
             {/* Content */}
             <div className="relative z-10">
-              {/* Logo */}
               <div className="mb-6">
                 <span className="text-white text-xl font-normal italic">deriv</span>
                 <span className="text-white text-xl font-bold">P2P</span>
               </div>
 
-              {/* Ad Type */}
               <div className="text-white text-2xl font-bold mb-6">
                 {adType} {currency}
               </div>
 
-              {/* Ad Details */}
               <div className="space-y-2 mb-8">
                 <div className="flex items-center gap-3">
                   <span className="text-white text-sm font-normal min-w-[80px]">ID number</span>
@@ -184,7 +181,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
             </div>
           </div>
           <div className="flex items-center justify-center gap-4 mt-6">
-            <button
+            <Button
               onClick={() => handleShare("whatsapp")}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
@@ -197,9 +194,9 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-600">WhatsApp</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("facebook")}
               className="flex flex-col items-center gap-1 hover:opacity-80 transition-opacity"
             >
@@ -212,7 +209,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-600">Facebook</span>
-            </button>
+            </Button>
 
             <Button
               onClick={() => handleShare("telegram")}
@@ -279,7 +276,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-600">Save image</span>
-            </button>
+            </Button>
           </div>
         </div>
       </DialogContent>
