@@ -340,7 +340,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">Save image</span>
-            </button>
+            </Button>
           </div>
         </div>
       </div>
