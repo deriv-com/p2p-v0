@@ -20,8 +20,8 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
 
   const adType = ad.type || "Buy"
   const rate = ad.exchange_rate || ad.rate?.value || "N/A"
-  const minAmount = ad.minimum_order_amount || (typeof ad.limits === "object" ? ad.limits.min : 0)
-  const maxAmount = ad.actual_maximum_order_amount || (typeof ad.limits === "object" ? ad.limits.max : 0)
+  const minAmount = ad.minimum_order_amount
+  const maxAmount = ad.actual_maximum_order_amount
   const currency = ad.account_currency || "USD"
 
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/ads/${ad.id}` : ""
@@ -155,7 +155,7 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
                 <div className="flex items-center gap-3">
                   <span className="text-white text-sm font-normal min-w-[80px]">Limits</span>
                   <span className="text-white text-sm font-bold">
-                    {minAmount?.toFixed(2)} - {maxAmount.toFixed(2)} {currency}
+                    {minAmount?.toFixed(2)} - {maxAmount?.toFixed(2)} {currency}
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
