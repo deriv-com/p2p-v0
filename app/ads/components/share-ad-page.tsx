@@ -149,7 +149,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
       </div>
 
       <div className="flex-1 overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-6"></h2>
+        <h2 className="text-2xl font-bold mb-6">Share ad</h2>
         <div className="max-w-[620px] mx-auto px-6 py-6 space-y-6">
           <div ref={cardRef} className="bg-primary py-6 px-8 text-white">
             <div className="mb-6">
