@@ -194,6 +194,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
           </div>
           <div className="grid grid-cols-4 gap-4">
             <Button
+              variant="ghost"
               onClick={() => handleShare("whatsapp")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -209,6 +210,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             </Button>
 
             <Button
+              variant="ghost"
               onClick={() => handleShare("facebook")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -224,6 +226,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             </Button>
 
             <Button
+              variant="ghost"
               onClick={() => handleShare("telegram")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
