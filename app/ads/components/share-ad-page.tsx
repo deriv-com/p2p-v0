@@ -147,7 +147,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
             <div ref={cardRef} className="bg-primary py-6 px-8 text-white">
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Image src="/icons/p2p-lo.svg" alt="WhatsApp" width={36} height={36} />
+                  <Image src="/icons/p2p-logo-white.svg" alt="WhatsApp"/>
                 </div>
                 <h2 className="text-2xl font-bold">
                   {ad.type === "buy" ? "Buy" : "Sell"} {ad.payment_currency}
