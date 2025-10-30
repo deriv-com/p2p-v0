@@ -259,7 +259,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                    <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                 </div>
-                <span className="text-xs text-gray-700">Save image</span>
+                <span className="text-xs font-normal text-slate-1600">Save image</span>
               </Button>
             </div>
           </div>
