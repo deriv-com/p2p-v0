@@ -167,7 +167,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
 
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-[620px] mx-auto px-6 py-6 space-y-6">
-          <div ref={cardRef} className="bg-gradient-to-br from-[#FF444F] to-[#FF6444] rounded-lg p-6 text-white">
+          <div ref={cardRef} className="bg-primary py-6 px-8 text-white">
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-4">
                 <span className="font-bold text-lg">deriv</span>
