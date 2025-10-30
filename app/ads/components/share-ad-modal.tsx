@@ -137,8 +137,6 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
               className="absolute bottom-0 left-0 right-0 h-[140px] bg-[#F4F4F4]"
               style={{ clipPath: "polygon(0 30%, 100% 0, 100% 100%, 0 100%)" }}
             />
-
-            {/* Content */}
             <div className="relative z-10">
               <div className="mb-6">
                 <span className="text-white text-xl font-normal italic">deriv</span>
