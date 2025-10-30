@@ -236,7 +236,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-[#EA4335] flex items-center justify-center">
-                  <Image src="/icons/Gmail.svg" alt="Gmail" width={36} height={36} />
+                  <Image src="/icons/gmail.svg" alt="Gmail" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Gmail</span>
               </Button>
@@ -247,22 +247,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Copy link</span>
               </Button>
@@ -273,32 +258,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <polyline
-                      points="7 10 12 15 17 10"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <line
-                      x1="12"
-                      y1="15"
-                      x2="12"
-                      y2="3"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                   <Image src="/icons/download.svg" alt="link" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Save image</span>
               </Button>
