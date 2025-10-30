@@ -140,22 +140,6 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
     )
   }
 
-  if (!ad) {
-    return (
-      <div className="fixed inset-0 bg-white z-50 flex flex-col">
-        <div className="flex items-center gap-4 p-4 border-b">
-          <Button variant="ghost" size="sm" onClick={onClose} className="p-2">
-            <Image src="/icons/back-arrow.svg" alt="Back" width={20} height={20} />
-          </Button>
-          <h1 className="text-xl font-bold">Share ad</h1>
-        </div>
-        <div className="flex items-center justify-center flex-1">
-          <p className="text-gray-500">Ad not found</p>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="fixed inset-0 bg-white z-50 flex flex-col">
       <div className="flex items-center gap-4 p-4 border-b">
