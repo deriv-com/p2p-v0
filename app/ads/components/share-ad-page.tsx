@@ -167,7 +167,6 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
 
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-[620px] mx-auto px-6 py-6 space-y-6">
-          {/* Ad Card */}
           <div ref={cardRef} className="bg-gradient-to-br from-[#FF444F] to-[#FF6444] rounded-lg p-6 text-white">
             <div className="mb-6">
               <div className="flex items-center gap-2 mb-4">
@@ -207,10 +206,8 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
               </div>
             )}
           </div>
-
-          {/* Share Options */}
           <div className="grid grid-cols-4 gap-4">
-            <button
+            <Button
               onClick={() => handleShare("whatsapp")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -223,9 +220,9 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">WhatsApp</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("facebook")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -238,9 +235,9 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">Facebook</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("telegram")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -253,9 +250,9 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">Telegram</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("twitter")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -268,9 +265,9 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">Twitter</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={() => handleShare("gmail")}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -283,9 +280,9 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">Gmail</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={handleCopyLink}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -308,9 +305,9 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 </svg>
               </div>
               <span className="text-xs text-gray-700">Copy link</span>
-            </button>
+            </Button>
 
-            <button
+            <Button
               onClick={handleSaveImage}
               className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
             >
