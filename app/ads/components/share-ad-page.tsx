@@ -258,7 +258,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
-                   <Image src="/icons/download.svg" alt="link" width={36} height={36} />
+                   <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Save image</span>
               </Button>
