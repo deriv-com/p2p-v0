@@ -24,7 +24,6 @@ export function ShareAdModal({ ad, open, onOpenChange }: ShareAdModalProps) {
   const maxAmount = ad.actual_maximum_order_amount || (typeof ad.limits === "object" ? ad.limits.max : 0)
   const currency = ad.account_currency || "USD"
 
-  // Generate shareable URL
   const shareUrl = typeof window !== "undefined" ? `${window.location.origin}/ads/${ad.id}` : ""
 
   const handleCopyLink = async () => {
