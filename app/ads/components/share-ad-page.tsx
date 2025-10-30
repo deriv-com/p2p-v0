@@ -191,7 +191,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("whatsapp")}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-[#25D366] flex items-center justify-center">
+                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">WhatsApp</span>
@@ -202,7 +202,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("facebook")}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-[#1877F2] flex items-center justify-center">
+                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Facebook</span>
@@ -213,7 +213,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("telegram")}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-[#0088cc] flex items-center justify-center">
+                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Telegram</span>
@@ -224,7 +224,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("twitter")}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/twitter.svg" alt="Twitter" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Twitter</span>
@@ -235,7 +235,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("gmail")}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-[#EA4335] flex items-center justify-center">
+                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Gmail</span>
@@ -246,7 +246,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 onClick={handleCopyLink}
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center">
+                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                 </div>
                 <span className="text-xs text-gray-700">Copy link</span>
