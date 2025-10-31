@@ -8,6 +8,8 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import MobileFooterNav from "@/components/mobile-footer-nav"
 
 interface Balance {
   wallet_id: string
@@ -26,6 +28,7 @@ export default function WalletPage() {
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const isDisabled = userData?.status === "disabled"
 
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
@@ -74,6 +77,14 @@ export default function WalletPage() {
     setSelectedCurrency(null)
     setTotalBalance(null)
     loadBalanceData()
+  }
+
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+      </div>
+    )
   }
 
   return (

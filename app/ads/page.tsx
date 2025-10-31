@@ -18,6 +18,8 @@ import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import MobileFooterNav from "@/components/mobile-footer-nav"
 
 interface StatusData {
   success: "create" | "update"
@@ -34,6 +36,7 @@ export default function AdsPage() {
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const isDisabled = userData?.status === "disabled"
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -192,6 +195,14 @@ export default function AdsPage() {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+      </div>
+    )
+  }
+
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
       </div>
     )
   }
