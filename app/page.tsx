@@ -75,10 +75,12 @@ export default function BuySellPage() {
 
   const balancesKey = useMemo(() => {
     if (isV1Signup) {
-      return JSON.stringify(userData?.balances || [])
+      const balances = userData?.balances || []
+      if (balances.length === 0) return "v1-empty"
+      return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
     }
-    return isV1Signup ? "v1" : "v2"
-  }, [isV1Signup, userData])
+    return "v2"
+  }, [isV1Signup, userData?.balances])
 
   const fetchBalance = useCallback(async () => {
     if (!userData) {
