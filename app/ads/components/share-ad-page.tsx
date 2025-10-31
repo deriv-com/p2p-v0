@@ -156,7 +156,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="grid grid-cols-2">
                   <span className="opacity-90">Limits</span>
                   <span className="font-semibold">
-                    {ad.limits.min} - {ad.limits.max} {ad.payment_currency}
+                    {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
                 <div className="grid grid-cols-2">
