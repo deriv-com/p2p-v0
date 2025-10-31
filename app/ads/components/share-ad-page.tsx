@@ -7,6 +7,7 @@ import html2canvas from "html2canvas"
 import type { Ad } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface ShareAdPageProps {
   ad: Ad
@@ -18,6 +19,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
   const cardRef = useRef<HTMLDivElement>(null)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const generateQRCode = async () => {
@@ -118,6 +120,53 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     }
   }
 
+  const handleShareImage = async () => {
+    if (!cardRef.current) return
+
+    try {
+      const canvas = await html2canvas(cardRef.current, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+      })
+
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((blob) => {
+          if (blob) resolve(blob)
+        })
+      })
+
+      const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, { type: "image/png" })
+
+      if (navigator.share && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
+          text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
+        })
+
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
+              <span>Shared successfully</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      } else {
+        handleSaveImage()
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name !== "AbortError") {
+        toast({
+          description: "Failed to share image",
+          variant: "destructive",
+        })
+      }
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="text-center py-12">
@@ -138,7 +187,10 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         <div className="flex-1 overflow-y-auto">
           <h2 className="text-2xl font-bold">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6">
-            <div ref={cardRef} className="w-[358px] bg-[linear-gradient(172deg,_#f4434f_73%,_rgba(0,0,0,0.04)_27%)] py-6 px-8 text-white">
+            <div
+              ref={cardRef}
+              className="w-[358px] bg-[linear-gradient(172deg,_#f4434f_73%,_rgba(0,0,0,0.04)_27%)] py-6 px-8 text-white"
+            >
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
@@ -174,88 +226,116 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
                     <Image src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
-                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">Scan this code to order via Deriv P2P</p>
+                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">
+                    Scan this code to order via Deriv P2P
+                  </p>
                 </>
               )}
             </div>
-            <div className="flex gap-6">
-              <Button
-                variant="ghost"
-                onClick={() => handleShare("whatsapp")}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">WhatsApp</span>
-              </Button>
+            {isMobile ? (
+              <div className="flex gap-6">
+                <Button
+                  variant="ghost"
+                  onClick={handleShareImage}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/share.svg" alt="Share" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Share image</span>
+                </Button>
 
-              <Button
-                variant="ghost"
-                onClick={() => handleShare("facebook")}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">Facebook</span>
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={handleSaveImage}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/download.svg" alt="download" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Save image</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex gap-6">
+                <Button
+                  variant="ghost"
+                  onClick={() => handleShare("whatsapp")}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">WhatsApp</span>
+                </Button>
 
-              <Button
-                variant="ghost"
-                onClick={() => handleShare("telegram")}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => handleShare("facebook")}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Facebook</span>
+                </Button>
 
-              <Button
-                variant="ghost"
-                onClick={() => handleShare("twitter")}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">Twitter</span>
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => handleShare("telegram")}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
+                </Button>
 
-              <Button
-                variant="ghost"
-                onClick={() => handleShare("gmail")}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">Gmail</span>
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => handleShare("twitter")}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Twitter</span>
+                </Button>
 
-              <Button
-                variant="ghost"
-                onClick={handleCopyLink}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/link.svg" alt="link" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={() => handleShare("gmail")}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Gmail</span>
+                </Button>
 
-              <Button
-                variant="ghost"
-                onClick={handleSaveImage}
-                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-              >
-                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                  <Image src="/icons/download.svg" alt="download" width={36} height={36} />
-                </div>
-                <span className="text-[10px] font-normal text-slate-1600">Save image</span>
-              </Button>
-            </div>
+                <Button
+                  variant="ghost"
+                  onClick={handleCopyLink}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/link.svg" alt="link" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  onClick={handleSaveImage}
+                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
+                >
+                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
+                    <Image src="/icons/download.svg" alt="download" width={36} height={36} />
+                  </div>
+                  <span className="text-[10px] font-normal text-slate-1600">Save image</span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
