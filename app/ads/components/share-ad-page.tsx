@@ -185,7 +185,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto">
-          <h2 className="text-2xl font-bold">Share ad</h2>
+          <h2 className="text-2xl font-bold ">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6">
             <div
               ref={cardRef}
@@ -233,7 +233,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               )}
             </div>
             {isMobile ? (
-              <div className="flex flex-col gap-2 w-full px-">
+              <div className="flex flex-col gap-2 w-full px-4">
                 <Button
                   onClick={handleShareImage}
                 >Share image
