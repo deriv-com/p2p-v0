@@ -25,7 +25,7 @@ export function P2PAccessRemoved() {
           />
         </div>
 
-        <h1 className="text-2xl font-bold text-slate-1200 mb-4">P2P access removed</h1>
+        <h1 className="text-base font-bold text-slate-1200 mb-4">P2P access removed</h1>
 
         <p className="text-base text-slate-600 mb-8 leading-relaxed">
           You can no longer use your Deriv P2P account. Check your email for more details. For support, reach out to us
