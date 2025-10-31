@@ -239,7 +239,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 >Share image
                 </Button>
                 <Button
-                  variant="ghost"
+                  variant="outline"
                   onClick={handleSaveImage}>Save image</Button>
               </div>
             ) : (
