@@ -19,8 +19,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const [isLoading, setIsLoading] = useState(true)
   const cardRef = useRef<HTMLDivElement>(null)
 
-  console.log(ad)
-
   useEffect(() => {
     const generateQRCode = async () => {
       try {
