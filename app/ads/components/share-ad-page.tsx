@@ -185,7 +185,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto">
-          <h2 className="text-2xl font-bold ">Share ad</h2>
+          <h2 className="text-2xl font-bold px-4 md:px-0">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6">
             <div
               ref={cardRef}
@@ -196,7 +196,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
                 </div>
                 <div className="text-lg font-bold">
-                  {ad.type === "buy" ? "Sell" : "Sell"} {ad.account_currency}
+                  {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
                 </div>
               </div>
 
