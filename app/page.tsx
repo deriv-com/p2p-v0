@@ -76,9 +76,17 @@ export default function BuySellPage() {
       return JSON.stringify(userData?.balances || [])
     }
     return isV1Signup ? "v1" : "v2"
-  }, [isV1Signup, userData?.balances])
+  }, [isV1Signup, userData])
 
   const fetchBalance = useCallback(async () => {
+    if (!userData) {
+      return
+    }
+
+    if (isV1Signup && !userData?.balances) {
+      return
+    }
+
     if (fetchedForRef.current === balancesKey) {
       return
     }
@@ -106,7 +114,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData?.balances])
+  }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
     fetchBalance()
