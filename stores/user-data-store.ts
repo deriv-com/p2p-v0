@@ -12,6 +12,7 @@ export interface UserData {
   temp_ban_until?: number | null
   is_online?: boolean
   balances?: Array<{ amount: string; currency: string }>
+  status?: string
 }
 
 export interface VerificationStatus {

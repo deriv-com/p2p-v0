@@ -7,6 +7,8 @@ import StatsTabs from "./components/stats-tabs"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import MobileFooterNav from "@/components/mobile-footer-nav"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
@@ -15,6 +17,7 @@ export default function ProfilePage() {
   const { userData: user } = useUserDataStore()
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
+  const isDisabled = user?.status === "disabled"
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -113,6 +116,17 @@ export default function ProfilePage() {
     fetchUserData()
   }, [])
 
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+        <div className="flex-shrink-0">
+          <MobileFooterNav />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="px-3 pt-3 md:pt-0">
@@ -131,7 +145,11 @@ export default function ProfilePage() {
             />
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
             <div className="md:w-[50%] flex flex-col gap-6 order-2 my-4">
-              <TradeLimits buyLimit={userData?.tradeLimits?.buy} sellLimit={userData?.tradeLimits?.sell} userData={userData} />
+              <TradeLimits
+                buyLimit={userData?.tradeLimits?.buy}
+                sellLimit={userData?.tradeLimits?.sell}
+                userData={userData}
+              />
             </div>
             <StatsTabs stats={userData} isLoading={isLoading} />
           </div>

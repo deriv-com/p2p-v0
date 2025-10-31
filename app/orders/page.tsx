@@ -24,6 +24,8 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import MobileFooterNav from "@/components/mobile-footer-nav"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -55,6 +57,7 @@ export default function OrdersPage() {
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
+  const isDisabled = userData?.status === "disabled"
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -325,6 +328,17 @@ export default function OrdersPage() {
       </div>
     </div>
   )
+
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+        <div className="flex-shrink-0">
+          <MobileFooterNav />
+        </div>
+      </div>
+    )
+  }
 
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =

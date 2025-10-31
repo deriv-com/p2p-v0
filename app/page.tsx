@@ -24,6 +24,7 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 
 export default function BuySellPage() {
   const router = useRouter()
@@ -70,6 +71,7 @@ export default function BuySellPage() {
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
+  const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
     if (isV1Signup) {
@@ -276,6 +278,17 @@ export default function BuySellPage() {
       }
     }
   }, [])
+
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+        <div className="flex-shrink-0">
+          <MobileFooterNav />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>

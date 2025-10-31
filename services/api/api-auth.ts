@@ -225,6 +225,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const brand = result?.data?.brand
     const tempBanUntil = result?.data?.temp_ban_until
     const balances = result?.data?.balances
+    const status = result?.data?.status
 
     if (userId) {
       useUserDataStore.getState().setUserId(userId.toString())
@@ -244,6 +245,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
           wallet_id: result.data.wallet_id,
           temp_ban_until: tempBanUntil,
           balances: balances,
+          status: status,
         })
       }
     }
@@ -399,7 +401,6 @@ export async function getUserBalance(): Promise<{ amount: string; currency: stri
     const result = await response.json()
     const balances = result?.data?.balances || []
 
-    // Get balance from balances[0].amount
     const firstBalance = balances[0] || {}
     return {
       amount: firstBalance.amount || "0.00",

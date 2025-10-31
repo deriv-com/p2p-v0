@@ -27,6 +27,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
   const userName = userData?.nickname ?? userData?.email
+  const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
     checkUserSignupStatus()
@@ -54,12 +55,16 @@ export default function Sidebar({ className }: SidebarProps) {
 
   const navItems = [
     { name: "Back to Home", href: homeUrl, icon: HomeIcon },
-    { name: "Market", href: "/", icon: MarketIcon },
-    { name: "Orders", href: "/orders", icon: OrdersIcon },
-    { name: "My Ads", href: "/ads", icon: AdsIcon },
-    ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
-    { name: "Profile", href: "/profile", icon: ProfileIcon },
-    { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
+    ...(!isDisabled
+      ? [
+          { name: "Market", href: "/", icon: MarketIcon },
+          { name: "Orders", href: "/orders", icon: OrdersIcon },
+          { name: "My Ads", href: "/ads", icon: AdsIcon },
+          ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
+          { name: "Profile", href: "/profile", icon: ProfileIcon },
+          { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
+        ]
+      : []),
   ]
 
   const hideOnMobile = ["Market", "Orders", "My Ads", "Wallet", "Profile"]
