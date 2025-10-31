@@ -149,11 +149,11 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               </div>
 
               <div className="space-y-2 mb-6">
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2">
                   <span className="opacity-90">ID number</span>
                   <span className="font-semibold">{ad.id}</span>
                 </div>
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2">
                   <span className="opacity-90">Limits</span>
                   <span className="font-semibold">
                     {ad.minimum_order_amount} - {ad.maximum_order_amount} {ad.payment_currency}
