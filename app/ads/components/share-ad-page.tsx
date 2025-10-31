@@ -148,7 +148,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 </div>
               </div>
 
-              <div className="space-y-2 mb-6">
+              <div className="space-y-1 mb-">
                 <div className="grid grid-cols-2">
                   <span className="text-sm">ID number</span>
                   <span className="font-bold text-sm">{ad.id}</span>
