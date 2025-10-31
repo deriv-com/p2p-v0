@@ -56,7 +56,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(adUrl)}`,
       telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(text)}`,
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(adUrl)}`,
-      gmail: `mailto:?subject=${encodeURIComponent(text)}&body=${encodeURIComponent(adUrl)}`,
+      gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(adUrl)}`,
     }
 
     if (shareUrls[platform]) {
