@@ -74,15 +74,22 @@ export default function BuySellPage() {
   const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
+    // Don't create a key until we know the signup version
+    if (!userData?.signup) return null
+
     if (isV1Signup) {
       const balances = userData?.balances || []
       if (balances.length === 0) return "v1-empty"
       return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
     }
     return "v2"
-  }, [isV1Signup, userData?.balances])
+  }, [isV1Signup, userData?.balances, userData?.signup])
 
   const fetchBalance = useCallback(async () => {
+    if (!userData?.signup) {
+      return
+    }
+
     if (!userData) {
       return
     }
