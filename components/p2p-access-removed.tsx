@@ -31,11 +31,6 @@ export function P2PAccessRemoved() {
           You can no longer use your Deriv P2P account. Check your email for more details. For support, reach out to us
           via live chat.
         </p>
-
-        <Button onClick={handleLiveChat} className="bg-[#FF444F] hover:bg-[#FF444F]/90 text-white px-8 py-6 text-base">
-          <Image src="/icons/chat-white.jpg" alt="Chat" width={20} height={20} className="mr-2" />
-          Live chat
-        </Button>
       </div>
     </div>
   )
