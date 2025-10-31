@@ -178,7 +178,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 </>
               )}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-4">
               <Button
                 variant="ghost"
                 onClick={() => handleShare("whatsapp")}
