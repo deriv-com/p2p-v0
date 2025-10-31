@@ -83,9 +83,6 @@ export default function WalletPage() {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
         <P2PAccessRemoved />
-        <div className="flex-shrink-0">
-          <MobileFooterNav />
-        </div>
       </div>
     )
   }
