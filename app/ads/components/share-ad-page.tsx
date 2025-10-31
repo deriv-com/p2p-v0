@@ -233,7 +233,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               )}
             </div>
             {isMobile ? (
-              <div className="flex flex-col gap-2 w-full">
+              <div className="flex flex-col gap-2 w-full px-">
                 <Button
                   onClick={handleShareImage}
                 >Share image
