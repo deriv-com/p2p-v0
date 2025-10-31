@@ -164,7 +164,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <span className="font-semibold">
                     {ad.exchange_rate_type === "float"
                       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
-                      : ad.exchange_rate}
+                      : ad.rate.value}
                   </span>
                 </div>
               </div>
