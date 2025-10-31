@@ -301,7 +301,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-span-full whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
