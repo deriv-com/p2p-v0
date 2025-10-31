@@ -23,7 +23,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const [showWallet, setShowWallet] = useState(true)
+  const [showWallet, setShowWallet] = useState(false)
   const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
   const userName = userData?.nickname ?? userData?.email
