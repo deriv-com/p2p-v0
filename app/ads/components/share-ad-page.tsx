@@ -182,7 +182,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               <Button
                 variant="ghost"
                 onClick={() => handleShare("whatsapp")}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-fit"
+                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
@@ -193,7 +193,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               <Button
                 variant="ghost"
                 onClick={() => handleShare("facebook")}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-fit"
+                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
@@ -204,7 +204,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               <Button
                 variant="ghost"
                 onClick={() => handleShare("telegram")}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-fit"
+                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
