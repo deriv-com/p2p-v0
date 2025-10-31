@@ -17,7 +17,7 @@ export function P2PAccessRemoved() {
       <div className="flex flex-col items-center max-w-[600px] text-center">
         <div className="mb-8">
           <Image
-            src="/icons/illustration-blocked-users"
+            src="/icons/illustration-blocked-users.svg"
             alt="P2P access removed"
             width={200}
             height={200}
