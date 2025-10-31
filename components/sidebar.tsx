@@ -23,7 +23,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const [showWallet, setShowWallet] = useState(false)
+  const [showWallet, setShowWallet] = useState<boolean | null>(null)
   const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
   const userName = userData?.nickname ?? userData?.email
@@ -37,6 +37,10 @@ export default function Sidebar({ className }: SidebarProps) {
     try {
       const userDataFromStore = userData
 
+      if (!userDataFromStore?.signup) {
+        return
+      }
+
       if (userDataFromStore?.signup === "v1") {
         setShowWallet(false)
         setIsV1Signup(true)
@@ -45,7 +49,7 @@ export default function Sidebar({ className }: SidebarProps) {
         setIsV1Signup(false)
       }
     } catch (error) {
-      setShowWallet(false)
+      setShowWallet(true)
       setIsV1Signup(false)
     }
   }
@@ -60,7 +64,7 @@ export default function Sidebar({ className }: SidebarProps) {
           { name: "Market", href: "/", icon: MarketIcon },
           { name: "Orders", href: "/orders", icon: OrdersIcon },
           { name: "My Ads", href: "/ads", icon: AdsIcon },
-          ...(showWallet ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
+          ...(showWallet === true ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
           { name: "Profile", href: "/profile", icon: ProfileIcon },
           { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
         ]
