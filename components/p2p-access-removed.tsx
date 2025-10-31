@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 
 export function P2PAccessRemoved() {
   return (
-    <div className="flex flex-col items-center justify-center px-6 py-12">
+    <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6 py-12">
       <div className="flex flex-col items-center text-center">
         <div className="mb-8">
           <Image
