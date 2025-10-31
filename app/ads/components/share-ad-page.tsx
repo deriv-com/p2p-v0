@@ -159,7 +159,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                     {ad.minimum_order_amount} - {ad.maximum_order_amount} {ad.payment_currency}
                   </span>
                 </div>
-                <div className="flex justify-between">
+                <div className="grid grid-cols-2">
                   <span className="opacity-90">Rate</span>
                   <span className="font-semibold">
                     {ad.exchange_rate_type === "float"
