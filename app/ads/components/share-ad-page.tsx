@@ -196,7 +196,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
                 </div>
                 <div className="text-lg font-bold">
-                  {ad.type === "buy" ? "Buy" : "Sell"} {ad.account_currency}
+                  {ad.type === "buy" ? "Sell" : "Sell"} {ad.account_currency}
                 </div>
               </div>
 
