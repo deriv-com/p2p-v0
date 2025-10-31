@@ -4,45 +4,39 @@ import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import QRCode from "qrcode"
 import html2canvas from "html2canvas"
-import { AdsAPI } from "@/services/api"
 import type { Ad } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 
 interface ShareAdPageProps {
-  adId: string
+  ad: Ad
   onClose: () => void
 }
 
-export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
+export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const { toast } = useToast()
-  const [ad, setAd] = useState<Ad | null>(null)
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
   const cardRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const fetchAd = async () => {
+    const generateQRCode = async () => {
       try {
         setIsLoading(true)
-        const response = await AdsAPI.getAdvert(adId)
-        if (response.data) {
-          setAd(response.data)
-          const adUrl = `${window.location.origin}/ads/${adId}`
-          const qrCode = await QRCode.toDataURL(adUrl, {
-            width: 200,
-            margin: 2,
-            color: {
-              dark: "#000000",
-              light: "#FFFFFF",
-            },
-          })
-          setQrCodeUrl(qrCode)
-        }
+        const adUrl = `${window.location.origin}/ads/${ad.id}`
+        const qrCode = await QRCode.toDataURL(adUrl, {
+          width: 200,
+          margin: 2,
+          color: {
+            dark: "#000000",
+            light: "#FFFFFF",
+          },
+        })
+        setQrCodeUrl(qrCode)
       } catch (error) {
-        console.error("Error fetching ad:", error)
+        console.error("Error generating QR code:", error)
         toast({
-          description: "Failed to load ad details",
+          description: "Failed to generate QR code",
           variant: "destructive",
         })
       } finally {
@@ -50,11 +44,11 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
       }
     }
 
-    fetchAd()
-  }, [adId, toast])
+    generateQRCode()
+  }, [ad.id, toast])
 
   const handleShare = async (platform: string) => {
-    const adUrl = `${window.location.origin}/ads/${adId}`
+    const adUrl = `${window.location.origin}/ads/${ad.id}`
     const text = `Check out this ${ad?.type === "buy" ? "Buy" : "Sell"} ${ad?.account_currency} ad on Deriv P2P`
 
     const shareUrls: Record<string, string> = {
@@ -71,7 +65,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
   }
 
   const handleCopyLink = async () => {
-    const adUrl = `${window.location.origin}/ads/${adId}`
+    const adUrl = `${window.location.origin}/ads/${ad.id}`
     try {
       await navigator.clipboard.writeText(adUrl)
       toast({
@@ -102,7 +96,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
       })
 
       const link = document.createElement("a")
-      link.download = `deriv-p2p-ad-${adId}.png`
+      link.download = `deriv-p2p-ad-${ad.id}.png`
       link.href = canvas.toDataURL()
       link.click()
 
@@ -178,7 +172,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
               {qrCodeUrl && (
                 <>
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
-                    <Image src={qrCodeUrl} alt="QR Code" width={110} height={110} />
+                    <Image src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
                   <p className="text-gray-600 text-sm mt-3 text-center">Scan this code to order via Deriv P2P</p>
                 </>
@@ -257,7 +251,7 @@ export default function ShareAdPage({ adId, onClose }: ShareAdPageProps) {
                 className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-auto"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
-                   <Image src="/icons/download.svg" alt="download" width={36} height={36} />
+                  <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                 </div>
                 <span className="text-xs font-normal text-slate-1600">Save image</span>
               </Button>

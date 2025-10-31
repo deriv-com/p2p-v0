@@ -34,7 +34,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
-  const [adToShare, setAdToShare] = useState<string | null>(null)
+  const [adToShare, setAdToShare] = useState<Ad | null>(null)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -104,7 +104,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleShare = (ad: Ad) => {
     setDrawerOpen(false)
-    setAdToShare(ad.in)
+    setAdToShare(ad)
     setShowShareView(true)
   }
 
@@ -217,7 +217,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   if (showShareView && adToShare) {
-    return <ShareAdPage adId={adToShare} onClose={handleCloseShareView} />
+    return <ShareAdPage ad={adToShare} onClose={handleCloseShareView} />
   }
 
   return (
@@ -301,7 +301,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </span>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-span-full whitespace-nowrap">
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
