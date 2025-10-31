@@ -14,7 +14,7 @@ export function P2PAccessRemoved() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6 py-12">
-      <div className="flex flex-col items-centertext-center">
+      <div className="flex flex-col items-center text-center">
         <div className="mb-8">
           <Image
             src="/icons/illustration-blocked-users.svg"
