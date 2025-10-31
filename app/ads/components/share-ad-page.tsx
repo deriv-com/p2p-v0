@@ -151,11 +151,11 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               <div className="space-y-2 mb-6">
                 <div className="grid grid-cols-2">
                   <span className="opacity-90">ID number</span>
-                  <span className="font-semibold">{ad.id}</span>
+                  <span className="font-bold text-sm">{ad.id}</span>
                 </div>
                 <div className="grid grid-cols-2">
                   <span className="opacity-90">Limits</span>
-                  <span className="font-semibold">
+                  <span className="font-bold text-sm">
                     {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
