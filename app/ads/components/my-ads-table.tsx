@@ -104,7 +104,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const handleShare = (ad: Ad) => {
     setDrawerOpen(false)
-    setAdToShare(ad)
+    setAdToShare(ad.in)
     setShowShareView(true)
   }
 
