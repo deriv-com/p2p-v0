@@ -74,7 +74,6 @@ export default function BuySellPage() {
   const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
-    // Don't create a key until we know the signup version
     if (!userData?.signup) return null
 
     if (isV1Signup) {
