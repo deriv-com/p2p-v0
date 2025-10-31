@@ -215,7 +215,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               <Button
                 variant="ghost"
                 onClick={() => handleShare("twitter")}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-fit"
+                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
@@ -226,7 +226,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               <Button
                 variant="ghost"
                 onClick={() => handleShare("gmail")}
-                className="flex flex-col items-center gap-2 p-3 rounded-lg hover:bg-gray-50 transition-colors min-w-fit"
+                className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit"
               >
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
