@@ -167,7 +167,6 @@ export default function OrderDetailsPage() {
 
   const renderPaymentMethodFields = (method: any) => {
     const fields = []
-
     const copyableFields = ["account", "bank_code"]
 
     Object.entries(method).forEach(([key, val]) => {
