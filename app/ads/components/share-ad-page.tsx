@@ -187,7 +187,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">WhatsApp</span>
+                <span className="text-[10px] font-normal text-slate-1600">WhatsApp</span>
               </Button>
 
               <Button
@@ -198,7 +198,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">Facebook</span>
+                <span className="text-[10px] font-normal text-slate-1600">Facebook</span>
               </Button>
 
               <Button
@@ -209,7 +209,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">Telegram</span>
+                <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
               </Button>
 
               <Button
@@ -220,7 +220,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">Twitter</span>
+                <span className="text-[10px] font-normal text-slate-1600">Twitter</span>
               </Button>
 
               <Button
@@ -231,7 +231,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">Gmail</span>
+                <span className="text-[10px] font-normal text-slate-1600">Gmail</span>
               </Button>
 
               <Button
@@ -242,7 +242,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">Copy link</span>
+                <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
               </Button>
 
               <Button
@@ -253,7 +253,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                 </div>
-                <span className="text-xs font-normal text-slate-1600">Save image</span>
+                <span className="text-[10px]font-normal text-slate-1600">Save image</span>
               </Button>
             </div>
           </div>
