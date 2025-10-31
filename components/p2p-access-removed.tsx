@@ -5,11 +5,9 @@ import { Button } from "@/components/ui/button"
 
 export function P2PAccessRemoved() {
   const handleLiveChat = () => {
-    // Open live chat - this will be handled by Deriv's live chat integration
     if (typeof window !== "undefined" && (window as any).LC_API) {
       ;(window as any).LC_API.open_chat_window()
-    } else {
-      // Fallback to opening help center
+  } else {
       window.open("https://deriv.com/contact-us/", "_blank")
     }
   }
@@ -19,7 +17,7 @@ export function P2PAccessRemoved() {
       <div className="flex flex-col items-center max-w-[600px] text-center">
         <div className="mb-8">
           <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-Fa9JfQ0fX9y9Eg2xuzPM0JAGb0kVCc.png"
+            src="/images/design-mode/image.png"
             alt="P2P access removed"
             width={200}
             height={200}
