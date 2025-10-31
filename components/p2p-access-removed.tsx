@@ -4,14 +4,6 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 
 export function P2PAccessRemoved() {
-  const handleLiveChat = () => {
-    if (typeof window !== "undefined" && (window as any).LC_API) {
-      ;(window as any).LC_API.open_chat_window()
-  } else {
-      window.open("https://deriv.com/contact-us/", "_blank")
-    }
-  }
-
   return (
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6 py-12">
       <div className="flex flex-col items-center text-center">
