@@ -148,7 +148,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 </div>
               </div>
 
-              <div className="space-y-1 mb-">
+              <div className="space-y-1 mb-4">
                 <div className="grid grid-cols-2">
                   <span className="text-sm">ID number</span>
                   <span className="font-bold text-sm">{ad.id}</span>
@@ -184,7 +184,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("whatsapp")}
                 className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
               >
-                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
+                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
                 </div>
                 <span className="text-[10px] font-normal text-slate-1600">WhatsApp</span>
@@ -195,7 +195,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("facebook")}
                 className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
               >
-                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
+                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
                 </div>
                 <span className="text-[10px] font-normal text-slate-1600">Facebook</span>
@@ -206,7 +206,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("telegram")}
                 className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
               >
-                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
+                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                 </div>
                 <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
@@ -217,7 +217,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("twitter")}
                 className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
               >
-                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
+                <div className="bg-[#F2F3F4]p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
                 </div>
                 <span className="text-[10px] font-normal text-slate-1600">Twitter</span>
@@ -228,7 +228,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 onClick={() => handleShare("gmail")}
                 className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
               >
-                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
+                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
                 </div>
                 <span className="text-[10px] font-normal text-slate-1600">Gmail</span>
@@ -239,7 +239,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 onClick={handleCopyLink}
                 className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
               >
-                <div className="w-[60px] p-2 rounded-full flex items-center justify-center">
+                <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                   <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                 </div>
                 <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
