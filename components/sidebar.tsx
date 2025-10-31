@@ -23,7 +23,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const [showWallet, setShowWallet] = useState(false)
+  const [showWallet, setShowWallet] = useState(true)
   const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
   const userName = userData?.nickname ?? userData?.email
@@ -49,7 +49,7 @@ export default function Sidebar({ className }: SidebarProps) {
         setIsV1Signup(false)
       }
     } catch (error) {
-      setShowWallet(false)
+      setShowWallet(true)
       setIsV1Signup(false)
     }
   }
