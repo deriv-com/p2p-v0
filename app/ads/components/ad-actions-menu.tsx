@@ -9,9 +9,18 @@ interface AdActionsMenuProps {
   onEdit: (ad: Ad) => void
   onToggleStatus: (ad: Ad) => void
   onDelete: (adId: string) => void
+  onShare?: (ad: Ad) => void
+  variant?: "default" | "drawer"
 }
 
-export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdActionsMenuProps) {
+export function AdActionsMenu({
+  ad,
+  onEdit,
+  onToggleStatus,
+  onDelete,
+  onShare,
+  variant = "default",
+}: AdActionsMenuProps) {
   const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
   return (
     <>
@@ -23,6 +32,15 @@ export function AdActionsMenu({ ad, onEdit, onToggleStatus, onDelete }: AdAction
       >
         <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
         Edit
+      </Button>
+      <Button
+        variant="ghost"
+        size="sm"
+        className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
+        onClick={() => onShare(ad)}
+      >
+        <Image src="/icons/link.svg" alt="Share" width={16} height={16} />
+        Share
       </Button>
       <Button
         variant="ghost"
