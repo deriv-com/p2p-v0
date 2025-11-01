@@ -16,6 +16,7 @@ import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-p
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -42,6 +43,7 @@ const PaymentSelectionContent = ({
   setSelectedPaymentMethods,
   handleAddPaymentMethodClick,
 }) => {
+  const { t } = useTranslations()
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
   const handlePaymentMethodToggle = (methodId: string) => {
@@ -60,11 +62,11 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
-        {userPaymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
+        {userPaymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">No compatible payment methods found</p>
-            <p className="text-sm text-gray-500">Add a payment method that matches the buyer's accepted methods</p>
+            <p className="text-gray-600 mb-4">{t("paymentMethod.noCompatibleMethods")}</p>
+            <p className="text-sm text-gray-500">{t("paymentMethod.addCompatibleMethod")}</p>
           </div>
         ) : (
           userPaymentMethods.map((method) => (
@@ -109,7 +111,7 @@ const PaymentSelectionContent = ({
         >
           <div className="flex items-center">
             <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-            <span className="text-slate-1200 text-base">Add payment method</span>
+            <span className="text-slate-1200 text-base">{t("paymentMethod.addPaymentMethod")}</span>
           </div>
         </div>
       </div>
@@ -121,13 +123,14 @@ const PaymentSelectionContent = ({
           hideAlert()
         }}
       >
-        Confirm
+        {t("common.confirm")}
       </Button>
     </div>
   )
 }
 
 export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalance }: OrderSidebarProps) {
+  const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
   const [amount, setAmount] = useState(null)
@@ -164,20 +167,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       const maxLimit = ad.actual_maximum_order_amount || "0.00"
 
       if (orderType === "buy" && numAmount > p2pBalance) {
-        setValidationError("Insufficient balance. Add funds to your wallet before creating an order.")
+        setValidationError(t("order.insufficientBalance"))
       } else if (numAmount < minLimit || numAmount > maxLimit) {
-        setValidationError(`Order limit: ${minLimit} - ${maxLimit} ${ad.account_currency}`)
+        setValidationError(t("order.orderLimitError", { min: minLimit, max: maxLimit, currency: ad.account_currency }))
       } else {
         setValidationError(null)
       }
     }
 
     if (!amount) setTotalAmount(0)
-  }, [amount, ad, orderType, p2pBalance])
+  }, [amount, ad, orderType, p2pBalance, t])
 
   const handleShowPaymentSelection = () => {
     showAlert({
-      title: "Payment method",
+      title: t("paymentMethod.title"),
       description: (
         <PaymentSelectionContent
           userPaymentMethods={userPaymentMethods}
@@ -209,16 +212,16 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
           showAlert({
-            title: "Unable to create an order",
-            description: "Order already exists.",
-            confirmText: "OK",
+            title: t("order.unableToCreateOrder"),
+            description: t("order.orderExists"),
+            confirmText: t("common.ok"),
             type: "warning",
           })
         } else {
           showAlert({
-            title: "Unable to create an order",
-            description: "There was an error when creating the order. Please try again.",
-            confirmText: "OK",
+            title: t("order.unableToCreateOrder"),
+            description: t("order.orderCreationError"),
+            confirmText: t("common.ok"),
             type: "warning",
           })
         }
@@ -256,17 +259,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         await fetchUserPaymentMethods()
         setShowAddPaymentPanel(false)
       } else {
-        let title = "Unable to add payment method"
-        let description = "There was an error when adding the payment method. Please try again."
+        let title = t("paymentMethod.unableToAdd")
+        let description = t("paymentMethod.addError")
 
         if (response.errors.length > 0 && response.errors[0].code === "PaymentMethodDuplicate") {
-          title = "Duplicate payment method"
-          description = "A payment method with the same values already exists. Add a new one."
+          title = t("paymentMethod.duplicateMethod")
+          description = t("paymentMethod.duplicateMethodDescription")
         }
         showAlert({
           title,
           description,
-          confirmText: "OK",
+          confirmText: t("common.ok"),
           type: "warning",
         })
       }
@@ -283,17 +286,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const getSelectedPaymentMethodsText = () => {
-    if (selectedPaymentMethods.length === 0) return "Select payment"
+    if (selectedPaymentMethods.length === 0) return t("order.selectPayment")
     if (selectedPaymentMethods.length === 1) {
       const method = userPaymentMethods.find((m) => m.id === selectedPaymentMethods[0])
-      return method ? `${method.display_name}` : "Select payment"
+      return method ? `${method.display_name}` : t("order.selectPayment")
     }
-    return `Selected (${selectedPaymentMethods.length})`
+    return t("order.selected") + ` (${selectedPaymentMethods.length})`
   }
 
   const isBuy = orderType === "buy"
-  const title = isBuy ? "Sell USD" : "Buy USD"
-  const youSendText = isBuy ? "You receive" : "You pay"
+  const title = isBuy ? `${t("common.sell")} USD` : `${t("common.buy")} USD`
+  const youSendText = isBuy ? t("order.youReceive") : t("order.youPay")
 
   const minLimit = ad?.minimum_order_amount || "0.00"
   const maxLimit = ad?.actual_maximum_order_amount || "0.00"
@@ -372,7 +375,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                       placeholder="0.00"
                       variant="floatingCurrency"
                       currency={ad.account_currency}
-                      label="Amount"
+                      label={t("order.amount")}
                     />
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
@@ -390,7 +393,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
-                    <h3 className="text-sm text-slate-1400 mb-3">Receive payment to</h3>
+                    <h3 className="text-sm text-slate-1400 mb-3">{t("order.receivePaymentTo")}</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
@@ -405,13 +408,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
                 <div className="mx-4 mt-4 text-sm">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Rate type</span>
+                    <span className="text-slate-500">{t("order.rateType")}</span>
                     <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
                       {ad.exchange_rate_type}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Exchange rate</span>
+                    <span className="text-slate-500">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1400">
                       {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
@@ -422,24 +425,26 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Order limit</span>
+                    <span className="text-slate-500">{t("order.orderLimit")}</span>
                     <span className="text-slate-1400">
                       {minLimit} - {maxLimit} {ad.account_currency}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">Payment time</span>
-                    <span className="text-slate-1400">{ad.order_expiry_period} min</span>
+                    <span className="text-slate-500">{t("order.paymentTime")}</span>
+                    <span className="text-slate-1400">
+                      {ad.order_expiry_period} {t("market.min")}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{isBuy ? "Buyer" : "Seller"}</span>
+                    <span className="text-slate-500">{isBuy ? t("order.buyer") : t("order.seller")}</span>
                     <span className="text-slate-1400">{ad.user?.nickname}</span>
                   </div>
                 </div>
 
                 <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
                   <h3 className="text-slate-500 flex-1">
-                    {isBuy ? "Buyer's payment method(s)" : "Seller's payment method(s)"}
+                    {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
                   <div className="flex flex-wrap gap-4">
                     {ad.payment_methods?.map((method, index) => (
@@ -456,7 +461,9 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 </div>
 
                 <div className="mx-4 mt-4 border-t py-2 text-sm flex-1">
-                  <h3 className="text-slate-500">{isBuy ? "Buyer's instructions" : "Seller's instructions"}</h3>
+                  <h3 className="text-slate-500">
+                    {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
+                  </h3>
                   <p className="text-slate-1400 break-words">
                     {ad.description ||
                       "Kindly transfer the payment to the provided account details after placing your order."}
@@ -475,7 +482,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                     {isSubmitting ? (
                       <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                     ) : (
-                      "Place order"
+                      t("order.placeOrder")
                     )}
                   </Button>
                   {orderStatus && !orderStatus.success && (
