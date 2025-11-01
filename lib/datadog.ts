@@ -72,7 +72,6 @@ export const trackDatadogAction = (name: string, context?: Record<string, any>) 
   }
 }
 
-// Helper function to track custom errors
 export const trackDatadogError = (error: Error, context?: Record<string, any>) => {
   if (typeof window === "undefined") return
 
