@@ -18,6 +18,7 @@ import { currencyLogoMapper, formatAmountWithDecimals } from "@/lib/utils"
 import WalletDisplay from "./wallet-display"
 import ChooseCurrencyStep from "./choose-currency-step"
 import TransactionDetails from "./transaction-details"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface TransferProps {
   currencySelected?: string
@@ -121,6 +122,8 @@ type WalletSelectorType = "from" | "to" | null
 type CurrencyToggleType = "source" | "destination"
 
 export default function Transfer({ currencySelected, onClose, stepVal = "enterAmount" }: TransferProps) {
+  const { t } = useTranslations()
+
   const [step, setStep] = useState<TransferStep>(stepVal)
   const [wallets, setWallets] = useState<ProcessedWallet[]>([])
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -715,11 +718,11 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     return currencyData?.limit?.transfer?.min_amount_per_transaction || 0
   }
 
-  const getSourceWalletAmount = () => {
+  const getSourceWalletAmount = (): string => {
     return sourceWalletData ? `${formatAmountWithDecimals(sourceWalletData.balance)} ${sourceWalletData.currency}` : ""
   }
 
-  const getDestinationWalletAmount = () => {
+  const getDestinationWalletAmount = (): string => {
     return destinationWalletData
       ? `${formatAmountWithDecimals(destinationWalletData.balance)} ${destinationWalletData.currency}`
       : ""
@@ -740,7 +743,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const renderMobileSheet = (type: WalletSelectorType) => {
     if (showMobileSheet !== type) return null
 
-    const title = type === "from" ? "From" : "To"
+    const title = type === "from" ? t("wallet.from") : t("wallet.to")
     const selectedWalletName = type === "from" ? sourceWalletData?.name : destinationWalletData?.name
 
     const filteredWallets = getFilteredWallets(type)
@@ -761,7 +764,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {p2pWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal text-slate-1200">P2P Wallet</h3>
+                  <h3 className="text-base font-normal text-slate-1200">{t("wallet.p2pWallet")}</h3>
                   {p2pWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -785,7 +788,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               )}
               {tradingWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal text-slate-1200 mt-2">Trading Wallet</h3>
+                  <h3 className="text-base font-normal text-slate-1200 mt-2">{t("wallet.tradingWallet")}</h3>
                   {tradingWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -817,7 +820,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   const renderDesktopWalletPopup = (type: WalletSelectorType) => {
     if (showDesktopWalletPopup !== type) return null
 
-    const title = type === "from" ? "From" : "To"
+    const title = type === "from" ? t("wallet.from") : t("wallet.to")
     const selectedWalletName = type === "from" ? sourceWalletData?.name : destinationWalletData?.name
 
     const filteredWallets = getFilteredWallets(type)
@@ -847,7 +850,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div className="space-y-4 max-h-[60vh] overflow-y-auto">
               {p2pWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal text-slate-1200">P2P Wallet</h3>
+                  <h3 className="text-base font-normal text-slate-1200">{t("wallet.p2pWallet")}</h3>
                   {p2pWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -871,7 +874,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               )}
               {tradingWallets.length > 0 && (
                 <>
-                  <h3 className="text-base font-normal text-slate-1200 mt-2">Trading Wallet</h3>
+                  <h3 className="text-base font-normal text-slate-1200 mt-2">{t("wallet.tradingWallet")}</h3>
                   {tradingWallets.map((wallet) => (
                     <div
                       key={wallet.wallet_id}
@@ -924,11 +927,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </Button>
           <div className="p-8">
-            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">Review and confirm</h2>
+            <h2 className="text-slate-1200 text-[24px] font-extrabold mb-12 text-left">
+              {t("wallet.reviewAndConfirm")}
+            </h2>
             <div className="mb-6">
               <div className="mb-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-normal text-grayscale-text-muted">From</span>
+                  <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
                   <div className="flex items-center gap-3">
                     {sourceWalletData &&
                       (sourceWalletData.name.includes("P2P") ? (
@@ -944,7 +949,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -957,7 +964,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -971,7 +979,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </div>
               <div className="mb-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-normal text-grayscale-text-muted">To</span>
+                  <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
                   <div className="flex items-center gap-3">
                     {destinationWalletData &&
                       (destinationWalletData.name.includes("P2P") ? (
@@ -987,7 +995,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1000,7 +1010,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1018,7 +1030,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
                   <div className="flex flex-col justify-center gap-2 py-4">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.transferAmount")}
+                      </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountByCurrency(
                           transferFeeCalculation.transferAmount,
@@ -1033,7 +1047,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <span className="text-base font-normal text-grayscale-text-muted">
-                        Transfer fee ({transferFeeCalculation.feePercentage}%)
+                        {t("wallet.transferFee")} ({transferFeeCalculation.feePercentage}%)
                       </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountByCurrency(transferFeeCalculation.transferFee, sourceWalletData?.currency || "")}{" "}
@@ -1044,7 +1058,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8]"></div>
                   <div className="py-4">
                     <div className="flex items-start justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">You'll receive</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.youllReceive")}
+                      </span>
                       <div className="text-right">
                         <div className="text-base font-normal text-slate-1200">
                           ≈
@@ -1072,7 +1088,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
                   <div className="h-[72px] flex items-center">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.transferAmount")}
+                      </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
                       </span>
@@ -1081,7 +1099,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8]"></div>
                   <div className="h-[72px] flex items-center">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.amountReceive")}
+                      </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
                       </span>
@@ -1099,7 +1119,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 {isSubmitting ? (
                   <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                 ) : (
-                  "Confirm"
+                  t("common.confirm")
                 )}
               </Button>
             </div>
@@ -1124,11 +1144,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div className="flex justify-center mb-10">
               <div className="w-12 h-1 bg-gray-300 rounded-full"></div>
             </div>
-            <h1 className="text-slate-1200 text-center text-[20px] font-extrabold mb-8 ml-4 ">Review and confirm</h1>
+            <h1 className="text-slate-1200 text-center text-[20px] font-extrabold mb-8 ml-4 ">
+              {t("wallet.reviewAndConfirm")}
+            </h1>
             <div className="mb-6 px-4">
               <div className="mb-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-normal text-grayscale-text-muted">From</span>
+                  <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
                   <div className="flex items-center gap-3">
                     {sourceWalletData &&
                       (sourceWalletData.name.includes("P2P") ? (
@@ -1144,7 +1166,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                                  getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1157,7 +1181,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={24}
                             height={24}
@@ -1171,7 +1196,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               </div>
               <div className="mb-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-base font-normal text-grayscale-text-muted">To</span>
+                  <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
                   <div className="flex items-center gap-3">
                     {destinationWalletData &&
                       (destinationWalletData.name.includes("P2P") ? (
@@ -1187,7 +1212,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                               <Image
                                 src={
-                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                                  getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                                  "/placeholder.svg"
+                                }
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1200,7 +1227,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) }
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1218,7 +1247,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
                   <div className="flex flex-col justify-center gap-2 py-4">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.transferAmount")}
+                      </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountByCurrency(
                           transferFeeCalculation.transferAmount,
@@ -1233,7 +1264,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     </div>
                     <div className="flex items-center justify-between w-full">
                       <span className="text-base font-normal text-grayscale-text-muted">
-                        Transfer fee ({transferFeeCalculation.feePercentage}%)
+                        {t("wallet.transferFee")} ({transferFeeCalculation.feePercentage}%)
                       </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountByCurrency(transferFeeCalculation.transferFee, sourceWalletData?.currency || "")}{" "}
@@ -1244,7 +1275,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8]"></div>
                   <div className="py-4">
                     <div className="flex items-start justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">You'll receive</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.youllReceive")}
+                      </span>
                       <div className="text-right">
                         <div className="text-base font-normal text-slate-1200">
                           ≈
@@ -1272,7 +1305,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8] mt-4 mb-0"></div>
                   <div className="h-[72px] flex items-center">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">Transfer amount</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.transferAmount")}
+                      </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
                       </span>
@@ -1281,7 +1316,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="h-1 bg-[#F6F7F8]"></div>
                   <div className="h-[72px] flex items-center">
                     <div className="flex items-center justify-between w-full">
-                      <span className="text-base font-normal text-grayscale-text-muted">Amount receive</span>
+                      <span className="text-base font-normal text-grayscale-text-muted">
+                        {t("wallet.amountReceive")}
+                      </span>
                       <span className="text-base font-normal text-slate-1200">
                         {formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} {selectedCurrency || "USD"}
                       </span>
@@ -1299,7 +1336,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 {isSubmitting ? (
                   <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                 ) : (
-                  "Confirm"
+                  t("common.confirm")
                 )}
               </Button>
             </div>
@@ -1354,8 +1391,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   if (step === "chooseCurrency") {
     return (
       <ChooseCurrencyStep
-        title="Transfer"
-        description="Choose which currency you would like to transfer."
+        title={t("wallet.transfer")}
+        description={t("wallet.chooseCurrencyDescription", { action: "transfer" })}
         currencies={currencies}
         onClose={onClose}
         onCurrencySelect={handleCurrencySelect}
@@ -1376,7 +1413,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           </Button>
         </div>
         <div className="md:max-w-[608px] md:mx-auto md:w-full flex-1 flex flex-col">
-          <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">Transfer</h1>
+          <h1 className="text-slate-1200 text-xl md:text-[32px] font-extrabold mt-6 mb-6 px-2">
+            {t("wallet.transfer")}
+          </h1>
           <div className="relative mb-6 px-2">
             <div
               className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
@@ -1389,7 +1428,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               }}
             >
               <div className="flex flex-col items-start gap-1 w-10">
-                <div className="text-grayscale-text-muted text-base font-normal">From</div>
+                <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.from")}</div>
                 {sourceWalletData ? (
                   sourceWalletData.name.includes("P2P") ? (
                     <div className="relative w-[21px] h-[21px] flex-shrink-0">
@@ -1404,7 +1443,8 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                              getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"
+                            }
                             alt={sourceWalletData.currency}
                             width={9}
                             height={9}
@@ -1416,7 +1456,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   ) : (
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
-                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency)}
+                        src={getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) || "/placeholder.svg"}
                         alt={sourceWalletData.currency}
                         width={24}
                         height={24}
@@ -1450,7 +1490,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               }}
             >
               <div className="flex flex-col items-start gap-1 w-10">
-                <div className="text-grayscale-text-muted text-base font-normal">To</div>
+                <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.to")}</div>
                 {destinationWalletData ? (
                   destinationWalletData.name.includes("P2P") ? (
                     <div className="relative w-[21px] h-[21px] flex-shrink-0">
@@ -1465,7 +1505,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         <div className="w-[10.5px] h-[10.5px] rounded-full bg-white flex items-center justify-center">
                           <Image
                             src={
-                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                              getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                              "/placeholder.svg"
+                            }
                             alt={destinationWalletData.currency}
                             width={9}
                             height={9}
@@ -1478,7 +1520,9 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                     <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0 mb-3 mt-1">
                       <Image
                         src={
-                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency)}
+                          getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
+                          "/placeholder.svg"
+                        }
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
@@ -1512,7 +1556,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             </div>
           </div>
           <div className="mb-6 px-2 relative">
-            <h2 className="text-slate-1200 text-sm font-normal mb-2">Amount</h2>
+            <h2 className="text-slate-1200 text-sm font-normal mb-2">{t("wallet.amount")}</h2>
             <div className="flex gap-2 items-center">
               <div className="relative flex-1">
                 <Input
@@ -1605,7 +1649,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             {showCurrencySwitcher && (
               <div className="mt-6 space-y-2">
                 <div className="flex justify-between items-center">
-                  <span className="text-black/50 text-xs font-normal">Transfer amount</span>
+                  <span className="text-black/50 text-xs font-normal">{t("wallet.transferAmount")}</span>
                   <span className="text-[#181C25] text-xs font-normal">
                     {transferFeeCalculation
                       ? `${formatAmountByCurrency(
@@ -1619,7 +1663,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-black/50 text-xs font-normal">
-                    Transfer fee ({transferFeeCalculation?.feePercentage || 0}%)
+                    {t("wallet.transferFee")} ({transferFeeCalculation?.feePercentage || 0}%)
                   </span>
                   <span className="text-[#181C25] text-xs font-normal">
                     {transferFeeCalculation
@@ -1628,7 +1672,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   </span>
                 </div>
                 <div className="flex justify-between items-start">
-                  <span className="text-black/50 text-xs font-normal">You'll receive:</span>
+                  <span className="text-black/50 text-xs font-normal">{t("wallet.youllReceive")}:</span>
                   <div className="text-right">
                     <div className="text-[#181C25] text-xs font-normal">
                       {transferFeeCalculation && exchangeRateData
@@ -1661,7 +1705,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
                 className="flex h-12 w-24 min-h-12 max-h-12 px-7 justify-center items-center gap-2"
               >
-                Transfer
+                {t("wallet.transfer")}
               </Button>
             </div>
           </div>
@@ -1678,7 +1722,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               }
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
             >
-              Transfer
+              {t("wallet.transfer")}
             </Button>
           </div>
         </div>
@@ -1693,7 +1737,12 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   if (step === "success") {
-    const transferText = `${formatAmountWithDecimals(Number.parseFloat(transferAmount || "0"))} ${selectedCurrency || "USD"} transferred from your ${sourceWalletData?.name} to your ${destinationWalletData?.name}`
+    const transferText = t("wallet.transferSuccessMessage", {
+      amount: formatAmountWithDecimals(Number.parseFloat(transferAmount || "0")),
+      currency: selectedCurrency || "USD",
+      from: sourceWalletData?.name || "",
+      to: destinationWalletData?.name || "",
+    })
 
     return (
       <>
@@ -1708,17 +1757,17 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             <div className="mb-6">
               <Image src="/icons/success-transfer.png" alt="Success" width={256} height={256} />
             </div>
-            <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer successful</h1>
+            <h1 className="text-white text-center text-2xl font-extrabold mb-4">{t("wallet.transferSuccessful")}</h1>
             <p className="text-white text-center text-base font-normal">{transferText}</p>
             <div className="hidden md:flex gap-4 mt-6">
               <Button
                 onClick={handleViewDetails}
                 className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
               >
-                View details
+                {t("wallet.viewDetails")}
               </Button>
               <Button onClick={handleDoneClick} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
-                Got it
+                {t("wallet.gotIt")}
               </Button>
             </div>
           </div>
@@ -1727,13 +1776,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               onClick={handleDoneClick}
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
             >
-              Got it
+              {t("wallet.gotIt")}
             </Button>
             <Button
               onClick={handleViewDetails}
               className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
             >
-              View details
+              {t("wallet.viewDetails")}
             </Button>
           </div>
         </div>
@@ -1746,7 +1795,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
   }
 
   if (step === "unsuccessful") {
-    const transferText = `We couldn't process your transfer. Please try again. ${transferErrorMessage || ""}`
+    const transferText = `${t("wallet.transferUnsuccessfulMessage")} ${transferErrorMessage || ""}`
 
     return (
       <div
@@ -1760,17 +1809,17 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           <div className="mb-6">
             <Image src="/icons/success-transfer.png" alt="Unsuccessful" width={256} height={256} />
           </div>
-          <h1 className="text-white text-center text-2xl font-extrabold mb-4">Transfer unsuccessful</h1>
+          <h1 className="text-white text-center text-2xl font-extrabold mb-4">{t("wallet.transferUnsuccessful")}</h1>
           <p className="text-white text-center text-base font-normal">{transferText}</p>
           <div className="hidden md:flex gap-4 mt-6">
             <Button
               onClick={handleDoneClick}
               className="w-[276px] h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
             >
-              Not now
+              {t("wallet.notNow")}
             </Button>
             <Button onClick={toEnterAmount} className="w-[276px] h-12 px-7 flex justify-center items-center gap-2">
-              Try again
+              {t("wallet.tryAgain")}
             </Button>
           </div>
         </div>
@@ -1779,13 +1828,13 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             onClick={toEnterAmount}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
           >
-            Try again
+            {t("wallet.tryAgain")}
           </Button>
           <Button
             onClick={handleDoneClick}
             className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2 bg-transparent border border-white rounded-3xl text-white text-base font-extrabold hover:bg-white/10"
           >
-            Not now
+            {t("wallet.notNow")}
           </Button>
         </div>
       </div>
