@@ -36,37 +36,3 @@ export const initDatadog = () => {
     console.error("[Datadog RUM] Initialization failed:", error)
   }
 }
-
-export const setDatadogUser = (userId: string, userEmail?: string, userName?: string) => {
-  if (typeof window === "undefined") return
-
-  try {
-    datadogRum.setUser({
-      id: userId,
-      email: userEmail,
-      name: userName,
-    })
-  } catch (error) {
-    console.error("[Datadog RUM] Failed to set user:", error)
-  }
-}
-
-export const addDatadogContext = (key: string, value: any) => {
-  if (typeof window === "undefined") return
-
-  try {
-    datadogRum.addRumGlobalContext(key, value)
-  } catch (error) {
-    console.error("[Datadog RUM] Failed to add context:", error)
-  }
-}
-
-export const trackDatadogError = (error: Error, context?: Record<string, any>) => {
-  if (typeof window === "undefined") return
-
-  try {
-    datadogRum.addError(error, context)
-  } catch (error) {
-    console.error("[Datadog RUM] Failed to track error:", error)
-  }
-}
