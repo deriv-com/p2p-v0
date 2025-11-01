@@ -24,7 +24,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const [showWallet, setShowWallet] = useState<boolean | null>(null)
   const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
@@ -59,6 +59,8 @@ export default function Sidebar({ className }: SidebarProps) {
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")
 
+  const helpCentreUrl = `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
+
   const navItems = [
     { name: "Back to Home", href: homeUrl, icon: HomeIcon },
     ...(!isDisabled
@@ -68,7 +70,7 @@ export default function Sidebar({ className }: SidebarProps) {
           { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
           ...(showWallet === true ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
-          { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
+          { name: "P2P Help Centre", href: helpCentreUrl, icon: GuideIcon },
         ]
       : []),
   ]
