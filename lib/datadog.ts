@@ -62,16 +62,6 @@ export const addDatadogContext = (key: string, value: any) => {
   }
 }
 
-export const trackDatadogAction = (name: string, context?: Record<string, any>) => {
-  if (typeof window === "undefined") return
-
-  try {
-    datadogRum.addAction(name, context)
-  } catch (error) {
-    console.error("[Datadog RUM] Failed to track action:", error)
-  }
-}
-
 export const trackDatadogError = (error: Error, context?: Record<string, any>) => {
   if (typeof window === "undefined") return
 
