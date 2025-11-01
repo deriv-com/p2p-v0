@@ -189,6 +189,7 @@
     "deposit": "Depositar",
     "withdraw": "Retirar",
     "transfer": "Transferir",
+    "amount": "Monto",
     "loadingAssets": "Cargando activos...",
     "noAssetsTitle": "Aún no hay activos",
     "noAssetsDescription": "Haz tu primer depósito y comienza tu viaje de trading hoy",
