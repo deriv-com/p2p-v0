@@ -1,12 +1,10 @@
 import { datadogRum } from "@datadog/browser-rum"
 
 export const initDatadog = () => {
-  // Only initialize in browser environment
   if (typeof window === "undefined") {
     return
   }
 
-  // Check if required environment variables are present
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
@@ -15,7 +13,6 @@ export const initDatadog = () => {
     return
   }
 
-  // Prevent multiple initializations
   if (datadogRum.getInternalContext()) {
     return
   }
@@ -29,46 +26,9 @@ export const initDatadog = () => {
       env: process.env.NEXT_PUBLIC_DATADOG_ENV || process.env.NEXT_PUBLIC_BRANCH || "development",
       version: "1.0.0",
       sessionSampleRate: 100,
-      sessionReplaySampleRate: 20,
-      trackUserInteractions: true,
-      trackResources: true,
-      trackLongTasks: true,
-      defaultPrivacyLevel: "mask-user-input",
-      allowedTracingUrls: [
-        (url) => {
-          // Track API calls to your backend
-          const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
-          const coreUrl = process.env.NEXT_PUBLIC_CORE_URL
-          const cashierUrl = process.env.NEXT_PUBLIC_CASHIER_URL
-
-          if (baseUrl && url.startsWith(baseUrl)) return true
-          if (coreUrl && url.startsWith(coreUrl)) return true
-          if (cashierUrl && url.startsWith(cashierUrl)) return true
-
-          return false
-        },
-      ],
-      beforeSend: (event) => {
-        // Filter out sensitive data before sending to Datadog
-        if (event.type === "resource" && event.resource.url) {
-          // Remove query parameters that might contain sensitive data
-          const url = new URL(event.resource.url)
-          const sensitiveParams = ["token", "password", "api_key", "secret"]
-
-          sensitiveParams.forEach((param) => {
-            if (url.searchParams.has(param)) {
-              url.searchParams.set(param, "[REDACTED]")
-            }
-          })
-
-          event.resource.url = url.toString()
-        }
-
-        return true
-      },
+      sessionReplaySampleRate: 20
     })
 
-    // Start session replay recording
     datadogRum.startSessionReplayRecording()
 
     console.log("[Datadog RUM] Successfully initialized")
