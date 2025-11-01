@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import Image from "next/image"
 import "../../styles/globals.css"
 
@@ -54,6 +55,7 @@ export function NovuNotifications() {
   const userId = useUserDataStore((state) => state.userId)
   const userIdFallback = userId || ""
   const applicationIdentifier = NOTIFICATIONS.applicationId
+  const { locale } = useTranslations()
 
   useEffect(() => {
     setMounted(true)
@@ -156,6 +158,7 @@ export function NovuNotifications() {
         localization={{ "inbox.filters.labels.default": "Notifications" }}
         colorScheme="light"
         i18n={{ poweredBy: "Notifications by" }}
+        locale={locale}
         onNotificationClick={(notification) => {
           if (notification.data?.order_id) {
             router.push(`/orders/${notification.data.order_id}`)
