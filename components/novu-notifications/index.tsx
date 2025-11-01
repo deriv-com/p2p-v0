@@ -157,7 +157,7 @@ export function NovuNotifications() {
         subscriberHash={subscriberHash}
         localization={{ "inbox.filters.labels.default": "Notifications" }}
         colorScheme="light"
-        i18n={{ lang: locale, poweredBy: "Notifications by" }
+        i18n={{ lang: locale, poweredBy: "Notifications by" }}
         onNotificationClick={(notification) => {
           if (notification.data?.order_id) {
             router.push(`/orders/${notification.data.order_id}`)
