@@ -37,7 +37,6 @@ export const initDatadog = () => {
   }
 }
 
-// Helper function to set user context
 export const setDatadogUser = (userId: string, userEmail?: string, userName?: string) => {
   if (typeof window === "undefined") return
 
