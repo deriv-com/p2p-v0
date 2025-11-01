@@ -27,10 +27,6 @@ export const initDatadog = () => {
       sessionSampleRate: 10,
       sessionReplaySampleRate: 1
     })
-
-    datadogRum.startSessionReplayRecording()
-
-    console.log("[Datadog RUM] Successfully initialized")
   } catch (error) {
     console.error("[Datadog RUM] Initialization failed:", error)
   }
