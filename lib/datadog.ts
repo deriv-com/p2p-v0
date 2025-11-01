@@ -23,9 +23,9 @@ export const initDatadog = () => {
       site: "datadoghq.com",
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
       env: process.env.NEXT_PUBLIC_DATADOG_ENV,
-      version: "1.0.0",
-      sessionSampleRate: 100,
-      sessionReplaySampleRate: 20
+      version: process.env.NEXT_PUBLIC_DATADOG_VERSION,
+      sessionSampleRate: 10,
+      sessionReplaySampleRate: 1
     })
 
     datadogRum.startSessionReplayRecording()
