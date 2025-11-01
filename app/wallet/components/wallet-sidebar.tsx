@@ -4,6 +4,7 @@ import DepositOptions from "./deposit-options"
 import WithdrawOptions from "./withdraw-options"
 import Transfer from "./transfer"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Currency {
   code: string
@@ -34,37 +35,39 @@ export default function WalletSidebar({
   currencies,
   transferStep,
 }: WalletSidebarProps) {
+  const { t } = useTranslations()
+
   if (!isOpen) return null
 
   const getTitle = () => {
     switch (operation) {
       case "DEPOSIT":
-        return "Deposit"
+        return t("wallet.deposit")
       case "WITHDRAW":
-        return "Withdraw"
+        return t("wallet.withdraw")
       case "TRANSFER":
-        return "Transfer"
+        return t("wallet.transfer")
       default:
-        return "Deposit"
+        return t("wallet.deposit")
     }
   }
 
-if (operation === "TRANSFER") {
-  return (
-    <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
-      <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
-        <Transfer
-          currencySelected={currencySelected}
-          onSendClick={onP2PTransferClick}
-          onReceiveClick={onAccountTransferClick}
-          currencies={currencies}
-          onClose={onClose}
-          stepVal={transferStep}
-        />
+  if (operation === "TRANSFER") {
+    return (
+      <div className="fixed inset-0 z-50 bg-background" onClick={onClose}>
+        <div className="h-full w-full" onClick={(e) => e.stopPropagation()}>
+          <Transfer
+            currencySelected={currencySelected}
+            onSendClick={onP2PTransferClick}
+            onReceiveClick={onAccountTransferClick}
+            currencies={currencies}
+            onClose={onClose}
+            stepVal={transferStep}
+          />
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 flex md:justify-end md:items-stretch" onClick={onClose}>
@@ -83,11 +86,7 @@ if (operation === "TRANSFER") {
           {operation === "DEPOSIT" ? (
             <DepositOptions onClose={onClose} onDirectDepositClick={onDirectDepositClick} currencies={currencies} />
           ) : (
-            <WithdrawOptions
-              onClose={onClose}
-              onDirectWithdrawClick={onDirectDepositClick}
-              currencies={currencies}
-            />
+            <WithdrawOptions onClose={onClose} onDirectWithdrawClick={onDirectDepositClick} currencies={currencies} />
           )}
         </div>
       </div>
