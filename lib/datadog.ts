@@ -20,7 +20,7 @@ export const initDatadog = () => {
     datadogRum.init({
       applicationId,
       clientToken,
-      site: process.env.NEXT_PUBLIC_DATADOG_SITE || "datadoghq.com",
+      site: "datadoghq.com",
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE || "p2p-v2",
       env: process.env.NEXT_PUBLIC_DATADOG_ENV || process.env.NEXT_PUBLIC_BRANCH || "development",
       version: "1.0.0",
