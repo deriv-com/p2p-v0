@@ -22,7 +22,7 @@ export const initDatadog = () => {
       clientToken,
       site: "datadoghq.com",
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
-      env: process.env.NEXT_PUBLIC_DATADOG_ENV || process.env.NEXT_PUBLIC_BRANCH || "development",
+      env: process.env.NEXT_PUBLIC_DATADOG_ENV,
       version: "1.0.0",
       sessionSampleRate: 100,
       sessionReplaySampleRate: 20
