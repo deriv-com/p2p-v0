@@ -52,7 +52,6 @@ export const setDatadogUser = (userId: string, userEmail?: string, userName?: st
   }
 }
 
-// Helper function to add custom context
 export const addDatadogContext = (key: string, value: any) => {
   if (typeof window === "undefined") return
 
@@ -63,7 +62,6 @@ export const addDatadogContext = (key: string, value: any) => {
   }
 }
 
-// Helper function to track custom actions
 export const trackDatadogAction = (name: string, context?: Record<string, any>) => {
   if (typeof window === "undefined") return
 
