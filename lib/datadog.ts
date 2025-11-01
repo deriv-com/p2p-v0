@@ -21,7 +21,7 @@ export const initDatadog = () => {
       applicationId,
       clientToken,
       site: "datadoghq.com",
-      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE || "p2p-v2",
+      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
       env: process.env.NEXT_PUBLIC_DATADOG_ENV || process.env.NEXT_PUBLIC_BRANCH || "development",
       version: "1.0.0",
       sessionSampleRate: 100,
