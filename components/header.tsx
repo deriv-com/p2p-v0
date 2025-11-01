@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
-import { LanguageSelector } from "./language-selector"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 export default function Header() {
@@ -57,7 +56,6 @@ export default function Header() {
         </nav>
       </div>
       <div className="h-12 flex items-center space-x-4">
-        <LanguageSelector />
         {userId && (
           <div className="text-slate-600 hover:text-slate-700">
             <NovuNotifications />

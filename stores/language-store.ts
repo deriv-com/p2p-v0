@@ -8,6 +8,7 @@ interface LanguageState {
   setLocale: (locale: Locale) => void
 }
 
+// Store persists the preference as fallback when no query param is present
 export const useLanguageStore = create<LanguageState>()(
   persist(
     (set) => ({
