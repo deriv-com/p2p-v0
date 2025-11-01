@@ -9,6 +9,7 @@ import { useState, useEffect } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import HomeIcon from "@/public/icons/ic-arrow-left.svg"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -23,6 +24,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
+  const { t } = useTranslations()
   const [showWallet, setShowWallet] = useState<boolean | null>(null)
   const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
@@ -61,17 +63,23 @@ export default function Sidebar({ className }: SidebarProps) {
     { name: "Back to Home", href: homeUrl, icon: HomeIcon },
     ...(!isDisabled
       ? [
-          { name: "Market", href: "/", icon: MarketIcon },
-          { name: "Orders", href: "/orders", icon: OrdersIcon },
-          { name: "My Ads", href: "/ads", icon: AdsIcon },
-          ...(showWallet === true ? [{ name: "Wallet", href: "/wallet", icon: WalletIcon }] : []),
-          { name: "Profile", href: "/profile", icon: ProfileIcon },
+          { name: t("navigation.market"), href: "/", icon: MarketIcon },
+          { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon },
+          { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
+          ...(showWallet === true ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
+          { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
           { name: "P2P Help Centre", href: `https://trade.deriv.com/help-centre/deriv-p2p`, icon: GuideIcon },
         ]
       : []),
   ]
 
-  const hideOnMobile = ["Market", "Orders", "My Ads", "Wallet", "Profile"]
+  const hideOnMobile = [
+    t("navigation.market"),
+    t("navigation.orders"),
+    t("navigation.myAds"),
+    t("navigation.wallet"),
+    t("navigation.profile"),
+  ]
 
   return (
     <div className={cn("w-[295px] flex flex-col border-r border-slate-200 mr-[8px]", className)}>
@@ -93,7 +101,7 @@ export default function Sidebar({ className }: SidebarProps) {
 
             return (
               <li key={item.name} className={cn(hideOnMobile.includes(item.name) && "hidden md:block")}>
-                {item.name === "Profile" && <div className="my-3 border-b border-grayscale-200"></div>}
+                {item.name === t("navigation.profile") && <div className="my-3 border-b border-grayscale-200"></div>}
                 <Link
                   prefetch
                   href={item.href}

@@ -1,0 +1,133 @@
+{
+  "common": {
+    "buy": "Comprar",
+    "sell": "Vender",
+    "market": "Mercado",
+    "orders": "Órdenes",
+    "myAds": "Mis Anuncios",
+    "wallet": "Billetera",
+    "profile": "Perfil",
+    "loading": "Cargando...",
+    "error": "Error",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Agregar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "all": "Todos",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK"
+  },
+  "navigation": {
+    "market": "Mercado",
+    "orders": "Órdenes",
+    "myAds": "Mis Anuncios",
+    "wallet": "Billetera",
+    "profile": "Perfil"
+  },
+  "market": {
+    "title": "Mercado",
+    "buyTab": "Comprar",
+    "sellTab": "Vender",
+    "yourePayingWith": "Estás pagando con",
+    "youreReceiving": "Estás recibiendo",
+    "paymentMethod": "Método de pago",
+    "paymentMethodAll": "Método de pago (Todos)",
+    "paymentMethodSelected": "Método de pago ({count})",
+    "advertisers": "Anunciantes",
+    "rates": "Tasas",
+    "paymentMethods": "Métodos de pago",
+    "orders": "órdenes",
+    "completion": "completado",
+    "min": "min",
+    "orderLimits": "Límites de orden",
+    "loadingAds": "Cargando anuncios...",
+    "noAdsTitle": "No hay anuncios para esta moneda",
+    "noAdsDescription": "Puedes publicar tu propio anuncio para que otros respondan.",
+    "following": "Siguiendo",
+    "verified": "Verificado"
+  },
+  "order": {
+    "placeOrder": "Realizar orden",
+    "amount": "Cantidad",
+    "youReceive": "Recibes",
+    "youPay": "Pagas",
+    "receivePaymentTo": "Recibir pago en",
+    "selectPayment": "Seleccionar pago",
+    "selected": "Seleccionado",
+    "rateType": "Tipo de tasa",
+    "exchangeRate": "Tasa de cambio",
+    "orderLimit": "Límite de orden",
+    "paymentTime": "Tiempo de pago",
+    "buyer": "Comprador",
+    "seller": "Vendedor",
+    "buyersPaymentMethods": "Método(s) de pago del comprador",
+    "sellersPaymentMethods": "Método(s) de pago del vendedor",
+    "buyersInstructions": "Instrucciones del comprador",
+    "sellersInstructions": "Instrucciones del vendedor",
+    "insufficientBalance": "Saldo insuficiente. Agrega fondos a tu billetera antes de crear una orden.",
+    "orderLimitError": "Límite de orden: {min} - {max} {currency}",
+    "orderExists": "La orden ya existe.",
+    "orderCreationError": "Hubo un error al crear la orden. Por favor, inténtalo de nuevo.",
+    "unableToCreateOrder": "No se puede crear una orden"
+  },
+  "paymentMethod": {
+    "title": "Método de pago",
+    "selectUpTo3": "Selecciona hasta 3",
+    "noCompatibleMethods": "No se encontraron métodos de pago compatibles",
+    "addCompatibleMethod": "Agrega un método de pago que coincida con los métodos aceptados del comprador",
+    "addPaymentMethod": "Agregar método de pago",
+    "duplicateMethod": "Método de pago duplicado",
+    "duplicateMethodDescription": "Ya existe un método de pago con los mismos valores. Agrega uno nuevo.",
+    "unableToAdd": "No se puede agregar el método de pago",
+    "addError": "Hubo un error al agregar el método de pago. Por favor, inténtalo de nuevo."
+  },
+  "balance": {
+    "title": "Saldo",
+    "totalBalance": "Saldo total",
+    "loading": "Cargando saldo..."
+  },
+  "filter": {
+    "fromFollowing": "De seguidos",
+    "sortBy": "Ordenar por",
+    "exchangeRate": "Tasa de cambio",
+    "apply": "Aplicar",
+    "reset": "Restablecer"
+  },
+  "chat": {
+    "conversationClosed": "Esta conversación está cerrada.",
+    "typeMessage": "Escribe un mensaje...",
+    "send": "Enviar",
+    "online": "En línea",
+    "offline": "Desconectado"
+  },
+  "orderDetails": {
+    "title": "Detalles de la orden",
+    "orderId": "ID de orden",
+    "status": "Estado",
+    "amount": "Cantidad",
+    "rate": "Tasa",
+    "total": "Total",
+    "paymentMethod": "Método de pago",
+    "instructions": "Instrucciones"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "networkError": "Error de red. Por favor, verifica tu conexión.",
+    "unauthorized": "No estás autorizado para realizar esta acción.",
+    "notFound": "No se encontró el recurso solicitado."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Dirección de correo electrónico no válida",
+    "invalidAmount": "Cantidad no válida",
+    "minAmount": "La cantidad mínima es {min}",
+    "maxAmount": "La cantidad máxima es {max}"
+  }
+}

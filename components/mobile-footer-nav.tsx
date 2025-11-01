@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { SvgIcon } from "@/components/icons/svg-icon"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
 import AdsIcon from "@/public/icons/ic-my-ads.svg"
@@ -14,6 +15,7 @@ import ProfileIcon from "@/public/icons/ic-profile.svg"
 export default function MobileFooterNav() {
   const pathname = usePathname()
   const { isChatVisible } = useChatVisibilityStore()
+  const { t } = useTranslations()
 
   if (
     pathname.startsWith("/orders/") ||
@@ -35,9 +37,12 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={MarketIcon} fill={pathname === "/" || pathname.startsWith("/advertiser") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon
+              src={MarketIcon}
+              fill={pathname === "/" || pathname.startsWith("/advertiser") ? "#FF444F" : "#181C25"}
+            />
           </div>
-          <span className="text-xs mt-1">Market</span>
+          <span className="text-xs mt-1">{t("navigation.market")}</span>
         </Link>
         <Link
           href="/orders"
@@ -47,9 +52,9 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={OrdersIcon} fill={pathname.startsWith("/orders") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={OrdersIcon} fill={pathname.startsWith("/orders") ? "#FF444F" : "#181C25"} />
           </div>
-          <span className="text-xs mt-1">Orders</span>
+          <span className="text-xs mt-1">{t("navigation.orders")}</span>
         </Link>
         <Link
           href="/ads"
@@ -59,9 +64,9 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"} />
           </div>
-          <span className="text-xs mt-1">My ads</span>
+          <span className="text-xs mt-1">{t("navigation.myAds")}</span>
         </Link>
         <Link
           href="/wallet"
@@ -71,9 +76,9 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"} />
           </div>
-          <span className="text-xs mt-1">Wallet</span>
+          <span className="text-xs mt-1">{t("navigation.wallet")}</span>
         </Link>
         <Link
           href="/profile"
@@ -83,9 +88,9 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={ProfileIcon} fill={pathname.startsWith("/profile") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={ProfileIcon} fill={pathname.startsWith("/profile") ? "#FF444F" : "#181C25"} />
           </div>
-          <span className="text-xs mt-1">Profile</span>
+          <span className="text-xs mt-1">{t("navigation.profile")}</span>
         </Link>
       </div>
     </div>

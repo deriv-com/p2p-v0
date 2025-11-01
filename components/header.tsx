@@ -6,17 +6,20 @@ import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
+import { LanguageSelector } from "./language-selector"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
+  const { t } = useTranslations()
 
   const pathname = usePathname()
   const navItems = [
-    { name: "Market", href: "/" },
-    { name: "Orders", href: "/orders" },
-    { name: "My Ads", href: "/ads" },
-    { name: "Wallet", href: "/wallet" },
-    { name: "Profile", href: "/profile" },
+    { name: t("navigation.market"), href: "/" },
+    { name: t("navigation.orders"), href: "/orders" },
+    { name: t("navigation.myAds"), href: "/ads" },
+    { name: t("navigation.wallet"), href: "/wallet" },
+    { name: t("navigation.profile"), href: "/profile" },
   ]
 
   if (pathname.startsWith("/advertiser") || pathname.match(/^\/orders\/[^/]+$/)) return null
@@ -54,6 +57,7 @@ export default function Header() {
         </nav>
       </div>
       <div className="h-12 flex items-center space-x-4">
+        <LanguageSelector />
         {userId && (
           <div className="text-slate-600 hover:text-slate-700">
             <NovuNotifications />

@@ -1,0 +1,133 @@
+{
+  "common": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "market": "Market",
+    "orders": "Orders",
+    "myAds": "My Ads",
+    "wallet": "Wallet",
+    "profile": "Profile",
+    "loading": "Loading...",
+    "error": "Error",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "all": "All",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK"
+  },
+  "navigation": {
+    "market": "Market",
+    "orders": "Orders",
+    "myAds": "My Ads",
+    "wallet": "Wallet",
+    "profile": "Profile"
+  },
+  "market": {
+    "title": "Market",
+    "buyTab": "Buy",
+    "sellTab": "Sell",
+    "yourePayingWith": "You're paying with",
+    "youreReceiving": "You're receiving",
+    "paymentMethod": "Payment method",
+    "paymentMethodAll": "Payment method (All)",
+    "paymentMethodSelected": "Payment method ({count})",
+    "advertisers": "Advertisers",
+    "rates": "Rates",
+    "paymentMethods": "Payment methods",
+    "orders": "orders",
+    "completion": "completion",
+    "min": "min",
+    "orderLimits": "Order limits",
+    "loadingAds": "Loading ads...",
+    "noAdsTitle": "No ads for this currency",
+    "noAdsDescription": "You can post your own ad for others to respond.",
+    "following": "Following",
+    "verified": "Verified"
+  },
+  "order": {
+    "placeOrder": "Place order",
+    "amount": "Amount",
+    "youReceive": "You receive",
+    "youPay": "You pay",
+    "receivePaymentTo": "Receive payment to",
+    "selectPayment": "Select payment",
+    "selected": "Selected",
+    "rateType": "Rate type",
+    "exchangeRate": "Exchange rate",
+    "orderLimit": "Order limit",
+    "paymentTime": "Payment time",
+    "buyer": "Buyer",
+    "seller": "Seller",
+    "buyersPaymentMethods": "Buyer's payment method(s)",
+    "sellersPaymentMethods": "Seller's payment method(s)",
+    "buyersInstructions": "Buyer's instructions",
+    "sellersInstructions": "Seller's instructions",
+    "insufficientBalance": "Insufficient balance. Add funds to your wallet before creating an order.",
+    "orderLimitError": "Order limit: {min} - {max} {currency}",
+    "orderExists": "Order already exists.",
+    "orderCreationError": "There was an error when creating the order. Please try again.",
+    "unableToCreateOrder": "Unable to create an order"
+  },
+  "paymentMethod": {
+    "title": "Payment method",
+    "selectUpTo3": "Select up to 3",
+    "noCompatibleMethods": "No compatible payment methods found",
+    "addCompatibleMethod": "Add a payment method that matches the buyer's accepted methods",
+    "addPaymentMethod": "Add payment method",
+    "duplicateMethod": "Duplicate payment method",
+    "duplicateMethodDescription": "A payment method with the same values already exists. Add a new one.",
+    "unableToAdd": "Unable to add payment method",
+    "addError": "There was an error when adding the payment method. Please try again."
+  },
+  "balance": {
+    "title": "Balance",
+    "totalBalance": "Total balance",
+    "loading": "Loading balance..."
+  },
+  "filter": {
+    "fromFollowing": "From following",
+    "sortBy": "Sort by",
+    "exchangeRate": "Exchange rate",
+    "apply": "Apply",
+    "reset": "Reset"
+  },
+  "chat": {
+    "conversationClosed": "This conversation is closed.",
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "orderDetails": {
+    "title": "Order details",
+    "orderId": "Order ID",
+    "status": "Status",
+    "amount": "Amount",
+    "rate": "Rate",
+    "total": "Total",
+    "paymentMethod": "Payment method",
+    "instructions": "Instructions"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "networkError": "Network error. Please check your connection.",
+    "unauthorized": "You are not authorized to perform this action.",
+    "notFound": "The requested resource was not found."
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalidEmail": "Invalid email address",
+    "invalidAmount": "Invalid amount",
+    "minAmount": "Minimum amount is {min}",
+    "maxAmount": "Maximum amount is {max}"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "common": {
+    "buy": "Acquista",
+    "sell": "Vendi",
+    "market": "Mercato",
+    "orders": "Ordini",
+    "myAds": "I Miei Annunci",
+    "wallet": "Portafoglio",
+    "profile": "Profilo",
+    "loading": "Caricamento...",
+    "error": "Errore",
+    "confirm": "Conferma",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "add": "Aggiungi",
+    "search": "Cerca",
+    "filter": "Filtra",
+    "sort": "Ordina",
+    "all": "Tutti",
+    "yes": "Sì",
+    "no": "No",
+    "ok": "OK"
+  },
+  "navigation": {
+    "market": "Mercato",
+    "orders": "Ordini",
+    "myAds": "I Miei Annunci",
+    "wallet": "Portafoglio",
+    "profile": "Profilo"
+  },
+  "market": {
+    "title": "Mercato",
+    "buyTab": "Acquista",
+    "sellTab": "Vendi",
+    "yourePayingWith": "Stai pagando con",
+    "youreReceiving": "Stai ricevendo",
+    "paymentMethod": "Metodo di pagamento",
+    "paymentMethodAll": "Metodo di pagamento (Tutti)",
+    "paymentMethodSelected": "Metodo di pagamento ({count})",
+    "advertisers": "Inserzionisti",
+    "rates": "Tassi",
+    "paymentMethods": "Metodi di pagamento",
+    "orders": "ordini",
+    "completion": "completamento",
+    "min": "min",
+    "orderLimits": "Limiti ordine",
+    "loadingAds": "Caricamento annunci...",
+    "noAdsTitle": "Nessun annuncio per questa valuta",
+    "noAdsDescription": "Puoi pubblicare il tuo annuncio per far rispondere altri.",
+    "following": "Seguendo",
+    "verified": "Verificato"
+  },
+  "order": {
+    "placeOrder": "Effettua ordine",
+    "amount": "Importo",
+    "youReceive": "Ricevi",
+    "youPay": "Paghi",
+    "receivePaymentTo": "Ricevi pagamento su",
+    "selectPayment": "Seleziona pagamento",
+    "selected": "Selezionato",
+    "rateType": "Tipo di tasso",
+    "exchangeRate": "Tasso di cambio",
+    "orderLimit": "Limite ordine",
+    "paymentTime": "Tempo di pagamento",
+    "buyer": "Acquirente",
+    "seller": "Venditore",
+    "buyersPaymentMethods": "Metodo/i di pagamento dell'acquirente",
+    "sellersPaymentMethods": "Metodo/i di pagamento del venditore",
+    "buyersInstructions": "Istruzioni dell'acquirente",
+    "sellersInstructions": "Istruzioni del venditore",
+    "insufficientBalance": "Saldo insufficiente. Aggiungi fondi al tuo portafoglio prima di creare un ordine.",
+    "orderLimitError": "Limite ordine: {min} - {max} {currency}",
+    "orderExists": "L'ordine esiste già.",
+    "orderCreationError": "Si è verificato un errore durante la creazione dell'ordine. Riprova.",
+    "unableToCreateOrder": "Impossibile creare un ordine"
+  },
+  "paymentMethod": {
+    "title": "Metodo di pagamento",
+    "selectUpTo3": "Seleziona fino a 3",
+    "noCompatibleMethods": "Nessun metodo di pagamento compatibile trovato",
+    "addCompatibleMethod": "Aggiungi un metodo di pagamento che corrisponda ai metodi accettati dall'acquirente",
+    "addPaymentMethod": "Aggiungi metodo di pagamento",
+    "duplicateMethod": "Metodo di pagamento duplicato",
+    "duplicateMethodDescription": "Esiste già un metodo di pagamento con gli stessi valori. Aggiungine uno nuovo.",
+    "unableToAdd": "Impossibile aggiungere il metodo di pagamento",
+    "addError": "Si è verificato un errore durante l'aggiunta del metodo di pagamento. Riprova."
+  },
+  "balance": {
+    "title": "Saldo",
+    "totalBalance": "Saldo totale",
+    "loading": "Caricamento saldo..."
+  },
+  "filter": {
+    "fromFollowing": "Da seguiti",
+    "sortBy": "Ordina per",
+    "exchangeRate": "Tasso di cambio",
+    "apply": "Applica",
+    "reset": "Ripristina"
+  },
+  "chat": {
+    "conversationClosed": "Questa conversazione è chiusa.",
+    "typeMessage": "Scrivi un messaggio...",
+    "send": "Invia",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "orderDetails": {
+    "title": "Dettagli ordine",
+    "orderId": "ID ordine",
+    "status": "Stato",
+    "amount": "Importo",
+    "rate": "Tasso",
+    "total": "Totale",
+    "paymentMethod": "Metodo di pagamento",
+    "instructions": "Istruzioni"
+  },
+  "errors": {
+    "generic": "Qualcosa è andato storto. Riprova.",
+    "networkError": "Errore di rete. Controlla la tua connessione.",
+    "unauthorized": "Non sei autorizzato a eseguire questa azione.",
+    "notFound": "La risorsa richiesta non è stata trovata."
+  },
+  "validation": {
+    "required": "Questo campo è obbligatorio",
+    "invalidEmail": "Indirizzo email non valido",
+    "invalidAmount": "Importo non valido",
+    "minAmount": "L'importo minimo è {min}",
+    "maxAmount": "L'importo massimo è {max}"
+  }
+}
