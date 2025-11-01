@@ -24,8 +24,8 @@ export const initDatadog = () => {
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
       env: process.env.NEXT_PUBLIC_DATADOG_ENV,
       version: process.env.NEXT_PUBLIC_DATADOG_VERSION,
-      sessionSampleRate: 10,
-      sessionReplaySampleRate: 1
+      sessionSampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE ?? 10,
+      sessionReplaySampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1
     })
   } catch (error) {
     console.error("[Datadog RUM] Initialization failed:", error)
