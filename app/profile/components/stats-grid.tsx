@@ -3,6 +3,7 @@
 import Image from "next/image"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface StatCardProps {
   tab: string
@@ -55,6 +56,8 @@ function StatCard({ tab, title, value }: StatCardProps) {
 }
 
 export default function StatsGrid({ stats }) {
+  const t = useTranslations()
+
   const formatAmount = (amount) => {
     return Number.parseFloat(amount).toLocaleString(undefined, {
       minimumFractionDigits: 2,
@@ -67,9 +70,9 @@ export default function StatsGrid({ stats }) {
 
     const minutes = seconds / 60
 
-    if (minutes < 1) return "< 1 min"
+    if (minutes < 1) return t("profile.lessThanOneMin")
 
-    return `${minutes.toFixed(2)} mins`
+    return `${minutes.toFixed(2)} ${t("profile.mins")}`
   }
 
   return (
@@ -78,13 +81,14 @@ export default function StatsGrid({ stats }) {
         <div>
           <Tabs defaultValue="last30days">
             <TabsList>
-              <TabsTrigger value="last30days">Last 30 days</TabsTrigger>
-              <TabsTrigger value="lifetime">Lifetime</TabsTrigger>
+              <TabsTrigger value="last30days">{t("profile.last30Days")}</TabsTrigger>
+              <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
                 <StatCard
-                  title="Sell completion"
+                  tab="last30days"
+                  title={t("profile.sellCompletion")}
                   value={
                     stats?.statistics_30day?.completion_rate_sell
                       ? `${stats.statistics_30day.completion_rate_sell}% (${stats.statistics_30day.completion_count_sell})`
@@ -92,25 +96,32 @@ export default function StatsGrid({ stats }) {
                   }
                 />
                 <StatCard
-                  title="Buy completion"
+                  tab="last30days"
+                  title={t("profile.buyCompletion")}
                   value={
                     stats?.statistics_30day?.completion_rate_buy
                       ? `${stats.statistics_30day.completion_rate_buy}% (${stats.statistics_30day.completion_count_buy})`
                       : "-"
                   }
                 />
-                <StatCard title="Total orders" value={stats?.statistics_30day?.completion_count_all ?? "0"} />
                 <StatCard
-                  title="Avg. pay time"
+                  tab="last30days"
+                  title={t("profile.totalOrders")}
+                  value={stats?.statistics_30day?.completion_count_all ?? "0"}
+                />
+                <StatCard
+                  tab="last30days"
+                  title={t("profile.avgPayTime")}
                   value={formatTimeInMinutes(stats?.statistics_30day?.buy_time_average)}
                 />
                 <StatCard
-                  title="Avg. release time"
+                  tab="last30days"
+                  title={t("profile.avgReleaseTime")}
                   value={formatTimeInMinutes(stats?.statistics_30day?.release_time_average)}
                 />
                 <StatCard
                   tab="last30days"
-                  title="Trade volume"
+                  title={t("profile.tradeVolume")}
                   value={
                     stats?.statistics_30day?.completion_amount_all > 0
                       ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD`
@@ -122,7 +133,8 @@ export default function StatsGrid({ stats }) {
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
               <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
                 <StatCard
-                  title="Sell completion"
+                  tab="lifetime"
+                  title={t("profile.sellCompletion")}
                   value={
                     stats?.statistics_lifetime?.completion_rate_sell
                       ? `${stats.statistics_lifetime.completion_rate_sell}% (${stats.statistics_lifetime.completion_count_sell})`
@@ -130,26 +142,37 @@ export default function StatsGrid({ stats }) {
                   }
                 />
                 <StatCard
-                  title="Buy completion"
+                  tab="lifetime"
+                  title={t("profile.buyCompletion")}
                   value={
                     stats?.statistics_lifetime?.completion_rate_buy
                       ? `${stats.statistics_lifetime.completion_rate_buy}% (${stats.statistics_lifetime.completion_count_buy})`
                       : "-"
                   }
                 />
-                <StatCard title="Total orders" value={stats?.statistics_lifetime?.completion_count_all ?? "0"} />
                 <StatCard
-                  title="Avg. pay time"
+                  tab="lifetime"
+                  title={t("profile.totalOrders")}
+                  value={stats?.statistics_lifetime?.completion_count_all ?? "0"}
+                />
+                <StatCard
+                  tab="lifetime"
+                  title={t("profile.avgPayTime")}
                   value={formatTimeInMinutes(stats?.statistics_lifetime?.buy_time_average)}
                 />
                 <StatCard
-                  title="Avg. release time"
+                  tab="lifetime"
+                  title={t("profile.avgReleaseTime")}
                   value={formatTimeInMinutes(stats?.statistics_lifetime?.release_time_average)}
                 />
-                <StatCard title="Trade partners" value={stats?.statistics_lifetime?.partner_count ?? "0"} />
                 <StatCard
                   tab="lifetime"
-                  title="Trade volume"
+                  title={t("profile.tradePartners")}
+                  value={stats?.statistics_lifetime?.partner_count ?? "0"}
+                />
+                <StatCard
+                  tab="lifetime"
+                  title={t("profile.tradeVolume")}
                   value={
                     stats?.statistics_lifetime?.completion_amount_all > 0
                       ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD`

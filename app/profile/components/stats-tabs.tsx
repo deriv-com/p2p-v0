@@ -15,6 +15,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useToast } from "@/hooks/use-toast"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface StatsTabsProps {
   stats?: any
@@ -35,12 +36,13 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
+  const t = useTranslations()
 
   const tabs = [
-    { id: "stats", label: "Stats" },
-    { id: "payment", label: "Payment methods" },
-    { id: "follows", label: "Follows" },
-    { id: "blocked", label: "Blocked" },
+    { id: "stats", label: t("profile.stats") },
+    { id: "payment", label: t("profile.paymentMethods") },
+    { id: "follows", label: t("profile.follows") },
+    { id: "blocked", label: t("profile.blocked") },
   ]
 
   const handleAddPaymentMethod = async (method: string, fields: Record<string, string>) => {
@@ -56,7 +58,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>Payment method added.</span>
+              <span>{t("profile.paymentMethodAdded")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -65,17 +67,17 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
         setRefreshKey((prev) => prev + 1)
       } else {
-        let title = "Unable to add payment method"
-        let description = "There was an error when adding the payment method. Please try again."
+        let title = t("paymentMethod.unableToAdd")
+        let description = t("paymentMethod.addError")
 
         if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
-          title = "Duplicate payment method"
-          description = "A payment method with the same values already exists.\nAdd a new one."
+          title = t("paymentMethod.duplicateMethod")
+          description = t("paymentMethod.duplicateMethodDescription")
         }
         showAlert({
           title,
           description,
-          confirmText: "OK",
+          confirmText: t("common.ok"),
           type: "warning",
         })
       }
@@ -90,14 +92,14 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
       setShowAddPaymentPanel(true)
     } else {
       showAlert({
-        title: "Getting started with P2P",
+        title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
           </div>
         ),
         confirmText: undefined,
-        cancelText: undefined
+        cancelText: undefined,
       })
     }
   }
@@ -114,7 +116,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <span className="text-sm font-normal text-gray-900">Stats</span>
+              <span className="text-sm font-normal text-gray-900">{t("profile.stats")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             {showStatsSidebar && (
@@ -130,7 +132,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4">
-                  <h2 className="text-2xl font-bold mb-4">Stats</h2>
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.stats")}</h2>
                   <StatsGrid stats={stats} />
                 </div>
               </div>
@@ -142,7 +144,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <span className="text-sm font-normal text-gray-900">Payment methods</span>
+              <span className="text-sm font-normal text-gray-900">{t("profile.paymentMethods")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             {showPaymentMethodsSidebar && (
@@ -158,7 +160,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold mb-4">Payment methods</h2>
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
                   <PaymentMethodsTab key={refreshKey} />
                 </div>
                 <div className="p-4">
@@ -167,7 +169,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                     variant="outline"
                     className="w-full rounded-full bg-transparent"
                   >
-                    Add payment method
+                    {t("profile.addPaymentMethod")}
                   </Button>
                 </div>
               </div>
@@ -179,7 +181,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <span className="text-sm font-normal text-gray-900">Follows</span>
+              <span className="text-sm font-normal text-gray-900">{t("profile.follows")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             {showFollowsSidebar && (
@@ -195,7 +197,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold mb-4">Follows</h2>
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.follows")}</h2>
                   <FollowsTab />
                 </div>
               </div>
@@ -207,7 +209,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
               }}
               className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             >
-              <span className="text-sm font-normal text-gray-900">Blocked</span>
+              <span className="text-sm font-normal text-gray-900">{t("profile.blocked")}</span>
               <Image src="/icons/chevron-right-sm.png" alt="Chevron right" width={20} height={20} />
             </div>
             {showBlockedSidebar && (
@@ -223,7 +225,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold mb-4">Blocked</h2>
+                  <h2 className="text-2xl font-bold mb-4">{t("profile.blocked")}</h2>
                   <BlockedTab />
                 </div>
               </div>
@@ -286,7 +288,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 <div className="flex justify-end mb-4">
                   <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
                     <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
-                    Add payment method
+                    {t("profile.addPaymentMethod")}
                   </Button>
                 </div>
                 <PaymentMethodsTab key={refreshKey} />

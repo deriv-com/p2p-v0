@@ -5,6 +5,7 @@ import Image from "next/image"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface UserInfoProps {
   username: string
@@ -26,6 +27,7 @@ export default function UserInfo({
   isLoading,
 }: UserInfoProps) {
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
+  const t = useTranslations()
 
   const isFullyVerified =
     verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified
@@ -56,8 +58,8 @@ export default function UserInfo({
                   </TooltipTrigger>
                   <TooltipContent>
                     <>
-                      <p className="font-bold text-white mb-2">Bronze tier</p>
-                      <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
+                      <p className="font-bold text-white mb-2">{t("profile.bronzeTier")}</p>
+                      <p className="opacity-[0.72]">{t("profile.bronzeTierDescription")}</p>
                     </>
                     <TooltipArrow className="fill-black" />
                   </TooltipContent>
@@ -71,7 +73,7 @@ export default function UserInfo({
               <div className="flex items-center">
                 <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
                 <span className="text-white opacity-[0.72]">
-                  {recommendation ? recommendation : "Not recommended yet"}
+                  {recommendation ? recommendation : t("profile.notRecommendedYet")}
                 </span>
               </div>
             </div>
@@ -79,7 +81,7 @@ export default function UserInfo({
               <div className="mx-4 h-4 w-px bg-black opacity-[0.08]"></div>
               <div className="flex items-center">
                 <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
-                <span className="text-white opacity-[0.72]">{rating ? rating : "Not rated yet"}</span>
+                <span className="text-white opacity-[0.72]">{rating ? rating : t("profile.notRatedYet")}</span>
               </div>
             </>
           </div>
