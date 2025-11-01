@@ -8,7 +8,7 @@ export const initDatadog = () => {
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
-  if (!applicationId || !clientToken) 
+  if (!applicationId || !clientToken) {
     return
   }
 
