@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input"
 import { OrdersAPI } from "@/services/api"
 import { cn } from "@/lib/utils"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentConfirmationSidebarProps {
   isOpen: boolean
@@ -28,6 +29,7 @@ export const PaymentConfirmationSidebar = ({
   order,
   isLoading = false,
 }: PaymentConfirmationSidebarProps) => {
+  const { t } = useTranslations()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [isUploadLoading, setIsUploadLoading] = useState<boolean>(false)
   const [fileError, setFileError] = useState<string | null>(null)
@@ -45,7 +47,7 @@ export const PaymentConfirmationSidebar = ({
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setFileError("File must be 5MB or smaller.")
+      setFileError(t("orders.fileTooLarge"))
       return
     }
 
@@ -113,17 +115,17 @@ export const PaymentConfirmationSidebar = ({
           </div>
 
           <div className="flex items-center gap-4 p-4 pb-0">
-            <h2 className="text-2xl font-bold">Confirm your payment</h2>
+            <h2 className="text-2xl font-bold">{t("orders.confirmPayment")}</h2>
           </div>
           <div className="px-4">
             <Alert variant="warning" className="flex items-center gap-2 mt-4 mb-0">
               <Image src="/icons/warning-icon-new.png" alt="Warning" height={24} width={24} />
-              <AlertDescription>Providing fraudulent documents will result in a permanent ban.</AlertDescription>
+              <AlertDescription>{t("orders.fraudWarning")}</AlertDescription>
             </Alert>
           </div>
           <div className="flex-1 md:flex-none p-4 space-y-2 overflow-y-auto">
             <p className="text-sm text-gray-600">
-              Ensure you've paid {amount} {currencySymbol} to {sellerName} and upload the receipt as proof of payment.
+              {t("orders.ensurePayment", { amount, currency: currencySymbol, name: sellerName })}
             </p>
 
             <div
@@ -154,9 +156,9 @@ export const PaymentConfirmationSidebar = ({
                 <div className="flex flex-col items-center">
                   <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer">
                     <Image src="/icons/upload-icon.png" alt="Upload" width={48} height={48} className="text-gray-400" />
-                    <span className="my-2 text-sm font-bold text-neutral-10">Upload proof of payment</span>
+                    <span className="my-2 text-sm font-bold text-neutral-10">{t("orders.uploadProof")}</span>
                   </label>
-                  <p className="text-xs text-gray-500 mt-1">JPEG, JPG, PNG, PDF (up to 5MB)</p>
+                  <p className="text-xs text-gray-500 mt-1">{t("orders.fileTypes")}</p>
                 </div>
               )}
             </div>
@@ -173,7 +175,7 @@ export const PaymentConfirmationSidebar = ({
               {isLoading || isUploadLoading ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
-                "Submit"
+                t("orders.submit")
               )}
             </Button>
           </div>

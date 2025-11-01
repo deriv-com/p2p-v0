@@ -11,6 +11,7 @@ import { SingleMonthCalendar } from "./single-month-calendar"
 import { DualMonthCalendar } from "./dual-month-calendar"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface DateFilterProps {
   value: DateFilterType
@@ -21,6 +22,7 @@ interface DateFilterProps {
 }
 
 export function DateFilter({ customRange, onValueChange, onCustomRangeChange, className }: DateFilterProps) {
+  const { t } = useTranslations()
   const [isOpen, setIsOpen] = React.useState(false)
   const [tempRange, setTempRange] = React.useState<DateRange>(customRange)
   const isMobile = useIsMobile()
@@ -35,7 +37,7 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
       }
       return format(customRange.from, "dd MMM yyyy")
     }
-    return "All time"
+    return t("orders.allTime")
   }
 
   const handleCustomRangeApply = () => {
@@ -54,12 +56,8 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
 
   const handleCustomRange = (fromDate, toDate) => {
     const normalizedRange = {
-      from: fromDate
-        ? new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate())
-        : undefined,
-      to: toDate
-        ? new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate())
-        : undefined,
+      from: fromDate ? new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate()) : undefined,
+      to: toDate ? new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate()) : undefined,
     }
     onCustomRangeChange(normalizedRange)
     onValueChange("custom")
@@ -99,12 +97,11 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           <div className="bg-white p-4">
             <SingleMonthCalendar selected={tempRange} onSelect={setTempRange} />
             <div className="flex flex-col gap-2 mt-6">
-              
               <Button onClick={handleCustomRangeApply} className="flex-1" disabled={!tempRange.from}>
-                Confirm
+                {t("orders.confirm")}
               </Button>
               <Button variant="outline" onClick={handleReset} className="flex-1 bg-transparent">
-                Reset
+                {t("orders.reset")}
               </Button>
             </div>
           </div>
@@ -120,9 +117,9 @@ export function DateFilter({ customRange, onValueChange, onCustomRangeChange, cl
           variant="outline"
           size="sm"
           className={cn(
-          "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
+            "rounded-3xl border border-input bg-background font-normal px-3 hover:bg-transparent focus:border-black",
             className,
-          isOpen && "bg-grayscale-800",
+            isOpen && "bg-grayscale-800",
           )}
         >
           <div className="flex items-center justify-between w-full">
