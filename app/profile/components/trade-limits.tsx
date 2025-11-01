@@ -15,7 +15,7 @@ interface TradeLimitsProps {
 }
 
 export default function TradeLimits({ buyLimit, sellLimit, userData }: TradeLimitsProps) {
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   const buyMax = userData?.daily_limits?.buy ?? "0.00"
   const buyRemaining = userData?.daily_limits_remaining?.buy ?? "0.00"

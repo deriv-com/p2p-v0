@@ -27,7 +27,7 @@ export default function UserInfo({
   isLoading,
 }: UserInfoProps) {
   const verificationStatus = useUserDataStore((state) => state.verificationStatus)
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   const isFullyVerified =
     verificationStatus?.email_verified && verificationStatus?.phone_verified && verificationStatus?.kyc_verified

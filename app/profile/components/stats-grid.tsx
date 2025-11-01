@@ -56,7 +56,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
 }
 
 export default function StatsGrid({ stats }) {
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   const formatAmount = (amount) => {
     return Number.parseFloat(amount).toLocaleString(undefined, {

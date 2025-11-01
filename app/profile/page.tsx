@@ -18,7 +18,7 @@ export default function ProfilePage() {
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
   const isDisabled = user?.status === "disabled"
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   useEffect(() => {
     const fetchUserData = async () => {

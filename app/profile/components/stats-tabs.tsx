@@ -36,7 +36,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
