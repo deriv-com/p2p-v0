@@ -12,9 +12,26 @@ export function LanguageSync() {
   useEffect(() => {
     const langParam = searchParams.get("lang")
 
-    if (langParam && locales.includes(langParam as Locale)) {
-      setLocale(langParam as Locale)
+    if (langParam) {
+      const normalizedLang = langParam.toLowerCase()
+      if (locales.includes(normalizedLang as Locale)) {
+        setLocale(normalizedLang as Locale)
+      } else {
+        // Fallback to stored locale if URL param is invalid
+        const storedLocale = localStorage.getItem("language-storage")
+        if (storedLocale) {
+          try {
+            const parsed = JSON.parse(storedLocale)
+            if (parsed.state?.locale && locales.includes(parsed.state.locale)) {
+              setLocale(parsed.state.locale)
+            }
+          } catch {
+            setLocale(defaultLocale)
+          }
+        }
+      }
     } else {
+      // No lang param, use stored locale or default
       const storedLocale = localStorage.getItem("language-storage")
       if (storedLocale) {
         try {
