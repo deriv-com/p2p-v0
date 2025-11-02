@@ -74,6 +74,18 @@ export default function WalletPage() {
     }
   }, [userData?.signup, router])
 
+  if (userData?.signup === "v1") {
+    return null
+  }
+
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+      </div>
+    )
+  }
+
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
     setTotalBalance(balance)
@@ -85,14 +97,6 @@ export default function WalletPage() {
     setSelectedCurrency(null)
     setTotalBalance(null)
     loadBalanceData()
-  }
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
   }
 
   return (
