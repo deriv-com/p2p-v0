@@ -367,7 +367,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                   )}
                 </div>
               </div>
-
+            </div>
               {isBlocked && (
                 <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
                   <div className="mb-4">
@@ -488,7 +488,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                 ad={selectedAd}
                 orderType={orderType}
               />
-            </div>
+            
           </div>
         </div>
       </div>
