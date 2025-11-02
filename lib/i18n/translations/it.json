@@ -453,6 +453,7 @@
     "joinedOn": "Iscritto il {date}",
     "recommendedBy": "Raccomandato da {count} trader",
     "notRecommendedYet": "Non ancora raccomandato",
+    "notRatedYet": "Non ancora valutato",
     "advertiserInfo": "Informazioni inserzionista",
     "close": "Chiudi",
     "buyCompletionRate30d": "Tasso di completamento acquisti (30g)",

@@ -446,6 +446,7 @@
     "joinedOn": "Inscrit le {date}",
     "recommendedBy": "Recommandé par {count} traders",
     "notRecommendedYet": "Pas encore recommandé",
+    "notRatedYet": "Pas encore évalué",
     "advertiserInfo": "Informations sur l'annonceur",
     "close": "Fermer",
     "buyCompletionRate30d": "Taux d'achèvement des achats (30j)",

@@ -446,6 +446,7 @@
     "joinedOn": "Joined on {date}",
     "recommendedBy": "Recommended by {count} traders",
     "notRecommendedYet": "Not recommended yet",
+    "notRatedYet": "Not rated yet",
     "advertiserInfo": "Advertiser info",
     "close": "Close",
     "buyCompletionRate30d": "Buy completion rate (30d)",

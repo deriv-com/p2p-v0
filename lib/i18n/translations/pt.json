@@ -295,6 +295,7 @@
     "joinedOn": "Entrou em {date}",
     "recommendedBy": "Recomendado por {count} traders",
     "notRecommendedYet": "Ainda não recomendado",
+    "notRatedYet": "Ainda não avaliado",
     "advertiserInfo": "Informações do anunciante",
     "close": "Fechar",
     "buyCompletionRate30d": "Taxa de conclusão de compras (30d)",

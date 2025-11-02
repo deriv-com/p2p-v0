@@ -295,6 +295,7 @@
     "joinedOn": "Se unió el {date}",
     "recommendedBy": "Recomendado por {count} comerciantes",
     "notRecommendedYet": "Aún no recomendado",
+    "notRatedYet": "Aún no calificado",
     "advertiserInfo": "Información del anunciante",
     "close": "Cerrar",
     "buyCompletionRate30d": "Tasa de finalización de compras (30d)",
