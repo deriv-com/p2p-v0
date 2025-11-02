@@ -4,6 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { useState, useEffect } from "react"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -14,6 +16,20 @@ import ProfileIcon from "@/public/icons/ic-profile.svg"
 export default function MobileFooterNav() {
   const pathname = usePathname()
   const { isChatVisible } = useChatVisibilityStore()
+  const { userData } = useUserDataStore()
+  const [showWallet, setShowWallet] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    if (!userData?.signup) {
+      return
+    }
+
+    if (userData?.signup === "v1") {
+      setShowWallet(false)
+    } else {
+      setShowWallet(true)
+    }
+  }, [userData?.signup])
 
   if (
     pathname.startsWith("/orders/") ||
@@ -35,7 +51,10 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={MarketIcon} fill={pathname === "/" || pathname.startsWith("/advertiser") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon
+              src={MarketIcon}
+              fill={pathname === "/" || pathname.startsWith("/advertiser") ? "#FF444F" : "#181C25"}
+            />
           </div>
           <span className="text-xs mt-1">Market</span>
         </Link>
@@ -47,7 +66,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={OrdersIcon} fill={pathname.startsWith("/orders") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={OrdersIcon} fill={pathname.startsWith("/orders") ? "#FF444F" : "#181C25"} />
           </div>
           <span className="text-xs mt-1">Orders</span>
         </Link>
@@ -59,22 +78,24 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"} />
           </div>
           <span className="text-xs mt-1">My ads</span>
         </Link>
-        <Link
-          href="/wallet"
-          className={cn("flex flex-col items-center justify-center", {
-            "text-primary": pathname.startsWith("/wallet"),
-            "text-slate-1200": !pathname.startsWith("/wallet"),
-          })}
-        >
-          <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"}/>
-          </div>
-          <span className="text-xs mt-1">Wallet</span>
-        </Link>
+        {showWallet !== false && (
+          <Link
+            href="/wallet"
+            className={cn("flex flex-col items-center justify-center", {
+              "text-primary": pathname.startsWith("/wallet"),
+              "text-slate-1200": !pathname.startsWith("/wallet"),
+            })}
+          >
+            <div className="h-5 w-5 flex items-center justify-center">
+              <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"} />
+            </div>
+            <span className="text-xs mt-1">Wallet</span>
+          </Link>
+        )}
         <Link
           href="/profile"
           className={cn("flex flex-col items-center justify-center", {
@@ -83,7 +104,7 @@ export default function MobileFooterNav() {
           })}
         >
           <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={ProfileIcon} fill={pathname.startsWith("/profile") ? "#FF444F" : "#181C25"}/>
+            <SvgIcon src={ProfileIcon} fill={pathname.startsWith("/profile") ? "#FF444F" : "#181C25"} />
           </div>
           <span className="text-xs mt-1">Profile</span>
         </Link>

@@ -32,12 +32,6 @@ export default function WalletPage() {
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
-  useEffect(() => {
-    if (userData?.signup === "v1") {
-      router.push("/")
-    }
-  }, [userData?.signup, router])
-
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -73,6 +67,12 @@ export default function WalletPage() {
   useEffect(() => {
     loadBalanceData()
   }, [loadBalanceData])
+
+  useEffect(() => {
+    if (userData?.signup === "v1") {
+      router.push("/")
+    }
+  }, [userData?.signup, router])
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
