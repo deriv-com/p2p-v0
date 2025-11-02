@@ -87,6 +87,8 @@ export default function WalletPage() {
     loadBalanceData()
   }
 
+  if()
+
   if (isDisabled) {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
