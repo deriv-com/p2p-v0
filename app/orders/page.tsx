@@ -61,14 +61,15 @@ export default function OrdersPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    console.log("[v0] Orders page - userData:", userData)
+    console.log("[v0] Orders page - userData?.signup:", userData?.signup)
+
     fetchOrders()
 
     // Check if user is v1 and show/hide button accordingly
-    if (userData?.signup === "v1") {
-      setShowCheckPreviousOrdersButton(true)
-    } else {
-      setShowCheckPreviousOrdersButton(false)
-    }
+    const isV1User = userData?.signup === "v1"
+    console.log("[v0] Orders page - isV1User:", isV1User)
+    setShowCheckPreviousOrdersButton(isV1User)
 
     return () => {
       if (abortControllerRef.current) {
