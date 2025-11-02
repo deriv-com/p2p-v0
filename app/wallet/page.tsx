@@ -68,12 +68,6 @@ export default function WalletPage() {
     loadBalanceData()
   }, [loadBalanceData])
 
-  useEffect(() => {
-    if (userData?.signup === "v1") {
-      router.push("/")
-    }
-  }, [userData?.signup, router])
-
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
     setTotalBalance(balance)
@@ -102,6 +96,10 @@ export default function WalletPage() {
       </div>
     )
   }
+
+  if (userData?.signup === "v1") {
+      router.push("/")
+    }
 
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
