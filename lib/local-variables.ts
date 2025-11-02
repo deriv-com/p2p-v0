@@ -76,7 +76,7 @@ export const APP_SETTINGS = {
   defaultCurrency: "USD",
   supportedCurrencies: ["USD", "EUR", "GBP", "IDR"],
   defaultLanguage: "EN",
-  supportedLanguages: ["EN", "ES", "FR", "ID", "IT"],
+  supportedLanguages: ["EN", "ES", "FR", "ID", "IT", "PT"],
 }
 
 export const NOTIFICATIONS = {
