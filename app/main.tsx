@@ -64,7 +64,6 @@ export default function Main({
           return
         }
 
-          console.log(userData)
         if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
           window.location.href = getLoginUrl(userData?.signup === "v1")
