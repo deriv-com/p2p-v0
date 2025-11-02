@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -84,51 +84,60 @@ export default function BuySellPage() {
     return "v2"
   }, [isV1Signup, userData?.balances, userData?.signup])
 
-  const fetchBalance = useCallback(async () => {
+  useEffect(() => {
+    console.log("[v0] Balance effect triggered, userData:", userData)
+    console.log("[v0] userData?.signup:", userData?.signup)
+    console.log("[v0] isV1Signup:", isV1Signup)
+    console.log("[v0] balancesKey:", balancesKey)
+
+    // Early return if userData hasn't loaded yet
     if (!userData?.signup) {
+      console.log("[v0] No signup data yet, skipping balance fetch")
       return
     }
 
-    if (!userData) {
-      return
-    }
-
+    // For v1 users, wait for balances to load
     if (isV1Signup && !userData?.balances) {
+      console.log("[v0] V1 user but no balances yet, skipping balance fetch")
       return
     }
 
+    // Check if we've already fetched for this balancesKey
     if (fetchedForRef.current === balancesKey) {
+      console.log("[v0] Already fetched for this balancesKey, skipping")
       return
     }
 
     fetchedForRef.current = balancesKey
     setIsLoadingBalance(true)
 
-    try {
-      if (isV1Signup) {
-        const balances = userData?.balances || []
-        const firstBalance = balances[0] || {}
-        setBalance(firstBalance.amount || "0.00")
-        setBalanceCurrency(firstBalance.currency || "USD")
-      } else {
-        const data = await getTotalBalance()
-        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+    const fetchBalance = async () => {
+      try {
+        if (isV1Signup) {
+          console.log("[v0] Fetching balance for V1 user")
+          const balances = userData?.balances || []
+          const firstBalance = balances[0] || {}
+          setBalance(firstBalance.amount || "0.00")
+          setBalanceCurrency(firstBalance.currency || "USD")
+        } else {
+          console.log("[v0] Fetching balance for V2 user")
+          const data = await getTotalBalance()
+          const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
-        setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
-        setBalanceCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
+          setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
+          setBalanceCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
+        }
+      } catch (error) {
+        console.error("Failed to fetch balance:", error)
+        setBalance("0.00")
+        setBalanceCurrency("USD")
+      } finally {
+        setIsLoadingBalance(false)
       }
-    } catch (error) {
-      console.error("Failed to fetch balance:", error)
-      setBalance("0.00")
-      setBalanceCurrency("USD")
-    } finally {
-      setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData])
 
-  useEffect(() => {
     fetchBalance()
-  }, [fetchBalance])
+  }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
