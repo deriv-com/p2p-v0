@@ -24,7 +24,6 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -51,22 +50,17 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
-  const { userData, userId } = useUserDataStore()
-  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(() => userData?.signup === "v1")
+  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
+  const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
-    const isV1User = userData?.signup === "v1"
-    setShowCheckPreviousOrdersButton(isV1User)
-  }, [userData?.signup])
-
-  useEffect(() => {
     fetchOrders()
+    checkUserSignupStatus()
 
     return () => {
       if (abortControllerRef.current) {
@@ -74,6 +68,17 @@ export default function OrdersPage() {
       }
     }
   }, [activeTab, dateFilter, customDateRange])
+
+  const checkUserSignupStatus = () => {
+    try {
+      const userDataFromStore = userData
+
+      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
+      else setShowCheckPreviousOrdersButton(false)
+    } catch (error) {
+      setShowCheckPreviousOrdersclient / total -balanceButton(false)
+    }
+  }
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
@@ -320,14 +325,6 @@ export default function OrdersPage() {
       </div>
     </div>
   )
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
-  }
 
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =
