@@ -93,7 +93,11 @@ export default function Main({
               }
 
               if (isMountedRef.current && !abortController.signal.aborted) {
-                router.push(pathname)
+                if(useUserDataStore.getState().userData?.signup && pathname === "wallet" ) {
+                  router.push("/")
+                } else {
+                  router.push(pathname)
+                  }
               }
             }
           } catch (error) {
