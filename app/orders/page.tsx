@@ -61,6 +61,11 @@ export default function OrdersPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    const isV1User = userData?.signup === "v1"
+    setShowCheckPreviousOrdersButton(isV1User)
+  }, [userData?.signup])
+
+  useEffect(() => {
     fetchOrders()
 
     return () => {
