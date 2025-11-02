@@ -10,7 +10,6 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useRouter } from "next/navigation"
-import { Loader2 } from "lucide-react"
 
 interface Balance {
   wallet_id: string
@@ -76,8 +75,9 @@ export default function WalletPage() {
 
   if (userData?.signup === undefined) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <div className="text-center py-12">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+        <p className="mt-2 text-slate-600">Loading wallet...</p>
       </div>
     )
   }
