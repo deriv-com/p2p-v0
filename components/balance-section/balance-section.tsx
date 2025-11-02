@@ -2,6 +2,7 @@
 
 import { formatAmountWithDecimals } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface BalanceSectionProps {
   balance: string
@@ -11,9 +12,11 @@ interface BalanceSectionProps {
 }
 
 export function BalanceSection({ balance, currency, isLoading, className }: BalanceSectionProps) {
+  const { t } = useTranslations()
+
   return (
     <div className={className || "mb-4"}>
-      <div className="text-white opacity-[0.72] text-xs mb-2">Est. total value</div>
+      <div className="text-white opacity-[0.72] text-xs mb-2">{t("wallet.estTotalValue")}</div>
       {isLoading ? (
         <Skeleton className="h-7 w-32 bg-white/20" />
       ) : (

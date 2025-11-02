@@ -20,6 +20,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdvertiserProfile {
   id: string | number
@@ -73,6 +74,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
+  const { t } = useTranslations()
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -255,7 +257,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     return (
       <div className="text-center py-8">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">Loading advertiser...</p>
+        <p className="mt-2 text-slate-600">{t("advertiser.loadingAdvertiser")}</p>
       </div>
     )
   }
@@ -266,7 +268,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         <div className="text-center py-8">
           <p>{error}</p>
           <Button onClick={handleBack} className="mt-4 text-white">
-            Go Back
+            {t("advertiser.goBack")}
           </Button>
         </div>
       </div>
@@ -316,7 +318,9 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
-                      <span className="mr-[8px]">{profile?.is_online ? "Online" : "Offline"}</span>
+                      <span className="mr-[8px]">
+                        {profile?.is_online ? t("advertiser.online") : t("advertiser.offline")}
+                      </span>
                       <span className="opacity-[0.08]">|</span>
                       <span className="ml-[8px]">{profile ? getJoinedDate(profile.created_at) : ""}</span>
                     </div>
@@ -325,8 +329,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <Image src="/icons/thumbs-up.png" alt="Recommended" width={24} height={24} className="mr-1" />
                         <span className="mr-[8px]">
                           {profile?.statistics_lifetime?.recommend_count > 0
-                            ? `Recommended by ${profile?.statistics_lifetime?.recommend_count} traders`
-                            : "Not recommended yet"}
+                            ? t("advertiser.recommendedBy", { count: profile?.statistics_lifetime?.recommend_count })
+                            : t("advertiser.notRecommendedYet")}
                         </span>
                       </div>
                       <span className="opacity-[0.08]">|</span>
@@ -335,7 +339,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
-                            : "Not rated yet"}
+                            : t("advertiser.notRatedYet")}
                         </span>
                       </div>
                     </div>
@@ -344,7 +348,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     <div className="flex items-center md:mt-0 ustify-self-end">
                       {!isBlocked && (
                         <Button onClick={toggleFollow} variant="outline" size="sm" disabled={isFollowLoading}>
-                          {isFollowing ? "Following" : "Follow"}
+                          {isFollowing ? t("advertiser.following") : t("advertiser.follow")}
                         </Button>
                       )}
                       <Button
@@ -357,144 +361,134 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         {isBlockLoading ? (
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
                         ) : null}
-                        {isBlocked ? "Unblock" : "Block"}
+                        {isBlocked ? t("advertiser.unblock") : t("advertiser.block")}
                       </Button>
                     </div>
                   )}
                 </div>
               </div>
-            </div>
 
-            {isBlocked && (
-              <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
-                <div className="mb-4">
-                  <Image src="/icons/blocked.png" alt="Blocked user" width={128} height={128} className="mx-auto" />
+              {isBlocked && (
+                <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
+                  <div className="mb-4">
+                    <Image src="/icons/blocked.png" alt="Blocked user" width={128} height={128} className="mx-auto" />
+                  </div>
+                  <h2 className="text-lg font-bold text-neutral-10 mb-2">{t("advertiser.youveBlockedUser")}</h2>
+                  <p className="text-base text-neutral-7">{t("advertiser.unblockDescription")}</p>
                 </div>
-                <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
-                <p className="text-base text-neutral-7">
-                  Unblock them if you'd like to interact with this advertiser again.
-                </p>
-              </div>
-            )}
+              )}
 
-            {!isBlocked && (
-              <>
-                <AdvertiserStats profile={profile} />
+              {!isBlocked && (
                 <>
-                  <div className="container mx-auto pb-4 text-lg font-bold">Online ads</div>
+                  <AdvertiserStats profile={profile} />
+                  <div className="container mx-auto pb-4 text-lg font-bold">{t("advertiser.onlineAds")}</div>
                   <div className="container mx-auto pb-8">
                     {adverts.length > 0 ? (
-                      <>
-                        <div>
-                          <Table>
-                            <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
-                              <TableRow className="text-xs">
-                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
-                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                                  Order limits
-                                </TableHead>
-                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                                  Time limit
-                                </TableHead>
-                                <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                                  Payment methods
-                                </TableHead>
-                                <TableHead className="text-right py-4 px-4"></TableHead>
+                      <div>
+                        <Table>
+                          <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white">
+                            <TableRow className="text-xs">
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.rates")}
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.orderLimits")}
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.timeLimit")}
+                              </TableHead>
+                              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                                {t("advertiser.paymentMethods")}
+                              </TableHead>
+                              <TableHead className="text-right py-4 px-4"></TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                            {adverts.map((ad) => (
+                              <TableRow
+                                className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
+                                key={ad.id}
+                              >
+                                <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
+                                  <div className="font-bold">
+                                    {ad.exchange_rate
+                                      ? ad.exchange_rate.toLocaleString(undefined, {
+                                          minimumFractionDigits: 2,
+                                          maximumFractionDigits: 2,
+                                        })
+                                      : ""}{" "}
+                                    {ad.payment_currency}
+                                    <span className="text-xs font-normal text-black opacity-[0.48]">
+                                      {" "}
+                                      /{ad.account_currency}
+                                    </span>
+                                  </div>
+                                  {ad.exchange_rate_type === "floating" && (
+                                    <div className="text-xs text-slate-500">0.1%</div>
+                                  )}
+                                </TableCell>
+                                <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
+                                  <div>
+                                    {isMobile && <span>Trade Limits: </span>}
+                                    {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
+                                  <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-1" />
+                                    <span>{ad.order_expiry_period} min</span>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
+                                  <div className="flex flex-wrap gap-2 text-xs">
+                                    {ad.payment_methods?.map((method, index) => (
+                                      <div key={index} className="flex items-center">
+                                        <div
+                                          className={`h-2 w-2 rounded-full mr-2 ${
+                                            method.toLowerCase().includes("bank")
+                                              ? "bg-paymentMethod-bank"
+                                              : "bg-paymentMethod-ewallet"
+                                          }`}
+                                        ></div>
+                                        <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </TableCell>
+                                <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
+                                  {userId != ad.user.id && (
+                                    <Button
+                                      variant={ad.type === "buy" ? "destructive" : "secondary"}
+                                      size="sm"
+                                      onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
+                                    >
+                                      {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
+                                    </Button>
+                                  )}
+                                </TableCell>
                               </TableRow>
-                            </TableHeader>
-                            <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                              {adverts.map((ad) => (
-                                <TableRow
-                                  className="grid grid-col gap-2 border-b mb-[16px] py-4 lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] lg:py-0"
-                                  key={ad.id}
-                                >
-                                  <TableCell className="p-0 lg:py-4 lg:px-4 align-middle text-base whitespace-nowrap row-start-1">
-                                    <div className="font-bold">
-                                      {ad.exchange_rate
-                                        ? ad.exchange_rate.toLocaleString(undefined, {
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2,
-                                          })
-                                        : ""}{" "}
-                                      {ad.payment_currency}
-                                      <span className="text-xs font-normal text-black opacity-[0.48]">
-                                        {" "}
-                                        /{ad.account_currency}
-                                      </span>
-                                    </div>
-                                    {ad.exchange_rate_type === "floating" && (
-                                      <div className="text-xs text-slate-500">0.1%</div>
-                                    )}
-                                  </TableCell>
-                                  <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-2">
-                                    <div>
-                                      {isMobile && <span>Trade Limits: </span>}
-                                      {ad.minimum_order_amount} - {ad.actual_maximum_order_amount} {ad.account_currency}
-                                    </div>
-                                  </TableCell>
-                                  <TableCell className="p-0 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-3">
-                                    <div className="flex items-center text-xs text-slate-500 bg-gray-100 rounded-sm px-2 py-1 w-fit">
-                                      <Image
-                                        src="/icons/clock.png"
-                                        alt="Time"
-                                        width={12}
-                                        height={12}
-                                        className="mr-1"
-                                      />
-                                      <span>{ad.order_expiry_period} min</span>
-                                    </div>
-                                  </TableCell>
-                                  <TableCell className="px-0 py-2 lg:py-4 lg:px-4 align-middle whitespace-nowrap row-start-4">
-                                    <div className="flex flex-wrap gap-2 text-xs">
-                                      {ad.payment_methods?.map((method, index) => (
-                                        <div key={index} className="flex items-center">
-                                          <div
-                                            className={`h-2 w-2 rounded-full mr-2 ${
-                                              method.toLowerCase().includes("bank")
-                                                ? "bg-paymentMethod-bank"
-                                                : "bg-paymentMethod-ewallet"
-                                            }`}
-                                          ></div>
-                                          <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </TableCell>
-                                  <TableCell className="px-0 py-2 lg:py-4 lg:px-4 text-right align-middle whitespace-nowrap row-start-4">
-                                    {userId != ad.user.id && (
-                                      <Button
-                                        variant={ad.type === "buy" ? "destructive" : "secondary"}
-                                        size="sm"
-                                        onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
-                                      >
-                                        {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
-                                      </Button>
-                                    )}
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </div>
-                      </>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
                     ) : (
                       <EmptyState
-                        title="No ads yet"
-                        description="This advertiser do not have any active ads."
+                        title={t("advertiser.noAdsYet")}
+                        description={t("advertiser.noActiveAds")}
                         redirectToAds={false}
                       />
                     )}
                   </div>
                 </>
-              </>
-            )}
+              )}
 
-            <OrderSidebar
-              isOpen={isOrderSidebarOpen}
-              onClose={() => setIsOrderSidebarOpen(false)}
-              ad={selectedAd}
-              orderType={orderType}
-            />
+              <OrderSidebar
+                isOpen={isOrderSidebarOpen}
+                onClose={() => setIsOrderSidebarOpen(false)}
+                ad={selectedAd}
+                orderType={orderType}
+              />
+            </div>
           </div>
         </div>
       </div>
