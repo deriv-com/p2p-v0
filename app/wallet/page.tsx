@@ -95,6 +95,14 @@ export default function WalletPage() {
     )
   }
 
+  if (userData?.signup === undefined || userData?.signup === null) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
       <div className="w-full flex flex-col items-center">
