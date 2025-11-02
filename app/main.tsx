@@ -97,7 +97,7 @@ export default function Main({
                   router.push("/")
                 } else {
                   router.push(pathname)
-                  }
+                }
               }
             }
           } catch (error) {

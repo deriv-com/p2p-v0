@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { useRouter } from "next/navigation"
 import { TransactionsTab } from "./components"
 import WalletSummary from "./components/wallet-summary"
 import WalletBalances from "./components/wallet-balances"
@@ -10,6 +9,7 @@ import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import MobileFooterNav from "@/components/mobile-footer-nav"
 
 interface Balance {
   wallet_id: string
@@ -19,9 +19,6 @@ interface Balance {
 }
 
 export default function WalletPage() {
-  const router = useRouter()
-  const { userData } = useUserDataStore()
-
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -29,6 +26,7 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
+  const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
@@ -88,18 +86,6 @@ export default function WalletPage() {
       </div>
     )
   }
-
-  if (userData?.signup === undefined || userData?.signup === null) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    )
-  }
-
-  if (userData?.signup === "v1") {
-      router.push("/")
-    }
 
   return (
     <div className="min-h-screen bg-background px-0 md:pl-[16px]">
