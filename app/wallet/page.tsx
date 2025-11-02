@@ -10,7 +10,6 @@ import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import { getHomeUrl } from "@/lib/utils"
 
 interface Balance {
   wallet_id: string
@@ -35,8 +34,7 @@ export default function WalletPage() {
 
   useEffect(() => {
     if (userData?.signup === "v1") {
-      const homeUrl = getHomeUrl(true, "home")
-      router.push(homeUrl)
+      router.push("/")
     }
   }, [userData?.signup, router])
 
