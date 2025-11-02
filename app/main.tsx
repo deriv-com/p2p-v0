@@ -26,6 +26,7 @@ export default function Main({
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
   const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
+  const { userData } = useUserDataStore()
 
   useEffect(() => {
     isMountedRef.current = true
