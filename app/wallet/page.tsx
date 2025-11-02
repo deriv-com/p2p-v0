@@ -21,6 +21,8 @@ interface Balance {
 
 export default function WalletPage() {
   const router = useRouter()
+  const { userData } = useUserDataStore()
+
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -28,7 +30,6 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
-  const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
 
@@ -86,10 +87,6 @@ export default function WalletPage() {
     setSelectedCurrency(null)
     setTotalBalance(null)
     loadBalanceData()
-  }
-
-  if (userData?.signup === "v1") {
-    return null
   }
 
   if (isDisabled) {
