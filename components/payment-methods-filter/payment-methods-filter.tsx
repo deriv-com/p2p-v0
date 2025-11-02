@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import EmptyState from "@/components/empty-state"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export interface PaymentMethod {
   display_name: string
@@ -39,6 +40,7 @@ export default function PaymentMethodsFilter({
   const [searchQuery, setSearchQuery] = useState("")
   const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
 
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
@@ -120,8 +122,8 @@ export default function PaymentMethodsFilter({
   }
 
   const getGroupTitle = (type: string) => {
-    if (type === "bank") return "Bank Transfers"
-    if (type === "ewallet") return "E-Wallets"
+    if (type === "bank") return t("paymentMethod.bankTransfers")
+    if (type === "ewallet") return t("paymentMethod.eWallets")
     return type?.charAt(0).toUpperCase() + type?.slice(1)
   }
 
@@ -166,7 +168,7 @@ export default function PaymentMethodsFilter({
           className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
-          placeholder="Search"
+          placeholder={t("paymentMethod.search")}
           value={searchQuery}
           onChange={handleSearchChange}
           className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
@@ -198,24 +200,24 @@ export default function PaymentMethodsFilter({
             disabled={isLoading || filteredPaymentMethods.length === 0}
           />
           <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
-            All payment method
+            {t("paymentMethod.allPaymentMethod")}
           </label>
         </div>
       )}
 
       <div className="space-y-2 max-h-60 overflow-y-auto">
         {isLoading ? (
-          <div className="text-center py-4 text-gray-500">Loading payment methods...</div>
+          <div className="text-center py-4 text-gray-500">{t("paymentMethod.loadingPaymentMethods")}</div>
         ) : filteredPaymentMethods.length === 0 ? (
           <div className="text-center py-4 text-gray-500">
             {searchQuery ? (
               <EmptyState
-                title="Payment method unavailable"
-                description="Search for a different payment method."
+                title={t("paymentMethod.paymentMethodUnavailable")}
+                description={t("paymentMethod.searchDifferent")}
                 redirectToAds={false}
               />
             ) : (
-              "No payment methods available"
+              t("paymentMethod.noPaymentMethodsAvailable")
             )}
           </div>
         ) : (
@@ -231,10 +233,10 @@ export default function PaymentMethodsFilter({
             variant="outline"
             size={isMobile ? "default" : "sm"}
           >
-            Reset
+            {t("paymentMethod.reset")}
           </Button>
           <Button onClick={handleApply} className="flex-1" size={isMobile ? "default" : "sm"}>
-            Apply
+            {t("paymentMethod.apply")}
           </Button>
         </div>
       )}
@@ -251,7 +253,7 @@ export default function PaymentMethodsFilter({
         <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
         <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="my-4">
-            <h3 className="text-xl font-bold text-center">Payment method</h3>
+            <h3 className="text-xl font-bold text-center">{t("paymentMethod.title")}</h3>
           </div>
           <FilterContent />
         </DrawerContent>

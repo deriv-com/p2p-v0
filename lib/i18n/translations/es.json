@@ -29,7 +29,9 @@
     "orders": "Órdenes",
     "myAds": "Mis Anuncios",
     "wallet": "Billetera",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "backToHome": "Volver al Inicio",
+    "p2pHelpCentre": "Centro de Ayuda P2P"
   },
   "market": {
     "title": "Mercado",
@@ -86,7 +88,17 @@
     "duplicateMethod": "Método de pago duplicado",
     "duplicateMethodDescription": "Ya existe un método de pago con los mismos valores. Agrega uno nuevo.",
     "unableToAdd": "No se puede agregar el método de pago",
-    "addError": "Hubo un error al agregar el método de pago. Por favor, inténtalo de nuevo."
+    "addError": "Hubo un error al agregar el método de pago. Por favor, inténtalo de nuevo.",
+    "search": "Buscar",
+    "allPaymentMethod": "Todos los métodos de pago",
+    "bankTransfers": "Transferencias Bancarias",
+    "eWallets": "Billeteras Electrónicas",
+    "paymentMethodUnavailable": "Método de pago no disponible",
+    "searchDifferent": "Busca un método de pago diferente.",
+    "noPaymentMethodsAvailable": "No hay métodos de pago disponibles",
+    "loadingPaymentMethods": "Cargando métodos de pago...",
+    "reset": "Restablecer",
+    "apply": "Aplicar"
   },
   "balance": {
     "title": "Saldo",
@@ -98,7 +110,14 @@
     "sortBy": "Ordenar por",
     "exchangeRate": "Tasa de cambio",
     "apply": "Aplicar",
-    "reset": "Restablecer"
+    "reset": "Restablecer",
+    "adTypes": "Tipos de anuncios",
+    "adsFromFollowing": "Anuncios de anunciantes que sigues",
+    "exchangeRateLowHigh": "Tasa de cambio (bajo-alto)",
+    "exchangeRateHighLow": "Tasa de cambio (alto-bajo)",
+    "userRatingHighLow": "Calificación de usuario (alto-bajo)",
+    "applyFilters": "Aplicar filtros",
+    "filter": "Filtrar"
   },
   "chat": {
     "conversationClosed": "Esta conversación está cerrada.",

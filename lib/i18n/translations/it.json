@@ -29,7 +29,9 @@
     "orders": "Ordini",
     "myAds": "I Miei Annunci",
     "wallet": "Portafoglio",
-    "profile": "Profilo"
+    "profile": "Profilo",
+    "backToHome": "Torna alla Home",
+    "p2pHelpCentre": "Centro Assistenza P2P"
   },
   "market": {
     "title": "Mercato",
@@ -93,7 +95,17 @@
     "duplicateMethod": "Metodo di pagamento duplicato",
     "duplicateMethodDescription": "Esiste già un metodo di pagamento con gli stessi valori. Aggiungine uno nuovo.",
     "unableToAdd": "Impossibile aggiungere il metodo di pagamento",
-    "addError": "Si è verificato un errore durante l'aggiunta del metodo di pagamento. Riprova."
+    "addError": "Si è verificato un errore durante l'aggiunta del metodo di pagamento. Riprova.",
+    "search": "Cerca",
+    "allPaymentMethod": "Tutti i metodi di pagamento",
+    "bankTransfers": "Bonifici Bancari",
+    "eWallets": "Portafogli Elettronici",
+    "paymentMethodUnavailable": "Metodo di pagamento non disponibile",
+    "searchDifferent": "Cerca un metodo di pagamento diverso.",
+    "noPaymentMethodsAvailable": "Nessun metodo di pagamento disponibile",
+    "loadingPaymentMethods": "Caricamento metodi di pagamento...",
+    "reset": "Ripristina",
+    "apply": "Applica"
   },
   "balance": {
     "title": "Saldo",
@@ -105,7 +117,14 @@
     "sortBy": "Ordina per",
     "exchangeRate": "Tasso di cambio",
     "apply": "Applica",
-    "reset": "Ripristina"
+    "reset": "Ripristina",
+    "adTypes": "Tipi di annunci",
+    "adsFromFollowing": "Annunci da inserzionisti che segui",
+    "exchangeRateLowHigh": "Tasso di cambio (basso-alto)",
+    "exchangeRateHighLow": "Tasso di cambio (alto-basso)",
+    "userRatingHighLow": "Valutazione utente (alto-basso)",
+    "applyFilters": "Applica filtri",
+    "filter": "Filtra"
   },
   "chat": {
     "conversationClosed": "Questa conversazione è chiusa.",

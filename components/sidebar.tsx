@@ -62,7 +62,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const helpCentreUrl = `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
 
   const navItems = [
-    { name: "Back to Home", href: homeUrl, icon: HomeIcon },
+    { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon },
     ...(!isDisabled
       ? [
           { name: t("navigation.market"), href: "/", icon: MarketIcon },
@@ -70,7 +70,7 @@ export default function Sidebar({ className }: SidebarProps) {
           { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
           ...(showWallet === true ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
-          { name: "P2P Help Centre", href: helpCentreUrl, icon: GuideIcon },
+          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon },
         ]
       : []),
   ]

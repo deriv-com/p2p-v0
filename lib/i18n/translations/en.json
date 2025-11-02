@@ -29,7 +29,9 @@
     "orders": "Orders",
     "myAds": "My Ads",
     "wallet": "Wallet",
-    "profile": "Profile"
+    "profile": "Profile",
+    "backToHome": "Back to Home",
+    "p2pHelpCentre": "P2P Help Centre"
   },
   "market": {
     "title": "Market",
@@ -86,7 +88,17 @@
     "duplicateMethod": "Duplicate payment method",
     "duplicateMethodDescription": "A payment method with the same values already exists. Add a new one.",
     "unableToAdd": "Unable to add payment method",
-    "addError": "There was an error when adding the payment method. Please try again."
+    "addError": "There was an error when adding the payment method. Please try again.",
+    "search": "Search",
+    "allPaymentMethod": "All payment method",
+    "bankTransfers": "Bank Transfers",
+    "eWallets": "E-Wallets",
+    "paymentMethodUnavailable": "Payment method unavailable",
+    "searchDifferent": "Search for a different payment method.",
+    "noPaymentMethodsAvailable": "No payment methods available",
+    "loadingPaymentMethods": "Loading payment methods...",
+    "reset": "Reset",
+    "apply": "Apply"
   },
   "balance": {
     "title": "Balance",
@@ -98,7 +110,14 @@
     "sortBy": "Sort by",
     "exchangeRate": "Exchange rate",
     "apply": "Apply",
-    "reset": "Reset"
+    "reset": "Reset",
+    "adTypes": "Ad types",
+    "adsFromFollowing": "Ads from advertisers you follow",
+    "exchangeRateLowHigh": "Exchange rate (low-high)",
+    "exchangeRateHighLow": "Exchange rate (high-low)",
+    "userRatingHighLow": "User rating (high-low)",
+    "applyFilters": "Apply filters",
+    "filter": "Filter"
   },
   "chat": {
     "conversationClosed": "This conversation is closed.",

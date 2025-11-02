@@ -29,7 +29,9 @@
     "orders": "Commandes",
     "myAds": "Mes Annonces",
     "wallet": "Portefeuille",
-    "profile": "Profil"
+    "profile": "Profil",
+    "backToHome": "Retour à l'Accueil",
+    "p2pHelpCentre": "Centre d'Aide P2P"
   },
   "market": {
     "title": "Marché",
@@ -86,7 +88,17 @@
     "duplicateMethod": "Méthode de paiement en double",
     "duplicateMethodDescription": "Une méthode de paiement avec les mêmes valeurs existe déjà. Ajoutez-en une nouvelle.",
     "unableToAdd": "Impossible d'ajouter la méthode de paiement",
-    "addError": "Une erreur s'est produite lors de l'ajout de la méthode de paiement. Veuillez réessayer."
+    "addError": "Une erreur s'est produite lors de l'ajout de la méthode de paiement. Veuillez réessayer.",
+    "search": "Rechercher",
+    "allPaymentMethod": "Toutes les méthodes de paiement",
+    "bankTransfers": "Virements Bancaires",
+    "eWallets": "Portefeuilles Électroniques",
+    "paymentMethodUnavailable": "Méthode de paiement indisponible",
+    "searchDifferent": "Recherchez une méthode de paiement différente.",
+    "noPaymentMethodsAvailable": "Aucune méthode de paiement disponible",
+    "loadingPaymentMethods": "Chargement des méthodes de paiement...",
+    "reset": "Réinitialiser",
+    "apply": "Appliquer"
   },
   "balance": {
     "title": "Solde",
@@ -98,7 +110,14 @@
     "sortBy": "Trier par",
     "exchangeRate": "Taux de change",
     "apply": "Appliquer",
-    "reset": "Réinitialiser"
+    "reset": "Réinitialiser",
+    "adTypes": "Types d'annonces",
+    "adsFromFollowing": "Annonces d'annonceurs que vous suivez",
+    "exchangeRateLowHigh": "Taux de change (bas-haut)",
+    "exchangeRateHighLow": "Taux de change (haut-bas)",
+    "userRatingHighLow": "Évaluation utilisateur (haut-bas)",
+    "applyFilters": "Appliquer les filtres",
+    "filter": "Filtrer"
   },
   "chat": {
     "conversationClosed": "Cette conversation est fermée.",
