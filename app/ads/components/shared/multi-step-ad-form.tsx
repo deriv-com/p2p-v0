@@ -17,6 +17,7 @@ import CountrySelection from "./country-selection"
 import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
 import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -39,30 +40,8 @@ interface AvailablePaymentMethod {
   method: string
 }
 
-const getButtonText = (isSubmitting: boolean, currentStep: number, mode: "create" | "edit") => {
-  if (currentStep === 0) {
-    return "Next"
-  }
-
-  if (currentStep === 1) {
-    return "Next"
-  }
-
-  if (currentStep === 2) {
-    return mode === "create" ? "Create ad" : "Save changes"
-  }
-
-  return mode === "create" ? "Create ad" : "Save changes"
-}
-
-const getPageTitle = (mode: "create" | "edit") => {
-  if (mode === "create") {
-    return "Create ad"
-  }
-  return `Edit ad`
-}
-
 function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps) {
+  const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
 
@@ -87,9 +66,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
 
   const steps = [
-    { title: "Set Type and Price", completed: currentStep > 0 },
-    { title: "Set payment details", completed: currentStep > 1 },
-    { title: "Set ad conditions", completed: currentStep > 2 },
+    { title: t("adForm.setTypeAndPrice"), completed: currentStep > 0 },
+    { title: t("adForm.setPaymentDetails"), completed: currentStep > 1 },
+    { title: t("adForm.setAdConditions"), completed: currentStep > 2 },
   ]
 
   const convertToSnakeCase = (str: string): string => {
@@ -275,17 +254,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     }
 
     if (errors[0].code === "AdvertExchangeRateDuplicate") {
-      const error = new Error(
-        "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
-      )
+      const error = new Error(t("adForm.duplicateRateMessage"))
       error.name = "AdvertExchangeRateDuplicate"
       throw error
     }
 
     if (errors[0].code === "AdvertOrderRangeOverlap") {
-      const error = new Error(
-        "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
-      )
+      const error = new Error(t("adForm.rangeOverlapMessage"))
       error.name = "AdvertOrderRangeOverlap"
       throw error
     }
@@ -296,11 +271,11 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
     if (errors[0].code) {
       const errorCodeMap: Record<string, string> = {
-        AdvertLimitReached: "You've reached the maximum number of ads allowed.",
+        AdvertLimitReached: t("adForm.adLimitReachedMessage"),
         InvalidExchangeRate: "The exchange rate you provided is invalid.",
         InvalidOrderAmount: "The order amount limits are invalid.",
-        InsufficientBalance: "You don't have enough balance to create this ad.",
-        AdvertTotalAmountExceeded: "The total amount exceeds your available balance. Please enter a smaller amount.",
+        InsufficientBalance: t("adForm.insufficientBalanceMessage"),
+        AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
       }
 
       if (errorCodeMap[errors[0].code]) {
@@ -350,9 +325,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         } else {
           router.push("/ads")
           showAlert({
-            title: "Ad created",
-            description: `You've successfully created a ${result.data.type} advert.\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`,
-            confirmText: "OK",
+            title: t("myAds.adCreated"),
+            description: t("adForm.adCreatedSuccess", { type: result.data.type }),
+            confirmText: t("common.ok"),
             type: "success",
           })
         }
@@ -382,7 +357,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             description: (
               <div className="flex items-center gap-2">
                 <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                <span>Ad details have been updated.</span>
+                <span>{t("adForm.adUpdatedSuccess")}</span>
               </div>
             ),
             className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -393,57 +368,54 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       }
     } catch (error) {
       let errorInfo = {
-        title: mode === "create" ? "Failed to create ad" : "Failed to update ad",
-        message: "Please try again.",
+        title: mode === "create" ? t("adForm.failedToCreateAd") : t("adForm.failedToUpdateAd"),
+        message: t("adForm.tryAgain"),
         type: "error" as "error" | "warning",
-        actionButtonText: mode === "create" ? "Update ad" : "Update ad",
+        actionButtonText: t("adForm.updateAd"),
       }
 
       if (error instanceof Error) {
         if (error.name === "AdvertExchangeRateDuplicate") {
           errorInfo = {
-            title: "You already have an ad with this rate",
-            message:
-              "You have another active ad with the same rate for this currency pair and order type. Set a different rate.",
+            title: t("adForm.duplicateRateTitle"),
+            message: t("adForm.duplicateRateMessage"),
             type: "warning",
-            actionButtonText: "Update ad",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else if (error.name === "AdvertOrderRangeOverlap") {
           errorInfo = {
-            title: "You already have an ad with this range",
-            message:
-              "Change the minimum and/or maximum order limit for this ad. The range between these limits must not overlap with another active ad you created for this currency pair and order type.",
+            title: t("adForm.rangeOverlapTitle"),
+            message: t("adForm.rangeOverlapMessage"),
             type: "warning",
-            actionButtonText: "Update ad",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
           errorInfo = {
-            title: "Ad limit reached",
-            message:
-              "You can have only 3 active ads for this currency pair and order type. Delete one to create a new ad.",
+            title: t("adForm.adLimitReachedTitle"),
+            message: t("adForm.adLimitReachedMessage"),
             type: "error",
-            actionButtonText: "Update ad",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else if (error.name === "InsufficientBalance") {
           errorInfo = {
-            title: "Insufficient balance",
-            message: "You don't have enough balance to create this ad",
+            title: t("adForm.insufficientBalanceTitle"),
+            message: t("adForm.insufficientBalanceMessage"),
             type: "error",
-            actionButtonText: "Update ad",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
           errorInfo = {
-            title: "Invalid values",
-            message: error.message || "Please check your input values.",
+            title: t("adForm.invalidValuesTitle"),
+            message: error.message || t("adForm.invalidValuesMessage"),
             type: "error",
-            actionButtonText: "Update ad",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else if (error.name === "AdvertTotalAmountExceeded") {
           errorInfo = {
-            title: "Amount exceeds balance",
-            message: "The total amount exceeds your available balance. Please enter a smaller amount.",
+            title: t("adForm.amountExceedsBalanceTitle"),
+            message: t("adForm.amountExceedsBalanceMessage"),
             type: "error",
-            actionButtonText: "Update ad",
+            actionButtonText: t("adForm.updateAd"),
           }
         } else {
           errorInfo.message = error.message || errorInfo.message
@@ -520,6 +492,17 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     (currentStep === 2 && mode === "edit" && !adFormValid) ||
     isBottomSheetOpen
 
+  const getButtonText = () => {
+    if (currentStep === 0 || currentStep === 1) {
+      return t("adForm.next")
+    }
+    return mode === "create" ? t("adForm.createAd") : t("adForm.saveChanges")
+  }
+
+  const getPageTitle = () => {
+    return mode === "create" ? t("adForm.createAd") : t("adForm.editAd")
+  }
+
   return (
     <form onSubmit={(e) => e.preventDefault()}>
       <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
@@ -539,7 +522,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             steps={steps}
             className="px-6 my-6"
             title={{
-              label: getPageTitle(mode),
+              label: getPageTitle(),
               stepTitle: steps[currentStep].title,
             }}
           />
@@ -571,7 +554,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               <div className="space-y-6">
                 <div>
                   <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold leading-6 tracking-normal">Order time limit</h3>
+                    <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -584,9 +567,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">
-                            Orders will expire if they aren't completed within this timeframe.
-                          </p>
+                          <p className="opacity-[0.72]">{t("adForm.orderTimeLimitTooltip")}</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
@@ -597,7 +578,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
                 <div className="w-full md:w-[70%]">
                   <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold">Choose your audience</h3>
+                    <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
@@ -610,10 +591,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">
-                            You can filter who interacts with your ads based on their location or P2P history. Stricter
-                            filters may reduce ad visibility.
-                          </p>
+                          <p className="opacity-[0.72]">{t("adForm.audienceTooltip")}</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
@@ -639,7 +617,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                   {isSubmitting ? (
                     <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                   ) : (
-                    getButtonText(isSubmitting, currentStep, mode)
+                    getButtonText()
                   )}
                 </Button>
               </div>
@@ -653,7 +631,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               {isSubmitting ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
-                getButtonText(isSubmitting, currentStep, mode)
+                getButtonText()
               )}
             </Button>
           </div>

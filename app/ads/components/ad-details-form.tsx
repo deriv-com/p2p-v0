@@ -12,6 +12,7 @@ import { getSettings } from "@/services/api/api-auth"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import Image from "next/image"
 import { currencyLogoMapper } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -38,6 +39,7 @@ export default function AdDetailsForm({
   isEditMode,
   currencies: currenciesProp,
 }: AdDetailsFormProps) {
+  const { t } = useTranslations()
   const [type, setType] = useState<"buy" | "sell">(initialData?.type || "buy")
   const [totalAmount, setTotalAmount] = useState(initialData?.totalAmount?.toString() || "")
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
@@ -141,51 +143,51 @@ export default function AdDetailsForm({
 
     if (touched.totalAmount) {
       if (!totalAmount) {
-        errors.totalAmount = "Total amount is required"
+        errors.totalAmount = t("adForm.totalAmountRequired")
       } else if (total <= 0) {
-        errors.totalAmount = "Total amount must be greater than 0"
+        errors.totalAmount = t("adForm.totalAmountGreaterThanZero")
       }
     }
 
     if (min > total) {
-      errors.minAmount = "Minimum amount must be less than total amount"
+      errors.minAmount = t("adForm.minAmountLessThanTotal")
     }
 
     if (max > total) {
-      errors.maxAmount = "Maximum amount must be less than total amount"
+      errors.maxAmount = t("adForm.maxAmountLessThanTotal")
     }
 
     if (touched.fixedRate) {
       if (!fixedRate) {
-        errors.fixedRate = "Rate is required"
+        errors.fixedRate = t("adForm.rateRequired")
       } else if (rate <= 0) {
-        errors.fixedRate = "Rate must be greater than 0"
+        errors.fixedRate = t("adForm.rateGreaterThanZero")
       }
     }
 
     if (touched.minAmount) {
       if (!minAmount) {
-        errors.minAmount = "Minimum amount is required"
+        errors.minAmount = t("adForm.minAmountRequired")
       } else if (min <= 0) {
-        errors.minAmount = "Minimum amount must be greater than 0"
+        errors.minAmount = t("adForm.minAmountGreaterThanZero")
       }
     }
 
     if (touched.minAmount && touched.maxAmount && min > max) {
-      errors.minAmount = "Minimum amount must be less than maximum amount"
-      errors.maxAmount = "Maximum amount must be greater than minimum amount"
+      errors.minAmount = t("adForm.minAmountLessThanMax")
+      errors.maxAmount = t("adForm.maxAmountGreaterThanMin")
     }
 
     if (touched.maxAmount) {
       if (!maxAmount) {
-        errors.maxAmount = "Maximum amount is required"
+        errors.maxAmount = t("adForm.maxAmountRequired")
       } else if (max <= 0) {
-        errors.maxAmount = "Maximum amount must be greater than 0"
+        errors.maxAmount = t("adForm.maxAmountGreaterThanZero")
       }
     }
 
     setFormErrors(errors)
-  }, [totalAmount, fixedRate, minAmount, maxAmount, touched, priceRange, forCurrency])
+  }, [totalAmount, fixedRate, minAmount, maxAmount, touched, priceRange, forCurrency, t])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -205,16 +207,16 @@ export default function AdDetailsForm({
     const additionalErrors: ValidationErrors = {}
 
     if (min > total) {
-      additionalErrors.minAmount = "Minimum amount must be less than total amount"
+      additionalErrors.minAmount = t("adForm.minAmountLessThanTotal")
     }
 
     if (max > total) {
-      additionalErrors.maxAmount = "Maximum amount must be less than total amount"
+      additionalErrors.maxAmount = t("adForm.maxAmountLessThanTotal")
     }
 
     if (min > max) {
-      additionalErrors.minAmount = "Minimum amount must be less than maximum amount"
-      additionalErrors.maxAmount = "Maximum amount must be greater than minimum amount"
+      additionalErrors.minAmount = t("adForm.minAmountLessThanMax")
+      additionalErrors.maxAmount = t("adForm.maxAmountGreaterThanMin")
     }
 
     const combinedErrors = { ...formErrors, ...additionalErrors }
@@ -281,7 +283,7 @@ export default function AdDetailsForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
                 <label className="block mb-2 text-black text-sm font-normal leading-5">
-                  {type === "buy" ? "Buy currency" : "Sell currency"}
+                  {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg" disabled>
@@ -310,6 +312,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -327,7 +330,7 @@ export default function AdDetailsForm({
               </div>
 
               <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">For</label>
+                <label className="block mb-2 text-black text-sm font-normal leading-5">{t("adForm.for")}</label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>
@@ -355,6 +358,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -375,12 +379,12 @@ export default function AdDetailsForm({
         )}
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Price type</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <RateInput
                 currency={forCurrency}
-                label={`Rate per ${buyCurrency}`}
+                label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
                 value={fixedRate}
                 onChange={(value) => {
                   if (value === "") {
@@ -429,7 +433,7 @@ export default function AdDetailsForm({
                   setTouched((prev) => ({ ...prev, totalAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder={type === "sell" ? "Sell quantity" : "Buy quantity"}
+                placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
                 isEditMode={isEditMode}
                 error={touched.totalAmount && !!formErrors.totalAmount}
                 currency={buyCurrency}
@@ -456,7 +460,7 @@ export default function AdDetailsForm({
             priceRange.highestPrice !== null && (
               <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg text-slate-1200">
                 <div className="flex-1 flex items-center justify-between">
-                  <div className="text-xs">Lowest price:</div>
+                  <div className="text-xs">{t("adForm.lowestPrice")}</div>
                   <div className="text-base font-bold">
                     {priceRange.lowestPrice.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
@@ -467,7 +471,7 @@ export default function AdDetailsForm({
                 </div>
                 <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
                 <div className="flex-1 flex items-center justify-between">
-                  <div className="text-xs">Highest price:</div>
+                  <div className="text-xs">{t("adForm.highestPrice")}</div>
                   <div className="text-base font-bold">
                     {priceRange.highestPrice.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
@@ -483,7 +487,7 @@ export default function AdDetailsForm({
         </div>
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Transaction limit</h3>
+          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.transactionLimit")}</h3>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div>
               <CurrencyInput
@@ -507,7 +511,7 @@ export default function AdDetailsForm({
                   setTouched((prev) => ({ ...prev, minAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, minAmount: true }))}
-                placeholder="Minimum order"
+                placeholder={t("adForm.minimumOrder")}
                 error={touched.minAmount && !!formErrors.minAmount}
                 currency={buyCurrency}
               />
@@ -538,7 +542,7 @@ export default function AdDetailsForm({
                   setTouched((prev) => ({ ...prev, maxAmount: true }))
                 }}
                 onBlur={() => setTouched((prev) => ({ ...prev, maxAmount: true }))}
-                placeholder="Maximum order"
+                placeholder={t("adForm.maximumOrder")}
                 error={touched.maxAmount && !!formErrors.maxAmount}
                 currency={buyCurrency}
               />
