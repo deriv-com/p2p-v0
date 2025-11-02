@@ -437,8 +437,8 @@ export const getHomeUrl = (isV1Signup = false, section = "") => {
   return url
 }
 
-export const getLoginUrl = (isV1Signup = false) => {
-  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
+export const getLoginUrl = () => {
+  const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production
   let baseUrl = ""
 
   if (isV1Signup) {
