@@ -112,7 +112,18 @@
     "typeMessage": "Scrivi un messaggio...",
     "send": "Invia",
     "online": "Online",
-    "offline": "Offline"
+    "offline": "Offline",
+    "seenMinutesAgo": "{minutes} minut{plural} fa",
+    "seenHoursAgo": "{hours} or{plural} fa",
+    "seenDaysAgo": "{days} giorn{plural} fa",
+    "justNow": "proprio ora",
+    "enterMessage": "Inserisci un messaggio",
+    "messageSent": "Messaggio inviato",
+    "messageNotSent": "Messaggio non inviato: {error}",
+    "disclaimerImportant": "Importante:",
+    "disclaimerText": "Deriv non ti contatterà mai tramite WhatsApp per chiedere le tue informazioni personali. Ignora sempre qualsiasi messaggio da numeri che affermano di essere di Deriv.",
+    "disclaimerNote": "Nota:",
+    "disclaimerNoteText": "In caso di controversia, useremo questa chat come riferimento."
   },
   "orderDetails": {
     "title": "Dettagli ordine",

@@ -105,7 +105,18 @@
     "typeMessage": "Type a message...",
     "send": "Send",
     "online": "Online",
-    "offline": "Offline"
+    "offline": "Offline",
+    "seenMinutesAgo": "{minutes} minute{plural} ago",
+    "seenHoursAgo": "{hours} hour{plural} ago",
+    "seenDaysAgo": "{days} day{plural} ago",
+    "justNow": "just now",
+    "enterMessage": "Enter message",
+    "messageSent": "Message sent",
+    "messageNotSent": "Message not sent: {error}",
+    "disclaimerImportant": "Important:",
+    "disclaimerText": "Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any messages from numbers claiming to be from Deriv.",
+    "disclaimerNote": "Note:",
+    "disclaimerNoteText": "In case of a dispute, we'll use this chat as a reference."
   },
   "orderDetails": {
     "title": "Order details",

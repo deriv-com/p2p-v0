@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { getChatErrorMessage, formatTime } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 type Message = {
   attachment: {
@@ -42,6 +43,7 @@ export default function OrderChat({
   counterpartyOnlineStatus,
   counterpartyLastOnlineAt,
 }: OrderChatProps) {
+  const { t } = useTranslations()
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isSending, setIsSending] = useState(false)
@@ -193,10 +195,10 @@ export default function OrderChat({
           <div className="text-xs text-slate-500 flex items-center gap-1">
             <span>
               {counterpartyOnlineStatus
-                ? "Online"
+                ? t("chat.online")
                 : counterpartyLastOnlineAt
-                  ? `Seen ${formatLastSeen(counterpartyLastOnlineAt)}`
-                  : "Offline"}
+                  ? `${t("chat.offline")} ${formatLastSeen(counterpartyLastOnlineAt)}`
+                  : t("chat.offline")}
             </span>
           </div>
         </div>
@@ -209,14 +211,11 @@ export default function OrderChat({
                 <Image src="/icons/warning-icon-new.png" className="-mt-[2px]" alt="Warning" width={24} height={24} />
               </div>
               <div className="text-sm text-slate-1200">
-                <span className="font-bold">Important:</span>
-                <span className="ml-1">
-                  Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any
-                  messages from numbers claiming to be from Deriv.
-                </span>
+                <span className="font-bold">{t("chat.disclaimerImportant")}</span>
+                <span className="ml-1">{t("chat.disclaimerText")}</span>
                 <div className="mt-[16px]">
-                  <span className="font-bold">Note:</span>
-                  <span className="ml-1">In case of a dispute, we'll use this chat as a reference.</span>
+                  <span className="font-bold">{t("chat.disclaimerNote")}</span>
+                  <span className="ml-1">{t("chat.disclaimerNoteText")}</span>
                 </div>
               </div>
             </div>
@@ -298,7 +297,9 @@ export default function OrderChat({
       </div>
 
       {isClosed ? (
-        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">This conversation is closed.</div>
+        <div className="p-4 border-t text-center text-sm text-neutral-7 bg-slate-75">
+          {t("chat.conversationClosed")}
+        </div>
       ) : (
         <div className="p-4 border-t bg-slate-75">
           <div className="space-y-2">
@@ -307,7 +308,7 @@ export default function OrderChat({
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, maxLength))}
                 onKeyDown={handleKeyDown}
-                placeholder="Enter message"
+                placeholder={t("chat.enterMessage")}
                 disabled={isSending}
                 className="w-full rounded-[8px] pr-12 resize-none min-h-[56px] placeholder:text[#0000003D]"
               />
