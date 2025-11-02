@@ -5,12 +5,16 @@ import { useLanguageStore } from "@/stores/language-store"
 import en from "./translations/en.json"
 import es from "./translations/es.json"
 import it from "./translations/it.json"
+import pt from "./translations/pt.json"
+import fr from "./translations/fr.json"
 import type { Locale } from "./config"
 
 const translations = {
   en,
   es,
   it,
+  pt,
+  fr,
 }
 
 type TranslationKey = string
