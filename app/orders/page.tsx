@@ -50,7 +50,10 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
-  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
+  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(() => {
+    const { userData } = useUserDataStore.getState()
+    return userData?.signup === "v1"
+  })
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
@@ -60,7 +63,6 @@ export default function OrdersPage() {
 
   useEffect(() => {
     fetchOrders()
-    checkUserSignupStatus()
 
     return () => {
       if (abortControllerRef.current) {
@@ -68,17 +70,6 @@ export default function OrdersPage() {
       }
     }
   }, [activeTab, dateFilter, customDateRange])
-
-  const checkUserSignupStatus = () => {
-    try {
-      const userDataFromStore = userData
-
-      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
-      else setShowCheckPreviousOrdersButton(false)
-    } catch (error) {
-      setShowCheckPreviousOrdersclient / total -balanceButton(false)
-    }
-  }
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
