@@ -442,7 +442,7 @@ export const getLoginUrl = (isV1Signup = false) => {
   let baseUrl = ""
 
   if (isV1Signup) {
-    return isProduction ? "app.deriv.com" : "staging-app.deriv.com"
+    return isProduction ? "https://app.deriv.com" : "https://staging-app.deriv.com"
   } 
   
   return isProduction ? "https://home.deriv.com/dashboard/login" : "https://staging-home.deriv.com/dashboard/login"
