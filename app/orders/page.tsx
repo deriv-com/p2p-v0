@@ -62,25 +62,20 @@ export default function OrdersPage() {
 
   useEffect(() => {
     fetchOrders()
-    checkUserSignupStatus()
+
+    // Check if user is v1 and show/hide button accordingly
+    if (userData?.signup === "v1") {
+      setShowCheckPreviousOrdersButton(true)
+    } else {
+      setShowCheckPreviousOrdersButton(false)
+    }
 
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
       }
     }
-  }, [activeTab, dateFilter, customDateRange, userData]) // Added userData as dependency to re-check signup status when userData loads or changes
-
-  const checkUserSignupStatus = () => {
-    try {
-      const userDataFromStore = userData
-
-      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
-      else setShowCheckPreviousOrdersButton(false)
-    } catch (error) {
-      setShowCheckPreviousOrdersButton(false)
-    }
-  }
+  }, [activeTab, dateFilter, customDateRange, userData])
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
