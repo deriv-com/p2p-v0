@@ -30,8 +30,7 @@ export default function WalletPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
-  const isV1Signup = userData?.signup === "v1"
+  const isDisabled = userData?.status === "disabled"s
 
   const loadBalanceData = useCallback(async () => {
     setIsLoading(true)
