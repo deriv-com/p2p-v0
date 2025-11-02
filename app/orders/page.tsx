@@ -50,16 +50,22 @@ export default function OrdersPage() {
   const [showChat, setShowChat] = useState(false)
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
-  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(() => {
-    const { userData } = useUserDataStore.getState()
-    return userData?.signup === "v1"
-  })
+  const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
 
   const abortControllerRef = useRef<AbortController | null>(null)
+
+  useEffect(() => {
+    if (userData?.signup === "v1") {
+      setShowCheckPreviousOrdersButton(true)
+    } else if (userData?.signup) {
+      // If signup exists but is not v1, hide the button
+      setShowCheckPreviousOrdersButton(false)
+    }
+  }, [userData?.signup])
 
   useEffect(() => {
     fetchOrders()
