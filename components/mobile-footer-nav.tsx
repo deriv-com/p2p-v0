@@ -42,7 +42,7 @@ export default function MobileFooterNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
-      <div className={cn("grid grid-cols-4 h-16", showWallet && "grid-cols-5")}>
+      <div className={cn("grid grid-cols-4 h-16", showWallet !== false&& "grid-cols-5")}>
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center", {
