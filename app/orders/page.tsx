@@ -25,7 +25,6 @@ import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -70,7 +69,7 @@ export default function OrdersPage() {
         abortControllerRef.current.abort()
       }
     }
-  }, [activeTab, dateFilter, customDateRange])
+  }, [activeTab, dateFilter, customDateRange, userData]) // Added userData as dependency to re-check signup status when userData loads or changes
 
   const checkUserSignupStatus = () => {
     try {
