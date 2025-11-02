@@ -9,7 +9,8 @@ import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
+import { useRouter } from "next/navigation"
+import { Loader2 } from "lucide-react"
 
 interface Balance {
   wallet_id: string
@@ -19,6 +20,7 @@ interface Balance {
 }
 
 export default function WalletPage() {
+  const router = useRouter()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -63,8 +65,26 @@ export default function WalletPage() {
   }, [])
 
   useEffect(() => {
+    if (userData?.signup === "v1") {
+      router.push("/")
+    }
+  }, [userData?.signup, router])
+
+  useEffect(() => {
     loadBalanceData()
   }, [loadBalanceData])
+
+  if (userData?.signup === undefined) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    )
+  }
+
+  if (userData?.signup === "v1") {
+    return null
+  }
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
