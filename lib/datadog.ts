@@ -1,7 +1,15 @@
 import { datadogRum } from "@datadog/browser-rum"
 
-export const initDatadog = async () => {
+export const initDatadog = () => {
   if (typeof window === "undefined") {
+    return
+  }
+
+  const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
+  const clientToken =
+  // process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
+
+  if (!applicationId || !clientToken) {
     return
   }
 
@@ -10,23 +18,15 @@ export const initDatadog = async () => {
   }
 
   try {
-    // Dynamically import the server action to fetch config
-    const { getDatadogConfig } = await import("@/lib/datadog-config")
-    const config = await getDatadogConfig()
-
-    if (!config.applicationId || !config.clientToken) {
-      return
-    }
-
     datadogRum.init({
-      applicationId: config.applicationId,
-      clientToken: config.clientToken,
+      applicationId,
+      clientToken,
       site: "datadoghq.com",
-      service: config.service,
-      env: config.env,
-      version: config.version,
-      sessionSampleRate: Number(config.sessionSampleRate),
-      sessionReplaySampleRate: Number(config.sessionReplaySampleRate),
+      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
+      env: process.env.NEXT_PUBLIC_DATADOG_ENV,
+      version: process.env.NEXT_PUBLIC_DATADOG_VERSION,
+      sessionSampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE ?? 10,
+      sessionReplaySampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1
     })
   } catch (error) {
     console.error("[Datadog RUM] Initialization failed:", error)
