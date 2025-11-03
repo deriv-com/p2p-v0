@@ -350,8 +350,6 @@ export async function toggleAdActiveStatus(
 
     const payload = {
       is_active: isActive,
-      payment_method_ids: null,
-      available_countries: null,
     }
 
     const requestData = { data: payload }
