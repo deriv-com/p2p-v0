@@ -50,7 +50,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }, [ad.id, toast])
 
   const handleShare = async (platform: string) => {
-    console.log(ad)
     const adUrl = `${window.location.origin}/advertiser/${ad.user?.id}`
     const text = `Check out this ${ad?.type === "buy" ? "Sell" : "Buy"} ${ad?.account_currency} ad on Deriv P2P`
 
