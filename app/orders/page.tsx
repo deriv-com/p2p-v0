@@ -71,6 +71,7 @@ export default function OrdersPage() {
 
   useEffect(() => {
     fetchOrders()
+    checkUserSignupStatus()
 
     return () => {
       if (abortControllerRef.current) {
