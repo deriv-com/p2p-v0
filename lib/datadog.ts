@@ -14,7 +14,7 @@ export const initDatadog = () => {
   }
 
   try {
-    datadogRum.init({
+    datadogRum?.init({
       applicationId,
       clientToken,
       site: "datadoghq.com",
