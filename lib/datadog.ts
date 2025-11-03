@@ -13,10 +13,6 @@ export const initDatadog = () => {
     return
   }
 
-  if (datadogRum.getInternalContext()) {
-    return
-  }
-
   try {
     datadogRum.init({
       applicationId,
