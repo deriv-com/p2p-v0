@@ -1,26 +1,19 @@
 import { datadogRum } from "@datadog/browser-rum"
 
 export const initDatadog = () => {
-  console.log("[v0] Datadog initialization starting...")
 
   if (typeof window === "undefined") {
-    console.log("[v0] Datadog: Skipping - not in browser environment")
-    return
+      return
   }
 
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
   if (!applicationId || !clientToken) {
-    console.warn("[v0] Datadog: Missing credentials", {
-      hasApplicationId: !!applicationId,
-      hasClientToken: !!clientToken,
-    })
     return
   }
 
   if (datadogRum.getInternalContext()) {
-    console.log("[v0] Datadog: Already initialized")
     return
   }
 
