@@ -6,10 +6,10 @@ export const initDatadog = () => {
   }
 
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
-  const clientToken =
+  const client = null
   // process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
-  if (!applicationId || !clientToken) {
+  if (!applicationId || !client) {
     return
   }
 
@@ -20,7 +20,7 @@ export const initDatadog = () => {
   try {
     datadogRum.init({
       applicationId,
-      clientToken,
+      client,
       site: "datadoghq.com",
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
       env: process.env.NEXT_PUBLIC_DATADOG_ENV,
