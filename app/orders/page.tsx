@@ -24,6 +24,7 @@ import { DateFilter } from "./components/date-filter"
 import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
