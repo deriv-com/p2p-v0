@@ -324,6 +324,14 @@ export default function OrdersPage() {
     </div>
   )
 
+  if (isDisabled) {
+    return (
+      <div className="flex flex-col h-screen overflow-hidden px-3">
+        <P2PAccessRemoved />
+      </div>
+    )
+  }
+
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =
       selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
