@@ -18,13 +18,6 @@ export const initDatadog = () => {
   }
 
   try {
-    console.log("[v0] Datadog: Initializing with config", {
-      applicationId,
-      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
-      env: process.env.NEXT_PUBLIC_DATADOG_ENV,
-      version: process.env.NEXT_PUBLIC_DATADOG_VERSION,
-    })
-
     datadogRum.init({
       applicationId,
       clientToken,
@@ -35,8 +28,6 @@ export const initDatadog = () => {
       sessionSampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE ?? 10,
       sessionReplaySampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1,
     })
-
-    console.log("[v0] Datadog: Successfully initialized")
   } catch (error) {
     console.error("[v0] Datadog RUM: Initialization failed:", error)
     console.error("[v0] Datadog: Error details:", {
