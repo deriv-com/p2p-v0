@@ -287,6 +287,14 @@ export async function updateAd(id: string, adData: any): Promise<{ success: bool
       adData.payment_method_names = []
     }
 
+    if (!adData.payment_method_ids) {
+      adData.payment_method_ids = null
+    }
+
+    if (!adData.available_countries) {
+      adData.available_countries = null
+    }
+
     const requestData = { data: adData }
     const body = JSON.stringify(requestData)
 
@@ -441,7 +449,13 @@ export async function createAd(
     const url = `${API.baseUrl}${API.endpoints.ads}`
     const headers = AUTH.getAuthHeader()
 
-    const requestBody = { data: payload }
+    const enhancedPayload = {
+      ...payload,
+      payment_method_ids: (payload as any).payment_method_ids ?? null,
+      available_countries: (payload as any).available_countries ?? null,
+    }
+
+    const requestBody = { data: enhancedPayload }
     const body = JSON.stringify(requestBody)
 
     const response = await fetch(url, {
