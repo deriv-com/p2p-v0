@@ -27,6 +27,7 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
+  const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -66,6 +67,8 @@ export default function WalletPage() {
   useEffect(() => {
     if (userData?.signup === "v1") {
       router.push("/")
+    } else if (userData?.signup !== undefined) {
+      setHasCheckedSignup(true)
     }
   }, [userData?.signup, router])
 
@@ -73,7 +76,7 @@ export default function WalletPage() {
     loadBalanceData()
   }, [loadBalanceData])
 
-  if (userData?.signup === undefined) {
+  if (!hasCheckedSignup && userData?.signup === undefined) {
     return (
       <div className="text-center py-12">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
