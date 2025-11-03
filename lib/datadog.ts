@@ -29,10 +29,6 @@ export const initDatadog = () => {
       sessionReplaySampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1,
     })
   } catch (error) {
-    console.error("[v0] Datadog RUM: Initialization failed:", error)
-    console.error("[v0] Datadog: Error details:", {
-      message: error instanceof Error ? error.message : String(error),
-      stack: error instanceof Error ? error.stack : undefined,
-    })
+    console.error("Datadog RUM: Initialization failed:", error)
   }
 }
