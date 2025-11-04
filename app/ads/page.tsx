@@ -19,13 +19,18 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 
 interface StatusData {
   success: "create" | "update"
   type: string
   id: string
   showStatusModal: boolean
+}
+
+interface Currency {
+  code: string
+  name: string
 }
 
 export default function AdsPage() {
@@ -45,7 +50,7 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
-  const [currencies, setCurrencies] = useState<string[]>([])
+  const [currencies, setCurrencies] = useState<Currency[]>([])
   const [selectedCurrency, setSelectedCurrency] = useState<string>("")
 
   const isMobile = useIsMobile()
@@ -82,16 +87,19 @@ export default function AdsPage() {
         const response = await AdsAPI.getCurrencies()
 
         if (response && response.data) {
-          // Filter currencies where cashiers array contains "p2p"
-          const p2pCurrencies = Object.keys(response.data).filter((currencyCode) => {
-            const currencyData = response.data[currencyCode]
-            return currencyData.cashiers && currencyData.cashiers.includes("p2p")
-          })
+          const p2pCurrencies: Currency[] = Object.keys(response.data)
+            .filter((currencyCode) => {
+              const currencyData = response.data[currencyCode]
+              return currencyData.cashiers && currencyData.cashiers.includes("p2p")
+            })
+            .map((currencyCode) => ({
+              code: currencyCode,
+              name: response.data[currencyCode].name || currencyCode,
+            }))
 
           setCurrencies(p2pCurrencies)
 
-          // Set default currency: USD if available, otherwise first element
-          const defaultCurrency = p2pCurrencies.includes("USD") ? "USD" : p2pCurrencies[0] || ""
+          const defaultCurrency = p2pCurrencies.find((c) => c.code === "USD")?.code || p2pCurrencies[0]?.code || ""
           setSelectedCurrency(defaultCurrency)
         }
       } catch (error) {
@@ -222,18 +230,31 @@ export default function AdsPage() {
         <div className="flex-none container mx-auto">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0 flex items-start justify-between">
             <span>All ads</span>
-            <Select value={selectedCurrency} onValueChange={handleCurrencyChange} disabled={tempBanUntil}>
-              <SelectTrigger className="w-[86px] mt-6 border-[#FFFFFF3D] bg-transparent text-white [&>svg]:text-white hover:bg-transparent focus:ring-0 focus:ring-offset-0">
-                <SelectValue placeholder="Currency" />
-              </SelectTrigger>
-              <SelectContent>
-                {currencies.map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {currency}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="mt-[24px]">
+              <CurrencyFilter
+                currencies={currencies}
+                selectedCurrency={selectedCurrency}
+                onCurrencySelect={handleCurrencyChange}
+                title="Select currency"
+                trigger={
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-[86px] h-[48px] border border-[#FFFFFF3D] bg-transparent hover:bg-transparent rounded-full text-white font-normal px-3"
+                    disabled={!!tempBanUntil}
+                  >
+                    <span>{selectedCurrency}</span>
+                    <Image
+                      src="/icons/chevron-down-white.png"
+                      alt="Arrow"
+                      width={24}
+                      height={24}
+                      className="ml-2 transition-transform duration-200"
+                    />
+                  </Button>
+                }
+              />
+            </div>
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex items-center justify-between my-6">
