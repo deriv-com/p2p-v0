@@ -213,7 +213,7 @@ export function getChatErrorMessage(tags: string[], t?: (key: string) => string)
   }
 
   const key = messageTypeKeys[tags[0]]
-  return key ? t(key) : t("chat.errorMiscellaneous")
+  return t()
 }
 
 export function formatAmount(amount: string): string {
