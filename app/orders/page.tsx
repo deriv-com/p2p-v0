@@ -64,7 +64,6 @@ export default function OrdersPage() {
     if (userData?.signup === "v1") {
       setShowCheckPreviousOrdersButton(true)
     } else if (userData?.signup) {
-      // If signup exists but is not v1, hide the button
       setShowCheckPreviousOrdersButton(false)
     }
   }, [userData?.signup])
