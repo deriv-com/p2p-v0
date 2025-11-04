@@ -172,26 +172,49 @@ export function getStatusBadgeStyle(status: string, type: string): string {
   }
 }
 
-export function getChatErrorMessage(tags: string[]): string {
-  const messageTypeFormatters = {
-    pii: "Please avoid sharing personal information like phone numbers, addresses, or ID details for your security.",
-    link: "Links and URLs are not permitted in this chat.",
-    profanity: "Please keep the conversation professional and avoid offensive language.",
-    promotional_content: "Promotional content and advertisements are not allowed.",
-    off_platform_communication:
-      "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
-    human_attention: "Threatening or harassing language is not tolerated. Please communicate respectfully.",
-    harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
-    fake_identity:
-      "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
-    sensitive_data_requests:
-      "Your message requires additional review. Please wait while we connect you with a specialist.",
-    miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
+export function getChatErrorMessage(tags: string[], t?: (key: string) => string): string {
+  // If no translation function provided, return English fallback
+  if (!t) {
+    const messageTypeFormatters: Record<string, string> = {
+      pii: "Please avoid sharing personal information like phone numbers, addresses, or ID details for your security.",
+      link: "Links and URLs are not permitted in this chat.",
+      profanity: "Please keep the conversation professional and avoid offensive language.",
+      promotional_content: "Promotional content and advertisements are not allowed.",
+      off_platform_communication:
+        "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
+      human_attention: "Threatening or harassing language is not tolerated. Please communicate respectfully.",
+      harassment: "Please do not impersonate Deriv staff or misrepresent your identity.",
+      fake_identity:
+        "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
+      sensitive_data_requests:
+        "Your message requires additional review. Please wait while we connect you with a specialist.",
+      miscellaneous: "Your message doesn't meet our community guidelines. Please try again.",
+    }
+
+    const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
+    return message
   }
 
-  const message = tags.length > 1 ? "It violates our chat guidelines." : messageTypeFormatters[tags[0]]
+  // Use translation keys
+  const messageTypeKeys: Record<string, string> = {
+    pii: "chat.errorPii",
+    link: "chat.errorLink",
+    profanity: "chat.errorProfanity",
+    promotional_content: "chat.errorPromotionalContent",
+    off_platform_communication: "chat.errorOffPlatformCommunication",
+    human_attention: "chat.errorHumanAttention",
+    harassment: "chat.errorHarassment",
+    fake_identity: "chat.errorFakeIdentity",
+    sensitive_data_requests: "chat.errorSensitiveDataRequests",
+    miscellaneous: "chat.errorMiscellaneous",
+  }
 
-  return message
+  if (tags.length > 1) {
+    return t("chat.errorMultipleViolations")
+  }
+
+  const key = messageTypeKeys[tags[0]]
+  return key ? t(key) : t("chat.errorMiscellaneous")
 }
 
 export function formatAmount(amount: string): string {
@@ -442,8 +465,7 @@ export const getLoginUrl = (isV1Signup = false) => {
 
   if (isV1Signup) {
     return isProduction ? "https://app.deriv.com" : "https://staging-app.deriv.com"
-  } 
-  
+  }
+
   return isProduction ? "https://home.deriv.com/dashboard/login" : "https://staging-home.deriv.com/dashboard/login"
-  
 }

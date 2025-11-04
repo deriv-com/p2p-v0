@@ -137,7 +137,18 @@
     "disclaimerImportant": "Importante:",
     "disclaimerText": "Deriv nunca te contactará por WhatsApp para solicitar tu información personal. Siempre ignora cualquier mensaje de números que afirmen ser de Deriv.",
     "disclaimerNote": "Nota:",
-    "disclaimerNoteText": "En caso de disputa, usaremos este chat como referencia."
+    "disclaimerNoteText": "En caso de disputa, usaremos este chat como referencia.",
+    "errorPii": "Por favor, evita compartir información personal como números de teléfono, direcciones o detalles de identificación por tu seguridad.",
+    "errorLink": "Los enlaces y URLs no están permitidos en este chat.",
+    "errorProfanity": "Por favor, mantén la conversación profesional y evita lenguaje ofensivo.",
+    "errorPromotionalContent": "El contenido promocional y los anuncios no están permitidos.",
+    "errorOffPlatformCommunication": "Por favor, mantén la conversación dentro de esta plataforma. No podemos ayudar con solicitudes para comunicarse en otro lugar.",
+    "errorHumanAttention": "El lenguaje amenazante o acosador no se tolera. Por favor, comunícate respetuosamente.",
+    "errorHarassment": "Por favor, no te hagas pasar por el personal de Deriv ni tergiverses tu identidad.",
+    "errorFakeIdentity": "Nunca compartas contraseñas, OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.",
+    "errorSensitiveDataRequests": "Tu mensaje requiere revisión adicional. Por favor, espera mientras te conectamos con un especialista.",
+    "errorMiscellaneous": "Tu mensaje no cumple con nuestras pautas de la comunidad. Por favor, inténtalo de nuevo.",
+    "errorMultipleViolations": "Viola nuestras pautas de chat."
   },
   "orderDetails": {
     "title": "Detalles de la orden",
