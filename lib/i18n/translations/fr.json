@@ -475,5 +475,13 @@
     "successfullyUnfollowed": "Ne suit plus avec succès",
     "userBlocked": "{nickname} bloqué.",
     "userUnblocked": "{nickname} débloqué."
+  },
+  "kyc": {
+    "title": "Vérification d'identité",
+    "subtitle": "Complétez votre vérification d'identité pour débloquer toutes les fonctionnalités P2P.",
+    "verifyIdentity": "Vérifier l'identité",
+    "completeProfile": "Complétez votre profil",
+    "completeProfileDescription": "Complétez votre profil pour commencer à trader en P2P.",
+    "backToHome": "Retour à l'Accueil"
   }
 }

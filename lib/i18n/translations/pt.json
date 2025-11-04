@@ -475,5 +475,13 @@
     "selectPayment": "Selecionar pagamento",
     "selected": "Selecionado ({count})",
     "noPaymentMethodsFound": "Nenhum método de pagamento encontrado"
+  },
+  "kyc": {
+    "title": "Verificação de identidade",
+    "subtitle": "Complete sua verificação de identidade para desbloquear todos os recursos P2P.",
+    "verifyIdentity": "Verificar identidade",
+    "completeProfile": "Complete seu perfil",
+    "completeProfileDescription": "Complete seu perfil para começar a negociar em P2P.",
+    "backToHome": "Voltar ao Início"
   }
 }

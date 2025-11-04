@@ -475,5 +475,13 @@
     "selectPayment": "Seleccionar pago",
     "selected": "Seleccionado ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago"
+  },
+  "kyc": {
+    "title": "Verificación de identidad",
+    "subtitle": "Completa tu verificación de identidad para desbloquear todas las funciones de P2P.",
+    "verifyIdentity": "Verificar identidad",
+    "completeProfile": "Completa tu perfil",
+    "completeProfileDescription": "Completa tu perfil para comenzar a operar en P2P.",
+    "backToHome": "Volver al Inicio"
   }
 }
