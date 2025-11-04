@@ -410,7 +410,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-[86px] h-[32px] border border-slate-300 bg-transparent hover:bg-slate-50 rounded-full text-black font-normal px-3"
+                        className="hidden w-[86px] h-[32px] border border-slate-300 bg-transparent hover:bg-slate-50 rounded-full text-black font-normal px-3"
                         disabled={isCurrenciesLoading}
                       >
                         <span>{selectedCurrency}</span>
