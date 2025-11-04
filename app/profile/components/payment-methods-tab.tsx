@@ -27,7 +27,7 @@ interface PaymentMethod {
 }
 
 export default function PaymentMethodsTab() {
-  const t = useTranslations()
+  const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
