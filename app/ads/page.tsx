@@ -19,7 +19,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface StatusData {
   success: "create" | "update"
@@ -45,10 +45,13 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const [currencies, setCurrencies] = useState<string[]>([])
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("")
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const fetchAds = async () => {
+
+  const fetchAds = async (currency?: string) => {
     if (!userId) {
       setLoading(false)
       return
@@ -57,7 +60,7 @@ export default function AdsPage() {
     try {
       setLoading(true)
       setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(true)
+      const userAdverts = await AdsAPI.getUserAdverts(true, currency || selectedCurrency)
 
       setAds(userAdverts)
     } catch (err) {
@@ -74,12 +77,38 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
+    const fetchCurrencies = async () => {
+      try {
+        const response = await AdsAPI.getCurrencies()
+
+        if (response && response.data) {
+          // Filter currencies where cashiers array contains "p2p"
+          const p2pCurrencies = Object.keys(response.data).filter((currencyCode) => {
+            const currencyData = response.data[currencyCode]
+            return currencyData.cashiers && currencyData.cashiers.includes("p2p")
+          })
+
+          setCurrencies(p2pCurrencies)
+
+          // Set default currency: USD if available, otherwise first element
+          const defaultCurrency = p2pCurrencies.includes("USD") ? "USD" : p2pCurrencies[0] || ""
+          setSelectedCurrency(defaultCurrency)
+        }
+      } catch (error) {
+        console.error("Failed to fetch currencies:", error)
+      }
+    }
+
+    fetchCurrencies()
+  }, [])
+
+  useEffect(() => {
     setLoading(false)
-    if (userId && !hasFetchedRef.current) {
-      fetchAds()
+    if (userId && !hasFetchedRef.current && selectedCurrency) {
+      fetchAds(selectedCurrency)
       hasFetchedRef.current = true
     }
-  }, [userId])
+  }, [userId, selectedCurrency])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -171,30 +200,49 @@ export default function AdsPage() {
     }
   }
 
+  const handleCurrencyChange = (value: string) => {
+    setSelectedCurrency(value)
+    fetchAds(value)
+  }
+
   const getHideMyAdsComponent = () => {
     return (
-      <div className="flex items-center justify-self-end">
-        <Switch
-          id="hide-ads"
-          checked={hiddenAdverts}
-          onCheckedChange={handleHideMyAds}
-          className="data-[state=checked]:bg-completed-icon"
-          disabled={tempBanUntil}
-        />
-        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
-          Hide my ads
-        </label>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p className="opacity-[0.72]">{"Hidden ads won't appear on the Market page."}</p>
-              <TooltipArrow className="fill-black" />
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div className="flex items-center gap-4 justify-self-end">
+        <div className="flex items-center">
+          <Switch
+            id="hide-ads"
+            checked={hiddenAdverts}
+            onCheckedChange={handleHideMyAds}
+            className="data-[state=checked]:bg-completed-icon"
+            disabled={tempBanUntil}
+          />
+          <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
+            Hide my ads
+          </label>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="opacity-[0.72]">{"Hidden ads won't appear on the Market page."}</p>
+                <TooltipArrow className="fill-black" />
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+        <Select value={selectedCurrency} onValueChange={handleCurrencyChange} disabled={tempBanUntil}>
+          <SelectTrigger className="w-[120px]">
+            <SelectValue placeholder="Currency" />
+          </SelectTrigger>
+          <SelectContent>
+            {currencies.map((currency) => (
+              <SelectItem key={currency} value={currency}>
+                {currency}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
     )
   }

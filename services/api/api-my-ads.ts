@@ -174,23 +174,28 @@ export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
   }
 }
 
-export async function getCurrencies(): Promise<string[]> {
+export async function getCurrencies(): Promise<any> {
   try {
-    const url = `${API.baseUrl}${API.endpoints.settings}`
-    const headers = AUTH.getAuthHeader()
+    const url = `${process.env.NEXT_PUBLIC_CORE_URL}/core/business/config/currencies`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
 
     const response = await fetch(url, {
+      method: "POST",
       headers,
       credentials: "include",
     })
-    await response.text()
-  } catch (error) {}
 
-  // TODO: Returning a default array for now until the API response structure is finalised and we have required data
-  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
+    const data = await response.json()
+    return data
+  } catch (error) {
+    return null
+  }
 }
 
-export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
+export async function getUserAdverts(showInactive?: boolean, accountCurrency?: string): Promise<MyAd[]> {
   try {
     const userId = useUserDataStore.getState().userId
 
@@ -201,6 +206,10 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       show_unlisted: "true",
       show_ineligible: "true",
     })
+
+    if (accountCurrency) {
+      queryParams.append("account_currency", accountCurrency)
+    }
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = AUTH.getAuthHeader()
