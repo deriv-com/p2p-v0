@@ -173,7 +173,6 @@ export function getStatusBadgeStyle(status: string, type: string): string {
 }
 
 export function getChatErrorMessage(tags: string[], t?: (key: string) => string): string {
-  // If no translation function provided, return English fallback
   if (!t) {
     const messageTypeFormatters: Record<string, string> = {
       pii: "Please avoid sharing personal information like phone numbers, addresses, or ID details for your security.",
