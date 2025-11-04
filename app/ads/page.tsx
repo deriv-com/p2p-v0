@@ -1,8 +1,6 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
-import { useUserDataStore, getCachedUserId } from "@/stores/user-data-store"
-import { TemporaryBanAlert } from "@/components/temporary-ban-alert" // Import TemporaryBanAlert
 
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
@@ -18,7 +16,10 @@ import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import MobileFooterNav from "@/components/mobile-footer-nav"
 
 interface StatusData {
   success: "create" | "update"
@@ -47,21 +48,15 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-
   const fetchAds = async () => {
+    if (!userId) {
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
-
-      const currentUserId = getCachedUserId() || useUserDataStore.getState().userId
-
-      if (!currentUserId) {
-        console.log("[v0] Ads page: userId not available")
-        setLoading(false)
-        return
-      }
-
-      console.log("[v0] Ads page: Fetching ads with userId:", currentUserId)
       const userAdverts = await AdsAPI.getUserAdverts(true)
 
       setAds(userAdverts)
@@ -79,12 +74,12 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    if (!hasFetchedRef.current) {
-      console.log("[v0] Ads page: Component mounted, starting fetch")
+    setLoading(false)
+    if (userId && !hasFetchedRef.current) {
       fetchAds()
       hasFetchedRef.current = true
     }
-  }, [])
+  }, [userId])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {

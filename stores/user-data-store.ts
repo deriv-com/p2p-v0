@@ -66,28 +66,6 @@ const getCachedSignup = (): string | null => {
   }
 }
 
-const getCachedUserId = (): string | null => {
-  if (typeof window === "undefined") return null
-  try {
-    return localStorage.getItem("user_id")
-  } catch {
-    return null
-  }
-}
-
-const cacheUserId = (userId: string | null | undefined) => {
-  if (typeof window === "undefined") return
-  try {
-    if (userId) {
-      localStorage.setItem("user_id", userId)
-    } else {
-      localStorage.removeItem("user_id")
-    }
-  } catch {
-    // Ignore localStorage errors
-  }
-}
-
 const cacheSignup = (signup: string | undefined) => {
   if (typeof window === "undefined") return
   try {
@@ -109,10 +87,7 @@ export const useUserDataStore = create<UserDataState>((set) => ({
     set({ userData: data })
   },
 
-  setUserId: (id) => {
-    cacheUserId(id)
-    set({ userId: id })
-  },
+  setUserId: (id) => set({ userId: id }),
 
   setClientId: (id) => set({ clientId: id }),
 
@@ -137,9 +112,8 @@ export const useUserDataStore = create<UserDataState>((set) => ({
 
   clearUserData: () => {
     cacheSignup(undefined)
-    cacheUserId(undefined)
     set(initialState)
   },
 }))
 
-export { getCachedSignup, getCachedUserId }
+export { getCachedSignup }
