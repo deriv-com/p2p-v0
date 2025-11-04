@@ -123,7 +123,6 @@ export default function OrdersPage() {
       setOrders(ordersArray)
     } catch (err) {
       if (!abortController.signal.aborted) {
-        console.error("Error fetching orders:", err)
         setOrders([])
       }
     } finally {

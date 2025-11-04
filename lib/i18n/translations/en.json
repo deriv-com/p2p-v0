@@ -486,5 +486,20 @@
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
     "phoneNumber": "Phone number"
+  },
+  "orderStatus": {
+    "refunded": "Refunded",
+    "refundedDetailed": "Refunded",
+    "cancelled": "Cancelled",
+    "cancelledDetailed": "Order cancelled",
+    "timedOut": "Expired",
+    "timedOutDetailed": "Order expired",
+    "completed": "Completed",
+    "completedDetailed": "Order complete",
+    "pendingPaymentBuyer": "Complete payment",
+    "pendingPaymentSeller": "Awaiting payment",
+    "pendingReleaseBuyer": "Waiting seller's confirmation",
+    "pendingReleaseSeller": "Confirm payment",
+    "disputed": "Under dispute"
   }
 }

@@ -111,7 +111,6 @@ export default function OrderDetailsPage() {
       const order = await OrdersAPI.getOrderById(orderId)
       setOrder(order.data)
     } catch (err) {
-      console.error("Error fetching order details:", err)
       setError(t("orderDetails.failedToLoadOrderDetails"))
     } finally {
       setIsLoading(false)
@@ -137,7 +136,6 @@ export default function OrderDetailsPage() {
         })
       }
     } catch (err) {
-      console.error("Error marking payment as sent:", err)
     } finally {
       setIsPaymentLoading(false)
     }
@@ -291,9 +289,7 @@ export default function OrderDetailsPage() {
           if (result.success) {
             fetchOrderDetails()
           }
-        } catch (error) {
-          console.error("Failed to cancel order:", error)
-        }
+        } catch (error) {}
       },
       type: "warning",
     })
