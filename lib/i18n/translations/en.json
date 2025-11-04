@@ -233,7 +233,9 @@
     "blockedUsersAppear": "Users you block will appear here.",
     "loadingUsers": "Loading users...",
     "noPaymentMethodsYet": "No payment methods yet",
-    "startAddingPaymentMethods": "Start adding payment methods"
+    "startAddingPaymentMethods": "Start adding payment methods",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "wallet": {
     "title": "Wallet",

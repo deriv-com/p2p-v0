@@ -240,7 +240,9 @@
     "blockedUsersAppear": "Gli utenti che blocchi appariranno qui.",
     "loadingUsers": "Caricamento utenti...",
     "noPaymentMethodsYet": "Nessun metodo di pagamento ancora",
-    "startAddingPaymentMethods": "Inizia ad aggiungere metodi di pagamento"
+    "startAddingPaymentMethods": "Inizia ad aggiungere metodi di pagamento",
+    "edit": "Modifica",
+    "delete": "Elimina"
   },
   "wallet": {
     "title": "Portafoglio",

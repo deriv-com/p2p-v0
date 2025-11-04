@@ -233,7 +233,9 @@
     "blockedUsersAppear": "Los usuarios que bloquees aparecerán aquí.",
     "loadingUsers": "Cargando usuarios...",
     "noPaymentMethodsYet": "Aún no hay métodos de pago",
-    "startAddingPaymentMethods": "Comienza a agregar métodos de pago"
+    "startAddingPaymentMethods": "Comienza a agregar métodos de pago",
+    "edit": "Editar",
+    "delete": "Eliminar"
   },
   "wallet": {
     "title": "Billetera",
