@@ -419,9 +419,14 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                   </p>
                 </div>
               )}
-
-              {!isBlocked && <AdvertiserStats profile={profile} />}
             </div>
+
+            {!isBlocked && (
+              <div className="mt-6">
+                <AdvertiserStats profile={profile} />
+              </div>
+            )}
+
             {!isBlocked && (
               <>
                 <div className="container mx-auto pb-4 pt-6 text-lg font-bold flex items-center justify-between">
