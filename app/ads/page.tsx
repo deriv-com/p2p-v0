@@ -240,7 +240,7 @@ export default function AdsPage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="w-[86px] h-[32px] border border-[#FFFFFF3D] bg-transparent hover:bg-transparent rounded-full text-white font-normal px-3"
+                    className="hidden w-[86px] h-[32px] border border-[#FFFFFF3D] bg-transparent hover:bg-transparent rounded-full text-white font-normal px-3"
                     disabled={!!tempBanUntil}
                   >
                     <span>{selectedCurrency}</span>
