@@ -487,20 +487,5 @@
     "completeProfile": "Completa tu perfil",
     "completeProfileDescription": "Completa tu perfil para comenzar a operar en P2P.",
     "backToHome": "Volver al Inicio"
-  },
-  "orderStatus": {
-    "refunded": "Reembolsado",
-    "refundedDetailed": "Reembolsado",
-    "cancelled": "Cancelado",
-    "cancelledDetailed": "Orden cancelada",
-    "timedOut": "Expirado",
-    "timedOutDetailed": "Orden expirada",
-    "completed": "Completado",
-    "completedDetailed": "Orden completa",
-    "pendingPaymentBuyer": "Completar pago",
-    "pendingPaymentSeller": "Esperando pago",
-    "pendingReleaseBuyer": "Esperando confirmación del vendedor",
-    "pendingReleaseSeller": "Confirmar pago",
-    "disputed": "En disputa"
   }
 }

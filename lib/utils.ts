@@ -132,52 +132,25 @@ export function getMethodDisplayDetails(method: {
   }
 }
 
-export function formatStatus(
-  isDetailed: boolean,
-  status: string,
-  isBuyer: boolean,
-  t?: (key: string) => string,
-): string {
+export function formatStatus(isDetailed: boolean, status: string, isBuyer: boolean): string {
   if (!status) return ""
-  if (!t) {
-    const statusMap: Record<string, string> = {
-      refunded: "Refunded",
-      cancelled: isDetailed ? "Order cancelled" : "Cancelled",
-      timed_out: isDetailed ? "Order expired" : "Expired",
-      completed: isDetailed ? "Order complete" : "Completed",
-      pending_payment: isBuyer ? "Complete payment" : "Awaiting payment",
-      pending_release: isBuyer ? "Waiting seller's confirmation" : "Confirm payment",
-      disputed: "Under dispute",
-    }
 
-    const lowerStatus = status.toLowerCase()
-    if (statusMap[lowerStatus]) {
-      return statusMap[lowerStatus]
-    }
-
-    return status
+  const statusMap: Record<string, string> = {
+    refunded: "Refunded",
+    cancelled: isDetailed ? "Order cancelled" : "Cancelled",
+    timed_out: isDetailed ? "Order expired" : "Expired",
+    completed: isDetailed ? "Order complete" : "Completed",
+    pending_payment: isBuyer ? "Complete payment" : "Awaiting payment",
+    pending_release: isBuyer ? "Waiting seller's confirmation" : "Confirm payment",
+    disputed: "Under dispute",
   }
 
   const lowerStatus = status.toLowerCase()
-
-  switch (lowerStatus) {
-    case "refunded":
-      return t("orderStatus.refunded")
-    case "cancelled":
-      return isDetailed ? t("orderStatus.cancelledDetailed") : t("orderStatus.cancelled")
-    case "timed_out":
-      return isDetailed ? t("orderStatus.timedOutDetailed") : t("orderStatus.timedOut")
-    case "completed":
-      return isDetailed ? t("orderStatus.completedDetailed") : t("orderStatus.completed")
-    case "pending_payment":
-      return isBuyer ? t("orderStatus.pendingPaymentBuyer") : t("orderStatus.pendingPaymentSeller")
-    case "pending_release":
-      return isBuyer ? t("orderStatus.pendingReleaseBuyer") : t("orderStatus.pendingReleaseSeller")
-    case "disputed":
-      return t("orderStatus.disputed")
-    default:
-      return status
+  if (statusMap[lowerStatus]) {
+    return statusMap[lowerStatus]
   }
+
+  return status
 }
 
 export function getStatusBadgeStyle(status: string, type: string): string {
@@ -469,7 +442,8 @@ export const getLoginUrl = (isV1Signup = false) => {
 
   if (isV1Signup) {
     return isProduction ? "https://app.deriv.com" : "https://staging-app.deriv.com"
-  }
-
+  } 
+  
   return isProduction ? "https://home.deriv.com/dashboard/login" : "https://staging-home.deriv.com/dashboard/login"
+  
 }

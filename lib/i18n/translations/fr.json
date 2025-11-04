@@ -487,20 +487,5 @@
     "completeProfile": "Complétez votre profil",
     "completeProfileDescription": "Complétez votre profil pour commencer à trader en P2P.",
     "backToHome": "Retour à l'Accueil"
-  },
-  "orderStatus": {
-    "refunded": "Remboursé",
-    "refundedDetailed": "Remboursé",
-    "cancelled": "Annulé",
-    "cancelledDetailed": "Commande annulée",
-    "timedOut": "Expiré",
-    "timedOutDetailed": "Commande expirée",
-    "completed": "Terminé",
-    "completedDetailed": "Commande terminée",
-    "pendingPaymentBuyer": "Effectuer le paiement",
-    "pendingPaymentSeller": "En attente de paiement",
-    "pendingReleaseBuyer": "En attente de confirmation du vendeur",
-    "pendingReleaseSeller": "Confirmer le paiement",
-    "disputed": "En litige"
   }
 }
