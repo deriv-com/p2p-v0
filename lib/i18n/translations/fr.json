@@ -37,6 +37,8 @@
     "title": "Marché",
     "buyTab": "Acheter",
     "sellTab": "Vendre",
+    "iWantToBuy": "Je veux acheter",
+    "iWantToSell": "Je veux vendre",
     "yourePayingWith": "Vous payez avec",
     "youreReceiving": "Vous recevez",
     "paymentMethod": "Méthode de paiement",
