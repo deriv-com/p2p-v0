@@ -75,7 +75,6 @@ const cacheSignup = (signup: string | undefined) => {
       localStorage.removeItem("user_signup")
     }
   } catch {
-    // Ignore localStorage errors
   }
 }
 
