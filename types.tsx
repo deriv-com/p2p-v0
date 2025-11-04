@@ -28,6 +28,12 @@ export interface Ad {
   minimum_order_amount?: number
   actual_maximum_order_amount?: number
   exchange_rate?: number
+  exchange_rate_type?: string
   payment_methods?: string[]
   is_active?: boolean
+  user?: {
+    id: string
+    name?: string
+  }
+  advertiser_id?: string
 }
