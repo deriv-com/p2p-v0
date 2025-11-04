@@ -205,17 +205,17 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               </div>
 
               <div className="space-y-1 mb-4">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">ID number</span>
                   <span className="font-bold text-sm">{ad.id}</span>
                 </div>
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">Limits</span>
                   <span className="font-bold text-sm">
                     {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">Rate</span>
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
