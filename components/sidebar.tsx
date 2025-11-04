@@ -23,9 +23,9 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const [showWallet, setShowWallet] = useState<boolean | null>(null)
-  const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
+  const [showWallet, setShowWallet] = useState<boolean | null>(null)
+  const [isV1Signup, setIsV1Signup] = useState(() => userData?.signup === "v1")
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
 
