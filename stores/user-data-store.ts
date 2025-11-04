@@ -57,10 +57,35 @@ const initialState = {
   socketToken: null,
 }
 
+const getCachedSignup = (): string | null => {
+  if (typeof window === "undefined") return null
+  try {
+    return localStorage.getItem("user_signup")
+  } catch {
+    return null
+  }
+}
+
+const cacheSignup = (signup: string | undefined) => {
+  if (typeof window === "undefined") return
+  try {
+    if (signup) {
+      localStorage.setItem("user_signup", signup)
+    } else {
+      localStorage.removeItem("user_signup")
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
+}
+
 export const useUserDataStore = create<UserDataState>((set) => ({
   ...initialState,
 
-  setUserData: (data) => set({ userData: data }),
+  setUserData: (data) => {
+    cacheSignup(data.signup)
+    set({ userData: data })
+  },
 
   setUserId: (id) => set({ userId: id }),
 
@@ -73,9 +98,11 @@ export const useUserDataStore = create<UserDataState>((set) => ({
   setBrand: (brand) => set({ brand }),
 
   updateUserData: (data) =>
-    set((state) => ({
-      userData: state.userData ? { ...state.userData, ...data } : data,
-    })),
+    set((state) => {
+      const newUserData = state.userData ? { ...state.userData, ...data } : data
+      cacheSignup(newUserData.signup)
+      return { userData: newUserData }
+    }),
 
   setVerificationStatus: (status) => set({ verificationStatus: status }),
 
@@ -83,5 +110,10 @@ export const useUserDataStore = create<UserDataState>((set) => ({
 
   setSocketToken: (token) => set({ socketToken: token }),
 
-  clearUserData: () => set(initialState),
+  clearUserData: () => {
+    cacheSignup(undefined)
+    set(initialState)
+  },
 }))
+
+export { getCachedSignup }
