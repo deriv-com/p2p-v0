@@ -69,6 +69,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }
 
   const handleCopyLink = async () => {
+    const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
     try {
       await navigator.clipboard.writeText(adUrl)
