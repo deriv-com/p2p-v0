@@ -82,7 +82,7 @@ export default function MobileFooterNav() {
           <div className="h-5 w-5 flex items-center justify-center">
             <SvgIcon src={AdsIcon} fill={pathname.startsWith("/ads") ? "#FF444F" : "#181C25"} />
           </div>
-          <span className="text-xs mt-1 text-senter">{t("navigation.myAds")}</span>
+          <span className="text-xs mt-1 text-center">{t("navigation.myAds")}</span>
         </Link>
         {showWallet === true && (
           <Link
