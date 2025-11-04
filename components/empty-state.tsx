@@ -26,7 +26,7 @@ export default function EmptyState({
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
   const { showAlert } = useAlertDialog()
-  const { t = useTranslations()
+  const { t } = useTranslations()
 
   const createAd = () => {
     if (userId) {
