@@ -79,49 +79,9 @@ export default function WalletPage() {
 
   if (!hasCheckedSignup && userData?.signup === undefined) {
     return (
-      <div className="min-h-screen bg-background px-0 md:pl-[16px]">
-        <div className="w-full flex flex-col items-center">
-          {/* Wallet Summary Skeleton */}
-          <div className="w-full mt-0">
-            <div className="w-full p-6 flex flex-col bg-slate-1200 md:h-[140px] h-auto rounded-b-3xl md:rounded-3xl">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Skeleton className="w-18 h-18 md:w-24 md:h-24 rounded-full" />
-                  <div className="flex flex-col gap-2">
-                    <Skeleton className="h-4 w-24 bg-white/20" />
-                    <Skeleton className="h-7 w-32 bg-white/20" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-[66px] px-[33px]">
-                  <div className="flex flex-col items-center gap-2">
-                    <Skeleton className="h-12 w-12 rounded-full bg-white/20" />
-                    <Skeleton className="h-3 w-12 bg-white/20" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Wallet Balances Skeleton */}
-          <div className="w-full mt-6 mx-4 md:mx-4 px-6 md:px-0">
-            <div className="space-y-4">
-              <Skeleton className="h-6 w-32" />
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="p-4 border rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <Skeleton className="w-10 h-10 rounded-full" />
-                      <div className="flex-1 space-y-2">
-                        <Skeleton className="h-4 w-16" />
-                        <Skeleton className="h-5 w-24" />
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+      <div className="text-center py-12">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+        <p className="mt-2 text-slate-600">Loading wallet...</p
       </div>
     )
   }
