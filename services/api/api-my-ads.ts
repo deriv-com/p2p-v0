@@ -266,6 +266,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         account_currency: accountCurrency,
+        user: advert.user
       }
     })
   } catch (error) {
