@@ -52,8 +52,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
-    const text = `Hi! I'd like to exchange ${ad?.payment_currency} for ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
-    const telegramText = `Hi! I'd like to exchange ${ad?.payment_currency} for ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad. Thanks!`
+    const text = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
+    const telegramText = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad. Thanks!`
 
     const shareUrls: Record<string, string> = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}`)}`,
