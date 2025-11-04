@@ -63,8 +63,15 @@ export default function OrdersPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    if (userData?.signup === "v1") {
+      setShowCheckPreviousOrdersButton(true)
+    } else if (userData?.signup) {
+      setShowCheckPreviousOrdersButton(false)
+    }
+  }, [userData?.signup])
+
+  useEffect(() => {
     fetchOrders()
-    checkUserSignupStatus()
 
     return () => {
       if (abortControllerRef.current) {
@@ -72,17 +79,6 @@ export default function OrdersPage() {
       }
     }
   }, [activeTab, dateFilter, customDateRange])
-
-  const checkUserSignupStatus = () => {
-    try {
-      const userDataFromStore = userData
-
-      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
-      else setShowCheckPreviousOrdersButton(false)
-    } catch (error) {
-      setShowCheckPreviousOrdersButton(false)
-    }
-  }
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {

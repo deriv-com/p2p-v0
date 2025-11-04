@@ -4,6 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { useState, useEffect } from "react"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
@@ -16,6 +18,20 @@ export default function MobileFooterNav() {
   const pathname = usePathname()
   const { isChatVisible } = useChatVisibilityStore()
   const { t } = useTranslations()
+  const { userData } = useUserDataStore()
+  const [showWallet, setShowWallet] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    if (!userData?.signup) {
+      return
+    }
+
+    if (userData?.signup === "v1") {
+      setShowWallet(false)
+    } else {
+      setShowWallet(true)
+    }
+  }, [userData?.signup])
 
   if (
     pathname.startsWith("/orders/") ||
@@ -28,7 +44,7 @@ export default function MobileFooterNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
-      <div className="grid grid-cols-5 h-16">
+      <div className={cn("grid grid-cols-4 h-16", showWallet === true && "grid-cols-5")}>
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center", {
@@ -68,18 +84,20 @@ export default function MobileFooterNav() {
           </div>
           <span className="text-xs mt-1">{t("navigation.myAds")}</span>
         </Link>
-        <Link
-          href="/wallet"
-          className={cn("flex flex-col items-center justify-center", {
-            "text-primary": pathname.startsWith("/wallet"),
-            "text-slate-1200": !pathname.startsWith("/wallet"),
-          })}
-        >
-          <div className="h-5 w-5 flex items-center justify-center">
-            <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"} />
-          </div>
-          <span className="text-xs mt-1">{t("navigation.wallet")}</span>
-        </Link>
+        {showWallet === true && (
+          <Link
+            href="/wallet"
+            className={cn("flex flex-col items-center justify-center", {
+              "text-primary": pathname.startsWith("/wallet"),
+              "text-slate-1200": !pathname.startsWith("/wallet"),
+            })}
+          >
+            <div className="h-5 w-5 flex items-center justify-center">
+              <SvgIcon src={WalletIcon} fill={pathname.startsWith("/wallet") ? "#FF444F" : "#181C25"} />
+            </div>
+            <span className="text-xs mt-1">Wallet</span>
+          </Link>
+        )}
         <Link
           href="/profile"
           className={cn("flex flex-col items-center justify-center", {

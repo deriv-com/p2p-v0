@@ -39,15 +39,6 @@ export function AdActionsMenu({
         variant="ghost"
         size="sm"
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
-        onClick={() => onShare(ad)}
-      >
-        <Image src="/icons/link.svg" alt="Share" width={16} height={16} />
-        {t("myAds.share")}
-      </Button>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onToggleStatus(ad)}
       >
         <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />

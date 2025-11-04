@@ -9,7 +9,7 @@ import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
+import { useRouter } from "next/navigation"
 
 interface Balance {
   wallet_id: string
@@ -19,6 +19,7 @@ interface Balance {
 }
 
 export default function WalletPage() {
+  const router = useRouter()
   const [displayBalances, setDisplayBalances] = useState(true)
   const [selectedCurrency, setSelectedCurrency] = useState<string | null>("USD")
   const [totalBalance, setTotalBalance] = useState("0.00")
@@ -26,6 +27,7 @@ export default function WalletPage() {
   const [p2pBalances, setP2pBalances] = useState<Balance[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currenciesData, setCurrenciesData] = useState<Record<string, any>>({})
+  const [hasCheckedSignup, setHasCheckedSignup] = useState(false)
   const { userData } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -63,8 +65,29 @@ export default function WalletPage() {
   }, [])
 
   useEffect(() => {
+    if (userData?.signup === "v1") {
+      router.push("/")
+    } else if (userData?.signup !== undefined) {
+      setHasCheckedSignup(true)
+    }
+  }, [userData?.signup, router])
+
+  useEffect(() => {
     loadBalanceData()
   }, [loadBalanceData])
+
+  if (!hasCheckedSignup && userData?.signup === undefined) {
+    return (
+      <div className="text-center py-12">
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
+        <p className="mt-2 text-slate-600">Loading wallet...</p>
+      </div>
+    )
+  }
+
+  if (userData?.signup === "v1") {
+    return null
+  }
 
   const handleBalanceClick = (currency: string, balance: string) => {
     setSelectedCurrency(currency)
