@@ -11,6 +11,7 @@ import { toggleFavouriteAdvertiser } from "@/services/api/api-buy-sell"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 import FollowUserList from "./follow-user-list"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface FollowUser {
   nickname: string
@@ -18,6 +19,7 @@ interface FollowUser {
 }
 
 export default function FollowsTab() {
+  const { t } = useTranslations()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [following, setFollowing] = useState<FollowUser[]>([])
@@ -82,10 +84,10 @@ export default function FollowsTab() {
   const handleFollowToggle = (user: FollowUser, isCurrentlyFollowing: boolean) => {
     if (isCurrentlyFollowing) {
       showAlert({
-        title: `Unfollow ${user.nickname}?`,
-        description: "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
-        confirmText: "Unfollow",
-        cancelText: "Cancel",
+        title: t("profile.unfollowUser", { nickname: user.nickname }),
+        description: t("profile.unfollowDescription"),
+        confirmText: t("profile.unfollow"),
+        cancelText: t("common.cancel"),
         type: "warning",
         onConfirm: async () => {
           try {
@@ -96,7 +98,7 @@ export default function FollowsTab() {
                 description: (
                   <div className="flex items-center gap-2">
                     <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    <span>{`${user.nickname} unfollowed.`}</span>
+                    <span>{t("profile.userUnfollowed", { nickname: user.nickname })}</span>
                   </div>
                 ),
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -117,7 +119,7 @@ export default function FollowsTab() {
               description: (
                 <div className="flex items-center gap-2">
                   <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                  <span>{`${user.nickname} followed.`}</span>
+                  <span>{t("profile.userFollowed", { nickname: user.nickname })}</span>
                 </div>
               ),
               className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -140,16 +142,8 @@ export default function FollowsTab() {
     <div className="space-y-4">
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList>
-          <TabsTrigger
-            value="follows"
-          >
-            Follows ({following.length})
-          </TabsTrigger>
-          <TabsTrigger
-            value="followers"
-          >
-            Followers ({followers.length})
-          </TabsTrigger>
+          <TabsTrigger value="follows">{t("profile.followsCount", { count: following.length })}</TabsTrigger>
+          <TabsTrigger value="followers">{t("profile.followersCount", { count: followers.length })}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="follows">
@@ -162,10 +156,10 @@ export default function FollowsTab() {
             onUserClick={handleAdvertiserClick}
             onFollowToggle={handleFollowToggle}
             followingUserIds={followingUserIds}
-            emptyTitle="Not following anyone yet"
-            emptyDescription="Start following users to see them here."
-            searchEmptyTitle="No matching name"
-            searchEmptyDescription={`There is no result for ${searchQuery}.`}
+            emptyTitle={t("profile.notFollowingAnyone")}
+            emptyDescription={t("profile.startFollowing")}
+            searchEmptyTitle={t("profile.noMatchingName")}
+            searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={true}
           />
         </TabsContent>
@@ -180,10 +174,10 @@ export default function FollowsTab() {
             onUserClick={handleAdvertiserClick}
             onFollowToggle={handleFollowToggle}
             followingUserIds={followingUserIds}
-            emptyTitle="No followers yet"
-            emptyDescription="When users follow you, they'll appear here."
-            searchEmptyTitle="No matching name"
-            searchEmptyDescription={`There is no result for ${searchQuery}.`}
+            emptyTitle={t("profile.noFollowers")}
+            emptyDescription={t("profile.whenUsersFollow")}
+            searchEmptyTitle={t("profile.noMatchingName")}
+            searchEmptyDescription={t("profile.noResultFor", { query: searchQuery })}
             showFollowingButton={false}
           />
         </TabsContent>

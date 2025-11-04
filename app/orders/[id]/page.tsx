@@ -32,8 +32,10 @@ import { OrderDetails } from "@/components/order-details"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { PaymentConfirmationSidebar } from "../components/payment-confirmation-sidebar"
 import { PaymentReceivedConfirmationSidebar } from "../components/payment-received-confirmation-sidebar"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export default function OrderDetailsPage() {
+  const { t } = useTranslations()
   const params = useParams()
   const orderId = params.id as string
   const isMobile = useIsMobile()
@@ -90,14 +92,14 @@ export default function OrderDetailsPage() {
       setShowDetailsSidebar(true)
     } else {
       showAlert({
-        title: "Order details",
+        title: t("orderDetails.title"),
         content: (
           <div className="overflow-auto max-h-[70vh]">
             <OrderDetails order={order} />
           </div>
         ),
-        cancelText: "Got it",
-        type: "warning"
+        cancelText: t("orderDetails.gotIt"),
+        type: "warning",
       })
     }
   }
@@ -110,7 +112,7 @@ export default function OrderDetailsPage() {
       setOrder(order.data)
     } catch (err) {
       console.error("Error fetching order details:", err)
-      setError("Failed to load order details. Please try again.")
+      setError(t("orderDetails.failedToLoadOrderDetails"))
     } finally {
       setIsLoading(false)
     }
@@ -127,7 +129,7 @@ export default function OrderDetailsPage() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>Proof of transfer submitted</span>
+              <span>{t("orderDetails.proofOfTransferSubmitted")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -167,7 +169,7 @@ export default function OrderDetailsPage() {
 
   const renderPaymentMethodFields = (method: any) => {
     const fields = []
-    
+
     const copyableFields = ["account", "bank_code"]
 
     Object.entries(method).forEach(([key, val]) => {
@@ -279,10 +281,10 @@ export default function OrderDetailsPage() {
 
   const handleCancelOrder = () => {
     showAlert({
-      title: "Cancelling your order?",
-      description: "Don't cancel if you've already paid.",
-      confirmText: "Cancel order",
-      cancelText: "Keep order",
+      title: t("orderDetails.cancellingYourOrder"),
+      description: t("orderDetails.dontCancelIfPaid"),
+      confirmText: t("orderDetails.cancelOrder"),
+      cancelText: t("orderDetails.keepOrder"),
       onConfirm: async () => {
         try {
           const result = await OrdersAPI.cancelOrder(orderId)
@@ -293,7 +295,7 @@ export default function OrderDetailsPage() {
           console.error("Failed to cancel order:", error)
         }
       },
-      type: "warning"
+      type: "warning",
     })
   }
 
@@ -301,9 +303,9 @@ export default function OrderDetailsPage() {
     return (
       <div className="px-4">
         <div className="text-center py-12">
-          <p>{error || "Order not found"}</p>
+          <p>{error || t("orderDetails.orderNotFound")}</p>
           <Button onClick={fetchOrderDetails} className="mt-4 text-white">
-            Try Again
+            {t("orderDetails.tryAgain")}
           </Button>
         </div>
       </div>
@@ -316,19 +318,19 @@ export default function OrderDetailsPage() {
   const counterpartyLabel =
     order?.type === "sell"
       ? order?.advert.user.id == userId
-        ? "Seller"
-        : "Buyer"
+        ? t("orderDetails.seller")
+        : t("orderDetails.buyer")
       : order?.advert.user.id == userId
-        ? "Buyer"
-        : "Seller"
+        ? t("orderDetails.buyer")
+        : t("orderDetails.seller")
   const youPayReceiveLabel =
     order?.type === "buy"
       ? order?.user.id == userId
-        ? "You pay"
-        : "You receive"
+        ? t("orderDetails.youPay")
+        : t("orderDetails.youReceive")
       : order?.user.id == userId
-        ? "You receive"
-        : "You pay"
+        ? t("orderDetails.youReceive")
+        : t("orderDetails.youPay")
   const complainType =
     order?.type === "sell"
       ? order?.advert.user.id == userId
@@ -378,7 +380,7 @@ export default function OrderDetailsPage() {
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading order details...</p>
+            <p className="mt-2 text-slate-600">{t("orderDetails.loadingOrderDetails")}</p>
           </div>
         ) : (
           <div className="flex flex-col">
@@ -393,11 +395,13 @@ export default function OrderDetailsPage() {
                   )}
                 >
                   <div className="flex items-center">
-                    <span className="font-bold">{formatStatus(true, order.status, counterpartyLabel === "Seller")}</span>
+                    <span className="font-bold">
+                      {formatStatus(true, order.status, counterpartyLabel === t("orderDetails.seller"))}
+                    </span>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (
                     <div className="flex items-center">
-                      <span>Time left:&nbsp;</span>
+                      <span>{t("orderDetails.timeLeft")}&nbsp;</span>
                       <span className="font-bold">{timeLeft}</span>
                     </div>
                   )}
@@ -415,7 +419,7 @@ export default function OrderDetailsPage() {
                           </p>
                         </div>
                         <button className="flex items-center text-sm" onClick={showOrderDetails}>
-                          View order details
+                          {t("orderDetails.viewOrderDetails")}
                           <ChevronRight className="h-4 w-4 ml-1" />
                         </button>
                       </div>
@@ -444,8 +448,12 @@ export default function OrderDetailsPage() {
                 {order.status !== "completed" && (
                   <div className="space-y-6 mt-4">
                     <div className="space-y-4">
-                      {order.type === "buy" && <h2 className="text-lg font-bold">Seller payment details</h2>}
-                      {order.type === "sell" && <h2 className="text-lg font-bold"> My payment details</h2>}
+                      {order.type === "buy" && (
+                        <h2 className="text-lg font-bold">{t("orderDetails.sellerPaymentDetails")}</h2>
+                      )}
+                      {order.type === "sell" && (
+                        <h2 className="text-lg font-bold">{t("orderDetails.myPaymentDetails")}</h2>
+                      )}
                       <div className="bg-orange-50 rounded-[16px] p-[16px]">
                         <div className="flex items-start gap-2">
                           <Image
@@ -455,9 +463,7 @@ export default function OrderDetailsPage() {
                             width={24}
                             className="-mt-[2px]"
                           />
-                          <p className="text-sm text-grayscale-100">
-                            Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.
-                          </p>
+                          <p className="text-sm text-grayscale-100">{t("orderDetails.cashTransactionWarning")}</p>
                         </div>
                       </div>
 
@@ -490,10 +496,10 @@ export default function OrderDetailsPage() {
                   (order.type === "sell" && order.status === "pending_payment" && order.advert.user.id == userId)) && (
                   <div className="py-8 flex flex-col-reverse md:flex-row gap-2 md:gap-4">
                     <Button variant="outline" className="flex-1 bg-transparent" onClick={handleCancelOrder}>
-                      Cancel order
+                      {t("orderDetails.cancelOrder")}
                     </Button>
                     <Button className="flex-1" onClick={handleShowPaymentConfirmation}>
-                      I've paid
+                      {t("orderDetails.ivePaid")}
                     </Button>
                   </div>
                 )}
@@ -501,7 +507,9 @@ export default function OrderDetailsPage() {
                   (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
                   order.advert.user.id == userId) ||
                   (order.type === "sell" &&
-                    (order.status === "pending_release" || order.status === "timed_out" || order.status === "disputed") &&
+                    (order.status === "pending_release" ||
+                      order.status === "timed_out" ||
+                      order.status === "disputed") &&
                     order.user.id == userId)) && (
                   <div className="md:pl-4 pt-4 flex gap-4 md:float-right">
                     <Button
@@ -512,10 +520,10 @@ export default function OrderDetailsPage() {
                       {isConfirmLoading ? (
                         <>
                           <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent mr-2"></div>
-                          Processing...
+                          {t("orderDetails.processing")}
                         </>
                       ) : (
-                        "I've received payment"
+                        t("orderDetails.iveReceivedPayment")
                       )}
                     </Button>
                   </div>
@@ -527,7 +535,9 @@ export default function OrderDetailsPage() {
                         <Image src="/icons/info-custom.png" alt="Info" width={24} height={24} />
                       </div>
                       <p className="text-sm text-grayscale-100">
-                        You have until {formatRatingDeadline(order.order_review_expires_at)} to rate this transaction.
+                        {t("orderDetails.ratingDeadline", {
+                          deadline: formatRatingDeadline(order.order_review_expires_at),
+                        })}
                       </p>
                     </div>
                     <div className="pt-2 flex justify-end">
@@ -536,20 +546,20 @@ export default function OrderDetailsPage() {
                         onClick={() => setShowRatingSidebar(true)}
                         className="flex-auto md:flex-none"
                       >
-                        Rate transaction
+                        {t("orderDetails.rateTransaction")}
                       </Button>
                     </div>
                   </div>
                 )}
                 {order.status === "completed" && !order.is_reviewable && order.rating && (
                   <div className="space-y-1 mt-[24px]">
-                    <h2 className="text-base font-bold">Your transaction rating</h2>
+                    <h2 className="text-base font-bold">{t("orderDetails.yourTransactionRating")}</h2>
                     <div className="flex flex-col gap-4 md:flex-row md:items-center justify-between">
                       <div className="flex items-center gap-1">{renderStars(order.rating)}</div>
                       {order.recommend && (
                         <div className="flex items-center gap-2">
                           <Image src="/icons/thumbs-up-green.png" alt="Recommended" width={16} height={16} />
-                          <span className="text-sm">Recommended</span>
+                          <span className="text-sm">{t("orderDetails.recommended")}</span>
                         </div>
                       )}
                     </div>
@@ -562,7 +572,7 @@ export default function OrderDetailsPage() {
                       onClick={() => setShowComplaintForm(true)}
                       className="flex-auto md:flex-1"
                     >
-                      Complain
+                      {t("orderDetails.complain")}
                     </Button>
                   </div>
                 )}

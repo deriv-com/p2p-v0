@@ -8,6 +8,7 @@ import Main from "./main"
 import "./globals.css"
 import { AlertDialogProvider } from "@/contexts/alert-dialog-context"
 import { DatadogRumInit } from "@/components/datadog-rum-init"
+import { LanguageSync } from "@/lib/i18n/language-sync"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -36,6 +37,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <DatadogRumInit />
+        <Suspense fallback={null}>
+          <LanguageSync />
+        </Suspense>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
             <Toaster />

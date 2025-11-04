@@ -19,7 +19,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface StatusData {
   success: "create" | "update"
@@ -29,6 +29,7 @@ interface StatusData {
 }
 
 export default function AdsPage() {
+  const { t } = useTranslations()
   const [ads, setAds] = useState<MyAd[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -61,12 +62,12 @@ export default function AdsPage() {
 
       setAds(userAdverts)
     } catch (err) {
-      setError("Failed to load ads. Please try again.")
+      setError(t("myAds.errorLoadingAds"))
       setAds([])
       setErrorModal({
         show: true,
-        title: "Error Loading Ads",
-        message: err instanceof Error ? err.message : "Failed to load ads. Please try again later.",
+        title: t("myAds.errorLoadingAdsTitle"),
+        message: err instanceof Error ? err.message : t("myAds.errorLoadingAdsMessage"),
       })
     } finally {
       setLoading(false)
@@ -100,13 +101,13 @@ export default function AdsPage() {
 
     if ((success === "create" || success === "update") && !isMobile) {
       const adTypeDisplay = type.toUpperCase()
-      const createDescription = `You've successfully created Ad (${adTypeDisplay} ${id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
-      const updateDescription = `You've successfully updated Ad (${adTypeDisplay} ${id}).\n\nYour changes have been saved and are now live.`
+      const createDescription = t("myAds.adCreatedMessage", { type: adTypeDisplay, id })
+      const updateDescription = t("myAds.adUpdatedMessage", { type: adTypeDisplay, id })
 
       showAlert({
-        title: success === "create" ? "Ad created" : "Ad updated",
+        title: success === "create" ? t("myAds.adCreated") : t("myAds.adUpdated"),
         description: success === "create" ? createDescription : updateDescription,
-        confirmText: "OK",
+        confirmText: t("common.ok"),
         type: "success",
       })
     }
@@ -121,7 +122,7 @@ export default function AdsPage() {
 
       fetchAds()
     }
-  }, [showAlert, isMobile])
+  }, [showAlert, isMobile, t])
 
   const handleAdUpdated = (status?: string) => {
     fetchAds()
@@ -145,12 +146,12 @@ export default function AdsPage() {
       showAlert({
         title: errorModal.title,
         description: errorModal.message,
-        confirmText: "OK",
+        confirmText: t("common.ok"),
         onConfirm: handleCloseErrorModal,
         type: "warning",
       })
     }
-  }, [errorModal.show, errorModal.title, errorModal.message, showAlert])
+  }, [errorModal.show, errorModal.title, errorModal.message, showAlert, t])
 
   const handleHideMyAds = async (value: boolean) => {
     const previousValue = hiddenAdverts
@@ -163,9 +164,9 @@ export default function AdsPage() {
       setHiddenAdverts(previousValue)
 
       showAlert({
-        title: `Unable to ${value ? "hide" : "show"} your ads`,
-        description: `Failed to ${value ? "hide" : "show"} your ads. Please try again.`,
-        confirmText: "OK",
+        title: value ? t("myAds.unableToHideAds") : t("myAds.unableToShowAds"),
+        description: value ? t("myAds.hideAdsError") : t("myAds.showAdsError"),
+        confirmText: t("common.ok"),
         type: "warning",
       })
     }
@@ -182,7 +183,7 @@ export default function AdsPage() {
           disabled={tempBanUntil}
         />
         <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
-          Hide my ads
+          {t("myAds.hideMyAds")}
         </label>
         <TooltipProvider>
           <Tooltip>
@@ -190,7 +191,7 @@ export default function AdsPage() {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">{"Hidden ads won't appear on the Market page."}</p>
+              <p className="opacity-[0.72]">{t("myAds.hideMyAdsTooltip")}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -211,11 +212,11 @@ export default function AdsPage() {
     <>
       <div className="flex flex-col h-screen bg-white px-3">
         {showDeletedBanner && (
-          <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
+          <StatusBanner variant="success" message={t("myAds.adDeleted")} onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
-            All ads
+            {t("myAds.title")}
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex items-center justify-between my-6">
@@ -227,7 +228,7 @@ export default function AdsPage() {
                 disabled={!!tempBanUntil}
               >
                 <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
-                Create ad
+                {t("myAds.createAd")}
               </Button>
             )}
             {getHideMyAdsComponent()}
@@ -247,11 +248,11 @@ export default function AdsPage() {
             isOpen
             onClose={handleCloseStatusModal}
             type="success"
-            title={statusData.success === "create" ? "Ad created" : "Ad updated"}
+            title={statusData.success === "create" ? t("myAds.adCreated") : t("myAds.adUpdated")}
             message={
               statusData.success === "create"
-                ? `You've successfully created Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.`
-                : `You've successfully updated Ad (${statusData.type.toUpperCase()} ${statusData.id}).\n\nYour changes have been saved and are now live.`
+                ? t("myAds.adCreatedMessage", { type: statusData.type.toUpperCase(), id: statusData.id })
+                : t("myAds.adUpdatedMessage", { type: statusData.type.toUpperCase(), id: statusData.id })
             }
             adType={statusData.type}
             adId={statusData.id}

@@ -18,6 +18,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -27,6 +28,7 @@ interface MyAdsTableProps {
 }
 
 export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted }: MyAdsTableProps) {
+  const { t } = useTranslations()
   const router = useRouter()
   const { toast } = useToast()
   const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
@@ -97,9 +99,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   const getStatusBadge = (isActive: boolean) => {
     if (isActive) {
-      return <Badge variant="success-light">Active</Badge>
+      return <Badge variant="success-light">{t("myAds.active")}</Badge>
     }
-    return <Badge variant="error-light">Inactive</Badge>
+    return <Badge variant="error-light">{t("myAds.inactive")}</Badge>
   }
 
   const handleShare = (ad: Ad) => {
@@ -132,9 +134,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         }
       } else {
         showAlert({
-          title: "Unable to update advert",
-          description: "There was an error when updating the advert. Please try again.",
-          confirmText: "OK",
+          title: t("myAds.unableToUpdateAd"),
+          description: t("myAds.updateAdError"),
+          confirmText: t("common.ok"),
           type: "warning",
         })
       }
@@ -144,10 +146,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const handleDelete = (adId: string) => {
     setDrawerOpen(false)
     showDeleteDialog({
-      title: "Delete ad?",
-      description: "You will not be able to restore it.",
-      confirmText: "Delete",
-      cancelText: "Cancel",
+      title: t("myAds.deleteAdTitle"),
+      description: t("myAds.deleteAdDescription"),
+      confirmText: t("common.delete"),
+      cancelText: t("common.cancel"),
       onConfirm: async () => {
         try {
           const result = await AdsAPI.deleteAd(adId)
@@ -159,7 +161,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                 description: (
                   <div className="flex items-center gap-2">
                     <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    <span>Ad deleted</span>
+                    <span>{t("myAds.adDeleted")}</span>
                   </div>
                 ),
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -167,20 +169,20 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               })
             }
           } else {
-            let description = "There was an error when deleting the advert. Please try again."
+            let description = t("myAds.deleteAdError")
 
             if (result.errors && result.errors.length > 0) {
               const hasOpenOrdersError = result.errors.some((error) => error.code === "AdvertDeleteOpenOrders")
               if (hasOpenOrdersError) {
-                description = "The advert has ongoing orders."
+                description = t("myAds.deleteAdOpenOrders")
               }
             }
 
             setTimeout(() => {
               showAlert({
-                title: "Unable to delete advert",
+                title: t("myAds.unableToDeleteAd"),
                 description,
-                confirmText: "OK",
+                confirmText: t("common.ok"),
                 type: "warning",
               })
             }, 500)
@@ -201,19 +203,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     return (
       <div className="text-center py-12">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">Loading ads...</p>
+        <p className="mt-2 text-slate-600">{t("myAds.loadingAds")}</p>
       </div>
     )
   }
 
   if (ads.length === 0) {
-    return (
-      <EmptyState
-        title="You have no ads"
-        description="Looking to buy or sell USD? You can post your own ad for others to respond."
-        redirectToAds={true}
-      />
-    )
+    return <EmptyState title={t("myAds.noAdsTitle")} description={t("myAds.noAdsDescription")} redirectToAds={true} />
   }
 
   if (showShareView && adToShare) {
@@ -226,10 +222,16 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         <Table>
           <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
             <TableRow className="text-xs">
-              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">Ad type</TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Available amount</TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Payment methods</TableHead>
-              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Status</TableHead>
+              <TableHead className="text-left py-4 lg:pl-0 pr-4 text-slate-600 font-normal">
+                {t("myAds.adType")}
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                {t("myAds.availableAmount")}
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                {t("myAds.paymentMethods")}
+              </TableHead>
+              <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">{t("myAds.status")}</TableHead>
               <TableHead className="text-left py-4 pl-4 lg:pr-0 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
@@ -265,13 +267,17 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
                           {!isMobile && (
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Ad Id:</span>
+                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
+                              {t("myAds.adId")}:
+                            </span>
                           )}
                           <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (
                           <div className="flex items-center justify-between md:justify-normal gap-1">
-                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">Rate:</span>
+                            <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
+                              {t("myAds.rate")}:
+                            </span>
                             <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
                           </div>
                         )}
@@ -290,12 +296,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     </div>
                     {isMobile && (
                       <div className="flex items-center justify-between gap-1">
-                        <span className="text-xs font-bold leading-5 text-slate-500">Rate:</span>
+                        <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
                         <span className="text-xs leading-5 text-gray-900">{rate}</span>
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
-                      <span className="text-xs font-bold leading-5 text-slate-500">Limit:</span>
+                      <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.limit")}:</span>
                       <span className="text-xs md:text-sm leading-5 text-gray-900 overflow-hidden text-ellipsis">
                         {formatLimits(ad)}
                       </span>
@@ -350,7 +356,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle className="font-bold text-xl">Manage ads</DrawerTitle>
+            <DrawerTitle className="font-bold text-xl">{t("myAds.manageAds")}</DrawerTitle>
           </DrawerHeader>
           <div className="flex flex-col">
             {selectedAd && (

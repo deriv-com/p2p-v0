@@ -14,6 +14,7 @@ import WalletActionStep from "./wallet-action-step"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Currency {
   code: string
@@ -42,6 +43,7 @@ export default function WalletSummary({
   currency: propCurrency = "USD",
   isLoading: propIsLoading = true,
 }: WalletSummaryProps) {
+  const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
@@ -83,7 +85,7 @@ export default function WalletSummary({
       setCurrentStep("chooseCurrency")
     } else {
       showAlert({
-        title: "Getting started with P2P",
+        title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
@@ -101,7 +103,7 @@ export default function WalletSummary({
       setCurrentStep("chooseCurrency")
     } else {
       showAlert({
-        title: "Getting started with P2P",
+        title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
@@ -119,7 +121,7 @@ export default function WalletSummary({
       setIsSidebarOpen(true)
     } else {
       showAlert({
-        title: "Getting started with P2P",
+        title: t("wallet.gettingStartedWithP2P"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
             <KycOnboardingSheet />
@@ -193,7 +195,7 @@ export default function WalletSummary({
             <div className={cn("flex flex-col", isMobile && "items-center")}>
               {isBalancesView ? (
                 <>
-                  <p className="text-xs font-normal text-white/72 mb-1">Est. total value</p>
+                  <p className="text-xs font-normal text-white/72 mb-1">{t("wallet.estTotalValue")}</p>
                   {propIsLoading ? (
                     <Skeleton className="h-7 w-32 bg-white/20" />
                   ) : (
@@ -222,7 +224,7 @@ export default function WalletSummary({
                 <Image src="/icons/plus-white.png" alt="Deposit" width={14} height={14} />
               </Button>
               <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
-                Deposit
+                {t("wallet.deposit")}
               </span>
             </div>
 
@@ -236,7 +238,7 @@ export default function WalletSummary({
                 <Image src="/icons/transfer-white.png" alt="Transfer" width={14} height={14} />
               </Button>
               <span className={cn("text-xs font-normal", isBalancesView ? "text-white" : "text-slate-1200")}>
-                Transfer
+                {t("wallet.transfer")}
               </span>
             </div>
 
@@ -269,7 +271,7 @@ export default function WalletSummary({
                   isBalancesView ? (propBalance === "0.00" ? "text-[#FFFFFF3D]" : "text-white") : "text-slate-1200",
                 )}
               >
-                Withdraw
+                {t("wallet.withdraw")}
               </span>
             </div>
           </div>
@@ -278,12 +280,10 @@ export default function WalletSummary({
         {currentStep === "chooseCurrency" && (
           <div className="fixed inset-0 z-50 bg-white">
             <ChooseCurrencyStep
-              title={currentOperation === "DEPOSIT" ? "Deposit" : "Withdrawal"}
-              description={
-                currentOperation === "DEPOSIT"
-                  ? "Choose which currency you would like to deposit."
-                  : "Choose which currency you would like to withdraw."
-              }
+              title={currentOperation === "DEPOSIT" ? t("wallet.deposit") : t("wallet.withdraw")}
+              description={t("wallet.chooseCurrencyDescription", {
+                action: currentOperation === "DEPOSIT" ? "deposit" : "withdraw",
+              })}
               currencies={currencies}
               onClose={handleClose}
               onCurrencySelect={handleCurrencySelect}
@@ -294,7 +294,7 @@ export default function WalletSummary({
         {currentStep === "walletAction" && (
           <div className="fixed inset-0 z-50 bg-white">
             <WalletActionStep
-              title={currentOperation === "DEPOSIT" ? "Deposit with" : "Withdraw with"}
+              title={currentOperation === "DEPOSIT" ? t("wallet.depositWith") : t("wallet.withdrawWith")}
               actionType={currentOperation.toLowerCase() as "deposit" | "withdraw"}
               onClose={handleClose}
               onGoBack={handleGoBackToCurrency}
@@ -313,7 +313,7 @@ export default function WalletSummary({
           onP2PTransferClick={handleSendTransferClick}
           onAccountTransferClick={handleReceiveTransferClick}
           currencies={currencies}
-          transferStep= { "enterAmount"}
+          transferStep={"enterAmount"}
         />
 
         <FullScreenIframeModal

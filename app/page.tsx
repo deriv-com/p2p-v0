@@ -25,8 +25,10 @@ import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export default function BuySellPage() {
+  const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -258,10 +260,10 @@ export default function BuySellPage() {
       selectedPaymentMethods.length === 0 ||
       selectedPaymentMethods.length === paymentMethods.length
     ) {
-      return "Payment method (All)"
+      return t("market.paymentMethodAll")
     }
 
-    return "Payment method (" + selectedPaymentMethods.length + ")"
+    return t("market.paymentMethodSelected", { count: selectedPaymentMethods.length })
   }
 
   useEffect(() => {
@@ -311,14 +313,14 @@ export default function BuySellPage() {
                         value="sell"
                         variant="underline"
                       >
-                        Buy
+                        {t("market.buyTab")}
                       </TabsTrigger>
                       <TabsTrigger
                         className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                         value="buy"
                         variant="underline"
                       >
-                        Sell
+                        {t("market.sellTab")}
                       </TabsTrigger>
                     </TabsList>
                   </Tabs>
@@ -329,7 +331,7 @@ export default function BuySellPage() {
                       currencies={currencies}
                       selectedCurrency={currency}
                       onCurrencySelect={handleCurrencySelect}
-                      title={activeTab === "sell" ? "You're paying with" : "You're receiving"}
+                      title={activeTab === "sell" ? t("market.yourePayingWith") : t("market.youreReceiving")}
                       trigger={
                         <Button
                           variant="outline"
@@ -448,14 +450,14 @@ export default function BuySellPage() {
             {isLoading ? (
               <div className="text-center py-12">
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-                <p className="mt-2 text-slate-600">Loading ads...</p>
+                <p className="mt-2 text-slate-600">{t("market.loadingAds")}</p>
               </div>
             ) : error ? (
               <div className="text-center py-8">{error}</div>
             ) : adverts.length === 0 ? (
               <EmptyState
-                title="No ads for this currency"
-                description={`You can post your own ad for others to respond.`}
+                title={t("market.noAdsTitle")}
+                description={t("market.noAdsDescription")}
                 redirectToAds={true}
               />
             ) : (
@@ -465,11 +467,13 @@ export default function BuySellPage() {
                     <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                       <TableRow className="text-xs">
                         <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                          Advertisers
+                          {t("market.advertisers")}
                         </TableHead>
-                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">Rates</TableHead>
+                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                          {t("market.rates")}
+                        </TableHead>
                         <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                          Payment methods
+                          {t("market.paymentMethods")}
                         </TableHead>
                         <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
                       </TableRow>
@@ -510,7 +514,7 @@ export default function BuySellPage() {
                                   )}
                                   {ad.user?.is_favourite && (
                                     <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                      Following
+                                      {t("market.following")}
                                     </span>
                                   )}
                                 </div>
@@ -532,20 +536,26 @@ export default function BuySellPage() {
                               {ad.user.order_count_lifetime > 0 && (
                                 <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
                                   <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>{ad.user.order_count_lifetime} orders</span>
+                                  <span>
+                                    {ad.user.order_count_lifetime} {t("market.orders")}
+                                  </span>
                                 </div>
                               )}
                               {ad.user.completion_average_30day && (
                                 <div className="flex flex-row items-center justify-center gap-[8px]">
                                   <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>{ad.user.completion_average_30day}% completion</span>
+                                  <span>
+                                    {ad.user.completion_average_30day}% {t("market.completion")}
+                                  </span>
                                 </div>
                               )}
                             </div>
                             <div className="flex items-center text-xs text-slate-500 mt-1">
                               <div className="flex items-center bg-gray-100 rounded-sm px-2 py-1">
                                 <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
-                                <span>{ad.order_expiry_period} min</span>
+                                <span>
+                                  {ad.order_expiry_period} {t("market.min")}
+                                </span>
                               </div>
                             </div>
                           </TableCell>
@@ -560,7 +570,7 @@ export default function BuySellPage() {
                               {ad.payment_currency}
                               <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
-                            <div className="mt-1">{`Order limits: ${ad.minimum_order_amount || "N/A"} - ${
+                            <div className="mt-1">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
                               ad.actual_maximum_order_amount || "N/A"
                             }  ${ad.account_currency}`}</div>
                           </TableCell>
@@ -590,7 +600,7 @@ export default function BuySellPage() {
                                 onClick={() => handleOrderClick(ad)}
                                 disabled={!!tempBanUntil}
                               >
-                                {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                                {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                               </Button>
                             )}
                           </TableCell>

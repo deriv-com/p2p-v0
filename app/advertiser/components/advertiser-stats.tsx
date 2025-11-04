@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import Image from "next/image"
 import { useIsMobile } from "@/hooks/use-mobile"
 import StatsContent from "./stats-content"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdvertiserProfile {
   id: string | number
@@ -43,9 +44,10 @@ interface AdvertiserStatsProps {
 }
 
 export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
+  const { t } = useTranslations()
   const [isStatsModalOpen, setIsStatsModalOpen] = useState(false)
   const isMobile = useIsMobile()
-  
+
   const buyCompletionRate = profile?.statistics_30day?.completion_rate_buy
   const sellCompletionRate = profile?.statistics_30day?.completion_rate_sell
   const buyCount = profile?.statistics_30day?.completion_count_buy || 0
@@ -59,34 +61,32 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between gap-4 mx-[-24px] p-6 border-b mb-4 md:mx-0 md:px-0 md:border-none md:mb-0 py-6">
           <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-8 flex-1">
             <div className="flex-shrink-0">
-              {buyCompletionRate ? 
+              {buyCompletionRate ? (
                 <div className="text-base font-bold">
                   {buyCompletionRate}% ({buyCount})
-                </div> :
-                <div className="text-base font-bold">
-                  -
                 </div>
-              }
-              <div className="text-xs text-slate-500">Buy completion rate (30d)</div>
+              ) : (
+                <div className="text-base font-bold">-</div>
+              )}
+              <div className="text-xs text-slate-500">{t("advertiser.buyCompletionRate30d")}</div>
             </div>
             <div className="flex-shrink-0">
-              {sellCompletionRate ?
+              {sellCompletionRate ? (
                 <div className="text-base font-bold">
                   {sellCompletionRate}% ({sellCount})
-                </div> : 
-                <div className="text-base font-bold">
-                  -
                 </div>
-              }
-              <div className="text-xs text-slate-500">Sell completion rate (30d)</div>
+              ) : (
+                <div className="text-base font-bold">-</div>
+              )}
+              <div className="text-xs text-slate-500">{t("advertiser.sellCompletionRate30d")}</div>
             </div>
             <div className="flex-shrink-0">
               <div className="text-base font-bold">{totalTrades30d}</div>
-              <div className="text-xs text-slate-500">Total trades (30d)</div>
+              <div className="text-xs text-slate-500">{t("advertiser.totalTrades30d")}</div>
             </div>
             <div className="flex-shrink-0">
               <div className="text-base font-bold">{totalAllTimeTrades}</div>
-              <div className="text-xs text-slate-500">Total all time trades</div>
+              <div className="text-xs text-slate-500">{t("advertiser.totalAllTimeTrades")}</div>
             </div>
           </div>
           <Button
@@ -95,7 +95,7 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
             className="font-normal px-0 md:px-3"
             onClick={() => setIsStatsModalOpen(true)}
           >
-            View more
+            {t("advertiser.viewMore")}
             <Image src="/icons/chevron-right-sm.png" width={20} height={20} />
           </Button>
         </div>
@@ -104,11 +104,13 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <Drawer open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DrawerContent>
             <DrawerHeader>
-              <DrawerTitle className="font-bold text-xl">Advertiser info</DrawerTitle>
+              <DrawerTitle className="font-bold text-xl">{t("advertiser.advertiserInfo")}</DrawerTitle>
             </DrawerHeader>
             <div className="p-4 overflow-y-auto">
               <StatsContent profile={profile} isMobile={true} />
-              <Button className="my-4 min-w-full w-full" onClick={() => setIsStatsModalOpen(false)}>Close</Button>
+              <Button className="my-4 min-w-full w-full" onClick={() => setIsStatsModalOpen(false)}>
+                {t("advertiser.close")}
+              </Button>
             </div>
           </DrawerContent>
         </Drawer>
@@ -116,10 +118,10 @@ export default function AdvertiserStats({ profile }: AdvertiserStatsProps) {
         <Dialog open={isStatsModalOpen} onOpenChange={setIsStatsModalOpen}>
           <DialogContent className="sm:max-w-md sm:rounded-[32px]">
             <DialogHeader>
-              <DialogTitle className="tracking-normal font-bold text-2xl">Advertiser info</DialogTitle>
+              <DialogTitle className="tracking-normal font-bold text-2xl">{t("advertiser.advertiserInfo")}</DialogTitle>
             </DialogHeader>
             <StatsContent profile={profile} isMobile={false} />
-            <Button onClick={() => setIsStatsModalOpen(false)}>Close</Button>
+            <Button onClick={() => setIsStatsModalOpen(false)}>{t("advertiser.close")}</Button>
           </DialogContent>
         </Dialog>
       )}
