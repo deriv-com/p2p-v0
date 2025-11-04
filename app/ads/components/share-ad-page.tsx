@@ -53,6 +53,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
     const text = `Check out this ${ad?.type === "buy" ? "Sell" : "Buy"} ${ad?.account_currency} ad on Deriv P2P`
+    const text = `Hi! I'd like to exchange ${ad?.payment_currency} for ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P.`
 
     const shareUrls: Record<string, string> = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text} ${adUrl}`)}`,
