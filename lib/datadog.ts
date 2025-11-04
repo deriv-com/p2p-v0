@@ -54,7 +54,7 @@ export const initDatadog = () => {
       sessionReplaySampleRate: Number(process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE) || 20,
       trackUserInteractions: true,
       //trackResources: true,
-      trackLongTasks: true,
+      //trackLongTasks: true,
      // defaultPrivacyLevel: "mask-user-input",
     })
 
