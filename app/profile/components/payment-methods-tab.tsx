@@ -395,7 +395,7 @@ export default function PaymentMethodsTab() {
       )}
       {eWallets.length > 0 && (
         <div>
-          <h3 className="text-base font-bold mb-4">{t("profile.eWallets")}</h3>
+          <h3 className="text-base font-bold mb-4">{t("paymentMethod.eWallets")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
               <Card
