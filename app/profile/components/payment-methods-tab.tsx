@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentMethod {
   id: string
@@ -26,6 +27,7 @@ interface PaymentMethod {
 }
 
 export default function PaymentMethodsTab() {
+  const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -282,7 +284,11 @@ export default function PaymentMethodsTab() {
 
   if (!userId) {
     return (
-      <EmptyState title="No payment methods yet" description="Start adding payment methods" redirectToAds={false} />
+      <EmptyState
+        title={t("profile.noPaymentMethodsYet")}
+        description={t("profile.startAddingPaymentMethods")}
+        redirectToAds={false}
+      />
     )
   }
 
@@ -326,7 +332,11 @@ export default function PaymentMethodsTab() {
 
   if (bankTransfers.length == 0 && eWallets.length == 0) {
     return (
-      <EmptyState title="No payment methods yet" description="Start adding payment methods." redirectToAds={false} />
+      <EmptyState
+        title={t("profile.noPaymentMethodsYet")}
+        description={t("profile.startAddingPaymentMethods")}
+        redirectToAds={false}
+      />
     )
   }
 
@@ -334,10 +344,14 @@ export default function PaymentMethodsTab() {
     <div>
       {bankTransfers.length > 0 && (
         <div className="mb-4">
-          <h3 className="text-base font-bold mb-4">Bank transfer</h3>
+          <h3 className="text-base font-bold mb-4">{t("profile.bankTransfer")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden shadow-none border-0 border-b rounded-none">
+              <Card
+                key={method.id}
+                variant="default"
+                className="overflow-hidden shadow-none border-0 border-b rounded-none"
+              >
                 <CardContent className="p-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-start gap-1 flex-1 min-w-0">
@@ -361,14 +375,14 @@ export default function PaymentMethodsTab() {
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
                           <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
-                          Edit
+                          {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
                           <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
-                          Delete
+                          {t("profile.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -381,17 +395,23 @@ export default function PaymentMethodsTab() {
       )}
       {eWallets.length > 0 && (
         <div>
-          <h3 className="text-base font-bold mb-4">E-wallets</h3>
+          <h3 className="text-base font-bold mb-4">{t("profile.eWallets")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {eWallets.map((method) => (
-              <Card key={method.id} variant="default" className="overflow-hidden shadow-none border-0 border-b rounded-none">
+              <Card
+                key={method.id}
+                variant="default"
+                className="overflow-hidden shadow-none border-0 border-b rounded-none"
+              >
                 <CardContent className="p-2">
                   <div className="flex justify-between items-center">
                     <div className="flex items-start gap-1 flex-1 min-w-0">
                       {getEWalletIcon()}
                       <div className="flex-1 min-w-0 text-sm">
                         <div className="text-neutral-10">{method.name}</div>
-                        <div className="text-neutral-7 text-xs">{method.details?.account?.value || `ID: ${method.id}`}</div>
+                        <div className="text-neutral-7 text-xs">
+                          {method.details?.account?.value || `ID: ${method.id}`}
+                        </div>
                       </div>
                     </div>
                     <DropdownMenu>
@@ -406,14 +426,14 @@ export default function PaymentMethodsTab() {
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
                           <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
-                          Edit
+                          {t("profile.edit")}
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
                           onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
                         >
                           <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
-                          Delete
+                          {t("profile.delete")}
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

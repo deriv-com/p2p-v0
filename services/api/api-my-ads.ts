@@ -200,6 +200,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       show_unorderable: "true",
       show_unlisted: "true",
       show_ineligible: "true",
+      account_currency: "USD"
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`

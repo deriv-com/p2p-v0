@@ -231,7 +231,11 @@
     "userUnblocked": "{nickname} unblocked.",
     "noBlockedUsers": "No blocked users yet",
     "blockedUsersAppear": "Users you block will appear here.",
-    "loadingUsers": "Loading users..."
+    "loadingUsers": "Loading users...",
+    "noPaymentMethodsYet": "No payment methods yet",
+    "startAddingPaymentMethods": "Start adding payment methods",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "wallet": {
     "title": "Wallet",
@@ -475,5 +479,12 @@
     "successfullyUnfollowed": "Successfully unfollowed",
     "userBlocked": "{nickname} blocked.",
     "userUnblocked": "{nickname} unblocked."
+  },
+  "kyc": {
+    "accessP2PMessage": "To access P2P, complete your profile and verification.",
+    "setupProfile": "Set up your profile",
+    "proofOfIdentity": "Proof of identity",
+    "proofOfAddress": "Proof of address",
+    "phoneNumber": "Phone number"
   }
 }

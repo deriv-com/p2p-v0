@@ -231,7 +231,11 @@
     "userUnblocked": "{nickname} débloqué.",
     "noBlockedUsers": "Pas encore d'utilisateurs bloqués",
     "blockedUsersAppear": "Les utilisateurs que vous bloquez apparaîtront ici.",
-    "loadingUsers": "Chargement des utilisateurs..."
+    "loadingUsers": "Chargement des utilisateurs...",
+    "noPaymentMethodsYet": "Pas encore de méthodes de paiement",
+    "startAddingPaymentMethods": "Commencez à ajouter des méthodes de paiement",
+    "edit": "Modifier",
+    "delete": "Supprimer"
   },
   "wallet": {
     "title": "Portefeuille",
@@ -475,5 +479,13 @@
     "successfullyUnfollowed": "Ne suit plus avec succès",
     "userBlocked": "{nickname} bloqué.",
     "userUnblocked": "{nickname} débloqué."
+  },
+  "kyc": {
+    "title": "Vérification d'identité",
+    "subtitle": "Complétez votre vérification d'identité pour débloquer toutes les fonctionnalités P2P.",
+    "verifyIdentity": "Vérifier l'identité",
+    "completeProfile": "Complétez votre profil",
+    "completeProfileDescription": "Complétez votre profil pour commencer à trader en P2P.",
+    "backToHome": "Retour à l'Accueil"
   }
 }

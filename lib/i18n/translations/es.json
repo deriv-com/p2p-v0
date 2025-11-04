@@ -231,7 +231,11 @@
     "userUnblocked": "{nickname} desbloqueado.",
     "noBlockedUsers": "Aún no hay usuarios bloqueados",
     "blockedUsersAppear": "Los usuarios que bloquees aparecerán aquí.",
-    "loadingUsers": "Cargando usuarios..."
+    "loadingUsers": "Cargando usuarios...",
+    "noPaymentMethodsYet": "Aún no hay métodos de pago",
+    "startAddingPaymentMethods": "Comienza a agregar métodos de pago",
+    "edit": "Editar",
+    "delete": "Eliminar"
   },
   "wallet": {
     "title": "Billetera",
@@ -475,5 +479,13 @@
     "selectPayment": "Seleccionar pago",
     "selected": "Seleccionado ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago"
+  },
+  "kyc": {
+    "title": "Verificación de identidad",
+    "subtitle": "Completa tu verificación de identidad para desbloquear todas las funciones de P2P.",
+    "verifyIdentity": "Verificar identidad",
+    "completeProfile": "Completa tu perfil",
+    "completeProfileDescription": "Completa tu perfil para comenzar a operar en P2P.",
+    "backToHome": "Volver al Inicio"
   }
 }

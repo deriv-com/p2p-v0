@@ -3,8 +3,10 @@
 import Image from "next/image"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 function KycOnboardingSheet() {
+  const { t } = useTranslations()
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
 
   const isProfileCompleted =
@@ -18,28 +20,28 @@ function KycOnboardingSheet() {
   const verificationSteps = [
     {
       id: "profile",
-      title: "Set up your profile",
+      title: t("kyc.setupProfile"),
       icon: "/icons/account-profile.png",
       completed: isProfileCompleted,
       link: `https://${getHomeUrl()}/dashboard/onboarding/personal-details?is_from_p2p=true`,
     },
     {
       id: "poi",
-      title: "Proof of identity",
+      title: t("kyc.proofOfIdentity"),
       icon: "/icons/poi.png",
       completed: isPoiCompleted,
       link: `https://${getHomeUrl()}/dashboard/kyc/confirm-detail?is_from_p2p=true`,
     },
     {
       id: "poa",
-      title: "Proof of address",
+      title: t("kyc.proofOfAddress"),
       icon: "/icons/poa.png",
       completed: isPoaCompleted,
       link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
     {
       id: "phone",
-      title: "Phone number",
+      title: t("kyc.phoneNumber"),
       icon: "/icons/pnv.png",
       completed: isPhoneCompleted,
       link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
@@ -56,9 +58,7 @@ function KycOnboardingSheet() {
 
   return (
     <div className="w-full">
-      <h2 className="text-slate-1200 text-base font-normal mb-6">
-        To access P2P, complete your profile and verification.
-      </h2>
+      <h2 className="text-slate-1200 text-base font-normal mb-6">{t("kyc.accessP2PMessage")}</h2>
 
       <div className="space-y-0">
         {verificationSteps.map((step, index) => (
@@ -66,8 +66,7 @@ function KycOnboardingSheet() {
             <div
               className={cn("flex items-center gap-3 py-6", !step.completed && "hover:cursor-pointer")}
               onClick={() => {
-                if(!step.completed)
-                    handleStepClick(step.link)
+                if (!step.completed) handleStepClick(step.link)
               }}
             >
               <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
