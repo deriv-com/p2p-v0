@@ -437,8 +437,13 @@ export const getHomeUrl = (isV1Signup = false, section = "") => {
   return url
 }
 
-export const getLoginUrl = () => {
+export const getLoginUrl = (isV1Signup = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
-  const baseUrl = isProduction ? "home.deriv.com" : "staging-home.deriv.com"
-  return `https://${baseUrl}/dashboard/login`
+
+  if (isV1Signup) {
+    return isProduction ? "https://app.deriv.com" : "https://staging-app.deriv.com"
+  } 
+  
+  return isProduction ? "https://home.deriv.com/dashboard/login" : "https://staging-home.deriv.com/dashboard/login"
+  
 }

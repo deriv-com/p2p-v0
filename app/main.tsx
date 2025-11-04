@@ -26,6 +26,7 @@ export default function Main({
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
   const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
+  const { userData } = useUserDataStore()
 
   useEffect(() => {
     isMountedRef.current = true
@@ -51,7 +52,7 @@ export default function Main({
             window.history.replaceState({}, "", newUrl.toString())
           } catch (error) {
             if (!isPublic) {
-              window.location.href = getLoginUrl()
+              window.location.href = getLoginUrl(true)
             }
             return
           }
@@ -65,7 +66,7 @@ export default function Main({
 
         if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
-          window.location.href = getLoginUrl()
+          window.location.href = getLoginUrl(userData?.signup === "v1")
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
 

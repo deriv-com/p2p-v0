@@ -1,6 +1,7 @@
 import { datadogRum } from "@datadog/browser-rum"
 
 export const initDatadog = () => {
+
   if (typeof window === "undefined") {
     return
   }
@@ -16,8 +17,9 @@ export const initDatadog = () => {
     return
   }
 
+
   try {
-    datadogRum.init({
+    datadogRum?.init({
       applicationId,
       clientToken,
       site: "datadoghq.com",
@@ -25,9 +27,13 @@ export const initDatadog = () => {
       env: process.env.NEXT_PUBLIC_DATADOG_ENV,
       version: process.env.NEXT_PUBLIC_DATADOG_VERSION,
       sessionSampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_SAMPLE_RATE ?? 10,
-      sessionReplaySampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1
+      sessionReplaySampleRate: process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE ?? 1,
+      trackUserInteractions: true,
+      trackResources: true,
+      trackLongTasks: true,
+      defaultPrivacyLevel: "mask-user-input",
     })
   } catch (error) {
-    console.error("[Datadog RUM] Initialization failed:", error)
+    console.error("Datadog RUM: Initialization failed:", error)
   }
 }

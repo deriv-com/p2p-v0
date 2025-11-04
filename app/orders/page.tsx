@@ -25,7 +25,7 @@ import { format, startOfDay, endOfDay } from "date-fns"
 import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -41,6 +41,7 @@ function TimeRemainingDisplay({ expiresAt }) {
 }
 
 export default function OrdersPage() {
+  const { t } = useTranslations()
   const router = useRouter()
   const { activeTab, setActiveTab, dateFilter, customDateRange, setDateFilter, setCustomDateRange } =
     useOrdersFilterStore()
@@ -62,8 +63,15 @@ export default function OrdersPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
+    if (userData?.signup === "v1") {
+      setShowCheckPreviousOrdersButton(true)
+    } else if (userData?.signup) {
+      setShowCheckPreviousOrdersButton(false)
+    }
+  }, [userData?.signup])
+
+  useEffect(() => {
     fetchOrders()
-    checkUserSignupStatus()
 
     return () => {
       if (abortControllerRef.current) {
@@ -71,17 +79,6 @@ export default function OrdersPage() {
       }
     }
   }, [activeTab, dateFilter, customDateRange])
-
-  const checkUserSignupStatus = () => {
-    try {
-      const userDataFromStore = userData
-
-      if (userDataFromStore?.signup === "v1") setShowCheckPreviousOrdersButton(true)
-      else setShowCheckPreviousOrdersButton(false)
-    } catch (error) {
-      setShowCheckPreviousOrdersButton(false)
-    }
-  }
 
   const fetchOrders = async () => {
     if (abortControllerRef.current) {
@@ -194,32 +191,32 @@ export default function OrdersPage() {
 
   const getOrderType = (order) => {
     if (order.type === "buy") {
-      if (order.user.id == userId) return <span className="text-secondary text-base">Buy</span>
-      else return <span className="text-destructive text-base">Sell</span>
+      if (order.user.id == userId) return <span className="text-secondary text-base">{t("common.buy")}</span>
+      else return <span className="text-destructive text-base">{t("common.sell")}</span>
     } else {
-      if (order.user.id == userId) return <span className="text-destructive text-base">Sell</span>
-      else return <span className="text-secondary text-base">Buy</span>
+      if (order.user.id == userId) return <span className="text-destructive text-base">{t("common.sell")}</span>
+      else return <span className="text-secondary text-base">{t("common.buy")}</span>
     }
   }
 
   const getRecommendLabel = () => {
     if (selectedOrder?.type === "sell") {
-      if (selectedOrder?.advert.user.id == userId) return "seller"
-      return "buyer"
+      if (selectedOrder?.advert.user.id == userId) return t("orders.seller")
+      return t("orders.buyer")
     } else {
-      if (selectedOrder?.advert.user.id == userId) return "buyer"
-      return "seller"
+      if (selectedOrder?.advert.user.id == userId) return t("orders.buyer")
+      return t("orders.seller")
     }
   }
 
   const getPayReceiveLabel = (order) => {
     let label = ""
     if (order.type === "buy") {
-      if (order.user.id == userId) label = "You pay: "
-      else label = "You receive: "
+      if (order.user.id == userId) label = t("orders.youPay")
+      else label = t("orders.youReceive")
     } else {
-      if (order.user.id == userId) label = "You receive: "
-      else label = "You pay: "
+      if (order.user.id == userId) label = t("orders.youReceive")
+      else label = t("orders.youPay")
     }
 
     return label
@@ -231,12 +228,18 @@ export default function OrdersPage() {
         <Table>
           <TableHeader className="hidden border-b sticky top-0 bg-white shadow-sm">
             <TableRow>
-              {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Date</TableHead>}
-              <TableHead className="py-4 px-4 text-slate-600 font-normal">Order ID</TableHead>
-              <TableHead className="py-4 px-4 text-slate-600 font-normal">Amount</TableHead>
-              <TableHead className="py-4 px-4 text-slate-600 font-normal">Status</TableHead>
-              {activeTab === "active" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Time</TableHead>}
-              {activeTab === "past" && <TableHead className="py-4 px-4 text-slate-600 font-normal">Rating</TableHead>}
+              {activeTab === "past" && (
+                <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.date")}</TableHead>
+              )}
+              <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.orderId")}</TableHead>
+              <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.amount")}</TableHead>
+              <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.status")}</TableHead>
+              {activeTab === "active" && (
+                <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.time")}</TableHead>
+              )}
+              {activeTab === "past" && (
+                <TableHead className="py-4 px-4 text-slate-600 font-normal">{t("orders.rating")}</TableHead>
+              )}
               <TableHead className="py-4 px-4 text-slate-600 font-normal"></TableHead>
             </TableRow>
           </TableHeader>
@@ -261,7 +264,9 @@ export default function OrdersPage() {
                           {` ${formatAmount(order.amount)} ${order.advert.account_currency}`}
                         </span>
                       </div>
-                      <div className="mt-[4px] text-slate-600 text-xs">ID: {order.id}</div>
+                      <div className="mt-[4px] text-slate-600 text-xs">
+                        {t("orders.id")}: {order.id}
+                      </div>
                     </div>
                   </div>
                 </TableCell>
@@ -277,7 +282,7 @@ export default function OrdersPage() {
                   <div
                     className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
-                    {formatStatus(false, order.status, getPayReceiveLabel(order) === "You pay: ")}
+                    {formatStatus(false, order.status, getPayReceiveLabel(order) === t("orders.youPay"))}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (
@@ -297,7 +302,7 @@ export default function OrdersPage() {
                     )}
                     {order.is_reviewable > 0 && !order.disputed_at && (
                       <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
-                        Rate
+                        {t("orders.rate")}
                       </Button>
                     )}
                   </TableCell>
@@ -388,14 +393,14 @@ export default function OrdersPage() {
                   className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                   variant="underline"
                 >
-                  Active
+                  {t("orders.active")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="past"
                   className="w-auto data-[state=active]:font-bold data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:rounded-none px-0"
                   variant="underline"
                 >
-                  Past
+                  {t("orders.past")}
                 </TabsTrigger>
               </TabsList>
             </Tabs>
@@ -406,7 +411,7 @@ export default function OrdersPage() {
                 className="text-white font-normal hover:text-white hover:bg-transparent "
                 onClick={handleCheckPreviousOrders}
               >
-                Check previous orders
+                {t("orders.checkPreviousOrders")}
                 <Image src="/icons/chevron-right-white.png" width={10} height={24} className="ml-1" />
               </Button>
             )}
@@ -431,14 +436,14 @@ export default function OrdersPage() {
           {isLoading ? (
             <div className="text-center py-12">
               <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-              <p className="mt-2 text-slate-600">Loading orders...</p>
+              <p className="mt-2 text-slate-600">{t("orders.loadingOrders")}</p>
             </div>
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
               {activeTab === "active" ? (
-                <EmptyState title="No active orders" description="View and manage your active orders here." />
+                <EmptyState title={t("orders.noActiveOrders")} description={t("orders.noActiveOrdersDescription")} />
               ) : (
-                <EmptyState title="No past orders" description="View and manage your past orders here." />
+                <EmptyState title={t("orders.noPastOrders")} description={t("orders.noPastOrdersDescription")} />
               )}
             </div>
           ) : (
@@ -452,7 +457,7 @@ export default function OrdersPage() {
           onClose={handleRatingSidebarClose}
           orderId={selectedOrderId}
           onSubmit={handleRatingSubmit}
-          recommendLabel={`Would you recommend this ${getRecommendLabel()}?`}
+          recommendLabel={t("orders.wouldYouRecommend", { role: getRecommendLabel() })}
         />
       </div>
     </>

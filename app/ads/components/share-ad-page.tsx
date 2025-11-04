@@ -25,7 +25,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     const generateQRCode = async () => {
       try {
         setIsLoading(true)
-        const adUrl = `${window.location.origin}/ads/${ad.id}`
+        const advertiserId = ad.user?.id
+        const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
         const qrCode = await QRCode.toDataURL(adUrl, {
           width: 200,
           margin: 2,
@@ -50,15 +51,17 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }, [ad.id, toast])
 
   const handleShare = async (platform: string) => {
-    const adUrl = `${window.location.origin}/advertiser/${ad.user.id}`
-    const text = `Check out this ${ad?.type === "buy" ? "Sell" : "Buy"} ${ad?.account_currency} ad on Deriv P2P`
+    const advertiserId = ad.user?.id
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+    const text = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
+    const telegramText = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad. Thanks!`
 
     const shareUrls: Record<string, string> = {
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text} ${adUrl}`)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(adUrl)}`,
-      telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(text)}`,
-      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(adUrl)}`,
-      gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(adUrl)}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}`)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${text}`)}`,
+      telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(telegramText)}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,
+      gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(`${text}`)}`,
     }
 
     if (shareUrls[platform]) {
@@ -67,7 +70,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }
 
   const handleCopyLink = async () => {
-    const adUrl = `${window.location.origin}/ads/${ad.id}`
+    const advertiserId = ad.user?.id
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
     try {
       await navigator.clipboard.writeText(adUrl)
       toast({
@@ -184,7 +188,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
           <h2 className="text-2xl font-bold px-4 md:px-0">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
@@ -201,17 +205,17 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               </div>
 
               <div className="space-y-1 mb-4">
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">ID number</span>
                   <span className="font-bold text-sm">{ad.id}</span>
                 </div>
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">Limits</span>
                   <span className="font-bold text-sm">
                     {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
-                <div className="grid grid-cols-2">
+                <div className="grid grid-cols-[85px_auto]">
                   <span className="text-sm">Rate</span>
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
@@ -232,17 +236,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 </>
               )}
             </div>
-            {isMobile ? (
-              <div className="flex flex-col gap-2 w-full">
-                <Button
-                  onClick={handleShareImage}
-                >Share image
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleSaveImage}>Save image</Button>
-              </div>
-            ) : (
+            {!isMobile && (
               <div className="flex gap-6">
                 <Button
                   variant="ghost"
@@ -324,6 +318,14 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             )}
           </div>
         </div>
+        {isMobile && (
+          <div className="fixed bottom-0 left-0 right-0 p-4 flex flex-col gap-2 max-w-xl mx-auto">
+            <Button onClick={handleShareImage}>Share image</Button>
+            <Button variant="outline" onClick={handleSaveImage}>
+              Save image
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

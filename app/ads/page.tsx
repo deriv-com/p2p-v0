@@ -210,9 +210,40 @@ export default function AdsPage() {
     }
   }
 
-  const handleCurrencyChange = (value: string) => {
+
+
+  const getHideMyAdsComponent = () => {
+    return (
+      <div className="flex items-center justify-self-end">
+        <Switch
+          id="hide-ads"
+          checked={hiddenAdverts}
+          onCheckedChange={handleHideMyAds}
+          className="data-[state=checked]:bg-completed-icon"
+          disabled={tempBanUntil}
+        />
+        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
+          {t("myAds.hideMyAds")}
+        </label>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="opacity-[0.72]">{t("myAds.hideMyAdsTooltip")}</p>
+              <TooltipArrow className="fill-black" />
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+    )
+
+      
+        const handleCurrencyChange = (value: string) => {
     setSelectedCurrency(value)
     fetchAds(value)
+
   }
 
   if (isDisabled) {
@@ -230,6 +261,7 @@ export default function AdsPage() {
           <StatusBanner variant="success" message={t("myAds.adDeleted")} onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
+
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0 flex items-end justify-between">
             <span>{t("myAds.title")}</span>
             <div>
@@ -257,6 +289,7 @@ export default function AdsPage() {
                 }
               />
             </div>
+
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex items-center justify-between my-6">

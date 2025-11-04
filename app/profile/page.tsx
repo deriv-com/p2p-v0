@@ -8,7 +8,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export default function ProfilePage() {
   const [userData, setUserData] = useState({})
@@ -18,6 +18,7 @@ export default function ProfilePage() {
   const tempBanUntil = user?.temp_ban_until
   const userEmail = user?.email
   const isDisabled = user?.status === "disabled"
+  const { t } = useTranslations()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -40,7 +41,7 @@ export default function ProfilePage() {
 
           if (responseData.errors[0].status != 401 && responseData.errors[0].status != 404) {
             showWarningDialog({
-              title: "Error",
+              title: t("common.error"),
               description: errorMessage,
             })
           }
@@ -58,11 +59,11 @@ export default function ProfilePage() {
 
           let joinDateString
           if (days === 0) {
-            joinDateString = "Joined today"
+            joinDateString = t("profile.joinedToday")
           } else if (days === 1) {
-            joinDateString = "Joined yesterday"
+            joinDateString = t("profile.joinedYesterday")
           } else {
-            joinDateString = `Joined ${days} days ago`
+            joinDateString = t("profile.joinedDaysAgo", { days })
           }
 
           setUserData(() => ({
@@ -72,11 +73,11 @@ export default function ProfilePage() {
             rating:
               data.statistics_lifetime.rating_average !== null
                 ? `${data.statistics_lifetime.rating_average}/5`
-                : "Not rated yet",
+                : t("profile.notRatedYet"),
             recommendation:
               data.statistics_lifetime?.recommend_average !== null
-                ? `Recommended by ${data.statistics_lifetime.recommend_count} traders`
-                : "Not recommended yet",
+                ? t("profile.recommendedBy", { count: data.statistics_lifetime.recommend_count })
+                : t("profile.notRecommendedYet"),
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
             sellCompletion: data.completion_average_30day ? data.completion_average_30day : "-",
@@ -99,14 +100,14 @@ export default function ProfilePage() {
           }))
         } else {
           showWarningDialog({
-            title: "Error",
-            description: "No user data found",
+            title: t("common.error"),
+            description: t("profile.noUserData"),
           })
         }
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : "Failed to load user data"
+        const errorMessage = error instanceof Error ? error.message : t("profile.errorLoadingProfile")
         showWarningDialog({
-          title: "Error",
+          title: t("common.error"),
           description: errorMessage,
         })
         console.error("Error fetching user data:", error)
@@ -114,7 +115,7 @@ export default function ProfilePage() {
     }
 
     fetchUserData()
-  }, [])
+  }, [t])
 
   if (isDisabled) {
     return (

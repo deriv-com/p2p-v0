@@ -14,6 +14,7 @@ import { ProfileAPI } from "@/services/api"
 import AddPaymentMethodPanel from "@/app/profile/components/add-payment-method-panel"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentMethod {
   display_name: string
@@ -61,6 +62,7 @@ const FullPagePaymentSelection = ({
   onConfirm: (methods: string[]) => void
   onAddPaymentMethod: () => void
 }) => {
+  const { t } = useTranslations()
   const [localSelected, setLocalSelected] = useState<string[]>(selectedPaymentMethods)
   const [searchQuery, setSearchQuery] = useState("")
 
@@ -108,7 +110,7 @@ const FullPagePaymentSelection = ({
           </Button>
         </div>
         <div className="px-6 pb-4">
-          <h2 className="text-2xl font-bold mb-6">Payment method</h2>
+          <h2 className="text-2xl font-bold mb-6">{t("paymentMethod.title")}</h2>
           <div className="relative">
             <Image
               src="/icons/search-icon-custom.png"
@@ -119,7 +121,7 @@ const FullPagePaymentSelection = ({
             />
             <Input
               type="text"
-              placeholder="Search"
+              placeholder={t("common.search")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
@@ -127,12 +129,12 @@ const FullPagePaymentSelection = ({
           </div>
         </div>
         <div className="px-6 pb-4">
-          <p className="text-sm">Select up to 3</p>
+          <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
         </div>
         <div className="flex-1 overflow-y-auto px-6 space-y-3">
           {filteredMethods.length === 0 ? (
             <div className="text-center py-8">
-              <p className="text-gray-600">No payment methods found</p>
+              <p className="text-gray-600">{t("adForm.noPaymentMethodsFound")}</p>
             </div>
           ) : (
             filteredMethods.map((method) => {
@@ -170,7 +172,7 @@ const FullPagePaymentSelection = ({
 
         <div className="p-6 pt-4 self-end">
           <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary">
-            Confirm
+            {t("common.confirm")}
           </Button>
         </div>
       </div>
@@ -193,6 +195,7 @@ const PaymentSelectionContent = ({
   setSelectedPaymentMethods: (methods: string[]) => void
   handleAddPaymentMethodClick?: () => void
 }) => {
+  const { t } = useTranslations()
   const [selectedPMs, setSelectedPMs] = useState(tempSelectedPaymentMethods)
 
   useEffect(() => {
@@ -233,10 +236,10 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full md:h-[60vh] md:max-h-[600px]">
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
-        {paymentMethods && <div className="text-[#000000B8]">Select up to 3</div>}
+        {paymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {paymentMethods.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">No payment methods found</p>
+            <p className="text-gray-600 mb-4">{t("adForm.noPaymentMethodsFound")}</p>
           </div>
         ) : (
           paymentMethods.map((method) => {
@@ -291,7 +294,7 @@ const PaymentSelectionContent = ({
           >
             <div className="flex items-center">
               <Image src="/icons/plus_icon.png" alt="Plus" width={14} height={24} className="mr-2" />
-              <span className="text-slate-1200 text-base">Add payment method</span>
+              <span className="text-slate-1200 text-base">{t("paymentMethod.addPaymentMethod")}</span>
             </div>
           </div>
         )}
@@ -305,7 +308,7 @@ const PaymentSelectionContent = ({
             hideAlert()
           }}
         >
-          Confirm
+          {t("common.confirm")}
         </Button>
       </div>
     </div>
@@ -320,6 +323,7 @@ export default function PaymentDetailsForm({
   availablePaymentMethods,
   onRefetchPaymentMethods,
 }: PaymentDetailsFormProps) {
+  const { t } = useTranslations()
   const isMobile = useIsMobile()
   const [paymentMethods, setPaymentMethods] = useState<string[]>(initialData.paymentMethods || [])
   const [instructions, setInstructions] = useState(initialData.instructions || "")
@@ -429,15 +433,15 @@ export default function PaymentDetailsForm({
     const selectedIds = selectedPaymentMethodIds
     const methods = initialData.type === "buy" ? availablePaymentMethods : userPaymentMethods
 
-    if (selectedIds.length === 0) return "Select payment"
+    if (selectedIds.length === 0) return t("adForm.selectPayment")
     if (selectedIds.length === 1) {
       const method = methods.find((m) => {
         const id = "id" in m ? m.id : m.method
         return id === selectedIds[0]
       })
-      return method ? `${method.display_name}` : "Select payment"
+      return method ? `${method.display_name}` : t("adForm.selectPayment")
     }
-    return `Selected (${selectedIds.length})`
+    return t("adForm.selected", { count: selectedIds.length })
   }
 
   useEffect(() => {
@@ -490,15 +494,12 @@ export default function PaymentDetailsForm({
                 <Textarea
                   value={instructions}
                   onChange={(e) => setInstructions(e.target.value)}
-                  placeholder="Instructions (Optional)"
+                  placeholder={t("adForm.instructions")}
                   className="min-h-[120px] resize-none"
                   maxLength={300}
                 />
                 <div className="flex justify-between items-start mt-2 text-xs text-gray-500 mx-4">
-                  <span>
-                    This information will be visible to everyone. Don&rsquo;t share your phone number or personal
-                    details.
-                  </span>
+                  <span>{t("adForm.instructionsDisclaimer")}</span>
                   <span>{instructions.length}/300</span>
                 </div>
               </div>

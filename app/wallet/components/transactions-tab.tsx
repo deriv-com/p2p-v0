@@ -6,6 +6,7 @@ import Image from "next/image"
 import TransactionDetails from "./transaction-details"
 import { formatAmountWithDecimals } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Transaction {
   transaction_id: number
@@ -42,12 +43,13 @@ interface TransactionsTabProps {
 }
 
 export default function TransactionsTab({ selectedCurrency, currencies = {} }: TransactionsTabProps) {
+  const { t } = useTranslations()
   const [transactions, setTransactions] = useState<Transaction[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeFilter, setActiveFilter] = useState("All")
+  const [activeFilter, setActiveFilter] = useState(t("wallet.all"))
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null)
 
-  const filters = ["All", "Deposit", "Withdraw", "Transfer"]
+  const filters = [t("wallet.all"), t("wallet.deposit"), t("wallet.withdraw"), t("wallet.transfer")]
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -70,7 +72,7 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
     const today = new Date()
 
     if (date.toDateString() === today.toDateString()) {
-      return "Today"
+      return t("wallet.today")
     }
 
     return date.toLocaleDateString()
@@ -80,11 +82,11 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
     const walletTransactionType = transaction.metadata.wallet_transaction_type
 
     if (walletTransactionType === "transfer_cashier_to_wallet") {
-      return "Deposit"
+      return t("wallet.deposit")
     } else if (walletTransactionType === "transfer_cashier_from_wallet") {
-      return "Withdraw"
+      return t("wallet.withdraw")
     } else if (walletTransactionType === "transfer_between_wallets") {
-      return "Transfer"
+      return t("wallet.transfer")
     }
   }
 
@@ -92,40 +94,40 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
     const type = getTransactionType(transaction)
 
     const getAmountColor = () => {
-      if (type === "Withdraw") {
+      if (type === t("wallet.withdraw")) {
         return "text-error"
-      } else if (type === "Deposit") {
+      } else if (type === t("wallet.deposit")) {
         return "text-success-text"
-      } else if (type === "Transfer") {
+      } else if (type === t("wallet.transfer")) {
         return "text-slate-1200"
       }
       return "text-slate-1200"
     }
 
     switch (type) {
-      case "Deposit":
+      case t("wallet.deposit"):
         return {
           iconSrc: "/icons/add-icon.png",
           amountColor: getAmountColor(),
-          type: "Deposit",
+          type: t("wallet.deposit"),
         }
-      case "Withdraw":
+      case t("wallet.withdraw"):
         return {
           iconSrc: "/icons/subtract-icon.png",
           amountColor: getAmountColor(),
-          type: "Withdraw",
+          type: t("wallet.withdraw"),
         }
-      case "Transfer":
+      case t("wallet.transfer"):
         return {
           iconSrc: "/icons/transfer-icon.png",
           amountColor: getAmountColor(),
-          type: "Transfer",
+          type: t("wallet.transfer"),
         }
       default:
         return {
           iconSrc: "/icons/add-icon.png",
           amountColor: getAmountColor(),
-          type: "Deposit",
+          type: t("wallet.deposit"),
         }
     }
   }
@@ -150,7 +152,7 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
   }
 
   const filteredTransactions = transactions.filter((transaction) => {
-    if (activeFilter === "All") {
+    if (activeFilter === t("wallet.all")) {
       return true
     }
     return getTransactionType(transaction) === activeFilter
@@ -214,7 +216,7 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
               <div className="space-y-0">
                 {dateTransactions.map((transaction, index) => {
                   const display = getTransactionDisplay(transaction)
-                  const isTransfer = display.type === "Transfer"
+                  const isTransfer = display.type === t("wallet.transfer")
 
                   return (
                     <div key={transaction.transaction_id} className="relative">
@@ -226,7 +228,7 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
                           <div className="flex-shrink-0">
                             {display.iconSrc && (
                               <Image
-                                src={display.iconSrc}
+                                src={display.iconSrc || "/placeholder.svg"}
                                 alt={`${display.type} icon`}
                                 width={24}
                                 height={24}
@@ -263,16 +265,20 @@ export default function TransactionsTab({ selectedCurrency, currencies = {} }: T
           {filteredTransactions.length === 0 && !loading && (
             <div className="text-center py-8 text-gray-500">
               {selectedCurrency
-                ? "No transactions for the selected currency"
-                : activeFilter === "All"
-                  ? "No transactions found"
-                  : `No ${activeFilter.toLowerCase()} transactions found`}
+                ? t("wallet.noTransactionsForCurrency")
+                : activeFilter === t("wallet.all")
+                  ? t("wallet.noTransactions")
+                  : activeFilter === t("wallet.deposit")
+                    ? t("wallet.noDepositTransactions")
+                    : activeFilter === t("wallet.withdraw")
+                      ? t("wallet.noWithdrawTransactions")
+                      : t("wallet.noTransferTransactions")}
             </div>
           )}
 
           {filteredTransactions.length > 0 && (
             <div className="text-center text-xs font-normal pt-0 text-grayscale-text-placeholder">
-              End of transaction
+              {t("wallet.endOfTransaction")}
             </div>
           )}
         </div>
