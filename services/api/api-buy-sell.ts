@@ -241,7 +241,6 @@ export async function getAdvertiserAds(advertiserId: string | number): Promise<A
   try {
     const queryParams = new URLSearchParams({
       user_id: advertiserId.toString(),
-      account_currency: "USD"
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
