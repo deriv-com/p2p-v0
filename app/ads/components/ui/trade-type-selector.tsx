@@ -10,7 +10,7 @@ interface TradeTypeSelectorProps {
 }
 
 export function TradeTypeSelector({ value, onChange, isEditMode = false }: TradeTypeSelectorProps) {
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   return (
     <Tabs
