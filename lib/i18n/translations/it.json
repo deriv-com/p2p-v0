@@ -493,6 +493,11 @@
     "verifyIdentity": "Verifica identità",
     "completeProfile": "Completa il tuo profilo",
     "completeProfileDescription": "Completa il tuo profilo per iniziare a fare trading P2P.",
-    "backToHome": "Torna alla Home"
+    "backToHome": "Torna alla Home",
+    "accessP2PMessage": "Per accedere al P2P, completa il tuo profilo e la verifica.",
+    "setupProfile": "Configura il tuo profilo",
+    "proofOfIdentity": "Prova d'identità",
+    "proofOfAddress": "Prova di residenza",
+    "phoneNumber": "Numero di telefono"
   }
 }

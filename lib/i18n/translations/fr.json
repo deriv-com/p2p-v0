@@ -486,6 +486,11 @@
     "verifyIdentity": "Vérifier l'identité",
     "completeProfile": "Complétez votre profil",
     "completeProfileDescription": "Complétez votre profil pour commencer à trader en P2P.",
-    "backToHome": "Retour à l'Accueil"
+    "backToHome": "Retour à l'Accueil",
+    "accessP2PMessage": "Pour accéder au P2P, complétez votre profil et votre vérification.",
+    "setupProfile": "Configurez votre profil",
+    "proofOfIdentity": "Preuve d'identité",
+    "proofOfAddress": "Preuve d'adresse",
+    "phoneNumber": "Numéro de téléphone"
   }
 }
