@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface EditPaymentMethodPanelProps {
   onClose: () => void
@@ -34,6 +35,7 @@ export default function EditPaymentMethodPanel({
   isLoading,
   paymentMethod,
 }: EditPaymentMethodPanelProps) {
+  const { t } = useTranslations()
   const [fieldValues, setFieldValues] = useState<Record<string, string>>({})
   const [errors, setErrors] = useState<Record<string, string>>({})
 
@@ -66,7 +68,7 @@ export default function EditPaymentMethodPanel({
     if (value && !validateInput(value)) {
       setErrors((prev) => ({
         ...prev,
-        [fieldName]: "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+        [fieldName]: t("profile.validationSymbolsOnly"),
       }))
     }
   }
@@ -78,9 +80,9 @@ export default function EditPaymentMethodPanel({
       const value = fieldValues[fieldName]?.trim()
 
       if (!value && fieldConfig.required) {
-        newErrors[fieldName] = `${fieldConfig.display_name} is required`
+        newErrors[fieldName] = t("profile.fieldRequired", { field: fieldConfig.display_name })
       } else if (value && !validateInput(value)) {
-        newErrors[fieldName] = "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed"
+        newErrors[fieldName] = t("profile.validationSymbolsOnly")
       }
     })
 
@@ -119,7 +121,7 @@ export default function EditPaymentMethodPanel({
     return (
       <PanelWrapper onClose={onClose}>
         <div className="flex-1 flex items-center justify-center">
-          <div className="text-gray-500">Loading...</div>
+          <div className="text-gray-500">{t("profile.loading")}</div>
         </div>
       </PanelWrapper>
     )
@@ -127,7 +129,7 @@ export default function EditPaymentMethodPanel({
 
   return (
     <PanelWrapper onClose={onClose}>
-      <h2 className="text-2xl font-bold p-4 pb-0">Edit payment details</h2>
+      <h2 className="text-2xl font-bold p-4 pb-0">{t("profile.editPaymentDetails")}</h2>
       <form onSubmit={handleSubmit} className="overflow-y-auto">
         <div className="p-4 space-y-4">
           <div className="space-y-4">
@@ -139,7 +141,7 @@ export default function EditPaymentMethodPanel({
                       id={fieldName}
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                      label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                      label={t("profile.enterField", { field: fieldConfig.display_name.toLowerCase() })}
                       className="min-h-[120px] resize-none"
                       maxLength={300}
                       variant="floating"
@@ -156,7 +158,7 @@ export default function EditPaymentMethodPanel({
                       type={getFieldType(fieldName)}
                       value={fieldValues[fieldName] || ""}
                       onChange={(e) => handleInputChange(fieldName, e.target.value)}
-                      label={`Enter ${fieldConfig.display_name.toLowerCase()}`}
+                      label={t("profile.enterField", { field: fieldConfig.display_name.toLowerCase() })}
                       required={fieldConfig.required}
                       variant="floating"
                     />
@@ -179,7 +181,7 @@ export default function EditPaymentMethodPanel({
           {isLoading ? (
             <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
           ) : (
-            "Save changes"
+            t("profile.saveChanges")
           )}
         </Button>
       </div>

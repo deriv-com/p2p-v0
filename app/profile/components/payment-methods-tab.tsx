@@ -160,7 +160,7 @@ export default function PaymentMethodsTab() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>Payment method updated.</span>
+              <span>{t("profile.paymentMethodUpdated")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -169,22 +169,22 @@ export default function PaymentMethodsTab() {
 
         fetchPaymentMethods()
       } else {
-        let errorMessage = "Unable to update this payment method."
+        let errorMessage = t("profile.unableToUpdatePaymentMethod")
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
 
           if (errorCode === "PaymentMethodInUseByOrder") {
-            errorMessage = "This payment method is currently being used by an open order and cannot be modified."
+            errorMessage = t("profile.paymentMethodInUseByOrder")
           } else if (result.errors[0].message) {
             errorMessage = result.errors[0].message
           }
         }
 
         showAlert({
-          title: "You can't update this payment method",
+          title: t("profile.cannotUpdatePaymentMethod"),
           description: errorMessage,
-          confirmText: "Got it",
+          confirmText: t("orderDetails.gotIt"),
           type: "error",
         })
       }
@@ -192,9 +192,9 @@ export default function PaymentMethodsTab() {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       showAlert({
-        title: "You can't update this payment method",
+        title: t("profile.cannotUpdatePaymentMethod"),
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: "Got it",
+        confirmText: t("orderDetails.gotIt"),
         type: "error",
       })
     } finally {
@@ -208,10 +208,10 @@ export default function PaymentMethodsTab() {
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
     showDeleteDialog({
-      title: `Delete payment method?`,
-      description: "Are you sure you want to delete this payment method?",
-      cancelText: "No",
-      confirmText: "Yes, delete",
+      title: t("profile.deletePaymentMethodTitle"),
+      description: t("profile.deletePaymentMethodDescription"),
+      cancelText: t("common.no"),
+      confirmText: t("common.yes") + ", " + t("common.delete").toLowerCase(),
       onConfirm: () => {
         confirmDeletePaymentMethod(id)
       },
@@ -227,7 +227,7 @@ export default function PaymentMethodsTab() {
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>Payment method deleted.</span>
+              <span>{t("profile.paymentMethodDeleted")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -235,23 +235,23 @@ export default function PaymentMethodsTab() {
         })
         fetchPaymentMethods()
       } else {
-        let errorMessage = "Unable to delete this payment method."
+        let errorMessage = t("profile.unableToDeletePaymentMethod")
 
         if (result.errors && result.errors.length > 0) {
           const errorCode = result.errors[0].code
 
           if (errorCode === "PaymentMethodInUseByOrder") {
-            errorMessage = "This payment method is linked to one of your orders and can't be deleted."
+            errorMessage = t("profile.paymentMethodLinkedToOrder")
           } else if (errorCode === "PaymentMethodInUseByAdvert") {
-            errorMessage = "This payment method is linked to one of your ads and can't be deleted."
+            errorMessage = t("profile.paymentMethodLinkedToAd")
           } else if (result.errors[0].message) {
             errorMessage = result.errors[0].message
           }
         }
         showAlert({
-          title: "Cannot delete this payment method",
+          title: t("profile.cannotDeletePaymentMethod"),
           description: errorMessage,
-          confirmText: "Got it",
+          confirmText: t("orderDetails.gotIt"),
           type: "error",
         })
       }
@@ -259,9 +259,9 @@ export default function PaymentMethodsTab() {
       setError(error instanceof Error ? error.message : "An error occurred. Please try again.")
 
       showAlert({
-        title: "Cannot delete this payment method",
+        title: t("profile.cannotDeletePaymentMethod"),
         description: error instanceof Error ? error.message : "An error occurred. Please try again.",
-        confirmText: "Got it",
+        confirmText: t("orderDetails.gotIt"),
         type: "error",
       })
     }
@@ -324,7 +324,7 @@ export default function PaymentMethodsTab() {
           variant="primary"
           className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded"
         >
-          Try again
+          {t("profile.tryAgain")}
         </Button>
       </div>
     )
