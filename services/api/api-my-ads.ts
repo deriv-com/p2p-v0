@@ -195,7 +195,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
     const userId = useUserDataStore.getState().userId
 
     const queryParams = new URLSearchParams({
-      account_currency: "USD"
+      account_currency: "USD",
       user_id: userId.toString(),
       show_inactive: showInactive !== undefined ? showInactive.toString() : "true",
       show_unorderable: "true",
