@@ -139,8 +139,6 @@ export function formatStatus(
   t?: (key: string) => string,
 ): string {
   if (!status) return ""
-
-  // If no translation function provided, return English fallback
   if (!t) {
     const statusMap: Record<string, string> = {
       refunded: "Refunded",
@@ -160,12 +158,11 @@ export function formatStatus(
     return status
   }
 
-  // Use translations
   const lowerStatus = status.toLowerCase()
 
   switch (lowerStatus) {
     case "refunded":
-      return isDetailed ? t("orderStatus.refundedDetailed") : t("orderStatus.refunded")
+      return t("orderStatus.refunded")
     case "cancelled":
       return isDetailed ? t("orderStatus.cancelledDetailed") : t("orderStatus.cancelled")
     case "timed_out":
