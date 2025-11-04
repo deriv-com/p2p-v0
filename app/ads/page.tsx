@@ -205,48 +205,6 @@ export default function AdsPage() {
     fetchAds(value)
   }
 
-  const getHideMyAdsComponent = () => {
-    return (
-      <div className="flex items-center gap-4 justify-self-end">
-        <div className="flex items-center">
-          <Switch
-            id="hide-ads"
-            checked={hiddenAdverts}
-            onCheckedChange={handleHideMyAds}
-            className="data-[state=checked]:bg-completed-icon"
-            disabled={tempBanUntil}
-          />
-          <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
-            Hide my ads
-          </label>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="opacity-[0.72]">{"Hidden ads won't appear on the Market page."}</p>
-                <TooltipArrow className="fill-black" />
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
-        <Select value={selectedCurrency} onValueChange={handleCurrencyChange} disabled={tempBanUntil}>
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="Currency" />
-          </SelectTrigger>
-          <SelectContent>
-            {currencies.map((currency) => (
-              <SelectItem key={currency} value={currency}>
-                {currency}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-    )
-  }
-
   if (isDisabled) {
     return (
       <div className="flex flex-col h-screen overflow-hidden px-3">
@@ -262,8 +220,20 @@ export default function AdsPage() {
           <StatusBanner variant="success" message="Ad deleted" onClose={() => setShowDeletedBanner(false)} />
         )}
         <div className="flex-none container mx-auto">
-          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
-            All ads
+          <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0 flex items-start justify-between">
+            <span>All ads</span>
+            <Select value={selectedCurrency} onValueChange={handleCurrencyChange} disabled={tempBanUntil}>
+              <SelectTrigger className="w-[86px] mt-6 border-[#FFFFFF3D] bg-transparent text-white [&>svg]:text-white hover:bg-transparent focus:ring-0 focus:ring-offset-0">
+                <SelectValue placeholder="Currency" />
+              </SelectTrigger>
+              <SelectContent>
+                {currencies.map((currency) => (
+                  <SelectItem key={currency} value={currency}>
+                    {currency}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
           <div className="flex items-center justify-between my-6">
@@ -278,7 +248,37 @@ export default function AdsPage() {
                 Create ad
               </Button>
             )}
-            {getHideMyAdsComponent()}
+            <div className="flex items-center gap-4 justify-self-end">
+              <div className="flex items-center">
+                <Switch
+                  id="hide-ads"
+                  checked={hiddenAdverts}
+                  onCheckedChange={handleHideMyAds}
+                  className="data-[state=checked]:bg-completed-icon"
+                  disabled={tempBanUntil}
+                />
+                <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
+                  Hide my ads
+                </label>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Image
+                        src="/icons/info-circle.png"
+                        alt="Info"
+                        width={12}
+                        height={12}
+                        className="ml-1 cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="opacity-[0.72]">{"Hidden ads won't appear on the Market page."}</p>
+                      <TooltipArrow className="fill-black" />
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
           </div>
         </div>
 
