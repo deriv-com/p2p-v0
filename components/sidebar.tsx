@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
-import { useUserDataStore } from "@/stores/user-data-store"
+import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import HomeIcon from "@/public/icons/ic-arrow-left.svg"
@@ -23,36 +23,25 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const [showWallet, setShowWallet] = useState<boolean | null>(null)
-  const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
+  const [showWallet, setShowWallet] = useState<boolean | null>(null)
+
+  const [isV1Signup, setIsV1Signup] = useState(() => {
+    const cached = getCachedSignup()
+    if (cached !== null) return cached === "v1"
+    return userData?.signup === "v1"
+  })
+
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
-    checkUserSignupStatus()
-  }, [userData])
-
-  const checkUserSignupStatus = () => {
-    try {
-      const userDataFromStore = userData
-
-      if (!userDataFromStore?.signup) {
-        return
-      }
-
-      if (userDataFromStore?.signup === "v1") {
-        setShowWallet(false)
-        setIsV1Signup(true)
-      } else {
-        setShowWallet(true)
-        setIsV1Signup(false)
-      }
-    } catch (error) {
-      setShowWallet(true)
-      setIsV1Signup(false)
+    if (userData?.signup) {
+      const isV1 = userData.signup === "v1"
+      setIsV1Signup(isV1)
+      setShowWallet(!isV1)
     }
-  }
+  }, [userData?.signup])
 
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")

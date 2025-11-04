@@ -23,10 +23,10 @@ export function PreviousOrdersSection({ onBack }: PreviousOrdersSectionProps) {
 
       <div className="flex-1 px-3">
         <h1 className="text-xl font-bold">Previous orders</h1>
-        <div className="mt-8 bg-white rounded-lg p-4">
+        <div className="bg-white rounded-lg p-4">
           <iframe
             src={isProduction ? "https://p2p.deriv.com/orders?from=p2p-v2" : "https://staging-p2p.deriv.com/orders?from=p2p-v2"} 
-            className="w-full h-[90vh] border-0 rounded-lg"
+            className="w-full h-[80vh] border-0 rounded-lg"
             title="Previous Orders"
             sandbox="allow-same-origin allow-scripts allow-forms"
           />
