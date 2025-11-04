@@ -56,7 +56,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
     const shareUrls: Record<string, string> = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text} ${adUrl}`)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(adUrl)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${text} ${adUrl}`)}`,
       telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(text)}`,
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(adUrl)}`,
       gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(`${text} ${adUrl}`)}`,
