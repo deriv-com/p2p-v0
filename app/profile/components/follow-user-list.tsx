@@ -90,7 +90,7 @@ export default function FollowUserList({
               className="absolute left-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
-              placeholder="Search"
+              placeholder={t("common.search")}
               value={searchQuery}
               onChange={onSearchChange}
               className="pl-10 pr-10 border-gray-300 focus:border-black bg-transparent rounded-lg"

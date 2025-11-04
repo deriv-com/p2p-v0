@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 import type { CurrencyFilterProps } from "./types"
 import EmptyState from "@/components/empty-state"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export function CurrencyFilter({
   currencies,
@@ -21,6 +22,7 @@ export function CurrencyFilter({
   trigger,
   placeholder = "Search",
 }: CurrencyFilterProps) {
+  const t = useTranslations()
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
@@ -87,7 +89,7 @@ export function CurrencyFilter({
           className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
-          placeholder={placeholder}
+          placeholder={placeholder === "Search" ? t("common.search") : placeholder}
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyDown}
