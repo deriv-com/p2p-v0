@@ -52,7 +52,7 @@ export default function EmptyState({
       {description && <p className="text-base text-neutral-7 mb-[10px] mt-2">{description}</p>}
       {redirectToAds && (
         <Button onClick={createAd} className="mt-4">
-          Create ad
+          {t("myAds.createAd")}
         </Button>
       )}
     </div>
