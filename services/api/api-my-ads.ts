@@ -190,7 +190,7 @@ export async function getCurrencies(): Promise<string[]> {
   return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
 }
 
-export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
+export async function getUserAdverts(showInactive?: boolean, accountCurrency?: string): Promise<MyAd[]> {
   try {
     const userId = useUserDataStore.getState().userId
 
@@ -201,6 +201,10 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       show_unlisted: "true",
       show_ineligible: "true",
     })
+
+    if (accountCurrency) {
+      queryParams.append("account_currency", accountCurrency)
+    }
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = AUTH.getAuthHeader()
@@ -259,13 +263,13 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
             Number(advert.completed_order_amount || 0),
           currency: accountCurrency,
         },
-        paymentMethods: advert.payment_methods || [],
+        paymentMethods: advert.payment_method_names || [],
         status: status,
         description: advert.description || "",
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         account_currency: accountCurrency,
-        user: advert.user
+        user: advert.user,
       }
     })
   } catch (error) {
