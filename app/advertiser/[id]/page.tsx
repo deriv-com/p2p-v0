@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { BuySellAPI } from "@/services/api"
+import { BuySellAPI, AdsAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import { formatPaymentMethodName } from "@/lib/utils"
@@ -20,6 +20,7 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger 
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 
 interface AdvertiserProfile {
   id: string | number
@@ -55,6 +56,11 @@ interface AdvertiserProfilePageProps {
   onBack?: () => void
 }
 
+interface Currency {
+  code: string
+  name: string
+}
+
 export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
@@ -73,10 +79,41 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
+  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("")
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
-  const fetchAdvertiserData = async () => {
+  useEffect(() => {
+    const fetchCurrencies = async () => {
+      try {
+        const response = await AdsAPI.getCurrencies()
+
+        if (response && response.data) {
+          const p2pCurrencies: Currency[] = Object.keys(response.data)
+            .filter((currencyCode) => {
+              const currencyData = response.data[currencyCode]
+              return currencyData.cashiers && currencyData.cashiers.includes("p2p")
+            })
+            .map((currencyCode) => ({
+              code: currencyCode,
+              name: response.data[currencyCode].name || currencyCode,
+            }))
+
+          setCurrencies(p2pCurrencies)
+
+          const defaultCurrency = p2pCurrencies.find((c) => c.code === "USD")?.code || p2pCurrencies[0]?.code || ""
+          setSelectedCurrency(defaultCurrency)
+        }
+      } catch (error) {
+        console.error("Failed to fetch currencies:", error)
+      }
+    }
+
+    fetchCurrencies()
+  }, [])
+
+  const fetchAdvertiserData = async (currency?: string) => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort()
     }
@@ -98,7 +135,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setIsFollowing(advertiserData.data.is_favourite || false)
       setIsBlocked(advertiserData.data.is_blocked || false)
 
-      const advertiserAds = await BuySellAPI.getAdvertiserAds(id)
+      const advertiserAds = await BuySellAPI.getAdvertiserAds(id, currency || selectedCurrency)
 
       if (abortController.signal.aborted) {
         return
@@ -120,14 +157,16 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   useEffect(() => {
-    fetchAdvertiserData()
+    if (selectedCurrency) {
+      fetchAdvertiserData(selectedCurrency)
+    }
 
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
       }
     }
-  }, [id])
+  }, [id, selectedCurrency])
 
   const toggleFollow = async () => {
     if (!profile) return
@@ -251,6 +290,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     router.back()
   }
 
+  const handleCurrencyChange = (value: string) => {
+    setSelectedCurrency(value)
+    fetchAdvertiserData(value)
+  }
+
   if (isLoading) {
     return (
       <div className="text-center py-8">
@@ -363,25 +407,49 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                   )}
                 </div>
               </div>
-            </div>
 
-            {isBlocked && (
-              <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
-                <div className="mb-4">
-                  <Image src="/icons/blocked.png" alt="Blocked user" width={128} height={128} className="mx-auto" />
+              {isBlocked && (
+                <div className="p-6 my-6 flex flex-col items-center justify-center text-center">
+                  <div className="mb-4">
+                    <Image src="/icons/blocked.png" alt="Blocked user" width={128} height={128} className="mx-auto" />
+                  </div>
+                  <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
+                  <p className="text-base text-neutral-7">
+                    Unblock them if you'd like to interact with this advertiser again.
+                  </p>
                 </div>
-                <h2 className="text-lg font-bold text-neutral-10 mb-2">You've blocked this user</h2>
-                <p className="text-base text-neutral-7">
-                  Unblock them if you'd like to interact with this advertiser again.
-                </p>
-              </div>
-            )}
+              )}
 
-            {!isBlocked && (
-              <>
-                <AdvertiserStats profile={profile} />
+              {!isBlocked && (
                 <>
-                  <div className="container mx-auto pb-4 text-lg font-bold">Online ads</div>
+                  <AdvertiserStats profile={profile} />
+                  <div className="container mx-auto pb-4 text-lg font-bold flex items-center justify-between">
+                    <span>Online ads</span>
+                    {currencies.length > 0 && (
+                      <CurrencyFilter
+                        currencies={currencies}
+                        selectedCurrency={selectedCurrency}
+                        onCurrencySelect={handleCurrencyChange}
+                        title="Select currency"
+                        trigger={
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-[86px] h-[32px] border border-gray-300 bg-transparent hover:bg-gray-50 rounded-full text-black font-normal px-3"
+                          >
+                            <span>{selectedCurrency}</span>
+                            <Image
+                              src="/icons/chevron-down.png"
+                              alt="Arrow"
+                              width={24}
+                              height={24}
+                              className="ml-2 transition-transform duration-200"
+                            />
+                          </Button>
+                        }
+                      />
+                    )}
+                  </div>
                   <div className="container mx-auto pb-8">
                     {adverts.length > 0 ? (
                       <>
@@ -486,15 +554,15 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     )}
                   </div>
                 </>
-              </>
-            )}
+              )}
 
-            <OrderSidebar
-              isOpen={isOrderSidebarOpen}
-              onClose={() => setIsOrderSidebarOpen(false)}
-              ad={selectedAd}
-              orderType={orderType}
-            />
+              <OrderSidebar
+                isOpen={isOrderSidebarOpen}
+                onClose={() => setIsOrderSidebarOpen(false)}
+                ad={selectedAd}
+                orderType={orderType}
+              />
+            </div>
           </div>
         </div>
       </div>
