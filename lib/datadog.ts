@@ -58,7 +58,7 @@ export const initDatadog = () => {
       defaultPrivacyLevel: "mask-user-input",
     })
 
-    datadogRum.startSessionReplayRecording()
+   // datadogRum.startSessionReplayRecording()
 
     console.log("[v0] Datadog: Successfully initialized and session tracking started")
   } catch (error) {
