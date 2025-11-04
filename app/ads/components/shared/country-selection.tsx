@@ -23,7 +23,7 @@ interface CountrySelectionProps {
 }
 
 export default function CountrySelection({ countries, selectedCountries, onCountriesChange }: CountrySelectionProps) {
-  const t = useTranslations()
+  const { t } = useTranslations()
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
