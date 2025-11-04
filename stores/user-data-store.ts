@@ -68,13 +68,10 @@ const getCachedSignup = (): string | null => {
 
 const cacheSignup = (signup: string | undefined) => {
   if (typeof window === "undefined") return
-  try {
-    if (signup) {
-      localStorage.setItem("user_signup", signup)
-    } else {
-      localStorage.removeItem("user_signup")
-    }
-  } catch {
+  if (signup) {
+    localStorage.setItem("user_signup", signup)
+  } else {
+    localStorage.removeItem("user_signup")
   }
 }
 
