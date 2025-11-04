@@ -52,15 +52,14 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
-    const text = `Check out this ${ad?.type === "buy" ? "Sell" : "Buy"} ${ad?.account_currency} ad on Deriv P2P`
-    const text = `Hi! I'd like to exchange ${ad?.payment_currency} for ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P.`
+    const text = `Hi! I'd like to exchange ${ad?.payment_currency} for ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
 
     const shareUrls: Record<string, string> = {
-      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text} ${adUrl}`)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${text} ${adUrl}`)}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}`)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${text}`)}`,
       telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(text)}`,
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(adUrl)}`,
-      gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(`${text} ${adUrl}`)}`,
+      gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(`${text}`)}`,
     }
 
     if (shareUrls[platform]) {
