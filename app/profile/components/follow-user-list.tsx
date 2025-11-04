@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import Image from "next/image"
 import EmptyState from "@/components/empty-state"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface FollowUser {
   nickname: string
@@ -42,6 +43,8 @@ export default function FollowUserList({
   searchEmptyDescription,
   showFollowingButton = false,
 }: FollowUserListProps) {
+  const t = useTranslations()
+
   const UserCard = ({ user }: { user: FollowUser }) => {
     const isFollowing = followingUserIds.includes(user.user_id)
 
@@ -111,7 +114,7 @@ export default function FollowUserList({
         {isLoading ? (
           <div className="text-center py-12">
             <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">Loading users...</p>
+            <p className="mt-2 text-slate-600">{t("profile.loadingUsers")}</p>
           </div>
         ) : users.length > 0 ? (
           users.map((user) => <UserCard key={user.user_id} user={user} />)
