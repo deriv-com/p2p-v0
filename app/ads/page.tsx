@@ -21,17 +21,13 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface StatusData {
   success: "create" | "update"
   type: string
   id: string
   showStatusModal: boolean
-}
-
-interface Currency {
-  code: string
-  name: string
 }
 
 export default function AdsPage() {
@@ -52,7 +48,7 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
-  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const { accountCurrencies } = useAccountCurrencies()
   const [selectedCurrency, setSelectedCurrency] = useState<string>("")
 
   const isMobile = useIsMobile()
@@ -84,33 +80,11 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        const response = await AdsAPI.getCurrencies()
-
-        if (response && response.data) {
-          const p2pCurrencies: Currency[] = Object.keys(response.data)
-            .filter((currencyCode) => {
-              const currencyData = response.data[currencyCode]
-              return currencyData.cashiers && currencyData.cashiers.includes("p2p")
-            })
-            .map((currencyCode) => ({
-              code: currencyCode,
-              name: response.data[currencyCode].name || currencyCode,
-            }))
-
-          setCurrencies(p2pCurrencies)
-
-          const defaultCurrency = p2pCurrencies.find((c) => c.code === "USD")?.code || p2pCurrencies[0]?.code || ""
-          setSelectedCurrency(defaultCurrency)
-        }
-      } catch (error) {
-        console.error("Failed to fetch currencies:", error)
-      }
+    if (accountCurrencies.length > 0 && !selectedCurrency) {
+      const defaultCurrency = accountCurrencies.find((c) => c.code === "USD")?.code || accountCurrencies[0]?.code || ""
+      setSelectedCurrency(defaultCurrency)
     }
-
-    fetchCurrencies()
-  }, [])
+  }, [accountCurrencies, selectedCurrency])
 
   useEffect(() => {
     setLoading(false)
@@ -262,7 +236,7 @@ export default function AdsPage() {
             <span>{t("myAds.title")}</span>
             <div>
               <CurrencyFilter
-                currencies={currencies}
+                currencies={accountCurrencies}
                 selectedCurrency={selectedCurrency}
                 onCurrencySelect={handleCurrencyChange}
                 title="Select currency"
