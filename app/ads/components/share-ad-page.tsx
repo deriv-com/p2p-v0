@@ -50,7 +50,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }, [ad.id, toast])
 
   const handleShare = async (platform: string) => {
-    const adUrl = `${window.location.origin}/advertiser/${ad.user?.id}`
+    const advertiserId = ad.user?.id || ad.advertiser_id || ad.id
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
     const text = `Check out this ${ad?.type === "buy" ? "Sell" : "Buy"} ${ad?.account_currency} ad on Deriv P2P`
 
     const shareUrls: Record<string, string> = {
@@ -234,13 +235,10 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             </div>
             {isMobile ? (
               <div className="flex flex-col gap-2 w-full">
-                <Button
-                  onClick={handleShareImage}
-                >Share image
+                <Button onClick={handleShareImage}>Share image</Button>
+                <Button variant="outline" onClick={handleSaveImage}>
+                  Save image
                 </Button>
-                <Button
-                  variant="outline"
-                  onClick={handleSaveImage}>Save image</Button>
               </div>
             ) : (
               <div className="flex gap-6">
