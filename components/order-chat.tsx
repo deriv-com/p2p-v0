@@ -273,7 +273,7 @@ export default function OrderChat({
                         )}
                         {msg.rejected && msg.tags ? (
                           <div className="text-xs text-error-text mt-[4px]">
-                            Message not sent: {getChatErrorMessage(msg.tags, t)}
+                            {t("chat.messageNotSent", { error: getChatErrorMessage(msg.tags, t) })}
                           </div>
                         ) : (
                           <div
