@@ -237,11 +237,18 @@ function createMockAdvertiser(id: string | number): any {
 /**
  * Get advertiser ads by advertiser ID
  */
-export async function getAdvertiserAds(advertiserId: string | number): Promise<Advertisement[]> {
+export async function getAdvertiserAds(
+  advertiserId: string | number,
+  accountCurrency?: string,
+): Promise<Advertisement[]> {
   try {
     const queryParams = new URLSearchParams({
       user_id: advertiserId.toString(),
     })
+
+    if (accountCurrency) {
+      queryParams.append("account_currency", accountCurrency)
+    }
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
     const headers = {
