@@ -1,6 +1,7 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
@@ -52,7 +53,8 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
-  const [currencies, setCurrencies] = useState<Currency[]>([])
+
+  const { accountCurrencies, isLoading: isCurrenciesLoading } = useAccountCurrencies()
   const [selectedCurrency, setSelectedCurrency] = useState<string>("")
 
   const isMobile = useIsMobile()
@@ -84,41 +86,19 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        const response = await AdsAPI.getCurrencies()
-
-        if (response && response.data) {
-          const p2pCurrencies: Currency[] = Object.keys(response.data)
-            .filter((currencyCode) => {
-              const currencyData = response.data[currencyCode]
-              return currencyData.cashiers && currencyData.cashiers.includes("p2p")
-            })
-            .map((currencyCode) => ({
-              code: currencyCode,
-              name: response.data[currencyCode].name || currencyCode,
-            }))
-
-          setCurrencies(p2pCurrencies)
-
-          const defaultCurrency = p2pCurrencies.find((c) => c.code === "USD")?.code || p2pCurrencies[0]?.code || ""
-          setSelectedCurrency(defaultCurrency)
-        }
-      } catch (error) {
-        console.error("Failed to fetch currencies:", error)
-      }
-    }
-
-    fetchCurrencies()
-  }, [])
-
-  useEffect(() => {
     setLoading(false)
     if (userId && !hasFetchedRef.current && selectedCurrency) {
       fetchAds(selectedCurrency)
       hasFetchedRef.current = true
     }
   }, [userId, selectedCurrency])
+
+  useEffect(() => {
+    if (accountCurrencies.length > 0 && !selectedCurrency) {
+      const defaultCurrency = accountCurrencies.find((c) => c.code === "USD")?.code || accountCurrencies[0]?.code || ""
+      setSelectedCurrency(defaultCurrency)
+    }
+  }, [accountCurrencies, selectedCurrency])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -234,7 +214,7 @@ export default function AdsPage() {
             <span>{t("myAds.title")}</span>
             <div>
               <CurrencyFilter
-                currencies={currencies}
+                currencies={accountCurrencies.map((c) => ({ code: c.code, name: c.name }))}
                 selectedCurrency={selectedCurrency}
                 onCurrencySelect={handleCurrencyChange}
                 title="Select currency"
@@ -243,7 +223,7 @@ export default function AdsPage() {
                     variant="outline"
                     size="sm"
                     className="hidden w-[86px] h-[32px] border border-[#FFFFFF3D] bg-transparent hover:bg-transparent rounded-full text-white font-normal px-3"
-                    disabled={!!tempBanUntil}
+                    disabled={!!tempBanUntil || isCurrenciesLoading}
                   >
                     <span>{selectedCurrency}</span>
                     <Image

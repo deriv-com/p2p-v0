@@ -7,7 +7,7 @@ import { useParams, useRouter } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { BuySellAPI, AdsAPI } from "@/services/api"
+import { BuySellAPI } from "@/services/api"
 import type { Advertisement } from "@/services/api/api-buy-sell"
 import { toggleFavouriteAdvertiser, toggleBlockAdvertiser } from "@/services/api/api-buy-sell"
 import { formatPaymentMethodName } from "@/lib/utils"
@@ -22,6 +22,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { CurrencyFilter } from "@/components/currency-filter/currency-filter"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 
 interface AdvertiserProfile {
   id: string | number
@@ -57,11 +58,6 @@ interface AdvertiserProfilePageProps {
   onBack?: () => void
 }
 
-interface Currency {
-  code: string
-  name: string
-}
-
 export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
@@ -81,38 +77,16 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [orderType, setOrderType] = useState<"buy" | "sell">("buy")
-  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const { accountCurrencies, isLoading: isCurrenciesLoading } = useAccountCurrencies()
   const [selectedCurrency, setSelectedCurrency] = useState<string>("")
   const abortControllerRef = useRef<AbortController | null>(null)
 
   useEffect(() => {
-    const fetchCurrencies = async () => {
-      try {
-        const response = await AdsAPI.getCurrencies()
-
-        if (response && response.data) {
-          const p2pCurrencies: Currency[] = Object.keys(response.data)
-            .filter((currencyCode) => {
-              const currencyData = response.data[currencyCode]
-              return currencyData.cashiers && currencyData.cashiers.includes("p2p")
-            })
-            .map((currencyCode) => ({
-              code: currencyCode,
-              name: response.data[currencyCode].name || currencyCode,
-            }))
-
-          setCurrencies(p2pCurrencies)
-
-          const defaultCurrency = p2pCurrencies.find((c) => c.code === "USD")?.code || p2pCurrencies[0]?.code || ""
-          setSelectedCurrency(defaultCurrency)
-        }
-      } catch (error) {
-        console.error("Failed to fetch currencies:", error)
-      }
+    if (accountCurrencies.length > 0 && !selectedCurrency) {
+      const defaultCurrency = accountCurrencies.find((c) => c.code === "USD")?.code || accountCurrencies[0]?.code || ""
+      setSelectedCurrency(defaultCurrency)
     }
-
-    fetchCurrencies()
-  }, [])
+  }, [accountCurrencies, selectedCurrency])
 
   const fetchAdvertiserData = async (currency?: string) => {
     if (abortControllerRef.current) {
@@ -437,7 +411,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                 <div className="container mx-auto pb-4 pt-6 text-lg font-bold flex items-center justify-between">
                   <span>{t("advertiser.onlineAds")}</span>
                   <CurrencyFilter
-                    currencies={currencies}
+                    currencies={accountCurrencies.map((c) => ({ code: c.code, name: c.name }))}
                     selectedCurrency={selectedCurrency}
                     onCurrencySelect={handleCurrencyChange}
                     title="Select currency"
@@ -446,6 +420,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         variant="outline"
                         size="sm"
                         className="hidden w-[86px] h-[32px] border border-slate-300 bg-transparent hover:bg-slate-50 rounded-full text-black font-normal px-3"
+                        disabled={isCurrenciesLoading}
                       >
                         <span>{selectedCurrency}</span>
                         <Image
