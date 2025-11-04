@@ -231,7 +231,9 @@
     "userUnblocked": "{nickname} desbloqueado.",
     "noBlockedUsers": "Ainda sem usuários bloqueados",
     "blockedUsersAppear": "Os usuários que você bloquear aparecerão aqui.",
-    "loadingUsers": "Carregando usuários..."
+    "loadingUsers": "Carregando usuários...",
+    "noPaymentMethodsYet": "Ainda sem métodos de pagamento",
+    "startAddingPaymentMethods": "Comece a adicionar métodos de pagamento"
   },
   "wallet": {
     "title": "Carteira",

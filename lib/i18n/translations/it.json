@@ -238,7 +238,9 @@
     "userUnblocked": "{nickname} sbloccato.",
     "noBlockedUsers": "Nessun utente bloccato ancora",
     "blockedUsersAppear": "Gli utenti che blocchi appariranno qui.",
-    "loadingUsers": "Caricamento utenti..."
+    "loadingUsers": "Caricamento utenti...",
+    "noPaymentMethodsYet": "Nessun metodo di pagamento ancora",
+    "startAddingPaymentMethods": "Inizia ad aggiungere metodi di pagamento"
   },
   "wallet": {
     "title": "Portafoglio",

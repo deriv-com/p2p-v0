@@ -231,7 +231,9 @@
     "userUnblocked": "{nickname} unblocked.",
     "noBlockedUsers": "No blocked users yet",
     "blockedUsersAppear": "Users you block will appear here.",
-    "loadingUsers": "Loading users..."
+    "loadingUsers": "Loading users...",
+    "noPaymentMethodsYet": "No payment methods yet",
+    "startAddingPaymentMethods": "Start adding payment methods"
   },
   "wallet": {
     "title": "Wallet",
