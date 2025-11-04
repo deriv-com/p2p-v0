@@ -25,7 +25,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     const generateQRCode = async () => {
       try {
         setIsLoading(true)
-        const adUrl = `${window.location.origin}/ads/${ad.id}`
+        const advertiserId = ad.user?.id
+        const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
         const qrCode = await QRCode.toDataURL(adUrl, {
           width: 200,
           margin: 2,
