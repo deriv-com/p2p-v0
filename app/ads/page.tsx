@@ -19,7 +19,6 @@ import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/compon
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
-import MobileFooterNav from "@/components/mobile-footer-nav"
 
 interface StatusData {
   success: "create" | "update"
@@ -48,15 +47,30 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const fetchAds = async () => {
-    if (!userId) {
-      setLoading(false)
-      return
-    }
 
+  const fetchAds = async () => {
     try {
       setLoading(true)
       setError(null)
+
+      // Wait for userId to be available (with timeout)
+      let currentUserId = useUserDataStore.getState().userId
+      let attempts = 0
+      const maxAttempts = 50 // 5 seconds max wait (50 * 100ms)
+
+      while (!currentUserId && attempts < maxAttempts) {
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        currentUserId = useUserDataStore.getState().userId
+        attempts++
+      }
+
+      if (!currentUserId) {
+        console.log("[v0] Ads page: userId not available after timeout")
+        setLoading(false)
+        return
+      }
+
+      console.log("[v0] Ads page: Fetching ads with userId:", currentUserId)
       const userAdverts = await AdsAPI.getUserAdverts(true)
 
       setAds(userAdverts)
@@ -74,12 +88,12 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    setLoading(false)
-    if (userId && !hasFetchedRef.current) {
+    if (!hasFetchedRef.current) {
+      console.log("[v0] Ads page: Component mounted, starting fetch")
       fetchAds()
       hasFetchedRef.current = true
     }
-  }, [userId])
+  }, [])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
