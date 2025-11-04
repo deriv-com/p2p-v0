@@ -43,7 +43,7 @@ export default function FollowUserList({
   searchEmptyDescription,
   showFollowingButton = false,
 }: FollowUserListProps) {
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   const UserCard = ({ user }: { user: FollowUser }) => {
     const isFollowing = followingUserIds.includes(user.user_id)
