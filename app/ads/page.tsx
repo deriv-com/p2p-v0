@@ -1,6 +1,8 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
+import { useUserDataStore, getCachedUserId } from "@/stores/user-data-store"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert" // Import TemporaryBanAlert
 
 import { useEffect, useState, useRef } from "react"
 import { useRouter } from "next/navigation"
@@ -16,8 +18,6 @@ import StatusBottomSheet from "./components/ui/status-bottom-sheet"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
-import { useUserDataStore } from "@/stores/user-data-store"
-import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 
 interface StatusData {
@@ -53,19 +53,10 @@ export default function AdsPage() {
       setLoading(true)
       setError(null)
 
-      // Wait for userId to be available (with timeout)
-      let currentUserId = useUserDataStore.getState().userId
-      let attempts = 0
-      const maxAttempts = 50 // 5 seconds max wait (50 * 100ms)
-
-      while (!currentUserId && attempts < maxAttempts) {
-        await new Promise((resolve) => setTimeout(resolve, 100))
-        currentUserId = useUserDataStore.getState().userId
-        attempts++
-      }
+      const currentUserId = getCachedUserId() || useUserDataStore.getState().userId
 
       if (!currentUserId) {
-        console.log("[v0] Ads page: userId not available after timeout")
+        console.log("[v0] Ads page: userId not available")
         setLoading(false)
         return
       }
@@ -231,7 +222,7 @@ export default function AdsPage() {
           <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
             All ads
           </div>
-          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
+          {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />} // TemporaryBanAlert is now declared
           <div className="flex items-center justify-between my-6">
             {ads.length > 0 && (
               <Button
