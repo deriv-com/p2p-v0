@@ -188,7 +188,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
           <h2 className="text-2xl font-bold px-4 md:px-0">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
@@ -236,14 +236,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 </>
               )}
             </div>
-            {isMobile ? (
-              <div className="flex flex-col gap-2 w-full">
-                <Button onClick={handleShareImage}>Share image</Button>
-                <Button variant="outline" onClick={handleSaveImage}>
-                  Save image
-                </Button>
-              </div>
-            ) : (
+            {!isMobile && (
               <div className="flex gap-6">
                 <Button
                   variant="ghost"
@@ -325,6 +318,14 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             )}
           </div>
         </div>
+        {isMobile && (
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex flex-col gap-2 max-w-xl mx-auto">
+            <Button onClick={handleShareImage}>Share image</Button>
+            <Button variant="outline" onClick={handleSaveImage}>
+              Save image
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
