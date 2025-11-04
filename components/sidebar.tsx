@@ -26,7 +26,6 @@ export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const { t, locale } = useTranslations()
   const [showWallet, setShowWallet] = useState<boolean | null>(null)
-  const [isV1Signup, setIsV1Signup] = useState(false)
   const { userData, userId } = useUserDataStore()
 
   const [isV1Signup, setIsV1Signup] = useState(() => {
