@@ -22,7 +22,7 @@ export function CurrencyFilter({
   trigger,
   placeholder = "Search",
 }: CurrencyFilterProps) {
-  const { t = useTranslations()
+  const { t } = useTranslations()
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const isMobile = useIsMobile()
