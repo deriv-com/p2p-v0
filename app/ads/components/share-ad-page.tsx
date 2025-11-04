@@ -319,7 +319,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </div>
         </div>
         {isMobile && (
-          <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 flex flex-col gap-2 max-w-xl mx-auto">
+          <div className="fixed bottom-0 left-0 right-0 p-4 flex flex-col gap-2 max-w-xl mx-auto">
             <Button onClick={handleShareImage}>Share image</Button>
             <Button variant="outline" onClick={handleSaveImage}>
               Save image
