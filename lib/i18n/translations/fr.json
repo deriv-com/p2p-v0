@@ -256,8 +256,7 @@
     "startAddingPaymentMethods": "Commencez à ajouter des méthodes de paiement",
     "edit": "Modifier",
     "delete": "Supprimer",
-    "deletePaymentMethodTitle": " 
-Supprimer la méthode de paiement ?",
+    "deletePaymentMethodTitle": "Supprimer la méthode de paiement ?",
     "deletePaymentMethodDescription": "Êtes-vous sûr de vouloir supprimer cette méthode de paiement ?",
     "paymentMethodDeleted": "Méthode de paiement supprimée.",
     "unableToDeletePaymentMethod": "Impossible de supprimer cette méthode de paiement.",
