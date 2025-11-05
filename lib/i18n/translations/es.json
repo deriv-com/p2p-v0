@@ -154,7 +154,7 @@
     "errorHarassment": "Por favor",
     "errorFakeIdentity": "OTPs",
     "errorSensitiveDataRequests": "Tu mensaje requiere revisión adicional. Por favor",
-    "errorMiscellaneous": "\"Tu mensaje no cumple con nuestras pautas de la comunidad. Por favor",
+    "errorMiscellaneous": "Tu mensaje no cumple con nuestras pautas de la comunidad. Por favor",
     "errorMultipleViolations": "Viola nuestras pautas de chat."
   },
   "orderDetails": {
