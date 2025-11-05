@@ -153,8 +153,8 @@
     "errorHumanAttention": "Le langage menaçant ou harcelant n'est pas toléré. Veuillez communiquer respectueusement.",
     "errorHarassment": "Veuillez ne pas usurper l'identité du personnel de Deriv ou déformer votre identité.",
     "errorFakeIdentity": "Ne partagez jamais de mots de passe, d'OTP ou d'identifiants de connexion. Le personnel de Deriv ne demandera jamais ces informations dans le chat.",
-    "errorSensitiveDataRequests": "espera mientras te conectamos con un especialista.",
-    "errorMiscellaneous": "inténtalo de nuevo.",
+    "errorSensitiveDataRequests": "Votre message nécessite un examen supplémentaire. Veuillez patienter pendant que nous vous connectons avec un spécialiste.",
+    "errorMiscellaneous": "Votre message ne respecte pas nos directives communautaires. Veuillez réessayer.",
     "errorMultipleViolations": "Il viole nos directives de chat."
   },
   "orderDetails": {
