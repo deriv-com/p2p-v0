@@ -256,7 +256,8 @@
     "startAddingPaymentMethods": "Commencez à ajouter des méthodes de paiement",
     "edit": "Modifier",
     "delete": "Supprimer",
-    "deletePaymentMethodTitle": "Supprimer la méthode de paiement ?",
+    "deletePaymentMethodTitle": " 
+Supprimer la méthode de paiement ?",
     "deletePaymentMethodDescription": "Êtes-vous sûr de vouloir supprimer cette méthode de paiement ?",
     "paymentMethodDeleted": "Méthode de paiement supprimée.",
     "unableToDeletePaymentMethod": "Impossible de supprimer cette méthode de paiement.",
@@ -348,7 +349,7 @@
     "createAd": "Créer une annonce",
     "hideMyAds": "Masquer mes annonces",
     "hideMyAdsTooltip": "Les annonces masquées n'apparaîtront pas sur la page Marché.",
-    "adDeleted": "Annonce supprimée",
+    "adDeleted": " Annonce supprimée",
     "adCreated": "Annonce créée",
     "adUpdated": "Annonce mise à jour",
     "adCreatedMessage": "",
