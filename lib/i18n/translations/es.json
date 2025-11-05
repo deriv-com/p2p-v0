@@ -153,7 +153,7 @@
     "errorHumanAttention": "El lenguaje amenazante o acosador no se tolera. Por favor, comunícate respetuosamente.",
     "errorHarassment": "Por favor, no te hagas pasar por el personal de Deriv ni tergiverses tu identidad.",
     "errorFakeIdentity": "Nunca compartas contraseñas, OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.",
-    "errorSensitiveDataRequests": "Tu mensaje requiere revisión adicional. Por favor",
+    "errorSensitiveDataRequests": "Tu mensaje requiere revisión adicional. Por favor, espera mientras te conectamos con un especialista.",
     "errorMiscellaneous": "Tu mensaje no cumple con nuestras pautas de la comunidad. Por favor",
     "errorMultipleViolations": "Viola nuestras pautas de chat."
   },
