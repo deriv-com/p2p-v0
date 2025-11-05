@@ -484,7 +484,7 @@
     "maxAmountGreaterThanMin": "Maximum amount must be greater than minimum amount",
     "minAmountLessThanTotal": "Minimum amount must be less than total amount",
     "maxAmountLessThanTotal": "Maximum amount must be less than total amount",
-    "adCreatedSuccess": You've successfully created a {type} advert.",
+    "adCreatedSuccess": "You've successfully created a {type} advert.",
     "adUpdatedSuccess": "Ad details have been updated.",
     "failedToCreateAd": "Failed to create ad",
     "failedToUpdateAd": "Failed to update ad",

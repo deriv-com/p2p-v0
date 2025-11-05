@@ -488,7 +488,7 @@
     "adUpdatedSuccess": "Los detalles del anuncio han sido actualizados.",
     "failedToCreateAd": "Error al crear el anuncio",
     "failedToUpdateAd": "Error al actualizar el anuncio",
-    "tryAgain": "\"Por favor",
+    "tryAgain": "Por favor",
     "updateAd": "Actualizar anuncio",
     "duplicateRateTitle": "Ya tienes un anuncio con esta tasa",
     "duplicateRateMessage": "Tienes otro anuncio activo con la misma tasa para este par de monedas y tipo de orden. Establece una tasa diferente.",
@@ -501,7 +501,7 @@
     "invalidValuesTitle": "Valores inválidos",
     "invalidValuesMessage": "\"Por favor",
     "amountExceedsBalanceTitle": "La cantidad excede el saldo",
-    "amountExceedsBalanceMessage": "\"La cantidad total excede tu saldo disponible. Por favor",
+    "amountExceedsBalanceMessage": "La cantidad total excede tu saldo disponible. Por favor",
     "selectPayment": "Seleccionar pago",
     "selected": "Seleccionado ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago"
