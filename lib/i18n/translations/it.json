@@ -270,7 +270,7 @@
     "editPaymentDetails": "Modifica dettagli di pagamento",
     "saveChanges": "Salva modifiche",
     "loading": "Caricamento...",
-    "validationSymbolsOnly": "and symbols -+.",
+    "validationSymbolsOnly": "Sono consentiti solo lettere, numeri, spazi e simboli -+.,'#@():;",
     "fieldRequired": "{field} è obbligatorio",
     "enterField": "Inserisci {field}",
     "tryAgain": "Riprova"
