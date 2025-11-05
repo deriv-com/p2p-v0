@@ -152,7 +152,7 @@
     "errorOffPlatformCommunication": "Por favor, mantén la conversación dentro de esta plataforma. No podemos ayudar con solicitudes para comunicarse en otro lugar.",
     "errorHumanAttention": "El lenguaje amenazante o acosador no se tolera. Por favor, comunícate respetuosamente.",
     "errorHarassment": "Por favor, no te hagas pasar por el personal de Deriv ni tergiverses tu identidad.",
-    "errorFakeIdentity": "OTPs",
+    "errorFakeIdentity": "Nunca compartas contraseñas, OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.",
     "errorSensitiveDataRequests": "Tu mensaje requiere revisión adicional. Por favor",
     "errorMiscellaneous": "Tu mensaje no cumple con nuestras pautas de la comunidad. Por favor",
     "errorMultipleViolations": "Viola nuestras pautas de chat."
