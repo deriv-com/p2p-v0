@@ -359,7 +359,7 @@
     "unableToHideAds": "No se pueden ocultar tus anuncios",
     "unableToShowAds": "No se pueden mostrar tus anuncios",
     "hideAdsError": "Error al ocultar tus anuncios. Por favor",
-    "showAdsError": "\"Error al mostrar tus anuncios. Por favor",
+    "showAdsError": "Error al mostrar tus anuncios. Por favor",
     "noAdsTitle": "No tienes anuncios",
     "noAdsDescription": "¿Buscas comprar o vender USD? Puedes publicar tu propio anuncio para que otros respondan.",
     "loadingAds": "Cargando anuncios...",
@@ -381,10 +381,10 @@
     "deleteAdTitle": "¿Eliminar anuncio?",
     "deleteAdDescription": "No podrás restaurarlo.",
     "unableToDeleteAd": "No se puede eliminar el anuncio",
-    "deleteAdError": "\"Hubo un error al eliminar el anuncio. Por favor",
+    "deleteAdError": "Hubo un error al eliminar el anuncio. Por favor",
     "deleteAdOpenOrders": "El anuncio tiene órdenes en curso.",
     "unableToUpdateAd": "No se puede actualizar el anuncio",
-    "updateAdError": "\"Hubo un error al actualizar el anuncio. Por favor"
+    "updateAdError": "Hubo un error al actualizar el anuncio. Por favor"
   },
   "": "",
   "If your ad doesn't receive an order within 3 days": "\"Has creado exitosamente un anuncio de {type}.",
