@@ -19,13 +19,9 @@ export default function MobileFooterNav() {
   const { isChatVisible } = useChatVisibilityStore()
   const { t } = useTranslations()
   const { userData } = useUserDataStore()
-  const [showWallet, setShowWallet] = useState<boolean | null>(null)
+  const [showWallet, setShowWallet] = useState<boolean>(true)
 
   useEffect(() => {
-    if (!userData?.signup) {
-      return
-    }
-
     if (userData?.signup === "v1") {
       setShowWallet(false)
     } else {
@@ -44,7 +40,7 @@ export default function MobileFooterNav() {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
-      <div className={cn("grid grid-cols-4 min-h-16", showWallet === true && "grid-cols-5")}>
+      <div className={cn("grid grid-cols-4 min-h-16", showWallet && "grid-cols-5")}>
         <Link
           href="/"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
@@ -84,7 +80,7 @@ export default function MobileFooterNav() {
           </div>
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.myAds")}</span>
         </Link>
-        {showWallet === true && (
+        {showWallet && (
           <Link
             href="/wallet"
             className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {

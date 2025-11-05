@@ -25,7 +25,7 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const { t, locale } = useTranslations()
-  const [showWallet, setShowWallet] = useState<boolean | null>(null)
+  const [showWallet, setShowWallet] = useState<boolean>(true)
   const { userData, userId } = useUserDataStore()
 
   const [isV1Signup, setIsV1Signup] = useState(() => {
@@ -38,17 +38,25 @@ export default function Sidebar({ className }: SidebarProps) {
   const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
-    if (userData?.signup) {
-      const isV1 = userData.signup === "v1"
-      setIsV1Signup(isV1)
-      setShowWallet(!isV1)
+    if (userData?.signup === "v1") {
+      setIsV1Signup(true)
+      setShowWallet(false)
+    } else if (userData?.signup) {
+      setIsV1Signup(false)
+      setShowWallet(true)
+    } else {
+      // Non-registered users: show wallet
+      setShowWallet(true)
     }
   }, [userData?.signup])
 
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")
 
-  const helpCentreUrl = locale != "en" ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p` : `https://trade.deriv.com//help-centre/deriv-p2p`  
+  const helpCentreUrl =
+    locale != "en"
+      ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
+      : `https://trade.deriv.com//help-centre/deriv-p2p`
 
   const navItems = [
     { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon },
@@ -57,7 +65,7 @@ export default function Sidebar({ className }: SidebarProps) {
           { name: t("navigation.market"), href: "/", icon: MarketIcon },
           { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon },
           { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
-          ...(showWallet === true ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
+          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
           { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon },
         ]
