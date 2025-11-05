@@ -97,7 +97,7 @@
     "duplicateMethod": "Méthode de paiement en double",
     "duplicateMethodDescription": "Une méthode de paiement avec les mêmes valeurs existe déjà. Ajoutez-en une nouvelle.",
     "unableToAdd": "Impossible d'ajouter la méthode de paiement",
-    "addError": "inténtalo de nuevo.\"",
+    "addError": "inténtalo de nuevo.",
     "search": "Rechercher",
     "allPaymentMethod": "Toutes les méthodes de paiement",
     "bankTransfers": "Virements Bancaires",
@@ -194,7 +194,7 @@
     "textCopiedToClipboard": "Le texte a été copié dans votre presse-papiers.",
     "ratingDeadline": "Vous avez jusqu'au {deadline} pour évaluer cette transaction.",
     "loadingOrderDetails": "Chargement des détails de l’ordre...",
-    "failedToLoadOrderDetails": "inténtalo de nuevo",
+    "failedToLoadOrderDetails": "inténtalo de nuevo.",
     "tryAgain": "Réessayer",
     "orderNotFound": "Ordre introuvable"
   },
