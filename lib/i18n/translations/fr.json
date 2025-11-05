@@ -78,7 +78,7 @@
     "insufficientBalance": "Solde insuffisant. Ajoutez des fonds à votre portefeuille avant de créer un ordre.",
     "orderLimitError": "Limite d’ordre: {min} - {max} {currency}",
     "orderExists": "L’ordre existe déjà.",
-    "orderCreationError": "inténtalo de nuevo.\"",
+    "orderCreationError": "inténtalo de nuevo.",
     "unableToCreateOrder": "Impossible de créer un ordre",
     "confirmPayment": "",
     "fraudWarning": "",
@@ -194,7 +194,7 @@
     "textCopiedToClipboard": "Le texte a été copié dans votre presse-papiers.",
     "ratingDeadline": "Vous avez jusqu'au {deadline} pour évaluer cette transaction.",
     "loadingOrderDetails": "Chargement des détails de l’ordre...",
-    "failedToLoadOrderDetails": "inténtalo de nuevo.\"",
+    "failedToLoadOrderDetails": "inténtalo de nuevo",
     "tryAgain": "Réessayer",
     "orderNotFound": "Ordre introuvable"
   },
