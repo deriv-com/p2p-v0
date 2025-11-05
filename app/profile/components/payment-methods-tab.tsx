@@ -5,7 +5,6 @@ import { maskAccountNumber } from "@/lib/utils"
 import Image from "next/image"
 import { useState, useEffect, useCallback } from "react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { API, AUTH } from "@/lib/local-variables"
 import { CustomShimmer } from "./ui/custom-shimmer"
 import { ProfileAPI } from "@/services/api"
@@ -16,7 +15,6 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import EmptyState from "@/components/empty-state"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useIsMobile } from "@/hooks/use-mobile"
 
 interface PaymentMethod {
   id: string
@@ -30,7 +28,6 @@ interface PaymentMethod {
 
 export default function PaymentMethodsTab() {
   const { t } = useTranslations()
-  const isMobile = useIsMobile()
   const userId = useUserDataStore((state) => state.userId)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -43,11 +40,6 @@ export default function PaymentMethodsTab() {
     paymentMethod: null as PaymentMethod | null,
   })
   const [isEditing, setIsEditing] = useState(false)
-
-  const [mobileActionSheet, setMobileActionSheet] = useState({
-    isOpen: false,
-    paymentMethod: null as PaymentMethod | null,
-  })
 
   const fetchPaymentMethods = useCallback(async () => {
     try {
@@ -215,8 +207,6 @@ export default function PaymentMethodsTab() {
   }
 
   const handleDeletePaymentMethod = (id: string, name: string) => {
-    setMobileActionSheet({ isOpen: false, paymentMethod: null })
-
     showDeleteDialog({
       title: t("profile.deletePaymentMethodTitle"),
       description: t("profile.deletePaymentMethodDescription"),
@@ -274,26 +264,6 @@ export default function PaymentMethodsTab() {
         confirmText: t("orderDetails.gotIt"),
         type: "error",
       })
-    }
-  }
-
-  const handleMobileMenuOpen = (method: PaymentMethod) => {
-    setMobileActionSheet({
-      isOpen: true,
-      paymentMethod: method,
-    })
-  }
-
-  const handleMobileEdit = () => {
-    if (mobileActionSheet.paymentMethod) {
-      handleEditPaymentMethod(mobileActionSheet.paymentMethod)
-      setMobileActionSheet({ isOpen: false, paymentMethod: null })
-    }
-  }
-
-  const handleMobileDelete = () => {
-    if (mobileActionSheet.paymentMethod) {
-      handleDeletePaymentMethod(mobileActionSheet.paymentMethod.id, mobileActionSheet.paymentMethod.name)
     }
   }
 
@@ -393,40 +363,29 @@ export default function PaymentMethodsTab() {
                         </div>
                       </div>
                     </div>
-                    {isMobile ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="p-1 h-auto w-auto flex-shrink-0 ml-2"
-                        onClick={() => handleMobileMenuOpen(method)}
-                      >
-                        <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
-                      </Button>
-                    ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                            <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent side="left" align="center" className="w-[160px]">
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
-                            onSelect={() => handleEditPaymentMethod(method)}
-                          >
-                            <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
-                            {t("profile.edit")}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
-                            onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
-                          >
-                            <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
-                            {t("profile.delete")}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
+                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
+                          onSelect={() => handleEditPaymentMethod(method)}
+                        >
+                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
+                          {t("profile.edit")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
+                          onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
+                        >
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
+                          {t("profile.delete")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </CardContent>
               </Card>
@@ -455,40 +414,29 @@ export default function PaymentMethodsTab() {
                         </div>
                       </div>
                     </div>
-                    {isMobile ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="p-1 h-auto w-auto flex-shrink-0 ml-2"
-                        onClick={() => handleMobileMenuOpen(method)}
-                      >
-                        <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
-                      </Button>
-                    ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
-                            <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent side="left" align="center" className="w-[160px]">
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
-                            onSelect={() => handleEditPaymentMethod(method)}
-                          >
-                            <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
-                            {t("profile.edit")}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
-                            onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
-                          >
-                            <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
-                            {t("profile.delete")}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="p-1 h-auto w-auto flex-shrink-0 ml-2">
+                          <Image src="/icons/vertical.svg" alt="Options" width={24} height={24} />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="left" align="center" className="w-[160px]">
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
+                          onSelect={() => handleEditPaymentMethod(method)}
+                        >
+                          <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
+                          {t("profile.edit")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-destructive focus:text-destructive px-[16px] py-[8px]"
+                          onSelect={() => handleDeletePaymentMethod(method.id, method.name)}
+                        >
+                          <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} />
+                          {t("profile.delete")}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </CardContent>
               </Card>
@@ -496,39 +444,6 @@ export default function PaymentMethodsTab() {
           </div>
         </div>
       )}
-
-      <Sheet
-        open={mobileActionSheet.isOpen}
-        onOpenChange={(open) => setMobileActionSheet({ isOpen: open, paymentMethod: null })}
-      >
-        <SheetContent side="bottom" className="rounded-t-[32px] p-0">
-          <div className="w-full flex justify-center pt-4 pb-2">
-            <div className="w-10 h-1 bg-gray-300 rounded-full"></div>
-          </div>
-          <SheetHeader className="px-6 pt-4 pb-2">
-            <SheetTitle className="text-left">{t("profile.paymentMethodActions")}</SheetTitle>
-          </SheetHeader>
-          <div className="px-6 pb-6 space-y-2">
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-auto py-4 px-4 text-base font-normal hover:bg-gray-100"
-              onClick={handleMobileEdit}
-            >
-              <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} className="mr-3" />
-              {t("profile.edit")}
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start h-auto py-4 px-4 text-base font-normal text-destructive hover:bg-red-50 hover:text-destructive"
-              onClick={handleMobileDelete}
-            >
-              <Image src="/icons/delete-trash-icon.png" alt="Delete" width={24} height={24} className="mr-3" />
-              {t("profile.delete")}
-            </Button>
-          </div>
-        </SheetContent>
-      </Sheet>
-
       {editPanel.show && editPanel.paymentMethod && (
         <EditPaymentMethodPanel
           paymentMethod={editPanel.paymentMethod}

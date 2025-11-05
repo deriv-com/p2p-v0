@@ -516,12 +516,6 @@
     "userUnblocked": "{nickname} unblocked."
   },
   "kyc": {
-    "title": "Identity verification",
-    "subtitle": "Complete your identity verification to unlock all P2P features.",
-    "verifyIdentity": "Verify identity",
-    "completeProfile": "Complete your profile",
-    "completeProfileDescription": "Complete your profile to start trading on P2P.",
-    "backToHome": "Back to Home",
     "accessP2PMessage": "To access P2P, complete your profile and verification.",
     "setupProfile": "Set up your profile",
     "proofOfIdentity": "Proof of identity",
