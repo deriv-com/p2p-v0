@@ -499,7 +499,7 @@
     "insufficientBalanceTitle": "Saldo insuficiente",
     "insufficientBalanceMessage": "No tienes suficiente saldo para crear este anuncio",
     "invalidValuesTitle": "Valores inválidos",
-    "invalidValuesMessage": "\"Por favor",
+    "invalidValuesMessage": "Por favor",
     "amountExceedsBalanceTitle": "La cantidad excede el saldo",
     "amountExceedsBalanceMessage": "La cantidad total excede tu saldo disponible. Por favor",
     "selectPayment": "Seleccionar pago",
