@@ -54,6 +54,13 @@ export default function AdsPage() {
   const isMobile = useIsMobile()
   const router = useRouter()
 
+  useEffect(() => {
+    if (accountCurrencies.length > 0 && !selectedCurrency) {
+      const defaultCurrency = accountCurrencies[0]?.code || ""
+      setSelectedCurrency(defaultCurrency)
+    }
+  }, [accountCurrencies, selectedCurrency])
+
   const fetchAds = async (currency?: string) => {
     if (!userId) {
       setLoading(false)
