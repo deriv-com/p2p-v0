@@ -155,7 +155,7 @@
     "errorFakeIdentity": "Nunca compartas contraseñas, OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.",
     "errorSensitiveDataRequests": "Tu mensaje requiere revisión adicional. Por favor, espera mientras te conectamos con un especialista.",
     "errorMiscellaneous": "Tu mensaje no cumple con nuestras pautas de la comunidad. Por favor, inténtalo de nuevo.",
-    "errorMultipleViolations": " Viola nuestras pautas de chat."
+    "errorMultipleViolations": "Viola nuestras pautas de chat."
   },
   "orderDetails": {
     "title": "Detalles de la orden",
