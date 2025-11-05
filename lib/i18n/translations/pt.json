@@ -152,9 +152,9 @@
     "errorOffPlatformCommunication": "Por favor, mantenha a conversa dentro desta plataforma. Não podemos ajudar com solicitações para se comunicar em outro lugar.",
     "errorHumanAttention": "Linguagem ameaçadora ou assediadora não é tolerada. Por favor, comunique-se respeitosamente.",
     "errorHarassment": "Por favor, não se passe por funcionários da Deriv ou deturpe sua identidade.",
-    "errorFakeIdentity": "Nunca compartilhe senhas, OTPs ou credenciais de login. Os funcionários da Deriv nunca pedirão essas informações no chat.",
-    "errorSensitiveDataRequests": "Il tuo messaggio richiede una revisione aggiuntiva. Per favore",
-    "errorMiscellaneous": "Il tuo messaggio non rispetta le nostre linee guida della comunità. Per favore",
+    "errorFakeIdentity": "OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.",
+    "errorSensitiveDataRequests": "Sua mensagem requer revisão adicional. Por favor, aguarde enquanto conectamos você com um especialista.",
+    "errorMiscellaneous": "Sua mensagem não atende às nossas diretrizes da comunidade. Por favor, tente novamente.",
     "errorMultipleViolations": "Viola nossas diretrizes de chat."
   },
   "orderDetails": {
