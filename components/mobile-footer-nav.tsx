@@ -1,7 +1,6 @@
 "use client"
 
-import { useTranslations } from "next/intl"
-
+import { useTranslations } from "@/lib/i18n/use-translations"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
