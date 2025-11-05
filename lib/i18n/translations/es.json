@@ -331,7 +331,7 @@
     "gettingStartedWithP2P": "Comenzando con P2P"
   },
   "errors": {
-    "generic": "\"Algo salió mal. Por favor",
+    "generic": "Algo salió mal. Por favor",
     "networkError": "Error de red. Por favor",
     "unauthorized": "No estás autorizado para realizar esta acción.",
     "notFound": "No se encontró el recurso solicitado."
@@ -353,12 +353,12 @@
     "adUpdated": "Anuncio actualizado",
     "adCreatedMessage": "",
     "adUpdatedMessage": "",
-    "errorLoadingAds": "\"Error al cargar los anuncios. Por favor",
+    "errorLoadingAds": "Error al cargar los anuncios. Por favor",
     "errorLoadingAdsTitle": "Error al cargar anuncios",
-    "errorLoadingAdsMessage": "\"Error al cargar los anuncios. Por favor",
+    "errorLoadingAdsMessage": "Error al cargar los anuncios. Por favor",
     "unableToHideAds": "No se pueden ocultar tus anuncios",
     "unableToShowAds": "No se pueden mostrar tus anuncios",
-    "hideAdsError": "\"Error al ocultar tus anuncios. Por favor",
+    "hideAdsError": "Error al ocultar tus anuncios. Por favor",
     "showAdsError": "\"Error al mostrar tus anuncios. Por favor",
     "noAdsTitle": "No tienes anuncios",
     "noAdsDescription": "¿Buscas comprar o vender USD? Puedes publicar tu propio anuncio para que otros respondan.",
