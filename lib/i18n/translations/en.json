@@ -352,7 +352,7 @@
     "adCreated": "Ad created",
     "adUpdated": "Ad updated",
     "adCreatedMessage": "You've successfully created Ad ({type} {id}).",
-    "adUpdatedMessage": "\"You've successfully updated Ad ({type} {id}).",
+    "adUpdatedMessage": "You've successfully updated Ad ({type} {id}).",
     "errorLoadingAds": "Failed to load ads. Please try again.",
     "errorLoadingAdsTitle": "Error Loading Ads",
     "errorLoadingAdsMessage": "Failed to load ads. Please try again later.",
