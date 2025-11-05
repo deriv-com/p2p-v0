@@ -49,17 +49,12 @@ export default function AdsPage() {
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
   const { accountCurrencies } = useAccountCurrencies()
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("")
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(accountCurrencies[0]?.code || "")
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
-  useEffect(() => {
-    if (accountCurrencies.length > 0 && !selectedCurrency) {
-      const defaultCurrency = accountCurrencies[0]?.code || ""
-      setSelectedCurrency(defaultCurrency)
-    }
-  }, [accountCurrencies, selectedCurrency])
+  const effectiveCurrency = selectedCurrency || accountCurrencies[0]?.code || ""
 
   const fetchAds = async (currency?: string) => {
     if (!userId) {
@@ -67,10 +62,16 @@ export default function AdsPage() {
       return
     }
 
+    const currencyToUse = currency || effectiveCurrency
+    if (!currencyToUse) {
+      setLoading(false)
+      return
+    }
+
     try {
       setLoading(true)
       setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(true, currency || selectedCurrency)
+      const userAdverts = await AdsAPI.getUserAdverts(true, currencyToUse)
 
       setAds(userAdverts)
     } catch (err) {
@@ -88,11 +89,18 @@ export default function AdsPage() {
 
   useEffect(() => {
     setLoading(false)
-    if (userId && !hasFetchedRef.current && selectedCurrency) {
-      fetchAds(selectedCurrency)
+    if (userId && !hasFetchedRef.current && accountCurrencies.length > 0) {
+      fetchAds(effectiveCurrency)
       hasFetchedRef.current = true
     }
-  }, [userId, selectedCurrency])
+  }, [userId, accountCurrencies.length])
+
+  useEffect(() => {
+    if (accountCurrencies.length > 0 && !selectedCurrency) {
+      const defaultCurrency = accountCurrencies[0]?.code || ""
+      setSelectedCurrency(defaultCurrency)
+    }
+  }, [accountCurrencies, selectedCurrency])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
