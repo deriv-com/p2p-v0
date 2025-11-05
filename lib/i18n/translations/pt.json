@@ -152,7 +152,7 @@
     "errorOffPlatformCommunication": "Per favore",
     "errorHumanAttention": "Il linguaggio minaccioso o molesto non è tollerato. Per favore",
     "errorHarassment": "Per favore",
-    "errorFakeIdentity": "OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.\"",
+    "errorFakeIdentity": "OTPs o credenciales de inicio de sesión. El personal de Deriv nunca pedirá esta información en el chat.",
     "errorSensitiveDataRequests": "Il tuo messaggio richiede una revisione aggiuntiva. Per favore",
     "errorMiscellaneous": "Il tuo messaggio non rispetta le nostre linee guida della comunità. Per favore",
     "errorMultipleViolations": "Viola nossas diretrizes de chat."
