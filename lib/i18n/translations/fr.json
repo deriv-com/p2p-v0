@@ -331,7 +331,7 @@
     "gettingStartedWithP2P": "Démarrer avec P2P"
   },
   "errors": {
-    "generic": "inténtalo de nuevo.\"",
+    "generic": "inténtalo de nuevo.",
     "networkError": "verifica tu conexión.\"",
     "unauthorized": "Vous n'êtes pas autorisé à effectuer cette action.",
     "notFound": "La ressource demandée n'a pas été trouvée."
