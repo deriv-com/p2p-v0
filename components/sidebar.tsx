@@ -5,7 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
@@ -25,30 +25,19 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const { t, locale } = useTranslations()
-  const [showWallet, setShowWallet] = useState<boolean>(true)
   const { userData, userId } = useUserDataStore()
 
-  const [isV1Signup, setIsV1Signup] = useState(() => {
+  const [isV1Signup] = useState(() => {
     const cached = getCachedSignup()
     if (cached !== null) return cached === "v1"
     return userData?.signup === "v1"
   })
 
+  // Show wallet for non-registered users and non-v1 users
+  const showWallet = userData?.signup !== "v1"
+
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
-
-  useEffect(() => {
-    if (userData?.signup === "v1") {
-      setIsV1Signup(true)
-      setShowWallet(false)
-    } else if (userData?.signup) {
-      setIsV1Signup(false)
-      setShowWallet(true)
-    } else {
-      // Non-registered users: show wallet
-      setShowWallet(true)
-    }
-  }, [userData?.signup])
 
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")

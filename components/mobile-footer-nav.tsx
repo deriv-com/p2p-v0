@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useState, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
@@ -19,15 +18,8 @@ export default function MobileFooterNav() {
   const { isChatVisible } = useChatVisibilityStore()
   const { t } = useTranslations()
   const { userData } = useUserDataStore()
-  const [showWallet, setShowWallet] = useState<boolean>(true)
 
-  useEffect(() => {
-    if (userData?.signup === "v1") {
-      setShowWallet(false)
-    } else {
-      setShowWallet(true)
-    }
-  }, [userData?.signup])
+  const showWallet = userData?.signup !== "v1"
 
   if (
     pathname.startsWith("/orders/") ||
