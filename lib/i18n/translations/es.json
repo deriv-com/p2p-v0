@@ -386,27 +386,6 @@
     "unableToUpdateAd": "No se puede actualizar el anuncio",
     "updateAdError": "Hubo un error al actualizar el anuncio. Por favor"
   },
-  "": "",
-  "If your ad doesn't receive an order within 3 days": "\"Has creado exitosamente un anuncio de {type}.",
-  "Si tu anuncio no recibe una orden en 3 días": "\"Vous avez créé avec succès une annonce de {type}.",
-  "Si votre annonce ne reçoit pas d’ordre dans les 3 jours": "\"Hai creato con successo un annuncio di {type}.",
-  "Se il tuo annuncio non riceve un ordine entro 3 giorni": "\"Você criou com sucesso um anúncio de {type}.",
-  "Se o seu anúncio não receber um pedido em 3 dias": "",
-  "Your changes have been saved and are now live": {
-    "\"": ""
-  },
-  "Tus cambios han sido guardados y están ahora en vivo": {
-    "\"": ""
-  },
-  "Vos modifications ont été enregistrées et sont maintenant actives": {
-    "\"": ""
-  },
-  "Le tue modifiche sono state salvate e sono ora attive": {
-    "\"": ""
-  },
-  "Suas alterações foram salvas e agora estão ativas": {
-    "\"": ""
-  },
   "orders": {
     "title": "Órdenes",
     "active": "Activas",
@@ -529,13 +508,13 @@
     "noAdsYet": "Aún no hay anuncios",
     "noActiveAds": "Este anunciante no tiene anuncios activos.",
     "loadingAdvertiser": "Cargando anunciante...",
-    "failedToLoad": "\"Error al cargar el perfil del anunciante. Por favor",
+    "failedToLoad": "Error al cargar el perfil del anunciante. Por favor",
     "follow": "Seguir",
     "following": "Siguiendo",
     "block": "Bloquear",
     "unblock": "Desbloquear",
     "blockUser": "¿Bloquear a {nickname}?",
-    "blockDescription": "and they can't place orders on yours.\"",
+    "blockDescription": "and they can't place orders on yours.",
     "youveBlockedUser": "Has bloqueado a este usuario",
     "unblockDescription": "Desbloquéalos si deseas interactuar con este anunciante nuevamente.",
     "successfullyFollowed": "Seguido exitosamente",
