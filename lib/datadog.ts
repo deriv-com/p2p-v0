@@ -1,19 +1,28 @@
 import { datadogRum } from "@datadog/browser-rum"
 
 export const initDatadog = () => {
+  console.log("[v0] initDatadog called")
+
   if (typeof window === "undefined") {
+    console.log("[v0] Datadog: Running on server, skipping initialization")
     return
   }
 
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
+  console.log("[v0] Datadog env vars:", {
+    applicationId: applicationId ? "present" : "missing",
+    clientToken: clientToken ? "present" : "missing",
+  })
+
   if (!applicationId || !clientToken) {
-    console.warn("Datadog RUM: Missing applicationId or clientToken")
+    console.warn("[v0] Datadog RUM: Missing applicationId or clientToken")
     return
   }
 
   if (datadogRum.getInternalContext()) {
+    console.log("[v0] Datadog: Already initialized")
     return
   }
 
@@ -25,6 +34,12 @@ export const initDatadog = () => {
     const sessionReplaySampleRate = process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE
       ? Number(process.env.NEXT_PUBLIC_DATADOG_SESSION_REPLAY_SAMPLE_RATE)
       : 100
+
+    console.log("[v0] Datadog: Initializing with config:", {
+      applicationId,
+      sessionSampleRate,
+      sessionReplaySampleRate,
+    })
 
     datadogRum.init({
       applicationId,
@@ -43,8 +58,8 @@ export const initDatadog = () => {
 
     datadogRum.startSessionReplayRecording()
 
-    console.log("Datadog RUM: Initialized successfully")
+    console.log("[v0] Datadog RUM: Initialized successfully")
   } catch (error) {
-    console.error("Datadog RUM: Initialization failed:", error)
+    console.error("[v0] Datadog RUM: Initialization failed:", error)
   }
 }
