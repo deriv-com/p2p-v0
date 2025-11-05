@@ -49,12 +49,10 @@ export default function AdsPage() {
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
   const { accountCurrencies } = useAccountCurrencies()
-  const [selectedCurrency, setSelectedCurrency] = useState<string>(accountCurrencies[0]?.code || "")
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("")
 
   const isMobile = useIsMobile()
   const router = useRouter()
-
-  const effectiveCurrency = selectedCurrency || accountCurrencies[0]?.code || ""
 
   const fetchAds = async (currency?: string) => {
     if (!userId) {
@@ -62,16 +60,11 @@ export default function AdsPage() {
       return
     }
 
-    const currencyToUse = currency || effectiveCurrency
-    if (!currencyToUse) {
-      setLoading(false)
-      return
-    }
-
     try {
       setLoading(true)
       setError(null)
-      const userAdverts = await AdsAPI.getUserAdverts(true, currencyToUse)
+      const effectiveCurrency = currency || selectedCurrency || accountCurrencies[0]?.code
+      const userAdverts = await AdsAPI.getUserAdverts(true, effectiveCurrency)
 
       setAds(userAdverts)
     } catch (err) {
@@ -89,18 +82,11 @@ export default function AdsPage() {
 
   useEffect(() => {
     setLoading(false)
-    if (userId && !hasFetchedRef.current && accountCurrencies.length > 0) {
-      fetchAds(effectiveCurrency)
+    if (userId && !hasFetchedRef.current && (selectedCurrency || accountCurrencies.length > 0)) {
+      fetchAds()
       hasFetchedRef.current = true
     }
-  }, [userId, accountCurrencies.length])
-
-  useEffect(() => {
-    if (accountCurrencies.length > 0 && !selectedCurrency) {
-      const defaultCurrency = accountCurrencies[0]?.code || ""
-      setSelectedCurrency(defaultCurrency)
-    }
-  }, [accountCurrencies, selectedCurrency])
+  }, [userId, selectedCurrency, accountCurrencies])
 
   useEffect(() => {
     if (userData?.adverts_are_listed !== undefined) {
@@ -245,7 +231,7 @@ export default function AdsPage() {
             <div>
               <CurrencyFilter
                 currencies={accountCurrencies}
-                selectedCurrency={selectedCurrency}
+                selectedCurrency={selectedCurrency || accountCurrencies[0]?.code || ""}
                 onCurrencySelect={handleCurrencyChange}
                 title="Select currency"
                 trigger={
@@ -255,7 +241,7 @@ export default function AdsPage() {
                     className="hidden w-[86px] h-[32px] border border-[#FFFFFF3D] bg-transparent hover:bg-transparent rounded-full text-white font-normal px-3"
                     disabled={!!tempBanUntil}
                   >
-                    <span>{selectedCurrency}</span>
+                    <span>{selectedCurrency || accountCurrencies[0]?.code || ""}</span>
                     <Image
                       src="/icons/chevron-down-white.png"
                       alt="Arrow"
