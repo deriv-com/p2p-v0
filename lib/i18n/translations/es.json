@@ -149,7 +149,7 @@
     "errorLink": "Los enlaces y URLs no están permitidos en este chat.",
     "errorProfanity": "Por favor, mantén la conversación profesional y evita lenguaje ofensivo.",
     "errorPromotionalContent": "El contenido promocional y los anuncios no están permitidos.",
-    "errorOffPlatformCommunication": "Por favor",
+    "errorOffPlatformCommunication": "Por favor, mantén la conversación dentro de esta plataforma. No podemos ayudar con solicitudes para comunicarse en otro lugar.",
     "errorHumanAttention": "El lenguaje amenazante o acosador no se tolera. Por favor",
     "errorHarassment": "Por favor",
     "errorFakeIdentity": "OTPs",
