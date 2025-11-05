@@ -154,7 +154,7 @@
     "errorHarassment": "Per favore, non impersonare il personale di Deriv o travisare la tua identità.",
     "errorFakeIdentity": "Non condividere mai password, OTP o credenziali di accesso. Il personale di Deriv non chiederà mai queste informazioni nella chat.",
     "errorSensitiveDataRequests": "Votre message nécessite un examen supplémentaire. Veuillez patienter pendant que nous vous connectons avec un spécialiste.",
-    "errorMiscellaneous": "Votre message ne respecte pas nos directives communautaires. Veuillez réessayer.",
+    "errorMiscellaneous": "Il tuo messaggio non rispetta le nostre linee guida della comunità. Per favore, riprova..",
     "errorMultipleViolations": "Viola le nostre linee guida della chat."
   },
   "orderDetails": {
