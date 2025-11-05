@@ -48,7 +48,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")
 
-  const helpCentreUrl = locale != "en" ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p` : `https://trade.deriv.com//help-centre/deriv-p2p`  
+  const helpCentreUrl = locale != "en" ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p` : `https://trade.deriv.com/help-centre/deriv-p2p`  
 
   const navItems = [
     { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon },
