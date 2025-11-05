@@ -381,7 +381,7 @@
     "deleteAdTitle": "Supprimer l'annonce ?",
     "deleteAdDescription": "Vous ne pourrez pas la restaurer.",
     "unableToDeleteAd": "Impossible de supprimer l'annonce",
-    "deleteAdError": "inténtalo de nuevo.\"",
+    "deleteAdError": "inténtalo de nuevo.",
     "deleteAdOpenOrders": "L'annonce a des ordre en cours.",
     "unableToUpdateAd": "Impossible de mettre à jour l'annonce",
     "updateAdError": "inténtalo de nuevo.\""
