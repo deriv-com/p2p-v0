@@ -332,7 +332,7 @@
   },
   "errors": {
     "generic": "\"Algo salió mal. Por favor",
-    "networkError": "\"Error de red. Por favor",
+    "networkError": "Error de red. Por favor",
     "unauthorized": "No estás autorizado para realizar esta acción.",
     "notFound": "No se encontró el recurso solicitado."
   },
