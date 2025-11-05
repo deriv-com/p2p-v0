@@ -152,7 +152,7 @@
     "errorOffPlatformCommunication": "mantén la conversación dentro de esta plataforma. No podemos ayudar con solicitudes para comunicarse en otro lugar.",
     "errorHumanAttention": "comunícate respetuosamente.",
     "errorHarassment": "no te hagas pasar por el personal de Deriv ni tergiverses tu identidad.",
-    "errorFakeIdentity": "or login credentials. Deriv staff will never ask for this information in chat.\"",
+    "errorFakeIdentity": "or login credentials. Deriv staff will never ask for this information in chat.",
     "errorSensitiveDataRequests": "espera mientras te conectamos con un especialista.",
     "errorMiscellaneous": "inténtalo de nuevo.",
     "errorMultipleViolations": "Il viole nos directives de chat."
