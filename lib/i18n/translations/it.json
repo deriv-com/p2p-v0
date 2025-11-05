@@ -386,27 +386,6 @@
     "unableToUpdateAd": "Impossibile aggiornare l'annuncio",
     "updateAdError": "Une erreur s'est produite lors de la mise à jour de l'annonce. Veuillez réessayer."
   },
-  "": "",
-  "If your ad doesn't receive an order within 3 days": "",
-  "Si tu anuncio no recibe una orden en 3 días": "",
-  "Si votre annonce ne reçoit pas d’ordre dans les 3 jours": "",
-  "Se il tuo annuncio non riceve un ordine entro 3 giorni": "",
-  "Se o seu anúncio não receber um pedido em 3 dias": "",
-  "Your changes have been saved and are now live": {
-    "\"": ""
-  },
-  "Tus cambios han sido guardados y están ahora en vivo": {
-    "\"": ""
-  },
-  "Vos modifications ont été enregistrées et sont maintenant actives": {
-    "\"": ""
-  },
-  "Le tue modifiche sono state salvate e sono ora attive": {
-    "\"": ""
-  },
-  "Suas alterações foram salvas e agora estão ativas": {
-    "\"": ""
-  },
   "orders": {
     "title": "Ordini",
     "active": "Attivi",
