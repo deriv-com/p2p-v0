@@ -9,6 +9,7 @@ import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface Country {
   code: string
@@ -22,6 +23,7 @@ interface CountrySelectionProps {
 }
 
 export default function CountrySelection({ countries, selectedCountries, onCountriesChange }: CountrySelectionProps) {
+  const { t } = useTranslations()
   const isMobile = useIsMobile()
   const [searchTerm, setSearchTerm] = useState("")
   const [isOpen, setIsOpen] = useState(false)
@@ -51,7 +53,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return "All"
+      return t("common.all")
     }
 
     const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
@@ -69,7 +71,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           className="absolute left-3 top-1/2 transform -translate-y-1/2"
         />
         <Input
-          placeholder="Search"
+          placeholder={t("common.search")}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="text-base pl-10 pr-10 h-8 border-grayscale-500 focus:border-grayscale-500  bg-grayscale-500 rounded-lg"
@@ -97,7 +99,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             className="data-[state=checked]:bg-black border-black"
           />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
-            All
+            {t("common.all")}
           </label>
         </div>
 
