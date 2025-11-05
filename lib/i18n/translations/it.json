@@ -84,7 +84,7 @@
     "fraudWarning": "Fornire documenti fraudolenti comporterà un ban permanente.",
     "ensurePayment": "Assicurati di aver pagato {amount} {currency} a {name} e carica la ricevuta come prova di pagamento.",
     "uploadProof": "Carica prova di pagamento",
-    "fileTypes": "\"JPEG",
+    "fileTypes": "JPEG",
     "fileTooLarge": "Il file deve essere di 5MB o meno.",
     "submit": "Invia"
   },
@@ -145,7 +145,7 @@
     "disclaimerText": "Deriv non ti contatterà mai tramite WhatsApp per chiedere le tue informazioni personali. Ignora sempre qualsiasi messaggio da numeri che affermano di essere di Deriv.",
     "disclaimerNote": "Nota:",
     "disclaimerNoteText": "usaremos este chat como referencia.\"",
-    "errorPii": "\"Por favor",
+    "errorPii": "Por favor",
     "errorLink": "I link e gli URL non sono consentiti in questa chat.",
     "errorProfanity": "Veuillez garder la conversation professionnelle et éviter le langage offensant.",
     "errorPromotionalContent": "I contenuti promozionali e le pubblicità non sono consentiti.",
