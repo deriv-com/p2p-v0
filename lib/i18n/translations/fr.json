@@ -478,9 +478,9 @@
     "insufficientBalanceTitle": "Solde insuffisant",
     "insufficientBalanceMessage": "Vous n'avez pas assez de solde pour créer cette annonce",
     "invalidValuesTitle": "Valeurs invalides",
-    "invalidValuesMessage": "verifica tus valores de entrada.\"",
+    "invalidValuesMessage": "verifica tus valores de entrada.",
     "amountExceedsBalanceTitle": "Le montant dépasse le solde",
-    "amountExceedsBalanceMessage": "ingresa una cantidad menor.\"",
+    "amountExceedsBalanceMessage": "ingresa una cantidad menor.",
     "selectPayment": "Sélectionner le paiement",
     "selected": "Sélectionné ({count})",
     "noPaymentMethodsFound": "Aucune méthode de paiement trouvée"
