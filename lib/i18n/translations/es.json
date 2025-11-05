@@ -318,7 +318,7 @@
     "transferSuccessful": "Transferencia exitosa",
     "transferUnsuccessful": "Transferencia fallida",
     "transferSuccessMessage": "{amount} {currency} transferidos desde tu {from} a tu {to}",
-    "transferUnsuccessfulMessage": "\"No pudimos procesar tu transferencia. Por favor",
+    "transferUnsuccessfulMessage": "No pudimos procesar tu transferencia. Por favor",
     "viewDetails": "Ver detalles",
     "gotIt": "Entendido",
     "notNow": "Ahora no",
