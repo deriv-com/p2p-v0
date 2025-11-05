@@ -10,6 +10,7 @@ import { getCategoryDisplayName, getMethodDisplayDetails, getPaymentMethodColour
 import Image from "next/image"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { usePaymentSelection } from "./payment-selection-context"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentMethod {
   id: number
@@ -22,6 +23,7 @@ interface PaymentMethod {
 }
 
 const AdPaymentMethods = () => {
+  const { t } = useTranslations()
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const { selectedPaymentMethodIds, togglePaymentMethod } = usePaymentSelection()
   const [isLoading, setIsLoading] = useState(true)
@@ -62,17 +64,17 @@ const AdPaymentMethods = () => {
         setPaymentMethods(data)
         setShowAddPaymentPanel(false)
       } else {
-        let title = "Unable to add payment method"
-        let description = "There was an error when adding the payment method. Please try again."
+        let title = t("paymentMethod.unableToAdd")
+        let description = t("paymentMethod.addError")
 
         if (result.errors.length > 0 && result.errors[0].code === "PaymentMethodDuplicate") {
-          title = "Duplicate payment method"
-          description = "A payment method with the same values already exists. Add a new one."
+          title = t("paymentMethod.duplicateMethod")
+          description = t("paymentMethod.duplicateMethodDescription")
         }
         showAlert({
           title,
           description,
-          confirmText: "OK",
+          confirmText: t("common.ok"),
           type: "warning",
         })
       }
@@ -105,8 +107,8 @@ const AdPaymentMethods = () => {
   return (
     <>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-2">Select payment method</h3>
-        <p className="text-gray-600 mb-4">You can select up to 3 payment methods</p>
+        <h3 className="text-lg font-semibold mb-2">{t("adForm.selectPaymentMethod")}</h3>
+        <p className="text-gray-600 mb-4">{t("adForm.selectUpTo3PaymentMethods")}</p>
 
         <div className="md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-4">
           <div className="flex gap-4 overflow-x-auto pb-2 md:contents">
@@ -153,19 +155,19 @@ const AdPaymentMethods = () => {
                 <div className="text-center">
                   <Image
                     src="/icons/plus_icon.png"
-                    alt="Add payment method"
+                    alt={t("paymentMethod.addPaymentMethod")}
                     width={14}
                     height={24}
                     className="mx-auto mb-2"
                   />
-                  <p className="text-sm text-neutral-10">Add payment method</p>
+                  <p className="text-sm text-neutral-10">{t("paymentMethod.addPaymentMethod")}</p>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
 
-        {paymentMethods.length === 0 && <p className="text-gray-500 italic">No payment methods are added yet</p>}
+        {paymentMethods.length === 0 && <p className="text-gray-500 italic">{t("adForm.noPaymentMethodsAdded")}</p>}
       </div>
 
       {showAddPaymentPanel && (

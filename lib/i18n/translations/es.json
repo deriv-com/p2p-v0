@@ -78,7 +78,7 @@
     "insufficientBalance": "Saldo insuficiente. Agrega fondos a tu billetera antes de crear una orden.",
     "orderLimitError": "Límite de orden: {min} - {max} {currency}",
     "orderExists": "La orden ya existe.",
-    "orderCreationError": "\"Hubo un error al crear la orden. Por favor",
+    "orderCreationError": "Hubo un error al crear la orden. Por favor",
     "unableToCreateOrder": "No se puede crear una orden",
     "confirmPayment": "",
     "fraudWarning": "",
@@ -194,7 +194,7 @@
     "textCopiedToClipboard": "El texto ha sido copiado a tu portapapeles.",
     "ratingDeadline": "Tienes hasta {deadline} para calificar esta transacción.",
     "loadingOrderDetails": "Cargando detalles de la orden...",
-    "failedToLoadOrderDetails": "\"Error al cargar los detalles de la orden. Por favor",
+    "failedToLoadOrderDetails": "Error al cargar los detalles de la orden. Por favor",
     "tryAgain": "Intentar de nuevo",
     "orderNotFound": "Orden no encontrada"
   },
@@ -318,7 +318,7 @@
     "transferSuccessful": "Transferencia exitosa",
     "transferUnsuccessful": "Transferencia fallida",
     "transferSuccessMessage": "{amount} {currency} transferidos desde tu {from} a tu {to}",
-    "transferUnsuccessfulMessage": "\"No pudimos procesar tu transferencia. Por favor",
+    "transferUnsuccessfulMessage": "No pudimos procesar tu transferencia. Por favor",
     "viewDetails": "Ver detalles",
     "gotIt": "Entendido",
     "notNow": "Ahora no",
@@ -331,8 +331,8 @@
     "gettingStartedWithP2P": "Comenzando con P2P"
   },
   "errors": {
-    "generic": "\"Algo salió mal. Por favor",
-    "networkError": "\"Error de red. Por favor",
+    "generic": "Algo salió mal. Por favor",
+    "networkError": "Error de red. Por favor",
     "unauthorized": "No estás autorizado para realizar esta acción.",
     "notFound": "No se encontró el recurso solicitado."
   },
@@ -353,13 +353,13 @@
     "adUpdated": "Anuncio actualizado",
     "adCreatedMessage": "",
     "adUpdatedMessage": "",
-    "errorLoadingAds": "\"Error al cargar los anuncios. Por favor",
+    "errorLoadingAds": "Error al cargar los anuncios. Por favor",
     "errorLoadingAdsTitle": "Error al cargar anuncios",
-    "errorLoadingAdsMessage": "\"Error al cargar los anuncios. Por favor",
+    "errorLoadingAdsMessage": "Error al cargar los anuncios. Por favor",
     "unableToHideAds": "No se pueden ocultar tus anuncios",
     "unableToShowAds": "No se pueden mostrar tus anuncios",
-    "hideAdsError": "\"Error al ocultar tus anuncios. Por favor",
-    "showAdsError": "\"Error al mostrar tus anuncios. Por favor",
+    "hideAdsError": "Error al ocultar tus anuncios. Por favor",
+    "showAdsError": "Error al mostrar tus anuncios. Por favor",
     "noAdsTitle": "No tienes anuncios",
     "noAdsDescription": "¿Buscas comprar o vender USD? Puedes publicar tu propio anuncio para que otros respondan.",
     "loadingAds": "Cargando anuncios...",
@@ -381,32 +381,22 @@
     "deleteAdTitle": "¿Eliminar anuncio?",
     "deleteAdDescription": "No podrás restaurarlo.",
     "unableToDeleteAd": "No se puede eliminar el anuncio",
-    "deleteAdError": "\"Hubo un error al eliminar el anuncio. Por favor",
+    "deleteAdError": "Hubo un error al eliminar el anuncio. Por favor",
     "deleteAdOpenOrders": "El anuncio tiene órdenes en curso.",
     "unableToUpdateAd": "No se puede actualizar el anuncio",
-    "updateAdError": "\"Hubo un error al actualizar el anuncio. Por favor"
+    "updateAdError": "Hubo un error al actualizar el anuncio. Por favor"
   },
   "": "",
-  "If your ad doesn't receive an order within 3 days": "\"Has creado exitosamente un anuncio de {type}.",
-  "Si tu anuncio no recibe una orden en 3 días": "\"Vous avez créé avec succès une annonce de {type}.",
-  "Si votre annonce ne reçoit pas d’ordre dans les 3 jours": "\"Hai creato con successo un annuncio di {type}.",
-  "Se il tuo annuncio non riceve un ordine entro 3 giorni": "\"Você criou com sucesso um anúncio de {type}.",
-  "Se o seu anúncio não receber um pedido em 3 dias": "",
-  "Your changes have been saved and are now live": {
-    "\"": ""
-  },
-  "Tus cambios han sido guardados y están ahora en vivo": {
-    "\"": ""
-  },
-  "Vos modifications ont été enregistrées et sont maintenant actives": {
-    "\"": ""
-  },
-  "Le tue modifiche sono state salvate e sono ora attive": {
-    "\"": ""
-  },
-  "Suas alterações foram salvas e agora estão ativas": {
-    "\"": ""
-  },
+  "If your ad doesn't receive an order within 3 days": "Has creado exitosamente un anuncio de {type}.",
+  "Si tu anuncio no recibe una orden en 3 días": "Has creado exitosamente un anuncio de {type}.",
+  "Si votre annonce ne reçoit pas d’ordre dans les 3 jours": "Vous avez créé avec succès une annonce de {type}.",
+  "Se il tuo annuncio non riceve un ordine entro 3 giorni": "Hai creato con successo un annuncio di {type}.",
+  "Se o seu anúncio não receber um pedido em 3 dias": "Você criou com sucesso um anúncio de {type}.",
+  "Your changes have been saved and are now live": "",
+  "Tus cambios han sido guardados y están ahora en vivo": "",
+  "Vos modifications ont été enregistrées et sont maintenant actives": "",
+  "Le tue modifiche sono state salvate e sono ora attive": "",
+  "Suas alterações foram salvas e agora estão ativas": "",
   "orders": {
     "title": "Órdenes",
     "active": "Activas",
@@ -472,6 +462,9 @@
     "audienceTooltip": "Puedes filtrar quién interactúa con tus anuncios según su ubicación o historial P2P. Los filtros más estrictos pueden reducir la visibilidad del anuncio.",
     "instructions": "Instrucciones (Opcional)",
     "instructionsDisclaimer": "Esta información será visible para todos. No compartas tu número de teléfono o detalles personales.",
+    "selectPaymentMethod": "Seleccionar método de pago",
+    "selectUpTo3PaymentMethods": "Puedes seleccionar hasta 3 métodos de pago",
+    "noPaymentMethodsAdded": "Aún no se han agregado métodos de pago",
     "totalAmountRequired": "La cantidad total es obligatoria",
     "totalAmountGreaterThanZero": "La cantidad total debe ser mayor que 0",
     "rateRequired": "La tasa es obligatoria",
@@ -529,7 +522,7 @@
     "noAdsYet": "Aún no hay anuncios",
     "noActiveAds": "Este anunciante no tiene anuncios activos.",
     "loadingAdvertiser": "Cargando anunciante...",
-    "failedToLoad": "\"Error al cargar el perfil del anunciante. Por favor",
+    "failedToLoad": "Error al cargar el perfil del anunciante. Por favor",
     "follow": "Seguir",
     "following": "Siguiendo",
     "block": "Bloquear",
