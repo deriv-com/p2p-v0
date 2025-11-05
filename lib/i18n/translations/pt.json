@@ -256,7 +256,7 @@
     "startAddingPaymentMethods": "Comece a adicionar métodos de pagamento",
     "edit": "Editar",
     "delete": "Excluir",
-    "deletePaymentMethodTitle": "Tem certeza de que deseja excluir este método de pagamento?",
+    "deletePaymentMethodTitle": "Excluir método de pagamento?",
     "deletePaymentMethodDescription": "Tem certeza de que deseja excluir este método de pagamento?",
     "paymentMethodDeleted": "Método de pagamento excluído.",
     "unableToDeletePaymentMethod": "Não foi possível excluir este método de pagamento.",
