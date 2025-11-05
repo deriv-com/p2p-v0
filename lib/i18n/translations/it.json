@@ -257,7 +257,7 @@
     "edit": "Modifica",
     "delete": "Elimina",
     "deletePaymentMethodTitle": "Eliminare il metodo di pagamento?",
-    "deletePaymentMethodDescription": "S?",
+    "deletePaymentMethodDescription": "Sei sicuro di voler eliminare questo metodo di pagamento?",
     "paymentMethodDeleted": "Metodo di pagamento eliminato.",
     "unableToDeletePaymentMethod": "Impossibile eliminare questo metodo di pagamento.",
     "paymentMethodLinkedToOrder": "Questo metodo di pagamento è collegato a uno dei tuoi ordini e non può essere eliminato.",
