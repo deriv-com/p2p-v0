@@ -174,7 +174,7 @@ export default function AdsPage() {
 
   const getHideMyAdsComponent = () => {
     return (
-      <div className="flex items-center justify-self-end">
+      <div className="flex items-center justify-self-end flex-shrink-0">
         <Switch
           id="hide-ads"
           checked={hiddenAdverts}
@@ -182,13 +182,19 @@ export default function AdsPage() {
           className="data-[state=checked]:bg-completed-icon"
           disabled={tempBanUntil}
         />
-        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2">
+        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
         </label>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
+              <Image
+                src="/icons/info-circle.png"
+                alt="Info"
+                width={12}
+                height={12}
+                className="ml-1 cursor-pointer flex-shrink-0"
+              />
             </TooltipTrigger>
             <TooltipContent>
               <p className="opacity-[0.72]">{t("myAds.hideMyAdsTooltip")}</p>
@@ -219,12 +225,12 @@ export default function AdsPage() {
             {t("myAds.title")}
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
-          <div className="flex items-center justify-between my-6">
+          <div className="flex flex-wrap items-center justify-between gap-3 my-6">
             {ads.length > 0 && (
               <Button
                 onClick={() => router.push("/ads/create")}
                 size="sm"
-                className="font-bold text-base leading-4 tracking-[0%] text-center"
+                className="font-bold text-base leading-4 tracking-[0%] text-center whitespace-nowrap"
                 disabled={!!tempBanUntil}
               >
                 <Image src="/icons/plus-white.png" alt="Plus icon" className="mr-1" height={22} width={13} />
