@@ -42,8 +42,6 @@ export default function Sidebar({ className }: SidebarProps) {
       const isV1 = userData.signup === "v1"
       setIsV1Signup(isV1)
       setShowWallet(!isV1)
-    } else {
-      setShowWallet(true)
     }
   }, [userData?.signup])
 
