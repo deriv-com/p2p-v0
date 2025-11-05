@@ -80,13 +80,6 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    if (accountCurrencies.length > 0 && !selectedCurrency) {
-      const defaultCurrency = accountCurrencies.find((c) => c.code === "USD")?.code || accountCurrencies[0]?.code || ""
-      setSelectedCurrency(defaultCurrency)
-    }
-  }, [accountCurrencies, selectedCurrency])
-
-  useEffect(() => {
     setLoading(false)
     if (userId && !hasFetchedRef.current && selectedCurrency) {
       fetchAds(selectedCurrency)
