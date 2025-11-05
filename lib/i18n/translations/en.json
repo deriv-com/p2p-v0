@@ -79,7 +79,14 @@
     "orderLimitError": "Order limit: {min} - {max} {currency}",
     "orderExists": "Order already exists.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
-    "unableToCreateOrder": "Unable to create an order"
+    "unableToCreateOrder": "Unable to create an order",
+    "confirmPayment": "",
+    "fraudWarning": "",
+    "ensurePayment": "",
+    "uploadProof": "",
+    "fileTypes": "",
+    "fileTooLarge": "",
+    "submit": ""
   },
   "paymentMethod": {
     "title": "Payment method",
@@ -137,15 +144,15 @@
     "disclaimerImportant": "Important:",
     "disclaimerText": "Deriv will never contact you via WhatsApp to ask for your personal information. Always ignore any messages from numbers claiming to be from Deriv.",
     "disclaimerNote": "Note:",
-    "disclaimerNoteText": "In case of a dispute, we'll use this chat as a reference.",
-    "errorPii": "Please avoid sharing personal information like phone numbers, addresses, or ID details for your security.",
+    "disclaimerNoteText": "In case of a dispute",
+    "errorPii": "Please avoid sharing personal information like phone numbers",
     "errorLink": "Links and URLs are not permitted in this chat.",
     "errorProfanity": "Please keep the conversation professional and avoid offensive language.",
     "errorPromotionalContent": "Promotional content and advertisements are not allowed.",
     "errorOffPlatformCommunication": "Please keep the conversation within this platform. We cannot assist with requests to communicate elsewhere.",
     "errorHumanAttention": "Threatening or harassing language is not tolerated. Please communicate respectfully.",
     "errorHarassment": "Please do not impersonate Deriv staff or misrepresent your identity.",
-    "errorFakeIdentity": "Never share passwords, OTPs, or login credentials. Deriv staff will never ask for this information in chat.",
+    "errorFakeIdentity": "Never share passwords",
     "errorSensitiveDataRequests": "Your message requires additional review. Please wait while we connect you with a specialist.",
     "errorMiscellaneous": "Your message doesn't meet our community guidelines. Please try again.",
     "errorMultipleViolations": "It violates our chat guidelines."
@@ -171,7 +178,7 @@
     "timeLeft": "Time left:",
     "sellerPaymentDetails": "Seller payment details",
     "myPaymentDetails": "My payment details",
-    "cashTransactionWarning": "Cash transactions may carry risks. For safer payments, use bank transfers or e-wallets.",
+    "cashTransactionWarning": "Cash transactions may carry risks. For safer payments",
     "cancelOrder": "Cancel order",
     "ivePaid": "I've paid",
     "iveReceivedPayment": "I've received payment",
@@ -230,7 +237,7 @@
     "notFollowingAnyone": "Not following anyone yet",
     "startFollowing": "Start following users to see them here.",
     "noFollowers": "No followers yet",
-    "whenUsersFollow": "When users follow you, they'll appear here.",
+    "whenUsersFollow": "When users follow you",
     "noMatchingName": "No matching name",
     "noResultFor": "There is no result for {query}.",
     "unfollowUser": "Unfollow {nickname}?",
@@ -263,7 +270,7 @@
     "editPaymentDetails": "Edit payment details",
     "saveChanges": "Save changes",
     "loading": "Loading...",
-    "validationSymbolsOnly": "Only letters, numbers, spaces, and symbols -+.,'#@():; are allowed",
+    "validationSymbolsOnly": "\"Only letters",
     "fieldRequired": "{field} is required",
     "enterField": "Enter {field}",
     "tryAgain": "Try again"
@@ -344,8 +351,8 @@
     "adDeleted": "Ad deleted",
     "adCreated": "Ad created",
     "adUpdated": "Ad updated",
-    "adCreatedMessage": "You've successfully created Ad ({type} {id}).\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.",
-    "adUpdatedMessage": "You've successfully updated Ad ({type} {id}).\n\nYour changes have been saved and are now live.",
+    "adCreatedMessage": "You've successfully created Ad ({type} {id}).",
+    "adUpdatedMessage": "You've successfully updated Ad ({type} {id}).",
     "errorLoadingAds": "Failed to load ads. Please try again.",
     "errorLoadingAdsTitle": "Error Loading Ads",
     "errorLoadingAdsMessage": "Failed to load ads. Please try again later.",
@@ -379,6 +386,27 @@
     "unableToUpdateAd": "Unable to update advert",
     "updateAdError": "There was an error when updating the advert. Please try again."
   },
+  "": "",
+  "If your ad doesn't receive an order within 3 days": "it will be deactivated.\"",
+  "Si tu anuncio no recibe una orden en 3 días": "será desactivado.\"",
+  "Si votre annonce ne reçoit pas d’ordre dans les 3 jours": "elle sera désactivée.\"",
+  "Se il tuo annuncio non riceve un ordine entro 3 giorni": "verrà disattivato.\"",
+  "Se o seu anúncio não receber um pedido em 3 dias": "ele será desativado.\"",
+  "Your changes have been saved and are now live": {
+    "\"": "\"Has actualizado exitosamente el Anuncio ({type} {id})."
+  },
+  "Tus cambios han sido guardados y están ahora en vivo": {
+    "\"": "\"Vous avez mis à jour avec succès l'Annonce ({type} {id})."
+  },
+  "Vos modifications ont été enregistrées et sont maintenant actives": {
+    "\"": "\"Hai aggiornato con successo l'Annuncio ({type} {id})."
+  },
+  "Le tue modifiche sono state salvate e sono ora attive": {
+    "\"": "\"Você atualizou com sucesso o Anúncio ({type} {id})."
+  },
+  "Suas alterações foram salvas e agora estão ativas": {
+    "\"": ""
+  },
   "orders": {
     "title": "Orders",
     "active": "Active",
@@ -397,8 +425,8 @@
     "time": "Time",
     "rating": "Rating",
     "rate": "Rate",
-    "youPay": "You pay: ",
-    "youReceive": "You receive: ",
+    "youPay": "You pay:",
+    "youReceive": "You receive:",
     "id": "ID",
     "allTime": "All time",
     "confirm": "Confirm",
@@ -410,7 +438,7 @@
     "fraudWarning": "Providing fraudulent documents will result in a permanent ban.",
     "ensurePayment": "Ensure you've paid {amount} {currency} to {name} and upload the receipt as proof of payment.",
     "uploadProof": "Upload proof of payment",
-    "fileTypes": "JPEG, JPG, PNG, PDF (up to 5MB)",
+    "fileTypes": "\"JPEG",
     "fileTooLarge": "File must be 5MB or smaller.",
     "submit": "Submit"
   },
@@ -456,7 +484,7 @@
     "maxAmountGreaterThanMin": "Maximum amount must be greater than minimum amount",
     "minAmountLessThanTotal": "Minimum amount must be less than total amount",
     "maxAmountLessThanTotal": "Maximum amount must be less than total amount",
-    "adCreatedSuccess": "You've successfully created a {type} advert.\n\nIf your ad doesn't receive an order within 3 days, it will be deactivated.",
+    "adCreatedSuccess": "You've successfully created a {type} advert.",
     "adUpdatedSuccess": "Ad details have been updated.",
     "failedToCreateAd": "Failed to create ad",
     "failedToUpdateAd": "Failed to update ad",
@@ -507,7 +535,7 @@
     "block": "Block",
     "unblock": "Unblock",
     "blockUser": "Block {nickname}?",
-    "blockDescription": "You won't see {nickname}'s ads, and they can't place orders on yours.",
+    "blockDescription": "\"You won't see {nickname}'s ads",
     "youveBlockedUser": "You've blocked this user",
     "unblockDescription": "Unblock them if you'd like to interact with this advertiser again.",
     "successfullyFollowed": "Successfully followed",
@@ -516,7 +544,13 @@
     "userUnblocked": "{nickname} unblocked."
   },
   "kyc": {
-    "accessP2PMessage": "To access P2P, complete your profile and verification.",
+    "title": "Identity verification",
+    "subtitle": "Complete your identity verification to unlock all P2P features.",
+    "verifyIdentity": "Verify identity",
+    "completeProfile": "Complete your profile",
+    "completeProfileDescription": "Complete your profile to start trading on P2P.",
+    "backToHome": "Back to Home",
+    "accessP2PMessage": "\"To access P2P",
     "setupProfile": "Set up your profile",
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
