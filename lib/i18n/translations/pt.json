@@ -270,7 +270,7 @@
     "editPaymentDetails": "Editar detalhes de pagamento",
     "saveChanges": "Salvar alterações",
     "loading": "Carregando...",
-    "validationSymbolsOnly": "'#@():; are allowed\"",
+    "validationSymbolsOnly": "'Apenas letras, números, espaços e símbolos -+.,'#@():; são permitidos",
     "fieldRequired": "{field} é obrigatório",
     "enterField": "Digite {field}",
     "tryAgain": "Tentar novamente"
