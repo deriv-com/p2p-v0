@@ -26,6 +26,7 @@ import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { ComplaintForm } from "@/components/complaint"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -54,6 +55,7 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
+  const [showComplaintForm, setShowComplaintForm] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
@@ -172,21 +174,16 @@ export default function OrdersPage() {
     fetchOrders()
   }
 
-  const handleChatClick = (e: React.MouseEvent, order: Order) => {
+  const handleComplainClick = (e: React.MouseEvent, order: Order) => {
     e.stopPropagation()
-    if (isMobile) {
-      setSelectedOrder(order)
-      setShowChat(true)
-      setIsChatVisible(true)
-
-      joinChannel("orders", order.id)
-    } else {
-      navigateToOrderDetails(order.id)
-    }
+    setSelectedOrder(order)
+    setShowComplaintForm(true)
   }
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value as "active" | "past")
+  const handleComplaintSubmit = () => {
+    setShowComplaintForm(false)
+    setSelectedOrder(null)
+    fetchOrders()
   }
 
   const getOrderType = (order) => {
@@ -220,6 +217,24 @@ export default function OrdersPage() {
     }
 
     return label
+  }
+
+  const getComplainType = (order: Order) => {
+    if (order.type === "sell") {
+      return order.advert.user.id == userId ? "buyer" : "seller"
+    } else {
+      return order.advert.user.id == userId ? "seller" : "buyer"
+    }
+  }
+
+  const handleChatClick = (e: React.MouseEvent, order: Order) => {
+    e.stopPropagation()
+    setIsChatVisible(true)
+    setSelectedOrder(order)
+  }
+
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue)
   }
 
   const DesktopOrderTable = () => (
@@ -278,7 +293,7 @@ export default function OrdersPage() {
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="py-0 px-4align-top row-start-1">
+                <TableCell className="py-0 px-4 align-top row-start-1">
                   <div
                     className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
@@ -303,6 +318,11 @@ export default function OrdersPage() {
                     {order.is_reviewable > 0 && !order.disputed_at && (
                       <Button variant="black" size="xs" onClick={(e) => handleRateClick(e, order)}>
                         {t("orders.rate")}
+                      </Button>
+                    )}
+                    {order.status === "timed_out" && !order.disputed_at && (
+                      <Button variant="outline" size="xs" onClick={(e) => handleComplainClick(e, order)}>
+                        {t("orders.complain")}
                       </Button>
                     )}
                   </TableCell>
@@ -458,6 +478,16 @@ export default function OrdersPage() {
           orderId={selectedOrderId}
           onSubmit={handleRatingSubmit}
           recommendLabel={t("orders.wouldYouRecommend", { role: getRecommendLabel() })}
+        />
+        <ComplaintForm
+          isOpen={showComplaintForm}
+          onClose={() => {
+            setShowComplaintForm(false)
+            setSelectedOrder(null)
+          }}
+          onSubmit={handleComplaintSubmit}
+          orderId={selectedOrder?.id}
+          type={selectedOrder ? getComplainType(selectedOrder) : "buyer"}
         />
       </div>
     </>

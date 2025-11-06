@@ -546,5 +546,19 @@
     "proofOfIdentity": "Prova de identidade",
     "proofOfAddress": "Prova de endereço",
     "phoneNumber": "Número de telefone"
+  },
+  "status": {
+    "refunded": "Reembolsado",
+    "cancelled": "Cancelado",
+    "orderCancelled": "Pedido cancelado",
+    "timedOut": "Expirado",
+    "orderExpired": "Pedido expirado",
+    "completed": "Concluído",
+    "orderComplete": "Pedido concluído",
+    "completePayment": "Concluir pagamento",
+    "awaitingPayment": "Aguardando pagamento",
+    "waitingSellersConfirmation": "Aguardando confirmação do vendedor",
+    "confirmPayment": "Confirmar pagamento",
+    "underDispute": "Em disputa"
   }
 }
