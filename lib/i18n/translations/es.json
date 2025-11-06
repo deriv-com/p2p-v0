@@ -255,7 +255,7 @@
     "unfollowUser": "¿Dejar de seguir a {nickname}?",
     "unfollowDescription": "Estás a punto de dejar de seguir a este usuario. Perderás el acceso rápido a su perfil y anuncios activos.",
     "unfollow": "Dejar de seguir",
-    "userUnfollowed": "{nickname} dejado de seguir.",
+    "userUnfollowed": "Has dejado de seguir a {nickname}.",
     "userFollowed": "{nickname} seguido.",
     "unblockUser": "¿Desbloquear a {nickname}?",
     "unblockDescription": "Podrás ver sus anuncios y ellos podrán realizar órdenes en los tuyos nuevamente.",
