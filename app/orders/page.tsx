@@ -479,16 +479,6 @@ export default function OrdersPage() {
           onSubmit={handleRatingSubmit}
           recommendLabel={t("orders.wouldYouRecommend", { role: getRecommendLabel() })}
         />
-        <ComplaintForm
-          isOpen={showComplaintForm}
-          onClose={() => {
-            setShowComplaintForm(false)
-            setSelectedOrder(null)
-          }}
-          onSubmit={handleComplaintSubmit}
-          orderId={selectedOrder?.id}
-          type={selectedOrder ? getComplainType(selectedOrder) : "buyer"}
-        />
       </div>
     </>
   )
