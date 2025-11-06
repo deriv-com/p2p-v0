@@ -501,7 +501,7 @@
     "amountExceedsBalanceTitle": "L'importo supera il saldo",
     "amountExceedsBalanceMessage": "L'importo totale supera il tuo saldo disponibile. Inserisci un importo inferiore.",
     "selectPayment": "Seleziona pagamento",
-    "selected": "Selezionato ({count})",
+    "selected": "Selezionati ({count})",
     "noPaymentMethodsFound": "Nessun metodo di pagamento trovato"
   },
   "advertiser": {
