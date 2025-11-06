@@ -490,7 +490,7 @@
     "transactionLimit": "Límite de transacción",
     "minimumOrder": "Pedido mínimo",
     "maximumOrder": "Pedido máximo",
-    "orderTimeLimit": "Límite de tiempo de orden",
+    "orderTimeLimit": "Límite de tiempo del pedido",
     "orderTimeLimitTooltip": "Las órdenes expirarán si no se completan dentro de este plazo.",
     "timeLimit15Minutes": "15 minutos",
     "timeLimit30Minutes": "30 minutos",
