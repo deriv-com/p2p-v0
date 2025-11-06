@@ -9,12 +9,10 @@ export const initDatadog = () => {
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
   if (!applicationId || !clientToken) {
-    console.warn("[v0] Datadog: Missing required environment variables")
     return
   }
 
   if (datadogRum.getInternalContext()) {
-    console.log("[v0] Datadog: Already initialized, skipping")
     return
   }
 
@@ -36,6 +34,6 @@ export const initDatadog = () => {
 
     datadogRum.startSessionReplayRecording()
   } catch (error) {
-    console.error("[v0] Datadog: Initialization failed:", error)
+    console.error("Datadog: Initialization failed:", error)
   }
 }
