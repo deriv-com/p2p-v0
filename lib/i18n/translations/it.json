@@ -263,7 +263,7 @@
     "unfollowDescription": "Stai per smettere di seguire questo utente. Perderai l'accesso rapido al suo profilo e agli annunci attivi.",
     "unfollow": "Smetti di seguire",
     "userUnfollowed": "{nickname} non più seguito.",
-    "userFollowed": "{nickname} seguito.",
+    "userFollowed": "Ora segui {nickname}.",
     "unblockUser": "Sbloccare {nickname}?",
     "unblockDescription": "Potrai vedere i loro annunci e potranno effettuare ordini sui tuoi di nuovo.",
     "unblock": "Sblocca",
