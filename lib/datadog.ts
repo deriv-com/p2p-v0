@@ -4,6 +4,7 @@ export const initDatadog = () => {
   if (typeof window === "undefined") {
     return
   }
+  
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
