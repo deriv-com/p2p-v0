@@ -32,13 +32,13 @@ export function useTranslations() {
         if (value && typeof value === "object" && k in value) {
           value = value[k]
         } else {
-          // Fallback to English if key not found
+
           value = translations.en
           for (const fallbackKey of keys) {
             if (value && typeof value === "object" && fallbackKey in value) {
               value = value[fallbackKey]
             } else {
-              return key // Return key if not found in fallback
+              return key 
             }
           }
           break
@@ -49,11 +49,8 @@ export function useTranslations() {
         return key
       }
 
-      // Replace parameters in the translation
       if (params) {
         return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
-          // Check if the parameter key exists, not if the value is truthy
-          // This allows empty strings to be used as valid replacement values
           return paramKey in params ? String(params[paramKey]) : match
         })
       }
