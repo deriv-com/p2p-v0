@@ -37,8 +37,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <DatadogRumInit />
-        <Suspense fallback={null}>
-        </Suspense>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <AlertDialogProvider>
             <Toaster />
