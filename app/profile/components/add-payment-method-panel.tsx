@@ -43,7 +43,7 @@ export default function AddPaymentMethodPanel({
   const [isLoadingMethods, setIsLoadingMethods] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
 
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   useEffect(() => {
     const fetchAvailablePaymentMethods = async () => {
