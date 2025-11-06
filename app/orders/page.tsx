@@ -55,7 +55,6 @@ export default function OrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null)
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
-  const [showComplaintForm, setShowComplaintForm] = useState(false)
   const isMobile = useIsMobile()
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
