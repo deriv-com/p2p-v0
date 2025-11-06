@@ -172,11 +172,6 @@ export default function OrdersPage() {
     fetchOrders()
   }
 
-  const handleComplainClick = (e: React.MouseEvent, order: Order) => {
-    e.stopPropagation()
-    setSelectedOrder(order)
-    setShowComplaintForm(true)
-  }
 
   const getOrderType = (order) => {
     if (order.type === "buy") {
