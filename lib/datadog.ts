@@ -41,8 +41,6 @@ export const initDatadog = () => {
       trackLongTasks: true,
       defaultPrivacyLevel: "mask-user-input",
     })
-
-    console.log("Datadog: Initialization successful")
   } catch (error) {
     console.error("Datadog: Initialization failed", {
       error,
