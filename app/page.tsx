@@ -58,7 +58,7 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(false)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
