@@ -6,7 +6,7 @@ export const initDatadog = () => {
   }
   
   const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID || "5c8975a3-ec86-4a64-8a3a-e6888fdde082"
-  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
+  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN || "pub08554ab30284600af157441bfb0fa923"
 
   if (!applicationId || !clientToken) {
     return
