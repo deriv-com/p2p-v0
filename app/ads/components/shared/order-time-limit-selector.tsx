@@ -17,7 +17,7 @@ interface OrderTimeLimitSelectorProps {
 export default function OrderTimeLimitSelector({ value, onValueChange, className }: OrderTimeLimitSelectorProps) {
   const isMobile = useIsMobile()
   const [isOpen, setIsOpen] = useState(false)
-  const t = useTranslations()
+  const { t } = useTranslations()
 
   const TIME_LIMIT_OPTIONS = [
     { value: 15, label: t("adForm.timeLimit15Minutes") },
