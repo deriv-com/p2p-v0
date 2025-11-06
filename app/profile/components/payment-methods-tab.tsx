@@ -344,7 +344,7 @@ export default function PaymentMethodsTab() {
     <div>
       {bankTransfers.length > 0 && (
         <div className="mb-4">
-          <h3 className="text-base font-bold mb-4">{t("profile.bankTransfer")}</h3>
+          <h3 className="text-base font-bold mb-4">{t("paymentMethod.bankTransfers")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {bankTransfers.map((method) => (
               <Card
