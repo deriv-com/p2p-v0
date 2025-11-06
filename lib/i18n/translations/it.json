@@ -267,7 +267,7 @@
     "unblockUser": "Sbloccare {nickname}?",
     "unblockDescription": "Sbloccalo se desideri interagire di nuovo con questo inserzionista.",
     "unblock": "Sblocca",
-    "userUnblocked": "{nickname} sbloccato.",
+    "userUnblocked": "Hai sbloccato {nickname}.",
     "noBlockedUsers": "Nessun utente bloccato ancora",
     "blockedUsersAppear": "Gli utenti che blocchi appariranno qui.",
     "loadingUsers": "Caricamento utenti...",
