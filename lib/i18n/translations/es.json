@@ -531,7 +531,7 @@
     "amountExceedsBalanceTitle": "El monto excede el saldo",
     "amountExceedsBalanceMessage": "El monto total excede tu saldo disponible. Por favor, ingresa un monto menor.",
     "selectPayment": "Seleccionar pago",
-    "selected": "Seleccionado ({count})",
+    "selected": "Seleccionados ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago"
   },
   "kyc": {
