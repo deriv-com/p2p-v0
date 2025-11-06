@@ -197,7 +197,7 @@ export default function OrderChat({
               {counterpartyOnlineStatus
                 ? t("chat.online")
                 : counterpartyLastOnlineAt
-                  ? `${t("chat.offline")} ${formatLastSeen(counterpartyLastOnlineAt, t)}`
+                  ? `Seen ${formatLastSeen(counterpartyLastOnlineAt, t)}`
                   : t("chat.offline")}
             </span>
           </div>
