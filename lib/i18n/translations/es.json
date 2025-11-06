@@ -388,7 +388,7 @@
     "adCreated": "Anuncio creado",
     "adUpdated": "Anuncio actualizado",
     "adCreatedMessage": "Has creado exitosamente el Anuncio ({type} {id}).\n\nSi tu anuncio no recibe una orden en 3 días, será desactivado.",
-    "adUpdatedMessage": "Has actualizado exitosamente el Anuncio ({type} {id}).\n\nTus cambios han sido guardados y están ahora en vivo.",
+    "adUpdatedMessage": "Has actualizado exitosamente el Anuncio ({type} {id}).",
     "errorLoadingAds": "Error al cargar los anuncios. Por favor, inténtalo de nuevo.",
     "errorLoadingAdsTitle": "Error al Cargar Anuncios",
     "errorLoadingAdsMessage": "Error al cargar los anuncios. Por favor, inténtalo de nuevo más tarde.",
