@@ -450,7 +450,7 @@
     "orderId": "ID de orden",
     "amount": "Cantidad",
     "status": "Estado",
-    "time": "Tiempo",
+    "time": "Hora",
     "rating": "Calificación",
     "rate": "Calificar",
     "youPay": "Pagas: ",
