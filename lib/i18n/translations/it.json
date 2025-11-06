@@ -265,7 +265,7 @@
     "userUnfollowed": "{nickname} non più seguito.",
     "userFollowed": "Ora segui {nickname}.",
     "unblockUser": "Sbloccare {nickname}?",
-    "unblockDescription": "Potrai vedere i loro annunci e potranno effettuare ordini sui tuoi di nuovo.",
+    "unblockDescription": "Sbloccalo se desideri interagire di nuovo con questo inserzionista.",
     "unblock": "Sblocca",
     "userUnblocked": "{nickname} sbloccato.",
     "noBlockedUsers": "Nessun utente bloccato ancora",
