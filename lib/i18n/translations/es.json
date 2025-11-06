@@ -512,7 +512,7 @@
     "maxAmountGreaterThanMin": "El monto máximo debe ser mayor que el monto mínimo",
     "minAmountLessThanTotal": "El monto mínimo debe ser menor que el monto total",
     "maxAmountLessThanTotal": "El monto máximo debe ser menor que el monto total",
-    "adCreatedSuccess": "Has creado exitosamente un anuncio de {type}.\n\nSi tu anuncio no recibe una orden en 3 días, será desactivado.",
+    "adCreatedSuccess": "Has creado exitosamente un anuncio de {type}.",
     "adUpdatedSuccess": "Los detalles del anuncio han sido actualizados.",
     "failedToCreateAd": "Error al crear el anuncio",
     "failedToUpdateAd": "Error al actualizar el anuncio",
