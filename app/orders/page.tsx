@@ -219,13 +219,6 @@ export default function OrdersPage() {
     return label
   }
 
-  const getComplainType = (order: Order) => {
-    if (order.type === "sell") {
-      return order.advert.user.id == userId ? "buyer" : "seller"
-    } else {
-      return order.advert.user.id == userId ? "seller" : "buyer"
-    }
-  }
 
   const handleChatClick = (e: React.MouseEvent, order: Order) => {
     e.stopPropagation()
