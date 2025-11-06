@@ -320,11 +320,6 @@ export default function OrdersPage() {
                         {t("orders.rate")}
                       </Button>
                     )}
-                    {order.status === "timed_out" && !order.disputed_at && (
-                      <Button variant="outline" size="xs" onClick={(e) => handleComplainClick(e, order)}>
-                        {t("orders.complain")}
-                      </Button>
-                    )}
                   </TableCell>
                 )}
                 <TableCell className="py-0 px-4 align-top row-start-5 col-span-full">
