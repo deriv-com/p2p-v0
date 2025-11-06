@@ -172,7 +172,6 @@ export default function OrdersPage() {
     fetchOrders()
   }
 
-
   const getOrderType = (order) => {
     if (order.type === "buy") {
       if (order.user.id == userId) return <span className="text-secondary text-base">{t("common.buy")}</span>
