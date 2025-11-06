@@ -77,7 +77,7 @@
     "sellersInstructions": "Instrucciones del vendedor",
     "insufficientBalance": "Saldo insuficiente. Agrega fondos a tu billetera antes de crear una orden.",
     "orderLimitError": "Límite de orden: {min} - {max} {currency}",
-    "orderExists": "La orden ya existe.",
+    "orderExists": "El pedido ya existe.",
     "orderCreationError": "Hubo un error al crear la orden. Por favor, inténtalo de nuevo.",
     "unableToCreateOrder": "No se puede crear una orden"
   },
