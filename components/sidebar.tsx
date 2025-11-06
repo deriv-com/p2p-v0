@@ -27,7 +27,7 @@ export default function Sidebar({ className }: SidebarProps) {
   const { t, locale } = useTranslations()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
-    return cached !== "v1" // Show wallet for V2 users and unverified users (null)
+    return cached !== "v1"
   })
   const { userData, userId } = useUserDataStore()
 
