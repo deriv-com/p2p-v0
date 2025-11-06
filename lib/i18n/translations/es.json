@@ -250,7 +250,7 @@
     "startFollowing": "Comienza a seguir usuarios para verlos aquí.",
     "noFollowers": "Aún no tienes seguidores",
     "whenUsersFollow": "Cuando los usuarios te sigan, aparecerán aquí.",
-    "noMatchingName": "No hay coincidencias",
+    "noMatchingName": "No hay ningún nombre coincidente",
     "noResultFor": "No hay resultados para {query}.",
     "unfollowUser": "¿Dejar de seguir a {nickname}?",
     "unfollowDescription": "Estás a punto de dejar de seguir a este usuario. Perderás el acceso rápido a su perfil y anuncios activos.",
