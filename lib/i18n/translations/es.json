@@ -373,7 +373,7 @@
     "blockUser": "¿Bloquear a {nickname}?",
     "blockDescription": "No verás los anuncios de {nickname} y no podrán realizar órdenes en los tuyos.",
     "youveBlockedUser": "Has bloqueado a este usuario",
-    "unblockDescription": "Desbloquéalos si deseas interactuar con este anunciante nuevamente.",
+    "unblockDescription": "Desbloquéalo si deseas interactuar con este anunciante nuevamente.",
     "successfullyFollowed": "Seguido exitosamente",
     "successfullyUnfollowed": "Dejado de seguir exitosamente",
     "userBlocked": "{nickname} bloqueado.",
