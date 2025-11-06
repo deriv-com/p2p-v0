@@ -510,7 +510,7 @@
     "maxAmountRequired": "El monto máximo es obligatorio",
     "maxAmountGreaterThanZero": "El monto máximo debe ser mayor que 0",
     "maxAmountGreaterThanMin": "El monto máximo debe ser mayor que el monto mínimo",
-    "minAmountLessThanTotal": "La cantidad mínima debe ser menor que la cantidad total",
+    "minAmountLessThanTotal": "El monto mínimo debe ser menor que el monto total",
     "maxAmountLessThanTotal": "La cantidad máxima debe ser menor que la cantidad total",
     "adCreatedSuccess": "Has creado exitosamente un anuncio de {type}.\n\nSi tu anuncio no recibe una orden en 3 días, será desactivado.",
     "adUpdatedSuccess": "Los detalles del anuncio han sido actualizados.",
