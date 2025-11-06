@@ -100,7 +100,10 @@
     "noPaymentMethodsAvailable": "No payment methods available",
     "loadingPaymentMethods": "Loading payment methods...",
     "reset": "Reset",
-    "apply": "Apply"
+    "apply": "Apply",
+    "selectPaymentMethod": "Select a payment method",
+    "addPaymentDetails": "Add payment details",
+    "enterInstructions": "Enter your instructions"
   },
   "balance": {
     "title": "Balance",

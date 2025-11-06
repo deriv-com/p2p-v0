@@ -100,7 +100,10 @@
     "noPaymentMethodsAvailable": "Nenhum método de pagamento disponível",
     "loadingPaymentMethods": "Carregando métodos de pagamento...",
     "reset": "Redefinir",
-    "apply": "Aplicar"
+    "apply": "Aplicar",
+    "selectPaymentMethod": "Selecione um método de pagamento",
+    "addPaymentDetails": "Adicionar detalhes de pagamento",
+    "enterInstructions": "Digite suas instruções"
   },
   "balance": {
     "title": "Saldo",
