@@ -501,7 +501,7 @@
     "instructions": "Instrucciones (Opcional)",
     "instructionsDisclaimer": "Esta información será visible para todos. No compartas tu número de teléfono o detalles personales.",
     "totalAmountRequired": "El monto total es obligatorio",
-    "totalAmountGreaterThanZero": "La cantidad total debe ser mayor que 0",
+    "totalAmountGreaterThanZero": "El monto total debe ser mayor que 0",
     "rateRequired": "La tasa es obligatoria",
     "rateGreaterThanZero": "La tasa debe ser mayor que 0",
     "minAmountRequired": "La cantidad mínima es obligatoria",
