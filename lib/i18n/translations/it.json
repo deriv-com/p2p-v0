@@ -252,7 +252,7 @@
     "errorLoadingProfile": "Impossibile caricare i dati utente",
     "noUserData": "Nessun dato utente trovato",
     "followsCount": "Seguiti ({count})",
-    "followersCount": "Seguaci ({count})",
+    "followersCount": "Follower ({count})",
     "notFollowingAnyone": "Non stai ancora seguendo nessuno",
     "startFollowing": "Inizia a seguire gli utenti per vederli qui.",
     "noFollowers": "Nessun seguace ancora",
