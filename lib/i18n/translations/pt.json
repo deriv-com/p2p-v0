@@ -127,7 +127,7 @@
     "loading": "Carregando saldo..."
   },
   "filter": {
-    "fromFollowing": "De seguindo",
+    "fromFollowing": "De seguidos",
     "sortBy": "Ordenar por",
     "exchangeRate": "Taxa de câmbio",
     "apply": "Aplicar",
