@@ -336,7 +336,7 @@
     "notNow": "Agora não",
     "tryAgain": "Tentar novamente",
     "p2pWallet": "Carteira P2P",
-    "tradingWallet": "Carteira de Negociação",
+    "tradingWallet": "Carteira de Trading",
     "minimumTransfer": "A transferência mínima é {amount} {currency}",
     "minimumTransferAmount": "O valor mínimo de transferência é {amount} {currency}.",
     "exceedsBalance": "O valor não pode exceder o saldo disponível {amount} {currency}.",
