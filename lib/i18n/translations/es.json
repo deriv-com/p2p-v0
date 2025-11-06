@@ -521,7 +521,7 @@
     "duplicateRateTitle": "Ya tienes un anuncio con esta tasa",
     "duplicateRateMessage": "Tienes otro anuncio activo con la misma tasa para este par de monedas y tipo de pedido. Establece una tasa diferente.",
     "rangeOverlapTitle": "Ya tienes un anuncio con este rango",
-    "rangeOverlapMessage": "Cambia el límite de orden mínimo y/o máximo para este anuncio. El rango entre estos límites no debe superponerse con otro anuncio activo que hayas creado para este par de monedas y tipo de orden.",
+    "rangeOverlapMessage": "Cambia el límite de pedido mínimo y/o máximo para este anuncio. El rango entre estos límites no debe superponerse con otro anuncio activo que hayas creado para este par de monedas y tipo de pedido.",
     "adLimitReachedTitle": "Límite de anuncios alcanzado",
     "adLimitReachedMessage": "Solo puedes tener 3 anuncios activos para este par de monedas y tipo de orden. Elimina uno para crear un nuevo anuncio.",
     "insufficientBalanceTitle": "Saldo insuficiente",
