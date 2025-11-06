@@ -228,7 +228,7 @@
     "bronzeTier": "Niveau Bronze",
     "bronzeTierDescription": "Niveau par défaut pour les nouveaux utilisateurs avec des limites de trading de base.",
     "last30Days": "30 derniers jours",
-    "lifetime": "Durée de vie",
+    "lifetime": "Depuis le début",
     "sellCompletion": "Achèvement des ventes",
     "buyCompletion": "Achèvement des achats",
     "totalOrders": "Total des commandes",
