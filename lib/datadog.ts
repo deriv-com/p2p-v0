@@ -31,8 +31,6 @@ export const initDatadog = () => {
       trackLongTasks: true,
       defaultPrivacyLevel: "mask-user-input",
     })
-
-    datadogRum.startSessionReplayRecording()
   } catch (error) {
     console.error("Datadog: Initialization failed:", error)
   }
