@@ -9,10 +9,12 @@ export const initDatadog = () => {
   const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
   if (!applicationId || !clientToken) {
+    console.log("[v0] Datadog: no application id or client token")
     return
   }
 
   if (datadogRum.getInternalContext()) {
+    console.log("[v0] Datadog: content existing")
     return
   }
 
