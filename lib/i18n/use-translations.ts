@@ -52,7 +52,9 @@ export function useTranslations() {
       // Replace parameters in the translation
       if (params) {
         return value.replace(/\{(\w+)\}/g, (match, paramKey) => {
-          return params[paramKey]?.toString() || match
+          // Check if the parameter key exists, not if the value is truthy
+          // This allows empty strings to be used as valid replacement values
+          return paramKey in params ? String(params[paramKey]) : match
         })
       }
 
