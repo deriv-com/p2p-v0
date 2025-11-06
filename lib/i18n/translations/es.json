@@ -528,7 +528,7 @@
     "insufficientBalanceMessage": "No tienes suficiente saldo para crear este anuncio",
     "invalidValuesTitle": "Valores inválidos",
     "invalidValuesMessage": "Por favor, verifica tus valores de entrada.",
-    "amountExceedsBalanceTitle": "La cantidad excede el saldo",
+    "amountExceedsBalanceTitle": "El monto excede el saldo",
     "amountExceedsBalanceMessage": "La cantidad total excede tu saldo disponible. Por favor, ingresa una cantidad menor.",
     "selectPayment": "Seleccionar pago",
     "selected": "Seleccionado ({count})",
