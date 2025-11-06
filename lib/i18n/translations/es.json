@@ -363,7 +363,7 @@
     "timeLimit": "Límite de tiempo",
     "paymentMethods": "Métodos de pago",
     "noAdsYet": "Aún no hay anuncios",
-    "noActiveAds": "Este anunciante no tiene anuncios activos.",
+    "noActiveAds": "Este anunciante no tiene ningún anuncio activo.",
     "loadingAdvertiser": "Cargando anunciante...",
     "failedToLoad": "Error al cargar el perfil del anunciante. Por favor, inténtalo de nuevo.",
     "follow": "Seguir",
