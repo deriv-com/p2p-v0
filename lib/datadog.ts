@@ -5,8 +5,8 @@ export const initDatadog = () => {
     return
   }
   
-  const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID || "5c8975a3-ec86-4a64-8a3a-e6888fdde082"
-  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN || "pub08554ab30284600af157441bfb0fa923"
+  const applicationId = process.env.NEXT_PUBLIC_DATADOG_APPLICATION_ID
+  const clientToken = process.env.NEXT_PUBLIC_DATADOG_CLIENT_TOKEN
 
   if (!applicationId || !clientToken) {
     return
@@ -21,9 +21,9 @@ export const initDatadog = () => {
       applicationId,
       clientToken,
       site: "datadoghq.com",
-      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE || "dp2p.deriv.com",
-      env: process.env.NEXT_PUBLIC_DATADOG_ENV || "staging",
-      version: process.env.NEXT_PUBLIC_DATADOG_VERSION || "1.0.0",
+      service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
+      env: process.env.NEXT_PUBLIC_DATADOG_ENV,
+      version: process.env.NEXT_PUBLIC_DATADOG_VERSION,
       sessionSampleRate: 10,
       sessionReplaySampleRate: 100,
       trackUserInteractions: true,
