@@ -127,7 +127,7 @@
     "loading": "Chargement du solde..."
   },
   "filter": {
-    "fromFollowing": "De suivi",
+    "fromFollowing": "De suivis",
     "sortBy": "Trier par",
     "exchangeRate": "Taux de change",
     "apply": "Appliquer",
