@@ -11,8 +11,7 @@ export const initDatadog = () => {
   const service = process.env.NEXT_PUBLIC_DATADOG_SERVICE
   const version = process.env.NEXT_PUBLIC_DATADOG_VERSION
 
-  if (!applicationId || !clientToken) {
-    console.warn("Datadog: Missing required configuration (applicationId or clientToken)")
+  if (!applicationId || !clientToken) 
     return
   }
 
