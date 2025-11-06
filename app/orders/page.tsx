@@ -219,13 +219,18 @@ export default function OrdersPage() {
     return label
   }
 
-
   const handleChatClick = (e: React.MouseEvent, order: Order) => {
     e.stopPropagation()
-    setIsChatVisible(true)
-    setSelectedOrder(order)
-  }
+    if (isMobile) {
+      setSelectedOrder(order)
+      setShowChat(true)
+      setIsChatVisible(true)
 
+      joinChannel("orders", order.id)
+    } else {
+      navigateToOrderDetails(order.id)
+    }
+  }
   const handleTabChange = (tabValue: string) => {
     setActiveTab(tabValue)
   }
