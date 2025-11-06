@@ -494,7 +494,7 @@
     "amountExceedsBalanceTitle": "Le montant dépasse le solde",
     "amountExceedsBalanceMessage": "Le montant total dépasse votre solde disponible. Veuillez entrer un montant inférieur.",
     "selectPayment": "Sélectionner le paiement",
-    "selected": "Sélectionné ({count})",
+    "selected": "Sélectionnés ({count})",
     "noPaymentMethodsFound": "Aucune méthode de paiement trouvée"
   },
   "advertiser": {
