@@ -175,7 +175,10 @@ export default function OrderDetailsPage() {
     Object.entries(method).forEach(([key, val]) => {
       if (key === "method" || key === "type" || !val) return
 
-      const displayKey = key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+      const translationKey = `paymentMethodFields.${key.toLowerCase()}`
+      const displayKey = t(translationKey, {
+        defaultValue: key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+      })
       const isCopyable = copyableFields.includes(key.toLowerCase())
 
       fields.push(

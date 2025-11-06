@@ -105,6 +105,22 @@
     "addPaymentDetails": "Adicionar detalhes de pagamento",
     "enterInstructions": "Digite suas instruções"
   },
+  "paymentMethodFields": {
+    "account": "Conta",
+    "bank_code": "Código Bancário",
+    "bank_name": "Nome do Banco",
+    "account_number": "Número da Conta",
+    "account_holder": "Titular da Conta",
+    "branch_code": "Código da Agência",
+    "iban": "IBAN",
+    "swift_code": "Código SWIFT",
+    "bic": "BIC",
+    "routing_number": "Número de Roteamento",
+    "sort_code": "Código de Classificação",
+    "ifsc_code": "Código IFSC",
+    "name": "Nome",
+    "instructions": "Instruções"
+  },
   "balance": {
     "title": "Saldo",
     "totalBalance": "Saldo total",
