@@ -79,7 +79,14 @@
     "orderLimitError": "Limite de commande : {min} - {max} {currency}",
     "orderExists": "La commande existe déjà.",
     "orderCreationError": "Une erreur s'est produite lors de la création de la commande. Veuillez réessayer.",
-    "unableToCreateOrder": "Impossible de créer une commande"
+    "unableToCreateOrder": "Impossible de créer une commande",
+    "confirmPayment": "Confirmez votre paiement",
+    "fraudWarning": "La fourniture de documents frauduleux entraînera une interdiction permanente.",
+    "ensurePayment": "Assurez-vous d'avoir payé {amount} {currency} à {name} et téléchargez le reçu comme preuve de paiement.",
+    "uploadProof": "Télécharger la preuve de paiement",
+    "fileTypes": "JPEG, JPG, PNG, PDF (jusqu'à 5 Mo)",
+    "fileTooLarge": "Le fichier doit faire 5 Mo ou moins.",
+    "submit": "Soumettre"
   },
   "paymentMethod": {
     "title": "Méthode de paiement",

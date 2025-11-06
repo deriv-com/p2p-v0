@@ -79,7 +79,14 @@
     "orderLimitError": "Limite do pedido: {min} - {max} {currency}",
     "orderExists": "O pedido já existe.",
     "orderCreationError": "Ocorreu um erro ao criar o pedido. Por favor, tente novamente.",
-    "unableToCreateOrder": "Não foi possível criar um pedido"
+    "unableToCreateOrder": "Não foi possível criar um pedido",
+    "confirmPayment": "Confirme seu pagamento",
+    "fraudWarning": "Fornecer documentos fraudulentos resultará em banimento permanente.",
+    "ensurePayment": "Certifique-se de ter pago {amount} {currency} para {name} e carregue o recibo como comprovante de pagamento.",
+    "uploadProof": "Carregar comprovante de pagamento",
+    "fileTypes": "JPEG, JPG, PNG, PDF (até 5MB)",
+    "fileTooLarge": "O arquivo deve ter 5MB ou menos.",
+    "submit": "Enviar"
   },
   "paymentMethod": {
     "title": "Método de pagamento",
