@@ -180,12 +180,6 @@ export default function OrdersPage() {
     setShowComplaintForm(true)
   }
 
-  const handleComplaintSubmit = () => {
-    setShowComplaintForm(false)
-    setSelectedOrder(null)
-    fetchOrders()
-  }
-
   const getOrderType = (order) => {
     if (order.type === "buy") {
       if (order.user.id == userId) return <span className="text-secondary text-base">{t("common.buy")}</span>
@@ -231,6 +225,7 @@ export default function OrdersPage() {
       navigateToOrderDetails(order.id)
     }
   }
+
   const handleTabChange = (tabValue: string) => {
     setActiveTab(tabValue)
   }
