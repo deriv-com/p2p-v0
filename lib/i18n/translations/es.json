@@ -171,7 +171,7 @@
   },
   "orderDetails": {
     "title": "Detalles del pedido",
-    "orderId": "ID de orden",
+    "orderId": "ID del pedido",
     "status": "Estado",
     "amount": "Cantidad",
     "rate": "Tasa",
