@@ -420,7 +420,7 @@
     "orderId": "ID ordine",
     "amount": "Importo",
     "status": "Stato",
-    "time": "Tempo",
+    "time": "Ora",
     "rating": "Valutazione",
     "rate": "Valuta",
     "youPay": "Paghi: ",
