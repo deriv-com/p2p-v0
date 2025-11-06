@@ -285,7 +285,7 @@
     "validationSymbolsOnly": "Solo se permiten letras, números, espacios y símbolos -+.,'#@():;",
     "fieldRequired": "{field} es obligatorio",
     "enterField": "Introduce {field}",
-    "tryAgain": "Intentar de nuevo"
+    "tryAgain": "Volver a intentar"
   },
   "wallet": {
     "title": "Billetera",
