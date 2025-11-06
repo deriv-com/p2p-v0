@@ -258,7 +258,7 @@
     "userUnfollowed": "Você deixou de seguir {nickname}.",
     "userFollowed": "Você está seguindo {nickname}.",
     "unblockUser": "Desbloquear {nickname}?",
-    "unblockDescription": "Você poderá ver os anúncios dele e ele poderá fazer pedidos nos seus novamente.",
+    "unblockDescription": "Desbloqueie-o se desejar interagir com este anunciante novamente.",
     "unblock": "Desbloquear",
     "userUnblocked": "{nickname} desbloqueado.",
     "noBlockedUsers": "Ainda sem usuários bloqueados",
