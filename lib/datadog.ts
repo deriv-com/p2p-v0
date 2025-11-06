@@ -24,7 +24,7 @@ export const initDatadog = () => {
       service: process.env.NEXT_PUBLIC_DATADOG_SERVICE,
       env: process.env.NEXT_PUBLIC_DATADOG_ENV,
       version: process.env.NEXT_PUBLIC_DATADOG_VERSION || "1.0.0",
-      sessionSampleRate: 10,
+      sessionSampleRate: 100,
       sessionReplaySampleRate: 100,
       trackUserInteractions: true,
       trackResources: true,
