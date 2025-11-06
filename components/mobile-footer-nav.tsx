@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
-import { useUserDataStore } from "@/stores/user-data-store"
+import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { useState, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { SvgIcon } from "@/components/icons/svg-icon"
@@ -19,7 +19,10 @@ export default function MobileFooterNav() {
   const { isChatVisible } = useChatVisibilityStore()
   const { t } = useTranslations()
   const { userData } = useUserDataStore()
-  const [showWallet, setShowWallet] = useState<boolean>(true)
+  const [showWallet, setShowWallet] = useState<boolean>(() => {
+    const cached = getCachedSignup()
+    return cached !== "v1" // Show wallet for V2 users and unverified users (null)
+  })
 
   useEffect(() => {
     if (userData?.signup === "v1") {
