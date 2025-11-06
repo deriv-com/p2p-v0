@@ -519,7 +519,7 @@
     "tryAgain": "Por favor, inténtalo de nuevo.",
     "updateAd": "Actualizar anuncio",
     "duplicateRateTitle": "Ya tienes un anuncio con esta tasa",
-    "duplicateRateMessage": "Tienes otro anuncio activo con la misma tasa para este par de monedas y tipo de orden. Establece una tasa diferente.",
+    "duplicateRateMessage": "Tienes otro anuncio activo con la misma tasa para este par de monedas y tipo de pedido. Establece una tasa diferente.",
     "rangeOverlapTitle": "Ya tienes un anuncio con este rango",
     "rangeOverlapMessage": "Cambia el límite de orden mínimo y/o máximo para este anuncio. El rango entre estos límites no debe superponerse con otro anuncio activo que hayas creado para este par de monedas y tipo de orden.",
     "adLimitReachedTitle": "Límite de anuncios alcanzado",
