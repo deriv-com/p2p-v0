@@ -228,7 +228,7 @@
     "bronzeTier": "Nivel bronce",
     "bronzeTierDescription": "Nivel predeterminado para nuevos usuarios con límites básicos de negociación.",
     "last30Days": "Últimos 30 días",
-    "lifetime": "Toda la vida",
+    "lifetime": "Desde el inicio",
     "sellCompletion": "Ventas completadas",
     "buyCompletion": "Compras completadas",
     "totalOrders": "Órdenes totales",
