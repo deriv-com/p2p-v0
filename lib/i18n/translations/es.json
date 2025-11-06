@@ -508,7 +508,7 @@
     "minAmountGreaterThanZero": "El monto mínimo debe ser mayor que 0",
     "minAmountLessThanMax": "El monto mínimo debe ser menor que el monto máximo",
     "maxAmountRequired": "El monto máximo es obligatorio",
-    "maxAmountGreaterThanZero": "La cantidad máxima debe ser mayor que 0",
+    "maxAmountGreaterThanZero": "El monto máximo debe ser mayor que 0",
     "maxAmountGreaterThanMin": "La cantidad máxima debe ser mayor que la cantidad mínima",
     "minAmountLessThanTotal": "La cantidad mínima debe ser menor que la cantidad total",
     "maxAmountLessThanTotal": "La cantidad máxima debe ser menor que la cantidad total",
