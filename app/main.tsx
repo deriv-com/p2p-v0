@@ -21,7 +21,6 @@ export default function Main({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
-  const [isLoadingUserData, setIsLoadingUserData] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
@@ -55,7 +54,6 @@ export default function Main({
             if (!isPublic) {
               window.location.href = getLoginUrl(true)
             }
-            setIsLoadingUserData(false)
             return
           }
         }
@@ -68,7 +66,6 @@ export default function Main({
 
         if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
-          setIsLoadingUserData(false)
           window.location.href = getLoginUrl(userData?.signup === "v1")
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
@@ -80,8 +77,7 @@ export default function Main({
               setVerificationStatus({
                 email_verified: onboardingStatus.verification.email_verified,
                 phone_verified: onboardingStatus.verification.phone_verified,
-                kyc_verified:
-                  onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
+                kyc_verified: onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
                 p2p_allowed: onboardingStatus.p2p?.allowed,
               })
 
@@ -98,26 +94,21 @@ export default function Main({
               }
 
               if (isMountedRef.current && !abortController.signal.aborted) {
-                setIsLoadingUserData(false)
                 router.push(pathname)
               }
             }
           } catch (error) {
             console.error("Error fetching onboarding status:", error)
             if (isMountedRef.current && !abortController.signal.aborted) {
-              setIsLoadingUserData(false)
               router.push(pathname)
             }
           }
-        } else {
-          setIsLoadingUserData(false)
         }
       } catch (error) {
         if (abortController.signal.aborted || !isMountedRef.current) {
           return
         }
         console.error("Error fetching session data:", error)
-        setIsLoadingUserData(false)
       }
     }
 
@@ -129,18 +120,10 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus, userData?.signup])
+  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
-  }
-
-  if (isLoadingUserData) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-      </div>
-    )
   }
 
   return (
