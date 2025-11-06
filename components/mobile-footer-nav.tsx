@@ -21,7 +21,7 @@ export default function MobileFooterNav() {
   const { userData } = useUserDataStore()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
-    return cached !== "v1" 
+    return cached !== "v1"
   })
 
   useEffect(() => {
