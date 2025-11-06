@@ -329,7 +329,7 @@
     "reviewAndConfirm": "Revisar y confirmar",
     "transferSuccessful": "Transferencia exitosa",
     "transferUnsuccessful": "Transferencia fallida",
-    "transferSuccessMessage": "{amount} {currency} transferidos desde tu {from} a tu {to}",
+    "transferSuccessMessage": "{amount} {currency} transferido de tu {from} a tu {to}",
     "transferUnsuccessfulMessage": "No pudimos procesar tu transferencia. Por favor, inténtalo de nuevo.",
     "viewDetails": "Ver detalles",
     "gotIt": "Entendido",
