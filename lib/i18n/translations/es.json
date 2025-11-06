@@ -226,7 +226,7 @@
     "addPaymentMethod": "Agregar método de pago",
     "paymentMethodAdded": "Método de pago agregado.",
     "bronzeTier": "Nivel bronce",
-    "bronzeTierDescription": "Nivel predeterminado para nuevos usuarios con límites de comercio básicos.",
+    "bronzeTierDescription": "Nivel predeterminado para nuevos usuarios con límites básicos de negociación.",
     "last30Days": "Últimos 30 días",
     "lifetime": "Toda la vida",
     "sellCompletion": "Ventas completadas",
