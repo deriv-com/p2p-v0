@@ -260,7 +260,7 @@
     "unblockUser": "¿Desbloquear a {nickname}?",
     "unblockDescription": "Desbloquéalo si deseas interactuar con este anunciante nuevamente.",
     "unblock": "Desbloquear",
-    "userUnblocked": "{nickname} desbloqueado.",
+    "userUnblocked": "Has desbloqueado a {nickname}.",
     "noBlockedUsers": "Aún no hay usuarios bloqueados",
     "blockedUsersAppear": "Los usuarios que bloquees aparecerán aquí.",
     "loadingUsers": "Cargando usuarios...",
