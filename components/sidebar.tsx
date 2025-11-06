@@ -5,7 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
@@ -25,27 +25,30 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const { t, locale } = useTranslations()
+  const [showWallet, setShowWallet] = useState<boolean | null>(null)
   const { userData, userId } = useUserDataStore()
 
-  const [isV1Signup] = useState(() => {
+  const [isV1Signup, setIsV1Signup] = useState(() => {
     const cached = getCachedSignup()
     if (cached !== null) return cached === "v1"
     return userData?.signup === "v1"
   })
 
-  // Show wallet for non-registered users and non-v1 users
-  const showWallet = userData?.signup !== "v1"
-
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
+
+  useEffect(() => {
+    if (userData?.signup) {
+      const isV1 = userData.signup === "v1"
+      setIsV1Signup(isV1)
+      setShowWallet(!isV1)
+    }
+  }, [userData?.signup])
 
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")
 
-  const helpCentreUrl =
-    locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
-      : `https://trade.deriv.com//help-centre/deriv-p2p`
+  const helpCentreUrl = locale != "en" ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p` : `https://trade.deriv.com//help-centre/deriv-p2p`  
 
   const navItems = [
     { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon },
@@ -54,7 +57,7 @@ export default function Sidebar({ className }: SidebarProps) {
           { name: t("navigation.market"), href: "/", icon: MarketIcon },
           { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon },
           { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
-          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
+          ...(showWallet === true ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
           { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
           { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon },
         ]
