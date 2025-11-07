@@ -96,8 +96,7 @@ export default function BuySellPage() {
 
     fetchedForRef.current = balancesKey
 
-    // Handle unverified V2 users immediately without loading state
-    if (!userData?.signup) {
+    if (balancesKey === "unverified") {
       setBalance("0.00")
       setBalanceCurrency("USD")
       setIsLoadingBalance(false)
@@ -334,7 +333,11 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
-                  <BalanceSection balance={balance || "0.00"} currency={balanceCurrency} isLoading={balance === null} />
+                  <BalanceSection
+                    balance={balance ?? "0.00"}
+                    currency={balanceCurrency}
+                    isLoading={balance === null || isLoadingBalance}
+                  />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
