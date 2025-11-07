@@ -70,6 +70,7 @@ export default function BuySellPage() {
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
+  const p2pAllowed = onboardingStatus?.p2p?.allowed
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -77,11 +78,6 @@ export default function BuySellPage() {
   const isDisabled = userData?.status === "disabled"
 
   const fetchBalance = useCallback(async () => {
-    if(!onboardingStatus?.p2p?.allowed) {
-        setIsLoadingBalance(false)
-        return
-    }
-
     if (!userData?.signup) {
       return
     }
