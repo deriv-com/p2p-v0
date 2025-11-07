@@ -78,17 +78,25 @@ export default function BuySellPage() {
   const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
-    if (!userData?.signup) return null
+    if (!userData?.signup) return "unverified"
 
     if (isV1Signup) {
       const balances = userData?.balances || []
       if (balances.length === 0) return "v1-empty"
       return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
     }
-    return "v2"
+    return `v2-${userData.signup}`
   }, [isV1Signup, userData?.balances, userData?.signup])
 
   const fetchBalance = useCallback(async () => {
+    // Skip if already fetched for this key
+    if (fetchedForRef.current === balancesKey) {
+      return
+    }
+
+    fetchedForRef.current = balancesKey
+
+    // Handle unverified V2 users immediately without loading state
     if (!userData?.signup) {
       setBalance("0.00")
       setBalanceCurrency("USD")
@@ -96,26 +104,10 @@ export default function BuySellPage() {
       return
     }
 
-    if (!userData) {
-      setBalance("0.00")
-      setBalanceCurrency("USD")
-      setIsLoadingBalance(false)
-      return
+    // Set loading only if balance is not yet set
+    if (balance === null) {
+      setIsLoadingBalance(true)
     }
-
-    if (isV1Signup && !userData?.balances) {
-      setBalance("0.00")
-      setBalanceCurrency("USD")
-      setIsLoadingBalance(false)
-      return
-    }
-
-    if (fetchedForRef.current === balancesKey) {
-      return
-    }
-
-    fetchedForRef.current = balancesKey
-    setIsLoadingBalance(true)
 
     try {
       if (isV1Signup) {
@@ -124,6 +116,7 @@ export default function BuySellPage() {
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
       } else {
+        // V2 verified user - fetch from API
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
@@ -137,7 +130,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData])
+  }, [balancesKey, isV1Signup, userData, balance])
 
   useEffect(() => {
     fetchBalance()
@@ -289,6 +282,7 @@ export default function BuySellPage() {
 
           useUserDataStore.getState().updateUserData({ balances })
 
+          // Update local state immediately for instant UI update
           if (balances.length > 0) {
             const firstBalance = balances[0]
             setBalance(firstBalance.amount || "0.00")
@@ -340,11 +334,7 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
-                  <BalanceSection
-                    balance={balance || "0.00"}
-                    currency={balanceCurrency}
-                    isLoading={isLoadingBalance || balance === null}
-                  />
+                  <BalanceSection balance={balance || "0.00"} currency={balanceCurrency} isLoading={balance === null} />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
