@@ -196,7 +196,7 @@
     "joinedToday": "Joined today",
     "joinedYesterday": "Joined yesterday",
     "joinedDaysAgo": "Joined {days} days ago",
-    "notRatedYet": "Not rated yet",
+    "notRatedYet": "No ratings yet",
     "notRecommendedYet": "No recommendations yet",
     "recommendedBy": "Recommended by {count} traders",
     "dailyTradeLimit": "Daily trade limit",
