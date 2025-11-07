@@ -8,7 +8,7 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import { getCurrencies } from "@/services/api/api-wallets"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed" // Import P2PAccessRemoved component
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useRouter } from "next/navigation"
 
 interface Balance {
