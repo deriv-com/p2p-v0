@@ -63,6 +63,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
   const userId = useUserDataStore((state) => state.userId)
+  const tempBanUntil = useUserDataStore((state) => state.temp_ban_until)
   const [profile, setProfile] = useState<AdvertiserProfile | null>(null)
   const [adverts, setAdverts] = useState<Advertisement[]>([])
   const [isFollowing, setIsFollowing] = useState(false)
