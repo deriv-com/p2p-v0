@@ -94,11 +94,6 @@ export default function BuySellPage() {
       return
     }
 
-    if (fetchedForRef.current === balancesKey) {
-      return
-    }
-
-    fetchedForRef.current = balancesKey
     setIsLoadingBalance(true)
 
     try {
