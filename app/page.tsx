@@ -58,7 +58,6 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -66,11 +65,11 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
-
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
   const p2pAllowed = onboardingStatus?.p2p?.allowed
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(p2pAllowed)
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
@@ -112,7 +111,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [isV1Signup, userData, onboardingStatus])
+  }, [isV1Signup, userData])
 
   useEffect(() => {
     fetchBalance()
