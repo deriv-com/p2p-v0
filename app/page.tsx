@@ -56,7 +56,7 @@ export default function BuySellPage() {
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const [balance, setBalance] = useState<string>("0.00")
+  const [balance, setBalance] = useState<string >(null)
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const fetchedForRef = useRef<string | null>(null)
