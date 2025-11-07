@@ -462,6 +462,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                       variant={ad.type === "buy" ? "destructive" : "secondary"}
                                       size="sm"
                                       onClick={() => handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")}
+                                      disabled={!!tempBanUntil}
                                     >
                                       {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                                     </Button>
