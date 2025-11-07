@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react"
 import { useUserDataStore } from "@/stores/user-data-store"
-import type { WebSocketMessage } from "./websocket-message"
-import type { WebSocketOptions } from "./websocket-options"
+import type { WebSocketMessage } from "@/lib/websocket-message"
+import type { WebSocketOptions } from "@/lib/websocket-options"
 
 export class WebSocketClient {
   private socket: WebSocket | null = null
@@ -150,6 +150,28 @@ export class WebSocketClient {
     const token = this.getSocketToken()
     return token !== null && token.trim() !== ""
   }
+
+  public subscribeToUserUpdates(): void {
+    const subscribeMessage: WebSocketMessage = {
+      action: "subscribe",
+      options: {
+        channel: "users/me",
+      },
+      payload: {},
+    }
+    this.send(subscribeMessage)
+  }
+
+  public unsubscribeFromUserUpdates(): void {
+    const unsubscribeMessage: WebSocketMessage = {
+      action: "unsubscribe",
+      options: {
+        channel: "users/me",
+      },
+      payload: {},
+    }
+    this.send(unsubscribeMessage)
+  }
 }
 
 let wsClientInstance: WebSocketClient | null = null
@@ -168,6 +190,8 @@ interface WebSocketContextType {
   getChatHistory: (channel: string, orderId: string) => void
   subscribe: (callback: (data: any) => void) => () => void
   reconnect: () => void
+  subscribeToUserUpdates: () => void
+  unsubscribeFromUserUpdates: () => void
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -198,6 +222,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const wsClient = getWebSocketClient({
       onOpen: () => {
         setIsConnected(true)
+        const userData = useUserDataStore.getState().userData
+        if (userData?.signup === "v1") {
+          wsClient.subscribeToUserUpdates()
+        }
       },
       onMessage: (data) => {
         subscribersRef.current.forEach((callback) => callback(data))
@@ -219,6 +247,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     return () => {
       if (wsClientRef.current) {
+        const userData = useUserDataStore.getState().userData
+        if (userData?.signup === "v1") {
+          wsClientRef.current.unsubscribeFromUserUpdates()
+        }
         wsClientRef.current.disconnect()
       }
     }
@@ -252,6 +284,14 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     }
   }
 
+  const subscribeToUserUpdates = () => {
+    wsClientRef.current?.subscribeToUserUpdates()
+  }
+
+  const unsubscribeFromUserUpdates = () => {
+    wsClientRef.current?.unsubscribeFromUserUpdates()
+  }
+
   const value: WebSocketContextType = {
     isConnected,
     joinChannel,
@@ -259,6 +299,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     getChatHistory,
     subscribe,
     reconnect,
+    subscribeToUserUpdates,
+    unsubscribeFromUserUpdates,
   }
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>

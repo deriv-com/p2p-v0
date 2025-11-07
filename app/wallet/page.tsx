@@ -67,7 +67,7 @@ export default function WalletPage() {
   useEffect(() => {
     if (userData?.signup === "v1") {
       router.push("/")
-    } else if (userData?.signup !== undefined) {
+    } else {
       setHasCheckedSignup(true)
     }
   }, [userData?.signup, router])
@@ -75,15 +75,6 @@ export default function WalletPage() {
   useEffect(() => {
     loadBalanceData()
   }, [loadBalanceData])
-
-  if (!hasCheckedSignup && userData?.signup === undefined) {
-    return (
-      <div className="text-center py-12">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">Loading wallet...</p>
-      </div>
-    )
-  }
 
   if (userData?.signup === "v1") {
     return null

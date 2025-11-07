@@ -122,6 +122,28 @@ export class WebSocketClient {
     this.send(getChatHistoryMessage)
   }
 
+  public subscribeToUserUpdates(): void {
+    const subscribeMessage: WebSocketMessage = {
+      action: "subscribe",
+      options: {
+        channel: "users/me",
+      },
+      payload: {},
+    }
+    this.send(subscribeMessage)
+  }
+
+  public unsubscribeFromUserUpdates(): void {
+    const unsubscribeMessage: WebSocketMessage = {
+      action: "unsubscribe",
+      options: {
+        channel: "users/me",
+      },
+      payload: {},
+    }
+    this.send(unsubscribeMessage)
+  }
+
   public disconnect(): void {
     if (this.socket) {
       if (this.socket.readyState === WebSocket.CONNECTING || this.socket.readyState === WebSocket.OPEN) {
