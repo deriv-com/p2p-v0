@@ -71,7 +71,7 @@ export default function FollowUserList({
           onClick={() => onFollowToggle(user, showFollowingButton ? true : isFollowing)}
           className="rounded-full px-4 py-1 text-sm"
         >
-          {showFollowingButton || isFollowing ? "Following" : "Follow"}
+          {showFollowingButton || isFollowing ? "Unfollow" : "Follow"}
         </Button>
       </div>
     )
