@@ -76,7 +76,10 @@ export default function ProfilePage() {
                 : t("profile.notRatedYet"),
             recommendation:
               data.statistics_lifetime?.recommend_average !== null
-                ? t("profile.recommendedBy", { count: data.statistics_lifetime.recommend_count })
+                ? t("profile.recommendedBy", {
+                    count: data.statistics_lifetime.recommend_count,
+                    plural: data.statistics_lifetime.recommend_count === 1 ? "" : "s",
+                  })
                 : t("profile.notRecommendedYet"),
             completionRate: data.completion_average_30day ? `${data.completion_average_30day}%` : "-",
             buyCompletion: data.buy_time_average_30day ? data.buy_time_average_30day : "-",
