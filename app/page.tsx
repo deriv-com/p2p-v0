@@ -26,11 +26,13 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { subscribe } = useWebSocketContext()
 
   const {
     activeTab,
@@ -266,6 +268,35 @@ export default function BuySellPage() {
 
     return t("market.paymentMethodSelected", { count: selectedPaymentMethods.length })
   }
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      // Check if message is a balance update
+      if (data.action === "balance_updated" || data.type === "balance_updated") {
+        console.log("[v0] Balance update received via WebSocket:", data)
+
+        // Update balance state based on message payload
+        if (data.payload?.balances && Array.isArray(data.payload.balances)) {
+          const balances = data.payload.balances
+
+          // Update user data store
+          useUserDataStore.getState().updateUserData({ balances })
+
+          // Update local balance state
+          if (isV1Signup && balances.length > 0) {
+            const firstBalance = balances[0]
+            setBalance(firstBalance.amount || "0.00")
+            setBalanceCurrency(firstBalance.currency || "USD")
+          } else {
+            // For V2 users, re-fetch the balance
+            fetchBalance()
+          }
+        }
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe, isV1Signup, fetchBalance])
 
   useEffect(() => {
     if (isFilterPopupOpen) {
