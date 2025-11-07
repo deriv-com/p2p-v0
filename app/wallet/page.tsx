@@ -65,11 +65,9 @@ export default function WalletPage() {
   }, [])
 
   useEffect(() => {
-    // Allow unverified users (no userData) to access wallet page
     if (userData?.signup === "v1") {
       router.push("/")
     } else {
-      // Mark as checked once userData is loaded or after initial mount
       setHasCheckedSignup(true)
     }
   }, [userData?.signup, router])
@@ -78,7 +76,6 @@ export default function WalletPage() {
     loadBalanceData()
   }, [loadBalanceData])
 
-  // Allow page to render immediately for V2 users (verified and unverified)
   if (userData?.signup === "v1") {
     return null
   }
