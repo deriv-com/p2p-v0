@@ -102,8 +102,7 @@ export default function BuySellPage() {
       setIsLoadingBalance(false)
       return
     }
-
-    // Set loading only if balance is not yet set
+    
     if (balance === null) {
       setIsLoadingBalance(true)
     }
