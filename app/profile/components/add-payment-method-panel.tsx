@@ -10,6 +10,7 @@ import { getPaymentMethods } from "@/services/api/api-buy-sell"
 import { getPaymentMethodFields, getPaymentMethodIcon, type AvailablePaymentMethod } from "@/lib/utils"
 import { PanelWrapper } from "@/components/ui/panel-wrapper"
 import EmptyState from "@/components/empty-state"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AddPaymentMethodPanelProps {
   onAdd: (method: string, fields: Record<string, string>) => void
@@ -41,6 +42,8 @@ export default function AddPaymentMethodPanel({
   const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
   const [isLoadingMethods, setIsLoadingMethods] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
+
+  const { t } = useTranslations()
 
   useEffect(() => {
     const fetchAvailablePaymentMethods = async () => {
@@ -231,14 +234,14 @@ export default function AddPaymentMethodPanel({
       return (
         <PanelWrapper onClose={onClose}>
           <div className="flex items-center justify-center py-8">
-            <div className="text-gray-500">Loading payment methods...</div>
+            <div className="text-gray-500">{t("paymentMethod.loadingPaymentMethods")}</div>
           </div>
         </PanelWrapper>
       )
     }
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="text-gray-500">Loading payment methods...</div>
+        <div className="text-gray-500">{t("paymentMethod.loadingPaymentMethods")}</div>
       </div>
     )
   }
@@ -248,14 +251,14 @@ export default function AddPaymentMethodPanel({
       return (
         <PanelWrapper onClose={onClose}>
           <div className="flex items-center justify-center py-8">
-            <div className="text-gray-500">No payment methods available</div>
+            <div className="text-gray-500">{t("paymentMethod.noPaymentMethodsAvailable")}</div>
           </div>
         </PanelWrapper>
       )
     }
     return (
       <div className="flex items-center justify-center py-8">
-        <div className="text-gray-500">No payment methods available</div>
+        <div className="text-gray-500">{t("paymentMethod.noPaymentMethodsAvailable")}</div>
       </div>
     )
   }
@@ -267,7 +270,7 @@ export default function AddPaymentMethodPanel({
 
     const methodSelectionContent = (
       <>
-        <h2 className="text-2xl font-bold p-4 pb-0">Select a payment method</h2>
+        <h2 className="text-2xl font-bold p-4 pb-0">{t("paymentMethod.selectPaymentMethod")}</h2>
         <div className="p-4 pb-2">
           <div className="relative">
             <Image
@@ -278,7 +281,7 @@ export default function AddPaymentMethodPanel({
               className="absolute left-3 top-1/2 transform -translate-y-1/2"
             />
             <Input
-              placeholder="Search"
+              placeholder={t("paymentMethod.search")}
               value={searchQuery}
               onChange={handleSearchChange}
               className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
@@ -319,8 +322,8 @@ export default function AddPaymentMethodPanel({
             ))
           ) : (
             <EmptyState
-              title="Payment method unavailable"
-              description="Search for a different payment method."
+              title={t("paymentMethod.paymentMethodUnavailable")}
+              description={t("paymentMethod.searchDifferent")}
               redirectToAds={false}
             />
           )}
@@ -338,7 +341,7 @@ export default function AddPaymentMethodPanel({
   const formContent = (
     <>
       <div className="flex items-center gap-4 p-4 pb-0">
-        <h2 className="text-2xl font-bold">Add payment details</h2>
+        <h2 className="text-2xl font-bold">{t("paymentMethod.addPaymentDetails")}</h2>
       </div>
       <form onSubmit={handleSubmit} className="overflow-y-auto">
         <div className="p-4 space-y-4">
@@ -351,7 +354,7 @@ export default function AddPaymentMethodPanel({
                     type={field.type}
                     value={details[field.name] || ""}
                     onChange={(e) => handleInputChange(field.name, e.target.value)}
-                    label={`Enter ${field.label.toLowerCase()}`}
+                    label={`${t("profile.enterField", { field: field.label.toLowerCase() })}`}
                     required={field.required}
                     variant="floating"
                   />
@@ -368,7 +371,7 @@ export default function AddPaymentMethodPanel({
               id="instructions"
               value={instructions}
               onChange={(e) => handleInstructionsChange(e.target.value)}
-              label="Enter your instructions"
+              label={t("paymentMethod.enterInstructions")}
               className="min-h-[120px] resize-none"
               maxLength={300}
               variant="floating"
@@ -389,7 +392,7 @@ export default function AddPaymentMethodPanel({
           {isLoading ? (
             <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
           ) : (
-            "Add"
+            t("common.add")
           )}
         </Button>
       </div>

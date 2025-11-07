@@ -175,7 +175,10 @@ export default function OrderDetailsPage() {
     Object.entries(method).forEach(([key, val]) => {
       if (key === "method" || key === "type" || !val) return
 
-      const displayKey = key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+      const translationKey = `paymentMethodFields.${key.toLowerCase()}`
+      const displayKey = t(translationKey, {
+        defaultValue: key.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()),
+      })
       const isCopyable = copyableFields.includes(key.toLowerCase())
 
       fields.push(
@@ -396,7 +399,7 @@ export default function OrderDetailsPage() {
                 >
                   <div className="flex items-center">
                     <span className="font-bold">
-                      {formatStatus(true, order.status, counterpartyLabel === t("orderDetails.seller"))}
+                      {formatStatus(true, order.status, counterpartyLabel === t("orderDetails.seller"), t)}
                     </span>
                   </div>
                   {(order.status === "pending_payment" || order.status === "pending_release") && (

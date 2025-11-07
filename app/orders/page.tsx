@@ -172,23 +172,6 @@ export default function OrdersPage() {
     fetchOrders()
   }
 
-  const handleChatClick = (e: React.MouseEvent, order: Order) => {
-    e.stopPropagation()
-    if (isMobile) {
-      setSelectedOrder(order)
-      setShowChat(true)
-      setIsChatVisible(true)
-
-      joinChannel("orders", order.id)
-    } else {
-      navigateToOrderDetails(order.id)
-    }
-  }
-
-  const handleTabChange = (value: string) => {
-    setActiveTab(value as "active" | "past")
-  }
-
   const getOrderType = (order) => {
     if (order.type === "buy") {
       if (order.user.id == userId) return <span className="text-secondary text-base">{t("common.buy")}</span>
@@ -220,6 +203,23 @@ export default function OrdersPage() {
     }
 
     return label
+  }
+
+  const handleChatClick = (e: React.MouseEvent, order: Order) => {
+    e.stopPropagation()
+    if (isMobile) {
+      setSelectedOrder(order)
+      setShowChat(true)
+      setIsChatVisible(true)
+
+      joinChannel("orders", order.id)
+    } else {
+      navigateToOrderDetails(order.id)
+    }
+  }
+
+  const handleTabChange = (tabValue: string) => {
+    setActiveTab(tabValue)
   }
 
   const DesktopOrderTable = () => (
@@ -278,11 +278,11 @@ export default function OrdersPage() {
                     <div className="text-slate-600 text-xs">{getPayReceiveLabel(order)}</div>
                   </div>
                 </TableCell>
-                <TableCell className="py-0 px-4align-top row-start-1">
+                <TableCell className="py-0 px-4 align-top row-start-1">
                   <div
                     className={`w-fit px-[12px] py-[8px] rounded-[6px] text-xs ${getStatusBadgeStyle(order.status, order.type)}`}
                   >
-                    {formatStatus(false, order.status, getPayReceiveLabel(order) === t("orders.youPay"))}
+                    {formatStatus(false, order.status, getPayReceiveLabel(order) === t("orders.youPay"), t)}
                   </div>
                 </TableCell>
                 {activeTab === "active" && (

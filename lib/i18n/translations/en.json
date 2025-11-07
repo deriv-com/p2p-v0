@@ -100,7 +100,26 @@
     "noPaymentMethodsAvailable": "No payment methods available",
     "loadingPaymentMethods": "Loading payment methods...",
     "reset": "Reset",
-    "apply": "Apply"
+    "apply": "Apply",
+    "selectPaymentMethod": "Select a payment method",
+    "addPaymentDetails": "Add payment details",
+    "enterInstructions": "Enter your instructions"
+  },
+  "paymentMethodFields": {
+    "account": "Account",
+    "bank_code": "Bank Code",
+    "bank_name": "Bank Name",
+    "account_number": "Account Number",
+    "account_holder": "Account Holder",
+    "branch_code": "Branch Code",
+    "iban": "IBAN",
+    "swift_code": "SWIFT Code",
+    "bic": "BIC",
+    "routing_number": "Routing Number",
+    "sort_code": "Sort Code",
+    "ifsc_code": "IFSC Code",
+    "name": "Name",
+    "instructions": "Instructions"
   },
   "balance": {
     "title": "Balance",
@@ -520,5 +539,19 @@
     "proofOfIdentity": "Proof of identity",
     "proofOfAddress": "Proof of address",
     "phoneNumber": "Phone number"
+  },
+  "status": {
+    "refunded": "Refunded",
+    "cancelled": "Cancelled",
+    "orderCancelled": "Order cancelled",
+    "timedOut": "Expired",
+    "orderExpired": "Order expired",
+    "completed": "Completed",
+    "orderComplete": "Order complete",
+    "completePayment": "Complete payment",
+    "awaitingPayment": "Awaiting payment",
+    "waitingSellersConfirmation": "Waiting seller's confirmation",
+    "confirmPayment": "Confirm payment",
+    "underDispute": "Under dispute"
   }
 }

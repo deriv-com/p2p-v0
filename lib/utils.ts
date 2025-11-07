@@ -132,25 +132,55 @@ export function getMethodDisplayDetails(method: {
   }
 }
 
-export function formatStatus(isDetailed: boolean, status: string, isBuyer: boolean): string {
+export function formatStatus(
+  isDetailed: boolean,
+  status: string,
+  isBuyer: boolean,
+  t?: (key: string) => string,
+): string {
   if (!status) return ""
 
-  const statusMap: Record<string, string> = {
-    refunded: "Refunded",
-    cancelled: isDetailed ? "Order cancelled" : "Cancelled",
-    timed_out: isDetailed ? "Order expired" : "Expired",
-    completed: isDetailed ? "Order complete" : "Completed",
-    pending_payment: isBuyer ? "Complete payment" : "Awaiting payment",
-    pending_release: isBuyer ? "Waiting seller's confirmation" : "Confirm payment",
-    disputed: "Under dispute",
+  // If no translation function provided, use fallback English text
+  if (!t) {
+    const statusMap: Record<string, string> = {
+      refunded: "Refunded",
+      cancelled: isDetailed ? "Order cancelled" : "Cancelled",
+      timed_out: isDetailed ? "Order expired" : "Expired",
+      completed: isDetailed ? "Order complete" : "Completed",
+      pending_payment: isBuyer ? "Complete payment" : "Awaiting payment",
+      pending_release: isBuyer ? "Waiting seller's confirmation" : "Confirm payment",
+      disputed: "Under dispute",
+    }
+
+    const lowerStatus = status.toLowerCase()
+    if (statusMap[lowerStatus]) {
+      return statusMap[lowerStatus]
+    }
+
+    return status
   }
 
+  // Use translation keys
   const lowerStatus = status.toLowerCase()
-  if (statusMap[lowerStatus]) {
-    return statusMap[lowerStatus]
-  }
 
-  return status
+  switch (lowerStatus) {
+    case "refunded":
+      return t("status.refunded")
+    case "cancelled":
+      return isDetailed ? t("status.orderCancelled") : t("status.cancelled")
+    case "timed_out":
+      return isDetailed ? t("status.orderExpired") : t("status.timedOut")
+    case "completed":
+      return isDetailed ? t("status.orderComplete") : t("status.completed")
+    case "pending_payment":
+      return isBuyer ? t("status.completePayment") : t("status.awaitingPayment")
+    case "pending_release":
+      return isBuyer ? t("status.waitingSellersConfirmation") : t("status.confirmPayment")
+    case "disputed":
+      return t("status.underDispute")
+    default:
+      return status
+  }
 }
 
 export function getStatusBadgeStyle(status: string, type: string): string {
