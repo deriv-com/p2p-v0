@@ -222,7 +222,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     const wsClient = getWebSocketClient({
       onOpen: () => {
         setIsConnected(true)
-        wsClient.subscribeToUserUpdates()
+        const userData = useUserDataStore.getState().userData
+        if (userData?.signup === "v1") {
+          wsClient.subscribeToUserUpdates()
+        }
       },
       onMessage: (data) => {
         subscribersRef.current.forEach((callback) => callback(data))
@@ -244,7 +247,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
 
     return () => {
       if (wsClientRef.current) {
-        wsClientRef.current.unsubscribeFromUserUpdates()
+        const userData = useUserDataStore.getState().userData
+        if (userData?.signup === "v1") {
+          wsClientRef.current.unsubscribeFromUserUpdates()
+        }
         wsClientRef.current.disconnect()
       }
     }

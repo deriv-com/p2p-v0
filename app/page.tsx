@@ -270,33 +270,28 @@ export default function BuySellPage() {
   }
 
   useEffect(() => {
-    const unsubscribe = subscribe((data: any) => {
-      // Check if message is a balance update
-      if (data.action === "balance_updated" || data.type === "balance_updated") {
-        console.log("[v0] Balance update received via WebSocket:", data)
+    if (!isV1Signup) {
+      return
+    }
 
-        // Update balance state based on message payload
+    const unsubscribe = subscribe((data: any) => {
+      if (data.action === "balance_updated" || data.type === "balance_updated") {
         if (data.payload?.balances && Array.isArray(data.payload.balances)) {
           const balances = data.payload.balances
 
-          // Update user data store
           useUserDataStore.getState().updateUserData({ balances })
 
-          // Update local balance state
-          if (isV1Signup && balances.length > 0) {
+          if (balances.length > 0) {
             const firstBalance = balances[0]
             setBalance(firstBalance.amount || "0.00")
             setBalanceCurrency(firstBalance.currency || "USD")
-          } else {
-            // For V2 users, re-fetch the balance
-            fetchBalance()
           }
         }
       }
     })
 
     return unsubscribe
-  }, [subscribe, isV1Signup, fetchBalance])
+  }, [subscribe, isV1Signup])
 
   useEffect(() => {
     if (isFilterPopupOpen) {
