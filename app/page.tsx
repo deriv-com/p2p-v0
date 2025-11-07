@@ -26,13 +26,11 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { subscribe } = useWebSocketContext()
 
   const {
     activeTab,
@@ -58,7 +56,7 @@ export default function BuySellPage() {
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const [balance, setBalance] = useState<string | null>(null)
+  const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const fetchedForRef = useRef<string | null>(null)
@@ -78,33 +76,36 @@ export default function BuySellPage() {
   const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
-    if (!userData?.signup) return "unverified"
+    if (!userData?.signup) return null
 
     if (isV1Signup) {
       const balances = userData?.balances || []
       if (balances.length === 0) return "v1-empty"
       return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
     }
-    return `v2-${userData.signup}`
+    return "v2"
   }, [isV1Signup, userData?.balances, userData?.signup])
 
   const fetchBalance = useCallback(async () => {
+    if (!userData?.signup) {
+      setIsLoadingBalance(false)
+      return
+    }
+
+    if (!userData) {
+      return
+    }
+
+    if (isV1Signup && !userData?.balances) {
+      return
+    }
+
     if (fetchedForRef.current === balancesKey) {
       return
     }
 
     fetchedForRef.current = balancesKey
-
-    if (balancesKey === "unverified") {
-      setBalance("0.00")
-      setBalanceCurrency("USD")
-      setIsLoadingBalance(false)
-      return
-    }
-
-    if (balance === null) {
-      setIsLoadingBalance(true)
-    }
+    setIsLoadingBalance(true)
 
     try {
       if (isV1Signup) {
@@ -126,7 +127,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData, balance])
+  }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
     fetchBalance()
@@ -267,31 +268,6 @@ export default function BuySellPage() {
   }
 
   useEffect(() => {
-    if (!isV1Signup) {
-      return
-    }
-
-    const unsubscribe = subscribe((data: any) => {
-      if (data.action === "balance_updated" || data.type === "balance_updated") {
-        if (data.payload?.balances && Array.isArray(data.payload.balances)) {
-          const balances = data.payload.balances
-
-          useUserDataStore.getState().updateUserData({ balances })
-
-          // Update local state immediately for instant UI update
-          if (balances.length > 0) {
-            const firstBalance = balances[0]
-            setBalance(firstBalance.amount || "0.00")
-            setBalanceCurrency(firstBalance.currency || "USD")
-          }
-        }
-      }
-    })
-
-    return unsubscribe
-  }, [subscribe, isV1Signup])
-
-  useEffect(() => {
     if (isFilterPopupOpen) {
       const handleClickOutside = (event: MouseEvent) => {
         if (!(event.target as Element).closest(".filter-dropdown-container")) {
@@ -330,11 +306,7 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
-                  <BalanceSection
-                    balance={balance ?? "0.00"}
-                    currency={balanceCurrency}
-                    isLoading={balance === null || isLoadingBalance}
-                  />
+                  <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
@@ -652,7 +624,7 @@ export default function BuySellPage() {
           onClose={() => setIsOrderSidebarOpen(false)}
           ad={selectedAd}
           orderType={activeTab}
-          p2pBalance={Number.parseFloat(balance || "0")}
+          p2pBalance={Number.parseFloat(balance)}
         />
       </div>
     </>
