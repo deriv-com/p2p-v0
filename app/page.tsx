@@ -77,7 +77,7 @@ export default function BuySellPage() {
   const isDisabled = userData?.status === "disabled"
 
   const fetchBalance = useCallback(async () => {
-    if(!onboardingStatus?.p2p) {
+    if(!onboardingStatus?.p2p.allowed) {
         setIsLoadingBalance(false)
         return
     }
