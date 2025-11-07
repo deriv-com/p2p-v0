@@ -90,14 +90,23 @@ export default function BuySellPage() {
 
   const fetchBalance = useCallback(async () => {
     if (!userData?.signup) {
+      setBalance("0.00")
+      setBalanceCurrency("USD")
+      setIsLoadingBalance(false)
       return
     }
 
     if (!userData) {
+      setBalance("0.00")
+      setBalanceCurrency("USD")
+      setIsLoadingBalance(false)
       return
     }
 
     if (isV1Signup && !userData?.balances) {
+      setBalance("0.00")
+      setBalanceCurrency("USD")
+      setIsLoadingBalance(false)
       return
     }
 
