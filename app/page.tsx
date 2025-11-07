@@ -89,7 +89,6 @@ export default function BuySellPage() {
   }, [isV1Signup, userData?.balances, userData?.signup])
 
   const fetchBalance = useCallback(async () => {
-    // Skip if already fetched for this key
     if (fetchedForRef.current === balancesKey) {
       return
     }
@@ -113,7 +112,7 @@ export default function BuySellPage() {
         const firstBalance = balances[0] || {}
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
-      } else 
+      } else {
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
