@@ -118,9 +118,6 @@ export default function BuySellPage() {
 
         setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
         setBalanceCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
-      } else {
-        setBalance("0.00")
-        setBalanceCurrency("USD")
       }
     } catch (error) {
       console.error("Failed to fetch balance:", error)
