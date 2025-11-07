@@ -94,10 +94,6 @@ export default function BuySellPage() {
       return
     }
 
-    if (fetchedForRef.current === balancesKey) {
-      return
-    }
-
     setIsLoadingBalance(true)
 
     try {
@@ -120,7 +116,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData, onboardingStatus.p2p])
+  }, [isV1Signup, userData, onboardingStatus.p2p])
 
   useEffect(() => {
     fetchBalance()
