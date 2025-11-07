@@ -102,7 +102,7 @@ export default function BuySellPage() {
       setIsLoadingBalance(false)
       return
     }
-    
+
     if (balance === null) {
       setIsLoadingBalance(true)
     }
@@ -113,8 +113,7 @@ export default function BuySellPage() {
         const firstBalance = balances[0] || {}
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
-      } else {
-        // V2 verified user - fetch from API
+      } else 
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
 
