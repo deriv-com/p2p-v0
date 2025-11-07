@@ -58,7 +58,7 @@ export default function BuySellPage() {
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const [balance, setBalance] = useState<string>("0.00")
+  const [balance, setBalance] = useState<string | null>(null)
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const fetchedForRef = useRef<string | null>(null)
@@ -91,6 +91,7 @@ export default function BuySellPage() {
   const fetchBalance = useCallback(async () => {
     if (!userData?.signup) {
       setIsLoadingBalance(false)
+      setBalance("0.00")
       return
     }
 
@@ -332,7 +333,11 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
-                  <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
+                  <BalanceSection
+                    balance={balance || "0.00"}
+                    currency={balanceCurrency}
+                    isLoading={isLoadingBalance || balance === null}
+                  />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
@@ -650,7 +655,7 @@ export default function BuySellPage() {
           onClose={() => setIsOrderSidebarOpen(false)}
           ad={selectedAd}
           orderType={activeTab}
-          p2pBalance={Number.parseFloat(balance)}
+          p2pBalance={Number.parseFloat(balance || "0")}
         />
       </div>
     </>
