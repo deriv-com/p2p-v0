@@ -89,7 +89,7 @@ export default function BuySellPage() {
 
   const fetchBalance = useCallback(async () => {
     if(!onboardingStatus?.p2p) {
-        setIsLoadingBalance(true)
+        setIsLoadingBalance(false)
         return
     }
 
