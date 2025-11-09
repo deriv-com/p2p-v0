@@ -25,7 +25,7 @@ import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { getTotalBalance } from "@/services/api/api-auth"
+import { useUserBalance } from "@/hooks/use-user-balance"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
@@ -56,7 +56,7 @@ export default function BuySellPage() {
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
-  const [userBalance, setUserBalance] = useState<number>(0)
+  const { balance: userBalance } = useUserBalance({ currency: selectedAccountCurrency })
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -72,35 +72,6 @@ export default function BuySellPage() {
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
   const isDisabled = userData?.status === "disabled"
-
-  useEffect(() => {
-    const fetchUserBalance = async () => {
-      if (!userData?.signup) return
-
-      try {
-        if (isV1Signup) {
-          const balances = userData?.balances || []
-          const accountBalance = balances.find((b: any) => b.currency === selectedAccountCurrency)
-          setUserBalance(Number.parseFloat(accountBalance?.amount || "0"))
-        } else {
-          const data = await getTotalBalance()
-          const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-
-          if (p2pWallet?.balances) {
-            const accountBalance = p2pWallet.balances.find((b: any) => b.currency === selectedAccountCurrency)
-            setUserBalance(Number.parseFloat(accountBalance?.balance || "0"))
-          } else {
-            setUserBalance(0)
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user balance:", error)
-        setUserBalance(0)
-      }
-    }
-
-    fetchUserBalance()
-  }, [isV1Signup, userData, selectedAccountCurrency])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
