@@ -89,7 +89,7 @@ export default function BuySellPage() {
   }, [isV1Signup, userData?.balances, userData?.signup])
 
   const fetchBalance = useCallback(async () => {
-    if (!userData?.signup){
+    if (!userData?.signup) {
       return
     }
 
@@ -140,11 +140,9 @@ export default function BuySellPage() {
     }
   }, [isConnected])
 
-   useEffect(() => {
+  useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
-      if (
-        data.payload.data?.event === "balance_change"
-      ) {
+      if (data.payload.data?.event === "balance_change") {
         const balances = data.payload.data.user?.balances[0]
         setBalance(balances.amount)
         setBalanceCurrency(balances.currency)
