@@ -85,6 +85,7 @@ export class WebSocketClient {
   }
 
   public joinChannel(channel: string, id: number): void {
+    console.log("[v0] Joining channel:", channel, "with id:", id)
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -152,6 +153,35 @@ export class WebSocketClient {
         channel: "users/me",
       },
       payload: {},
+    }
+    this.send(unsubscribeMessage)
+  }
+
+  public subscribeToOrder(orderId: number): void {
+    console.log("[v0] Subscribing to order:", orderId)
+    this.joinChannel("orders", orderId)
+    const subscribeMessage: WebSocketMessage = {
+      action: "subscribe",
+      options: {
+        channel: "orders",
+      },
+      payload: {
+        order_id: orderId,
+      },
+    }
+    this.send(subscribeMessage)
+  }
+
+  public unsubscribeFromOrder(orderId: number): void {
+    console.log("[v0] Unsubscribing from order:", orderId)
+    const unsubscribeMessage: WebSocketMessage = {
+      action: "unsubscribe",
+      options: {
+        channel: "orders",
+      },
+      payload: {
+        order_id: orderId,
+      },
     }
     this.send(unsubscribeMessage)
   }
