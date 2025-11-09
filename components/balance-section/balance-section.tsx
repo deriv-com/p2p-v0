@@ -72,9 +72,6 @@ export function BalanceSection({ className }: BalanceSectionProps) {
       }
     })
 
-    return () => {
-      unsubscribe()
-    }
   }, [isV1Signup, isConnected, subscribe])
 
   useEffect(() => {
