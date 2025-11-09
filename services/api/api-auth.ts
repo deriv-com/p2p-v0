@@ -284,7 +284,7 @@ export async function getClientProfile(): Promise<void> {
 
     if (data.residence) {
       useUserDataStore.getState().setResidenceCountry(data.residence)
-    
+    }
   } catch (error) {
     console.error("Error fetching profile:", error)
   }
