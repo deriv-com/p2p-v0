@@ -25,7 +25,7 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const isWalletAccount = searchParams.get("token")
+  const isWalletAccount = searchParams.get("wallet")
   const { t, locale } = useTranslations()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
