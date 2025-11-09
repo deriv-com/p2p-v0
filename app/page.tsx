@@ -135,10 +135,6 @@ export default function BuySellPage() {
   }, [fetchBalance])
 
   useEffect(() => {
-    
-  }, [userData?.signup, isConnected])
-
-  useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
       if (data.payload.data?.event === "balance_change") {
         const balances = data.payload.data.user?.balances[0]
