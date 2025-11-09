@@ -14,7 +14,7 @@ interface BalanceSectionProps {
 
 export function BalanceSection({ className }: BalanceSectionProps) {
   const { t } = useTranslations()
-  const { joinChannelsubscribe, isConnected} = useWebSocketContext()
+  const { joinChannel, subscribe, isConnected} = useWebSocketContext()
   const userData = useUserDataStore((state) => state.userData)
 
   const [balance, setBalance] = useState<string>("0.00")
