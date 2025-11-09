@@ -465,7 +465,7 @@ export const currencyLogoMapper = {
   TRX: "/icons/trx-logo.png",
 }
 
-export const getHomeUrl = (isV1Signup = false, section = "") => {
+export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
   const isProduction = process.env.NEXT_PUBLIC_NODE_ENV === "production"
   let baseUrl = "",
     url = ""
@@ -477,8 +477,15 @@ export const getHomeUrl = (isV1Signup = false, section = "") => {
   }
 
   if (section === "profile") {
-    if (isV1Signup) url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
-    else url = `https://${baseUrl}/dashboard/profile`
+    if (isV1Signup) {
+      if(isWalletAccount) {
+        url = isProduction ? `https://hub.deriv.com/accounts/Profile` : `https://staging-hub.deriv.com/accounts/Profile`
+      } else {
+        url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
+      }
+    } else {
+      url = `https://${baseUrl}/dashboard/profile`
+    }
   } else if (section === "home") {
     if (isV1Signup) url = `https://${baseUrl}`
     else url = `https://${baseUrl}/dashboard/home`
