@@ -55,7 +55,7 @@ export default function Sidebar({ className }: SidebarProps) {
     const isWalletAccount = searchParams.get("wallet")
     setHomeUrl(getHomeUrl(isV1Signup, "home"))
     setProfileUrl(getHomeUrl(isV1Signup, "profile", isWalletAccount))
-  }, [userData?.signup])
+  }, [searchParamsuserData?.signup])
 
   const helpCentreUrl =
     locale != "en"
