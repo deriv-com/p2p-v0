@@ -88,7 +88,6 @@ export default function BuySellPage() {
 
   const fetchBalance = useCallback(async () => {
     if (!userData?.signup) {
-      setIsLoadingBalance(false)
       return
     }
 
