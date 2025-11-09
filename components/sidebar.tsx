@@ -52,7 +52,7 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }, [userData?.signup])
 
-  const homeUrl = getHomeUrl(isV1Signup, "home)
+  const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile", isWalletAccount)
 
   const helpCentreUrl =
