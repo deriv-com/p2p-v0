@@ -155,9 +155,7 @@ export default function AdsPage() {
         </TooltipProvider>
       </div>
     )
-  }
-
-  console.log("[v0] AdsPage render - userId:", userId, "hasFetched:", hasFetchedRef.current)
+  
 
   if (isDisabled) {
     return (
