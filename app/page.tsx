@@ -110,6 +110,10 @@ export default function BuySellPage() {
         const firstBalance = balances[0] || {}
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
+
+        if (isConnected) {
+          joinChannel("users/me")
+        }
       } else {
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
@@ -131,9 +135,7 @@ export default function BuySellPage() {
   }, [fetchBalance])
 
   useEffect(() => {
-    if (userData?.signup === "v1" && isConnected) {
-      joinChannel("users/me")
-    }
+    
   }, [userData?.signup, isConnected])
 
   useEffect(() => {
