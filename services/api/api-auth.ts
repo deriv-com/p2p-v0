@@ -259,7 +259,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
-    console.log("[v0] getClientProfile: starting")
+  
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
       method: "GET",
       credentials: "include",
