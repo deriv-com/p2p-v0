@@ -250,6 +250,10 @@ export async function fetchUserIdAndStore(): Promise<void> {
           status: status,
         })
       }
+    } else {
+      useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}]
+        })
     }
   
   } catch (error) {
