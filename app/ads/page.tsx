@@ -40,6 +40,7 @@ export default function AdsPage() {
   const isMobile = useIsMobile()
   const router = useRouter()
   const fetchAds = async () => {
+    console.log("[v0] fetchAds called - userId:", userId, "hasFetched:", hasFetchedRef.current)
     if (!userId) {
       setLoading(false)
       return
@@ -65,6 +66,7 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
+    console.log("[v0] useEffect running - userId:", userId, "hasFetched:", hasFetchedRef.current)
     if (userId && !hasFetchedRef.current) {
       hasFetchedRef.current = true
       fetchAds()
@@ -156,6 +158,8 @@ export default function AdsPage() {
       </div>
     )
   }
+
+  console.log("[v0] AdsPage render - userId:", userId, "hasFetched:", hasFetchedRef.current)
 
   if (isDisabled) {
     return (

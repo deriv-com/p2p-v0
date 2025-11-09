@@ -208,7 +208,9 @@ export async function logout(): Promise<void> {
  */
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
+    console.log("[v0] fetchUserIdAndStore: starting")
     await getClientProfile()
+    console.log("[v0] fetchUserIdAndStore: after getClientProfile")
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
@@ -228,6 +230,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const status = result?.data?.status
 
     if (userId) {
+      console.log("[v0] fetchUserIdAndStore: setting userId:", userId)
       useUserDataStore.getState().setUserId(userId.toString())
 
       if (brandClientId) {
@@ -239,6 +242,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
       const { userData } = useUserDataStore.getState()
       if (userData) {
+        console.log("[v0] fetchUserIdAndStore: updating userData")
         useUserDataStore.getState().updateUserData({
           adverts_are_listed: result.data.adverts_are_listed,
           signup: result.data.signup,
@@ -249,6 +253,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
         })
       }
     }
+    console.log("[v0] fetchUserIdAndStore: complete")
   } catch (error) {
     console.error("Error fetching user ID:", error)
   }
@@ -256,6 +261,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
+    console.log("[v0] getClientProfile: starting")
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
       method: "GET",
       credentials: "include",
@@ -276,11 +282,13 @@ export async function getClientProfile(): Promise<void> {
       nickname: data.nickname,
     }
 
+    console.log("[v0] getClientProfile: setting userData")
     useUserDataStore.getState().setUserData(userData)
 
     if (data.residence) {
       useUserDataStore.getState().setResidenceCountry(data.residence)
     }
+    console.log("[v0] getClientProfile: complete")
   } catch (error) {
     console.error("Error fetching profile:", error)
   }
