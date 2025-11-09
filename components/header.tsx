@@ -7,12 +7,10 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { NovuNotifications } from "./novu-notifications"
 import { MobileSidebarTrigger } from "./mobile-sidebar-wrapper"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useWalletParam } from "@/hooks/use-wallet-param"
 
 export default function Header() {
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
-  const { appendWalletParam } = useWalletParam()
 
   const pathname = usePathname()
   const navItems = [
@@ -43,7 +41,7 @@ export default function Header() {
               <Link
                 prefetch
                 key={item.name}
-                href={appendWalletParam(item.href)}
+                href={item.href}
                 className={cn(
                   "inline-flex h-12 items-center border-b-2 px-4 text-sm",
                   isActive

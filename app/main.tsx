@@ -9,6 +9,7 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useWalletStore } from "@/stores/wallet-store"
 import { getLoginUrl } from "@/lib/utils"
 import "./globals.css"
 
@@ -27,6 +28,12 @@ export default function Main({
   const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
+  const { setIsWalletAccount } = useWalletStore()
+
+  useEffect(() => {
+    const walletParam = searchParams.get("wallet")
+    setIsWalletAccount(walletParam === "true")
+  }, [searchParams, setIsWalletAccount])
 
   useEffect(() => {
     isMountedRef.current = true
@@ -77,7 +84,8 @@ export default function Main({
               setVerificationStatus({
                 email_verified: onboardingStatus.verification.email_verified,
                 phone_verified: onboardingStatus.verification.phone_verified,
-                kyc_verified: onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
+                kyc_verified:
+                  onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
                 p2p_allowed: onboardingStatus.p2p?.allowed,
               })
 

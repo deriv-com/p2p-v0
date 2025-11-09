@@ -508,18 +508,3 @@ export const getLoginUrl = (isV1Signup = false) => {
 
   return isProduction ? "https://home.deriv.com/dashboard/login" : "https://staging-home.deriv.com/dashboard/login"
 }
-
-// Utility function to append wallet param to URL
-export const appendWalletParam = (url: string, walletParam: string | null): string => {
-  if (!walletParam) return url
-
-  try {
-    const urlObj = new URL(url, typeof window !== "undefined" ? window.location.origin : "http://localhost")
-    urlObj.searchParams.set("wallet", walletParam)
-    return urlObj.pathname + urlObj.search
-  } catch {
-    // If URL parsing fails, manually append
-    const separator = url.includes("?") ? "&" : "?"
-    return `${url}${separator}wallet=${walletParam}`
-  }
-}

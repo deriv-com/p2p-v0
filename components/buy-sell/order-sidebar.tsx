@@ -17,7 +17,6 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useWalletParam } from "@/hooks/use-wallet-param"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -134,7 +133,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const { t } = useTranslations()
   const router = useRouter()
   const isMobile = useIsMobile()
-  const { appendWalletParam } = useWalletParam()
   const [amount, setAmount] = useState(null)
   const [totalAmount, setTotalAmount] = useState(0)
   const [validationError, setValidationError] = useState<string | null>(null)
@@ -228,7 +226,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           })
         }
       } else {
-        router.push(appendWalletParam("/orders/" + order.data.id))
+        router.push("/orders/" + order.data.id)
       }
     } catch (error) {
       setOrderStatus({

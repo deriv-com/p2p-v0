@@ -2,15 +2,15 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
+import { useWalletStore } from "@/stores/wallet-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useWalletParam } from "@/hooks/use-wallet-param"
 import HomeIcon from "@/public/icons/ic-arrow-left.svg"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
@@ -25,9 +25,8 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const { isWalletAccount } = useWalletStore()
   const { t, locale } = useTranslations()
-  const { appendWalletParam } = useWalletParam()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
     return cached !== "v1"
@@ -54,10 +53,9 @@ export default function Sidebar({ className }: SidebarProps) {
       setIsV1Signup(false)
     }
 
-    const isWalletAccount = searchParams.get("wallet")
     setHomeUrl(getHomeUrl(isV1Signup, "home"))
-    setProfileUrl(getHomeUrl(isV1Signup, "profile", isWalletAccount))
-  }, [searchParams, userData?.signup])
+    setProfileUrl(getHomeUrl(isV1Signup, "profile", isWalletAccount ? "true" : null))
+  }, [isWalletAccount, userData?.signup, isV1Signup])
 
   const helpCentreUrl =
     locale != "en"
@@ -65,15 +63,15 @@ export default function Sidebar({ className }: SidebarProps) {
       : `https://trade.deriv.com/help-centre/deriv-p2p`
 
   const navItems = [
-    { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon, external: true },
+    { name: t("navigation.backToHome"), href: homeUrl, icon: HomeIcon },
     ...(!isDisabled
       ? [
-          { name: t("navigation.market"), href: "/", icon: MarketIcon, external: false },
-          { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon, external: false },
-          { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon, external: false },
-          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon, external: false }] : []),
-          { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon, external: false },
-          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon, external: true },
+          { name: t("navigation.market"), href: "/", icon: MarketIcon },
+          { name: t("navigation.orders"), href: "/orders", icon: OrdersIcon },
+          { name: t("navigation.myAds"), href: "/ads", icon: AdsIcon },
+          ...(showWallet ? [{ name: t("navigation.wallet"), href: "/wallet", icon: WalletIcon }] : []),
+          { name: t("navigation.profile"), href: "/profile", icon: ProfileIcon },
+          { name: t("navigation.p2pHelpCentre"), href: helpCentreUrl, icon: GuideIcon },
         ]
       : []),
   ]
@@ -109,7 +107,7 @@ export default function Sidebar({ className }: SidebarProps) {
                 {item.name === t("navigation.profile") && <div className="my-3 border-b border-grayscale-200"></div>}
                 <Link
                   prefetch
-                  href={item.external ? item.href : appendWalletParam(item.href)}
+                  href={item.href}
                   className={cn("flex items-center gap-3 rounded-md py-4 text-sm", isActive ? "text-primary" : "")}
                 >
                   <div className="h-5 w-5 flex items-center justify-center">

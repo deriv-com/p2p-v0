@@ -8,7 +8,6 @@ import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { useState, useEffect } from "react"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { SvgIcon } from "@/components/icons/svg-icon"
-import { useWalletParam } from "@/hooks/use-wallet-param"
 import MarketIcon from "@/public/icons/ic-buy-sell.svg"
 import OrdersIcon from "@/public/icons/ic-orders.svg"
 import AdsIcon from "@/public/icons/ic-my-ads.svg"
@@ -20,7 +19,6 @@ export default function MobileFooterNav() {
   const { isChatVisible } = useChatVisibilityStore()
   const { t } = useTranslations()
   const { userData } = useUserDataStore()
-  const { appendWalletParam } = useWalletParam()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
     return cached !== "v1"
@@ -47,7 +45,7 @@ export default function MobileFooterNav() {
     <div className="fixed bottom-0 left-0 right-0 bg-white border-t md:hidden z-40">
       <div className={cn("grid grid-cols-4 min-h-16", showWallet && "grid-cols-5")}>
         <Link
-          href={appendWalletParam("/")}
+          href="/"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
             "text-primary": pathname === "/" || pathname.startsWith("/advertiser"),
             "text-slate-1200": !(pathname === "/" || pathname.startsWith("/advertiser")),
@@ -62,7 +60,7 @@ export default function MobileFooterNav() {
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.market")}</span>
         </Link>
         <Link
-          href={appendWalletParam("/orders")}
+          href="/orders"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
             "text-primary": pathname.startsWith("/orders"),
             "text-slate-1200": !pathname.startsWith("/orders"),
@@ -74,7 +72,7 @@ export default function MobileFooterNav() {
           <span className="text-xs mt-1 line-clamp-2">{t("navigation.orders")}</span>
         </Link>
         <Link
-          href={appendWalletParam("/ads")}
+          href="/ads"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
             "text-primary": pathname.startsWith("/ads"),
             "text-slate-1200": !pathname.startsWith("/ads"),
@@ -87,7 +85,7 @@ export default function MobileFooterNav() {
         </Link>
         {showWallet && (
           <Link
-            href={appendWalletParam("/wallet")}
+            href="/wallet"
             className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
               "text-primary": pathname.startsWith("/wallet"),
               "text-slate-1200": !pathname.startsWith("/wallet"),
@@ -100,7 +98,7 @@ export default function MobileFooterNav() {
           </Link>
         )}
         <Link
-          href={appendWalletParam("/profile")}
+          href="/profile"
           className={cn("flex flex-col items-center justify-center px-1 text-center max-w-full py-2", {
             "text-primary": pathname.startsWith("/profile"),
             "text-slate-1200": !pathname.startsWith("/profile"),
