@@ -52,10 +52,10 @@ export default function Sidebar({ className }: SidebarProps) {
       setShowWallet(true)
       setIsV1Signup(false)
     }
-  }, [userData?.signup])
 
-  const homeUrl = getHomeUrl(isV1Signup, "home")
-  const profileUrl = getHomeUrl(isV1Signup, "profile", isWalletAccount)
+    setHomeUrl(getHomeUrl(isV1Signup, "home"))
+    setProfileUrl(getHomeUrl(isV1Signup, "profile", isWalletAccount))
+  }, [userData?.signup])
 
   const helpCentreUrl =
     locale != "en"
