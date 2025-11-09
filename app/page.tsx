@@ -58,26 +58,37 @@ export default function BuySellPage() {
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
-  const onboardingStatus = useUserDataStore((state) => state.onboardingStatus)
+
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
   const tempBanUntil = userData?.temp_ban_until
-  const p2pAllowed = onboardingStatus?.p2p?.allowed
-  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(p2pAllowed)
   const hasFilteredPaymentMethods =
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
   const isDisabled = userData?.status === "disabled"
 
+  const balancesKey = useMemo(() => {
+    if (!userData?.signup) return null
+
+    if (isV1Signup) {
+      const balances = userData?.balances || []
+      if (balances.length === 0) return "v1-empty"
+      return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
+    }
+    return "v2"
+  }, [isV1Signup, userData?.balances, userData?.signup])
+
   const fetchBalance = useCallback(async () => {
     if (!userData?.signup) {
+      setIsLoadingBalance(false)
       return
     }
 
@@ -89,6 +100,11 @@ export default function BuySellPage() {
       return
     }
 
+    if (fetchedForRef.current === balancesKey) {
+      return
+    }
+
+    fetchedForRef.current = balancesKey
     setIsLoadingBalance(true)
 
     try {
@@ -111,7 +127,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [isV1Signup, userData])
+  }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
     fetchBalance()
