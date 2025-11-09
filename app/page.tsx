@@ -135,6 +135,12 @@ export default function BuySellPage() {
   }, [fetchBalance])
 
   useEffect(() => {
+    if (isConnected) {
+      joinChannel("users/me")
+    }
+  }, [isConnected, orderId])
+
+  useEffect(() => {
     const operation = searchParams.get("operation")
     const currencyParam = searchParams.get("currency")
 
