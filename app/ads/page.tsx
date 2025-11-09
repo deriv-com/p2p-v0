@@ -46,6 +46,7 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const hasProcessedUrlParamsRef = useRef(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
@@ -89,6 +90,9 @@ export default function AdsPage() {
   }, [userData?.adverts_are_listed])
 
   useEffect(() => {
+    // Skip if already processed
+    if (hasProcessedUrlParamsRef.current) return
+
     const searchParams = new URLSearchParams(window.location.search)
     const success = searchParams.get("success")
     const type = searchParams.get("type")
@@ -98,6 +102,9 @@ export default function AdsPage() {
     if (!success || !type || !id || showStatusModal !== "true") {
       return
     }
+
+    // Mark as processed immediately to prevent duplicate processing
+    hasProcessedUrlParamsRef.current = true
 
     if ((success === "create" || success === "update") && !isMobile) {
       const adTypeDisplay = type.toUpperCase()
@@ -120,9 +127,10 @@ export default function AdsPage() {
         showStatusModal: true,
       })
 
+      // Fetch ads to show the newly created/updated ad
       fetchAds()
     }
-  }, [showAlert, isMobile, t])
+  }, [])
 
   const handleAdUpdated = (status?: string) => {
     fetchAds()
