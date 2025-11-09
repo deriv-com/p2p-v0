@@ -44,7 +44,6 @@ export function BalanceSection({ className }: BalanceSectionProps) {
         setCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
       }
     } catch (error) {
-      console.error("Failed to fetch balance:", error)
       setBalance("0.00")
       setCurrency("USD")
     } finally {
