@@ -26,6 +26,8 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
+import type { BalanceUpdateMessage } from "@/lib/websocket-message"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
@@ -65,6 +67,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const { subscribe } = useWebSocketContext()
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
@@ -85,6 +88,30 @@ export default function BuySellPage() {
     }
     return "v2"
   }, [isV1Signup, userData?.balances, userData?.signup])
+
+  useEffect(() => {
+    if (!isV1Signup) {
+      return
+    }
+
+    const unsubscribe = subscribe((message: BalanceUpdateMessage) => {
+      if (message.action === "balance_updated" && message.payload?.balances) {
+        const updatedBalances = message.payload.balances
+        const firstBalance = updatedBalances[0] || {}
+
+        setBalance(firstBalance.amount || "0.00")
+        setBalanceCurrency(firstBalance.currency || "USD")
+
+        useUserDataStore.getState().updateUserData({
+          balances: updatedBalances,
+        })
+      }
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [isV1Signup, subscribe])
 
   const fetchBalance = useCallback(async () => {
     if (!userData?.signup) {
