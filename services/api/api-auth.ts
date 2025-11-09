@@ -208,9 +208,7 @@ export async function logout(): Promise<void> {
  */
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
-    console.log("[v0] fetchUserIdAndStore: starting")
     await getClientProfile()
-    console.log("[v0] fetchUserIdAndStore: after getClientProfile")
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
