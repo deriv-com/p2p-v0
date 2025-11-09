@@ -240,7 +240,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
       const { userData } = useUserDataStore.getState()
       if (userData) {
-        console.log("[v0] fetchUserIdAndStore: updating userData")
+      
         useUserDataStore.getState().updateUserData({
           adverts_are_listed: result.data.adverts_are_listed,
           signup: result.data.signup,
@@ -251,7 +251,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
         })
       }
     }
-    console.log("[v0] fetchUserIdAndStore: complete")
+  
   } catch (error) {
     console.error("Error fetching user ID:", error)
   }
