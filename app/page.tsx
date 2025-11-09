@@ -100,7 +100,7 @@ export default function BuySellPage() {
     }
 
     if (fetchedForRef.current === balancesKey) {
-      return
+      //return
     }
 
     fetchedForRef.current = balancesKey
