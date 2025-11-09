@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWalletParam } from "@/hooks/use-wallet-param"
 
 interface EmptyStateProps {
   icon?: string
@@ -27,10 +28,11 @@ export default function EmptyState({
   const userId = useUserDataStore((state) => state.userId)
   const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
+  const { appendWalletParam } = useWalletParam()
 
   const createAd = () => {
     if (userId) {
-      router.push("/ads/create")
+      router.push(appendWalletParam("/ads/create"))
     } else {
       showAlert({
         title: t("profile.gettingStarted"),
