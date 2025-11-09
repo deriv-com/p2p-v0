@@ -93,10 +93,6 @@ export default function BuySellPage() {
       return
     }
 
-    if (!userData) {
-      return
-    }
-
     if (isV1Signup && !userData?.balances) {
       return
     }
