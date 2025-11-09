@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
@@ -23,6 +23,7 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
@@ -55,6 +56,9 @@ export default function BuySellPage() {
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
+  const [balance, setBalance] = useState<string>("0.00")
+  const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
+  const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -70,6 +74,64 @@ export default function BuySellPage() {
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
   const isDisabled = userData?.status === "disabled"
+
+  const balancesKey = useMemo(() => {
+    if (!userData?.signup) return null
+
+    if (isV1Signup) {
+      const balances = userData?.balances || []
+      if (balances.length === 0) return "v1-empty"
+      return `v1-${balances[0]?.amount || "0"}-${balances[0]?.currency || "USD"}`
+    }
+    return "v2"
+  }, [isV1Signup, userData?.balances, userData?.signup])
+
+  const fetchBalance = useCallback(async () => {
+    if (!userData?.signup) {
+      setIsLoadingBalance(false)
+      return
+    }
+
+    if (!userData) {
+      return
+    }
+
+    if (isV1Signup && !userData?.balances) {
+      return
+    }
+
+    if (fetchedForRef.current === balancesKey) {
+      return
+    }
+
+    fetchedForRef.current = balancesKey
+    setIsLoadingBalance(true)
+
+    try {
+      if (isV1Signup) {
+        const balances = userData?.balances || []
+        const firstBalance = balances[0] || {}
+        setBalance(firstBalance.amount || "0.00")
+        setBalanceCurrency(firstBalance.currency || "USD")
+      } else {
+        const data = await getTotalBalance()
+        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
+
+        setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
+        setBalanceCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
+      }
+    } catch (error) {
+      console.error("Failed to fetch balance:", error)
+      setBalance("0.00")
+      setBalanceCurrency("USD")
+    } finally {
+      setIsLoadingBalance(false)
+    }
+  }, [balancesKey, isV1Signup, userData])
+
+  useEffect(() => {
+    fetchBalance()
+  }, [fetchBalance])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
@@ -244,7 +306,7 @@ export default function BuySellPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div className="w-[calc(100%+24px)] md:w-full flex flex-row items-end gap-[16px] md:gap-[24px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl justify-between -m-3 mb-4 md:m-0">
                 <div>
-                  <BalanceSection />
+                  <BalanceSection balance={balance} currency={balanceCurrency} isLoading={isLoadingBalance} />
                   <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as "buy" | "sell")}>
                     <TabsList className="w-auto bg-transparent p-0 gap-4">
                       <TabsTrigger
@@ -562,7 +624,7 @@ export default function BuySellPage() {
           onClose={() => setIsOrderSidebarOpen(false)}
           ad={selectedAd}
           orderType={activeTab}
-          p2pBalance={0}
+          p2pBalance={Number.parseFloat(balance)}
         />
       </div>
     </>
