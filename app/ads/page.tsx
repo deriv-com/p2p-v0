@@ -65,10 +65,11 @@ export default function AdsPage() {
   }
 
   useEffect(() => {
-    setLoading(false)
     if (userId && !hasFetchedRef.current) {
       hasFetchedRef.current = true
       fetchAds()
+    } else if (!userId) {
+      setLoading(false)
     }
   }, [userId])
 
