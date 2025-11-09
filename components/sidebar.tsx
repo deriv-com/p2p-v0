@@ -51,7 +51,7 @@ export default function Sidebar({ className }: SidebarProps) {
   }, [userData?.signup])
 
   const homeUrl = getHomeUrl(isV1Signup, "home")
-  const profileUrl = getHomeUrl(isV1Signup, "profile")
+  const profileUrl = getHomeUrl(isV1Signup, "profile", isWalletAccount)
 
   const helpCentreUrl =
     locale != "en"
