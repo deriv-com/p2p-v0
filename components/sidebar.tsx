@@ -37,7 +37,8 @@ export default function Sidebar({ className }: SidebarProps) {
     if (cached !== null) return cached === "v1"
     return userData?.signup === "v1"
   })
-  const [isWalletAccount, setIsWalletAccount] = useState(false)
+  const [homeUrl, setHomeUrl] = useState("")
+  const [profileUrl, setProfileUrl] = useState("")
 
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
