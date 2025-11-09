@@ -143,10 +143,7 @@ export default function BuySellPage() {
    useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
       if (
-        ["buyer_paid", "completed", "cancelled", "refunded", "disputed", "user_review", "advertiser_review"].includes(
-          data.payload.data?.event,
-        ) &&
-        data.payload.data?.order?.id == orderId
+        data.payload.data?.event === "balance_change"
       ) {
         setOrder(data.payload.data.order)
       }
