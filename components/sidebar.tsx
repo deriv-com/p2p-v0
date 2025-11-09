@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
