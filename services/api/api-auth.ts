@@ -218,6 +218,10 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     const result = await response.json()
     if (!response.ok) {
+      useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}],
+          signup: "v2"
+        })
       throw new Error(`Failed to fetch user data: ${response.statusText}`)
     }
 
