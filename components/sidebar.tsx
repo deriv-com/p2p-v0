@@ -5,7 +5,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
@@ -35,8 +35,6 @@ export default function Sidebar({ className }: SidebarProps) {
     if (cached !== null) return cached === "v1"
     return userData?.signup === "v1"
   })
-  const [homeUrl, setHomeUrl] = useState("")
-  const [profileUrl, setProfileUrl] = useState("")
 
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
@@ -49,10 +47,11 @@ export default function Sidebar({ className }: SidebarProps) {
       setShowWallet(true)
       setIsV1Signup(false)
     }
+  }, [userData?.signup])
 
-    setHomeUrl(getHomeUrl(isV1Signup, "home"))
-    setProfileUrl(getHomeUrl(isV1Signup, "profile", isWalletAccount ? "true" : null))
-  }, [isWalletAccount, userData?.signup, isV1Signup])
+  const homeUrl = useMemo(() => getHomeUrl(isV1Signup, "home"), [isV1Signup])
+
+  const profileUrl = useMemo(() => getHomeUrl(isV1Signup, "profile", isWalletAccount), [isV1Signup, isWalletAccount])
 
   const helpCentreUrl =
     locale != "en"
