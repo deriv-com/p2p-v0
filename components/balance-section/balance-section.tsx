@@ -56,13 +56,9 @@ export function BalanceSection({ className }: BalanceSectionProps) {
     if (!isV1Signup || !isConnected) return
 
     const unsubscribe = subscribe((data: any) => {
-      console.log("[v0] BalanceSection received WebSocket message:", data)
-
-      // Listen for balance_change event on users/me channel
+  
       if (data.event === "balance_change" && data.options?.channel === "users/me") {
-        console.log("[v0] Balance change event detected:", data.payload)
-
-        // Update balance from the payload
+  
         if (data.payload?.balances && Array.isArray(data.payload.balances)) {
           const firstBalance = data.payload.balances[0] || {}
           if (firstBalance.amount) {
