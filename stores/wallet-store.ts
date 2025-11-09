@@ -21,7 +21,6 @@ const storeWalletStatus = (value: boolean) => {
   try {
     localStorage.setItem("is_wallet_account", value.toString())
   } catch {
-    // Ignore localStorage errors
   }
 }
 
@@ -30,7 +29,6 @@ const clearStoredWalletStatus = () => {
   try {
     localStorage.removeItem("is_wallet_account")
   } catch {
-    // Ignore localStorage errors
   }
 }
 
