@@ -140,6 +140,21 @@ export default function BuySellPage() {
     }
   }, [isConnected])
 
+   useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (
+        ["buyer_paid", "completed", "cancelled", "refunded", "disputed", "user_review", "advertiser_review"].includes(
+          data.payload.data?.event,
+        ) &&
+        data.payload.data?.order?.id == orderId
+      ) {
+        setOrder(data.payload.data.order)
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
+
   useEffect(() => {
     const operation = searchParams.get("operation")
     const currencyParam = searchParams.get("currency")
