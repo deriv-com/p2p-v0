@@ -39,7 +39,7 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
-  const fetchAds = async () = {
+  const fetchAds = async () => {
     if (!userId) {
       setLoading(false)
       return
