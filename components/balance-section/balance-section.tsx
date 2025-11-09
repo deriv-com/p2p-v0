@@ -61,7 +61,7 @@ export function BalanceSection({ className }: BalanceSectionProps) {
     const unsubscribe = subscribe((data: any) => {
       if (data.payload.data?.event === "balance_change") {
         if (data.payload?.data?.user?.balances && Array.isArray(data.payload?.data?.user?.balances)) {
-          const firstBalance = data.payload.data.user?.balances[0] || {}
+          const firstBalance = data.payload.data.user.balances[0] || {}
           if (firstBalance.amount) {
             setBalance(firstBalance.amount)
           }
