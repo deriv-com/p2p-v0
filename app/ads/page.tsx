@@ -155,7 +155,7 @@ export default function AdsPage() {
         </TooltipProvider>
       </div>
     )
-  
+  }
 
   if (isDisabled) {
     return (
