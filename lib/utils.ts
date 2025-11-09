@@ -478,7 +478,7 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
 
   if (section === "profile") {
     if (isV1Signup) {
-      if(isWalletAccount) {
+      if (isWalletAccount) {
         url = isProduction ? `https://hub.deriv.com/accounts/Profile` : `https://staging-hub.deriv.com/accounts/Profile`
       } else {
         url = `https://${baseUrl}/account/personal-details?platform=p2p-v2`
@@ -487,8 +487,14 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
       url = `https://${baseUrl}/dashboard/profile`
     }
   } else if (section === "home") {
-    if (isV1Signup) url = `https://${baseUrl}`
-    else url = `https://${baseUrl}/dashboard/home`
+    if (isV1Signup) {
+      url = `https://${baseUrl}`
+      if (isWalletAccount) {
+        url += `?wallet=${isWalletAccount}`
+      }
+    } else {
+      url = `https://${baseUrl}/dashboard/home`
+    }
   } else {
     url = baseUrl
   }
