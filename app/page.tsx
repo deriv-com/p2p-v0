@@ -135,7 +135,7 @@ export default function BuySellPage() {
   }, [fetchBalance])
 
   useEffect(() => {
-    if (isConnected) {
+    if (isV1Signup && isConnected) {
       joinChannel("users/me")
     }
   }, [isConnected])
