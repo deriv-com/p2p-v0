@@ -62,8 +62,7 @@ export function BalanceSection({ className }: BalanceSectionProps) {
   }, [isV1Signup, subscribe])
 
   const fetchBalance = useCallback(async () => {
-    if (!userData?.signup) {
-      setIsLoading(false)
+    if (!userData?.signup){
       return
     }
 
