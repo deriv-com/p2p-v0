@@ -57,12 +57,10 @@ export function BalanceSection({ className }: BalanceSectionProps) {
 
     const unsubscribe = subscribe((data: any) => {
       if (data.event === "balance_change" && data.options?.channel === "users/me") {
-  
         if (data.payload?.balances && Array.isArray(data.payload.balances)) {
           const firstBalance = data.payload.balances[0] || {}
           if (firstBalance.amount) {
-            setBalance(firstBalance.amount)
-            console.log("[v0] Updated balance to:", firstBalance.amount)
+            setBalance(firstBalance.amount
           }
           if (firstBalance.currency) {
             setCurrency(firstBalance.currency)
