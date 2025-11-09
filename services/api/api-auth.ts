@@ -209,6 +209,7 @@ export async function logout(): Promise<void> {
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
+  
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
@@ -228,7 +229,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
     const status = result?.data?.status
 
     if (userId) {
-      console.log("[v0] fetchUserIdAndStore: setting userId:", userId)
       useUserDataStore.getState().setUserId(userId.toString())
 
       if (brandClientId) {
