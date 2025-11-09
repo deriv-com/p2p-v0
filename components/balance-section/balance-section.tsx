@@ -60,7 +60,7 @@ export function BalanceSection({ className }: BalanceSectionProps) {
         if (data.payload?.balances && Array.isArray(data.payload.balances)) {
           const firstBalance = data.payload.balances[0] || {}
           if (firstBalance.amount) {
-            setBalance(firstBalance.amount
+            setBalance(firstBalance.amount)
           }
           if (firstBalance.currency) {
             setCurrency(firstBalance.currency)
