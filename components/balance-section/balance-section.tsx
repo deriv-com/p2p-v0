@@ -14,7 +14,7 @@ interface BalanceSectionProps {
 
 export function BalanceSection({ className }: BalanceSectionProps) {
   const { t } = useTranslations()
-  const { subscribe } = useWebSocketContext()
+  const { subscribe, isConnected, subscribeToUserUpdates, unsubscribeFromUserUpdates } = useWebSocketContext()
   const userData = useUserDataStore((state) => state.userData)
 
   const [balance, setBalance] = useState<string>("0.00")
@@ -53,18 +53,24 @@ export function BalanceSection({ className }: BalanceSectionProps) {
   }, [isV1Signup, userData])
 
   useEffect(() => {
-    if (!isV1Signup) return
+    if (!isV1Signup || !isConnected) return
 
+    console.log("[v0] BalanceSection: Subscribing to users/me channel for balance updates")
+
+    // Subscribe to WebSocket messages
     const unsubscribe = subscribe((data: any) => {
+      console.log("[v0] BalanceSection received WebSocket message:", data)
+
       // Listen for balance_change event on users/me channel
-      if (data.event === "balance_change" && data.channel === "users/me") {
-        console.log("[v0] Balance change event received:", data)
+      if (data.event === "balance_change" && data.options?.channel === "users/me") {
+        console.log("[v0] Balance change event detected:", data.payload)
 
         // Update balance from the payload
         if (data.payload?.balances && Array.isArray(data.payload.balances)) {
           const firstBalance = data.payload.balances[0] || {}
           if (firstBalance.amount) {
             setBalance(firstBalance.amount)
+            console.log("[v0] Updated balance to:", firstBalance.amount)
           }
           if (firstBalance.currency) {
             setCurrency(firstBalance.currency)
@@ -73,10 +79,15 @@ export function BalanceSection({ className }: BalanceSectionProps) {
       }
     })
 
+    // Join and subscribe to users/me channel
+    subscribeToUserUpdates()
+
     return () => {
+      console.log("[v0] BalanceSection: Unsubscribing from users/me channel")
       unsubscribe()
+      unsubscribeFromUserUpdates()
     }
-  }, [isV1Signup, subscribe])
+  }, [isV1Signup, isConnected, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
 
   useEffect(() => {
     fetchBalance()
