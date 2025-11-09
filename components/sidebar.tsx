@@ -37,6 +37,7 @@ export default function Sidebar({ className }: SidebarProps) {
     if (cached !== null) return cached === "v1"
     return userData?.signup === "v1"
   })
+  const [isWalletAccount, setIsWalletAccount] = useState(false)
 
   const userName = userData?.nickname ?? userData?.email
   const isDisabled = userData?.status === "disabled"
@@ -45,6 +46,7 @@ export default function Sidebar({ className }: SidebarProps) {
     if (userData?.signup === "v1") {
       setShowWallet(false)
       setIsV1Signup(true)
+      setIsWalletAccount(searchParams.get("wallet"))
     } else if (userData?.signup) {
       setShowWallet(true)
       setIsV1Signup(false)
