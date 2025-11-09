@@ -47,12 +47,13 @@ export default function Sidebar({ className }: SidebarProps) {
     if (userData?.signup === "v1") {
       setShowWallet(false)
       setIsV1Signup(true)
-      setIsWalletAccount(searchParams.get("wallet"))
+      setIsWalletAccount()
     } else if (userData?.signup) {
       setShowWallet(true)
       setIsV1Signup(false)
     }
 
+    const isWalletAccount = searchParams.get("wallet")
     setHomeUrl(getHomeUrl(isV1Signup, "home"))
     setProfileUrl(getHomeUrl(isV1Signup, "profile", isWalletAccount))
   }, [userData?.signup])
