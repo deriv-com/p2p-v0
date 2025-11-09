@@ -1,12 +1,8 @@
 "use client"
-
-import { useState, useEffect, useCallback } from "react"
 import { formatAmountWithDecimals } from "@/lib/utils"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useUserDataStore } from "@/stores/user-data-store"
-import { getTotalBalance } from "@/services/api/api-auth"
-import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useUserBalance } from "@/hooks/use-user-balance"
 
 interface BalanceSectionProps {
   className?: string
@@ -14,72 +10,7 @@ interface BalanceSectionProps {
 
 export function BalanceSection({ className }: BalanceSectionProps) {
   const { t } = useTranslations()
-  const { joinChannel, subscribe, isConnected } = useWebSocketContext()
-  const userData = useUserDataStore((state) => state.userData)
-
-  const [balance, setBalance] = useState<string>("0.00")
-  const [currency, setCurrency] = useState<string>("USD")
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-
-  const isV1Signup = userData?.signup === "v1"
-
-  const fetchBalance = useCallback(async () => {
-    if (!userData?.signup) {
-      return
-    }
-
-    setIsLoading(true)
-
-    try {
-      if (isV1Signup) {
-        const balances = userData?.balances || []
-        const firstBalance = balances[0] || {}
-        setBalance(firstBalance.amount || "0.00")
-        setCurrency(firstBalance.currency || "USD")
-      } else {
-        const data = await getTotalBalance()
-        const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
-
-        setBalance(p2pWallet?.total_balance?.approximate_total_balance ?? "0.00")
-        setCurrency(p2pWallet?.total_balance?.converted_to ?? "USD")
-      }
-    } catch (error) {
-      setBalance("0.00")
-      setCurrency("USD")
-    } finally {
-      setIsLoading(false)
-    }
-  }, [isV1Signup, userData])
-
-  useEffect(() => {
-    if (!isV1Signup || !isConnected) return
-
-    if (isConnected) {
-      joinChannel("users/me")
-    }
-
-    const unsubscribe = subscribe((data: any) => {
-      if (data.payload.data?.event === "balance_change") {
-        if (data.payload?.data?.user?.balances && Array.isArray(data.payload?.data?.user?.balances)) {
-          const firstBalance = data.payload.data.user.balances[0] || {}
-          if (firstBalance.amount) {
-            setBalance(firstBalance.amount)
-          }
-          if (firstBalance.currency) {
-            setCurrency(firstBalance.currency)
-          }
-        }
-      }
-    })
-
-    return () => {
-      unsubscribe()
-    }
-  }, [isV1Signup, isConnected, subscribe])
-
-  useEffect(() => {
-    fetchBalance()
-  }, [fetchBalance])
+  const { balance, currency, isLoading } = useUserBalance()
 
   return (
     <div className={className || "mb-4"}>
