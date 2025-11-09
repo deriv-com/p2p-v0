@@ -68,7 +68,6 @@ export default function AdsPage() {
     if (userId && !hasFetchedRef.current) {
       hasFetchedRef.current = true
       fetchAds()
-      console.log("render component")
     } else if (!userId) {
       setLoading(false)
     }
