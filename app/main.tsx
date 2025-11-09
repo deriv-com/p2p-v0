@@ -34,7 +34,7 @@ export default function Main({
     if (walletParam !== null) {
       setIsWalletAccount(walletParam === "true")
     }
-    // If walletParam is null, keep the current value from localStorage
+
   }, [searchParams, setIsWalletAccount])
 
   useEffect(() => {
