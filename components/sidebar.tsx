@@ -7,7 +7,6 @@ import { cn, getHomeUrl } from "@/lib/utils"
 import { NovuNotifications } from "./novu-notifications"
 import { useState, useEffect } from "react"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
-import { useWalletStore } from "@/stores/wallet-store"
 import { Avatar } from "@/components/ui/avatar"
 import { SvgIcon } from "@/components/icons/svg-icon"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -25,14 +24,12 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname()
-  const { isWalletAccount } = useWalletStore()
+  const { isWalletAccount, userData, userId } = useUserDataStore()
   const { t, locale } = useTranslations()
   const [showWallet, setShowWallet] = useState<boolean>(() => {
     const cached = getCachedSignup()
     return cached !== "v1"
   })
-  const { userData, userId } = useUserDataStore()
-
   const [isV1Signup, setIsV1Signup] = useState(() => {
     const cached = getCachedSignup()
     if (cached !== null) return cached === "v1"

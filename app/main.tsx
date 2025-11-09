@@ -9,7 +9,6 @@ import Sidebar from "@/components/sidebar"
 import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { useWalletStore } from "@/stores/wallet-store"
 import { getLoginUrl } from "@/lib/utils"
 import "./globals.css"
 
@@ -28,7 +27,7 @@ export default function Main({
   const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
-  const { setIsWalletAccount } = useWalletStore()
+  const { setIsWalletAccount } = useUserDataStore()
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")

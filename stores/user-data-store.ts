@@ -32,6 +32,7 @@ interface UserDataState {
   verificationStatus: VerificationStatus | null
   onboardingStatus: OnboardingStatusResponse | null
   socketToken: string | null
+  isWalletAccount: boolean
   setUserData: (data: UserData) => void
   setUserId: (id: string) => void
   setClientId: (id: string) => void
@@ -42,6 +43,7 @@ interface UserDataState {
   setVerificationStatus: (status: VerificationStatus) => void
   setOnboardingStatus: (status: OnboardingStatusResponse) => void
   setSocketToken: (token: string | null) => void
+  setIsWalletAccount: (isWallet: boolean) => void
   clearUserData: () => void
 }
 
@@ -55,6 +57,7 @@ const initialState = {
   verificationStatus: null,
   onboardingStatus: null,
   socketToken: null,
+  isWalletAccount: typeof window !== "undefined" ? localStorage.getItem("is_wallet_account") === "true" : false,
 }
 
 const getCachedSignup = (): string | null => {
@@ -73,6 +76,11 @@ const cacheSignup = (signup: string | undefined) => {
   } else {
     localStorage.removeItem("user_signup")
   }
+}
+
+const cacheWalletAccount = (isWallet: boolean) => {
+  if (typeof window === "undefined") return
+  localStorage.setItem("is_wallet_account", isWallet.toString())
 }
 
 export const useUserDataStore = create<UserDataState>((set) => ({
@@ -106,8 +114,16 @@ export const useUserDataStore = create<UserDataState>((set) => ({
 
   setSocketToken: (token) => set({ socketToken: token }),
 
+  setIsWalletAccount: (isWallet) => {
+    cacheWalletAccount(isWallet)
+    set({ isWalletAccount: isWallet })
+  },
+
   clearUserData: () => {
     cacheSignup(undefined)
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("is_wallet_account")
+    }
     set(initialState)
   },
 }))
