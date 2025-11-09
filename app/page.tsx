@@ -134,7 +134,7 @@ export default function BuySellPage() {
     if (isV1Signup && isConnected) {
       joinChannel("users/me")
     }
-  }, [isConnected])
+  }, [isV1Signup, isConnected])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
