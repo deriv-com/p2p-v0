@@ -87,7 +87,7 @@ export function BalanceSection({ className }: BalanceSectionProps) {
       unsubscribe()
       unsubscribeFromUserUpdates()
     }
-  }, [isV1Signup, isConnected, subscribe, subscribeToUserUpdates, unsubscribeFromUserUpdates])
+  }, [isV1Signup, isConnected, subscribe])
 
   useEffect(() => {
     fetchBalance()
