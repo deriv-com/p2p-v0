@@ -52,13 +52,11 @@ export function BalanceSection({ className }: BalanceSectionProps) {
   }, [isV1Signup, userData])
 
   useEffect(() => {
+    if (!isV1Signup || !isConnected) return
+
     if (isConnected) {
       joinChannel("users/me")
     }
-  }, [isConnected])
-
-  useEffect(() => {
-    if (!isV1Signup || !isConnected) return
 
     const unsubscribe = subscribe((data: any) => {
       if (data.payload.data?.event === "balance_change") {
