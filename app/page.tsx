@@ -32,7 +32,7 @@ export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { isConnected, joinChannel, subscribe } = useWebSocketContext()
+  const { isConnected, joinChanne, subscribe } = useWebSocketContext()
 
   const {
     activeTab,
@@ -131,10 +131,10 @@ export default function BuySellPage() {
   }, [fetchBalance])
 
   useEffect(() => {
-    if (isV1Signup && isConnected) {
+    if (userData?.signup === "v1" && isConnected) {
       joinChannel("users/me")
     }
-  }, [isV1Signup, isConnected])
+  }, [userData?.signup, isConnected])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {
