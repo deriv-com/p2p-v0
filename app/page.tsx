@@ -89,7 +89,7 @@ export default function BuySellPage() {
   }, [isV1Signup, userData?.balances, userData?.signup])
 
   const fetchBalance = useCallback(async () => {
-    if (!userData?.signup)
+    if (!userData?.signup) {
       return
     }
 
