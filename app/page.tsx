@@ -138,7 +138,7 @@ export default function BuySellPage() {
     if (isConnected) {
       joinChannel("users/me")
     }
-  }, [isConnected, orderId])
+  }, [isConnected])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
