@@ -145,7 +145,9 @@ export default function BuySellPage() {
       if (
         data.payload.data?.event === "balance_change"
       ) {
-        setOrder(data.payload.data.order)
+        const balances = data.payload.data.user?.balances[0]
+        setBalance(balances.amount)
+        setBalanceCurrency(balances.currency)
       }
     })
 
