@@ -55,7 +55,7 @@ export function BalanceSection({ className }: BalanceSectionProps) {
     if (!isV1Signup || !isConnected) return
 
     const unsubscribe = subscribe((data: any) => {
-      if (data.event === "balance_change" && data.options?.channel === "users/me") {
+      if (data.payload.data?.event === "balance_change") {
         if (data.payload?.balances && Array.isArray(data.payload.balances)) {
           const firstBalance = data.payload.balances[0] || {}
           if (firstBalance.amount) {
