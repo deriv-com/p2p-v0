@@ -31,7 +31,10 @@ export default function Main({
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")
-    setIsWalletAccount(walletParam === "true")
+    if (walletParam !== null) {
+      setIsWalletAccount(walletParam === "true")
+    }
+    // If walletParam is null, keep the current value from localStorage
   }, [searchParams, setIsWalletAccount])
 
   useEffect(() => {
@@ -127,7 +130,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
+  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus, userData?.signup])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
