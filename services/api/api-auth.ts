@@ -280,13 +280,11 @@ export async function getClientProfile(): Promise<void> {
       nickname: data.nickname,
     }
 
-    console.log("[v0] getClientProfile: setting userData")
     useUserDataStore.getState().setUserData(userData)
 
     if (data.residence) {
       useUserDataStore.getState().setResidenceCountry(data.residence)
-    }
-    console.log("[v0] getClientProfile: complete")
+    
   } catch (error) {
     console.error("Error fetching profile:", error)
   }
