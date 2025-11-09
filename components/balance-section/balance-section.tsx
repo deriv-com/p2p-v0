@@ -54,10 +54,7 @@ export function BalanceSection({ className }: BalanceSectionProps) {
 
   useEffect(() => {
     if (!isV1Signup || !isConnected) return
-
-    console.log("[v0] BalanceSection: Subscribing to users/me channel for balance updates")
-
-    // Subscribe to WebSocket messages
+    
     const unsubscribe = subscribe((data: any) => {
       console.log("[v0] BalanceSection received WebSocket message:", data)
 
