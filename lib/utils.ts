@@ -489,9 +489,6 @@ export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = f
   } else if (section === "home") {
     if (isV1Signup) {
       url = `https://${baseUrl}`
-      if (isWalletAccount) {
-        url += `?wallet=${isWalletAccount}`
-      }
     } else {
       url = `https://${baseUrl}/dashboard/home`
     }
