@@ -130,7 +130,7 @@ export default function Main({
         abortControllerRef.current.abort()
       }
     }
-  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus, userData?.signup])
+  }, [pathname, router, searchParams, setVerificationStatus, setOnboardingStatus])
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
