@@ -184,28 +184,6 @@ export class WebSocketClient {
     }
     this.send(unsubscribeMessage)
   }
-
-  public subscribeToOrder(orderId: number): void {
-    const subscribeMessage: WebSocketMessage = {
-      action: "subscribe",
-      options: {
-        channel: `orders/${orderId}`,
-      },
-      payload: {},
-    }
-    this.send(subscribeMessage)
-  }
-
-  public unsubscribeFromOrder(orderId: number): void {
-    const unsubscribeMessage: WebSocketMessage = {
-      action: "unsubscribe",
-      options: {
-        channel: `orders/${orderId}`,
-      },
-      payload: {},
-    }
-    this.send(unsubscribeMessage)
-  }
 }
 
 let wsClientInstance: WebSocketClient | null = null
@@ -226,8 +204,6 @@ interface WebSocketContextType {
   reconnect: () => void
   subscribeToUserUpdates: () => void
   unsubscribeFromUserUpdates: () => void
-  subscribeToOrder: (orderId: number) => void
-  unsubscribeFromOrder: (orderId: number) => void
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -328,16 +304,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current?.unsubscribeFromUserUpdates()
   }
 
-  const subscribeToOrder = (orderId: number) => {
-    console.log("[v0] Context: Subscribing to order", orderId)
-    wsClientRef.current?.subscribeToOrder(orderId)
-  }
-
-  const unsubscribeFromOrder = (orderId: number) => {
-    console.log("[v0] Context: Unsubscribing from order", orderId)
-    wsClientRef.current?.unsubscribeFromOrder(orderId)
-  }
-
   const value: WebSocketContextType = {
     isConnected,
     joinChannel,
@@ -347,8 +313,6 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     reconnect,
     subscribeToUserUpdates,
     unsubscribeFromUserUpdates,
-    subscribeToOrder,
-    unsubscribeFromOrder,
   }
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>

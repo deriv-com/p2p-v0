@@ -56,8 +56,7 @@ export default function OrderDetailsPage() {
   const [showChat, setShowChat] = useState(false)
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
-  const { isConnected, joinChannel, reconnect, subscribe, subscribeToOrder, unsubscribeFromOrder } =
-    useWebSocketContext()
+  const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
     fetchOrderDetails()
@@ -68,22 +67,10 @@ export default function OrderDetailsPage() {
   }, [orderId])
 
   useEffect(() => {
-    if (isConnected && orderId) {
-      console.log("[v0] Order page: Subscribing to order", orderId)
-      const orderIdNum = Number.parseInt(orderId, 10)
-      if (!isNaN(orderIdNum)) {
-        subscribeToOrder(orderIdNum)
-      } else {
-        console.error("[v0] Invalid orderId:", orderId)
-      }
-
-      return () => {
-        if (!isNaN(orderIdNum)) {
-          unsubscribeFromOrder(orderIdNum)
-        }
-      }
+    if (isConnected) {
+      joinChannel("orders", orderId)
     }
-  }, [isConnected, orderId, subscribeToOrder, unsubscribeFromOrder])
+  }, [isConnected, orderId])
 
   useEffect(() => {
     const unsubscribe = subscribe((data: any) => {

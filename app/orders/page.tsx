@@ -55,7 +55,7 @@ export default function OrdersPage() {
   const [showPreviousOrders, setShowPreviousOrders] = useState(false)
   const [showCheckPreviousOrdersButton, setShowCheckPreviousOrdersButton] = useState(false)
   const isMobile = useIsMobile()
-  const { subscribeToOrder } = useWebSocketContext()
+  const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const isDisabled = userData?.status === "disabled"
@@ -212,8 +212,7 @@ export default function OrdersPage() {
       setShowChat(true)
       setIsChatVisible(true)
 
-      console.log("[v0] Orders list: Subscribing to order", order.id)
-      subscribeToOrder(order.id)
+      joinChannel("orders", order.id)
     } else {
       navigateToOrderDetails(order.id)
     }
