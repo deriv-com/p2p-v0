@@ -252,7 +252,8 @@ export async function fetchUserIdAndStore(): Promise<void> {
       }
     } else {
       useUserDataStore.getState().updateUserData({
-          balances: [{amount: "0"}]
+          balances: [{amount: "0"}],
+          signup: "v2"
         })
     }
   
