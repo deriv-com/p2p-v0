@@ -603,21 +603,20 @@ export default function BuySellPage() {
                                 <TooltipProvider>
                                   <Tooltip>
                                     <TooltipTrigger asChild>
-                                      <button className="ml-1 inline-flex items-center">
-                                        <Image
-                                          src="/icons/info.png"
-                                          alt="Info"
-                                          width={12}
-                                          height={12}
-                                          className="opacity-60 hover:opacity-100 transition-opacity"
-                                        />
-                                      </button>
+                                      <Image
+                                        src="/icons/info-circle.png"
+                                        alt="Info"
+                                        width={12}
+                                        height={12}
+                                        className="ml-1 cursor-pointer flex-shrink-0"
+                                      />
                                     </TooltipTrigger>
                                     <TooltipContent>
-                                      <p>Complete your payment within 15 minutes after placing the order.</p>
+                                      <p className="opacity-[0.72]">Complete your payment within 15 minutes after placing the order.</p>
+                                      <TooltipArrow className="fill-black" />
                                     </TooltipContent>
                                   </Tooltip>
-                                </TooltipProvider>
+                                </TooltipProvider
                               </div>
                             </div>
                           </TableCell>
