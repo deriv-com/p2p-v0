@@ -60,8 +60,8 @@ const PaymentSelectionContent = ({
   }
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto">
-      <div className="flex-1 space-y-4">
+    <div className="flex flex-col max-h-[70vh]">
+      <div className="flex-1 overflow-y-auto space-y-4 pb-4">
         {userPaymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
           <div className="text-center py-8">
@@ -121,16 +121,18 @@ const PaymentSelectionContent = ({
           </div>
         </div>
       </div>
-      <Button
-        className="w-full mt-12"
-        disabled={selectedPMs.length == 0}
-        onClick={() => {
-          setSelectedPaymentMethods(selectedPMs)
-          hideAlert()
-        }}
-      >
-        {t("common.confirm")}
-      </Button>
+      <div className="pt-4 border-t">
+        <Button
+          className="w-full"
+          disabled={selectedPMs.length == 0}
+          onClick={() => {
+            setSelectedPaymentMethods(selectedPMs)
+            hideAlert()
+          }}
+        >
+          {t("common.confirm")}
+        </Button>
+      </div>
     </div>
   )
 }
