@@ -67,6 +67,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const { showAlert } = useAlertDialog()
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
