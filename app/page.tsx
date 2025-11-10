@@ -578,7 +578,7 @@ export default function BuySellPage() {
                               )}
                               {ad.user.order_count_lifetime > 0 && (
                                 <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                  <div className="h-1 w-1 rounded-full bg-gray-100"></div>
                                   <span>
                                     {ad.user.order_count_lifetime} {t("market.orders")}
                                   </span>
