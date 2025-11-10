@@ -511,7 +511,7 @@ export default function BuySellPage() {
                     </TableRow>
                   </TableHeader>
                   <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {[...Array(5)].map((_, index) => (
+                    {[...Array(2)].map((_, index) => (
                       <TableRow
                         key={index}
                         className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
