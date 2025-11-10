@@ -558,6 +558,7 @@ export default function BuySellPage() {
                                           <>
                                             <p className="font-bold text-white mb-2">Bronze tier</p>
                                             <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
+                                            <a className="opacity-[0.72]" href="https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits">Learn more</a>
                                           </>
                                           <TooltipArrow className="fill-black" />
                                         </TooltipContent>
