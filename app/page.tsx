@@ -598,7 +598,7 @@ export default function BuySellPage() {
                                 <TooltipProvider>
                                   <Tooltip>
                                     <TooltipTrigger asChild>
-                                      <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1">
+                                      <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
                                         <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
                                         <span>
                                           {ad.order_expiry_period} {t("market.min")}
