@@ -496,7 +496,7 @@ export default function BuySellPage() {
             {isLoading ? (
               <div className="space-y-4">
                 {[...Array(3)].map((_, index) => (
-                  <Skeleton key={index} className="h-[150px] w-full rounded-lg" />
+                  <Skeleton key={index} className="h-[150px] w-full rounded-lg bg-white/20" />
                 ))}
               </div>
             ) : error ? (
