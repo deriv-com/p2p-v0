@@ -464,7 +464,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <h3 className="text-grayscale-text-muted">
                     {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
                   </h3>
-                  <p className="text-slate-1400 break-words">
+                  <p className="text-slate-1200 break-words">
                     {ad.description ||
                       "Kindly transfer the payment to the provided account details after placing your order."}
                   </p>
