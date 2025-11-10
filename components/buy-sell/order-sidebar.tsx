@@ -77,6 +77,11 @@ const PaymentSelectionContent = ({
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
               }`}
+              onClick={() => {
+                if (!(selectedPMs?.length >= 3 && !selectedPMs?.includes(method.id))) {
+                  handlePaymentMethodToggle(method.id)
+                }
+              }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -97,6 +102,7 @@ const PaymentSelectionContent = ({
                   onCheckedChange={() => handlePaymentMethodToggle(method.id)}
                   disabled={!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3}
                   className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
+                  onClick={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
