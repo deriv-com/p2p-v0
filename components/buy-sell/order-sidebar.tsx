@@ -214,8 +214,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           showAlert({
             title: "Existing order in progress",
             description: t("order.orderExists"),
-            confirmText: t("common.ok"),
+            confirmText: "Go to Market",
             type: "warning",
+            onConfirm: () => {
+              handleClose()
+            }
           })
         } else {
           showAlert({
