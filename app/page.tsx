@@ -548,13 +548,20 @@ export default function BuySellPage() {
                                   </button>
                                   <Image src="/icons/verified-badge.png" alt="Verified" width={32} height={32} />
                                   {ad.user.trade_band === "bronze" && (
-                                    <Image
-                                      src="/icons/bronze.png"
-                                      alt="Bronze"
-                                      width={18}
-                                      height={18}
-                                      className="mr-1"
-                                    />
+                                    <TooltipProvider>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                          <>
+                                            <p className="font-bold text-white mb-2">Bronze tier</p>
+                                            <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
+                                          </>
+                                          <TooltipArrow className="fill-black" />
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </TooltipProvider>
                                   )}
                                   {ad.user?.is_favourite && (
                                     <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
