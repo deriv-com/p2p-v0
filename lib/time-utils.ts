@@ -9,7 +9,7 @@ export interface TimeRemaining {
 export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
   const now = new Date().getTime()
   const expiry = new Date(expiresAt).getTime()
-  const difference = expiry - now - 1000
+  const difference = expiry - now
 
   if (difference <= 0) {
     return {
