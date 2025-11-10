@@ -581,7 +581,7 @@ export default function BuySellPage() {
                                     height={16}
                                     className="mr-1"
                                   />
-                                  <span className="text-[##FFAE26]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                                  <span className="text-[#FFAE26]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
                                 </span>
                               )}
                               {ad.user.order_count_lifetime > 0 && (
