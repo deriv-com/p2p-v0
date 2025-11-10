@@ -27,6 +27,8 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { useAlertDialog } from "@/hooks/use-alert-dialog"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
@@ -67,6 +69,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const { showAlert } = useAlertDialog()
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
@@ -249,8 +252,21 @@ export default function BuySellPage() {
     }
   }
 
-  const handleAdvertiserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+  const handleAdvertiserClick = (advertiserId: number) => {
+    if(userId) {
+        router.push(`/advertiser/${advertiserId}`)
+    } else {
+        showAlert({
+            title: t("profile.gettingStarted"),
+            description: (
+            <div className="space-y-4 mb-6 mt-2">
+                <KycOnboardingSheet />
+            </div>
+            ),
+            confirmText: undefined,
+            cancelText: undefined,
+        })
+    }
   }
 
   const handleOrderClick = (ad: Advertisement) => {
