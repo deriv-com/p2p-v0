@@ -306,7 +306,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                              <Image src="/icons/bronze.png" className="cursor " alt="Bronze" width={18} height={18} />
                             </TooltipTrigger>
                             <TooltipContent>
                               <>
