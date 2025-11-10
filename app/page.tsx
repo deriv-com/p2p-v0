@@ -616,7 +616,7 @@ export default function BuySellPage() {
                                       <TooltipArrow className="fill-black" />
                                     </TooltipContent>
                                   </Tooltip>
-                                </TooltipProvider
+                                </TooltipProvider>
                               </div>
                             </div>
                           </TableCell>
