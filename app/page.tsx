@@ -494,55 +494,10 @@ export default function BuySellPage() {
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
             {isLoading ? (
-              <div className="md:block">
-                <Table>
-                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
-                    <TableRow className="text-xs">
-                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                        {t("market.advertisers")}
-                      </TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                        {t("market.rates")}
-                      </TableHead>
-                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                        {t("market.paymentMethods")}
-                      </TableHead>
-                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                    {[...Array(2)].map((_, index) => (
-                      <TableRow
-                        key={index}
-                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
-                      >
-                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
-                          <div className="flex items-center">
-                            <Skeleton className="h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
-                            <div className="flex-1">
-                              <Skeleton className="h-4 w-32 mb-2" />
-                              <Skeleton className="h-3 w-48" />
-                              <Skeleton className="h-3 w-24 mt-2" />
-                            </div>
-                          </div>
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                          <Skeleton className="h-5 w-32 mb-2" />
-                          <Skeleton className="h-3 w-48" />
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                          <div className="flex flex-col gap-2">
-                            <Skeleton className="h-3 w-24" />
-                            <Skeleton className="h-3 w-28" />
-                          </div>
-                        </TableCell>
-                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                          <Skeleton className="h-8 w-20 ml-auto" />
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+              <div className="space-y-4">
+                {[...Array(3)].map((_, index) => (
+                  <Skeleton key={index} className="h-[150px] w-full rounded-lg" />
+                ))}
               </div>
             ) : error ? (
               <div className="text-center py-8">{error}</div>
