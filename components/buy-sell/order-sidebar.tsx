@@ -380,7 +380,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
                   <div className="flex items-center">
-                    <span className="text-gray-500">{youSendText}:&nbsp;</span>
+                    <span className="text-grayscale-text-muted">{youSendText}:&nbsp;</span>
                     <span className="font-bold">
                       {Number.parseFloat(totalAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
