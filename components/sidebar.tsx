@@ -126,7 +126,7 @@ export default function Sidebar({ className }: SidebarProps) {
               ? `${userData.first_name} ${userData.last_name}`
               : userData?.nickname}
           </h2>
-          <div className="text-xs text-slate-1400 truncate">{userData?.email || ""}</div>
+          <div className="text-xs text-slate-1400 wrap-anywhere">{userData?.email || ""}</div>
         </div>
         <Link prefetch href={profileUrl}>
           <Image src="/icons/chevron-right-black.png" alt="Arrow" width={14} height={14} />
