@@ -21,7 +21,7 @@ export function calculateTimeRemaining(expiresAt: string): TimeRemaining {
     }
   }
 
-  const totalSeconds = Math.floor(difference / 1000)
+  const totalSeconds = Math.ceil(difference / 1000)
   const hours = Math.floor(totalSeconds / 3600)
   const minutes = Math.floor((totalSeconds % 3600) / 60)
   const seconds = totalSeconds % 60
