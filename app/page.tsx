@@ -554,7 +554,7 @@ export default function BuySellPage() {
                                         <TooltipTrigger asChild>
                                           <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} className="mr-1 cursor-pointer" />
                                         </TooltipTrigger>
-                                        <TooltipContent className="max-w-[340px] text-wrap">
+                                        <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
                                           <>
                                             <p className="font-bold text-white mb-2">Bronze tier</p>
                                             <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
