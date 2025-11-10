@@ -49,6 +49,15 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }, [userData?.signup])
 
+  useEffect(() => {
+    
+    return () => {
+      useUserDataStore.getState().clearUserData()
+      console.log("unmount")
+    }
+    
+  }, [])
+
   const homeUrl = useMemo(() => getHomeUrl(isV1Signup, "home"), [isV1Signup])
 
   const profileUrl = useMemo(() => getHomeUrl(isV1Signup, "profile", isWalletAccount), [isV1Signup, isWalletAccount])
