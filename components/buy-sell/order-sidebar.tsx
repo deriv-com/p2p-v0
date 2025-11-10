@@ -60,8 +60,8 @@ const PaymentSelectionContent = ({
   }
 
   return (
-    <div className="flex flex-col max-h-[70vh]">
-      <div className="flex-1 overflow-y-auto space-y-4 pb-4">
+    <div className="flex flex-col h-full overflow-y-auto">
+      <div className="flex-1 space-y-4">
         {userPaymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
           <div className="text-center py-8">
@@ -77,11 +77,6 @@ const PaymentSelectionContent = ({
                   ? "opacity-30 cursor-not-allowed hover:bg-white"
                   : ""
               }`}
-              onClick={() => {
-                if (!(selectedPMs?.length >= 3 && !selectedPMs?.includes(method.id))) {
-                  handlePaymentMethodToggle(method.id)
-                }
-              }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex-1">
@@ -102,7 +97,6 @@ const PaymentSelectionContent = ({
                   onCheckedChange={() => handlePaymentMethodToggle(method.id)}
                   disabled={!selectedPMs?.includes(method.id) && selectedPMs?.length >= 3}
                   className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
-                  onClick={(e) => e.stopPropagation()}
                 />
               </div>
             </div>
@@ -121,18 +115,16 @@ const PaymentSelectionContent = ({
           </div>
         </div>
       </div>
-      <div className="pt-4 border-t">
-        <Button
-          className="w-full"
-          disabled={selectedPMs.length == 0}
-          onClick={() => {
-            setSelectedPaymentMethods(selectedPMs)
-            hideAlert()
-          }}
-        >
-          {t("common.confirm")}
-        </Button>
-      </div>
+      <Button
+        className="w-full mt-12"
+        disabled={selectedPMs.length == 0}
+        onClick={() => {
+          setSelectedPaymentMethods(selectedPMs)
+          hideAlert()
+        }}
+      >
+        {t("common.confirm")}
+      </Button>
     </div>
   )
 }

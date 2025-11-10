@@ -546,7 +546,7 @@ export default function BuySellPage() {
                                   >
                                     {ad.user?.nickname}
                                   </button>
-                                  <Image src="/icons/verified-badge.png" alt="Verified" width={32} height={32} />
+                                  <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
                                   {ad.user.trade_band === "bronze" && (
                                     <TooltipProvider>
                                       <Tooltip>
