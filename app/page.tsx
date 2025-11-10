@@ -270,9 +270,22 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    setSelectedAd(ad)
-    setIsOrderSidebarOpen(true)
-    setError(null)
+    if(userId) {
+        setSelectedAd(ad)
+        setIsOrderSidebarOpen(true)
+        setError(null)
+    } else {
+        showAlert({
+            title: t("profile.gettingStarted"),
+            description: (
+            <div className="space-y-4 mb-6 mt-2">
+                <KycOnboardingSheet />
+            </div>
+            ),
+            confirmText: undefined,
+            cancelText: undefined,
+        })
+    }
   }
 
   const handleCurrencySelect = (currencyCode: string) => {
