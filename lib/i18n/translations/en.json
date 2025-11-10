@@ -77,7 +77,7 @@
     "sellersInstructions": "Seller's instructions",
     "insufficientBalance": "Insufficient balance. Add funds to your wallet before creating an order.",
     "orderLimitError": "Order limit: {min} - {max} {currency}",
-    "orderExists": "Order already exists.",
+    "orderExists": "You can only have one active order per ad. Complete your existing order to continue.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
     "unableToCreateOrder": "Unable to create an order"
   },
