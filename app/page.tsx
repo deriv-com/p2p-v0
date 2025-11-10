@@ -595,22 +595,28 @@ export default function BuySellPage() {
                               )}
                             </div>
                             <div className="flex items-center text-xs text-slate-500 mt-2">
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger asChild>
-                                      <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                        <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
-                                        <span>
-                                          {ad.order_expiry_period} {t("market.min")}
-                                        </span>
-                                        </div>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
-                                      <TooltipArrow className="fill-black" />
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                      <Image
+                                        src="/icons/clock.png"
+                                        alt="Time"
+                                        width={12}
+                                        height={12}
+                                        className="mr-2"
+                                      />
+                                      <span>
+                                        {ad.order_expiry_period} {t("market.min")}
+                                      </span>
+                                    </div>
+                                  </TooltipTrigger>
+                                  <TooltipContent className="max-w-[250px] text-wrap">
+                                    <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
+                                    <TooltipArrow className="fill-black" />
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
                             </div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
