@@ -1,6 +1,12 @@
-import { datadogRum } from "@datadog/browser-rum"
+// Datadog RUM client tokens are safe for client-side use, but v0 flags them as sensitive
+// Re-enable in production by uncommenting the code below
+
+// import { datadogRum } from "@datadog/browser-rum"
 
 export const initDatadog = () => {
+  // Datadog initialization disabled for v0 preview environment
+  // Uncomment the code below to re-enable in production
+  /*
   if (typeof window === "undefined") {
     return
   }
@@ -48,4 +54,5 @@ export const initDatadog = () => {
       stack: error instanceof Error ? error.stack : undefined,
     })
   }
+  */
 }
