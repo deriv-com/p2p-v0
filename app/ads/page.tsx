@@ -233,7 +233,7 @@ export default function AdsPage() {
                 {t("myAds.createAd")}
               </Button>
             )}
-            {getHideMyAdsComponent()}
+            {ads.length > 0 && getHideMyAdsComponent()}
           </div>
         </div>
 
