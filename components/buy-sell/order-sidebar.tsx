@@ -442,7 +442,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                 </div>
 
-                <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
+                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
                   <h3 className="text-grayscale-text-muted flex-1">
                     {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
