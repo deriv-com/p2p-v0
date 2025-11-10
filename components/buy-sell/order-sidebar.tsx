@@ -353,7 +353,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 </Button>
               </div>
 
-              <div className="flex flex-col h-full overflow-y-auto">
+              <div className="flex flex-col h-auto overflow-y-auto">
                 <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
                 <div className="p-4">
                   <div className="mb-2">
