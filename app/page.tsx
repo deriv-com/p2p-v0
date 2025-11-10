@@ -628,7 +628,7 @@ export default function BuySellPage() {
                                 variant={ad.type === "buy" ? "destructive" : "secondary"}
                                 size="sm"
                                 onClick={() => handleOrderClick(ad)}
-                                disabled={!!tempBanUntil}
+                                disabled={!!tempBanUntil && !!userId}
                               >
                                 {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                               </Button>
