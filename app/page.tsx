@@ -29,6 +29,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
@@ -253,38 +254,38 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if(userId) {
-        router.push(`/advertiser/${advertiserId}`)
+    if (userId) {
+      router.push(`/advertiser/${advertiserId}`)
     } else {
-        showAlert({
-            title: t("profile.gettingStarted"),
-            description: (
-            <div className="space-y-4 mb-6 mt-2">
-                <KycOnboardingSheet />
-            </div>
-            ),
-            confirmText: undefined,
-            cancelText: undefined,
-        })
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     }
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if(userId) {
-        setSelectedAd(ad)
-        setIsOrderSidebarOpen(true)
-        setError(null)
+    if (userId) {
+      setSelectedAd(ad)
+      setIsOrderSidebarOpen(true)
+      setError(null)
     } else {
-        showAlert({
-            title: t("profile.gettingStarted"),
-            description: (
-            <div className="space-y-4 mb-6 mt-2">
-                <KycOnboardingSheet />
-            </div>
-            ),
-            confirmText: undefined,
-            cancelText: undefined,
-        })
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     }
   }
 
@@ -599,6 +600,24 @@ export default function BuySellPage() {
                                 <span>
                                   {ad.order_expiry_period} {t("market.min")}
                                 </span>
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <button className="ml-1 inline-flex items-center">
+                                        <Image
+                                          src="/icons/info.png"
+                                          alt="Info"
+                                          width={12}
+                                          height={12}
+                                          className="opacity-60 hover:opacity-100 transition-opacity"
+                                        />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p>Complete your payment within 15 minutes after placing the order.</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               </div>
                             </div>
                           </TableCell>
