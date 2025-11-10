@@ -415,7 +415,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
-                    <span className="text-slate-1400">
+                    <span className="text-slate-1200">
                       {Number.parseFloat(ad.exchange_rate).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
@@ -426,19 +426,19 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.orderLimit")}</span>
-                    <span className="text-slate-1400">
+                    <span className="text-slate-1200">
                       {minLimit} - {maxLimit} {ad.account_currency}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.paymentTime")}</span>
-                    <span className="text-slate-1400">
+                    <span className="text-slate-1200">
                       {ad.order_expiry_period} {t("market.min")}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{isBuy ? t("order.buyer") : t("order.seller")}</span>
-                    <span className="text-slate-1400">{ad.user?.nickname}</span>
+                    <span className="text-slate-1200">{ad.user?.nickname}</span>
                   </div>
                 </div>
 
@@ -454,7 +454,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                             method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                           }`}
                         />
-                        <span className="text-slate-1400">{formatPaymentMethodName(method)}</span>
+                        <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>
                       </div>
                     ))}
                   </div>
