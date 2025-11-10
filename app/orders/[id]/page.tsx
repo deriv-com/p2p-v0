@@ -242,7 +242,7 @@ export default function OrderDetailsPage() {
     const calculateTimeLeft = () => {
       const now = new Date()
       const expiryTime = new Date(order.expires_at)
-      const diff = expiryTime.getTime() - now.getTime()
+      const diff = expiryTime.getTime() - now.getTime() - 1000
 
       if (diff <= 0) {
         setTimeLeft("00:00")
