@@ -75,7 +75,6 @@ export default function Main({
 
         if (!isAuthenticated && !isPublic) {
           setIsHeaderVisible(false)
-          useUserDataStore.getState().clearUserData()
           window.location.href = getLoginUrl(userData?.signup === "v1")
         } else if (isAuthenticated) {
           await AuthAPI.fetchUserIdAndStore()
