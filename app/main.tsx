@@ -27,6 +27,15 @@ export default function Main({
   const setOnboardingStatus = useUserDataStore((state) => state.setOnboardingStatus)
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
+  const { setIsWalletAccount } = useUserDataStore()
+
+  useEffect(() => {
+    const walletParam = searchParams.get("wallet")
+    if (walletParam !== null) {
+      setIsWalletAccount(walletParam === "true")
+    }
+
+  }, [searchParams, setIsWalletAccount])
 
   useEffect(() => {
     isMountedRef.current = true
@@ -77,7 +86,8 @@ export default function Main({
               setVerificationStatus({
                 email_verified: onboardingStatus.verification.email_verified,
                 phone_verified: onboardingStatus.verification.phone_verified,
-                kyc_verified: onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
+                kyc_verified:
+                  onboardingStatus.kyc.poi_status === "approved" && onboardingStatus.kyc.poa_status === "approved",
                 p2p_allowed: onboardingStatus.p2p?.allowed,
               })
 

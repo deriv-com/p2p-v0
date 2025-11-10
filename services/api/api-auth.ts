@@ -209,6 +209,7 @@ export async function logout(): Promise<void> {
 export async function fetchUserIdAndStore(): Promise<void> {
   try {
     await getClientProfile()
+  
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/users/me`, {
       method: "GET",
       credentials: "include",
@@ -217,7 +218,10 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
     const result = await response.json()
     if (!response.ok) {
-      throw new Error(`Failed to fetch user data: ${response.statusText}`)
+      useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}],
+          signup: "v2"
+        })
     }
 
     const userId = result?.data?.id
@@ -239,6 +243,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
       const { userData } = useUserDataStore.getState()
       if (userData) {
+      
         useUserDataStore.getState().updateUserData({
           adverts_are_listed: result.data.adverts_are_listed,
           signup: result.data.signup,
@@ -248,7 +253,13 @@ export async function fetchUserIdAndStore(): Promise<void> {
           status: status,
         })
       }
+    } else {
+      useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}],
+          signup: "v2"
+        })
     }
+  
   } catch (error) {
     console.error("Error fetching user ID:", error)
   }
@@ -256,6 +267,7 @@ export async function fetchUserIdAndStore(): Promise<void> {
 
 export async function getClientProfile(): Promise<void> {
   try {
+  
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/client/profile`, {
       method: "GET",
       credentials: "include",

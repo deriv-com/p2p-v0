@@ -26,11 +26,13 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { isConnected, joinChannel, subscribe } = useWebSocketContext()
 
   const {
     activeTab,
@@ -88,11 +90,6 @@ export default function BuySellPage() {
 
   const fetchBalance = useCallback(async () => {
     if (!userData?.signup) {
-      setIsLoadingBalance(false)
-      return
-    }
-
-    if (!userData) {
       return
     }
 
@@ -113,6 +110,10 @@ export default function BuySellPage() {
         const firstBalance = balances[0] || {}
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
+
+        if (isConnected) {
+          joinChannel("users/me")
+        }
       } else {
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
@@ -127,11 +128,23 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, userData])
+  }, [balancesKey, isV1Signup, isConnected, userData])
 
   useEffect(() => {
     fetchBalance()
   }, [fetchBalance])
+
+  useEffect(() => {
+    const unsubscribe = subscribe((data: any) => {
+      if (data.payload.data?.event === "balance_change") {
+        const balances = data.payload.data.user?.balances[0]
+        setBalance(balances.amount)
+        setBalanceCurrency(balances.currency)
+      }
+    })
+
+    return unsubscribe
+  }, [subscribe])
 
   useEffect(() => {
     const operation = searchParams.get("operation")

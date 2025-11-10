@@ -97,6 +97,17 @@ export class WebSocketClient {
     this.send(joinMessage)
   }
 
+  public joinUserChannel(): void {
+    const joinMessage: WebSocketMessage = {
+      action: "join",
+      options: {
+        channel: "users/me",
+      },
+      payload: {},
+    }
+    this.send(joinMessage)
+  }
+
   public leaveChannel(channel: string): void {
     const leaveMessage: WebSocketMessage = {
       action: "leave",
@@ -123,6 +134,7 @@ export class WebSocketClient {
   }
 
   public subscribeToUserUpdates(): void {
+    this.joinUserChannel()
     const subscribeMessage: WebSocketMessage = {
       action: "subscribe",
       options: {
