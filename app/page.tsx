@@ -31,6 +31,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
@@ -493,9 +494,55 @@ export default function BuySellPage() {
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
             {isLoading ? (
-              <div className="text-center py-12">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-                <p className="mt-2 text-slate-600">{t("market.loadingAds")}</p>
+              <div className="md:block">
+                <Table>
+                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+                    <TableRow className="text-xs">
+                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                        {t("market.advertisers")}
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                        {t("market.rates")}
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                        {t("market.paymentMethods")}
+                      </TableHead>
+                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                    {[...Array(5)].map((_, index) => (
+                      <TableRow
+                        key={index}
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                      >
+                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Skeleton className="h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
+                            <div className="flex-1">
+                              <Skeleton className="h-4 w-32 mb-2" />
+                              <Skeleton className="h-3 w-48" />
+                              <Skeleton className="h-3 w-24 mt-2" />
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                          <Skeleton className="h-5 w-32 mb-2" />
+                          <Skeleton className="h-3 w-48" />
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                          <div className="flex flex-col gap-2">
+                            <Skeleton className="h-3 w-24" />
+                            <Skeleton className="h-3 w-28" />
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                          <Skeleton className="h-8 w-20 ml-auto" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
             ) : error ? (
               <div className="text-center py-8">{error}</div>
@@ -506,178 +553,178 @@ export default function BuySellPage() {
                 redirectToAds={true}
               />
             ) : (
-              <>
-                <div className="md:block">
-                  <Table>
-                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
-                      <TableRow className="text-xs">
-                        <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                          {t("market.advertisers")}
-                        </TableHead>
-                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                          {t("market.rates")}
-                        </TableHead>
-                        <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                          {t("market.paymentMethods")}
-                        </TableHead>
-                        <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                      {adverts.map((ad) => (
-                        <TableRow
-                          className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
-                          key={ad.id}
-                        >
-                          <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                                {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                                <div
-                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
-                                    ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                  }`}
+              <div className="md:block">
+                <Table>
+                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+                    <TableRow className="text-xs">
+                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                        {t("market.advertisers")}
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                        {t("market.rates")}
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                        {t("market.paymentMethods")}
+                      </TableHead>
+                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                    {adverts.map((ad) => (
+                      <TableRow
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                        key={ad.id}
+                      >
+                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                              {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                              <div
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
+                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                }`}
+                              />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                  className="hover:underline cursor-pointer"
+                                >
+                                  {ad.user?.nickname}
+                                </button>
+                                <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
+                                {ad.user.trade_band === "bronze" && (
+                                  <TooltipProvider>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <Image
+                                          src="/icons/bronze.png"
+                                          alt="Bronze"
+                                          width={18}
+                                          height={18}
+                                          className="mr-1 cursor-pointer"
+                                        />
+                                      </TooltipTrigger>
+                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                        <>
+                                          <p className="font-bold text-white mb-2">Bronze tier</p>
+                                          <p className="opacity-[0.72]">
+                                            Default tier for new users with basic trading limits.
+                                          </p>
+                                        </>
+                                        <TooltipArrow className="fill-black" />
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                                {ad.user?.is_favourite && (
+                                  <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                    {t("market.following")}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                            {ad.user.rating_average_lifetime && (
+                              <span className="flex items-center">
+                                <Image
+                                  src="/icons/star-active.png"
+                                  alt="Rating"
+                                  width={16}
+                                  height={16}
+                                  className="mr-1"
                                 />
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-1">
-                                  <button
-                                    onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                    className="hover:underline cursor-pointer"
-                                  >
-                                    {ad.user?.nickname}
-                                  </button>
-                                  <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
-                                  {ad.user.trade_band === "bronze" && (
-                                    <TooltipProvider>
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} className="mr-1 cursor-pointer" />
-                                        </TooltipTrigger>
-                                        <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-                                          <>
-                                            <p className="font-bold text-white mb-2">Bronze tier</p>
-                                            <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
-                                          </>
-                                          <TooltipArrow className="fill-black" />
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </TooltipProvider>
-                                  )}
-                                  {ad.user?.is_favourite && (
-                                    <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                      {t("market.following")}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                              {ad.user.rating_average_lifetime && (
-                                <span className="flex items-center">
-                                  <Image
-                                    src="/icons/star-active.png"
-                                    alt="Rating"
-                                    width={16}
-                                    height={16}
-                                    className="mr-1"
-                                  />
-                                  <span className="text-[#FFAE26]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
-                                </span>
-                              )}
-                              {ad.user.order_count_lifetime > 0 && (
-                                <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>
-                                    {ad.user.order_count_lifetime} {t("market.orders")}
-                                  </span>
-                                </div>
-                              )}
-                              {ad.user.completion_average_30day && (
-                                <div className="flex flex-row items-center justify-center gap-[8px]">
-                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>
-                                    {ad.user.completion_average_30day}% {t("market.completion")}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-2">
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                      <Image
-                                        src="/icons/clock.png"
-                                        alt="Time"
-                                        width={12}
-                                        height={12}
-                                        className="mr-2"
-                                      />
-                                      <span>
-                                        {ad.order_expiry_period} {t("market.min")}
-                                      </span>
-                                    </div>
-                                  </TooltipTrigger>
-                                  <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                    <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
-                                    <TooltipArrow className="fill-black" />
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            </div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                            <div className="font-bold text-base flex items-center">
-                              {ad.exchange_rate
-                                ? ad.exchange_rate.toLocaleString(undefined, {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })
-                                : ""}{" "}
-                              {ad.payment_currency}
-                              <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
-                            </div>
-                            <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
-                              ad.actual_maximum_order_amount || "N/A"
-                            }  ${ad.account_currency}`}</div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                            <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
-                              {ad.payment_methods?.map((method, index) => (
-                                <div key={index} className="flex items-center">
-                                  {method && (
-                                    <div
-                                      className={`h-2 w-2 rounded-full mr-2 ${
-                                        method.toLowerCase().includes("bank")
-                                          ? "bg-paymentMethod-bank"
-                                          : "bg-paymentMethod-ewallet"
-                                      }`}
-                                    ></div>
-                                  )}
-                                  <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                            {userId != ad.user.id && (
-                              <Button
-                                variant={ad.type === "buy" ? "destructive" : "secondary"}
-                                size="sm"
-                                onClick={() => handleOrderClick(ad)}
-                                disabled={!!tempBanUntil}
-                              >
-                                {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
-                              </Button>
+                                <span className="text-[#FFAE26]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                              </span>
                             )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </>
+                            {ad.user.order_count_lifetime > 0 && (
+                              <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                <span>
+                                  {ad.user.order_count_lifetime} {t("market.orders")}
+                                </span>
+                              </div>
+                            )}
+                            {ad.user.completion_average_30day && (
+                              <div className="flex flex-row items-center justify-center gap-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                <span>
+                                  {ad.user.completion_average_30day}% {t("market.completion")}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-2">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                    <span>
+                                      {ad.order_expiry_period} {t("market.min")}
+                                    </span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                  <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
+                                  <TooltipArrow className="fill-black" />
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                          <div className="font-bold text-base flex items-center">
+                            {ad.exchange_rate
+                              ? ad.exchange_rate.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ""}{" "}
+                            {ad.payment_currency}
+                            <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
+                          </div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
+                            ad.actual_maximum_order_amount || "N/A"
+                          }  ${ad.account_currency}`}</div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                          <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
+                            {ad.payment_methods?.map((method, index) => (
+                              <div key={index} className="flex items-center">
+                                {method && (
+                                  <div
+                                    className={`h-2 w-2 rounded-full mr-2 ${
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
+                                    }`}
+                                  ></div>
+                                )}
+                                <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                          {userId != ad.user.id && (
+                            <Button
+                              variant={ad.type === "buy" ? "destructive" : "secondary"}
+                              size="sm"
+                              onClick={() => handleOrderClick(ad)}
+                              disabled={!!tempBanUntil}
+                            >
+                              {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </div>
         </div>
