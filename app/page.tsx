@@ -249,8 +249,21 @@ export default function BuySellPage() {
     }
   }
 
-  const handleAdvertiserClick = (userId: number) => {
-    router.push(`/advertiser/${userId}`)
+  const handleAdvertiserClick = (advertiserId: number) => {
+    if(userId) {
+        router.push(`/advertiser/${advertiserId}`)
+    } else {
+        showAlert({
+            title: t("profile.gettingStarted"),
+            description: (
+            <div className="space-y-4 mb-6 mt-2">
+                <KycOnboardingSheet />
+            </div>
+            ),
+            confirmText: undefined,
+            cancelText: undefined,
+        })
+    }
   }
 
   const handleOrderClick = (ad: Advertisement) => {
