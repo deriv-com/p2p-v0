@@ -613,7 +613,7 @@ export default function BuySellPage() {
                               {ad.payment_currency}
                               <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
-                            <div className="mt-1">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
+                            <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
                               ad.actual_maximum_order_amount || "N/A"
                             }  ${ad.account_currency}`}</div>
                           </TableCell>
