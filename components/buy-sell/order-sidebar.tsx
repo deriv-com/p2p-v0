@@ -460,7 +460,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                 </div>
 
-                <div className="mx-4 mt-4 border-t py-2 text-sm">
+                <div className="mx-4 mt-4 border-t border-[#E9ECEF] py-2 text-sm">
                   <h3 className="text-grayscale-text-muted">
                     {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
                   </h3>
