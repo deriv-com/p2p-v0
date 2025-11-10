@@ -30,6 +30,7 @@ import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { VerifiedBadge } from "@/components/verified-badge"
 
 export default function BuySellPage() {
   const { t } = useTranslations()
