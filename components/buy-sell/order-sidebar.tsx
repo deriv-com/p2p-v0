@@ -212,7 +212,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
           showAlert({
-            title: t("order.unableToCreateOrder"),
+            title: "Existing order in progress",
             description: t("order.orderExists"),
             confirmText: t("common.ok"),
             type: "warning",
