@@ -13,6 +13,8 @@ interface PriceTypeSelectorProps {
 }
 
 export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTypeSelectorProps) {
+  const { t } = useTranslations()
+  
   return (
     <div className="space-y-4">
      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
