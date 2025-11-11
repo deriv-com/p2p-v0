@@ -434,13 +434,6 @@ export default function PaymentDetailsForm({
     const methods = initialData.type === "buy" ? availablePaymentMethods : userPaymentMethods
 
     if (selectedIds.length === 0) return t("adForm.selectPayment")
-    if (selectedIds.length === 1) {
-      const method = methods.find((m) => {
-        const id = "id" in m ? m.id : m.method
-        return id === selectedIds[0]
-      })
-      return method ? `${method.display_name}` : t("adForm.selectPayment")
-    }
     return t("adForm.selected", { count: selectedIds.length })
   }
 
