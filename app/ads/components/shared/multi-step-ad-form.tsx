@@ -1,658 +1,633 @@
-"use client"
+import { API, AUTH } from "@/lib/local-variables"
+import { useUserDataStore } from "@/stores/user-data-store"
 
-import { useState, useRef, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import AdDetailsForm from "../ad-details-form"
-import PaymentDetailsForm from "../payment-details-form"
-import { AdsAPI, ProfileAPI, BuySellAPI } from "@/services/api"
-import { useIsMobile } from "@/hooks/use-mobile"
-import { Button } from "@/components/ui/button"
-import { ProgressSteps } from "./progress-steps"
-import Navigation from "@/components/navigation"
-import { useAlertDialog } from "@/hooks/use-alert-dialog"
-import OrderTimeLimitSelector from "./order-time-limit-selector"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import Image from "next/image"
-import CountrySelection from "./country-selection"
-import { PaymentSelectionProvider, usePaymentSelection } from "../payment-selection-context"
-import { useToast } from "@/hooks/use-toast"
-import { getSettings, type Country } from "@/services/api/api-auth"
-import { useTranslations } from "@/lib/i18n/use-translations"
-
-interface MultiStepAdFormProps {
-  mode: "create" | "edit"
-  adId?: string
-  initialType?: "buy" | "sell"
+export interface APIAdvert {
+  id: number
+  user?: {
+    nickname: string
+    id: number
+    is_favourite: boolean
+    created_at: number
+  }
+  account_currency?: string
+  actual_maximum_order_amount?: number
+  available_amount: number
+  open_order_amount?: number
+  completed_order_amount?: number
+  created_at?: number
+  description: string
+  exchange_rate: number
+  exchange_rate_type: string
+  is_active: boolean
+  maximum_order_amount: number
+  minimum_order_amount: number
+  order_expiry_period: number
+  payment_currency?: string
+  payment_method_names: string[]
+  type?: string
 }
 
-interface UserPaymentMethod {
+export interface MyAd {
   id: string
-  type: string
-  display_name: string
-  fields: Record<string, any>
-  is_enabled: number
-  method: string
+  type: "Buy" | "Sell"
+  rate: {
+    value: string
+    percentage: string
+    currency: string
+  }
+  limits: {
+    min: number
+    max: number
+    currency: string
+  }
+  available: {
+    current: number
+    total: number
+    currency: string
+  }
+  paymentMethods: string[]
+  status: "Active" | "Inactive"
+  createdAt: string
+  updatedAt: string
+  account_currency?: string
+  payment_currency?: string
 }
 
-interface AvailablePaymentMethod {
-  display_name: string
-  type: string
-  method: string
+export interface AdFilters {
+  type?: "Buy" | "Sell"
+  status?: "Active" | "Inactive"
+  adId?: string
 }
 
-function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps) {
-  const { t } = useTranslations()
-  const router = useRouter()
-  const isMobile = useIsMobile()
+export interface CreateAdPayload {
+  type: "buy" | "sell"
+  account_currency: string
+  payment_currency: string
+  minimum_order_amount: number
+  maximum_order_amount: number
+  available_amount: number
+  exchange_rate: number
+  exchange_rate_type: "fixed" | "float"
+  description: string
+  is_active: number
+  order_expiry_period: number
+  payment_method_names: string[]
+}
 
-  const { toast } = useToast()
-  const [currentStep, setCurrentStep] = useState(0)
-  const [formData, setFormData] = useState(initialType ? { type: initialType } : {})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [adFormValid, setAdFormValid] = useState(false)
-  const [paymentFormValid, setPaymentFormValid] = useState(false)
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
-  const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
-  const { showAlert } = useAlertDialog()
-  const [orderTimeLimit, setOrderTimeLimit] = useState(15)
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
-  const [countries, setCountries] = useState<Country[]>([])
-  const [isLoadingCountries, setIsLoadingCountries] = useState(true)
-  const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
-  const [userPaymentMethods, setUserPaymentMethods] = useState<UserPaymentMethod[]>([])
-  const [availablePaymentMethods, setAvailablePaymentMethods] = useState<AvailablePaymentMethod[]>([])
+export interface CreateAdResponse {
+  id: string
+  type: "buy" | "sell"
+  status: "active" | "inactive"
+  created_at: string
+}
 
-  const formDataRef = useRef({})
-  const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
+export interface Advert {
+  id: string
+  name: string
+  avatar: string
+  rating: number
+  orders: number
+  completion: number
+  following: boolean
+  online: boolean
+  rate: number
+  limits: string
+  minAmount: number
+  maxAmount: number
+  time: string
+  methods: string[]
+  currency: string
+  type: string
+}
 
-  const steps = [
-    { title: t("adForm.setTypeAndPrice"), completed: currentStep > 0 },
-    { title: t("adForm.setPaymentDetails"), completed: currentStep > 1 },
-    { title: t("adForm.setAdConditions"), completed: currentStep > 2 },
-  ]
+export async function getMyAds(filters?: AdFilters): Promise<MyAd[]> {
+  try {
+    const userAdverts = await getUserAdverts()
 
-  const convertToSnakeCase = (str: string): string => {
-    return str
-      .toLowerCase()
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "")
-  }
-
-  const fetchUserPaymentMethods = async () => {
-    try {
-      const response = await ProfileAPI.getUserPaymentMethods()
-
-      if (response.error) {
-        return
-      }
-
-      setUserPaymentMethods(response || [])
-    } catch (error) {
-      console.error("Error fetching payment methods:", error)
-    }
-  }
-
-  const fetchAvailablePaymentMethods = async () => {
-    try {
-      const methods = await BuySellAPI.getPaymentMethods()
-      setAvailablePaymentMethods(methods || [])
-    } catch (error) {
-      console.error("Error fetching available payment methods:", error)
-    }
-  }
-
-  useEffect(() => {
-    fetchUserPaymentMethods()
-    fetchAvailablePaymentMethods()
-  }, [])
-
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        setIsLoadingCountries(true)
-        const response = await getSettings()
-        const countriesData = response.countries || []
-        setCountries(countriesData)
-
-        const uniqueCurrencies = Array.from(
-          new Set(
-            countriesData
-              .filter((country: Country) => country.fixed_rate === "enabled")
-              .map((country: Country) => country.currency)
-              .filter((currency): currency is string => !!currency),
-          ),
-        )
-          .map((code) => ({ code }))
-          .sort((a, b) => a.code.localeCompare(b.code))
-
-        setCurrencies(uniqueCurrencies)
-      } catch (error) {
-        setCountries([])
-        setCurrencies([])
-      } finally {
-        setIsLoadingCountries(false)
-      }
-    }
-
-    fetchCountries()
-  }, [])
-
-  useEffect(() => {
-    if (mode === "edit" && adId) {
-      const loadInitialData = async () => {
-        try {
-          const advertData = await AdsAPI.getAdvert(adId)
-          const { data } = advertData
-
-          if (data) {
-            let paymentMethodNames: string[] = []
-            let paymentMethodIds: number[] = []
-
-            if (data.payment_methods && Array.isArray(data.payment_methods)) {
-              if (data.type === "buy") {
-                paymentMethodNames = data.payment_methods.map((methodName: string) => {
-                  if (methodName.includes("_") || methodName === methodName.toLowerCase()) {
-                    return methodName
-                  }
-                  return convertToSnakeCase(methodName)
-                })
-
-                setSelectedPaymentMethodIds(paymentMethodNames)
-              } else {
-                paymentMethodIds = data.payment_method_ids
-                  .map((id: any) => Number(id))
-                  .filter((id: number) => !isNaN(id))
-
-                setSelectedPaymentMethodIds(paymentMethodIds)
-              }
-            }
-
-            const formattedData = {
-              ...data,
-              totalAmount:
-                Number.parseFloat(data.available_amount) +
-                Number.parseFloat(data.completed_order_amount) +
-                Number.parseFloat(data.open_order_amount),
-              fixedRate: Number.parseFloat(data.exchange_rate),
-              minAmount: data.minimum_order_amount,
-              maxAmount: data.maximum_order_amount,
-              paymentMethods: paymentMethodNames,
-              payment_method_ids: paymentMethodIds,
-              instructions: data.description || "",
-              forCurrency: data.payment_currency,
-              buyCurrency: data.account_currency,
-              priceType: data.exchange_rate_type || "fixed",
-              floatingRate: data.floating_rate || "",
-            }
-
-            setFormData(formattedData)
-            formDataRef.current = formattedData
-
-            if (data.order_expiry_period) {
-              setOrderTimeLimit(data.order_expiry_period)
-            }
-
-            if (data.available_countries) {
-              setSelectedCountries(data.available_countries)
-            }
-          }
-        } catch (error) {}
-      }
-
-      loadInitialData()
-    }
-  }, [mode, adId, setSelectedPaymentMethodIds])
-
-  useEffect(() => {
-    if (mode === "create" && formData.type && previousTypeRef.current && formData.type !== previousTypeRef.current) {
-      setSelectedPaymentMethodIds([])
-    }
-    previousTypeRef.current = formData.type as "buy" | "sell" | undefined
-  }, [formData.type, mode, setSelectedPaymentMethodIds])
-
-  const hasSelectedPaymentMethods = selectedPaymentMethodIds.length > 0
-
-  useEffect(() => {
-    const handleAdFormValidation = (e: any) => {
-      setAdFormValid(e.detail.isValid)
-      if (e.detail.isValid) {
-        const updatedData = { ...formData, ...e.detail.formData }
-        setFormData(updatedData)
-        formDataRef.current = updatedData
-      }
-    }
-
-    const handlePaymentFormValidation = (e: any) => {
-      setPaymentFormValid(e.detail.isValid)
-      if (e.detail.isValid) {
-        const updatedData = { ...formData, ...e.detail.formData }
-        setFormData(updatedData)
-        formDataRef.current = updatedData
-      }
-    }
-
-    document.addEventListener("adFormValidationChange", handleAdFormValidation)
-    document.addEventListener("paymentFormValidationChange", handlePaymentFormValidation)
-
-    return () => {
-      document.removeEventListener("adFormValidationChange", handleAdFormValidation)
-      document.removeEventListener("paymentFormValidationChange", handlePaymentFormValidation)
-    }
-  }, [formData])
-
-  const handleAdDetailsNext = (data, errors?: Record<string, string>) => {
-    const updatedData = { ...formData, ...data }
-    setFormData(updatedData)
-    formDataRef.current = updatedData
-
-    if (!errors || Object.keys(errors).length === 0) {
-      setCurrentStep(1)
-    }
-  }
-
-  const formatErrorMessage = (errors: any[]): string => {
-    if (!errors || errors.length === 0) {
-      return "An unknown error occurred"
-    }
-
-    if (errors[0].code === "AdvertExchangeRateDuplicate") {
-      const error = new Error(t("adForm.duplicateRateMessage"))
-      error.name = "AdvertExchangeRateDuplicate"
-      throw error
-    }
-
-    if (errors[0].code === "AdvertOrderRangeOverlap") {
-      const error = new Error(t("adForm.rangeOverlapMessage"))
-      error.name = "AdvertOrderRangeOverlap"
-      throw error
-    }
-
-    if (errors[0].message) {
-      return errors[0].message
-    }
-
-    if (errors[0].code) {
-      const errorCodeMap: Record<string, string> = {
-        AdvertLimitReached: t("adForm.adLimitReachedMessage"),
-        InvalidExchangeRate: "The exchange rate you provided is invalid.",
-        InvalidOrderAmount: "The order amount limits are invalid.",
-        InsufficientBalance: t("adForm.insufficientBalanceMessage"),
-        AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
-      }
-
-      if (errorCodeMap[errors[0].code]) {
-        const error = new Error(errorCodeMap[errors[0].code])
-        error.name = errors[0].code
-        throw error
-      }
-
-      return `Error: ${errors[0].code}. Please try again or contact support.`
-    }
-
-    return "There was an error processing your request. Please try again."
-  }
-
-  const handleFinalSubmit = async () => {
-    const finalData = { ...formDataRef.current }
-
-    setIsSubmitting(true)
-
-    try {
-      const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
-
-      if (mode === "create") {
-        const exchangeRate =
-          finalData.priceType === "floating" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
-
-        const payload = {
-          type: finalData.type || "buy",
-          account_currency: finalData.buyCurrency,
-          payment_currency: finalData.forCurrency,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "floating",
-          description: finalData.instructions || "",
-          is_active: 1,
-          order_expiry_period: orderTimeLimit,
-          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
-        }
-
-        const result = await AdsAPI.createAd(payload)
-
-        if (result.errors && result.errors.length > 0) {
-          const errorMessage = formatErrorMessage(result.errors)
-          throw new Error(errorMessage)
-        } else {
-          router.push("/ads")
-          showAlert({
-            title: t("myAds.adCreated"),
-            description: t("adForm.adCreatedSuccess", { type: result.data.type }),
-            confirmText: t("common.ok"),
-            type: "success",
-          })
-        }
-      } else {
-        const exchangeRate =
-          finalData.priceType === "floating" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
-
-        const payload = {
-          is_active: true,
-          minimum_order_amount: finalData.minAmount || 0,
-          maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
-          exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "floating",
-          order_expiry_period: orderTimeLimit,
-          available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
-          description: finalData.instructions || "",
-          ...(finalData.type === "buy"
-            ? { payment_method_names: finalData.paymentMethods || [] }
-            : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
-        }
-
-        const updateResult = await AdsAPI.updateAd(finalData.id, payload)
-
-        if (updateResult.errors && updateResult.errors.length > 0) {
-          const errorMessage = formatErrorMessage(updateResult.errors)
-          throw new Error(errorMessage)
-        } else {
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                <span>{t("adForm.adUpdatedSuccess")}</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-        }
-        router.push("/ads")
-      }
-    } catch (error) {
-      let errorInfo = {
-        title: mode === "create" ? t("adForm.failedToCreateAd") : t("adForm.failedToUpdateAd"),
-        message: t("adForm.tryAgain"),
-        type: "error" as "error" | "warning",
-        actionButtonText: t("adForm.updateAd"),
-      }
-
-      if (error instanceof Error) {
-        if (error.name === "AdvertExchangeRateDuplicate") {
-          errorInfo = {
-            title: t("adForm.duplicateRateTitle"),
-            message: t("adForm.duplicateRateMessage"),
-            type: "warning",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertOrderRangeOverlap") {
-          errorInfo = {
-            title: t("adForm.rangeOverlapTitle"),
-            message: t("adForm.rangeOverlapMessage"),
-            type: "warning",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertLimitReached" || error.message === "ad_limit_reached") {
-          errorInfo = {
-            title: t("adForm.adLimitReachedTitle"),
-            message: t("adForm.adLimitReachedMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "InsufficientBalance") {
-          errorInfo = {
-            title: t("adForm.insufficientBalanceTitle"),
-            message: t("adForm.insufficientBalanceMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "InvalidExchangeRate" || error.name === "InvalidOrderAmount") {
-          errorInfo = {
-            title: t("adForm.invalidValuesTitle"),
-            message: error.message || t("adForm.invalidValuesMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else if (error.name === "AdvertTotalAmountExceeded") {
-          errorInfo = {
-            title: t("adForm.amountExceedsBalanceTitle"),
-            message: t("adForm.amountExceedsBalanceMessage"),
-            type: "error",
-            actionButtonText: t("adForm.updateAd"),
-          }
-        } else {
-          errorInfo.message = error.message || errorInfo.message
-        }
-      }
-
-      showAlert({
-        title: errorInfo.title,
-        description: errorInfo.message,
-        confirmText: errorInfo.actionButtonText,
-        type: errorInfo.type,
-        onConfirm: () => {
-          setCurrentStep(0)
-        },
+    if (filters) {
+      const filteredAds = userAdverts.filter((ad) => {
+        if (filters.type && ad.type !== filters.type) return false
+        if (filters.status && ad.status !== filters.status) return false
+        if (filters.adId && ad.id !== filters.adId) return false
+        return true
       })
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
 
-  const handleBottomSheetOpenChange = (isOpen: boolean) => {
-    setIsBottomSheetOpen(isOpen)
-  }
-
-  const handleButtonClick = () => {
-    if (isBottomSheetOpen) {
-      return
+      return filteredAds
     }
 
-    if (currentStep === 0) {
-      if (!adFormValid) {
-        return
-      }
-
-      setCurrentStep(1)
-      return
-    }
-
-    if (currentStep === 1) {
-      if (mode === "create" && formData.type === "buy" && !paymentFormValid) {
-        return
-      }
-
-      if (formData.type === "sell" && !hasSelectedPaymentMethods) {
-        return
-      }
-
-      setCurrentStep(2)
-      return
-    }
-
-    if (currentStep === 2) {
-      if (mode === "edit" && !adFormValid) {
-        return
-      }
-
-      if (isSubmitting) {
-        return
-      }
-
-      handleFinalSubmit()
-      return
-    }
+    return userAdverts
+  } catch (error) {
+    return []
   }
-
-  const handleClose = () => {
-    router.push("/ads")
-  }
-
-  const isButtonDisabled =
-    (currentStep === 0 && !adFormValid) ||
-    (currentStep === 1 && mode === "create" && formData.type === "buy" && !paymentFormValid) ||
-    (currentStep === 1 && formData.type === "sell" && !hasSelectedPaymentMethods) ||
-    (currentStep === 2 && mode === "edit" && !adFormValid) ||
-    isBottomSheetOpen
-
-  const getButtonText = () => {
-    if (currentStep === 0 || currentStep === 1) {
-      return t("adForm.next")
-    }
-    return mode === "create" ? t("adForm.createAd") : t("adForm.saveChanges")
-  }
-
-  const getPageTitle = () => {
-    return mode === "create" ? t("adForm.createAd") : t("adForm.editAd")
-  }
-
-  return (
-    <form onSubmit={(e) => e.preventDefault()}>
-      <div className="fixed w-full h-full bg-white top-0 left-0 md:px-[24px]">
-        <div className="md:max-w-[620px] mx-auto pb-12 mt-0 md:mt-8 progress-steps-container overflow-x-hidden overflow-y-auto h-full md:px-0">
-          <Navigation
-            isBackBtnVisible={currentStep != 0}
-            isVisible={false}
-            onBack={() => {
-              const updatedStep = currentStep - 1
-              setCurrentStep(updatedStep)
-            }}
-            onClose={handleClose}
-            title=""
-          />
-          <ProgressSteps
-            currentStep={currentStep}
-            steps={steps}
-            className="px-6 my-6"
-            title={{
-              label: getPageTitle(),
-              stepTitle: steps[currentStep].title,
-            }}
-          />
-
-          <div className="relative mb-16 md:mb-0 mx-6">
-            {currentStep === 0 ? (
-              <AdDetailsForm
-                onNext={handleAdDetailsNext}
-                onClose={handleClose}
-                initialData={formData}
-                setFormData={setFormData}
-                isEditMode={mode === "edit"}
-                currencies={currencies}
-              />
-            ) : currentStep === 1 ? (
-              <PaymentDetailsForm
-                onBack={() => setCurrentStep(0)}
-                onClose={handleClose}
-                initialData={formData}
-                setFormData={setFormData}
-                isSubmitting={isSubmitting}
-                isEditMode={mode === "edit"}
-                onBottomSheetOpenChange={handleBottomSheetOpenChange}
-                userPaymentMethods={userPaymentMethods}
-                availablePaymentMethods={availablePaymentMethods}
-                onRefetchPaymentMethods={fetchUserPaymentMethods}
-              />
-            ) : (
-              <div className="space-y-6">
-                <div>
-                  <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold leading-6 tracking-normal">{t("adForm.orderTimeLimit")}</h3>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.png"
-                            alt="Info"
-                            width={12}
-                            height={12}
-                            className="ml-1 cursor-pointer"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="opacity-[0.72]">{t("adForm.orderTimeLimitTooltip")}</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                  <OrderTimeLimitSelector value={orderTimeLimit} onValueChange={setOrderTimeLimit} />
-                </div>
-
-                <div className="w-full md:w-[70%]">
-                  <div className="flex gap-[4px] items-center mb-4">
-                    <h3 className="text-base font-bold">{t("adForm.chooseYourAudience")}</h3>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Image
-                            src="/icons/info-circle.png"
-                            alt="Info"
-                            width={12}
-                            height={12}
-                            className="ml-1 cursor-pointer"
-                          />
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="opacity-[0.72]">{t("adForm.audienceTooltip")}</p>
-                          <TooltipArrow className="fill-black" />
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>{" "}
-                  </div>
-                  <div>
-                    <CountrySelection
-                      selectedCountries={selectedCountries}
-                      onCountriesChange={setSelectedCountries}
-                      countries={countries}
-                      isLoading={isLoadingCountries}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {isMobile ? (
-            <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
-              <div className="mx-6">
-                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
-                  {isSubmitting ? (
-                    <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-                  ) : (
-                    getButtonText()
-                  )}
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="hidden md:block"></div>
-          )}
-
-          <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
-              {isSubmitting ? (
-                <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
-              ) : (
-                getButtonText()
-              )}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </form>
-  )
 }
 
-export default function MultiStepAdForm({ mode, adId, initialType }: MultiStepAdFormProps) {
-  return (
-    <PaymentSelectionProvider>
-      <MultiStepAdFormInner mode={mode} adId={adId} initialType={initialType} />
-    </PaymentSelectionProvider>
-  )
+export async function toggleAdStatus(id: string, isActive: boolean, currentAd: MyAd): Promise<{ success: boolean }> {
+  try {
+    const adData = {
+      is_active: isActive,
+    }
+
+    return await updateAd(id, adData)
+  } catch (error) {
+    throw error
+  }
+}
+
+export async function hideMyAds(hide: boolean): Promise<{ success: boolean }> {
+  try {
+    const url = `${API.baseUrl}/users/${useUserDataStore.getState().userId}`
+    const headers = {
+      ...AUTH.getAuthHeader(),
+      "Content-Type": "application/json",
+    }
+    const payload = {
+      adverts_are_listed: !hide,
+    }
+
+    const requestData = { data: payload }
+    const body = JSON.stringify(requestData)
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      credentials: "include",
+      headers,
+      body,
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = {}
+    }
+
+    if (!response.ok) {
+      throw new Error(`Failed to ${hide ? "hide" : "show"} ads: ${response.statusText || responseText}`)
+    }
+
+    return { success: true }
+  } catch (error) {
+    console.error("Error hiding/showing ads:", error)
+    throw error
+  }
+}
+
+export async function getCurrencies(): Promise<string[]> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.settings}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+    await response.text()
+  } catch (error) {}
+
+  // TODO: Returning a default array for now until the API response structure is finalised and we have required data
+  return ["USD", "BTC", "ETH", "LTC", "BRL", "VND"]
+}
+
+export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
+  try {
+    const userId = useUserDataStore.getState().userId
+
+    const queryParams = new URLSearchParams({
+      user_id: userId.toString(),
+      show_inactive: showInactive !== undefined ? showInactive.toString() : "true",
+      show_unorderable: "true",
+      show_unlisted: "true",
+      show_ineligible: "true",
+      account_currency: "USD",
+    })
+
+    const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user adverts")
+    }
+
+    const responseText = await response.text()
+    let apiData
+
+    try {
+      apiData = JSON.parse(responseText)
+    } catch (e) {
+      apiData = { data: [] }
+    }
+
+    if (!apiData || !apiData.data || !Array.isArray(apiData.data)) {
+      return []
+    }
+
+    return apiData.data.map((advert: APIAdvert) => {
+      const minAmount = advert.minimum_order_amount || 0
+      const maxAmount = advert.maximum_order_amount || 0
+      const exchangeRate = advert.exchange_rate || 0
+      const currency = advert.payment_currency || "USD"
+      const accountCurrency = advert.account_currency
+      const isActive = advert.is_active !== undefined ? advert.is_active : true
+      const availableAmount = advert.available_amount || 0
+
+      const status: "Active" | "Inactive" = isActive ? "Active" : "Inactive"
+
+      return {
+        id: String(advert.id || "0"),
+        type: ((advert.type || "buy") as string).toLowerCase() === "buy" ? "Buy" : "Sell",
+        rate: {
+          value: `${exchangeRate.toFixed(4)} ${currency}`,
+          percentage: "0.1%",
+          currency: currency,
+        },
+        limits: {
+          min: minAmount,
+          max: maxAmount,
+          currency: accountCurrency,
+        },
+        available: {
+          current: availableAmount,
+          total:
+            Number(availableAmount || 0) +
+            Number(advert.open_order_amount || 0) +
+            Number(advert.completed_order_amount || 0),
+          currency: accountCurrency,
+        },
+        paymentMethods: advert.payment_methods || [],
+        status: status,
+        description: advert.description || "",
+        createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
+        updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
+        account_currency: accountCurrency,
+        user: advert.user,
+      }
+    })
+  } catch (error) {
+    return []
+  }
+}
+
+export async function updateAd(id: string, adData: any): Promise<{ success: boolean; errors?: any[] }> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
+    const headers = AUTH.getAuthHeader()
+
+    if (adData.payment_method_names) {
+      if (!Array.isArray(adData.payment_method_names)) {
+        adData.payment_method_names = [String(adData.payment_method_names)]
+      } else {
+        adData.payment_method_names = adData.payment_method_names.map((method) => String(method))
+      }
+    } else {
+      adData.payment_method_names = []
+    }
+
+    if (!adData.payment_method_ids) {
+      adData.payment_method_ids = null
+    }
+
+    if (!adData.available_countries) {
+      adData.available_countries = null
+    }
+
+    const requestData = { data: adData }
+    const body = JSON.stringify(requestData)
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers,
+      credentials: "include",
+      body,
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = {}
+    }
+
+    if (!response.ok) {
+      let errors = []
+      if (responseData && responseData.errors) {
+        errors = responseData.errors
+      } else {
+        errors = [{ message: `Failed to update ad: ${response.statusText || responseText}` }]
+      }
+
+      return {
+        success: false,
+        errors: errors,
+      }
+    }
+
+    return {
+      success: true,
+      errors: responseData.errors || [],
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
+  }
+}
+
+export async function toggleAdActiveStatus(
+  id: string,
+  isActive: boolean,
+): Promise<{ success: boolean; errors?: any[] }> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
+    const headers = AUTH.getAuthHeader()
+
+    const payload = {
+      is_active: isActive,
+    }
+
+    const requestData = { data: payload }
+    const body = JSON.stringify(requestData)
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers,
+      credentials: "include",
+      body,
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = {}
+    }
+
+    if (!response.ok) {
+      let errors = []
+      if (responseData && responseData.errors) {
+        errors = responseData.errors
+      } else {
+        errors = [
+          { message: `Failed to ${isActive ? "activate" : "deactivate"} ad: ${response.statusText || responseText}` },
+        ]
+      }
+
+      return {
+        success: false,
+        errors: errors,
+      }
+    }
+
+    return {
+      success: true,
+      errors: responseData.errors || [],
+    }
+  } catch (error) {
+    return {
+      success: false,
+      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
+  }
+}
+
+export async function deleteAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers,
+      credentials: "include",
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = {}
+    }
+
+    if (!response.ok) {
+      let errors = []
+      if (responseData && responseData.errors) {
+        errors = responseData.errors
+      } else {
+        errors = [{ message: `Failed to delete ad: ${response.statusText}` }]
+      }
+
+      return {
+        success: false,
+        errors: errors,
+      }
+    }
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
+  }
+}
+
+export async function createAd(
+  payload: CreateAdPayload,
+): Promise<{ success: boolean; data: CreateAdResponse; errors?: any[] }> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.ads}`
+    const headers = AUTH.getAuthHeader()
+
+    const enhancedPayload = {
+      ...payload,
+      payment_method_ids: (payload as any).payment_method_ids ?? null,
+      available_countries: (payload as any).available_countries ?? null,
+    }
+
+    const requestBody = { data: enhancedPayload }
+    const body = JSON.stringify(requestBody)
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers,
+      credentials: "include",
+      body,
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = { raw: responseText }
+    }
+
+    if (!response.ok) {
+      let errorMessage = responseData.error || `Error creating advertisement: ${response.statusText}`
+      let errorCode = null
+
+      if (responseData.errors && Array.isArray(responseData.errors) && responseData.errors.length > 0) {
+        if (responseData.errors[0].code) {
+          errorCode = responseData.errors[0].code
+
+          switch (errorCode) {
+            case "AdvertExchangeRateDuplicate":
+              errorMessage = "You already have an ad with this exchange rate. Please use a different rate."
+              break
+            case "AdvertLimitReached":
+              errorMessage = "You've reached the maximum number of ads allowed."
+              break
+            case "InvalidExchangeRate":
+              errorMessage = "The exchange rate you provided is invalid."
+              break
+            case "InvalidOrderAmount":
+              errorMessage = "The order amount limits are invalid."
+              break
+            case "InsufficientBalance":
+              errorMessage = "You don't have enough balance to create this ad."
+              break
+            case "AdvertTotalAmountExceeded":
+              errorMessage = "The total amount exceeds your available balance. Please enter a smaller amount."
+              break
+            default:
+              errorMessage = `Error: ${errorCode}. Please try again or contact support.`
+          }
+        } else if (responseData.errors[0].message) {
+          errorMessage = responseData.errors[0].message
+        }
+      }
+
+      if (response.status === 400) {
+        if (errorMessage.includes("limit") || errorCode === "AdvertLimitReached") {
+          throw new Error("ad_limit_reached")
+        }
+      }
+
+      const error = new Error(errorMessage)
+      if (errorCode) {
+        error.name = errorCode
+      }
+      throw error
+    }
+
+    return {
+      success: true,
+      data: {
+        id: responseData.data?.id || "000000",
+        type: responseData.data?.type || payload.type,
+        status: responseData.data?.status || "active",
+        created_at: responseData.data?.created_at || new Date().toISOString(),
+      },
+      errors: responseData.errors || [],
+    }
+  } catch (error) {
+    return {
+      success: false,
+      data: {
+        id: "",
+        type: payload.type,
+        status: "inactive",
+        created_at: new Date().toISOString(),
+      },
+      errors: [
+        {
+          message: error instanceof Error ? error.message : "An unexpected error occurred",
+          code: error instanceof Error ? error.name : "UnknownError",
+        },
+      ],
+    }
+  }
+}
+
+export async function activateAd(id: string): Promise<{ success: boolean; errors?: any[] }> {
+  try {
+    const payload = {
+      is_active: true,
+    }
+
+    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
+    const headers = AUTH.getAuthHeader()
+
+    const body = JSON.stringify({ data: payload })
+
+    const response = await fetch(url, {
+      method: "PATCH",
+      headers,
+      credentials: "include",
+      body,
+    })
+
+    const responseText = await response.text()
+    let responseData
+
+    try {
+      responseData = JSON.parse(responseText)
+    } catch (e) {
+      responseData = {}
+    }
+
+    if (!response.ok) {
+      let errors = []
+      if (responseData && responseData.errors) {
+        errors = responseData.errors
+      } else {
+        errors = [{ message: `Failed to activate ad: ${response.statusText || responseText}` }]
+      }
+
+      return {
+        success: false,
+        errors: errors,
+      }
+    }
+
+    return { success: true }
+  } catch (error) {
+    return {
+      success: false,
+      errors: [{ message: error instanceof Error ? error.message : "An unexpected error occurred" }],
+    }
+  }
+}
+
+export async function getAdvert(id: string): Promise<MyAd> {
+  try {
+    const url = `${API.baseUrl}${API.endpoints.ads}/${id}`
+    const headers = AUTH.getAuthHeader()
+
+    const response = await fetch(url, {
+      headers,
+      credentials: "include",
+    })
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch user adverts")
+    }
+
+    const responseText = await response.text()
+    let data
+
+    try {
+      data = JSON.parse(responseText)
+    } catch (e) {
+      data = {}
+    }
+
+    return data
+  } catch (error) {
+    return {}
+  }
 }
