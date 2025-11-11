@@ -5,6 +5,8 @@ import { useState, useEffect } from "react"
 import type { AdFormData } from "../types"
 import { CurrencyInput } from "./ui/currency-input"
 import { RateInput } from "./ui/rate-input"
+import { PriceTypeSelector } from "./ui/price-type-selector"
+import { FloatingRateInput } from "./ui/floating-rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
@@ -41,8 +43,10 @@ export default function AdDetailsForm({
 }: AdDetailsFormProps) {
   const { t } = useTranslations()
   const [type, setType] = useState<"buy" | "sell">(initialData?.type || "buy")
+  const [priceType, setPriceType] = useState<"fixed" | "floating">("floating")
   const [totalAmount, setTotalAmount] = useState(initialData?.totalAmount?.toString() || "")
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
+  const [floatingRate, setFloatingRate] = useState("0.05")
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
@@ -57,6 +61,7 @@ export default function AdDetailsForm({
   })
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
+  const [marketPrice, setMarketPrice] = useState<number | null>(null)
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -70,7 +75,8 @@ export default function AdDetailsForm({
   }
 
   const isFormValid = () => {
-    const hasValues = !!totalAmount && !!fixedRate && !!minAmount && !!maxAmount
+    const hasValues =
+      !!totalAmount && (priceType === "fixed" ? !!fixedRate : !!floatingRate) && !!minAmount && !!maxAmount
     const hasNoErrors = Object.keys(formErrors).length === 0
     return hasValues && hasNoErrors
   }
@@ -105,15 +111,19 @@ export default function AdDetailsForm({
             const lowestPrice = Math.min(...rates.map((r: any) => r.min))
             const highestPrice = Math.max(...rates.map((r: any) => r.max))
             setPriceRange({ lowestPrice, highestPrice })
+            setMarketPrice((lowestPrice + highestPrice) / 2)
           } else {
             setPriceRange({ lowestPrice: null, highestPrice: null })
+            setMarketPrice(null)
           }
         } else {
           setPriceRange({ lowestPrice: null, highestPrice: null })
+          setMarketPrice(null)
         }
       } catch (error) {
         console.error("Error fetching price range:", error)
         setPriceRange({ lowestPrice: null, highestPrice: null })
+        setMarketPrice(null)
       } finally {
         setIsLoadingPriceRange(false)
       }
@@ -123,23 +133,11 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency])
 
   useEffect(() => {
-    if (initialData) {
-      if (initialData.type) setType(initialData.type as "buy" | "sell")
-      if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
-      if (initialData.fixedRate !== undefined) setFixedRate(initialData.fixedRate.toString())
-      if (initialData.minAmount !== undefined) setMinAmount(initialData.minAmount.toString())
-      if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
-      if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
-      if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
-    }
-  }, [initialData])
-
-  useEffect(() => {
     const errors: ValidationErrors = {}
     const total = Number(totalAmount)
     const min = Number(minAmount)
     const max = Number(maxAmount)
-    const rate = Number(fixedRate)
+    const rate = priceType === "fixed" ? Number(fixedRate) : Number(floatingRate)
 
     if (touched.totalAmount) {
       if (!totalAmount) {
@@ -157,7 +155,7 @@ export default function AdDetailsForm({
       errors.maxAmount = t("adForm.maxAmountLessThanTotal")
     }
 
-    if (touched.fixedRate) {
+    if (touched.fixedRate && priceType === "fixed") {
       if (!fixedRate) {
         errors.fixedRate = t("adForm.rateRequired")
       } else if (rate <= 0) {
@@ -187,7 +185,7 @@ export default function AdDetailsForm({
     }
 
     setFormErrors(errors)
-  }, [totalAmount, fixedRate, minAmount, maxAmount, touched, priceRange, forCurrency, t])
+  }, [totalAmount, fixedRate, floatingRate, minAmount, maxAmount, touched, priceRange, forCurrency, priceType, t])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -229,7 +227,9 @@ export default function AdDetailsForm({
       const formData = {
         type,
         totalAmount: Number.parseFloat(totalAmount) || 0,
-        fixedRate: Number.parseFloat(fixedRate) || 0,
+        fixedRate: priceType === "fixed" ? Number.parseFloat(fixedRate) || 0 : undefined,
+        floatingRate: priceType === "floating" ? Number.parseFloat(floatingRate) || 0 : undefined,
+        priceType,
         minAmount: Number.parseFloat(minAmount) || 0,
         maxAmount: Number.parseFloat(maxAmount) || 0,
         forCurrency,
@@ -243,7 +243,9 @@ export default function AdDetailsForm({
     const formData = {
       type,
       totalAmount: Number.parseFloat(totalAmount) || 0,
-      fixedRate: Number.parseFloat(fixedRate) || 0,
+      fixedRate: priceType === "fixed" ? Number.parseFloat(fixedRate) || 0 : undefined,
+      floatingRate: priceType === "floating" ? Number.parseFloat(floatingRate) || 0 : undefined,
+      priceType,
       minAmount: Number.parseFloat(minAmount) || 0,
       maxAmount: Number.parseFloat(maxAmount) || 0,
       forCurrency,
@@ -262,7 +264,9 @@ export default function AdDetailsForm({
         formData: {
           type,
           totalAmount: Number.parseFloat(totalAmount) || 0,
-          fixedRate: Number.parseFloat(fixedRate) || 0,
+          fixedRate: priceType === "fixed" ? Number.parseFloat(fixedRate) || 0 : undefined,
+          floatingRate: priceType === "floating" ? Number.parseFloat(floatingRate) || 0 : undefined,
+          priceType,
           minAmount: Number.parseFloat(minAmount) || 0,
           maxAmount: Number.parseFloat(maxAmount) || 0,
           forCurrency,
@@ -271,7 +275,7 @@ export default function AdDetailsForm({
       },
     })
     document.dispatchEvent(event)
-  }, [type, totalAmount, fixedRate, minAmount, maxAmount, formErrors])
+  }, [type, totalAmount, fixedRate, floatingRate, minAmount, maxAmount, formErrors, priceType])
 
   return (
     <div className="max-w-[800px] mx-auto">
@@ -380,108 +384,128 @@ export default function AdDetailsForm({
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <RateInput
+          <PriceTypeSelector value={priceType} onChange={setPriceType} disabled={isEditMode} />
+
+          <div className="mt-6">
+            {priceType === "fixed" ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <RateInput
+                    currency={forCurrency}
+                    label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
+                    value={fixedRate}
+                    onChange={(value) => {
+                      if (value === "") {
+                        setFixedRate("")
+                        setTouched((prev) => ({ ...prev, fixedRate: true }))
+                        return
+                      }
+
+                      const decimalConstraints = getDecimalConstraints(buyCurrency)
+                      if (decimalConstraints) {
+                        const decimalPlaces = getDecimalPlaces(value)
+                        if (decimalPlaces > decimalConstraints.maximum) {
+                          return
+                        }
+                      }
+
+                      setFixedRate(value)
+                      setTouched((prev) => ({ ...prev, fixedRate: true }))
+                    }}
+                    onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
+                    error={touched.fixedRate && !!formErrors.fixedRate}
+                  />
+                  {touched.fixedRate && formErrors.fixedRate && (
+                    <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
+                  )}
+                </div>
+                <div>
+                  <CurrencyInput
+                    value={totalAmount}
+                    onValueChange={(value) => {
+                      if (value === "") {
+                        setTotalAmount("")
+                        setTouched((prev) => ({ ...prev, totalAmount: true }))
+                        return
+                      }
+
+                      const decimalConstraints = getDecimalConstraints(buyCurrency)
+                      if (decimalConstraints) {
+                        const decimalPlaces = getDecimalPlaces(value)
+                        if (decimalPlaces > decimalConstraints.maximum) {
+                          return
+                        }
+                      }
+
+                      setTotalAmount(value)
+                      setTouched((prev) => ({ ...prev, totalAmount: true }))
+                    }}
+                    onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
+                    placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
+                    isEditMode={isEditMode}
+                    error={touched.totalAmount && !!formErrors.totalAmount}
+                    currency={buyCurrency}
+                  />
+                  {touched.totalAmount && formErrors.totalAmount && (
+                    <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
+                  )}
+                </div>
+              </div>
+            ) : (
+              <FloatingRateInput
+                value={floatingRate}
+                onChange={setFloatingRate}
+                label="Rate"
                 currency={forCurrency}
-                label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
-                value={fixedRate}
-                onChange={(value) => {
-                  if (value === "") {
-                    setFixedRate("")
-                    setTouched((prev) => ({ ...prev, fixedRate: true }))
-                    return
-                  }
-
-                  const decimalConstraints = getDecimalConstraints(buyCurrency)
-                  if (decimalConstraints) {
-                    const decimalPlaces = getDecimalPlaces(value)
-                    if (decimalPlaces > decimalConstraints.maximum) {
-                      return
-                    }
-                  }
-
-                  setFixedRate(value)
-                  setTouched((prev) => ({ ...prev, fixedRate: true }))
-                }}
-                onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
-                error={touched.fixedRate && !!formErrors.fixedRate}
+                marketPrice={marketPrice || undefined}
+                highestPrice={priceRange.highestPrice || undefined}
               />
-              {touched.fixedRate && formErrors.fixedRate && (
-                <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
-              )}
-            </div>
-            <div>
-              <CurrencyInput
-                value={totalAmount}
-                onValueChange={(value) => {
-                  if (value === "") {
-                    setTotalAmount("")
-                    setTouched((prev) => ({ ...prev, totalAmount: true }))
-                    return
-                  }
-
-                  const decimalConstraints = getDecimalConstraints(buyCurrency)
-                  if (decimalConstraints) {
-                    const decimalPlaces = getDecimalPlaces(value)
-                    if (decimalPlaces > decimalConstraints.maximum) {
-                      return
-                    }
-                  }
-
-                  setTotalAmount(value)
-                  setTouched((prev) => ({ ...prev, totalAmount: true }))
-                }}
-                onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
-                isEditMode={isEditMode}
-                error={touched.totalAmount && !!formErrors.totalAmount}
-                currency={buyCurrency}
-              />
-              {touched.totalAmount && formErrors.totalAmount && (
-                <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
-              )}
-            </div>
+            )}
           </div>
-          {isLoadingPriceRange ? (
-            <div className="flex flex-col md:flex-row md:items-center gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg">
-              <div className="flex-1 flex items-center justify-between">
-                <CustomShimmer className="h-4 w-20" />
-                <CustomShimmer className="h-5 w-32" />
-              </div>
-              <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
-              <div className="flex-1 flex items-center justify-between">
-                <CustomShimmer className="h-4 w-20" />
-                <CustomShimmer className="h-5 w-32" />
-              </div>
-            </div>
-          ) : (
-            priceRange.lowestPrice !== null &&
-            priceRange.highestPrice !== null && (
-              <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg text-slate-1200">
-                <div className="flex-1 flex items-center justify-between">
-                  <div className="text-xs">{t("adForm.lowestPrice")}</div>
-                  <div className="text-base font-bold">
-                    {priceRange.lowestPrice.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    <span className="text-xs font-normal">{forCurrency}</span>
+
+          {priceType === "fixed" && (
+            <>
+              {isLoadingPriceRange ? (
+                <div className="flex flex-col md:flex-row md:items-center gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg">
+                  <div className="flex-1 flex items-center justify-between">
+                    <CustomShimmer className="h-4 w-20" />
+                    <CustomShimmer className="h-5 w-32" />
+                  </div>
+                  <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
+                  <div className="flex-1 flex items-center justify-between">
+                    <CustomShimmer className="h-4 w-20" />
+                    <CustomShimmer className="h-5 w-32" />
                   </div>
                 </div>
-                <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
-                <div className="flex-1 flex items-center justify-between">
-                  <div className="text-xs">{t("adForm.highestPrice")}</div>
-                  <div className="text-base font-bold">
-                    {priceRange.highestPrice.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}{" "}
-                    <span className="text-xs font-normal">{forCurrency}</span>
+              ) : (
+                priceRange.lowestPrice !== null &&
+                priceRange.highestPrice !== null && (
+                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg text-slate-1200">
+                    <div className="flex-1 flex items-center justify-between">
+                      <div className="text-xs">{t("adForm.lowestPrice")}</div>
+                      <div className="text-base font-bold">
+                        {priceRange.lowestPrice.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        <span className="text-xs font-normal">{forCurrency}</span>
+                      </div>
+                    </div>
+                    <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
+                    <div className="flex-1 flex items-center justify-between">
+                      <div className="text-xs">{t("adForm.highestPrice")}</div>
+                      <div className="text-base font-bold">
+                        {priceRange.highestPrice.toLocaleString(undefined, {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}{" "}
+                        <span className="text-xs font-normal">{forCurrency}</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            )
+                )
+              )}
+            </>
           )}
           <div className="border-b border-grayscale-200 mt-6"></div>
         </div>
