@@ -23,7 +23,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">Total number of users you've successfully traded with.</p>
+              <p className="text-white">Total number of users you've successfully traded with.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -34,7 +34,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">The total value of all trades completed in your lifetime.</p>
+              <p className="text-white">The total value of all trades completed in your lifetime.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -45,7 +45,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">The total value of all completed trades in the last 30 days.</p>
+              <p className="text-white">The total value of all completed trades in the last 30 days.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
