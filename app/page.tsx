@@ -518,7 +518,7 @@ export default function BuySellPage() {
                       >
                         <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                           <div className="flex items-center">
-                            <Skeleton className=" bg-black/4 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
+                            <Skeleton className="bg-black/4 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
                             <div className="flex-1">
                               <Skeleton className="h-4 w-32 mb-2" />
                               <Skeleton className="h-3 w-48" />
