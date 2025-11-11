@@ -630,7 +630,7 @@ export default function BuySellPage() {
                             {ad.user.rating_average_lifetime && (
                               <span className="flex items-center">
                                 <Image
-                                  src="/icons/star-active.png"
+                                  src="/icons/star-active.svg"
                                   alt="Rating"
                                   width={16}
                                   height={16}
