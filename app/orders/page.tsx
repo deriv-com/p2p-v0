@@ -227,7 +227,7 @@ export default function OrdersPage() {
     <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white">
       {[1, 2, 3, 4].map((i) => (
         <div key={i} className="border rounded-lg p-4">
-          <Skeleton className="h-[160px] w-full rounded-lg" />
+          <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
         </div>
       ))}
     </div>
