@@ -191,7 +191,7 @@ export default function AdsPage() {
                 src="/icons/info-circle.svg"
                 alt="Info"
                 width={24}
-                height={12}
+                height={24}
                 className="ml-1 cursor-pointer flex-shrink-0"
               />
             </TooltipTrigger>
@@ -233,7 +233,7 @@ export default function AdsPage() {
                 {t("myAds.createAd")}
               </Button>
             )}
-            {ads.length > 0 && getHideMyAdsComponent()}
+            {getHideMyAdsComponent()}
           </div>
         </div>
 
