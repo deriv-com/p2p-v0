@@ -432,14 +432,15 @@ export default function AdDetailsForm({
                     <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
                   )}
                 </div>) : (
-                <FloatingRateInput
-                    value={floatingRate}
-                    onChange={setFloatingRate}
-                    label="Rate"
-                    currency={forCurrency}
-                    marketPrice={marketPrice || undefined}
-                    highestPrice={priceRange.highestPrice || undefined}
-                />)
+                    <FloatingRateInput
+                        value={floatingRate}
+                        onChange={setFloatingRate}
+                        label="Rate"
+                        currency={forCurrency}
+                        marketPrice={marketPrice || undefined}
+                        highestPrice={priceRange.highestPrice || undefined}
+                    />
+                )}
                 <div>
                   <CurrencyInput
                     value={totalAmount}
