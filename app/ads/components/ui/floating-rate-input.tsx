@@ -57,6 +57,9 @@ export function FloatingRateInput({
 
   const showFloating = isFocused || value.length > 0
 
+  const ratePercentage = Number.parseFloat(value) || 0
+  const yourPrice = marketPrice ? marketPrice * (1 + ratePercentage / 100) : null
+
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row gap-4">
@@ -70,7 +73,7 @@ export function FloatingRateInput({
             <div className="flex-1 relative">
               <Input
                 type="text"
-                value={value}
+                value={`${value}%`}
                 onChange={handleChange}
                 onBlur={() => {
                   setIsFocused(false)
@@ -80,6 +83,7 @@ export function FloatingRateInput({
                 placeholder=""
                 aria-invalid={error}
                 variant="floating"
+                className="pr-8"
               />
               <label
                 className={cn(
@@ -92,21 +96,11 @@ export function FloatingRateInput({
               </label>
             </div>
 
-            <div className="flex items-center gap-2 px-3 bg-white">
-              <Button
-                type="button"
-                onClick={handleDecrement}
-                variant="ghost"
-                size="sm"
-              >
+            <div className="flex items-center gap-2 px-3 bg-white border-l">
+              <Button type="button" onClick={handleDecrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
                 −
               </Button>
-              <Button
-                type="button"
-                onClick={handleIncrement}
-                variant="ghost"
-                size="sm"
-              >
+              <Button type="button" onClick={handleIncrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
                 +
               </Button>
             </div>
@@ -115,13 +109,41 @@ export function FloatingRateInput({
       </div>
 
       {marketPrice && (
-        <div className="text-xs text-grayscale-100 hidden">
+        <div className="text-sm text-grayscale-100">
           Current market price:{" "}
-          {marketPrice.toLocaleString(undefined, {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}{" "}
-          {currency}
+          <span className="font-semibold">
+            {marketPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
+            {currency}
+          </span>
+        </div>
+      )}
+
+      {yourPrice && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-grayscale-100">Your price:</span>
+          <span className="text-base font-bold">
+            {yourPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
+            <span className="text-xs font-normal">{currency}</span>
+          </span>
+        </div>
+      )}
+
+      {highestPrice && (
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-grayscale-100">Highest price in market:</span>
+          <span className="text-base font-bold">
+            {highestPrice.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}{" "}
+            <span className="text-xs font-normal">{currency}</span>
+          </span>
         </div>
       )}
     </div>

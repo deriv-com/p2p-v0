@@ -15,6 +15,7 @@ import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import Image from "next/image"
 import { currencyLogoMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface AdDetailsFormProps {
   onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
@@ -62,6 +63,8 @@ export default function AdDetailsForm({
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
   const [marketPrice, setMarketPrice] = useState<number | null>(null)
+
+  const { isConnected, joinExchangeRatesChannel, leaveExchangeRatesChannel, subscribe } = useWebSocketContext()
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -132,6 +135,28 @@ export default function AdDetailsForm({
     fetchPriceRange()
   }, [buyCurrency, forCurrency])
 
+  useEffect(() => {
+    if (!buyCurrency || !forCurrency || !isConnected) return
+
+    console.log("[v0] Joining exchange_rates channel:", `exchange_rates/${buyCurrency}/${forCurrency}`)
+
+    joinExchangeRatesChannel(buyCurrency, forCurrency)
+
+    const unsubscribe = subscribe((data: any) => {
+      console.log("[v0] Received WebSocket message:", data)
+
+      if (data.channel === `exchange_rates/${buyCurrency}/${forCurrency}` && data.payload?.rate) {
+        console.log("[v0] Updating market price:", data.payload.rate)
+        setMarketPrice(data.payload.rate)
+      }
+    })
+
+    return () => {
+      console.log("[v0] Leaving exchange_rates channel:", `exchange_rates/${buyCurrency}/${forCurrency}`)
+      leaveExchangeRatesChannel(buyCurrency, forCurrency)
+      unsubscribe()
+    }
+  }, [buyCurrency, forCurrency, isConnected, joinExchangeRatesChannel, leaveExchangeRatesChannel, subscribe])
 
   useEffect(() => {
     if (initialData) {
@@ -144,7 +169,6 @@ export default function AdDetailsForm({
       if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
     }
   }, [initialData])
-
 
   useEffect(() => {
     const errors: ValidationErrors = {}
@@ -400,56 +424,17 @@ export default function AdDetailsForm({
           <PriceTypeSelector value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
           <div className="mt-4">
-            
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {priceType === "fixed" ? ( 
-                    <div>
-                    <RateInput
-                        currency={forCurrency}
-                        label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
-                        value={fixedRate}
-                        onChange={(value) => {
-                        if (value === "") {
-                            setFixedRate("")
-                            setTouched((prev) => ({ ...prev, fixedRate: true }))
-                            return
-                        }
-
-                        const decimalConstraints = getDecimalConstraints(buyCurrency)
-                        if (decimalConstraints) {
-                            const decimalPlaces = getDecimalPlaces(value)
-                            if (decimalPlaces > decimalConstraints.maximum) {
-                            return
-                            }
-                        }
-
-                        setFixedRate(value)
-                        setTouched((prev) => ({ ...prev, fixedRate: true }))
-                        }}
-                        onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
-                        error={touched.fixedRate && !!formErrors.fixedRate}
-                    />
-                    {touched.fixedRate && formErrors.fixedRate && (
-                        <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
-                    )}
-                    </div>
-                ) : (
-                    <FloatingRateInput
-                        value={floatingRate}
-                        onChange={setFloatingRate}
-                        label="Rate"
-                        currency={forCurrency}
-                        marketPrice={marketPrice || undefined}
-                        highestPrice={priceRange.highestPrice || undefined}
-                    />
-                )}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {priceType === "fixed" ? (
                 <div>
-                  <CurrencyInput
-                    value={totalAmount}
-                    onValueChange={(value) => {
+                  <RateInput
+                    currency={forCurrency}
+                    label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
+                    value={fixedRate}
+                    onChange={(value) => {
                       if (value === "") {
-                        setTotalAmount("")
-                        setTouched((prev) => ({ ...prev, totalAmount: true }))
+                        setFixedRate("")
+                        setTouched((prev) => ({ ...prev, fixedRate: true }))
                         return
                       }
 
@@ -461,66 +446,103 @@ export default function AdDetailsForm({
                         }
                       }
 
-                      setTotalAmount(value)
-                      setTouched((prev) => ({ ...prev, totalAmount: true }))
+                      setFixedRate(value)
+                      setTouched((prev) => ({ ...prev, fixedRate: true }))
                     }}
-                    onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                    placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
-                    isEditMode={isEditMode}
-                    error={touched.totalAmount && !!formErrors.totalAmount}
-                    currency={buyCurrency}
+                    onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
+                    error={touched.fixedRate && !!formErrors.fixedRate}
                   />
-                  {touched.totalAmount && formErrors.totalAmount && (
-                    <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
+                  {touched.fixedRate && formErrors.fixedRate && (
+                    <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
                   )}
                 </div>
+              ) : (
+                <FloatingRateInput
+                  value={floatingRate}
+                  onChange={setFloatingRate}
+                  label="Rate"
+                  currency={forCurrency}
+                  marketPrice={marketPrice || undefined}
+                  highestPrice={priceRange.highestPrice || undefined}
+                />
+              )}
+              <div>
+                <CurrencyInput
+                  value={totalAmount}
+                  onValueChange={(value) => {
+                    if (value === "") {
+                      setTotalAmount("")
+                      setTouched((prev) => ({ ...prev, totalAmount: true }))
+                      return
+                    }
+
+                    const decimalConstraints = getDecimalConstraints(buyCurrency)
+                    if (decimalConstraints) {
+                      const decimalPlaces = getDecimalPlaces(value)
+                      if (decimalPlaces > decimalConstraints.maximum) {
+                        return
+                      }
+                    }
+
+                    setTotalAmount(value)
+                    setTouched((prev) => ({ ...prev, totalAmount: true }))
+                  }}
+                  onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
+                  placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
+                  isEditMode={isEditMode}
+                  error={touched.totalAmount && !!formErrors.totalAmount}
+                  currency={buyCurrency}
+                />
+                {touched.totalAmount && formErrors.totalAmount && (
+                  <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
+                )}
               </div>
-            
+            </div>
           </div>
 
-            <>
-              {isLoadingPriceRange ? (
-                <div className="flex flex-col md:flex-row md:items-center gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg">
+          <>
+            {isLoadingPriceRange ? (
+              <div className="flex flex-col md:flex-row md:items-center gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg">
+                <div className="flex-1 flex items-center justify-between">
+                  <CustomShimmer className="h-4 w-20" />
+                  <CustomShimmer className="h-5 w-32" />
+                </div>
+                <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
+                <div className="flex-1 flex items-center justify-between">
+                  <CustomShimmer className="h-4 w-20" />
+                  <CustomShimmer className="h-5 w-32" />
+                </div>
+              </div>
+            ) : (
+              priceRange.lowestPrice !== null &&
+              priceRange.highestPrice !== null && (
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg text-slate-1200">
                   <div className="flex-1 flex items-center justify-between">
-                    <CustomShimmer className="h-4 w-20" />
-                    <CustomShimmer className="h-5 w-32" />
+                    <div className="text-xs">{t("adForm.lowestPrice")}</div>
+                    <div className="text-base font-bold">
+                      {priceRange.lowestPrice.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      <span className="text-xs font-normal">{forCurrency}</span>
+                    </div>
                   </div>
                   <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
                   <div className="flex-1 flex items-center justify-between">
-                    <CustomShimmer className="h-4 w-20" />
-                    <CustomShimmer className="h-5 w-32" />
+                    <div className="text-xs">{t("adForm.highestPrice")}</div>
+                    <div className="text-base font-bold">
+                      {priceRange.highestPrice.toLocaleString(undefined, {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}{" "}
+                      <span className="text-xs font-normal">{forCurrency}</span>
+                    </div>
                   </div>
                 </div>
-              ) : (
-                priceRange.lowestPrice !== null &&
-                priceRange.highestPrice !== null && (
-                  <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg text-slate-1200">
-                    <div className="flex-1 flex items-center justify-between">
-                      <div className="text-xs">{t("adForm.lowestPrice")}</div>
-                      <div className="text-base font-bold">
-                        {priceRange.lowestPrice.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}{" "}
-                        <span className="text-xs font-normal">{forCurrency}</span>
-                      </div>
-                    </div>
-                    <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
-                    <div className="flex-1 flex items-center justify-between">
-                      <div className="text-xs">{t("adForm.highestPrice")}</div>
-                      <div className="text-base font-bold">
-                        {priceRange.highestPrice.toLocaleString(undefined, {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}{" "}
-                        <span className="text-xs font-normal">{forCurrency}</span>
-                      </div>
-                    </div>
-                  </div>
-                )
-              )}
-            </>
-          
+              )
+            )}
+          </>
+
           <div className="border-b border-grayscale-200 mt-6"></div>
         </div>
 
