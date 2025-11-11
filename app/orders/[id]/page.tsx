@@ -384,8 +384,8 @@ export default function OrderDetailsPage() {
         {isLoading ? (
           <div className="flex flex-col gap-6">
             <div className="w-full lg:w-1/2">
-              <Skeleton className="h-[80px] w-full rounded-lg mb-6" />
-              <Skeleton className="h-[150px] w-full rounded-lg mb-6" />
+              <Skeleton className="h-[80px] w-full rounded-lg mb-6 bg-white/20" />
+              <Skeleton className="h-[150px] w-full rounded-lg mb-6 bg-white/20" />
               <Skeleton className="h-[200px] w-full rounded-lg" />
             </div>
           </div>
