@@ -475,7 +475,7 @@ export default function AdDetailsForm({
                   )}
                 </div>
               </div>
-            )
+            
           </div>
 
             <>
