@@ -54,7 +54,7 @@ export default function UserInfo({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                    <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
                   </TooltipTrigger>
                   <TooltipContent>
                     <>
