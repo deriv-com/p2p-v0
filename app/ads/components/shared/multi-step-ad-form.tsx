@@ -559,10 +559,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Image
-                            src="/icons/info-circle.png"
+                            src="/icons/info-circle.svg"
                             alt="Info"
-                            width={12}
-                            height={12}
+                            width={24}
+                            height={24}
                             className="ml-1 cursor-pointer"
                           />
                         </TooltipTrigger>
