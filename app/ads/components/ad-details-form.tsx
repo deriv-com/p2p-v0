@@ -397,7 +397,6 @@ export default function AdDetailsForm({
         )}
 
         <div>
-          <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
           <PriceTypeSelector value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
           <div className="mt-6">
