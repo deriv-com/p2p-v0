@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
 import { getSettings } from "@/services/api/api-auth"
+import { getCurrencyName } from "@/lib/currency-names"
 
 export function useCurrencyData(currency = "USD") {
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -23,8 +24,13 @@ export function useCurrencyData(currency = "USD") {
           (advert: { payment_currency: string }) => advert.payment_currency,
         )
         const uniquePaymentCurrencies = [...new Set(paymentCurrencies)]
-        currencyList = uniquePaymentCurrencies.map((code) => ({ code })).sort((a, b) => a.code.localeCompare(b.code))
-        
+        currencyList = uniquePaymentCurrencies
+          .map((code) => ({
+            code,
+            name: getCurrencyName(code),
+          }))
+          .sort((a, b) => a.code.localeCompare(b.code))
+
         setCurrencies(currencyList)
         setError(null)
       } catch (err) {
@@ -43,7 +49,7 @@ export function useCurrencyData(currency = "USD") {
     return currencies.find((currency) => currency.code === code)
   }
 
-  const getCurrencyName = (code: string): string => {
+  const getCurrencyNameByCode = (code: string): string => {
     const currency = getCurrencyByCode(code)
     return currency ? `${currency.code} - ${currency.name}` : code
   }
@@ -51,7 +57,7 @@ export function useCurrencyData(currency = "USD") {
   return {
     currencies,
     getCurrencyByCode,
-    getCurrencyName,
+    getCurrencyName: getCurrencyNameByCode,
     isLoading,
     error,
   }
