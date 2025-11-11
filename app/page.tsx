@@ -577,7 +577,7 @@ export default function BuySellPage() {
                       >
                         <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
                               {(ad.user?.nickname || "").charAt(0).toUpperCase()}
                               <div
                                 className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
