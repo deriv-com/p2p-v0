@@ -172,7 +172,7 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
-    const hasNoAds = ads.length > && 0
+    const hasNoAds = ads.length > 0
     return (
       <div className="flex items-center justify-self-end flex-shrink-0">
         <Switch
