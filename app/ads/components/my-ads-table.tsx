@@ -284,7 +284,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap text-xs">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap text-xs text-slate-1200">
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
@@ -301,7 +301,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
-                      <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.limit")}:</span>
+                      <span className="text-xs leading-5">{t("myAds.limit")}:</span>
                       <span className="text-xs leading-5 text-gray-900 overflow-hidden text-ellipsis">
                         {formatLimits(ad)}
                       </span>
