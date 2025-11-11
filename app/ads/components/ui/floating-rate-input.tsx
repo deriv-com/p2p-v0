@@ -127,7 +127,7 @@ export function FloatingRateInput({
         <div className="flex-1">
           <div className="flex rounded-lg overflow-hidden border border-gray-200 bg-gray-50 h-full">
             <div className="flex-1 relative">
-              <div className="p-4 pt-6 text-gray-500">{/* Placeholder for consistency */}</div>
+              <div className="p-4 pt-6 text-gray-500"></div>
               <label className="absolute left-3 top-2 text-xs text-black/70 px-1">Sell quantity</label>
             </div>
             <div className="flex items-center justify-center bg-slate-75 px-4 text-gray-500 min-w-[80px] text-center">
