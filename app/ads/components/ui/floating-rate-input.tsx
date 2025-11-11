@@ -114,7 +114,6 @@ export function FloatingRateInput({
               <Button
                 type="button"
                 onClick={handleIncrement}
-                className="w-10 h-10 flex items-center justify-center text-2xl text-gray-600 hover:bg-gray-100 rounded transition-colors"
                 variant="ghost"
                 size="sm"
               >
