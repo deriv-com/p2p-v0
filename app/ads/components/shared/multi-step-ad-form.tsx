@@ -567,7 +567,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">{t("adForm.orderTimeLimitTooltip")}</p>
+                          <p className="text-white">{t("adForm.orderTimeLimitTooltip")}</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
@@ -585,13 +585,13 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                           <Image
                             src="/icons/info-circle.png"
                             alt="Info"
-                            width={12}
-                            height={12}
+                            width={24}
+                            height={24}
                             className="ml-1 cursor-pointer"
                           />
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p className="opacity-[0.72]">{t("adForm.audienceTooltip")}</p>
+                          <p className="text-white">{t("adForm.audienceTooltip")}</p>
                           <TooltipArrow className="fill-black" />
                         </TooltipContent>
                       </Tooltip>
