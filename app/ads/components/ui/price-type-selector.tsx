@@ -11,7 +11,7 @@ interface PriceTypeSelectorProps {
 export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTypeSelectorProps) {
   return (
     <div className="flex items-center gap-8">
-      <button
+      <Button
         type="button"
         onClick={() => !disabled && onChange("fixed")}
         disabled={disabled}
@@ -26,9 +26,9 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
           {value === "fixed" && <div className="w-3.5 h-3.5 rounded-full bg-black" />}
         </div>
         <span className={cn("text-base", value === "fixed" ? "text-black" : "text-gray-600")}>Fixed Price</span>
-      </button>
+      </Button>
 
-      <button
+      <Button
         type="button"
         onClick={() => !disabled && onChange("floating")}
         disabled={disabled}
@@ -43,7 +43,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
           {value === "floating" && <div className="w-3.5 h-3.5 rounded-full bg-black" />}
         </div>
         <span className={cn("text-base", value === "floating" ? "text-black" : "text-gray-600")}>Floating Price</span>
-      </button>
+      </Button>
     </div>
   )
 }
