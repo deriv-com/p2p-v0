@@ -271,14 +271,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               {t("myAds.adId")}:
                             </span>
                           )}
-                          <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
+                          <span className="text-xs leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (
                           <div className="flex items-center justify-between md:justify-normal gap-1">
                             <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
                               {t("myAds.rate")}:
                             </span>
-                            <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
+                            <span className="text-xs font-bold leading-5 text-gray-900">{rate}</span>
                           </div>
                         )}
                       </div>
