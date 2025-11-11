@@ -34,7 +34,6 @@ export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { isConnected, joinChannel, subscribe } = useWebSocketContext()
 
   const {
     activeTab,
@@ -114,9 +113,6 @@ export default function BuySellPage() {
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
 
-        if (isConnected) {
-          joinChannel("users/me")
-        }
       } else {
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
@@ -136,18 +132,6 @@ export default function BuySellPage() {
   useEffect(() => {
     fetchBalance()
   }, [fetchBalance])
-
-  useEffect(() => {
-    const unsubscribe = subscribe((data: any) => {
-      if (data.payload.data?.event === "balance_change") {
-        const balances = data.payload.data.user?.balances[0]
-        setBalance(balances.amount)
-        setBalanceCurrency(balances.currency)
-      }
-    })
-
-    return unsubscribe
-  }, [subscribe])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
