@@ -57,15 +57,6 @@ export function FloatingRateInput({
 
   const showFloating = isFocused || value.length > 0
 
-  const calculateYourPrice = () => {
-    if (!marketPrice || !value) return null
-    const rateValue = Number.parseFloat(value) || 0
-    const yourPrice = marketPrice * (1 + rateValue / 100)
-    return yourPrice.toFixed(2)
-  }
-
-  const yourPrice = calculateYourPrice()
-
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row gap-4">
