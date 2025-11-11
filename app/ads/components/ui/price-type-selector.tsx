@@ -1,50 +1,41 @@
 "use client"
 
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+
+export type PriceType = "fixed" | "floating"
 
 interface PriceTypeSelectorProps {
-  value: "fixed" | "floating"
-  onChange: (value: "fixed" | "floating") => void
+  value: PriceType
+  onChange: (value: PriceType) => void
   disabled?: boolean
 }
 
 export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTypeSelectorProps) {
   return (
-    <div className="flex items-center gap-8">
-      <Button
-        type="button"
-        onClick={() => !disabled && onChange("fixed")}
-        disabled={disabled}
-        className={cn("flex items-center gap-3 cursor-pointer group", disabled && "cursor-not-allowed opacity-50")}
-      >
-        <div
-          className={cn(
-            "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
-            value === "fixed" ? "border-black" : "border-gray-300 group-hover:border-gray-400",
-          )}
-        >
-          {value === "fixed" && <div className="w-3.5 h-3.5 rounded-full bg-black" />}
-        </div>
-        <span className={cn("text-base", value === "fixed" ? "text-black" : "text-gray-600")}>Fixed Price</span>
-      </Button>
+    <div className="space-y-4">
+      <h3 className="text-xl font-bold text-foreground">Price type</h3>
 
-      <Button
-        type="button"
-        onClick={() => !disabled && onChange("floating")}
+      <RadioGroup
+        value={value}
+        onValueChange={(val) => onChange(val as PriceType)}
         disabled={disabled}
-        className={cn("flex items-center gap-3 cursor-pointer group", disabled && "cursor-not-allowed opacity-50")}
+        className="flex gap-8"
       >
-        <div
-          className={cn(
-            "w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all",
-            value === "floating" ? "border-black" : "border-gray-300 group-hover:border-gray-400",
-          )}
-        >
-          {value === "floating" && <div className="w-3.5 h-3.5 rounded-full bg-black" />}
+        <div className="flex items-center space-x-3">
+          <RadioGroupItem value="fixed" id="fixed-price" className="border-grayscale-100 text-black" />
+          <Label htmlFor="fixed-price" className="text-base font-normal cursor-pointer text-grayscale-100">
+            Fixed Price
+          </Label>
         </div>
-        <span className={cn("text-base", value === "floating" ? "text-black" : "text-gray-600")}>Floating Price</span>
-      </Button>
+
+        <div className="flex items-center space-x-3">
+          <RadioGroupItem value="floating" id="floating-price" className="border-grayscale-100 text-black" />
+          <Label htmlFor="floating-price" className="text-base font-normal cursor-pointer text-grayscale-100">
+            Floating Price
+          </Label>
+        </div>
+      </RadioGroup>
     </div>
   )
 }
