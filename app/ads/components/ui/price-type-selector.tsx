@@ -33,7 +33,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         </div>
 
         <div className="flex items-center space-x-3">
-          <RadioGroupItem value="floating" id="floating-price" className="border-grayscale-100 text-black" />
+          <RadioGroupItem value="float" id="floating-price" className="border-grayscale-100 text-black" />
           <Label htmlFor="floating-price" className="text-sm font-normal cursor-pointer text-grayscale-100">
             Floating Price
           </Label>
