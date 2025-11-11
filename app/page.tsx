@@ -493,7 +493,7 @@ export default function BuySellPage() {
         </div>
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
-            {isLoading ? (
+            {!isLoading ? (
               <div className="md:block">
                 <Table>
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
