@@ -14,7 +14,7 @@ interface PriceTypeSelectorProps {
 
 export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTypeSelectorProps) {
   const { t } = useTranslations()
-  
+
   return (
     <div className="space-y-4">
      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
@@ -27,7 +27,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
       >
         <div className="flex items-center space-x-3">
           <RadioGroupItem value="fixed" id="fixed-price" className="border-grayscale-100 text-black" />
-          <Label htmlFor="fixed-price" className="text-base font-normal cursor-pointer text-grayscale-100">
+          <Label htmlFor="fixed-price" className="text-sm font-normal cursor-pointer text-grayscale-100">
             Fixed Price
           </Label>
         </div>
