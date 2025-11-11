@@ -424,7 +424,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                         maximumFractionDigits: 2,
                       })}{" "}
                       {ad.payment_currency}
-                      <span className="text-grayscaletext-muted"> /{ad.account_currency}</span>
+                      <span className="text-grayscale-text-muted"> /{ad.account_currency}</span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
