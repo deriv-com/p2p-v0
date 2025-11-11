@@ -90,7 +90,6 @@ export function FloatingRateInput({
                 aria-invalid={error}
                 variant="floating"
               />
-
               <label
                 className={cn(
                   "absolute left-3 pointer-events-none transition-all duration-200",
