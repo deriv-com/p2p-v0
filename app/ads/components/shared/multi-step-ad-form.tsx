@@ -312,7 +312,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           maximum_order_amount: finalData.maxAmount || 0,
           available_amount: finalData.totalAmount || 0,
           exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "floating",
+          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
           description: finalData.instructions || "",
           is_active: 1,
           order_expiry_period: orderTimeLimit,
