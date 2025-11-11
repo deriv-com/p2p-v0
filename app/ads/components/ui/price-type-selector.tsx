@@ -1,6 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 
 interface PriceTypeSelectorProps {
   value: "fixed" | "floating"
