@@ -67,7 +67,7 @@ export interface CreateAdPayload {
   maximum_order_amount: number
   available_amount: number
   exchange_rate: number
-  exchange_rate_type: "fixed" | "float"
+  exchange_rate_type: "fixed" | "floating"
   description: string
   is_active: number
   order_expiry_period: number
