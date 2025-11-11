@@ -181,7 +181,7 @@ export default function AdsPage() {
           className="data-[state=checked]:bg-completed-icon"
           disabled={tempBanUntil}
         />
-        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2 whitespace-nowrap">
+        <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ml-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
         </label>
         <TooltipProvider>
