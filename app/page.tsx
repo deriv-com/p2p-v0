@@ -127,7 +127,7 @@ export default function BuySellPage() {
     } finally {
       setIsLoadingBalance(false)
     }
-  }, [balancesKey, isV1Signup, isConnected, userData])
+  }, [balancesKey, isV1Signup, userData])
 
   useEffect(() => {
     fetchBalance()
