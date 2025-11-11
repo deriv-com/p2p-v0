@@ -335,7 +335,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 count: profile?.statistics_lifetime?.recommend_count,
                                 plural: profile?.statistics_lifetime?.recommend_count === 1 ? "" : "s",
                               })
-                            : t("advertiser.notRecommendedYet")}
+                            : t("profile.notRecommendedYet")}
                         </span>
                       </div>
                       <span className="opacity-[0.08]">|</span>
