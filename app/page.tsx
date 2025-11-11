@@ -520,24 +520,24 @@ export default function BuySellPage() {
                           <div className="flex items-center">
                             <Skeleton className="bg-black/4 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
                             <div className="flex-1">
-                              <Skeleton className="h-4 w-32 mb-2" />
-                              <Skeleton className="h-3 w-48" />
-                              <Skeleton className="h-3 w-24 mt-2" />
+                              <Skeleton className="bg-black/4 h-4 w-32 mb-2" />
+                              <Skeleton className="bg-black/4 h-3 w-48" />
+                              <Skeleton className="bg-black/4 h-3 w-24 mt-2" />
                             </div>
                           </div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                          <Skeleton className="h-5 w-32 mb-2" />
-                          <Skeleton className="h-3 w-48" />
+                          <Skeleton className="bg-black/4 h-5 w-32 mb-2" />
+                          <Skeleton className="bg-black/4 h-3 w-48" />
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
                           <div className="flex flex-col gap-2">
-                            <Skeleton className="h-3 w-24" />
-                            <Skeleton className="h-3 w-28" />
+                            <Skeleton className="bg-black/4 h-3 w-24" />
+                            <Skeleton className="bg-black/4 h-3 w-28" />
                           </div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                          <Skeleton className="h-8 w-20 ml-auto" />
+                          <Skeleton className="bg-black/4 h-8 w-20 ml-auto" />
                         </TableCell>
                       </TableRow>
                     ))}
