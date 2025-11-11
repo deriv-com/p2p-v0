@@ -204,7 +204,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     return (
       <div className="w-full space-y-4">
         {Array.from({ length: 3 }).map((_, index) => (
-          <Skeleton key={index} className="h-[200px] w-full rounded-lg bg-grayscale-50" />
+          <Skeleton key={index} className="h-[200px] w-full rounded-lg bg-grayscale-500" />
         ))}
       </div>
     )
