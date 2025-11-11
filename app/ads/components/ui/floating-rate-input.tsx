@@ -142,36 +142,6 @@ export function FloatingRateInput({
           {currency}
         </div>
       )}
-
-      <div className="flex flex-col md:flex-row md:items-center gap-4 p-4 bg-gray-50 rounded-lg">
-        {yourPrice && marketPrice && (
-          <div className="flex-1 flex items-center justify-between">
-            <span className="text-sm text-gray-600">Your price:</span>
-            <span className="text-lg font-bold text-black">
-              {Number.parseFloat(yourPrice).toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}{" "}
-              <span className="text-sm font-normal text-gray-600">{currency}</span>
-            </span>
-          </div>
-        )}
-
-        {yourPrice && marketPrice && highestPrice && <div className="w-full h-[1px] md:w-px md:h-6 bg-gray-300" />}
-
-        {highestPrice && (
-          <div className="flex-1 flex items-center justify-between">
-            <span className="text-sm text-gray-600">Highest price in market:</span>
-            <span className="text-lg font-bold text-black">
-              {highestPrice.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}{" "}
-              <span className="text-sm font-normal text-gray-600">{currency}</span>
-            </span>
-          </div>
-        )}
-      </div>
     </div>
   )
 }
