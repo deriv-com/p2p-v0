@@ -338,7 +338,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         }
       } else {
         const exchangeRate =
-          finalData.priceType === "floating" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+          finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
 
         const payload = {
           is_active: true,
@@ -346,7 +346,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           maximum_order_amount: finalData.maxAmount || 0,
           available_amount: finalData.totalAmount || 0,
           exchange_rate: exchangeRate || 0,
-          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "floating",
+          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
           order_expiry_period: orderTimeLimit,
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           description: finalData.instructions || "",
