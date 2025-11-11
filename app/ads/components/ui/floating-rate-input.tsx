@@ -3,6 +3,9 @@
 import type React from "react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
 
 interface FloatingRateInputProps {
   value: string
@@ -101,20 +104,20 @@ export function FloatingRateInput({
             </div>
 
             <div className="flex items-center gap-2 px-3 bg-white">
-              <button
+              <Button
                 type="button"
                 onClick={handleDecrement}
                 className="w-10 h-10 flex items-center justify-center text-2xl text-gray-600 hover:bg-gray-100 rounded transition-colors"
               >
                 −
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
                 onClick={handleIncrement}
                 className="w-10 h-10 flex items-center justify-center text-2xl text-gray-600 hover:bg-gray-100 rounded transition-colors"
               >
                 +
-              </button>
+              </Button>
             </div>
           </div>
         </div>
