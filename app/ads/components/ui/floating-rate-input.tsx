@@ -4,7 +4,6 @@ import type React from "react"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 
 interface FloatingRateInputProps {
@@ -78,7 +77,7 @@ export function FloatingRateInput({
             )}
           >
             <div className="flex-1 relative">
-              <input
+              <Input
                 type="text"
                 value={value}
                 onChange={handleChange}
