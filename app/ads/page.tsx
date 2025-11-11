@@ -190,7 +190,7 @@ export default function AdsPage() {
               <Image
                 src="/icons/info-circle.svg"
                 alt="Info"
-                width={12}
+                width={24}
                 height={12}
                 className="ml-1 cursor-pointer flex-shrink-0"
               />
