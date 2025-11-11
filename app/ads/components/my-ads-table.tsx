@@ -262,7 +262,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType}
                         </span>
-                        <span className="text-gray-900 text-base font-bold leading-6 ml-1"> {ad.account_currency}</span>
+                        <span className="text-gray-text-slate-1200 text-base font-bold leading-6 ml-1"> {ad.account_currency}</span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
@@ -278,7 +278,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             <span className="text-xs font-bold md:font-normal leading-5 text-slate-500">
                               {t("myAds.rate")}:
                             </span>
-                            <span className="text-xs font-bold leading-5 text-gray-900">{rate}</span>
+                            <span className="text-xs font-bold leading-5 0">{rate}</span>
                           </div>
                         )}
                       </div>
@@ -297,12 +297,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {isMobile && (
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
-                        <span className="text-xs leading-5 text-gray-900">{rate}</span>
+                        <span className="text-xs leading-5">{rate}</span>
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
                       <span className="text-xs leading-5">{t("myAds.limit")}:</span>
-                      <span className="text-xs leading-5 text-gray-900 overflow-hidden text-ellipsis">
+                      <span className="text-xs leading-5 overflow-hidden text-ellipsis">
                         {formatLimits(ad)}
                       </span>
                     </div>
