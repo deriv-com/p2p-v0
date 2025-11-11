@@ -476,7 +476,6 @@ export default function AdDetailsForm({
             )}
           </div>
 
-          {priceType === "fixed" && (
             <>
               {isLoadingPriceRange ? (
                 <div className="flex flex-col md:flex-row md:items-center gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg">
@@ -519,7 +518,7 @@ export default function AdDetailsForm({
                 )
               )}
             </>
-          )}
+          
           <div className="border-b border-grayscale-200 mt-6"></div>
         </div>
 
