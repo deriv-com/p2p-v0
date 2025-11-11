@@ -34,6 +34,7 @@ export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
+  const { isConnected, joinChannel, subscribe } = useWebSocketContext()
 
   const {
     activeTab,
@@ -136,17 +137,6 @@ export default function BuySellPage() {
     fetchBalance()
   }, [fetchBalance])
 
-  useEffect(() => {
-    const unsubscribe = subscribe((data: any) => {
-      if (data.payload.data?.event === "balance_change") {
-        const balances = data.payload.data.user?.balances[0]
-        setBalance(balances.amount)
-        setBalanceCurrency(balances.currency)
-      }
-    })
-
-    return unsubscribe
-  }, [subscribe])
 
   useEffect(() => {
     const operation = searchParams.get("operation")
