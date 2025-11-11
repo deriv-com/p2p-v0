@@ -197,7 +197,7 @@ export default function AdsPage() {
               />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">{t("myAds.hideMyAdsTooltip")}</p>
+              <p className="text-white">{t("myAds.hideMyAdsTooltip")}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
