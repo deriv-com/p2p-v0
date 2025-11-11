@@ -172,6 +172,7 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
+    const hasNoAds = ads.length >  && 0
     return (
       <div className="flex items-center justify-self-end flex-shrink-0">
         <Switch
@@ -179,7 +180,7 @@ export default function AdsPage() {
           checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
-          disabled={tempBanUntil}
+          disabled={tempBanUntil || }
         />
         <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ml-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
