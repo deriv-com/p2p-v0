@@ -87,8 +87,8 @@ export function FloatingRateInput({
                 }}
                 onFocus={() => setIsFocused(true)}
                 placeholder=""
-                className="w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none text-gray-900"
                 aria-invalid={error}
+                variant="floating"
               />
 
               <label
