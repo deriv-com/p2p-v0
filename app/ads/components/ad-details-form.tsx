@@ -399,7 +399,7 @@ export default function AdDetailsForm({
         <div>
           <PriceTypeSelector value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
-          <div className="mt-6">
+          <div className="mt-4">
             {priceType === "fixed" ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
