@@ -313,7 +313,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   <TableCell className="p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap">
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
-                  <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 col-span-full whitespace-nowrap">
+                  <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
                     {getStatusBadge(isActive)}
                   </TableCell>
                   <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
