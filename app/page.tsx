@@ -499,13 +499,13 @@ export default function BuySellPage() {
                   <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
                     <TableRow className="text-xs">
                       <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                        {t("market.advertisers")}
+                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
                       </TableHead>
                       <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                        {t("market.rates")}
+                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
                       </TableHead>
                       <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                        {t("market.paymentMethods")}
+                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
                       </TableHead>
                       <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
                     </TableRow>
