@@ -402,36 +402,38 @@ export default function AdDetailsForm({
           <div className="mt-4">
             
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {priceType === "fixed" ? ( <div>
-                  <RateInput
-                    currency={forCurrency}
-                    label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
-                    value={fixedRate}
-                    onChange={(value) => {
-                      if (value === "") {
-                        setFixedRate("")
-                        setTouched((prev) => ({ ...prev, fixedRate: true }))
-                        return
-                      }
-
-                      const decimalConstraints = getDecimalConstraints(buyCurrency)
-                      if (decimalConstraints) {
-                        const decimalPlaces = getDecimalPlaces(value)
-                        if (decimalPlaces > decimalConstraints.maximum) {
-                          return
+                {priceType === "fixed" ? ( 
+                    <div>
+                    <RateInput
+                        currency={forCurrency}
+                        label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
+                        value={fixedRate}
+                        onChange={(value) => {
+                        if (value === "") {
+                            setFixedRate("")
+                            setTouched((prev) => ({ ...prev, fixedRate: true }))
+                            return
                         }
-                      }
 
-                      setFixedRate(value)
-                      setTouched((prev) => ({ ...prev, fixedRate: true }))
-                    }}
-                    onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
-                    error={touched.fixedRate && !!formErrors.fixedRate}
-                  />
-                  {touched.fixedRate && formErrors.fixedRate && (
-                    <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
-                  )}
-                </div>) : (
+                        const decimalConstraints = getDecimalConstraints(buyCurrency)
+                        if (decimalConstraints) {
+                            const decimalPlaces = getDecimalPlaces(value)
+                            if (decimalPlaces > decimalConstraints.maximum) {
+                            return
+                            }
+                        }
+
+                        setFixedRate(value)
+                        setTouched((prev) => ({ ...prev, fixedRate: true }))
+                        }}
+                        onBlur={() => setTouched((prev) => ({ ...prev, fixedRate: true }))}
+                        error={touched.fixedRate && !!formErrors.fixedRate}
+                    />
+                    {touched.fixedRate && formErrors.fixedRate && (
+                        <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
+                    )}
+                    </div>
+                ) : (
                     <FloatingRateInput
                         value={floatingRate}
                         onChange={setFloatingRate}
