@@ -2,6 +2,7 @@
 
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 export type PriceType = "fixed" | "floating"
 
