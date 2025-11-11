@@ -609,7 +609,7 @@ export default function BuySellPage() {
                                       <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
                                         <>
                                           <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="opacity-[0.72]">
+                                          <p className="opacity-[0.72] text-white">
                                             Default tier for new users with basic trading limits.
                                           </p>
                                         </>
