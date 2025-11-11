@@ -67,7 +67,7 @@ export interface CreateAdPayload {
   maximum_order_amount: number
   available_amount: number
   exchange_rate: number
-  exchange_rate_type: "fixed"
+  exchange_rate_type: "fixed" | "floating"
   description: string
   is_active: number
   order_expiry_period: number
@@ -200,7 +200,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       show_unorderable: "true",
       show_unlisted: "true",
       show_ineligible: "true",
-      account_currency: "USD"
+      account_currency: "USD",
     })
 
     const url = `${API.baseUrl}${API.endpoints.ads}?${queryParams.toString()}`
@@ -266,7 +266,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
         createdAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         updatedAt: new Date((advert.created_at || 0) * 1000 || Date.now()).toISOString(),
         account_currency: accountCurrency,
-        user: advert.user
+        user: advert.user,
       }
     })
   } catch (error) {
