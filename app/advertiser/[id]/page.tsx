@@ -344,7 +344,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
-                            : t("advertiser.notRatedYet")}
+                            : t("profile.notRatedYet")}
                         </span>
                       </div>
                     </div>
