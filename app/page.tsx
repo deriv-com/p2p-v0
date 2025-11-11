@@ -34,7 +34,6 @@ export default function BuySellPage() {
   const { t } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { isConnected, joinChannel, subscribe } = useWebSocketContext()
 
   const {
     activeTab,
