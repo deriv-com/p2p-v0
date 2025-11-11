@@ -49,9 +49,6 @@ export default function Sidebar({ className }: SidebarProps) {
     }
   }, [userData?.signup])
 
-  const homeUrl = useMemo(() => getHomeUrl(isV1Signup, "home"), [isV1Signup])
-
-  const profileUrl = useMemo(() => getHomeUrl(isV1Signup, "profile", isWalletAccount), [isV1Signup, isWalletAccount])
   const homeUrl = getHomeUrl(isV1Signup, "home")
   const profileUrl = getHomeUrl(isV1Signup, "profile")
 
