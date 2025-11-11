@@ -42,13 +42,11 @@ export function FloatingRateInput({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
 
-    // Allow empty string, minus sign, or valid number
     if (newValue === "" || newValue === "-") {
       onChange(newValue)
       return
     }
 
-    // Validate number format
     const numValue = Number.parseFloat(newValue)
     if (!isNaN(numValue) && numValue >= -100 && numValue <= 100) {
       onChange(newValue)
@@ -57,7 +55,6 @@ export function FloatingRateInput({
 
   const showFloating = isFocused || value.length > 0
 
-  // Calculate your price based on market price and rate
   const calculateYourPrice = () => {
     if (!marketPrice || !value) return null
     const rateValue = Number.parseFloat(value) || 0
