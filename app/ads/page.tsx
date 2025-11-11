@@ -188,7 +188,7 @@ export default function AdsPage() {
           <Tooltip>
             <TooltipTrigger asChild>
               <Image
-                src="/icons/info-circle.png"
+                src="/icons/info-circle.svg"
                 alt="Info"
                 width={12}
                 height={12}
