@@ -400,9 +400,9 @@ export default function AdDetailsForm({
           <PriceTypeSelector value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
           <div className="mt-4">
-            {priceType === "fixed" ? (
+            
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                {priceType === "fixed" ? ( <div>
                   <RateInput
                     currency={forCurrency}
                     label={t("adForm.ratePerCurrency", { currency: buyCurrency })}
@@ -431,7 +431,15 @@ export default function AdDetailsForm({
                   {touched.fixedRate && formErrors.fixedRate && (
                     <p className="text-destructive text-xs mt-1">{formErrors.fixedRate}</p>
                   )}
-                </div>
+                </div>) : (
+                <FloatingRateInput
+                    value={floatingRate}
+                    onChange={setFloatingRate}
+                    label="Rate"
+                    currency={forCurrency}
+                    marketPrice={marketPrice || undefined}
+                    highestPrice={priceRange.highestPrice || undefined}
+                />)
                 <div>
                   <CurrencyInput
                     value={totalAmount}
@@ -464,16 +472,7 @@ export default function AdDetailsForm({
                   )}
                 </div>
               </div>
-            ) : (
-              <FloatingRateInput
-                value={floatingRate}
-                onChange={setFloatingRate}
-                label="Rate"
-                currency={forCurrency}
-                marketPrice={marketPrice || undefined}
-                highestPrice={priceRange.highestPrice || undefined}
-              />
-            )}
+            )
           </div>
 
             <>
