@@ -59,7 +59,7 @@ export default function UserInfo({
                   <TooltipContent>
                     <>
                       <p className="font-bold text-white mb-2">{t("profile.bronzeTier")}</p>
-                      <p className="opacity-[0.72]">{t("profile.bronzeTierDescription")}</p>
+                      <p className="text-white">{t("profile.bronzeTierDescription")}</p>
                     </>
                     <TooltipArrow className="fill-black" />
                   </TooltipContent>
