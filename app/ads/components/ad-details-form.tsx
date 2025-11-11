@@ -132,6 +132,20 @@ export default function AdDetailsForm({
     fetchPriceRange()
   }, [buyCurrency, forCurrency])
 
+
+  useEffect(() => {
+    if (initialData) {
+      if (initialData.type) setType(initialData.type as "buy" | "sell")
+      if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
+      if (initialData.fixedRate !== undefined) setFixedRate(initialData.fixedRate.toString())
+      if (initialData.minAmount !== undefined) setMinAmount(initialData.minAmount.toString())
+      if (initialData.maxAmount !== undefined) setMaxAmount(initialData.maxAmount.toString())
+      if (initialData.forCurrency !== undefined) setForCurrency(initialData.forCurrency.toString())
+      if (initialData.buyCurrency !== undefined) setBuyCurrency(initialData.buyCurrency.toString())
+    }
+  }, [initialData])
+
+
   useEffect(() => {
     const errors: ValidationErrors = {}
     const total = Number(totalAmount)
