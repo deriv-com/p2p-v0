@@ -34,7 +34,7 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function BuySellPage() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -72,6 +72,10 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const { showAlert } = useAlertDialog()
+  const helpCentreUrl =
+    locale != "en"
+      ? `https://trade.deriv.com/${locale}/help-centre/deriv-p2p`
+      : `https://trade.deriv.com/help-centre/deriv-p2p`
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
@@ -596,7 +600,7 @@ export default function BuySellPage() {
                                           <p className="text-white">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <a href="https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits" className="mt-4 text-white">
+                                          <a href={helpCentreUrl} className="mt-4 text-white">
                                             Learn more
                                           </a>
                                         </>
