@@ -58,7 +58,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
     const shareUrls: Record<string, string> = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}`)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${text}`)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${adUrl}`)}`,
       telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(telegramText)}`,
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,
       gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(`${text}`)}`,
@@ -269,17 +269,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                     <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  onClick={() => handleShare("twitter")}
-                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-                >
-                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
-                  </div>
-                  <span className="text-[10px] font-normal text-slate-1600">Twitter</span>
                 </Button>
 
                 <Button
