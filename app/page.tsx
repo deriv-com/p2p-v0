@@ -596,9 +596,9 @@ export default function BuySellPage() {
                                           <p className="text-white">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <p className="text-white">
+                                          <a href="" className="mt-4 text-white">
                                             Learn more
-                                          </p>
+                                          </a>
                                         </>
                                         <TooltipArrow className="fill-black" />
                                       </TooltipContent>
