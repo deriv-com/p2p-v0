@@ -62,7 +62,7 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
-        {userPaymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
+        {userPaymentMethods.length >  && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-sm text-gray-500">{t("paymentMethod.addCompatibleMethod")}</p>
