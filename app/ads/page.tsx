@@ -172,6 +172,7 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
+    const hasNoAds = ads.length > 0
     return (
       <div className="flex items-center justify-self-end flex-shrink-0">
         <Switch
@@ -179,24 +180,24 @@ export default function AdsPage() {
           checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
-          disabled={tempBanUntil}
+          disabled={tempBanUntil || !hasNoAds}
         />
-        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2 whitespace-nowrap">
+        <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ml-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
         </label>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Image
-                src="/icons/info-circle.png"
+                src="/icons/info-circle.svg"
                 alt="Info"
-                width={12}
-                height={12}
+                width={24}
+                height={24}
                 className="ml-1 cursor-pointer flex-shrink-0"
               />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">{t("myAds.hideMyAdsTooltip")}</p>
+              <p className="text-white">{t("myAds.hideMyAdsTooltip")}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -233,7 +234,7 @@ export default function AdsPage() {
                 {t("myAds.createAd")}
               </Button>
             )}
-            {ads.length > 0 && getHideMyAdsComponent()}
+            {getHideMyAdsComponent()}
           </div>
         </div>
 

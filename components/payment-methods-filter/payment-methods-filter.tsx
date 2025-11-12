@@ -147,7 +147,7 @@ export default function PaymentMethodsFilter({
                   className="data-[state=checked]:bg-black border-black"
                   disabled={isLoading}
                 />
-                <label htmlFor={method.method} className="text-sm text-grayscale-100 cursor-pointer flex-1">
+                <label htmlFor={method.method} className="text-sm text-grayscale-600 cursor-pointer flex-1">
                   {method.display_name}
                 </label>
               </div>

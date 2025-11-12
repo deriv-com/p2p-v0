@@ -23,7 +23,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">Total number of users you've successfully traded with.</p>
+              <p className="text-white">Total number of users you've successfully traded with.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -34,7 +34,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">The total value of all trades completed in your lifetime.</p>
+              <p className="text-white">The total value of all trades completed in your lifetime.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -45,7 +45,7 @@ function StatCard({ tab, title, value }: StatCardProps) {
               <Image src="/icons/info-circle.png" alt="Info" width={12} height={12} className="ml-1 cursor-pointer" />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">The total value of all completed trades in the last 30 days.</p>
+              <p className="text-white">The total value of all completed trades in the last 30 days.</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
@@ -85,7 +85,7 @@ export default function StatsGrid({ stats }) {
               <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
+              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-slate-200">
                 <StatCard
                   tab="last30days"
                   title={t("profile.sellCompletion")}
@@ -131,7 +131,7 @@ export default function StatsGrid({ stats }) {
               </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y divide-slate-200">
+              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-slate-200">
                 <StatCard
                   tab="lifetime"
                   title={t("profile.sellCompletion")}

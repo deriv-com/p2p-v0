@@ -54,12 +54,12 @@ export default function UserInfo({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                    <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
                   </TooltipTrigger>
                   <TooltipContent>
                     <>
                       <p className="font-bold text-white mb-2">{t("profile.bronzeTier")}</p>
-                      <p className="opacity-[0.72]">{t("profile.bronzeTierDescription")}</p>
+                      <p className="text-white">{t("profile.bronzeTierDescription")}</p>
                     </>
                     <TooltipArrow className="fill-black" />
                   </TooltipContent>
@@ -78,7 +78,7 @@ export default function UserInfo({
               </div>
             </div>
             <>
-              <div className="mx-4 h-4 w-px bg-black opacity-[0.08]"></div>
+              <div className="mx-4 h-4 w-px bg-white opacity-[0.08]"></div>
               <div className="flex items-center">
                 <Image src="/icons/star-rating.png" alt="Star" width={24} height={24} className="mr-1" />
                 <span className="text-white opacity-[0.72]">{rating ? rating : t("profile.notRatedYet")}</span>

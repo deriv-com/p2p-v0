@@ -31,7 +31,7 @@
     "wallet": "Wallet",
     "profile": "Profile",
     "backToHome": "Back to Home",
-    "p2pHelpCentre": "P2P Help Centre"
+    "p2pHelpCentre": "P2P help centre"
   },
   "market": {
     "title": "Market",
@@ -77,7 +77,7 @@
     "sellersInstructions": "Seller's instructions",
     "insufficientBalance": "Insufficient balance. Add funds to your wallet before creating an order.",
     "orderLimitError": "Order limit: {min} - {max} {currency}",
-    "orderExists": "Order already exists.",
+    "orderExists": "You can only have one active order per ad. Complete your existing order to continue.",
     "orderCreationError": "There was an error when creating the order. Please try again.",
     "unableToCreateOrder": "Unable to create an order"
   },
@@ -85,7 +85,7 @@
     "title": "Payment method",
     "selectUpTo3": "Select up to 3",
     "noCompatibleMethods": "No compatible payment methods found",
-    "addCompatibleMethod": "Add a payment method that matches the buyer's accepted methods",
+    "addCompatibleMethod": "Add a supported payment method to continue",
     "addPaymentMethod": "Add payment method",
     "duplicateMethod": "Duplicate payment method",
     "duplicateMethodDescription": "A payment method with the same values already exists. Add a new one.",
@@ -93,7 +93,7 @@
     "addError": "There was an error when adding the payment method. Please try again.",
     "search": "Search",
     "allPaymentMethod": "All payment method",
-    "bankTransfers": "Bank Transfers",
+    "bankTransfers": "Bank transfers",
     "eWallets": "E-Wallets",
     "paymentMethodUnavailable": "Payment method unavailable",
     "searchDifferent": "Search for a different payment method.",
@@ -373,7 +373,7 @@
     "hideAdsError": "Failed to hide your ads. Please try again.",
     "showAdsError": "Failed to show your ads. Please try again.",
     "noAdsTitle": "You have no ads",
-    "noAdsDescription": "Looking to buy or sell USD? You can post your own ad for others to respond.",
+    "noAdsDescription": "Looking to buy or sell? You can post your own ad for others to respond.",
     "loadingAds": "Loading ads...",
     "adType": "Ad type",
     "availableAmount": "Available amount",

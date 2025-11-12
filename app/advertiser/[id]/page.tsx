@@ -306,7 +306,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                              <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
                             </TooltipTrigger>
                             <TooltipContent>
                               <>
@@ -335,7 +335,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 count: profile?.statistics_lifetime?.recommend_count,
                                 plural: profile?.statistics_lifetime?.recommend_count === 1 ? "" : "s",
                               })
-                            : t("advertiser.notRecommendedYet")}
+                            : t("profile.notRecommendedYet")}
                         </span>
                       </div>
                       <span className="opacity-[0.08]">|</span>
@@ -344,7 +344,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
-                            : t("advertiser.notRatedYet")}
+                            : t("profile.notRatedYet")}
                         </span>
                       </div>
                     </div>

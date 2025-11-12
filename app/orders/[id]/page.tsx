@@ -13,6 +13,7 @@ import { OrdersAPI } from "@/services/api"
 import type { Order } from "@/services/api/api-orders"
 import OrderChat from "@/components/order-chat"
 import { useToast } from "@/hooks/use-toast"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   cn,
   formatAmount,
@@ -242,7 +243,7 @@ export default function OrderDetailsPage() {
     const calculateTimeLeft = () => {
       const now = new Date()
       const expiryTime = new Date(order.expires_at)
-      const diff = expiryTime.getTime() - now.getTime()
+      const diff = expiryTime.getTime() - now.getTime() - 1000
 
       if (diff <= 0) {
         setTimeLeft("00:00")
@@ -381,9 +382,12 @@ export default function OrderDetailsPage() {
       )}
       <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
-          <div className="text-center py-12">
-            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-            <p className="mt-2 text-slate-600">{t("orderDetails.loadingOrderDetails")}</p>
+          <div className="flex flex-col gap-6">
+            <div className="w-full lg:w-1/2">
+              <Skeleton className="h-[80px] w-full rounded-lg mb-6 bg-grayscale-500" />
+              <Skeleton className="h-[150px] w-full rounded-lg mb-6 bg-grayscale-500" />
+              <Skeleton className="h-[200px] w-full rounded-lg bg-grayscale-500" />
+            </div>
           </div>
         ) : (
           <div className="flex flex-col">
