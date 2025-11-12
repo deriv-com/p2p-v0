@@ -27,7 +27,7 @@ export interface Advertisement {
   minimum_order_amount: string
   order_expiry_period: number
   payment_currency: string
-  payment_currency_name?: string // Add payment_currency_name field for API support
+  payment_currency_name?: string
   payment_method_names: string[]
   payment_methods: string[]
   type: string
