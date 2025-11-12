@@ -51,7 +51,7 @@ export function CurrencyFilter({
   }, [currencies, searchQuery, selectedCurrency])
 
   const handleCurrencySelect = useCallback(
-    (currencyCode: string) => {
+    (currencyCode: string, currencyName) => {
       onCurrencySelect(currencyCode)
       setIsOpen(false)
       setSearchQuery("")
