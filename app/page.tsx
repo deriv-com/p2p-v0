@@ -292,7 +292,7 @@ export default function BuySellPage() {
   }
 
   const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
-    setCurrency(`${currencyCode} - ${currencyName}`)
+    setCurrency(currencyCode)
   }
 
   const handleFilterApply = (newFilters: MarketFilterOptions, sortByValue?: string) => {
