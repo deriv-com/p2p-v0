@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react"
 import type { Currency } from "@/components/currency-filter/types"
 import { getSettings } from "@/services/api/api-auth"
-import { getCurrencyName } from "@/lib/currency-names"
 
 export function useCurrencyData(currency = "USD") {
   const [currencies, setCurrencies] = useState<Currency[]>([])
@@ -16,16 +15,23 @@ export function useCurrencyData(currency = "USD") {
         setIsLoading(true)
         const response = await getSettings()
 
+        const countries = response.countries || []
+        const currencyMap = new Map<string, string>()
+
+        countries.forEach((country: { currency?: string; currency_name?: string }) => {
+          if (country.currency && country.currency_name) {
+            currencyMap.set(country.currency, country.currency_name)
+          }
+        })
+
         const availableAdverts = response.available_adverts || {}
 
         let currencyList: Currency[] = []
 
-        const paymentCurrencies = availableAdverts[currency]?.map(
-          (advert: { payment_currency: string; payment_currency_name?: string }) => ({
-            code: advert.payment_currency,
-            name: advert.payment_currency_name || getCurrencyName(advert.payment_currency),
-          }),
-        )
+        const paymentCurrencies = availableAdverts[currency]?.map((advert: { payment_currency: string }) => ({
+          code: advert.payment_currency,
+          name: currencyMap.get(advert.payment_currency) || advert.payment_currency,
+        }))
 
         const uniqueCurrencies = paymentCurrencies?.reduce((acc: Currency[], curr: Currency) => {
           if (!acc.find((c) => c.code === curr.code)) {
