@@ -597,7 +597,7 @@ export default function BuySellPage() {
                                       <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
                                         <>
                                           <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="text-white mt-4">
+                                          <p className="text-white mb-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
                                           <a href={helpCentreUrl} className="text-white">
@@ -605,7 +605,7 @@ export default function BuySellPage() {
                                             <Image
                                               src="/icons/chevron-right-white.png"
                                               alt="Arrow"
-                                              width={18}
+                                              width={8}
                                               height={18}
                                               className="ml-2 cursor-pointer"
                                             />
