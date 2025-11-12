@@ -85,7 +85,7 @@
     "title": "Payment method",
     "selectUpTo3": "Select up to 3",
     "noCompatibleMethods": "No compatible payment methods found",
-    "addCompatibleMethod": "Add a payment method that matches the buyer's accepted methods",
+    "addCompatibleMethod": "Add a supported payment method to continue",
     "addPaymentMethod": "Add payment method",
     "duplicateMethod": "Duplicate payment method",
     "duplicateMethodDescription": "A payment method with the same values already exists. Add a new one.",
