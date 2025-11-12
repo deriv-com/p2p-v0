@@ -596,7 +596,7 @@ export default function BuySellPage() {
                                           <p className="text-white">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <a href="" className="mt-4 text-white">
+                                          <a href="https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits" className="mt-4 text-white">
                                             Learn more
                                           </a>
                                         </>
