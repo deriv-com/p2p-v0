@@ -600,7 +600,7 @@ export default function BuySellPage() {
                                           <p className="text-white mb-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <a href={helpCentreUrl} className="text-white">
+                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="text-white">
                                             Learn more
                                             <Image
                                               src="/icons/chevron-right-white.png"
@@ -609,7 +609,7 @@ export default function BuySellPage() {
                                               height={18}
                                               className="ml-2 cursor-pointer"
                                             />
-                                          </a>
+                                          </Button>
                                         </>
                                         <TooltipArrow className="fill-black" />
                                       </TooltipContent>
