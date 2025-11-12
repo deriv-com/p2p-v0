@@ -291,7 +291,7 @@ export default function BuySellPage() {
     }
   }
 
-  const handleCurrencySelect = (currencyCode: string) => {
+  const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
     setCurrency(currencyCode)
   }
 
