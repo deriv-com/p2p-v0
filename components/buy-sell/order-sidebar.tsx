@@ -103,7 +103,7 @@ const PaymentSelectionContent = ({
         )}
 
         <div
-          className="border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
+          className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
           onClick={() => {
             handleAddPaymentMethodClick()
           }}
