@@ -357,6 +357,7 @@ export default function AddPaymentMethodPanel({
                     label={`${t("profile.enterField", { field: field.label.toLowerCase() })}`}
                     required={field.required}
                     variant="floating"
+                    maxLength={300}
                   />
                   {(touched[field.name] || details[field.name]) && errors[field.name] && (
                     <p className="mt-1 text-xs text-red-500">{errors[field.name]}</p>
