@@ -580,7 +580,7 @@ export default function BuySellPage() {
                                 <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
                                 {ad.user.trade_band === "bronze" && (
                                   <TooltipProvider>
-                                    <Tooltip>
+                                    <Tooltip disableHoverableContent={false}>
                                       <TooltipTrigger asChild>
                                         <Image
                                           src="/icons/bronze.png"
