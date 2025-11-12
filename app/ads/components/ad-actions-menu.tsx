@@ -59,7 +59,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start my-1"
         onClick={() => onDelete(ad.id)}
       >
-        <Image src="/icons/delete.svg" alt="Delete" width={14} height={16} />
+        <Image className="mr-2" src="/icons/delete.svg" alt="Delete" width={14} height={16} />
         <span className="text-disputed-icon">{t("myAds.delete")}</span>
       </Button>
     </>
