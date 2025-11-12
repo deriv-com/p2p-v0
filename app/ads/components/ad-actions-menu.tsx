@@ -41,7 +41,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onShare(ad)}
       >
-        <Image src="/icons/link.svg" alt="Share" width={16} height={16} />
+        <Image src="/icons/share-icon.svg" alt="Share" width={16} height={16} />
         Share
       </Button>
       <Button
