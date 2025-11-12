@@ -34,7 +34,7 @@ import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function BuySellPage() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -72,6 +72,15 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const { showAlert } = useAlertDialog()
+  
+  const redirectToHelpCentre = () => {
+    const helpCentreUrl =
+    locale != "en"
+      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+      : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+
+    window.open(helpCentreUrl, '_blank');
+  }
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
@@ -580,7 +589,7 @@ export default function BuySellPage() {
                                 <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
                                 {ad.user.trade_band === "bronze" && (
                                   <TooltipProvider>
-                                    <Tooltip>
+                                    <Tooltip disableHoverableContent={false}>
                                       <TooltipTrigger asChild>
                                         <Image
                                           src="/icons/bronze.png"
@@ -593,9 +602,19 @@ export default function BuySellPage() {
                                       <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
                                         <>
                                           <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="opacity-[0.72] text-white">
+                                          <p className="text-white mb-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
+                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs">
+                                            Learn more
+                                            <Image
+                                              src="/icons/chevron-right-white.png"
+                                              alt="Arrow"
+                                              width={8}
+                                              height={18}
+                                              className="ml-2 cursor-pointer"
+                                            />
+                                          </Button>
                                         </>
                                         <TooltipArrow className="fill-black" />
                                       </TooltipContent>
