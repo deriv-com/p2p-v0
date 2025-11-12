@@ -64,7 +64,7 @@ const PaymentSelectionContent = ({
       <div className="flex-1 space-y-4">
         {userPaymentMethods.length > 0 && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
-          <div className="text-center py-8">
+          <div className="pb-2">
             <p className="text-sm text-gray-500">{t("paymentMethod.addCompatibleMethod")}</p>
           </div>
         ) : (
