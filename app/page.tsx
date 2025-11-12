@@ -605,7 +605,7 @@ export default function BuySellPage() {
                                           <p className="text-white mb-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="text-white hover:bg-transparent p-0 font-normal">
+                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="text-white hover:bg-transparent p-0 font-normal text-xs">
                                             Learn more
                                             <Image
                                               src="/icons/chevron-right-white.png"
