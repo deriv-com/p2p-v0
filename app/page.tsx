@@ -602,6 +602,13 @@ export default function BuySellPage() {
                                           </p>
                                           <a href={helpCentreUrl} className="mt-4 text-white">
                                             Learn more
+                                            <Image
+                                              src="/icons/chevron-right-white.png"
+                                              alt="Arrow"
+                                              width={18}
+                                              height={18}
+                                              className="ml-2 cursor-pointer"
+                                            />
                                           </a>
                                         </>
                                         <TooltipArrow className="fill-black" />
