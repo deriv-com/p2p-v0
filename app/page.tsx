@@ -597,10 +597,10 @@ export default function BuySellPage() {
                                       <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
                                         <>
                                           <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="text-white">
+                                          <p className="text-white mt-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <a href={helpCentreUrl} className="mt-4 text-white">
+                                          <a href={helpCentreUrl} className="text-white">
                                             Learn more
                                             <Image
                                               src="/icons/chevron-right-white.png"
