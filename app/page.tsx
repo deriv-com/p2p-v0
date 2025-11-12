@@ -168,7 +168,7 @@ export default function BuySellPage() {
     }
 
     if (currencies.length > 0) {
-      setCurrency(currencies[0]?.code)
+      setCurrency(`${currencies[0]?.code } - ${currencies[0]?.name }`)
     }
   }, [searchParams, currencies, setActiveTab, setSelectedAccountCurrency])
 
