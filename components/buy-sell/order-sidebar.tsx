@@ -65,7 +65,7 @@ const PaymentSelectionContent = ({
         {userPaymentMethods.length > 0 && (<div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>)}
         {userPaymentMethods.length === 0 ? (
           <div className="pb-2 text-slate-1200 text-sm">
-            {t("paymentMethod.addCompatibleMethod")}</p>
+            {t("paymentMethod.addCompatibleMethod")}
           </div>
         ) : (
           userPaymentMethods.map((method) => (
