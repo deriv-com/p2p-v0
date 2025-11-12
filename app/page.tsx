@@ -72,10 +72,15 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const { showAlert } = useAlertDialog()
-  const helpCentreUrl =
+  
+  const redirectToHelpCentre = () => {
+    const helpCentreUrl =
     locale != "en"
       ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
       : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+      
+    window.open(helpCentreUrl, '_blank');
+  }
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
