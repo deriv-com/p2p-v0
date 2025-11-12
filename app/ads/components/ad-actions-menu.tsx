@@ -32,7 +32,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onEdit(ad)}
       >
-        <Image src="/icons/pencil.png" alt="Edit" width={16} height={16} />
+        <Image src="/icons/edit.svg" alt="Edit" width={16} height={16} />
         {t("myAds.edit")}
       </Button>
       <Button
@@ -50,7 +50,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onToggleStatus(ad)}
       >
-        <Image src="/icons/deactivate.png" alt="Toggle status" width={16} height={16} />
+        <Image src="/icons/deactivate.svg" alt="Toggle status" width={16} height={16} />
         {isActive ? t("myAds.deactivate") : t("myAds.activate")}
       </Button>
       <Button
@@ -59,7 +59,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start my-1"
         onClick={() => onDelete(ad.id)}
       >
-        <Image src="/icons/trash-red.png" alt="Delete" width={16} height={16} />
+        <Image src="/icons/delete.png" alt="Delete" width={16} height={16} />
         <span className="text-disputed-icon">{t("myAds.delete")}</span>
       </Button>
     </>
