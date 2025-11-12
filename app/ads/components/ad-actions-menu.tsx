@@ -32,7 +32,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onEdit(ad)}
       >
-        <Image src="/icons/edit.svg" alt="Edit" width={14} height={16} />
+        <Image className="mr-2" src="/icons/edit.svg" alt="Edit" width={14} height={16} />
         {t("myAds.edit")}
       </Button>
       <Button
@@ -41,7 +41,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onShare(ad)}
       >
-        <Image src="/icons/share-icon.svg" alt="Share" width={14} height={16} />
+        <Image className="mr-2" src="/icons/share-icon.svg" alt="Share" width={14} height={16} />
         Share
       </Button>
       <Button
@@ -50,7 +50,7 @@ export function AdActionsMenu({
         className="hover:bg-transparent font-normal justify-start text-grayscale-600 my-1"
         onClick={() => onToggleStatus(ad)}
       >
-        <Image src="/icons/deactivate.svg" alt="Toggle status" width={14} height={16} />
+        <Image className="mr-2" src="/icons/deactivate.svg" alt="Toggle status" width={14} height={16} />
         {isActive ? t("myAds.deactivate") : t("myAds.activate")}
       </Button>
       <Button
