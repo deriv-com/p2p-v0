@@ -78,7 +78,7 @@ export default function BuySellPage() {
     locale != "en"
       ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
       : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-      
+
     window.open(helpCentreUrl, '_blank');
   }
 
@@ -605,7 +605,7 @@ export default function BuySellPage() {
                                           <p className="text-white mb-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="text-white">
+                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="text-white hover:bg-transparent p-0 ">
                                             Learn more
                                             <Image
                                               src="/icons/chevron-right-white.png"
