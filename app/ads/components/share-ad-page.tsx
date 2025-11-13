@@ -178,7 +178,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         lastModified: Date.now(),
       });
 
-      console.log('canShare?', navigator.canShare?.({ files: [file] }));
+      console.log("File size MB:", (file.size / 1024 / 1024).toFixed(2));
+console.log("canShare?", navigator.canShare?.({ files: [file] }));
 
       
 
