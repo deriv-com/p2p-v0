@@ -244,7 +244,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
             >
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
+                  <img src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
                 </div>
                 <div className="text-lg font-bold">
                   {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
