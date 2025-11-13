@@ -97,6 +97,12 @@ export function NovuNotifications() {
         width: "32px",
         height: "32px",
       },
+         bellDot: {
+        top: "-8px",
+        right: "-12px",
+        width: "12px",
+        height: "12px",
+      },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",
     },
