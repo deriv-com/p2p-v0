@@ -203,6 +203,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           lastModified: Date.now(),
         })
 
+        console.log("navigator share")
+
         const canShareFiles = navigator.canShare && navigator.canShare({ files: [file] })
 
         if (canShareFiles) {
