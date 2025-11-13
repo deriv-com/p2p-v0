@@ -131,35 +131,60 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
+        useCORS: true,
+        allowTaint: false,
       })
 
-      const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => {
-          if (blob) resolve(blob)
-        })
+      const blob: Blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob)
+            } else {
+              reject(new Error("Failed to create blob"))
+            }
+          },
+          "image/png",
+          1.0,
+        )
       })
 
-      const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, { type: "image/png" })
-
-      if (navigator.share && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
-          text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
+      if (navigator.share && navigator.canShare) {
+        const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
+          type: "image/png",
+          lastModified: Date.now(),
         })
 
+        const canShareFile = navigator.canShare({ files: [file] })
+
+        if (canShareFile) {
+          await navigator.share({
+            files: [file],
+            title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
+            text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
+          })
+
+          toast({
+            description: (
+              <div className="flex items-center gap-2">
+                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
+                <span>Shared successfully</span>
+              </div>
+            ),
+            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+            duration: 2500,
+          })
+          return
+        }
+      }
+
+      try {
+        await handleSaveImage()
+      } catch (saveError) {
         toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-              <span>Shared successfully</span>
-            </div>
-          ),
-          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-          duration: 2500,
+          description: "Failed to share or save image",
+          variant: "destructive",
         })
-      } else {
-        handleSaveImage()
       }
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
