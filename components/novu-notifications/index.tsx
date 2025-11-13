@@ -94,6 +94,8 @@ export function NovuNotifications() {
       },
       bellContainer: {
         margin: 0,
+           width: "32px",
+        height: "32px",
       },
       bellIcon: {
        width: "24px",
