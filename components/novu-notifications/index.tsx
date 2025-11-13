@@ -96,8 +96,8 @@ export function NovuNotifications() {
         margin: 0,
       },
       bellIcon: {
-        width: "18px",
-        height: "18px",
+       width: "24px",
+        height: "24px",
       },
       bellDot: {
         top: "-8px",
