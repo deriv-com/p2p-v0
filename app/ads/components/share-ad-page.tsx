@@ -180,6 +180,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
       console.log('canShare?', navigator.canShare?.({ files: [file] }));
 
+      navigator.share({ title: 'Hello', text: 'Plain text share test' });
+
       // ✅ Check feature support
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
