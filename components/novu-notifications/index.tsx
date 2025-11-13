@@ -94,8 +94,8 @@ export function NovuNotifications() {
         height: "24px",
       },
       bellIcon: {
-        width: "24px",
-        height: "24px",
+        width: "32px",
+        height: "32px",
       },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",
