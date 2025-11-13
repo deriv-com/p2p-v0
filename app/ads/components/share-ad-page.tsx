@@ -99,12 +99,38 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
+        useCORS: true,
+        allowTaint: false,
       })
 
+      const blob: Blob = await new Promise((resolve, reject) => {
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              resolve(blob)
+            } else {
+              reject(new Error("Failed to create blob"))
+            }
+          },
+          "image/png",
+          1.0,
+        )
+      })
+
+      const url = URL.createObjectURL(blob)
+
       const link = document.createElement("a")
+      link.href = url
       link.download = `deriv-p2p-ad-${ad.id}.png`
-      link.href = canvas.toDataURL()
+
+      link.style.display = "none"
+      document.body.appendChild(link)
       link.click()
+
+      setTimeout(() => {
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
+      }, 100)
 
       toast({
         description: (
