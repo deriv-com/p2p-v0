@@ -153,13 +153,15 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
+    
+
     try {
       console.log(cardRef.current);
 
       // Capture div as canvas
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: '#ffffff',
-        scale: 1,
+        scale: 1.5,
         useCORS: true,
         allowTaint: false,
       });
