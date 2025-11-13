@@ -163,7 +163,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
-      await new Promise((r) => setTimeout(r, 300)); // slight delay
+      await new Promise((r) => setTimeout(r, 300)); 
       await waitForImages(cardRef.current); // wait for images
 
       try {
