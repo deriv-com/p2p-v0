@@ -117,7 +117,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         const uniqueCurrencies = Array.from(
           new Set(
             countriesData
-              .filter((country: Country) => country.fixed_rate === "enabled")
               .map((country: Country) => country.currency)
               .filter((currency): currency is string => !!currency),
           ),
