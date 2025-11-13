@@ -207,7 +207,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
         const canShareFiles = navigator.canShare && navigator.canShare({ files: [file] })
 
-console.log("navigator share")
+console.log("canShareFiles")
         if (canShareFiles) {
           try {
             await navigator.share({
