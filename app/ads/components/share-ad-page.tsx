@@ -226,7 +226,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
-              className="w-full md:w-[358px] bg-[linear-gradient(172deg,_#f4434f_73%,_rgba(0,0,0,0.04)_27%)] py-4 md:py-6 px-6 md:px-8 text-white"
+           
             >
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
