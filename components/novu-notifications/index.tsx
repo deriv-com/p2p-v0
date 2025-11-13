@@ -89,8 +89,8 @@ export function NovuNotifications() {
         borderRadius: "50%",
         backgroundColor: "rgba(0, 0, 0, 0.08)",
         padding: 0,
-        width: "32px",
-        height: "32px",
+        width: "36px",
+        height: "36px",
       },
       bellContainer: {
         margin: 0,
