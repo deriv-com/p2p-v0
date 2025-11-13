@@ -110,7 +110,7 @@ export function FloatingRateInput({
 
       {marketPrice && (
         <div className="text-sm text-grayscale-100">
-          Current market price:{" "}
+          Real-time market rate:{" "}
           <span className="font-semibold">
             {marketPrice.toLocaleString(undefined, {
               minimumFractionDigits: 2,

@@ -138,21 +138,15 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
 
-    console.log("[v0] Joining exchange_rates channel:", `exchange_rates/${buyCurrency}/${forCurrency}`)
-
     joinExchangeRatesChannel(buyCurrency, forCurrency)
 
     const unsubscribe = subscribe((data: any) => {
-      console.log("[v0] Received WebSocket message:", data)
-
       if (data.channel === `exchange_rates/${buyCurrency}/${forCurrency}` && data.payload?.rate) {
-        console.log("[v0] Updating market price:", data.payload.rate)
         setMarketPrice(data.payload.rate)
       }
     })
 
     return () => {
-      console.log("[v0] Leaving exchange_rates channel:", `exchange_rates/${buyCurrency}/${forCurrency}`)
       leaveExchangeRatesChannel(buyCurrency, forCurrency)
       unsubscribe()
     }
@@ -355,6 +349,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -400,6 +395,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
