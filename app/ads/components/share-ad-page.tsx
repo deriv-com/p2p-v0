@@ -232,7 +232,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
       <div className="flex flex-col h-full max-w-xl mx-auto">
         <div className="flex items-center justify-end py-[12px] px-4 md:p-6 md:pb-4">
           <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+            <img src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
