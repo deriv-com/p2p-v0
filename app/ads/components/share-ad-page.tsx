@@ -153,72 +153,44 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
-    console.log("test");
+      await new Promise((r) => setTimeout(r, 300)); // slight delay
+      await waitForImages(cardRef.current); // wait for images
 
-     await new Promise((r) => setTimeout(r, 300)); 
-
-    try {
-      console.log(cardRef.current);
-
-      // Capture div as canvas
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: '#ffffff',
-        scale: 1.5,
-        useCORS: true,
-        allowTaint: false,
-      });
-
-      console.log("after html2canvas");
-
-      // Convert to blob (JPEG reduces file size for iOS reliability)
-      const blob: Blob = await new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => (blob ? resolve(blob) : reject(new Error('Failed to create blob'))),
-          'image/jpeg',
-          0.9 // reduce size
-        );
-      });
-
-      const file = new File([blob], `deriv-p2p-ad-${ad.id}.jpg`, {
-        type: 'image/jpeg',
-        lastModified: Date.now(),
-      });
-
-      console.log("File size MB:", (file.size / 1024 / 1024).toFixed(2));
-console.log("canShare?", navigator.canShare?.({ files: [file] }));
-
-      
-
-      // ✅ Check feature support
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: `${ad.type === 'buy' ? 'Buy' : 'Sell'} ${ad.account_currency} - Deriv P2P`,
-          text: `Check out this ${ad.type === 'buy' ? 'Buy' : 'Sell'} ${ad.account_currency} ad on Deriv P2P`,
-          files: [file],
+      try {
+        const canvas = await html2canvas(cardRef.current, {
+          backgroundColor: '#ffffff',
+          scale: isMobile ? 1.2 : 2,
         });
 
-        toast({
-          description: (
-            <div className="flex items-center gap-2">
-              <img src="/icons/tick.svg" alt="Success" width={24} height={24} />
-              <span>Shared successfully</span>
-            </div>
-          ),
-          className: 'bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]',
-          duration: 2500,
+        const blob = await new Promise<Blob>((resolve, reject) => {
+          canvas.toBlob(
+            (blob) => (blob ? resolve(blob) : reject(new Error('Failed to create blob'))),
+            'image/jpeg',
+            0.9,
+          );
         });
-        return;
+
+        const file = new File([blob], `deriv-p2p-ad-${ad.id}.jpg`, {
+          type: 'image/jpeg',
+          lastModified: Date.now(),
+        });
+
+        if (navigator.share && navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            title: `${ad.type === 'buy' ? 'Buy' : 'Sell'} ${ad.account_currency} - Deriv P2P`,
+            text: `Check out this ${ad.type} ${ad.account_currency} ad on Deriv P2P`,
+            files: [file],
+          });
+          toast({ description: 'Shared successfully' });
+          return;
+        }
+
+        // Fallback
+        await handleSaveImage();
+      } catch (error) {
+        console.error(error);
+        toast({ description: 'Failed to share image', variant: 'destructive' });
       }
-
-      // Fallback if cannot share
-      await handleSaveImage();
-    } catch (error) {
-      console.error(error);
-      toast({
-        description: 'Failed to share image',
-        variant: 'destructive',
-      });
-    }
 
   }
 
