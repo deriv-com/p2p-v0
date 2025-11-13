@@ -161,7 +161,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         backgroundColor: '#ffffff',
         scale: 2,
         useCORS: true,
-        allowTaint: true,
+        allowTaint: false,
       });
 
       console.log("after html2canvas");
