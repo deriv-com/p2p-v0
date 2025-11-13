@@ -135,7 +135,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <img src="/icons/tick.svg" alt="Success" width={24} height={24} />
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
             <span>Image saved successfully</span>
           </div>
         ),
