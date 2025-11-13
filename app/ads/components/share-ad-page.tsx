@@ -164,6 +164,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         allowTaint: true,
       });
 
+      console.log("after html2canvas");
+
       // Convert to blob (JPEG reduces file size for iOS reliability)
       const blob: Blob = await new Promise((resolve, reject) => {
         canvas.toBlob(
