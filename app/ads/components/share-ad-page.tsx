@@ -166,6 +166,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
+    console.log("handleShareImage")
+
     try {
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#ffffff",
@@ -174,19 +176,26 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         allowTaint: false,
       })
 
+      console.log("after canvas")
+
       const blob: Blob = await new Promise((resolve, reject) => {
         canvas.toBlob(
           (blob) => {
             if (blob) {
               resolve(blob)
+              console.log("if blob")
             } else {
               reject(new Error("Failed to create blob"))
+
+              console.log("else blob")
             }
           },
           "image/png",
           1.0,
         )
       })
+
+      console.log("after blob")
 
       if (navigator.share) {
         const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
