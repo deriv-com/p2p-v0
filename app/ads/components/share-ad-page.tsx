@@ -178,6 +178,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         lastModified: Date.now(),
       });
 
+      console.log('canShare?', navigator.canShare?.({ files: [file] }));
+
       // ✅ Check feature support
       if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
         await navigator.share({
