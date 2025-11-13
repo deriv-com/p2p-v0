@@ -103,7 +103,7 @@ export function NovuNotifications() {
       },
       bellDot: {
         top: "-2px",
-        right: "-6px",
+        right: "-3px",
         width: "12px",
         height: "12px",
       },
