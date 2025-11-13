@@ -196,7 +196,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
         toast({
           description: (
             <div className="flex items-center gap-2">
-              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
+              <img src="/icons/tick.svg" alt="Success" width={24} height={24} />
               <span>Shared successfully</span>
             </div>
           ),
@@ -291,7 +291,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
+                    <img src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">WhatsApp</span>
                 </Button>
@@ -302,7 +302,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
+                    <img src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Facebook</span>
                 </Button>
@@ -313,7 +313,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
+                    <img src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
                 </Button>
@@ -324,7 +324,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
+                    <img src="/icons/google.svg" alt="Gmail" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Gmail</span>
                 </Button>
@@ -335,7 +335,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/link.svg" alt="link" width={36} height={36} />
+                    <img src="/icons/link.svg" alt="link" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
                 </Button>
@@ -346,7 +346,7 @@ console.log("canShare?", navigator.canShare?.({ files: [file] }));
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/download.svg" alt="download" width={36} height={36} />
+                    <img src="/icons/download.svg" alt="download" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Save image</span>
                 </Button>
