@@ -92,70 +92,79 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     }
   }
 
-  const captureCard = async (): Promise<Blob | null> => {
-    if (!cardRef.current) return null
+  const captureCard = async (): Promise<string | null> => {
+    if (!cardRef.current) {
+      console.log("[v0] No card ref available")
+      return null
+    }
 
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    console.log("[v0] Capturing card, isIOS:", isIOS)
 
     try {
-      // Wait for images to load before capturing
+      // Wait for all images to fully load
       const images = cardRef.current.querySelectorAll("img")
+      console.log("[v0] Found", images.length, "images to load")
+
       await Promise.all(
         Array.from(images).map((img) => {
-          if (img.complete) return Promise.resolve()
+          if (img.complete) {
+            console.log("[v0] Image already loaded:", img.src)
+            return Promise.resolve()
+          }
           return new Promise((resolve) => {
-            img.onload = resolve
-            img.onerror = resolve
+            img.onload = () => {
+              console.log("[v0] Image loaded:", img.src)
+              resolve(null)
+            }
+            img.onerror = () => {
+              console.log("[v0] Image failed to load:", img.src)
+              resolve(null)
+            }
+            // Timeout after 5 seconds
+            setTimeout(resolve, 5000)
           })
         }),
       )
 
-      // iOS-specific html2canvas options
+      console.log("[v0] All images loaded, starting html2canvas")
+
+      // iOS-optimized html2canvas configuration
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#ffffff",
-        scale: isIOS ? 1.5 : 2, // Lower scale for iOS to avoid memory issues
+        scale: isIOS ? 1 : 2,
         useCORS: true,
-        allowTaint: true, // Allow tainted canvas on iOS
-        logging: false,
+        allowTaint: true,
+        logging: true, // Enable for debugging
+        width: cardRef.current.offsetWidth,
+        height: cardRef.current.offsetHeight,
         windowWidth: cardRef.current.scrollWidth,
         windowHeight: cardRef.current.scrollHeight,
-        imageTimeout: 15000,
+        imageTimeout: 0, // No timeout for iOS
         removeContainer: true,
+        foreignObjectRendering: false, // Disable for iOS compatibility
+        onclone: (clonedDoc) => {
+          // Ensure images are visible in cloned document
+          const clonedImages = clonedDoc.querySelectorAll("img")
+          clonedImages.forEach((img) => {
+            img.style.display = "block"
+          })
+        },
       })
 
-      // Convert canvas to blob with iOS-compatible approach
-      return new Promise((resolve, reject) => {
-        try {
-          canvas.toBlob(
-            (blob) => {
-              if (blob) {
-                resolve(blob)
-              } else {
-                // Fallback: use dataURL approach for iOS
-                try {
-                  const dataUrl = canvas.toDataURL("image/png", 0.95)
-                  const base64 = dataUrl.split(",")[1]
-                  const binaryString = atob(base64)
-                  const bytes = new Uint8Array(binaryString.length)
-                  for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i)
-                  }
-                  const fallbackBlob = new Blob([bytes], { type: "image/png" })
-                  resolve(fallbackBlob)
-                } catch (fallbackError) {
-                  reject(new Error("Failed to create blob from canvas"))
-                }
-              }
-            },
-            "image/png",
-            0.95, // Slightly lower quality for better iOS compatibility
-          )
-        } catch (error) {
-          reject(error)
-        }
-      })
+      console.log("[v0] Canvas created:", canvas.width, "x", canvas.height)
+
+      // Convert to data URL (works more reliably on iOS than blobs)
+      const dataUrl = canvas.toDataURL("image/png", 1.0)
+      console.log("[v0] Data URL created, length:", dataUrl.length)
+
+      return dataUrl
     } catch (error) {
       console.error("[v0] Canvas capture error:", error)
+      toast({
+        description: `Capture failed: ${error instanceof Error ? error.message : "Unknown error"}`,
+        variant: "destructive",
+      })
       return null
     }
   }
@@ -163,63 +172,98 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleSaveImage = async () => {
     if (!cardRef.current) return
 
-    try {
-      const blob = await captureCard()
+    console.log("[v0] handleSaveImage called")
 
-      if (!blob) {
+    try {
+      const dataUrl = await captureCard()
+
+      if (!dataUrl) {
         throw new Error("Failed to capture image")
       }
 
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      console.log("[v0] Starting download, isIOS:", isIOS)
 
       if (isIOS) {
-        // iOS: Use FileReader to create data URL
-        const reader = new FileReader()
-        reader.onloadend = () => {
-          const base64data = reader.result as string
-          const link = document.createElement("a")
-          link.href = base64data
-          link.download = `deriv-p2p-ad-${ad.id}.png`
-          document.body.appendChild(link)
-          link.click()
-          setTimeout(() => {
-            document.body.removeChild(link)
-          }, 100)
+        // iOS: Open in new window so user can long-press to save
+        const win = window.open()
+        if (win) {
+          win.document.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Save Image</title>
+                <style>
+                  body {
+                    margin: 0;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    background: #f5f5f5;
+                    font-family: system-ui, -apple-system, sans-serif;
+                  }
+                  img {
+                    max-width: 100%;
+                    height: auto;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                  }
+                  .instructions {
+                    margin-top: 20px;
+                    padding: 16px;
+                    background: white;
+                    border-radius: 8px;
+                    text-align: center;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                  .instructions p {
+                    margin: 8px 0;
+                    color: #333;
+                  }
+                  .instructions strong {
+                    color: #f4434f;
+                  }
+                </style>
+              </head>
+              <body>
+                <img src="${dataUrl}" alt="Deriv P2P Ad" />
+                <div class="instructions">
+                  <p><strong>To save this image:</strong></p>
+                  <p>Long press on the image above</p>
+                  <p>Then tap "Save Image"</p>
+                </div>
+              </body>
+            </html>
+          `)
+          win.document.close()
+        } else {
+          throw new Error("Failed to open window. Please allow popups.")
         }
-        reader.onerror = () => {
-          throw new Error("Failed to read image data")
-        }
-        reader.readAsDataURL(blob)
       } else {
-        // Other browsers: Use object URL
-        const url = URL.createObjectURL(blob)
+        // Desktop/Android: Direct download
         const link = document.createElement("a")
-        link.href = url
+        link.href = dataUrl
         link.download = `deriv-p2p-ad-${ad.id}.png`
-        link.style.display = "none"
         document.body.appendChild(link)
         link.click()
-
-        setTimeout(() => {
-          document.body.removeChild(link)
-          URL.revokeObjectURL(url)
-        }, 100)
+        document.body.removeChild(link)
       }
 
       toast({
         description: (
           <div className="flex items-center gap-2">
             <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-            <span>Image saved successfully</span>
+            <span>{isIOS ? "Image opened - long press to save" : "Image saved successfully"}</span>
           </div>
         ),
         className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
+        duration: isIOS ? 4000 : 2500,
       })
     } catch (error) {
       console.error("[v0] Save image error:", error)
       toast({
-        description: "Failed to save image. Please try again.",
+        description: `Failed to save image: ${error instanceof Error ? error.message : "Please try again"}`,
         variant: "destructive",
       })
     }
@@ -228,29 +272,42 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
-    try {
-      const blob = await captureCard()
+    console.log("[v0] handleShareImage called")
 
-      if (!blob) {
+    try {
+      const dataUrl = await captureCard()
+
+      if (!dataUrl) {
         throw new Error("Failed to capture image")
       }
 
-      // Try native share API if available
-      if (navigator.share) {
-        const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
-          type: "image/png",
-          lastModified: Date.now(),
-        })
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-        const canShareFiles = navigator.canShare && navigator.canShare({ files: [file] })
+      // Try native share API
+      if (navigator.share && isIOS) {
+        try {
+          console.log("[v0] Attempting native share on iOS")
 
-        if (canShareFiles) {
-          try {
-            await navigator.share({
-              files: [file],
-              title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
-              text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
-            })
+          // Convert data URL to blob
+          const response = await fetch(dataUrl)
+          const blob = await response.blob()
+
+          const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
+            type: "image/png",
+            lastModified: Date.now(),
+          })
+
+          console.log("[v0] File created:", file.size, "bytes")
+
+          const shareData = {
+            files: [file],
+            title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
+            text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
+          }
+
+          if (navigator.canShare && navigator.canShare(shareData)) {
+            console.log("[v0] Can share, sharing now")
+            await navigator.share(shareData)
 
             toast({
               description: (
@@ -263,22 +320,27 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               duration: 2500,
             })
             return
-          } catch (shareError) {
-            // User cancelled or share failed
-            if (shareError instanceof Error && shareError.name === "AbortError") {
-              return
-            }
-            console.error("[v0] Share error:", shareError)
+          } else {
+            console.log("[v0] Cannot share files, falling back")
           }
+        } catch (shareError) {
+          // User cancelled share
+          if (shareError instanceof Error && shareError.name === "AbortError") {
+            console.log("[v0] User cancelled share")
+            return
+          }
+          console.error("[v0] Share error:", shareError)
+          // Fall through to save method
         }
       }
 
       // Fallback to save
+      console.log("[v0] Falling back to save")
       await handleSaveImage()
     } catch (error) {
       console.error("[v0] Share image error:", error)
       toast({
-        description: "Failed to share image. Please try again.",
+        description: `Failed to share image: ${error instanceof Error ? error.message : "Please try again"}`,
         variant: "destructive",
       })
     }
@@ -310,7 +372,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             >
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" crossOrigin="anonymous" />
+                  <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" width={120} height={32} />
                 </div>
                 <div className="text-lg font-bold">
                   {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
@@ -341,13 +403,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               {qrCodeUrl && (
                 <>
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
-                    <Image
-                      src={qrCodeUrl || "/placeholder.svg"}
-                      alt="QR Code"
-                      width={110}
-                      height={110}
-                      crossOrigin="anonymous"
-                    />
+                    <Image src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
                   <p className="text-grayscale-text-muted text-xs mt-3 text-center">
                     Scan this code to order via Deriv P2P
