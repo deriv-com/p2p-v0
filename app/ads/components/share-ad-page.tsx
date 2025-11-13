@@ -150,6 +150,15 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     }
   }
 
+  const waitForImages = (element: HTMLElement) =>
+  Promise.all(Array.from(element.querySelectorAll('img')).map(img => {
+    if (img.complete) return Promise.resolve();
+    return new Promise<void>((resolve) => {
+      img.onload = img.onerror = () => resolve();
+    });
+  }));
+
+
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
