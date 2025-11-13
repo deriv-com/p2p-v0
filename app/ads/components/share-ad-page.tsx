@@ -158,7 +158,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         backgroundColor: "#ffffff",
         scale: 2,
         useCORS: true,
-        allowTaint: false,
+        allowTaint: true,
       })
 
       const blob: Blob = await new Promise((resolve, reject) => {
