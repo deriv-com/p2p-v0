@@ -201,6 +201,18 @@ export class WebSocketClient {
     }
     this.send(unsubscribeMessage)
   }
+
+  public requestExchangeRate(buyCurrency: string, forCurrency: string): void {
+    const channel = `exchange_rates/${buyCurrency}/${forCurrency}`
+    const requestMessage: WebSocketMessage = {
+      action: "message",
+      options: {
+        channel,
+      },
+      payload: {},
+    }
+    this.send(requestMessage)
+  }
 }
 
 let wsClientInstance: WebSocketClient | null = null
@@ -223,6 +235,7 @@ interface WebSocketContextType {
   unsubscribeFromUserUpdates: () => void
   joinExchangeRatesChannel: (buyCurrency: string, forCurrency: string) => void
   leaveExchangeRatesChannel: (buyCurrency: string, forCurrency: string) => void
+  requestExchangeRate: (buyCurrency: string, forCurrency: string) => void
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -331,6 +344,10 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current?.leaveExchangeRatesChannel(buyCurrency, forCurrency)
   }
 
+  const requestExchangeRate = (buyCurrency: string, forCurrency: string) => {
+    wsClientRef.current?.requestExchangeRate(buyCurrency, forCurrency)
+  }
+
   const value: WebSocketContextType = {
     isConnected,
     joinChannel,
@@ -342,6 +359,7 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     unsubscribeFromUserUpdates,
     joinExchangeRatesChannel,
     leaveExchangeRatesChannel,
+    requestExchangeRate,
   }
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>

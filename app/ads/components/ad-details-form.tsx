@@ -64,7 +64,8 @@ export default function AdDetailsForm({
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
   const [marketPrice, setMarketPrice] = useState<number | null>(null)
 
-  const { isConnected, joinExchangeRatesChannel, leaveExchangeRatesChannel, subscribe } = useWebSocketContext()
+  const { isConnected, joinExchangeRatesChannel, leaveExchangeRatesChannel, subscribe, requestExchangeRate } =
+    useWebSocketContext()
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -140,6 +141,10 @@ export default function AdDetailsForm({
 
     joinExchangeRatesChannel(buyCurrency, forCurrency)
 
+    const requestTimer = setTimeout(() => {
+      requestExchangeRate(buyCurrency, forCurrency)
+    }, 100)
+
     const unsubscribe = subscribe((data: any) => {
       if (data.channel === `exchange_rates/${buyCurrency}/${forCurrency}` && data.payload?.rate) {
         setMarketPrice(data.payload.rate)
@@ -147,6 +152,7 @@ export default function AdDetailsForm({
     })
 
     return () => {
+      clearTimeout(requestTimer)
       leaveExchangeRatesChannel(buyCurrency, forCurrency)
       unsubscribe()
     }
@@ -395,6 +401,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
