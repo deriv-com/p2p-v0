@@ -150,7 +150,8 @@ export default function AdDetailsForm({
       leaveExchangeRatesChannel(buyCurrency, forCurrency)
       unsubscribe()
     }
-  }, [buyCurrency, forCurrency, isConnected, joinExchangeRatesChannel, leaveExchangeRatesChannel, subscribe])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [buyCurrency, forCurrency, isConnected])
 
   useEffect(() => {
     if (initialData) {
@@ -349,7 +350,6 @@ export default function AdDetailsForm({
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg" ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -395,7 +395,6 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
