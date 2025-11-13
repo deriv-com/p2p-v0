@@ -226,10 +226,12 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
-           
+              className="w-full md:w-[358px] bg-[linear-gradient(172deg,_#f4434f_73%,_rgba(0,0,0,0.04)_27%)] py-4 md:py-6 px-6 md:px-8 text-white"
             >
               <div className="mb-6">
-               
+                <div className="flex items-center gap-2 mb-4">
+                  <img src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
+                </div>
                 <div className="text-lg font-bold">
                   {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
                 </div>
@@ -256,7 +258,16 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                 </div>
               </div>
 
-              
+              {qrCodeUrl && (
+                <>
+                  <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
+                    <img src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
+                  </div>
+                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">
+                    Scan this code to order via Deriv P2P
+                  </p>
+                </>
+              )}
             </div>
             {!isMobile && (
               <div className="flex gap-6">
