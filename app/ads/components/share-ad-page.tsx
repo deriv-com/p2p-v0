@@ -117,20 +117,32 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         )
       })
 
-      const url = URL.createObjectURL(blob)
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
 
-      const link = document.createElement("a")
-      link.href = url
-      link.download = `deriv-p2p-ad-${ad.id}.png`
+      if (isIOS) {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          const base64data = reader.result as string
+          const link = document.createElement("a")
+          link.href = base64data
+          link.download = `deriv-p2p-ad-${ad.id}.png`
+          link.click()
+        }
+        reader.readAsDataURL(blob)
+      } else {
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.href = url
+        link.download = `deriv-p2p-ad-${ad.id}.png`
+        link.style.display = "none"
+        document.body.appendChild(link)
+        link.click()
 
-      link.style.display = "none"
-      document.body.appendChild(link)
-      link.click()
-
-      setTimeout(() => {
-        document.body.removeChild(link)
-        URL.revokeObjectURL(url)
-      }, 100)
+        setTimeout(() => {
+          document.body.removeChild(link)
+          URL.revokeObjectURL(url)
+        }, 100)
+      }
 
       toast({
         description: (
@@ -143,6 +155,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         duration: 2500,
       })
     } catch (error) {
+      console.error("[v0] Save image error:", error)
       toast({
         description: "Failed to save image",
         variant: "destructive",
@@ -175,50 +188,49 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         )
       })
 
-      if (navigator.share && navigator.canShare) {
+      if (navigator.share) {
         const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
           type: "image/png",
           lastModified: Date.now(),
         })
 
-        const canShareFile = navigator.canShare({ files: [file] })
+        const canShareFiles = navigator.canShare && navigator.canShare({ files: [file] })
 
-        if (canShareFile) {
-          await navigator.share({
-            files: [file],
-            title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
-            text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
-          })
+        if (canShareFiles) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
+              text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
+            })
 
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-                <span>Shared successfully</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-          return
+            toast({
+              description: (
+                <div className="flex items-center gap-2">
+                  <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
+                  <span>Shared successfully</span>
+                </div>
+              ),
+              className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+              duration: 2500,
+            })
+            return
+          } catch (shareError) {
+            if (shareError instanceof Error && shareError.name === "AbortError") {
+              return
+            }
+            console.error("[v0] Share error:", shareError)
+          }
         }
       }
 
-      try {
-        await handleSaveImage()
-      } catch (saveError) {
-        toast({
-          description: "Failed to share or save image",
-          variant: "destructive",
-        })
-      }
+      await handleSaveImage()
     } catch (error) {
-      if (error instanceof Error && error.name !== "AbortError") {
-        toast({
-          description: "Failed to share image",
-          variant: "destructive",
-        })
-      }
+      console.error("[v0] Share image error:", error)
+      toast({
+        description: "Failed to share image",
+        variant: "destructive",
+      })
     }
   }
 
