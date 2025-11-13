@@ -90,7 +90,7 @@ export function NovuNotifications() {
         backgroundColor: "rgba(0, 0, 0, 0.08)",
       },
       bellContainer: {
-        width: "24px",
+        width: "32px",
         height: "24px",
       },
       bellIcon: {
