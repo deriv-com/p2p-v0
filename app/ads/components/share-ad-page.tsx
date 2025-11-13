@@ -154,6 +154,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     if (!cardRef.current) return
 
     try {
+    console.log(cardRef.current)
       const canvas = await html2canvas(cardRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
