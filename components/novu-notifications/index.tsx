@@ -105,7 +105,7 @@ export function NovuNotifications() {
         top: "-2px",
         right: "-3px",
         width: "8px",
-        height: "9px",
+        height: "8px",
       },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",
