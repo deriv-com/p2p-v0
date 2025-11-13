@@ -104,8 +104,8 @@ export function NovuNotifications() {
       bellDot: {
         top: "-2px",
         right: "-3px",
-        width: "12px",
-        height: "12px",
+        width: "8px",
+        height: "9px",
       },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",
