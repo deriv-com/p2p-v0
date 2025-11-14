@@ -78,7 +78,7 @@ export default function AdsPage() {
       fetchAds()
       hasFetchedRef.current = true
     } else {
-        setLoading(false)
+      setLoading(false)
     }
   }, [userId])
 
