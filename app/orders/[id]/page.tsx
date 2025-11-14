@@ -356,9 +356,7 @@ export default function OrderDetailsPage() {
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
-          {isChatLoading ? (
-            <OrderChatSkeleton />
-          ) : (
+          
             <OrderChat
               orderId={orderId}
               counterpartyName={counterpartyNickname || "User"}
@@ -371,7 +369,7 @@ export default function OrderDetailsPage() {
                 setIsChatVisible(false)
               }}
             />
-          )}
+          
         </div>
       </div>
     )
