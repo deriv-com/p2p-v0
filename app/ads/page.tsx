@@ -222,7 +222,7 @@ export default function AdsPage() {
             {t("myAds.title")}
           </div>
           {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
-          <div className="flex flex-wrap items-center justify-between gap-3 my-6">
+          <div className="flex flex-col flex-wrap items-center justify-between gap-3 my-6">
             {ads.length > 0 && (
               <Button
                 onClick={() => router.push("/ads/create")}
