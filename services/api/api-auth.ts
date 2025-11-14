@@ -178,6 +178,8 @@ export async function getSession(): Promise<boolean> {
       credentials: "include",
     })
 
+    console.log()
+
     return response.status === 200
   } catch (error) {
     console.error(error)
