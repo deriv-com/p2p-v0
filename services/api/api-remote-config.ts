@@ -13,7 +13,7 @@ export interface RemoteConfigResponse {
  */
 export async function getRemoteConfig(): Promise<RemoteConfigResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/v1/fe/remote-config`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/v1/fe/remote-config`, {
       method: "GET",
       credentials: "include",
       headers: {
