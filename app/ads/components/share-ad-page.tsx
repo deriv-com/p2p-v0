@@ -26,7 +26,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       try {
         setIsLoading(true)
         const advertiserId = ad.user?.id
-        const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+        const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
         const qrCode = await QRCode.toDataURL(adUrl, {
           width: 200,
           margin: 2,
@@ -51,7 +51,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
-    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     const text = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
     const telegramText = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad. Thanks!`
 
@@ -70,7 +70,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
   const handleCopyLink = async () => {
     const advertiserId = ad.user?.id
-    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     try {
       await navigator.clipboard.writeText(adUrl)
       toast({

@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -59,6 +59,8 @@ interface AdvertiserProfilePageProps {
 export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
+  const searchParams = useSearchParams()
+  const adIdParam = searchParams.get('adId')
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
@@ -132,6 +134,15 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       }
     }
   }, [id])
+
+  useEffect(() => {
+    if (adIdParam && adverts.length > 0 && !isBlocked) {
+      const ad = adverts.find(a => a.id === adIdParam)
+      if (ad) {
+        handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      }
+    }
+  }, [adIdParam, adverts, isBlocked])
 
   const toggleFollow = async () => {
     if (!profile) return
