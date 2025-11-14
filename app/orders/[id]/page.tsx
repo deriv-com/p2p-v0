@@ -354,7 +354,7 @@ export default function OrderDetailsPage() {
     return (
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
-          {isChatLoading ? (
+          {isLoading ? (
             <OrderChatSkeleton />
           ) : (
             <OrderChat
@@ -626,7 +626,7 @@ export default function OrderDetailsPage() {
                 )}
               </div>
               <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
-                {isChatLoading ? (
+                {isLoading ? (
                   <OrderChatSkeleton />
                 ) : (
                   <OrderChat
