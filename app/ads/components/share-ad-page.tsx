@@ -37,7 +37,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         })
         setQrCodeUrl(qrCode)
       } catch (error) {
-        console.error("Error generating QR code:", error)
         toast({
           description: "Failed to generate QR code",
           variant: "destructive",
@@ -312,7 +311,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <img src="/icons/download.svg" alt="download" width={36} height={36} />
+                    <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Save image</span>
                 </Button>
