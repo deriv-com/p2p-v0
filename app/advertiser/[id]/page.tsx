@@ -140,7 +140,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }, [id])
 
   useEffect(() => {
+    console.log(adIdParam)
+    console.log(adverts)
     if (adIdParam && adverts.length > 0 && !isBlocked) {
+      
       const ad = adverts.find(a => a.id === adIdParam)
       console.log(ad)
       if (ad) {
