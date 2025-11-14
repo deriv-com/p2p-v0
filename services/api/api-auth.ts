@@ -170,7 +170,7 @@ export async function getSession(): Promise<boolean> {
     const isOryEnabled = await getFeatureFlag("ory")
     
     const sessionUrl = isOryEnabled
-      ? "https://staging-auth.deriv.com/sessions/whoami"
+      ? `${process.env.NEXT_PUBLIC_CORE_URL}/sessions/whoami`
       : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
