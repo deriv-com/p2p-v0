@@ -384,49 +384,40 @@ export default function OrderDetailsPage() {
         {isLoading ? (
           <div className="flex flex-col gap-6">
             <div className="w-full lg:w-1/2">
-              {/* Status badge skeleton */}
               <Skeleton className="h-[60px] w-full rounded-lg mb-6 bg-grayscale-500" />
-              
-              {/* Order details card skeleton */}
               <div className="border rounded-lg p-4 mb-6">
-                {/* Order ID */}
+              
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[80px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[200px] bg-grayscale-500" />
                 </div>
-                
-                {/* Exchange Rate */}
+              
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[120px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[150px] bg-grayscale-500" />
                 </div>
                 
-                {/* You Pay/Receive */}
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[100px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[180px] bg-grayscale-500" />
                 </div>
                 
-                {/* You Receive/Send */}
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[100px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[180px] bg-grayscale-500" />
                 </div>
                 
-                {/* Order Time */}
                 <div className="mb-4">
                   <Skeleton className="h-[14px] w-[90px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[220px] bg-grayscale-500" />
                 </div>
                 
-                {/* Counterparty */}
                 <div>
                   <Skeleton className="h-[14px] w-[60px] mb-2 bg-grayscale-500" />
                   <Skeleton className="h-[20px] w-[140px] bg-grayscale-500" />
                 </div>
               </div>
               
-              {/* Payment details section skeleton */}
               <div className="space-y-4">
                 <Skeleton className="h-[24px] w-[200px] bg-grayscale-500" />
                 <Skeleton className="h-[80px] w-full rounded-2xl bg-grayscale-500" />
