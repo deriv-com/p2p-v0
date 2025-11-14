@@ -30,7 +30,6 @@ export async function getRemoteConfig(): Promise<RemoteConfigResponse> {
     return result.data || { ory: false }
   } catch (error) {
     console.error("Error fetching remote config:", error)
-    // Return default config on error
     return { ory: false }
   }
 }
