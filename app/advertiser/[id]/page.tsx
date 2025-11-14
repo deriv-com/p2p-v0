@@ -129,7 +129,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     if(id) {
       fetchAdvertiserData()
     } else {
-      router.push("")
+      router.push("/")
     }
 
     return () => {
