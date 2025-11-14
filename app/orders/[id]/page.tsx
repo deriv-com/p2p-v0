@@ -58,7 +58,6 @@ export default function OrderDetailsPage() {
   const [showChat, setShowChat] = useState(false)
   const [showPaymentConfirmation, setShowPaymentConfirmation] = useState(false)
   const [showPaymentReceivedConfirmation, setShowPaymentReceivedConfirmation] = useState(false)
-  const [isChatLoading, setIsChatLoading] = useState(true)
   const { isConnected, joinChannel, reconnect, subscribe } = useWebSocketContext()
 
   useEffect(() => {
@@ -72,7 +71,6 @@ export default function OrderDetailsPage() {
   useEffect(() => {
     if (isConnected) {
       joinChannel("orders", orderId)
-      setIsChatLoading(false)
     }
   }, [isConnected, orderId])
 
