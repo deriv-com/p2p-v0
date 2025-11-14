@@ -175,7 +175,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         return
       }
 
-
       await handleSaveImage()
     } catch (error) {
 
