@@ -200,7 +200,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
-          <h2 className="text-[] font-bold px-4 md:px-0">Share ad</h2>
+          <h2 className="text-[24px] font-bold px-4 md:px-0">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
