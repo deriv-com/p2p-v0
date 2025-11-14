@@ -126,7 +126,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   useEffect(() => {
-    fetchAdvertiserData()
+    if(id) {
+      fetchAdvertiserData()
+    } else {
+      router.push("")
+    }
 
     return () => {
       if (abortControllerRef.current) {
