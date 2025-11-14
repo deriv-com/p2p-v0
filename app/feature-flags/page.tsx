@@ -3,8 +3,6 @@
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
-import { useFeatureFlagsStore } from "@/stores/feature-flags-store"
-import type { FeatureFlag } from "@/stores/feature-flags-store"
 import { getRemoteConfig } from "@/services/api/api-remote-config"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
@@ -13,8 +11,37 @@ import { useToast } from "@/hooks/use-toast"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Image from "next/image"
 
+interface FeatureFlag {
+  name: string
+  enabled: boolean
+  description: string
+}
+
+const STORAGE_KEY = "feature-flags"
+
+const loadFlagsFromStorage = (): Record<string, boolean> => {
+  if (typeof window === "undefined") return {}
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    return stored ? JSON.parse(stored) : {}
+  } catch {
+    return {}
+  }
+}
+
+const saveFlagsToStorage = (flags: Record<string, boolean>) => {
+  if (typeof window === "undefined") return
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(flags))
+  } catch (error) {
+    console.error("Failed to save flags to localStorage:", error)
+  }
+}
+
 export default function FeatureFlagsPage() {
-  const { flags, isLoading, error, setFlags, toggleFlag, setLoading, setError } = useFeatureFlagsStore()
+  const [flags, setFlags] = useState<FeatureFlag[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const { userData } = useUserDataStore()
   const { toast } = useToast()
   const isDisabled = userData?.status === "disabled"
@@ -25,16 +52,17 @@ export default function FeatureFlagsPage() {
   }, [])
 
   const fetchFeatureFlags = async () => {
-    setLoading(true)
+    setIsLoading(true)
     setError(null)
 
     try {
       const config = await getRemoteConfig()
+      const localOverrides = loadFlagsFromStorage()
 
       // Convert config object to FeatureFlag array
       const flagsArray: FeatureFlag[] = Object.entries(config).map(([name, enabled]) => ({
         name,
-        enabled: Boolean(enabled),
+        enabled: name in localOverrides ? localOverrides[name] : Boolean(enabled),
         description: getFlagDescription(name),
       }))
 
@@ -48,7 +76,7 @@ export default function FeatureFlagsPage() {
         variant: "destructive",
       })
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
@@ -61,15 +89,24 @@ export default function FeatureFlagsPage() {
   }
 
   const handleToggle = async (flagName: string) => {
-    toggleFlag(flagName)
+    const updatedFlags = flags.map((flag) =>
+      flag.name === flagName ? { ...flag, enabled: !flag.enabled } : flag
+    )
+    setFlags(updatedFlags)
+
+    const flagsObject = updatedFlags.reduce(
+      (acc, flag) => {
+        acc[flag.name] = flag.enabled
+        return acc
+      },
+      {} as Record<string, boolean>
+    )
+    saveFlagsToStorage(flagsObject)
 
     toast({
       title: "Feature Flag Updated",
       description: `${flagName} has been toggled`,
     })
-
-    // Note: In a real implementation, you would call an API to persist the change
-    // await updateFeatureFlag(flagName, newValue)
   }
 
   const handleRefresh = () => {
