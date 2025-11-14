@@ -155,14 +155,12 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     await waitForImages(cardRef.current)
 
     try {
-      // Use html-to-image to generate blob
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
         quality: 0.95,
         pixelRatio: isMobile ? 2 : 3,
         backgroundColor: "#ffffff",
       })
-
-      // Convert data URL to blob
+      
       const response = await fetch(dataUrl)
       const blob = await response.blob()
 
