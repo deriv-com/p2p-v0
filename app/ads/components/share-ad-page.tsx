@@ -95,11 +95,9 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleSaveImage = async () => {
     if (!cardRef.current) return
 
-    try {
-      // Wait for all images to load
+    tr
       await waitForImages(cardRef.current)
 
-      // Use html-to-image library
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
         quality: 1.0,
         pixelRatio: 2,
