@@ -169,7 +169,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
       if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
-          title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P ()`,
+          title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P (test)`,
           files: [file],
         })
         toast({ description: "Shared successfully" })
