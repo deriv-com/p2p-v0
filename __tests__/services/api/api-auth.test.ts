@@ -1,9 +1,13 @@
 import { getKycStatus } from "@/services/api/api-auth"
+import * as AuthAPI from "@/services/api/api-auth"
+import * as RemoteConfigAPI from "@/services/api/api-remote-config"
 import { API, AUTH } from "@/lib/local-variables"
 import jest from "jest" // Import jest to fix the undeclared variable error
 
 // Mock fetch
 global.fetch = jest.fn()
+
+jest.mock("@/services/api/api-remote-config")
 
 describe("getKycStatus", () => {
   beforeEach(() => {
@@ -79,5 +83,77 @@ describe("getKycStatus", () => {
       biometrics_completed: false,
       show_onboarding: true,
     })
+  })
+})
+
+describe("getSession", () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+  })
+
+  it("should call Ory endpoint when ory flag is enabled", async () => {
+    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(true)
+    
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockResolvedValue({
+      status: 200,
+    } as Response)
+
+    const result = await AuthAPI.getSession()
+
+    expect(RemoteConfigAPI.getFeatureFlag).toHaveBeenCalledWith("ory")
+    expect(fetch).toHaveBeenCalledWith(
+      "https://staging-auth.deriv.com/sessions/whoami",
+      expect.objectContaining({
+        method: "GET",
+        credentials: "include",
+      })
+    )
+    expect(result).toBe(true)
+  })
+
+  it("should call legacy session endpoint when ory flag is disabled", async () => {
+    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
+    
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockResolvedValue({
+      status: 200,
+    } as Response)
+
+    const result = await AuthAPI.getSession()
+
+    expect(RemoteConfigAPI.getFeatureFlag).toHaveBeenCalledWith("ory")
+    expect(fetch).toHaveBeenCalledWith(
+      `${process.env.NEXT_PUBLIC_CORE_URL}/session`,
+      expect.objectContaining({
+        method: "GET",
+        credentials: "include",
+      })
+    )
+    expect(result).toBe(true)
+  })
+
+  it("should return false when session is invalid", async () => {
+    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
+    
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockResolvedValue({
+      status: 401,
+    } as Response)
+
+    const result = await AuthAPI.getSession()
+
+    expect(result).toBe(false)
+  })
+
+  it("should handle network errors gracefully", async () => {
+    ;(RemoteConfigAPI.getFeatureFlag as jest.Mock).mockResolvedValueOnce(false)
+    
+    const mockFetch = fetch as jest.MockedFunction<typeof fetch>
+    mockFetch.mockRejectedValue(new Error("Network error"))
+
+    const result = await AuthAPI.getSession()
+
+    expect(result).toBe(false)
   })
 })

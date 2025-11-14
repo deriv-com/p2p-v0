@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getFeatureFlag } from "./api-remote-config"
 
 export interface LoginRequest {
   email: string
@@ -166,7 +167,13 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
  */
 export async function getSession(): Promise<boolean> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/session`, {
+    const isOryEnabled = await getFeatureFlag("ory")
+    
+    const sessionUrl = isOryEnabled
+      ? "https://staging-auth.deriv.com/sessions/whoami"
+      : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
+
+    const response = await fetch(sessionUrl, {
       method: "GET",
       credentials: "include",
     })
