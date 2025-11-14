@@ -77,7 +77,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       toast({
         description: (
           <div className="flex items-center gap-2">
-            <img src="/icons/tick.svg" alt="Success" width={24} height={24} />
+            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
             <span>Ad link copied</span>
           </div>
         ),
@@ -257,7 +257,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <img src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
+                    <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">WhatsApp</span>
                 </Button>
@@ -268,7 +268,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <img src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
+                    <Image src="/icons/facebook.svg" alt="Facebook" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Facebook</span>
                 </Button>
@@ -279,7 +279,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <img src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
+                    <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
                 </Button>
