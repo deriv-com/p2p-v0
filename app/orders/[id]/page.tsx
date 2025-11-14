@@ -385,7 +385,7 @@ export default function OrderDetailsPage() {
       )}
       <div className="container mx-auto px-[24px] mt-4">
         {isLoading ? (
-          <div className="flex flex-col gap-6">
+          <div className="flex gap-6">
             <div>
               <Skeleton className="h-[60px] w-full rounded-lg mb-6 bg-grayscale-500" />
               <div className="border rounded-lg p-4 mb-6">
