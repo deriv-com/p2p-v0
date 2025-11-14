@@ -165,7 +165,7 @@ export default function FeatureFlagsPage() {
               height={120}
               className="mx-auto mb-4 opacity-50"
             />
-            <p className="text-slate-500 text-lg font-medium">No feature flags found</
+            <p className="text-slate-500 text-lg font-medium">No feature flags found</p>
           </div>
         ) : (
           <div className="space-y-4">
