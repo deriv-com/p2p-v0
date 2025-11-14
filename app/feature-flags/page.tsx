@@ -132,23 +132,7 @@ export default function FeatureFlagsPage() {
       <div className="flex-none container mx-auto">
         <div className="w-[calc(100%+24px)] md:w-full h-[80px] bg-slate-1200 p-6 rounded-b-3xl md:rounded-3xl text-white text-xl font-bold -m-3 mb-4 md:mx-0 md:mt-0">
           Feature Flags
-        </div>
-
-        <div className="flex flex-wrap items-center justify-between gap-3 my-6">
-          <div className="flex-1">
-            <input
-              type="text"
-              placeholder="Search feature flags..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 border border-input rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-            />
-          </div>
-          <Button onClick={handleRefresh} size="sm" variant="outline" className="font-normal">
-            <Image src="/icons/refresh.svg" alt="Refresh" width={16} height={16} className="mr-2" />
-            Refresh
-          </Button>
-        </div>
+        </di
 
         {error && (
           <div className="bg-destructive/10 border border-destructive text-destructive px-4 py-3 rounded-md mb-4">
