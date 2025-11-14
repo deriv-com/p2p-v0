@@ -241,7 +241,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               {qrCodeUrl && (
                 <>
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
-                    <img src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
+                    <Image src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
                   <p className="text-grayscale-text-muted text-xs mt-3 text-center">
                     Scan this code to order via Deriv P2P
@@ -290,7 +290,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <img src="/icons/google.svg" alt="Gmail" width={36} height={36} />
+                    <Image src="/icons/google.svg" alt="Gmail" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Gmail</span>
                 </Button>
@@ -301,7 +301,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
                 >
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <img src="/icons/link.svg" alt="link" width={36} height={36} />
+                    <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
                 </Button>
