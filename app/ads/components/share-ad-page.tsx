@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import QRCode from "qrcode"
-import html2canvas from "html2canvas"
+import * as htmlToImage from "html-to-image"
 import type { Ad } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -37,7 +37,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         })
         setQrCodeUrl(qrCode)
       } catch (error) {
-        console.error("Error generating QR code:", error)
         toast({
           description: "Failed to generate QR code",
           variant: "destructive",
@@ -96,31 +95,16 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     if (!cardRef.current) return
 
     try {
-      const canvas = await html2canvas(cardRef.current, {
+      await waitForImages(cardRef.current)
+
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
         backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
       })
-
-      const blob: Blob = await new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              resolve(blob)
-            } else {
-              reject(new Error("Failed to create blob"))
-            }
-          },
-          "image/png",
-          1.0,
-        )
-      })
-
-      const url = URL.createObjectURL(blob)
 
       const link = document.createElement("a")
-      link.href = url
+      link.href = dataUrl
       link.download = `deriv-p2p-ad-${ad.id}.png`
 
       link.style.display = "none"
@@ -129,96 +113,74 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
       setTimeout(() => {
         document.body.removeChild(link)
-        URL.revokeObjectURL(url)
       }, 100)
 
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-            <span>Image saved successfully</span>
-          </div>
-        ),
-        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
-      })
+      if(!isMobile) {
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
+              <span>Image saved successfully</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      }
     } catch (error) {
-      toast({
-        description: "Failed to save image",
-        variant: "destructive",
-      })
+      if(!isMobile) {
+        toast({
+          description: "Failed to save image",
+          variant: "destructive",
+        })
+      }
     }
+  }
+
+  const waitForImages = (element: HTMLElement) => {
+    return Promise.all(
+      Array.from(element.querySelectorAll("img")).map((img) => {
+        if (img.complete) return Promise.resolve()
+        return new Promise<void>((resolve) => {
+          img.onload = img.onerror = () => resolve()
+        })
+      }),
+    )
   }
 
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
+    await new Promise((r) => setTimeout(r, 300))
+    await waitForImages(cardRef.current)
+
     try {
-      const canvas = await html2canvas(cardRef.current, {
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 0.95,
+        pixelRatio: isMobile ? 2 : 3,
         backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
       })
 
-      const blob: Blob = await new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              resolve(blob)
-            } else {
-              reject(new Error("Failed to create blob"))
-            }
-          },
-          "image/png",
-          1.0,
-        )
+      const response = await fetch(dataUrl)
+      const blob = await response.blob()
+
+      const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
+        type: "image/png",
+        lastModified: Date.now(),
       })
 
-      if (navigator.share && navigator.canShare) {
-        const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
-          type: "image/png",
-          lastModified: Date.now(),
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          title: "",
+          files: [file],
         })
-
-        const canShareFile = navigator.canShare({ files: [file] })
-
-        if (canShareFile) {
-          await navigator.share({
-            files: [file],
-            title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
-            text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
-          })
-
-          toast({
-            description: (
-              <div className="flex items-center gap-2">
-                <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-                <span>Shared successfully</span>
-              </div>
-            ),
-            className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-            duration: 2500,
-          })
-          return
-        }
+        toast({ description: "Shared successfully" })
+        return
       }
 
-      try {
-        await handleSaveImage()
-      } catch (saveError) {
-        toast({
-          description: "Failed to share or save image",
-          variant: "destructive",
-        })
-      }
+      await handleSaveImage()
     } catch (error) {
-      if (error instanceof Error && error.name !== "AbortError") {
-        toast({
-          description: "Failed to share image",
-          variant: "destructive",
-        })
-      }
+      console.log(error)
     }
   }
 
@@ -240,7 +202,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
-          <h2 className="text-2xl font-bold px-4 md:px-0">Share ad</h2>
+          <h2 className="text-[24px] font-bold px-4 md:px-0">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
@@ -279,7 +241,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               {qrCodeUrl && (
                 <>
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
-                    <Image src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
+                    <img src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
                   <p className="text-grayscale-text-muted text-xs mt-3 text-center">
                     Scan this code to order via Deriv P2P
