@@ -357,69 +357,7 @@ export default function OrderDetailsPage() {
       <div className="h-[calc(100vh-64px)] mb-[64px] flex flex-col">
         <div className="flex-1 h-full">
           {isChatLoading ? (
-            <div className="flex flex-col h-full">
-              {/* Chat Header */}
-              <div className="border-b p-4 flex items-center gap-3">
-                <Skeleton className="h-10 w-10 rounded-full bg-grayscale-500" />
-                <div className="flex-1">
-                  <Skeleton className="h-5 w-32 mb-1 bg-grayscale-500" />
-                  <Skeleton className="h-3 w-24 bg-grayscale-500" />
-                </div>
-              </div>
-
-              {/* Disclaimer Section */}
-              <div className="p-4 bg-orange-50 border-b">
-                <div className="flex gap-2">
-                  <Skeleton className="h-5 w-5 rounded bg-grayscale-500 flex-shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-3 w-full bg-grayscale-500" />
-                    <Skeleton className="h-3 w-3/4 bg-grayscale-500" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Messages Area */}
-              <div className="flex-1 p-4 space-y-4 overflow-hidden">
-                {/* Date Header */}
-                <div className="flex justify-center">
-                  <Skeleton className="h-6 w-24 rounded-full bg-grayscale-500" />
-                </div>
-
-                {/* Received Message */}
-                <div className="flex gap-2">
-                  <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500 flex-shrink-0" />
-                  <div className="flex-1 max-w-[70%]">
-                    <Skeleton className="h-16 w-full rounded-lg bg-grayscale-500" />
-                    <Skeleton className="h-3 w-16 mt-1 bg-grayscale-500" />
-                  </div>
-                </div>
-
-                {/* Sent Message */}
-                <div className="flex gap-2 justify-end">
-                  <div className="flex-1 max-w-[70%]">
-                    <Skeleton className="h-12 w-full rounded-lg bg-grayscale-500 ml-auto" />
-                    <Skeleton className="h-3 w-16 mt-1 ml-auto bg-grayscale-500" />
-                  </div>
-                </div>
-
-                {/* Another Received Message */}
-                <div className="flex gap-2">
-                  <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500 flex-shrink-0" />
-                  <div className="flex-1 max-w-[70%]">
-                    <Skeleton className="h-20 w-full rounded-lg bg-grayscale-500" />
-                    <Skeleton className="h-3 w-16 mt-1 bg-grayscale-500" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Input Section */}
-              <div className="border-t p-4">
-                <div className="flex gap-2 items-center">
-                  <Skeleton className="h-10 flex-1 rounded-lg bg-grayscale-500" />
-                  <Skeleton className="h-10 w-10 rounded-lg bg-grayscale-500" />
-                </div>
-              </div>
-            </div>
+            <OrderChatSkeleton />
           ) : (
             <OrderChat
               orderId={orderId}
@@ -691,69 +629,7 @@ export default function OrderDetailsPage() {
               </div>
               <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
                 {isChatLoading ? (
-                  <div className="flex flex-col h-full">
-                    {/* Chat Header */}
-                    <div className="border-b p-4 flex items-center gap-3">
-                      <Skeleton className="h-10 w-10 rounded-full bg-grayscale-500" />
-                      <div className="flex-1">
-                        <Skeleton className="h-5 w-32 mb-1 bg-grayscale-500" />
-                        <Skeleton className="h-3 w-24 bg-grayscale-500" />
-                      </div>
-                    </div>
-
-                    {/* Disclaimer Section */}
-                    <div className="p-4 bg-orange-50 border-b">
-                      <div className="flex gap-2">
-                        <Skeleton className="h-5 w-5 rounded bg-grayscale-500 flex-shrink-0" />
-                        <div className="flex-1 space-y-2">
-                          <Skeleton className="h-3 w-full bg-grayscale-500" />
-                          <Skeleton className="h-3 w-3/4 bg-grayscale-500" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Messages Area */}
-                    <div className="flex-1 p-4 space-y-4 overflow-hidden">
-                      {/* Date Header */}
-                      <div className="flex justify-center">
-                        <Skeleton className="h-6 w-24 rounded-full bg-grayscale-500" />
-                      </div>
-
-                      {/* Received Message */}
-                      <div className="flex gap-2">
-                        <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500 flex-shrink-0" />
-                        <div className="flex-1 max-w-[70%]">
-                          <Skeleton className="h-16 w-full rounded-lg bg-grayscale-500" />
-                          <Skeleton className="h-3 w-16 mt-1 bg-grayscale-500" />
-                        </div>
-                      </div>
-
-                      {/* Sent Message */}
-                      <div className="flex gap-2 justify-end">
-                        <div className="flex-1 max-w-[70%]">
-                          <Skeleton className="h-12 w-full rounded-lg bg-grayscale-500 ml-auto" />
-                          <Skeleton className="h-3 w-16 mt-1 ml-auto bg-grayscale-500" />
-                        </div>
-                      </div>
-
-                      {/* Another Received Message */}
-                      <div className="flex gap-2">
-                        <Skeleton className="h-8 w-8 rounded-full bg-grayscale-500 flex-shrink-0" />
-                        <div className="flex-1 max-w-[70%]">
-                          <Skeleton className="h-20 w-full rounded-lg bg-grayscale-500" />
-                          <Skeleton className="h-3 w-16 mt-1 bg-grayscale-500" />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Input Section */}
-                    <div className="border-t p-4">
-                      <div className="flex gap-2 items-center">
-                        <Skeleton className="h-10 flex-1 rounded-lg bg-grayscale-500" />
-                        <Skeleton className="h-10 w-10 rounded-lg bg-grayscale-500" />
-                      </div>
-                    </div>
-                  </div>
+                  <OrderChatSkeleton />
                 ) : (
                   <OrderChat
                     orderId={orderId}

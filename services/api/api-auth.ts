@@ -167,7 +167,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
  */
 export async function getSession(): Promise<boolean> {
   try {
-    const isOryEnabled = localStorage.getItem("is_ory_enabled") ?? true
+    const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
     const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
