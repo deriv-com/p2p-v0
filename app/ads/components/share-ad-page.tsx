@@ -95,7 +95,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleSaveImage = async () => {
     if (!cardRef.current) return
 
-    tr
+    try {
       await waitForImages(cardRef.current)
 
       const dataUrl = await htmlToImage.toPng(cardRef.current, {
