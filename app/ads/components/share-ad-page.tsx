@@ -160,7 +160,8 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         pixelRatio: isMobile ? 2 : 3,
         backgroundColor: "#ffffff",
       })
-      
+
+      // Convert data URL to blob
       const response = await fetch(dataUrl)
       const blob = await response.blob()
 
@@ -178,8 +179,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         return
       }
 
-      // Fallback to save
-      await handleSaveImage()
+
     } catch (error) {
       console.error("Error sharing image:", error)
       toast({ description: "Failed to share image", variant: "destructive" })
