@@ -115,16 +115,18 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         document.body.removeChild(link)
       }, 100)
 
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-            <span>Image saved successfully</span>
-          </div>
-        ),
-        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
-      })
+      if(!isMobile) {
+        toast({
+          description: (
+            <div className="flex items-center gap-2">
+              <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
+              <span>Image saved successfully</span>
+            </div>
+          ),
+          className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
+          duration: 2500,
+        })
+      }
     } catch (error) {
       if(!isMobile) {
         toast({
