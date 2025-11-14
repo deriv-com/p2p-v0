@@ -126,11 +126,12 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         duration: 2500,
       })
     } catch (error) {
-      console.error("Error saving image:", error)
-      toast({
-        description: "Failed to save image",
-        variant: "destructive",
-      })
+      if(!isMobile) {
+        toast({
+          description: "Failed to save image",
+          variant: "destructive",
+        })
+      }
     }
   }
 
