@@ -16,20 +16,20 @@ describe("OrderChatSkeleton", () => {
     const header = container.querySelector(".border-b")
     expect(header).toBeInTheDocument()
     
-    // Avatar skeleton
+    // Avatar skeleton - check for Skeleton component
     const avatar = container.querySelector(".w-10.h-10.rounded-full")
-    expect(avatar).toHaveClass("bg-grayscale-500", "animate-pulse")
+    expect(avatar).toHaveAttribute("data-slot", "skeleton")
     
-    // Text placeholders in header
-    const headerPlaceholders = header?.querySelectorAll(".bg-grayscale-500.animate-pulse.rounded")
-    expect(headerPlaceholders?.length).toBeGreaterThanOrEqual(2)
+    // Text placeholders in header - check for Skeleton components
+    const skeletons = container.querySelectorAll('[data-slot="skeleton"]')
+    expect(skeletons.length).toBeGreaterThanOrEqual(2)
   })
 
   it("renders disclaimer section skeleton", () => {
     const { container } = render(<OrderChatSkeleton />)
     
     const disclaimer = container.querySelector(".rounded-\\[16px\\].h-\\[120px\\]")
-    expect(disclaimer).toHaveClass("bg-grayscale-500", "animate-pulse")
+    expect(disclaimer).toHaveAttribute("data-slot", "skeleton")
   })
 
   it("renders multiple message skeletons", () => {
@@ -44,7 +44,7 @@ describe("OrderChatSkeleton", () => {
     const { container } = render(<OrderChatSkeleton />)
     
     const dateHeader = container.querySelector(".rounded-full.h-6.w-32")
-    expect(dateHeader).toHaveClass("bg-grayscale-500", "animate-pulse")
+    expect(dateHeader).toHaveAttribute("data-slot", "skeleton")
   })
 
   it("renders input section skeleton", () => {
@@ -52,11 +52,11 @@ describe("OrderChatSkeleton", () => {
     
     // Input field skeleton
     const input = container.querySelector(".h-14.w-full")
-    expect(input).toHaveClass("bg-grayscale-500", "animate-pulse", "rounded-lg")
+    expect(input).toHaveAttribute("data-slot", "skeleton")
     
     // Character count skeleton
     const charCount = container.querySelector(".h-3.w-12")
-    expect(charCount).toHaveClass("bg-grayscale-500", "animate-pulse")
+    expect(charCount).toHaveAttribute("data-slot", "skeleton")
   })
 
   it("applies correct styling to sent vs received message skeletons", () => {
@@ -79,5 +79,13 @@ describe("OrderChatSkeleton", () => {
     // Footer background
     const footer = container.querySelector(".bg-slate-75")
     expect(footer).toBeInTheDocument()
+  })
+
+  it("uses Skeleton component for all placeholder elements", () => {
+    const { container } = render(<OrderChatSkeleton />)
+    
+    const skeletons = container.querySelectorAll('[data-slot="skeleton"]')
+    // Should have header (3), disclaimer (1), date (1), messages (8), input (2) = at least 15
+    expect(skeletons.length).toBeGreaterThanOrEqual(15)
   })
 })
