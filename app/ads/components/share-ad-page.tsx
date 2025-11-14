@@ -198,7 +198,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       <div className="flex flex-col h-full max-w-xl mx-auto">
         <div className="flex items-center justify-end py-[12px] px-4 md:p-6 md:pb-4">
           <Button onClick={onClose} variant="ghost" size="sm" className="bg-grayscale-300 px-1">
-            <img src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+            <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
@@ -210,7 +210,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
             >
               <div className="mb-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <img src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
+                  <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
                 </div>
                 <div className="text-lg font-bold">
                   {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
