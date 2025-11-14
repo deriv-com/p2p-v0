@@ -161,7 +161,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         backgroundColor: "#ffffff",
       })
 
-      // Convert data URL to blob
       const response = await fetch(dataUrl)
       const blob = await response.blob()
 
@@ -179,7 +178,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         return
       }
 
-      // Fallback to save
+
       await handleSaveImage()
     } catch (error) {
       console.error("Error sharing image:", error)
