@@ -23,7 +23,6 @@ export async function getRemoteConfig(): Promise<RemoteConfigResponse> {
 
     if (!response.ok) {
       console.warn(`Failed to fetch remote config: ${response.statusText}`)
-      // Return default config if fetch fails
       return { ory: false }
     }
 
