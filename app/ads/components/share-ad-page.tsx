@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import QRCode from "qrcode"
-import html2canvas from "html2canvas"
+import * as htmlToImage from "html-to-image"
 import type { Ad } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -96,31 +96,18 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     if (!cardRef.current) return
 
     try {
-      const canvas = await html2canvas(cardRef.current, {
+      // Wait for all images to load
+      await waitForImages(cardRef.current)
+
+      // Use html-to-image library
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
         backgroundColor: "#ffffff",
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
       })
-
-      const blob: Blob = await new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              resolve(blob)
-            } else {
-              reject(new Error("Failed to create blob"))
-            }
-          },
-          "image/png",
-          1.0,
-        )
-      })
-
-      const url = URL.createObjectURL(blob)
 
       const link = document.createElement("a")
-      link.href = url
+      link.href = dataUrl
       link.download = `deriv-p2p-ad-${ad.id}.png`
 
       link.style.display = "none"
@@ -129,7 +116,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
       setTimeout(() => {
         document.body.removeChild(link)
-        URL.revokeObjectURL(url)
       }, 100)
 
       toast({
@@ -143,6 +129,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         duration: 2500,
       })
     } catch (error) {
+      console.error("Error saving image:", error)
       toast({
         description: "Failed to save image",
         variant: "destructive",
@@ -151,56 +138,54 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   }
 
   const waitForImages = (element: HTMLElement) => {
-    Promise.all(Array.from(element.querySelectorAll('img')).map(img => {
-      if (img.complete) return Promise.resolve();
-      return new Promise<void>((resolve) => {
-        img.onload = img.onerror = () => resolve();
-      });
-    }));
+    return Promise.all(
+      Array.from(element.querySelectorAll("img")).map((img) => {
+        if (img.complete) return Promise.resolve()
+        return new Promise<void>((resolve) => {
+          img.onload = img.onerror = () => resolve()
+        })
+      }),
+    )
   }
-
 
   const handleShareImage = async () => {
     if (!cardRef.current) return
 
-      await new Promise((r) => setTimeout(r, 300)); 
-      await waitForImages(cardRef.current); // wait for images
+    await new Promise((r) => setTimeout(r, 300))
+    await waitForImages(cardRef.current)
 
-      try {
-        const canvas = await html2canvas(cardRef.current, {
-          backgroundColor: '#ffffff',
-          scale: isMobile ? 1.2 : 2,
-        });
+    try {
+      // Use html-to-image to generate blob
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 0.95,
+        pixelRatio: isMobile ? 2 : 3,
+        backgroundColor: "#ffffff",
+      })
 
-        const blob = await new Promise<Blob>((resolve, reject) => {
-          canvas.toBlob(
-            (blob) => (blob ? resolve(blob) : reject(new Error('Failed to create blob'))),
-            'image/jpeg',
-            0.9,
-          );
-        });
+      // Convert data URL to blob
+      const response = await fetch(dataUrl)
+      const blob = await response.blob()
 
-        const file = new File([blob], `deriv-p2p-ad-${ad.id}.jpg`, {
-          type: 'image/jpeg',
-          lastModified: Date.now(),
-        });
+      const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
+        type: "image/png",
+        lastModified: Date.now(),
+      })
 
-        if (navigator.share && navigator.canShare?.({ files: [file] })) {
-          await navigator.share({
-            title: `${ad.type === 'buy' ? 'Buy' : 'Sell'} ${ad.account_currency} - Deriv P2P`,
-            files: [file],
-          });
-          toast({ description: 'Shared successfully' });
-          return;
-        }
-
-        // Fallback
-        await handleSaveImage();
-      } catch (error) {
-        console.error(error);
-        toast({ description: 'Failed to share image', variant: 'destructive' });
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
+          files: [file],
+        })
+        toast({ description: "Shared successfully" })
+        return
       }
 
+      // Fallback to save
+      await handleSaveImage()
+    } catch (error) {
+      console.error("Error sharing image:", error)
+      toast({ description: "Failed to share image", variant: "destructive" })
+    }
   }
 
   if (isLoading) {
