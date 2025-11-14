@@ -427,7 +427,9 @@ export default function OrderDetailsPage() {
                 <Skeleton className="h-[120px] w-full rounded-lg bg-grayscale-500" />
               </div>
             </div>
-            <OrderChatSkeleton />
+            <div className="hidden lg:block w-full lg:w-1/2 border rounded-lg overflow-hidden flex flex-col h-[600px]">
+              <OrderChatSkeleton />
+            </div>
           </div>
         ) : (
           <div className="flex flex-col">
