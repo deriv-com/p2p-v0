@@ -177,8 +177,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
       await handleSaveImage()
     } catch (error) {
-
-      toast({ description: "Failed to share image", variant: "destructive" })
+      console.log(error)
     }
   }
 
