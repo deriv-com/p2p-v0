@@ -17,12 +17,11 @@ export default function OrderChatSkeleton() {
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {/* Date Header Skeleton */}
+         
           <div className="flex justify-center my-4">
             <Skeleton className="h-6 w-32 rounded-full" />
           </div>
 
-          {/* Message Skeleton - Received */}
           <div className="flex justify-start">
             <div className="max-w-[80%] space-y-2">
               <Skeleton className="h-16 w-64" />
@@ -30,7 +29,6 @@ export default function OrderChatSkeleton() {
             </div>
           </div>
 
-          {/* Message Skeleton - Sent */}
           <div className="flex justify-end">
             <div className="max-w-[80%] space-y-2">
               <Skeleton className="h-16 w-48" />
@@ -38,7 +36,6 @@ export default function OrderChatSkeleton() {
             </div>
           </div>
 
-          {/* Message Skeleton - Received */}
           <div className="flex justify-start">
             <div className="max-w-[80%] space-y-2">
               <Skeleton className="h-20 w-56" />
@@ -46,7 +43,6 @@ export default function OrderChatSkeleton() {
             </div>
           </div>
 
-          {/* Message Skeleton - Sent */}
           <div className="flex justify-end">
             <div className="max-w-[80%] space-y-2">
               <Skeleton className="h-12 w-40" />
