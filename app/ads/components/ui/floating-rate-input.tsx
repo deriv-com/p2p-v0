@@ -92,32 +92,28 @@ export function FloatingRateInput({
               </Button>
             </div>
           </div>
-          {marketPrice && (
-            <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
-              Current market price:{" "}
-              <span>
-                {marketPrice.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                {currency}
-              </span>
-            </div>
-          )}
+          <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
+            Current market price:{" "}
+            <span>
+              {marketPrice?.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              {currency}
+            </span>
+          </div>
         </div>
       </div>
-      {yourPrice && (
-        <div className="flex items-center justify-between text-xs">
-          <span className="text-grayscale-text-muted">Your rate:</span>
-          <span className="text-slate-1200">
-            {yourPrice.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}{" "}
-            <span className="text-xs font-normal">{currency}</span>
-          </span>
-        </div>
-      )}
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-grayscale-text-muted">Your rate:</span>
+        <span className="text-slate-1200">
+          {yourPrice?.toLocaleString(undefined, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}{" "}
+          <span className="text-xs font-normal">{currency}</span>
+        </span>
+      </div>
     </div>
   )
 }
