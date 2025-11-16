@@ -419,6 +419,8 @@ export default function AdDetailsForm({
                 </Select>
               </div>
             </div>
+
+            <div className="border-b border-grayscale-200 mt-6"></div>
           </div>
         )}
 
