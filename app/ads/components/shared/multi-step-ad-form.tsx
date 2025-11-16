@@ -182,6 +182,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               buyCurrency: data.account_currency,
               priceType: data.exchange_rate_type,
               floatingRate: data.floating_rate || "",
+              exchangeRateType: data.exchange_rate_type
             }
 
             setFormData(formattedData)
