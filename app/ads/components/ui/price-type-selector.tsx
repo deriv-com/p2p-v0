@@ -44,7 +44,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         className={`flex items-start justify-between p-4 rounded-lg cursor-pointer transition-colors bg-grayscale-500 ${
           value === "fixed"
             ? "border-black"
-            : "border-gray-200"
+            : "border-grayscale-500"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
@@ -61,7 +61,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         className={`flex items-start justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
           value === "float"
             ? "border-black"
-            : "border-gray-200"
+            : "border-grayscale-5"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
