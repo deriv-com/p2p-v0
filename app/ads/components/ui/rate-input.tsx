@@ -81,11 +81,11 @@ export function RateInput({
         {currency}
         </div>
       </div>
-      {yourPrice && (
+      {value && (
         <div className="flex items-center justify-between text-xs">
           <span className="text-grayscale-text-muted">Your rate:</span>
           <span className="text-slate-1200">
-            {yourPrice.toLocaleString(undefined, {
+            {value.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}{" "}
