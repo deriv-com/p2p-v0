@@ -555,7 +555,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           accountCurrency={ad.account_currency}
           paymentCurrency={ad.payment_currency}
           oldRate={ad.effective_rate_display}
-          newRate={marketRate || ad.effective_rate_display}
+          newRate={marketRate}
         />
       )}
     </>
