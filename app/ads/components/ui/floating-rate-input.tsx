@@ -105,22 +105,20 @@ export function FloatingRateInput({
               </Button>
             </div>
           </div>
+          {marketPrice && (
+            <div className="text-sm text-grayscale-100">
+              Current market price:{" "}
+              <span className="font-semibold">
+                {marketPrice.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                {currency}
+              </span>
+            </div>
+          )}
         </div>
       </div>
-
-      {marketPrice && (
-        <div className="text-sm text-grayscale-100">
-          Curren:{" "}
-          <span className="font-semibold">
-            {marketPrice.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}{" "}
-            {currency}
-          </span>
-        </div>
-      )}
-
       {yourPrice && (
         <div className="flex items-center justify-between">
           <span className="text-sm text-grayscale-100">Your price:</span>
