@@ -61,7 +61,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         className={`flex items-start justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
           value === "float"
             ? "border-black"
-            : "border-grayscale-5"
+            : "border-grayscale-500"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
