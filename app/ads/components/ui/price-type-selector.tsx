@@ -41,7 +41,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
     <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled} className="space-y-4 p-4">
       <Label
         htmlFor="fixed"
-        className={`flex items-start justify-between p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+        className={`flex items-start justify-between p-4 rounded-lg cursor-pointer transition-colors ${
           value === "fixed"
             ? "border-black bg-white"
             : "border-gray-200 bg-gray-50 hover:bg-gray-100"
