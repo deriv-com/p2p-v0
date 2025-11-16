@@ -269,7 +269,7 @@ export default function AdDetailsForm({
         type,
         totalAmount: Number.parseFloat(totalAmount) || 0,
         fixedRate: priceType === "fixed" ? Number.parseFloat(fixedRate) || 0 : undefined,
-        floatingRate: priceType === "floating" ? Number.parseFloat(floatingRate) || 0 : undefined,
+        floatingRate: priceType === "floa" ? Number.parseFloat(floatingRate) || 0 : undefined,
         priceType,
         minAmount: Number.parseFloat(minAmount) || 0,
         maxAmount: Number.parseFloat(maxAmount) || 0,
