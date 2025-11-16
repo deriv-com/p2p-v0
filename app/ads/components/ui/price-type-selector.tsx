@@ -84,7 +84,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
           <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
           <DrawerContent>
             <div className="px-4 pb-6">
-              <div className="pt-4 pb-2">
+              <div className="py-4">
                 <h3 className="text-lg font-bold">Rate type</h3>
               </div>
               {content}
