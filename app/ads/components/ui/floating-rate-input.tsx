@@ -84,7 +84,7 @@ export function FloatingRateInput({
               />
             </div>
 
-            <div className="flex items-center gap-2 px-3 bg-white border-l">
+            <div className="flex items-center gap-2 px-3 bg-white ">
               <Button type="button" onClick={handleDecrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
                 <Image src="/icons/subtract-icon.png" alt="Filter" width={16} height={16} />
               </Button>
