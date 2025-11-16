@@ -16,7 +16,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
 
   return (
     <div className="space-y-4">
-      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
+      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Rate Type</h3>
 
       <Select
         value={value}
