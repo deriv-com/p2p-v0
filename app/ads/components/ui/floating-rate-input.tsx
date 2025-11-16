@@ -88,7 +88,7 @@ export function FloatingRateInput({
                 <Image src="/icons/minus.svg" alt="Decrement" />
               </Button>
               <Button type="button" onClick={handleIncrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/plus.svg" alt="In" />
+                <Image src="/icons/plus.svg" alt="Increment" />
               </Button>
             </div>
           </div>
