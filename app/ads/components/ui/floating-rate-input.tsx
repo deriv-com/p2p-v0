@@ -83,15 +83,6 @@ export function FloatingRateInput({
                 variant="floating"
                 className="pr-8 border-0"
               />
-              <label
-                className={cn(
-                  "absolute left-3 pointer-events-none transition-all duration-200",
-                  showFloating ? "text-xs top-2 px-1" : "text-sm top-1/2 -translate-y-1/2",
-                  error ? "text-red-500" : "text-black/70",
-                )}
-              >
-                {label}
-              </label>
             </div>
 
             <div className="flex items-center gap-2 px-3 bg-white border-l">
