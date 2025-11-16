@@ -85,7 +85,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
           <DrawerContent>
             <div className="px-4 pb-6">
               <div className="py-4">
-                <h3 className="text-lg font-bold text-center">Rate type</h3>
+                <h3 className="text-xl font-bold text-center">Rate type</h3>
               </div>
               {content}
             </div>
