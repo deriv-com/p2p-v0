@@ -83,7 +83,7 @@ export function FloatingRateInput({
                 placeholder=""
                 aria-invalid={error}
                 variant="floating"
-                className="pr-8"
+                className="pr-8 border-0"
               />
               <label
                 className={cn(
