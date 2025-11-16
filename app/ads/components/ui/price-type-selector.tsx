@@ -5,6 +5,8 @@ import Image from "next/image"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 export type PriceType = "fixed" | "float"
@@ -36,15 +38,14 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
   )
 
   const content = (
-    <div className="space-y-4 p-4">
-      <Button
-        onClick={() => handleSelect("fixed")}
-        disabled={disabled}
-        className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
+    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled} className="space-y-4 p-4">
+      <Label
+        htmlFor="fixed"
+        className={`flex items-start justify-between p-4 rounded-lg border-2 cursor-pointer transition-colors ${
           value === "fixed"
             ? "border-black bg-white"
             : "border-gray-200 bg-gray-50 hover:bg-gray-100"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
           <div className="text-base font-semibold mb-1">Fixed</div>
@@ -52,27 +53,16 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
             Set a constant price, unaffected by market fluctuations.
           </div>
         </div>
-        <div className="ml-4 mt-1">
-          <div
-            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-              value === "fixed" ? "border-black" : "border-gray-400"
-            }`}
-          >
-            {value === "fixed" && (
-              <div className="w-3 h-3 rounded-full bg-black" />
-            )}
-          </div>
-        </div>
-      </Button>
+        <RadioGroupItem value="fixed" id="fixed" className="mt-1 ml-4 h-6 w-6" />
+      </Label>
 
-      <Button
-        onClick={() => handleSelect("float")}
-        disabled={disabled}
-        className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
+      <Label
+        htmlFor="float"
+        className={`flex items-start justify-between p-4 rounded-lg border-2 cursor-pointer transition-colors ${
           value === "float"
             ? "border-black bg-white"
             : "border-gray-200 bg-gray-50 hover:bg-gray-100"
-        } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+        } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
         <div className="text-left flex-1">
           <div className="text-base font-semibold mb-1">Floating</div>
@@ -80,19 +70,9 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
             Set a rate that changes with market movements.
           </div>
         </div>
-        <div className="ml-4 mt-1">
-          <div
-            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-              value === "float" ? "border-black" : "border-gray-400"
-            }`}
-          >
-            {value === "float" && (
-              <div className="w-3 h-3 rounded-full bg-black" />
-            )}
-          </div>
-        </div>
-      </Button>
-    </div>
+        <RadioGroupItem value="float" id="float" className="mt-1 ml-4 h-6 w-6" />
+      </Label>
+    </RadioGroup>
   )
 
   return (
