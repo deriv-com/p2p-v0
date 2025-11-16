@@ -66,10 +66,10 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
       </Button>
 
       <Button
-        onClick={() => handleSelect("floating")}
+        onClick={() => handleSelect("float")}
         disabled={disabled}
         className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
-          value === "floating"
+          value === "float"
             ? "border-black bg-white"
             : "border-gray-200 bg-gray-50 hover:bg-gray-100"
         } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
@@ -83,10 +83,10 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         <div className="ml-4 mt-1">
           <div
             className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
-              value === "floating" ? "border-black" : "border-gray-400"
+              value === "float" ? "border-black" : "border-gray-400"
             }`}
           >
-            {value === "floating" && (
+            {value === "float" && (
               <div className="w-3 h-3 rounded-full bg-black" />
             )}
           </div>
