@@ -588,12 +588,7 @@ export default function BuySellPage() {
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
                             <div className="font-bold text-base flex items-center">
-                              {ad.effective_rate_display
-                                ? ad.effective_rate_display.toLocaleString(undefined, {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  })
-                                : ""}{" "}
+                              {ad.effective_rate_display}{" "}
                               {ad.payment_currency}
                               <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
                             </div>
