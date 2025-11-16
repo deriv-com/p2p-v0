@@ -85,10 +85,10 @@ export function FloatingRateInput({
 
             <div className="flex items-center gap-2 px-3 bg-white">
               <Button type="button" onClick={handleDecrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/minus.svg" alt="Filter" width={16} height={16} />
+                <Image src="/icons/minus.svg" alt="Decrement" />
               </Button>
               <Button type="button" onClick={handleIncrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/plus.svg" alt="Filter" width={16} height={16} />
+                <Image src="/icons/plus.svg" alt="In" />
               </Button>
             </div>
           </div>
