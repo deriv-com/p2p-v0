@@ -475,7 +475,7 @@ export default function AdDetailsForm({
             {priceType === "fixed" && <div className="flex items-center justify-between text-xs mt-4">
               <span className="text-grayscale-text-muted">Your rate:</span>
               <span className="text-slate-1200">
-                {value?.toLocaleString(undefined, {
+                {fixedRate?.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}{" "}
