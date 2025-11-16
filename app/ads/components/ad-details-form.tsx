@@ -500,7 +500,7 @@ export default function AdDetailsForm({
                 <div className="flex items-center justify-between text-xs ">
                   <span className="text-grayscale-text-muted">Highest rate in market:</span>
                   <span className="text-slate-1200">
-                    {priceRange?.highestPrice.toLocaleString(undefined, {
+                    {priceRange?.highestPrice?.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}{" "}
