@@ -240,7 +240,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               const availableData = getAvailableAmount(ad)
               const isActive = ad.is_active !== undefined ? ad.is_active : ad.status === "Active"
               const adType = ad.type || "Buy"
-              const rate = ad.effective_rate == "fixed" ? ad.exchange_rate || ad.rate?.value 
+              const rate = ad.effective_rate_display
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
 
               return (
