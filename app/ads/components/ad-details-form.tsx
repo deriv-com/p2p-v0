@@ -10,7 +10,7 @@ import { FloatingRateInput } from "./ui/floating-rate-input"
 import { TradeTypeSelector } from "./ui/trade-type-selector"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccountCurrencies } from "@/hooks/use-account-currencies"
-import { getSettings } from "@/services/api/api-auth"
+import { getAdvertStatistics } from "@/services/api/api-auth"
 import Image from "next/image"
 import { currencyLogoMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -96,25 +96,28 @@ export default function AdDetailsForm({
 
       setIsLoadingPriceRange(true)
       try {
-        const response = await getSettings()
-        const availableAdverts = response.available_adverts || {}
-
-        const adverts = availableAdverts[buyCurrency] || []
-        const matchingAdverts = adverts.filter((advert: any) => advert.payment_currency === forCurrency)
-
-        if (matchingAdverts.length > 0) {
-          const rates = matchingAdverts
-            .map((advert: any) => ({
-              min: advert.minimum_exchange_rate,
-              max: advert.maximum_exchange_rate,
-            }))
-            .filter((rate: any) => rate.min != null && rate.max != null)
-
-          if (rates.length > 0) {
-            const lowestPrice = Math.min(...rates.map((r: any) => r.min))
-            const highestPrice = Math.max(...rates.map((r: any) => r.max))
-            setPriceRange({ lowestPrice, highestPrice })
-            setMarketPrice((lowestPrice + highestPrice) / 2)
+        const response = await getAdvertStatistics(buyCurrency)
+        
+        // Extract rates based on price type and payment currency
+        const advertStats = response || {}
+        const currencyStats = advertStats[forCurrency]
+        
+        if (currencyStats) {
+          const typeStats = priceType === "fixed" ? currencyStats.fixed : currencyStats.floating
+          
+          if (typeStats) {
+            const lowestPrice = typeStats.minimum_exchange_rate
+            const highestPrice = typeStats.maximum_exchange_rate
+            
+            setPriceRange({ 
+              lowestPrice: lowestPrice !== null ? lowestPrice : null, 
+              highestPrice: highestPrice !== null ? highestPrice : null 
+            })
+            
+            // Set market price as average if both values exist
+            if (lowestPrice !== null && highestPrice !== null) {
+              setMarketPrice((lowestPrice + highestPrice) / 2)
+            }
           } else {
             setPriceRange({ lowestPrice: null, highestPrice: null })
             setMarketPrice(null)
@@ -133,7 +136,7 @@ export default function AdDetailsForm({
     }
 
     fetchPriceRange()
-  }, [buyCurrency, forCurrency])
+  }, [buyCurrency, forCurrency, priceType])
 
   useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
@@ -354,9 +357,8 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg"
-                              }
+                               || "/placeholder.svg"}
                               alt={`${currency.code} logo`}
                               width={20}
                               height={20}
@@ -400,10 +402,8 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg"
-                              }
+                               || "/placeholder.svg"}
                               alt={`${currency.code} logo`}
                               width={20}
                               height={20}
