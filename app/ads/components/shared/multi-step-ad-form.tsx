@@ -180,7 +180,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               instructions: data.description || "",
               forCurrency: data.payment_currency,
               buyCurrency: data.account_currency,
-              priceType: data.exchange_rate_type || "fixed",
+              priceType: data.exchange_rate_type,
               floatingRate: data.floating_rate || "",
             }
 
