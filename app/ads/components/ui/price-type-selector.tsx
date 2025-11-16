@@ -58,7 +58,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
 
       <Label
         htmlFor="float"
-        className={`flex items-start justify-between p-4 rounded-lg border-2 cursor-pointer transition-colors ${
+        className={`flex items-start justify-between p-4 rounded-lg border cursor-pointer transition-colors ${
           value === "float"
             ? "border-black bg-white"
             : "border-gray-200 bg-gray-50 hover:bg-gray-100"
