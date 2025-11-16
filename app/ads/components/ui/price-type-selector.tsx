@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 
-export type PriceType = "fixed" | "floating"
+export type PriceType = "fixed" | "float"
 
 interface PriceTypeSelectorProps {
   value: PriceType
