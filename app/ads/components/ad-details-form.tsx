@@ -46,7 +46,7 @@ export default function AdDetailsForm({
   const [priceType, setPriceType] = useState<"fixed" | "float">(initialData?.priceType || "fixed")
   const [totalAmount, setTotalAmount] = useState(initialData?.totalAmount?.toString() || "")
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
-  const [floatingRate, setFloatingRate] = useState(initialData?.floatingRate?.toString() || "")
+  const [floatingRate, setFloatingRate] = useState(initialData?.floatingRate?.toString() || "0.01")
   const [minAmount, setMinAmount] = useState(initialData?.minAmount?.toString() || "")
   const [maxAmount, setMaxAmount] = useState(initialData?.maxAmount?.toString() || "")
   const [buyCurrency, setBuyCurrency] = useState(initialData?.buyCurrency?.toString() || "USD")
