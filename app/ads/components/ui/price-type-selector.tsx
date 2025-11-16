@@ -1,7 +1,6 @@
 "use client"
 
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 export type PriceType = "fixed" | "floating"
@@ -17,28 +16,23 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
 
   return (
     <div className="space-y-4">
-     <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
+      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.priceType")}</h3>
 
-      <RadioGroup
+      <Select
         value={value}
         onValueChange={(val) => onChange(val as PriceType)}
         disabled={disabled}
-        className="flex gap-8"
       >
-        <div className="flex items-center space-x-3">
-          <RadioGroupItem value="fixed" id="fixed-price" className="border-grayscale-100 text-black" />
-          <Label htmlFor="fixed-price" className="text-sm font-normal cursor-pointer text-grayscale-100">
-            Fixed Price
-          </Label>
-        </div>
-
-        <div className="flex items-center space-x-3">
-          <RadioGroupItem value="float" id="floating-price" className="border-grayscale-100 text-black" />
-          <Label htmlFor="floating-price" className="text-sm font-normal cursor-pointer text-grayscale-100">
-            Floating Price
-          </Label>
-        </div>
-      </RadioGroup>
+        <SelectTrigger className="w-full md:w-64 h-14 rounded-lg">
+          <SelectValue placeholder="Select price type">
+            {value === "fixed" ? "Fixed Price" : "Floating Price"}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="fixed">Fixed Price</SelectItem>
+          <SelectItem value="floating">Floating Price</SelectItem>
+        </SelectContent>
+      </Select>
     </div>
   )
 }
