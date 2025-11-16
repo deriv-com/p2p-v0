@@ -14,8 +14,6 @@ interface FloatingRateInputProps {
   label?: string
   currency?: string
   marketPrice?: number
-  highestPrice?: number
-  lowestPrice?: number
 }
 
 export function FloatingRateInput({
@@ -26,8 +24,6 @@ export function FloatingRateInput({
   label = "Rate",
   currency = "IDR",
   marketPrice,
-  highestPrice,
-  lowestPrice
 }: FloatingRateInputProps) {
   const [isFocused, setIsFocused] = useState(false)
 
