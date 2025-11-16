@@ -83,8 +83,8 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         <Drawer open={open} onOpenChange={setOpen}>
           <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
           <DrawerContent>
-            <div className="pb-6">
-              <div className="px-4 pt-4 pb-2">
+            <div className="px-4 pb-6">
+              <div className="pt-4 pb-2">
                 <h3 className="text-lg font-bold">Rate type</h3>
               </div>
               {content}
