@@ -281,7 +281,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               {t("myAds.rate")}:
                             </span>
                             <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
-                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 px-2">{exchangeRate}</span>
+                            {exchangeRateType == "float" && <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 px-2">{exchangeRate}</span>}
                           </div>
                         )}
                       </div>
@@ -301,6 +301,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
                         <span className="text-xs leading-5 text-gray-900">{rate}</span>
+                        {exchangeRateType == "float" && <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 px-2">{exchangeRate}</span>}
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
