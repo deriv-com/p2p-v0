@@ -465,8 +465,6 @@ export default function AdDetailsForm({
                   label="Rate"
                   currency={forCurrency}
                   marketPrice={marketPrice || undefined}
-                  highestPrice={priceRange.highestPrice || undefined}
-                  lowestPrice={priceRange.lowestPrice || undefined}
                 />
               )}
             </div>
