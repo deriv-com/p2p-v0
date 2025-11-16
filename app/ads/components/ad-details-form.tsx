@@ -468,37 +468,6 @@ export default function AdDetailsForm({
                   highestPrice={priceRange.highestPrice || undefined}
                 />
               )}
-              <div>
-                <CurrencyInput
-                  value={totalAmount}
-                  onValueChange={(value) => {
-                    if (value === "") {
-                      setTotalAmount("")
-                      setTouched((prev) => ({ ...prev, totalAmount: true }))
-                      return
-                    }
-
-                    const decimalConstraints = getDecimalConstraints(buyCurrency)
-                    if (decimalConstraints) {
-                      const decimalPlaces = getDecimalPlaces(value)
-                      if (decimalPlaces > decimalConstraints.maximum) {
-                        return
-                      }
-                    }
-
-                    setTotalAmount(value)
-                    setTouched((prev) => ({ ...prev, totalAmount: true }))
-                  }}
-                  onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
-                  placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
-                  isEditMode={isEditMode}
-                  error={touched.totalAmount && !!formErrors.totalAmount}
-                  currency={buyCurrency}
-                />
-                {touched.totalAmount && formErrors.totalAmount && (
-                  <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
-                )}
-              </div>
             </div>
           </div>
 
@@ -550,6 +519,37 @@ export default function AdDetailsForm({
 
         <div>
           <h3 className="text-base font-bold leading-6 tracking-normal mb-4">{t("adForm.transactionLimit")}</h3>
+          <div>
+            <CurrencyInput
+              value={totalAmount}
+              onValueChange={(value) => {
+                if (value === "") {
+                  setTotalAmount("")
+                  setTouched((prev) => ({ ...prev, totalAmount: true }))
+                  return
+                }
+
+                const decimalConstraints = getDecimalConstraints(buyCurrency)
+                if (decimalConstraints) {
+                  const decimalPlaces = getDecimalPlaces(value)
+                  if (decimalPlaces > decimalConstraints.maximum) {
+                    return
+                  }
+                }
+
+                setTotalAmount(value)
+                setTouched((prev) => ({ ...prev, totalAmount: true }))
+              }}
+              onBlur={() => setTouched((prev) => ({ ...prev, totalAmount: true }))}
+              placeholder={type === "sell" ? t("adForm.sellQuantity") : t("adForm.buyQuantity")}
+              isEditMode={isEditMode}
+              error={touched.totalAmount && !!formErrors.totalAmount}
+              currency={buyCurrency}
+            />
+            {touched.totalAmount && formErrors.totalAmount && (
+              <p className="text-destructive text-xs mt-1">{formErrors.totalAmount}</p>
+            )}
+          </div>
           <div className="flex flex-col md:flex-row md:items-center gap-4">
             <div>
               <CurrencyInput
