@@ -56,7 +56,6 @@ export default function AdDetailsForm({
   const [touched, setTouched] = useState({
     totalAmount: false,
     fixedRate: false,
-    floatingRate: false,
     minAmount: false,
     maxAmount: false,
   })
