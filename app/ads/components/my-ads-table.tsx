@@ -281,7 +281,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               {t("myAds.rate")}:
                             </span>
                             <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
-                            <span className="text-xs text-grayscale-600">{exchangeRate}</span>
+                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 px-2">{exchangeRate}</span>
                           </div>
                         )}
                       </div>
