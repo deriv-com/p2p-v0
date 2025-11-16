@@ -440,7 +440,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1400">
-                      {marketRate || ad.effective_rate_display}{" "}
+                      {ad.effective_rate_display}{" "}
                       {ad.payment_currency}
                       <span> /{ad.account_currency}</span>
                     </span>
