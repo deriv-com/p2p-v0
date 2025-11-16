@@ -22,7 +22,6 @@ export function FloatingRateInput({
   onChange,
   onBlur,
   error = false,
-  label = "Rate",
   currency = "IDR",
   marketPrice,
 }: FloatingRateInputProps) {
