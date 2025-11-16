@@ -31,7 +31,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
       className="w-full h-14 rounded-lg justify-between text-base font-normal"
     >
       <span>{value === "fixed" ? "Fixed" : "Floating"}</span>
-      <ChevronDown className="h-4 w-4 opacity-50" />
+      <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
     </Button>
   )
 
