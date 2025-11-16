@@ -81,7 +81,7 @@ export function FloatingRateInput({
                 variant="floating"
                 className="pr-8 border-0"
                 label="Rate"
-                readonly
+                readOnly
               />
             </div>
 
