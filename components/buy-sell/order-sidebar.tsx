@@ -2,8 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
+import { useRouter } from 'next/navigation'
+import { ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -17,6 +17,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -146,6 +147,29 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userData = useUserDataStore((state) => state.userData)
+  const { joinExchangeRatesChannel, leaveExchangeRatesChannel, requestExchangeRate, subscribe, isConnected } =
+    useWebSocketContext()
+  const [marketRate, setMarketRate] = useState<number | null>(null)
+
+  useEffect(() => {
+    if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
+      joinExchangeRatesChannel(ad.payment_currency, ad.account_currency)
+      const timer = setTimeout(() => {
+        requestExchangeRate(ad.payment_currency, ad.account_currency)
+      }, 100)
+      const unsubscribe = subscribe((data) => {
+        const expectedChannel = `exchange_rates/${ad.payment_currency}/${ad.account_currency}`
+        if (data.channel === expectedChannel && data.payload?.rate) {
+          setMarketRate(data.payload.rate)
+        }
+      })
+      return () => {
+        clearTimeout(timer)
+        leaveExchangeRatesChannel(ad.payment_currency, ad.account_currency)
+        unsubscribe()
+      }
+    }
+  }, [isOpen, ad, isConnected])
 
   useEffect(() => {
     if (isOpen) {
@@ -416,7 +440,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-slate-500">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1400">
-                      {ad.effective_rate_display}{" "}
+                      {marketRate || ad.effective_rate_display}{" "}
                       {ad.payment_currency}
                       <span> /{ad.account_currency}</span>
                     </span>
