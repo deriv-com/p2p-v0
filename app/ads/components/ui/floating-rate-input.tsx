@@ -80,7 +80,7 @@ export function FloatingRateInput({
                 aria-invalid={error}
                 variant="floating"
                 className="pr-8 border-0"
-                label=""
+                label="Rate"
               />
             </div>
 
