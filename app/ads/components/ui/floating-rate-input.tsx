@@ -78,7 +78,7 @@ export function FloatingRateInput({
                 onFocus={() => setIsFocused(true)}
                 placeholder=""
                 aria-invalid={error}
-                className="pr-8 border-0 h-[56px]"
+                className="pr-8 border-0 h-[56px] mb-4"
                 readOnly
               />
             </div>
