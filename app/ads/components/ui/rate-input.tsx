@@ -80,7 +80,7 @@ export function RateInput({
         <div className="flex items-center justify-center bg-gray-50 px-4 text-gray-500 min-w-[80px] text-center">
         {currency}
         </div>
-      </di
+      </div>
     </div>
   )
 }
