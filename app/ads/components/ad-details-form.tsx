@@ -165,7 +165,7 @@ export default function AdDetailsForm({
     if (initialData) {
       if (initialData.type) setType(initialData.type as "buy" | "sell")
       if (initialData.totalAmount !== undefined) setTotalAmount(initialData.totalAmount.toString())
-      if (initialData.exchangeRateType !== undefined) setPriceType(initialData.exchangeRateType.toString())
+      if (initialData.priceType !== undefined) setPriceType(initialData.priceType.toString())
       if (initialData.fixedRate !== undefined) setFixedRate(initialData.fixedRate.toString())
       if (initialData.floatingRate !== undefined) setFloatingRate(initialData.floatingRate.toString())
       if (initialData.minAmount !== undefined) setMinAmount(initialData.minAmount.toString())
