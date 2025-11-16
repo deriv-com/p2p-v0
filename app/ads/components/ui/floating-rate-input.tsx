@@ -123,7 +123,7 @@ export function FloatingRateInput({
       </div>
       {yourPrice && (
         <div className="flex items-center justify-between text-xs">
-          <span className="text-grayscale-text-muted">Your price:</span>
+          <span className="text-grayscale-text-muted">Your rate:</span>
           <span className="text-slate-1200">
             {yourPrice.toLocaleString(undefined, {
               minimumFractionDigits: 2,
