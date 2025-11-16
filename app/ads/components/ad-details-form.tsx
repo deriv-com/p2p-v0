@@ -373,7 +373,7 @@ export default function AdDetailsForm({
               </div>
 
               <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">{type === "buy" ? "" : "Receive in"}</label>
+                <label className="block mb-2 text-black text-sm font-normal leading-5">{type === "buy" ? "Paying with" : "Receive in"}</label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>
