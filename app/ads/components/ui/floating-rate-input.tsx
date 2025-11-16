@@ -12,7 +12,6 @@ interface FloatingRateInputProps {
   onChange: (value: string) => void
   onBlur?: () => void
   error?: boolean
-  label?: string
   currency?: string
   marketPrice?: number
 }
@@ -86,7 +85,7 @@ export function FloatingRateInput({
 
             <div className="flex items-center gap-2 px-3 bg-white border-l">
               <Button type="button" onClick={handleDecrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
-                <Image src="/icons/add-icon.png" alt="Filter" width={16} height={16} />
+                <Image src="/icons/subtract-icon.png" alt="Filter" width={16} height={16} />
               </Button>
               <Button type="button" onClick={handleIncrement} variant="ghost" size="sm" className="h-8 w-8 p-0 text-lg">
                 <Image src="/icons/subtract-icon.png" alt="Filter" width={16} height={16} />
