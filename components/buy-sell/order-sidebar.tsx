@@ -255,8 +255,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
             confirmText: t("common.ok"),
             type: "warning",
           })
-        } else if (errorCode === "OrderCreateFailRateSlippage") { 
-        
+        } else if(errorCode === "OrderCreateFailRateSlippage") {
+          showAlert({
+            title: t("order.unableToCreateOrder"),
+            description: t("order.orderCreationError"),
+            confirmText: t("common.ok"),
+            type: "warning",
+          })
         } else {
           showAlert({
             title: t("order.unableToCreateOrder"),
