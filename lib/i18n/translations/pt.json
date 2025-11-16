@@ -486,7 +486,7 @@
     "setPaymentDetails": "Definir detalhes de pagamento",
     "setAdConditions": "Definir condições do anúncio",
     "buyCurrency": "Comprar",
-    "sellCurrency": "Vender moeda",
+    "sellCurrency": "Vender",
     "for": "Por",
     "priceType": "Tipo de preço",
     "ratePerCurrency": "Taxa por {currency}",
