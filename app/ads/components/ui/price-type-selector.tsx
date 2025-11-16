@@ -49,7 +49,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
       >
         <div className="text-left flex-1">
           <div className="text-base mb-1 text-slate-1200">Fixed</div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-grayscale-text-muted">
             Set a constant price, unaffected by market fluctuations.
           </div>
         </div>
@@ -66,7 +66,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
       >
         <div className="text-left flex-1">
           <div className="text-base text-slate-1200 mb-1">Floating</div>
-          <div className="text-sm text-gray-600">
+          <div className="text-sm text-grayscale-text-muted">
             Set a rate that changes with market movements.
           </div>
         </div>
