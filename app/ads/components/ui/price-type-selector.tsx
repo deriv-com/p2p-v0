@@ -37,8 +37,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
 
   const content = (
     <div className="space-y-4 p-4">
-      {/* Fixed Option */}
-      <button
+      <Button
         onClick={() => handleSelect("fixed")}
         disabled={disabled}
         className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
@@ -64,10 +63,9 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
             )}
           </div>
         </div>
-      </button>
+      </Button>
 
-      {/* Floating Option */}
-      <button
+      <Button
         onClick={() => handleSelect("floating")}
         disabled={disabled}
         className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
@@ -93,7 +91,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
             )}
           </div>
         </div>
-      </button>
+      </Button>
     </div>
   )
 
