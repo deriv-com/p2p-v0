@@ -38,7 +38,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
   )
 
   const content = (
-    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled} className="space-y-4">
+    <RadioGroup value={value} onValueChange={handleSelect} disabled={disabled}>
       <Label
         htmlFor="fixed"
         className={`font-normal flex items-center justify-between p-4 rounded-lg cursor-pointer transition-colors bg-grayscale-500 ${
