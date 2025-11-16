@@ -99,7 +99,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
               <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
               <DialogClose> 
                 <Button variant="ghost" className="bg-slate-75">
-                  <Image src="/icons/close-d.png" alt="Arrow" width={24} height={24} className="ml-2" />
+                  <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} className="ml-2" />
                 </Button>
               </DialogClose>
             </DialogHeader>
