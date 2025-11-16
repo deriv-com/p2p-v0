@@ -31,7 +31,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="fixed">Fixed</SelectItem>
-          <SelectItem value="floating">Floating Price</SelectItem>
+          <SelectItem value="floating">Floating</SelectItem>
         </SelectContent>
       </Select>
     </div>
