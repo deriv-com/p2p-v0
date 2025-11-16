@@ -516,7 +516,7 @@ export default function AdDetailsForm({
 
         <div>
           <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">Amount and order limit</h3>
-          <div>
+          <div className="">
             <CurrencyInput
               value={totalAmount}
               onValueChange={(value) => {
