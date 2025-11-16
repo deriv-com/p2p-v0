@@ -76,7 +76,7 @@ export default function RateChangeConfirmation({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-      <DialogContent className="sm:max-w-[600px] p-8 rounded-2xl">
+      <DialogContent className="p-8 rounded-2xl">
         <DialogTitle className="text-2xl font-bold mb-6">Market rate changed</DialogTitle>
         <DialogDescription className="sr-only">
           The exchange rate has changed. Please confirm if you want to proceed with the order.
