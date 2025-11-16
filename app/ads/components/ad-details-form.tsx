@@ -484,25 +484,27 @@ export default function AdDetailsForm({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between text-xs ">
-                <span className="text-grayscale-text-muted">Lowest rate in market:</span>
-                <span className="text-slate-1200">
-                  {priceRange.lowestPrice.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  <span className="text-xs font-normal">{currency}</span>
-                </span>
-              </div>
-              <div className="flex items-center justify-between text-xs ">
-                <span className="text-grayscale-text-muted">Highest rate in market:</span>
-                <span className="text-slate-1200">
-                  {priceRange.highestPrice.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}{" "}
-                  <span className="text-xs font-normal">{currency}</span>
-                </span>
+              <div>
+                <div className="flex items-center justify-between text-xs ">
+                  <span className="text-grayscale-text-muted">Lowest rate in market:</span>
+                  <span className="text-slate-1200">
+                    {priceRange.lowestPrice.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    <span className="text-xs font-normal">{currency}</span>
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-xs ">
+                  <span className="text-grayscale-text-muted">Highest rate in market:</span>
+                  <span className="text-slate-1200">
+                    {priceRange.highestPrice.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    <span className="text-xs font-normal">{currency}</span>
+                  </span>
+                </div>
               </div>
             )}
           </>
