@@ -54,7 +54,6 @@ export function FloatingRateInput({
   }
 
   const showFloating = isFocused || value.length > 0
-
   const ratePercentage = Number.parseFloat(value) || 0
   const yourPrice = marketPrice ? marketPrice * (1 + ratePercentage / 100) : null
 
