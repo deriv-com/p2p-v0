@@ -98,7 +98,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
             <DialogHeader className="flex">
               <DialogTitle className="tracking-normal font-bold text-2xl">Rate type</DialogTitle>
               <DialogClose> 
-                <Button variant="ghost" className="bg-slate-75 min-w-[48px]">
+                <Button variant="ghost" className="bg-slate-75 min-w-[48px] px-">
                   <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
                 </Button>
               </DialogClose>
