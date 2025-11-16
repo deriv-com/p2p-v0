@@ -28,7 +28,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
     <Button
       variant="outline"
       disabled={disabled}
-      className="w-full h-[56px] max-h-[56px] rounded-lg justify-between"
+      className="w-full h-[56px] max-h-[56px] rounded-lg justify-between px-4"
     >
       <span>{value === "fixed" ? "Fixed" : "Floating"}</span>
       <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
