@@ -134,7 +134,7 @@ export function FloatingRateInput({
 
       {highestPrice && (
         <div className="flex items-center justify-between text-xs ">
-          <span className="text-grayscale-text-muted">Highest price in market:</span>
+          <span className="text-grayscale-text-muted">Highest rate in market:</span>
           <span className="text-slate-1200">
             {highestPrice.toLocaleString(undefined, {
               minimumFractionDigits: 2,
