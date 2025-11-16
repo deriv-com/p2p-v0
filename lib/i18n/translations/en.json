@@ -446,7 +446,7 @@
     "for": "For",
     "priceType": "Price type",
     "ratePerCurrency": "Rate per {currency}",
-    "sellQuantity": "Sell quantity",
+    "sellQuantity": "Total sell amount",
     "buyQuantity": "Buy quantity",
     "lowestPrice": "Lowest price:",
     "highestPrice": "Highest price:",
