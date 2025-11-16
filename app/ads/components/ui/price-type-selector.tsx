@@ -92,7 +92,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
           </DrawerContent>
         </Drawer>
       ) : (
-        <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog open={open} onOpenChange={setOpen} className="sm:rounded-4xl">
           <DialogTrigger asChild>{triggerButton}</DialogTrigger>
           <DialogContent className="sm:rounded-4xl">
             <h3 className="text-lg font-bold mb-2">Rate type</h3>
