@@ -24,7 +24,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         disabled={disabled}
         className="w-full"
       >
-        <SelectTrigger className="w-full md:w-64 h-14 rounded-lg">
+        <SelectTrigger className="w-full h-14 rounded-lg">
           <SelectValue placeholder="Select price type">
             {value === "fixed" ? "Fixed" : "Floating"}
           </SelectValue>
