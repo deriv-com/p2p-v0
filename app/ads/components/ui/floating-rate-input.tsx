@@ -120,9 +120,9 @@ export function FloatingRateInput({
         </div>
       </div>
       {yourPrice && (
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-grayscale-text-muted">Your price:</span>
-          <span className="text-base font-bold">
+        <div className="flex items-center justify-between text-xs">
+          <span className="text-grayscale-text-muted">Your price:</span>
+          <span className="text-slate-1200">
             {yourPrice.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
@@ -133,9 +133,9 @@ export function FloatingRateInput({
       )}
 
       {highestPrice && (
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-grayscale-text-muted">Highest price in market:</span>
-          <span className="text-base font-bold">
+        <div className="flex items-center justify-between text-xs ">
+          <span className="text-grayscale-text-muted">Highest price in market:</span>
+          <span className="text-slate-1200">
             {highestPrice.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
