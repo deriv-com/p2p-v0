@@ -43,7 +43,7 @@ export default function AdDetailsForm({
 }: AdDetailsFormProps) {
   const { t } = useTranslations()
   const [type, setType] = useState<"buy" | "sell">(initialData?.type || "buy")
-  const [priceType, setPriceType] = useState<"fixed" | "floating">("fixed")
+  const [priceType, setPriceType] = useState<"fixed" | "float">("fixed")
   const [totalAmount, setTotalAmount] = useState(initialData?.totalAmount?.toString() || "")
   const [fixedRate, setFixedRate] = useState(initialData?.fixedRate?.toString() || "")
   const [floatingRate, setFloatingRate] = useState("0.01")
