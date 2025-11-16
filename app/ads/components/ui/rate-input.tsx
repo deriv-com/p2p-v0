@@ -84,13 +84,12 @@ export function RateInput({
       
       <div className="flex items-center justify-between text-xs mt-4">
         <span className="text-grayscale-text-muted">Your rate:</span>
-        {value && (<span className="text-slate-1200">
+        <span className="text-slate-1200">
           {value.toLocaleString(undefined, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}{" "}
           <span className="text-xs font-normal">{currency}</span>
-          )}
         </span>
       </div>
     </div>
