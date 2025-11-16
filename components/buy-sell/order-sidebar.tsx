@@ -18,6 +18,7 @@ import { useIsMobile } from "@/lib/hooks/use-is-mobile"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
+import { MarketRateChangeDialog } from "./market-rate-change-dialog"
 
 interface OrderSidebarProps {
   isOpen: boolean
@@ -150,6 +151,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const { joinExchangeRatesChannel, leaveExchangeRatesChannel, requestExchangeRate, subscribe, isConnected } =
     useWebSocketContext()
   const [marketRate, setMarketRate] = useState<number | null>(null)
+  const [initialRate, setInitialRate] = useState<number | null>(null)
+  const [showRateChangeDialog, setShowRateChangeDialog] = useState(false)
 
   useEffect(() => {
     if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
@@ -160,7 +163,11 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.payment_currency}/${ad.account_currency}`
         if (data.channel === expectedChannel && data.payload?.rate) {
-          setMarketRate(data.payload.rate)
+          const newRate = data.payload.rate
+          setMarketRate(newRate)
+          if (initialRate === null) {
+            setInitialRate(newRate)
+          }
         }
       })
       return () => {
@@ -169,7 +176,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         unsubscribe()
       }
     }
-  }, [isOpen, ad, isConnected])
+  }, [isOpen, ad, isConnected, initialRate])
 
   useEffect(() => {
     if (isOpen) {
@@ -225,6 +232,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const handleSubmit = async () => {
     if (!ad) return
 
+    if (marketRate && initialRate && marketRate !== initialRate) {
+      setShowRateChangeDialog(true)
+      return
+    }
+
+    await proceedWithOrder()
+  }
+
+  const proceedWithOrder = async () => {
+    if (!ad) return
+
     try {
       setIsSubmitting(true)
       setOrderStatus(null)
@@ -270,6 +288,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       setAmount(null)
       setValidationError(null)
       setTempSelectedPaymentMethods([])
+      setMarketRate(null)
+      setInitialRate(null)
       onClose()
     }, 300)
   }
@@ -352,6 +372,16 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       fetchUserPaymentMethods()
     }
   }, [ad])
+
+  const handleConfirmRateChange = async () => {
+    setShowRateChangeDialog(false)
+    await proceedWithOrder()
+  }
+
+  const handleCancelRateChange = () => {
+    setShowRateChangeDialog(false)
+    setIsSubmitting(false)
+  }
 
   if (!isOpen && !isAnimating) return null
 
@@ -515,6 +545,20 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           )}
         </div>
       </div>
+
+      {ad && marketRate && initialRate && (
+        <MarketRateChangeDialog
+          isOpen={showRateChangeDialog}
+          onConfirm={handleConfirmRateChange}
+          onCancel={handleCancelRateChange}
+          amount={amount || "0"}
+          accountCurrency={ad.account_currency}
+          paymentCurrency={ad.payment_currency}
+          oldRate={initialRate}
+          newRate={marketRate}
+          orderType={orderType}
+        />
+      )}
 
       {showAddPaymentPanel && (
         <AddPaymentMethodPanel
