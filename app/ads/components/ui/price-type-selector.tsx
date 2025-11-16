@@ -60,7 +60,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
         htmlFor="float"
         className={`flex items-start justify-between p-4 rounded-lg border cursor-pointer transition-colors bg-grayscale-500 ${
           value === "float"
-            ? "border-black "
+            ? "border-black"
             : "border-gray-200"
         } ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       >
