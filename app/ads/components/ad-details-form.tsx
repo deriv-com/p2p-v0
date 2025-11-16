@@ -486,32 +486,26 @@ export default function AdDetailsForm({
                 </div>
               </div>
             ) : (
-              priceRange.lowestPrice !== null &&
-              priceRange.highestPrice !== null && (
-                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4 my-4 px-4 py-2 bg-grayscale-500 rounded-lg text-slate-1200">
-                  <div className="flex-1 flex items-center justify-between">
-                    <div className="text-xs">{t("adForm.lowestPrice")}</div>
-                    <div className="text-base font-bold">
-                      {priceRange.lowestPrice.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                      <span className="text-xs font-normal">{forCurrency}</span>
-                    </div>
-                  </div>
-                  <div className="w-full h-[1px] md:w-px md:h-6 bg-grayscale-200" />
-                  <div className="flex-1 flex items-center justify-between">
-                    <div className="text-xs">{t("adForm.highestPrice")}</div>
-                    <div className="text-base font-bold">
-                      {priceRange.highestPrice.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}{" "}
-                      <span className="text-xs font-normal">{forCurrency}</span>
-                    </div>
-                  </div>
-                </div>
-              )
+              <div className="flex items-center justify-between text-xs ">
+                <span className="text-grayscale-text-muted">Lowest rate in market:</span>
+                <span className="text-slate-1200">
+                  {priceRange.lowestPrice.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-xs font-normal">{currency}</span>
+                </span>
+              </div>
+              <div className="flex items-center justify-between text-xs ">
+                <span className="text-grayscale-text-muted">Highest rate in market:</span>
+                <span className="text-slate-1200">
+                  {priceRange.highestPrice.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-xs font-normal">{currency}</span>
+                </span>
+              </div>
             )}
           </>
 
