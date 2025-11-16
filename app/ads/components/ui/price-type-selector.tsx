@@ -77,7 +77,7 @@ export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTy
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-bold leading-6 tracking-normal mb-4">Rate type</h3>
+      <h3 className="text-lg font-bold leading-6 tracking-normal">Rate type</h3>
 
       {isMobile ? (
         <Drawer open={open} onOpenChange={setOpen}>
