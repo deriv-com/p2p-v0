@@ -159,7 +159,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   useEffect(() => {
     if (ad && amount) {
       const numAmount = Number.parseFloat(amount)
-      const exchangeRate = ad.exchange_rate || 0
+      const exchangeRate = ad.effective_rate_display || 0
       const total = numAmount * exchangeRate
       setTotalAmount(total)
 
