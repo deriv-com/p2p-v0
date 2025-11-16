@@ -521,6 +521,9 @@ export async function createP2PUser(): Promise<CreateP2PUserResponse> {
  */
 export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
   try {
+    const queryParams = new URLSearchParams()
+    queryParams.append("account_currency", accountCurrency)
+
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/advert-statistics/${accountCurrency}`, {
       method: "GET",
       credentials: "include",
