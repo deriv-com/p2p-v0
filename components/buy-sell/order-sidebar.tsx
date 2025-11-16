@@ -227,7 +227,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const handleSubmit = async () => {
     if (!ad) return
 
-    if (marketRate && Math.abs(marketRate - ad.effective_rate_display) > 0.01) {
+    if (marketRate && marketRate != ad.effective_rate_display) {
       setShowRateChangeConfirmation(true)
       return
     }
