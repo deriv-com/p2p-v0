@@ -56,7 +56,7 @@ export function RateInput({
             step={step}
             min={min}
             placeholder=""
-            className="w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none text-gray-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="w-full p-4 pt-6 border-0 focus:ring-0 focus:outline-none text-gray-900 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none h-[56px]"
             aria-invalid={error}
           />
 
