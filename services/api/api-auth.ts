@@ -169,7 +169,7 @@ export async function getSession(): Promise<boolean> {
     const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
     const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/session`, {
+    const response = await fetch(sessionUrl, {
       method: "GET",
       credentials: "include",
     })
