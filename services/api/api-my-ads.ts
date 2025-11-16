@@ -240,7 +240,7 @@ export async function getUserAdverts(showInactive?: boolean): Promise<MyAd[]> {
       const status: "Active" | "Inactive" = isActive ? "Active" : "Inactive"
 
       return {
-        ...advert
+        ...advert,
         id: String(advert.id || "0"),
         type: ((advert.type || "buy") as string).toLowerCase() === "buy" ? "Buy" : "Sell",
         rate: {
