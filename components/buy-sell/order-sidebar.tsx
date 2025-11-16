@@ -257,7 +257,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           })
         } else if(errorCode === "OrderCreateFailRateSlippage") {
           showAlert({
-            title: t("order.unableToCreateOrder"),
+            title: "Market rate changed significantly",
             description: t("order.orderCreationError"),
             confirmText: t("common.ok"),
             type: "warning",
