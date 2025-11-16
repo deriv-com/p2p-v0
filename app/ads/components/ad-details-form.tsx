@@ -479,7 +479,7 @@ export default function AdDetailsForm({
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}{" "}
-                <span className="text-xs font-normal">{currency}</span>
+                <span className="text-xs font-normal">{forCurrency}</span>
               </span>
             </div>}
             <div className="flex items-center justify-between text-xs ">
