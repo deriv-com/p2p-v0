@@ -1,7 +1,11 @@
 "use client"
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { useTranslations } from "@/lib/i18n/use-translations"
+import { useState } from "react"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer"
+import { Button } from "@/components/ui/button"
+import { useIsMobile } from "@/hooks/use-mobile"
+import { ChevronDown } from 'lucide-react'
 
 export type PriceType = "fixed" | "floating"
 
@@ -12,28 +16,112 @@ interface PriceTypeSelectorProps {
 }
 
 export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTypeSelectorProps) {
-  const { t } = useTranslations()
+  const [open, setOpen] = useState(false)
+  const isMobile = useIsMobile()
+
+  const handleSelect = (newValue: PriceType) => {
+    onChange(newValue)
+    setOpen(false)
+  }
+
+  const triggerButton = (
+    <Button
+      variant="outline"
+      disabled={disabled}
+      className="w-full h-14 rounded-lg justify-between text-base font-normal"
+    >
+      <span>{value === "fixed" ? "Fixed" : "Floating"}</span>
+      <ChevronDown className="h-4 w-4 opacity-50" />
+    </Button>
+  )
+
+  const content = (
+    <div className="space-y-4 p-4">
+      {/* Fixed Option */}
+      <button
+        onClick={() => handleSelect("fixed")}
+        disabled={disabled}
+        className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
+          value === "fixed"
+            ? "border-black bg-white"
+            : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+        } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+      >
+        <div className="text-left flex-1">
+          <div className="text-base font-semibold mb-1">Fixed</div>
+          <div className="text-sm text-gray-600">
+            Set a constant price, unaffected by market fluctuations.
+          </div>
+        </div>
+        <div className="ml-4 mt-1">
+          <div
+            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+              value === "fixed" ? "border-black" : "border-gray-400"
+            }`}
+          >
+            {value === "fixed" && (
+              <div className="w-3 h-3 rounded-full bg-black" />
+            )}
+          </div>
+        </div>
+      </button>
+
+      {/* Floating Option */}
+      <button
+        onClick={() => handleSelect("floating")}
+        disabled={disabled}
+        className={`w-full p-4 rounded-lg border-2 flex items-start justify-between transition-colors ${
+          value === "floating"
+            ? "border-black bg-white"
+            : "border-gray-200 bg-gray-50 hover:bg-gray-100"
+        } ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
+      >
+        <div className="text-left flex-1">
+          <div className="text-base font-semibold mb-1">Floating</div>
+          <div className="text-sm text-gray-600">
+            Set a rate that changes with market movements.
+          </div>
+        </div>
+        <div className="ml-4 mt-1">
+          <div
+            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+              value === "floating" ? "border-black" : "border-gray-400"
+            }`}
+          >
+            {value === "floating" && (
+              <div className="w-3 h-3 rounded-full bg-black" />
+            )}
+          </div>
+        </div>
+      </button>
+    </div>
+  )
 
   return (
     <div className="space-y-4">
-      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Rate Type</h3>
+      <h3 className="text-base font-bold leading-6 tracking-normal mb-4">Rate type</h3>
 
-      <Select
-        value={value}
-        onValueChange={(val) => onChange(val as PriceType)}
-        disabled={disabled}
-        className="w-full"
-      >
-        <SelectTrigger className="w-full h-14 rounded-lg">
-          <SelectValue placeholder="Select price type">
-            {value === "fixed" ? "Fixed" : "Floating"}
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="fixed">Fixed</SelectItem>
-          <SelectItem value="float">Floating</SelectItem>
-        </SelectContent>
-      </Select>
+      {isMobile ? (
+        <Drawer open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>{triggerButton}</DrawerTrigger>
+          <DrawerContent>
+            <div className="pb-6">
+              <div className="px-4 pt-4 pb-2">
+                <h3 className="text-lg font-bold">Rate type</h3>
+              </div>
+              {content}
+            </div>
+          </DrawerContent>
+        </Drawer>
+      ) : (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>{triggerButton}</DialogTrigger>
+          <DialogContent className="sm:max-w-[500px]">
+            <h3 className="text-lg font-bold mb-2">Rate type</h3>
+            {content}
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   )
 }
