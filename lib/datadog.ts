@@ -31,7 +31,7 @@ export const initDatadog = () => {
 
     datadogRum.init({
       applicationId,
-     // clientToken,
+      clientToken ?? "",
       site: "datadoghq.com",
       service,
       env,
