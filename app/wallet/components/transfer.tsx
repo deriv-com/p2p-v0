@@ -1431,7 +1431,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.from")}</div>
                 {sourceWalletData ? (
                   sourceWalletData.name.includes("P2P") ? (
-                    <div className="relative w-[21px] h-[21px] flex-shrink-0">
+                    <div className="relative w-[21px] h-[21px] flex-shrink-0 mt-1">
                       <Image
                         src="/icons/p2p-black.png"
                         alt="P2P"
@@ -1493,7 +1493,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.to")}</div>
                 {destinationWalletData ? (
                   destinationWalletData.name.includes("P2P") ? (
-                    <div className="relative w-[21px] h-[21px] flex-shrink-0">
+                    <div className="relative w-[21px] h-[21px] flex-shrink-0 mt-1">
                       <Image
                         src="/icons/p2p-black.png"
                         alt="P2P"
