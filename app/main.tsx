@@ -22,6 +22,7 @@ export default function Main({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
+  const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
@@ -122,6 +123,10 @@ export default function Main({
           return
         }
         console.error("Error fetching session data:", error)
+      } finally {
+        if (isMountedRef.current && !abortController.signal.aborted) {
+          setIsCheckingUserStatus(false)
+        }
       }
     }
 
@@ -137,6 +142,10 @@ export default function Main({
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
+  }
+
+  if (isCheckingUserStatus) {
+    return null
   }
 
   if (isDisabled) {
