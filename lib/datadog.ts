@@ -11,7 +11,9 @@ export const initDatadog = () => {
   const service = process.env.NEXT_PUBLIC_DATADOG_SERVICE
   const version = process.env.NEXT_PUBLIC_DATADOG_VERSION
 
-  if (!applicationId || !clientToken) {
+  if (!applicationId || 
+ // !clientToken
+  ) {
     return
   }
 
@@ -29,7 +31,7 @@ export const initDatadog = () => {
 
     datadogRum.init({
       applicationId,
-      clientToken,
+     // clientToken,
       site: "datadoghq.com",
       service,
       env,
