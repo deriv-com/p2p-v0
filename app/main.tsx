@@ -141,6 +141,7 @@ export default function Main({
 
   if (isDisabled) {
     return (
+      <>
         <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
           {isHeaderVisible && <Sidebar className="hidden md:flex" />}
           <div className="flex-1">
@@ -155,6 +156,7 @@ export default function Main({
             <P2PAccessRemoved />
           </main>
         </div>
+      </>
     )
   }
 
