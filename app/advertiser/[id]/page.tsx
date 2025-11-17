@@ -144,6 +144,13 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       const ad = adverts.find(a => a.id == adIdParam)
       if (ad) {
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      } else {
+        showAlert({
+          title: `This ad is unavailable`,
+          description: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
+          confirmText: "OK",
+          type: "warning",
+        })
       }
     }
   }, [adIdParam, adverts, isBlocked])
