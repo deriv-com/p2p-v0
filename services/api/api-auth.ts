@@ -159,7 +159,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       if(data.recovery_link) {
         await fetch(data.recovery_link, {
-          redirect: 'manual',
+          redirect: 'manual'
         })
       
         window.location.href = url
