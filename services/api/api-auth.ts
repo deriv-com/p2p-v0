@@ -137,33 +137,57 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  * Verify token from URL parameter
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
+  const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
+  
   try {
-    const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
+    if(isOryEnabled) {
+      const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
+      const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      const { data } = result
+
+      if(data.recovery_link) {
+        await fetch(data.recovery_link, {
+          redirect: 'manual'
+        })
+      
+        window.location.href = url
+      
+        return data
+      }
+
+      return data
+    } else {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Enable-Session": "true",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      const { data } = result
+
+      return data
     }
-
-    const result = await response.json()
-    const { data } = result
-
-    if(data.recovery_link) {
-      fetch(data.recovery_link, {
-        redirect: 'manual'
-      }).then(res => res.json())
-      .then(data => {
-        window.location.href = url;
-      });
-    }
-
-    return data
   } catch (error) {
     console.error("Token verification error:", error)
     throw new Error("Failed to verify token. Please try again.")
