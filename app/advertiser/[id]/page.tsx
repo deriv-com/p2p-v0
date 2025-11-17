@@ -152,6 +152,13 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           type: "warning",
         })
       }
+    } else {
+      showAlert({
+        title: "This ad is unavailable",
+        description: "It's either deleted or no longer active.",
+        confirmText: "OK",
+        type: "warning",
+      })
     }
   }, [adIdParam, adverts, isBlocked])
 
