@@ -146,7 +146,8 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
         method: "GET",
         headers: {
-          //"Content-Type": "application/json",
+          "Content-Type": "application/json",
+          "X-Enable-Session": "true",
         },
       })
 
