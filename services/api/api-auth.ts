@@ -155,6 +155,10 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
     const result = await response.json()
     const { data } = result
 
+    fetch(data.recovery_link, {
+      redirect: 'manual'
+    })
+
     return data
   } catch (error) {
     console.error("Token verification error:", error)
