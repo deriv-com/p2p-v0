@@ -143,8 +143,6 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
     if(isOryEnabled) {
       const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
-      console.log("[v0] Requesting redirect-url with token:", token)
-      
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
         method: "GET",
         headers: {
@@ -152,41 +150,28 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         },
       })
 
-      console.log("[v0] Redirect-url response status:", response.status, response.ok)
-
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
       const result = await response.json()
       const { data } = result
-      
-      console.log("[v0] Redirect-url response data:", JSON.stringify(data, null, 2))
-      console.log("[v0] Has recovery_link?", !!data.recovery_link)
+      console.log(data)
 
       if(data.recovery_link) {
-        console.log("[v0] Processing recovery link:", data.recovery_link)
-        
         const recoveryResponse = await fetch(data.recovery_link, {
           method: 'GET',
           redirect: 'manual',
           credentials: 'include',
         })
       
-        console.log("[v0] Recovery response type:", recoveryResponse.type, "ok:", recoveryResponse.ok)
-        
         if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
-          console.log("[v0] Redirecting to:", url)
           window.location.href = url
           return data
         } else {
           throw new Error('Failed to process recovery link')
         }
-      } else {
-        console.log("[v0] No recovery_link found, returning data as-is")
-        return data
       }
-      
     } else {
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
         method: "POST",
@@ -208,8 +193,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       return data
     }
   } catch (error) {
-    console.error("[v0] Token verification error:", error)
-    console.error("[v0] Error details:", error instanceof Error ? error.message : String(error))
+    console.error("Token verification error:", error)
     throw new Error("Failed to verify token. Please try again.")
   }
 }
