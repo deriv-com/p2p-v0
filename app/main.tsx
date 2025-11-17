@@ -154,7 +154,7 @@ export default function Main({
           <main className="flex-1 overflow-hidden px-3">
             <P2PAccessRemoved />
           </main>
-        </di
+        </div>
     )
   }
 
