@@ -951,7 +951,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg"
-                                }
+                                 || "/placeholder.svg"}
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -997,7 +997,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg"
-                                }
+                                 || "/placeholder.svg"}
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1012,7 +1012,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg"
-                            }
+                             || "/placeholder.svg"}
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1168,7 +1168,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                 src={
                                   getCurrencyImage(sourceWalletData.name, sourceWalletData.currency) ||
                                   "/placeholder.svg"
-                                }
+                                 || "/placeholder.svg"}
                                 alt={sourceWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1214,7 +1214,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                                 src={
                                   getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                                   "/placeholder.svg"
-                                }
+                                 || "/placeholder.svg"}
                                 alt={destinationWalletData.currency}
                                 width={9}
                                 height={9}
@@ -1229,7 +1229,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg"
-                            }
+                             || "/placeholder.svg"}
                             alt={destinationWalletData.currency}
                             width={24}
                             height={24}
@@ -1418,7 +1418,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
           </h1>
           <div className="relative mb-6 px-2">
             <div
-              className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
+              className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px] relative"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setShowMobileSheet("from")
@@ -1427,7 +1427,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="flex flex-col items-start gap-1 w-10">
+              <div className="absolute top-4 left-6 flex flex-col items-start gap-1 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.from")}</div>
                 {sourceWalletData ? (
                   sourceWalletData.name.includes("P2P") ? (
@@ -1480,7 +1480,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
             </div>
             <div className="h-2"></div>
             <div
-              className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px]"
+              className="bg-grayscale-500 p-4 px-6 flex items-center gap-1 rounded-2xl cursor-pointer h-[100px] relative"
               onClick={() => {
                 if (window.innerWidth < 768) {
                   setShowMobileSheet("to")
@@ -1489,7 +1489,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="flex flex-col items-start gap-1 w-10">
+              <div className="absolute top-4 left-6 flex flex-col items-start gap-1 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.to")}</div>
                 {destinationWalletData ? (
                   destinationWalletData.name.includes("P2P") ? (
@@ -1507,7 +1507,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                             src={
                               getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                               "/placeholder.svg"
-                            }
+                             || "/placeholder.svg"}
                             alt={destinationWalletData.currency}
                             width={9}
                             height={9}
@@ -1522,7 +1522,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                         src={
                           getCurrencyImage(destinationWalletData.name, destinationWalletData.currency) ||
                           "/placeholder.svg"
-                        }
+                         || "/placeholder.svg"}
                         alt={destinationWalletData.currency}
                         width={24}
                         height={24}
