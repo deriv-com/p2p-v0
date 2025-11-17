@@ -147,7 +147,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       } else {
         showAlert({
           title: "This ad is unavailable",
-          description: "It's either deleted or no longer active.",
+          description: "",
           confirmText: "OK",
           type: "warning",
         })
