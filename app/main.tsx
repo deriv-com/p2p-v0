@@ -141,7 +141,6 @@ export default function Main({
 
   if (isDisabled) {
     return (
-      <WebSocketProvider>
         <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
           {isHeaderVisible && <Sidebar className="hidden md:flex" />}
           <div className="flex-1">
@@ -155,8 +154,7 @@ export default function Main({
           <main className="flex-1 overflow-hidden px-3">
             <P2PAccessRemoved />
           </main>
-        </div>
-      </WebSocketProvider>
+        </di
     )
   }
 
