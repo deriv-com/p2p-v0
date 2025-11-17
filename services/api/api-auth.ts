@@ -168,8 +168,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
           window.location.href = url
           return data
-        } else {
-          console.error('Recovery link fetch failed:', recoveryResponse.status)
+        } else 
           throw new Error('Failed to process recovery link')
         }
       }
