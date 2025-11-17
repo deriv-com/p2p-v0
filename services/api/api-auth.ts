@@ -171,8 +171,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         } else 
           throw new Error('Failed to process recovery link')
         }
-      }
-
+      
       return data
     } else {
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
