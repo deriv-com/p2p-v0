@@ -155,16 +155,22 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       }
 
       const result = await response.json()
-      console.log(result)
+      console.log("[v0] verifyToken result:", result)
       const { data } = result
 
       if(data.recovery_link) {
-        fetch(data.recovery_link, {
-          redirect: 'manual'
-        }).then(res => res.json())
-        .then(data => {
-          window.location.href = url;
-        });
+        // Follow the recovery link to set the session cookie
+        await fetch(data.recovery_link, {
+          redirect: 'follow',
+          credentials: 'include'
+        })
+        
+        console.log("[v0] Recovery link processed, redirecting to:", url)
+        // Redirect to the app
+        window.location.href = url
+        
+        // Return the data so the caller can proceed
+        return { user: { id: '', email: '' } }
       }
 
       return data
