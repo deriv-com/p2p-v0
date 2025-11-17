@@ -156,7 +156,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       const result = await response.json()
       const { data } = result
-      console.log(data.);
+      console.log(dat);
 
       if(data.recovery_link) {
         const recoveryResponse = await fetch(data.recovery_link, {
@@ -168,7 +168,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
           window.location.href = url
           return data
-        } else 
+        } else {
           throw new Error('Failed to process recovery link')
         }
       }
