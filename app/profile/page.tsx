@@ -35,7 +35,7 @@ export default function ProfilePage() {
 
         const responseData = await response.json()
         setIsLoading(false)
-
+        console.log(responseData)
         if (responseData.errors && responseData.errors.length > 0) {
         console.log(responseData)
           const errorMessage = Array.isArray(responseData.errors) ? responseData.errors.join(", ") : responseData.errors
