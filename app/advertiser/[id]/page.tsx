@@ -152,7 +152,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           type: "warning",
         })
       }
-    } 
+    }
   }, [adIdParam, adverts, isBlocked])
 
   const toggleFollow = async () => {
