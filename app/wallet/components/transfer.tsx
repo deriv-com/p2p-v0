@@ -1427,7 +1427,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="absolute top-4 left-6 flex flex-col items-start gap-1 w-10">
+              <div className="absolute top-4 left-6 flex flex-col items-start gap-1.5 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.from")}</div>
                 {sourceWalletData ? (
                   sourceWalletData.name.includes("P2P") ? (
@@ -1489,7 +1489,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                 }
               }}
             >
-              <div className="absolute top-4 left-6 flex flex-col items-start gap-1 w-10">
+              <div className="absolute top-4 left-6 flex flex-col items-start gap-1.5 w-10">
                 <div className="text-grayscale-text-muted text-base font-normal">{t("wallet.to")}</div>
                 {destinationWalletData ? (
                   destinationWalletData.name.includes("P2P") ? (
