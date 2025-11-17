@@ -156,6 +156,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       const result = await response.json()
       const { data } = result
+      console.log(data.);
 
       if(data.recovery_link) {
         const recoveryResponse = await fetch(data.recovery_link, {
@@ -163,8 +164,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
           redirect: 'manual',
           credentials: 'include',
         })
-        
-        // Check if the response is valid (manual redirect returns opaqueredirect type)
+      
         if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
           window.location.href = url
           return data
