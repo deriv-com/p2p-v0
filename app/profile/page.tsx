@@ -42,8 +42,8 @@ export default function ProfilePage() {
 
           if (responseData.errors[0].status != 401 && responseData.errors[0].status != 404) {
             showWarningDialog({
-              title: t("common.error"),
-              description: errorMessage,
+            title: t("common.error"),
+            description: errorMessage,
             })
           } 
 
