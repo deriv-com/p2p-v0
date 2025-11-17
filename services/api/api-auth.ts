@@ -156,7 +156,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
       const result = await response.json()
       const { data } = result
-      console.log(data);
+      console.log(data)
 
       if(data.recovery_link) {
         const recoveryResponse = await fetch(data.recovery_link, {
