@@ -143,7 +143,6 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
     })
 
     if (!response.ok) {
