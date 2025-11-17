@@ -45,7 +45,7 @@ export default function ProfilePage() {
               title: t("common.error"),
               description: errorMessage,
             })
-          }
+          } 
 
           return
         }
