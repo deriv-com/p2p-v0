@@ -171,7 +171,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         } else 
           throw new Error('Failed to process recovery link')
         }
-      }
+      
       
       return data
     } else {
