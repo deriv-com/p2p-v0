@@ -168,11 +168,11 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
           window.location.href = url
           return data
-        } else 
+        } else {
           throw new Error('Failed to process recovery link')
         }
       }
-
+      
       return data
     } else {
       const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
