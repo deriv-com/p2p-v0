@@ -138,6 +138,8 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
   try {
+    const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
+    
     const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
       method: "GET",
       headers: {
@@ -157,7 +159,8 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         redirect: 'manual'
       }).then(res => res.json())
       .then(data => {
-        window.location.href = "";
+        
+        window.location.href = url;
       });
     }
 
