@@ -1468,7 +1468,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
                 )}
               </div>
-              <div className="flex-1 mt-6">
+              <div className="flex-1 mt-6 ml-10">
                 {sourceWalletData && (
                   <>
                     <div className="text-slate-1200 text-base font-bold">{sourceWalletData.name}</div>
@@ -1534,7 +1534,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   <div className="text-grayscale-text-placeholder text-base font-normal mb-3 mt-1">Select</div>
                 )}
               </div>
-              <div className="flex-1 mt-6">
+              <div className="flex-1 mt-6 ml-10">
                 {destinationWalletData && (
                   <>
                     <div className="text-slate-1200 text-base font-bold">{destinationWalletData.name}</div>
