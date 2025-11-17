@@ -143,9 +143,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
     if (adIdParam && adverts.length > 0 && !isBlocked) {
       const ad = adverts.find(a => a.id == adIdParam)
       if (ad) {
-        if(tempBanUntil) {
-          return
-        } else {
+        if(!tempBanUntil) {
           handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
         }
       } else {
