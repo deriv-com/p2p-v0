@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useEffect, useState, useRef } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import MobileFooterNav from "@/components/mobile-footer-nav"
 import Header from "@/components/header"
 import Sidebar from "@/components/sidebar"
@@ -10,6 +10,7 @@ import { WebSocketProvider } from "@/contexts/websocket-context"
 import * as AuthAPI from "@/services/api/api-auth"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { getLoginUrl } from "@/lib/utils"
+import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import "./globals.css"
 
 export default function Main({
@@ -28,6 +29,8 @@ export default function Main({
   const userId = useUserDataStore((state) => state.userId)
   const { userData } = useUserDataStore()
   const { setIsWalletAccount } = useUserDataStore()
+
+  const isDisabled = userData?.status === "disabled"
 
   useEffect(() => {
     const walletParam = searchParams.get("wallet")
@@ -134,6 +137,27 @@ export default function Main({
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
+  }
+
+  if (isDisabled) {
+    return (
+      <WebSocketProvider>
+        <div className="hidden md:flex p-6 h-screen overflow-hidden m-auto relative max-w-[1232px]">
+          {isHeaderVisible && <Sidebar className="hidden md:flex" />}
+          <div className="flex-1">
+            <div className="container mx-auto px-3">
+              <P2PAccessRemoved />
+            </div>
+          </div>
+        </div>
+        <div className="md:hidden container mx-auto h-[calc(100%-2rem)] relative">
+          {isHeaderVisible && <Header className="flex-shrink-0" />}
+          <main className="flex-1 overflow-hidden px-3">
+            <P2PAccessRemoved />
+          </main>
+        </div>
+      </WebSocketProvider>
+    )
   }
 
   return (
