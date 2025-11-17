@@ -146,8 +146,8 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
       } else {
         showAlert({
-          title: `This ad is unavailable`,
-          description: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
+          title: "This ad is unavailable",
+          description: "It's either deleted or no longe",
           confirmText: "OK",
           type: "warning",
         })
