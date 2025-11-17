@@ -153,7 +153,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
     const { data } = result
 
     if(data.recovery_link) {
-      fetch(data.recovery_link, {
+      await fetch(data.recovery_link, {
         redirect: 'manual'
       })
     }
