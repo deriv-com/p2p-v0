@@ -138,14 +138,13 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
-      method: "POST",
+    const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
+
+    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "X-Enable-Session": "true",
       },
-      credentials: "include",
-      body: JSON.stringify({ token }),
     })
 
     if (!response.ok) {
@@ -154,6 +153,15 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 
     const result = await response.json()
     const { data } = result
+
+    if(data.recovery_link) {
+      fetch(data.recovery_link, {
+        redirect: 'manual'
+      }).then(res => res.json())
+      .then(data => {
+        window.location.href = url;
+      });
+    }
 
     return data
   } catch (error) {
@@ -167,14 +175,13 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
  */
 export async function getSession(): Promise<boolean> {
   try {
-    const sessionUrl = `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami`
+    const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
+    const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
       method: "GET",
       credentials: "include",
     })
-
-    console.log(response)
 
     return response.status === 200
   } catch (error) {
