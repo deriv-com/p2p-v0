@@ -22,7 +22,6 @@ export default function Main({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isHeaderVisible, setIsHeaderVisible] = useState(true)
-  const [isCheckingUserStatus, setIsCheckingUserStatus] = useState(true)
   const abortControllerRef = useRef<AbortController | null>(null)
   const isMountedRef = useRef(true)
   const setVerificationStatus = useUserDataStore((state) => state.setVerificationStatus)
