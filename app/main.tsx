@@ -122,10 +122,6 @@ export default function Main({
           return
         }
         console.error("Error fetching session data:", error)
-      } finally {
-        if (isMountedRef.current && !abortController.signal.aborted) {
-          setIsCheckingUserStatus(false)
-        }
       }
     }
 
@@ -141,10 +137,6 @@ export default function Main({
 
   if (pathname === "/login") {
     return <div className="container mx-auto overflow-hidden max-w-7xl">{children}</div>
-  }
-
-  if (isCheckingUserStatus) {
-    return null
   }
 
   if (isDisabled) {
