@@ -137,6 +137,8 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  * Verify token from URL parameter
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
+  const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
+  
   try {
     const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
