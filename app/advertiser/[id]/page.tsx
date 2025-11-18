@@ -113,7 +113,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setAdverts(advertiserAds)
     } catch (err) {
       if (!abortController.signal.aborted) {
-        console.error("Error fetching advertiser data:", err)
         setError("Failed to load the advertiser profile.")
         setProfile(null)
         setAdverts([])
