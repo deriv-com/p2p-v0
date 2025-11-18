@@ -26,7 +26,11 @@ interface PaymentMethod {
   isDefault?: boolean
 }
 
-export default function PaymentMethodsTab() {
+interface PaymentMethodsTabProps {
+  onAddPaymentMethod?: () => void
+}
+
+export default function PaymentMethodsTab({ onAddPaymentMethod }: PaymentMethodsTabProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -288,6 +292,7 @@ export default function PaymentMethodsTab() {
         title={t("profile.noPaymentMethodsYet")}
         description={t("profile.startAddingPaymentMethods")}
         redirectToAds={false}
+        onAddPaymentMethod={onAddPaymentMethod}
       />
     )
   }
@@ -336,6 +341,7 @@ export default function PaymentMethodsTab() {
         title={t("profile.noPaymentMethodsYet")}
         description={t("profile.startAddingPaymentMethods")}
         redirectToAds={false}
+        onAddPaymentMethod={onAddPaymentMethod}
       />
     )
   }
@@ -422,7 +428,7 @@ export default function PaymentMethodsTab() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
                           <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />

@@ -285,13 +285,15 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
             <TabsContent value="payment" className="mt-4">
               <div className="relative">
-                <div className="flex justify-end mb-4">
-                  <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
-                    <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
-                    {t("profile.addPaymentMethod")}
-                  </Button>
-                </div>
-                <PaymentMethodsTab key={refreshKey} />
+                {isMobile && (
+                  <div className="flex justify-end mb-4">
+                    <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
+                      <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
+                      {t("profile.addPaymentMethod")}
+                    </Button>
+                  </div>
+                )}
+                <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} />
               </div>
             </TabsContent>
 

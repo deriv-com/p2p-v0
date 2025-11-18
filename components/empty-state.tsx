@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,7 @@ interface EmptyStateProps {
   description?: string
   className?: string
   redirectToAds?: boolean
+  onAddPaymentMethod?: () => void
 }
 
 export default function EmptyState({
@@ -22,6 +23,7 @@ export default function EmptyState({
   description,
   className,
   redirectToAds = false,
+  onAddPaymentMethod,
 }: EmptyStateProps) {
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
@@ -53,6 +55,14 @@ export default function EmptyState({
       {redirectToAds && (
         <Button onClick={createAd} className="mt-4">
           {t("myAds.createAd")}
+        </Button>
+      )}
+      {onAddPaymentMethod && (
+        <Button 
+          onClick={onAddPaymentMethod} 
+          className="mt-4 bg-[#FF444F] hover:bg-[#FF444F]/90 rounded-3xl h-12 min-h-[48px] max-h-[48px] px-7 min-w-[96px]"
+        >
+          {t("profile.addPaymentMethod")}
         </Button>
       )}
     </div>
