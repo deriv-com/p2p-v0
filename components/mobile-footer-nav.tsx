@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname } from 'next/navigation'
 import { cn } from "@/lib/utils"
 import { useChatVisibilityStore } from "@/stores/chat-visibility-store"
 import { useUserDataStore, getCachedSignup } from "@/stores/user-data-store"
@@ -31,6 +31,10 @@ export default function MobileFooterNav() {
       setShowWallet(true)
     }
   }, [userData?.signup])
+
+  if (userData?.status === "disabled") {
+    return null
+  }
 
   if (
     pathname.startsWith("/orders/") ||

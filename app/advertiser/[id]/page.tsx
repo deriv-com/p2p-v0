@@ -113,7 +113,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setAdverts(advertiserAds)
     } catch (err) {
       if (!abortController.signal.aborted) {
-        console.error("Error fetching advertiser data:", err)
         setError("Failed to load the advertiser profile.")
         setProfile(null)
         setAdverts([])
@@ -144,6 +143,13 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       const ad = adverts.find(a => a.id == adIdParam)
       if (ad) {
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      } else {
+        showAlert({
+          title: "This ad is unavailable",
+          description: "It's either deleted or no longer active.",
+          confirmText: "OK",
+          type: "warning",
+        })
       }
     }
   }, [adIdParam, adverts, isBlocked])

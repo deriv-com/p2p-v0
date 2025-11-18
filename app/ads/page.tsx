@@ -3,7 +3,7 @@
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useEffect, useState, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import MyAdsTable from "./components/my-ads-table"
 import { AdsAPI } from "@/services/api"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -36,7 +36,6 @@ export default function AdsPage() {
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -202,14 +201,6 @@ export default function AdsPage() {
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </div>
-    )
-  }
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
       </div>
     )
   }

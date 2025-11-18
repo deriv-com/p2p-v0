@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -59,7 +59,6 @@ export default function OrdersPage() {
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -344,14 +343,6 @@ export default function OrdersPage() {
       </div>
     </div>
   )
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
-  }
 
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =

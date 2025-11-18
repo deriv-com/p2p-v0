@@ -259,11 +259,29 @@ export async function fetchUserIdAndStore(): Promise<void> {
     })
 
     const result = await response.json()
+    
+    if (response.status === 403) {
+      const errors = result?.errors || []
+      const isUserDisabled = errors.some((error: any) => 
+        error.code === "UserDisabled" || error.message?.includes("UserDisabled")
+      )
+      
+      if (isUserDisabled) {
+        useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}],
+          signup: "v2",
+          status: "disabled"
+        })
+        return
+      }
+    }
+    
     if (!response.ok) {
       useUserDataStore.getState().updateUserData({
           balances: [{amount: "0"}],
           signup: "v2"
         })
+      return
     }
 
     const userId = result?.data?.id
