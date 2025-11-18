@@ -140,7 +140,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }, [id])
 
   useEffect(() => {
-    if (adIdParam && adverts.length > 0 && !isBlocked &&) {
+    if (adIdParam && adverts.length > 0 && !isBlocked) {
       const ad = adverts.find(a => a.id == adIdParam)
       if (ad) {
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
@@ -153,7 +153,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
         })
       }
     }
-  }, [adIdParam, adverts, isBlocked, tempBanUntil])
+  }, [adIdParam, adverts, isBlocked])
 
   const toggleFollow = async () => {
     if (!profile) return
