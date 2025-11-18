@@ -171,9 +171,15 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-4" align="start">
-        <CountryList />
-      </PopoverContent>
+<PopoverContent
+  align="start"
+  className="p-4 
+             w-[var(--radix-popover-trigger-width)] 
+             min-w-[var(--radix-popover-trigger-width)]"
+>
+  <CountryList />
+</PopoverContent>
+
     </Popover>
   )
 }
