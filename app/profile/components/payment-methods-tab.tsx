@@ -428,7 +428,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod }: PaymentMethods
                       </DropdownMenuTrigger>
                       <DropdownMenuContent side="left" align="center" className="w-[160px]">
                         <DropdownMenuItem
-                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px] cursor-pointer"
+                          className="flex items-center gap-2 text-gray-700 focus:text-gray-700 px-[16px] py-[8px]"
                           onSelect={() => handleEditPaymentMethod(method)}
                         >
                           <Image src="/icons/edit-pencil-icon.png" alt="Edit" width={24} height={24} />
