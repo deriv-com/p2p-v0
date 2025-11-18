@@ -161,18 +161,22 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
+                  {paymentMethodsCount > 0 && (
+                    <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
+                  )}
                   <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} onPaymentMethodsCountChange={setPaymentMethodsCount} />
                 </div>
-                <div className="p-4">
-                  <Button
-                    onClick={handleShowAddPaymentMethod}
-                    variant="outline"
-                    className="w-full rounded-full bg-transparent"
-                  >
-                    {t("profile.addPaymentMethod")}
-                  </Button>
-                </div>
+                {paymentMethodsCount > 0 && (
+                  <div className="p-4">
+                    <Button
+                      onClick={handleShowAddPaymentMethod}
+                      variant="outline"
+                      className="w-full rounded-full bg-transparent"
+                    >
+                      {t("profile.addPaymentMethod")}
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
             <Divider />
