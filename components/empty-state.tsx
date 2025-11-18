@@ -60,7 +60,7 @@ export default function EmptyState({
       {onAddPaymentMethod && (
         <Button
           onClick={onAddPaymentMethod}
-          className="mt-4 flex h-[48px] min-h-[48px] max-h-[48px] min-w-[96px] rounded-3xl bg-[#FF444F] hover:bg-[#FF444F]/90 text-white"
+          className="mt-4 flex h-[48px] min-h-[48px] max-h-[48px] w-[227px] rounded-3xl bg-[#FF444F] hover:bg-[#FF444F]/90 text-white"
         >
           {t("profile.addPaymentMethod")}
         </Button>
