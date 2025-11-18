@@ -537,7 +537,7 @@
     "invalidValuesMessage": "Por favor, verifica tus valores de entrada.",
     "amountExceedsBalanceTitle": "El monto excede el saldo",
     "amountExceedsBalanceMessage": "El monto total excede tu saldo disponible. Por favor, ingresa un monto menor.",
-    "selectPayment": "Seleccionar pago",
+    "selectPayment": "Seleccionar método de pago",
     "selected": "Seleccionados ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago"
   },
