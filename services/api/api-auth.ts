@@ -267,7 +267,6 @@ export async function fetchUserIdAndStore(): Promise<void> {
       )
       
       if (isUserDisabled) {
-
         useUserDataStore.getState().updateUserData({
           balances: [{amount: "0"}],
           signup: "v2",
