@@ -128,7 +128,7 @@ export function CurrencyFilter({
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
-                {currency.code} - {currency.name}
+                {currency.code} -       {currency.name}
               </div>
             ))}
           </div>
