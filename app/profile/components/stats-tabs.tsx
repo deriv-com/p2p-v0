@@ -37,6 +37,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
+  const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
@@ -161,7 +162,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
                   <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
-                  <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} />
+                  <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} onPaymentMethodsCountChange={setPaymentMethodsCount} />
                 </div>
                 <div className="p-4">
                   <Button
@@ -285,13 +286,19 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
             <TabsContent value="payment" className="mt-4">
               <div className="relative">
-                <div className="flex justify-end mb-4">
-                  <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
-                    <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
-                    {t("profile.addPaymentMethod")}
-                  </Button>
-                </div>
-                <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} />
+                {paymentMethodsCount > 0 && (
+                  <div className="flex justify-end mb-4">
+                    <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
+                      <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
+                      {t("profile.addPaymentMethod")}
+                    </Button>
+                  </div>
+                )}
+                <PaymentMethodsTab 
+                  key={refreshKey} 
+                  onAddPaymentMethod={handleShowAddPaymentMethod}
+                  onPaymentMethodsCountChange={setPaymentMethodsCount}
+                />
               </div>
             </TabsContent>
 

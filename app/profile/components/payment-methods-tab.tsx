@@ -28,9 +28,10 @@ interface PaymentMethod {
 
 interface PaymentMethodsTabProps {
   onAddPaymentMethod?: () => void
+  onPaymentMethodsCountChange?: (count: number) => void
 }
 
-export default function PaymentMethodsTab({ onAddPaymentMethod }: PaymentMethodsTabProps) {
+export default function PaymentMethodsTab({ onAddPaymentMethod, onPaymentMethodsCountChange }: PaymentMethodsTabProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
@@ -61,6 +62,7 @@ export default function PaymentMethodsTab({ onAddPaymentMethod }: PaymentMethods
       if (!response.ok) {
         if (response.status == 401) {
           setPaymentMethods([])
+          onPaymentMethodsCountChange?.(0)
           return
         } else {
           throw new Error(`Error fetching payment methods: ${response.statusText}`)
@@ -109,12 +111,13 @@ export default function PaymentMethodsTab({ onAddPaymentMethod }: PaymentMethods
       })
 
       setPaymentMethods(transformedMethods)
+      onPaymentMethodsCountChange?.(transformedMethods.length)
     } catch (error) {
       setError(error instanceof Error ? error.message : "Failed to load payment methods")
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [onPaymentMethodsCountChange])
 
   useEffect(() => {
     fetchPaymentMethods()
