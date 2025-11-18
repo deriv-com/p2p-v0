@@ -91,7 +91,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
       </div>
 
       <div className="space-y-4 overflow-y-auto px-1">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 mt-2">
           <Checkbox
             id="all-countries"
             checked={isAllSelected}
