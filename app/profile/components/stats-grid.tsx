@@ -85,100 +85,108 @@ export default function StatsGrid({ stats }) {
               <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
-                <StatCard
-                  tab="last30days"
-                  title={t("profile.sellCompletion")}
-                  value={
-                    stats?.statistics_30day?.completion_rate_sell
-                      ? `${stats.statistics_30day.completion_rate_sell}% (${stats.statistics_30day.completion_count_sell})`
-                      : "-"
-                  }
-                />
-                <StatCard
-                  tab="last30days"
-                  title={t("profile.buyCompletion")}
-                  value={
-                    stats?.statistics_30day?.completion_rate_buy
-                      ? `${stats.statistics_30day.completion_rate_buy}% (${stats.statistics_30day.completion_count_buy})`
-                      : "-"
-                  }
-                />
-                <StatCard
-                  tab="last30days"
-                  title={t("profile.totalOrders")}
-                  value={stats?.statistics_30day?.completion_count_all ?? "0"}
-                />
-                <StatCard
-                  tab="last30days"
-                  title={t("profile.avgPayTime")}
-                  value={formatTimeInMinutes(stats?.statistics_30day?.buy_time_average)}
-                />
-                <StatCard
-                  tab="last30days"
-                  title={t("profile.avgReleaseTime")}
-                  value={formatTimeInMinutes(stats?.statistics_30day?.release_time_average)}
-                />
-                <StatCard
-                  tab="last30days"
-                  title={t("profile.tradeVolume")}
-                  value={
-                    stats?.statistics_30day?.completion_amount_all > 0
-                      ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD`
-                      : "0.00 USD"
-                  }
-                />
+              <div className="md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
+                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+                  <StatCard
+                    tab="last30days"
+                    title={t("profile.sellCompletion")}
+                    value={
+                      stats?.statistics_30day?.completion_rate_sell
+                        ? `${stats.statistics_30day.completion_rate_sell}% (${stats.statistics_30day.completion_count_sell})`
+                        : "-"
+                    }
+                  />
+                  <StatCard
+                    tab="last30days"
+                    title={t("profile.buyCompletion")}
+                    value={
+                      stats?.statistics_30day?.completion_rate_buy
+                        ? `${stats.statistics_30day.completion_rate_buy}% (${stats.statistics_30day.completion_count_buy})`
+                        : "-"
+                    }
+                  />
+                  <StatCard
+                    tab="last30days"
+                    title={t("profile.totalOrders")}
+                    value={stats?.statistics_30day?.completion_count_all ?? "0"}
+                  />
+                  <StatCard
+                    tab="last30days"
+                    title={t("profile.avgPayTime")}
+                    value={formatTimeInMinutes(stats?.statistics_30day?.buy_time_average)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+                  <StatCard
+                    tab="last30days"
+                    title={t("profile.avgReleaseTime")}
+                    value={formatTimeInMinutes(stats?.statistics_30day?.release_time_average)}
+                  />
+                  <StatCard
+                    tab="last30days"
+                    title={t("profile.tradeVolume")}
+                    value={
+                      stats?.statistics_30day?.completion_amount_all > 0
+                        ? `${formatAmount(stats?.statistics_30day?.completion_amount_all)} USD`
+                        : "0.00 USD"
+                    }
+                  />
+                </div>
               </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.sellCompletion")}
-                  value={
-                    stats?.statistics_lifetime?.completion_rate_sell
-                      ? `${stats.statistics_lifetime.completion_rate_sell}% (${stats.statistics_lifetime.completion_count_sell})`
-                      : "-"
-                  }
-                />
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.buyCompletion")}
-                  value={
-                    stats?.statistics_lifetime?.completion_rate_buy
-                      ? `${stats.statistics_lifetime.completion_rate_buy}% (${stats.statistics_lifetime.completion_count_buy})`
-                      : "-"
-                  }
-                />
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.totalOrders")}
-                  value={stats?.statistics_lifetime?.completion_count_all ?? "0"}
-                />
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.avgPayTime")}
-                  value={formatTimeInMinutes(stats?.statistics_lifetime?.buy_time_average)}
-                />
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.avgReleaseTime")}
-                  value={formatTimeInMinutes(stats?.statistics_lifetime?.release_time_average)}
-                />
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.tradePartners")}
-                  value={stats?.statistics_lifetime?.partner_count ?? "0"}
-                />
-                <StatCard
-                  tab="lifetime"
-                  title={t("profile.tradeVolume")}
-                  value={
-                    stats?.statistics_lifetime?.completion_amount_all > 0
-                      ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD`
-                      : "0.00 USD"
-                  }
-                />
+              <div className="md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
+                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.sellCompletion")}
+                    value={
+                      stats?.statistics_lifetime?.completion_rate_sell
+                        ? `${stats.statistics_lifetime.completion_rate_sell}% (${stats.statistics_lifetime.completion_count_sell})`
+                        : "-"
+                    }
+                  />
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.buyCompletion")}
+                    value={
+                      stats?.statistics_lifetime?.completion_rate_buy
+                        ? `${stats.statistics_lifetime.completion_rate_buy}% (${stats.statistics_lifetime.completion_count_buy})`
+                        : "-"
+                    }
+                  />
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.totalOrders")}
+                    value={stats?.statistics_lifetime?.completion_count_all ?? "0"}
+                  />
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.avgPayTime")}
+                    value={formatTimeInMinutes(stats?.statistics_lifetime?.buy_time_average)}
+                  />
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.avgReleaseTime")}
+                    value={formatTimeInMinutes(stats?.statistics_lifetime?.release_time_average)}
+                  />
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.tradePartners")}
+                    value={stats?.statistics_lifetime?.partner_count ?? "0"}
+                  />
+                  <StatCard
+                    tab="lifetime"
+                    title={t("profile.tradeVolume")}
+                    value={
+                      stats?.statistics_lifetime?.completion_amount_all > 0
+                        ? `${formatAmount(stats?.statistics_lifetime?.completion_amount_all)} USD`
+                        : "0.00 USD"
+                    }
+                  />
+                </div>
               </div>
             </TabsContent>
           </Tabs>
