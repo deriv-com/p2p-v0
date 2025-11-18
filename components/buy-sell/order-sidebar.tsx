@@ -2,8 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
+import { useRouter } from 'next/navigation'
+import { ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -288,10 +288,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const getSelectedPaymentMethodsText = () => {
-    if (selectedPaymentMethods.length === 0) return t("order.selectPayment")
+    if (selectedPaymentMethods.length === 0) return t("order.receivePaymentTo")
     if (selectedPaymentMethods.length === 1) {
       const method = userPaymentMethods.find((m) => m.id === selectedPaymentMethods[0])
-      return method ? `${method.display_name}` : t("order.selectPayment")
+      return method ? `${method.display_name}` : t("order.receivePaymentTo")
     }
     return t("order.selected") + ` (${selectedPaymentMethods.length})`
   }
@@ -395,7 +395,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
-                    <h3 className="text-sm text-slate-1200 mb-3">{t("order.receivePaymentTo")}</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
