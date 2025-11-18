@@ -13,7 +13,7 @@ interface StatCardProps {
 
 function StatCard({ tab, title, value }: StatCardProps) {
   return (
-    <div className="flex flex-row-reverse justify-between border-b md:border-none border-slate-200 md:flex-col pt-6 pb-2">
+    <div className="flex flex-row-reverse justify-between md:border-none md:flex-col pt-6 pb-2">
       <div className="font-bold text-black text-base leading-6 tracking-normal">{value}</div>
       <div className="flex items-center text-slate-500 mb-2 font-normal text-xs leading-5 tracking-normal">
         {title}
@@ -85,7 +85,7 @@ export default function StatsGrid({ stats }) {
               <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-slate-200">
+              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
                 <StatCard
                   tab="last30days"
                   title={t("profile.sellCompletion")}
@@ -131,7 +131,7 @@ export default function StatsGrid({ stats }) {
               </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
-              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-slate-200">
+              <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
                 <StatCard
                   tab="lifetime"
                   title={t("profile.sellCompletion")}
