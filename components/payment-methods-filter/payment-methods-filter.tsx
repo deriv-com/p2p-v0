@@ -142,7 +142,7 @@ export default function PaymentMethodsFilter({
               <div key={method.method} className="flex items-center space-x-3">
                 <Checkbox
                   id={method.method}
-                  checked={tempSelectedMethods.includes(method.method)}
+                  checked={isAllSelected ? false : tempSelectedMethods.includes(method.method)}
                   onCheckedChange={() => handleMethodToggle(method.method)}
                   className="data-[state=checked]:bg-black border-black"
                   disabled={isLoading}
