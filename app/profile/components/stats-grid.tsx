@@ -134,7 +134,7 @@ export default function StatsGrid({ stats }) {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 bg-transparent">
+            <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 md:px-0  bg-transparent">
               <div className="md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
                 <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
                   <StatCard
