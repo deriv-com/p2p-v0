@@ -103,6 +103,8 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           </label>
         </div>
 
+        <div className="h-px bg-black/[0.08] my-4" />
+
         {filteredCountries.map((country) => (
           <div key={country.code} className="flex items-center space-x-3">
             <Checkbox
@@ -171,15 +173,14 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           />
         </Button>
       </PopoverTrigger>
-<PopoverContent
-  align="start"
-  className="p-4 
-             w-[var(--radix-popover-trigger-width)] 
-             min-w-[var(--radix-popover-trigger-width)]"
->
-  <CountryList />
-</PopoverContent>
-
+      <PopoverContent
+        align="start"
+        className="p-4 
+                   w-[var(--radix-popover-trigger-width)] 
+                   min-w-[var(--radix-popover-trigger-width)]"
+      >
+        <CountryList />
+      </PopoverContent>
     </Popover>
   )
 }
