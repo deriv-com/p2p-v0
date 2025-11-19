@@ -91,7 +91,9 @@ export default function PaymentMethodsFilter({
 
   const handleMethodToggle = (methodId: string) => {
     if (isAllSelected) {
-      setTempSelectedMethods([methodId])
+      const allMethodIds = paymentMethods.map((m) => m.method)
+      const newMethods = allMethodIds.filter((id) => id !== methodId)
+      setTempSelectedMethods(newMethods)
       return
     }
     const isSelected = tempSelectedMethods.includes(methodId)
