@@ -137,7 +137,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  * Verify token from URL parameter
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
-  const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED
+  const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
   
   try {
     if(isOryEnabled) {
@@ -206,8 +206,6 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
 export async function getSession(): Promise<boolean> {
   try {
     const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
-    console.log("test")
-    console.log(isOryEnabled)
     const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
