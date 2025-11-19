@@ -53,7 +53,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return t("common.all")
+      return t("common.allCountries")
     }
 
     const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
@@ -99,7 +99,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             className="data-[state=checked]:bg-black border-black"
           />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
-            {t("common.all")}
+            {t("common.allCountries")}
           </label>
         </div>
 
