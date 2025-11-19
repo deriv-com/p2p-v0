@@ -115,6 +115,7 @@ export default function StatsGrid({ stats }) {
                     title={t("profile.avgPayTime")}
                     value={formatTimeInMinutes(stats?.statistics_30day?.buy_time_average)}
                   />
+                  <div className="hidden md:block md:col-span-4 border-t border-black/[0.08]" />
                   <StatCard
                     tab="last30days"
                     title={t("profile.avgReleaseTime")}
@@ -163,6 +164,7 @@ export default function StatsGrid({ stats }) {
                     title={t("profile.avgPayTime")}
                     value={formatTimeInMinutes(stats?.statistics_lifetime?.buy_time_average)}
                   />
+                  <div className="hidden md:block md:col-span-4 border-t border-black/[0.08]" />
                   <StatCard
                     tab="lifetime"
                     title={t("profile.avgReleaseTime")}
