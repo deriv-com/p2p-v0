@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -19,6 +19,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { VisibilityStatusDialog } from "./visibility-status-dialog"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -37,6 +38,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
+  const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
+  const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -199,6 +202,13 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
     setDrawerOpen(true)
   }
 
+  const handleVisibilityStatusClick = (ad: Ad) => {
+    if (ad.visibility_status && ad.visibility_status.length > 0) {
+      setSelectedVisibilityReasons(ad.visibility_status)
+      setVisibilityDialogOpen(true)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="text-center py-12">
@@ -244,6 +254,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
               const exchangeRate = `${ad.exchange_rate}%`
               const exchangeRateType = ad.exchange_rate_type
               const paymentMethods = ad.payment_methods || ad.paymentMethods || []
+              const hasVisibilityStatus = ad.visibility_status && ad.visibility_status.length > 0
 
               return (
                 <TableRow
@@ -318,37 +329,49 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {getStatusBadge(isActive)}
                   </TableCell>
                   <TableCell className="p-2 lg:pl-4 lg:pr-0 lg:py-4 align-top row-start-1 whitespace-nowrap">
-                    {isMobile ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                        onClick={() => handleOpenDrawer(ad)}
-                      >
-                        <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                      </Button>
-                    ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                          >
-                            <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-[160px] p-1">
-                          <AdActionsMenu
-                            ad={ad}
-                            onEdit={handleEdit}
-                            onToggleStatus={handleToggleStatus}
-                            onDelete={handleDelete}
-                            onShare={handleShare}
-                          />
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                    <div className="flex items-center gap-2">
+                      {hasVisibilityStatus && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onClick={() => handleVisibilityStatusClick(ad)}
+                        >
+                          <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={20} height={20} />
+                        </Button>
+                      )}
+                      {isMobile ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          onClick={() => handleOpenDrawer(ad)}
+                        >
+                          <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                        </Button>
+                      ) : (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            >
+                              <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-[160px] p-1">
+                            <AdActionsMenu
+                              ad={ad}
+                              onEdit={handleEdit}
+                              onToggleStatus={handleToggleStatus}
+                              onDelete={handleDelete}
+                              onShare={handleShare}
+                            />
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               )
@@ -376,6 +399,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           </div>
         </DrawerContent>
       </Drawer>
+
+      <VisibilityStatusDialog
+        open={visibilityDialogOpen}
+        onOpenChange={setVisibilityDialogOpen}
+        reasons={selectedVisibilityReasons}
+      />
     </>
   )
 }

@@ -141,27 +141,20 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
 
-    let hasJoined = false
-    
+    joinExchangeRatesChannel(buyCurrency, forCurrency)
+
+    const requestTimer = setTimeout(() => {
+      requestExchangeRate(buyCurrency, forCurrency)
+    }, 100)
+
     const unsubscribe = subscribe((data: any) => {
-      const expectedChannel = `exchange_rates/${buyCurrency}/${forCurrency}`
-      
-      // Check if we received join confirmation
-      if (data.action === "join" && data.channel === expectedChannel && !hasJoined) {
-        hasJoined = true
-        // Request exchange rate after successful join
-        requestExchangeRate(buyCurrency, forCurrency)
-      }
-      
-      // Handle rate updates
-      if (data.channel === expectedChannel && data.payload?.rate) {
+      if (data.channel === `exchange_rates/${buyCurrency}/${forCurrency}` && data.payload?.rate) {
         setMarketPrice(data.payload.rate)
       }
     })
 
-    joinExchangeRatesChannel(buyCurrency, forCurrency)
-
     return () => {
+      clearTimeout(requestTimer)
       leaveExchangeRatesChannel(buyCurrency, forCurrency)
       unsubscribe()
     }
