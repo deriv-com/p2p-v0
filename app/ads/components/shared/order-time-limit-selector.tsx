@@ -73,7 +73,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
       </SelectTrigger>
       <SelectContent>
         {TIME_LIMIT_OPTIONS.map((option) => (
-          <SelectItem key={option.value} value={option.value.toString()} className="text-base">
+          <SelectItem key={option.value} value={option.value.toString()} className="text-base h-12">
             {option.label}
           </SelectItem>
         ))}
