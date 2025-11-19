@@ -205,10 +205,10 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
  */
 export async function getSession(): Promise<boolean> {
   try {
-    const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED
+    const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
     console.log("test")
-    console.log(Boolean(isOryEnabled))
-    const sessionUrl = Boolean(isOryEnabled) ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
+    console.log(isOryEnabled))
+    const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
       method: "GET",
