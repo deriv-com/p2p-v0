@@ -54,6 +54,7 @@ jobs:
                 NEXT_PUBLIC_BRANCH: ${{ vars.NEXT_PUBLIC_BRANCH }}
                 NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID }}
                 NEXT_PUBLIC_NOTIFICATION_URL: ${{ vars.NEXT_PUBLIC_NOTIFICATION_URL }}
+                NEXT_PUBLIC_IS_ORY_ENABLED: ${{ vars.NEXT_PUBLIC_IS_ORY_ENABLED }}
                 NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL }}
                 NEXT_PUBLIC_NODE_ENV: staging
                 NODE_ENV: staging
@@ -76,6 +77,7 @@ jobs:
                 NEXT_PUBLIC_BRANCH: ${{ vars.NEXT_PUBLIC_BRANCH }}
                 NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID: ${{ vars.NEXT_PUBLIC_NOTIFICATION_APPLICATION_ID }}
                 NEXT_PUBLIC_NOTIFICATION_URL: ${{ vars.NEXT_PUBLIC_NOTIFICATION_URL }}
+                NEXT_PUBLIC_IS_ORY_ENABLED: ${{ vars.NEXT_PUBLIC_IS_ORY_ENABLED }}
                 NEXT_PUBLIC_ORY_URL: ${{ vars.NEXT_PUBLIC_ORY_URL }}
                 NEXT_PUBLIC_NODE_ENV: staging
                 NODE_ENV: staging
