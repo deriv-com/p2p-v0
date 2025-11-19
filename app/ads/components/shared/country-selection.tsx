@@ -103,7 +103,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           </label>
         </div>
 
-        <div className="h-px bg-black/[0.08] my-7 md:-mx-5" />
+        <div className="h-px bg-black/[0.08] my-7 md:relative md:left-[-16px] md:w-[calc(100%+32px)]" />
 
         {filteredCountries.map((country) => (
           <div key={country.code} className="flex items-center space-x-3">
