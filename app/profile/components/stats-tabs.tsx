@@ -239,20 +239,17 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           </div>
         ) : (
           <Tabs defaultValue="stats">
-            <div className="relative">
-              <TabsList className="w-full md:w-auto mb-2 bg-transparent">
-                {tabs.map((tab) => (
-                  <TabsTrigger
-                    key={tab.id}
-                    value={tab.id}
-                    className="w-full px-4 py-2 rounded-none border-b-2 border-b-transparent data-[state=active]:border-b-black data-[state=active]:shadow-none"
-                  >
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              <div className="absolute bottom-0 left-0 right-0 h-px bg-grayscale-500" />
-            </div>
+            <TabsList className="w-full md:w-auto mb-2 bg-transparent border-b-2 border-b-grayscale-500">
+              {tabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.id}
+                  value={tab.id}
+                  className="w-full px-4 py-2 rounded-none border-b-2 border-b-transparent data-[state=active]:border-b-black data-[state=active]:shadow-none -mb-[2px]"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
 
             <TabsContent value="stats" className="mt-4">
               {isLoading ? (
