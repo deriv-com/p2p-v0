@@ -137,7 +137,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  * Verify token from URL parameter
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
-  const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
+  const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED
   
   try {
     if(isOryEnabled) {
