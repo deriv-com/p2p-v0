@@ -103,7 +103,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           </label>
         </div>
 
-        <div className="h-px bg-black/[0.08] my-7 md:absolute md:left-0 md:w-full" />
+        <div className="h-px bg-black/[0.08] my-7 md:fixed md:left-0 md:w-full" />
 
         <div className="space-y-4 max-h-[300px] overflow-y-auto">
           {filteredCountries.map((country) => (
