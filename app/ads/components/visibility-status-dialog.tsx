@@ -93,13 +93,7 @@ export function VisibilityStatusDialog({
           const actionInfo = getReasonAction(reason, t)
           return (
             <li key={index} className="flex flex-col gap-3 rounded-lg border border-grayscale-200 p-4">
-              <div className="flex items-start gap-3">
-                <AlertCircle className="h-5 w-5 text-status-warning flex-shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <h4 className="font-semibold text-sm text-slate-1200 mb-1">{reasonContent.title}</h4>
-                  <p className="text-sm text-grayscale-600">{reasonContent.description}</p>
-                </div>
-              </div>
+              <p className="text-sm text-grayscale-600">{reasonContent.description}</p>
               {actionInfo && (
                 <Button onClick={() => handleAction(actionInfo.action)} className="w-full" variant="default">
                   {actionInfo.label}
