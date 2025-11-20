@@ -160,7 +160,7 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency, priceType, type])
 
   useEffect(() => {
-    if (!buyCurrency || !forCurrency || !isConnected) return
+    if (priceType === "" || !buyCurrency || !forCurrency || !isConnected) return
 
     joinExchangeRatesChannel(buyCurrency, forCurrency)
     
