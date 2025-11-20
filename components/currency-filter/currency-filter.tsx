@@ -80,7 +80,7 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-4 md:mb-0">
+      <div className="relative mb-4 md:mb-0 md:pr-4">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
@@ -109,7 +109,7 @@ export function CurrencyFilter({
         )}
       </div>
 
-      <div className="max-h-[85%] overflow-y-auto scrollbar-custom pr-3">
+      <div className="max-h-[85%] overflow-y-auto scrollbar-custom md:pr-2">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={`${searchQuery} is unavailable`}
