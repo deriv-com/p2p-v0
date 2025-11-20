@@ -261,10 +261,9 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   key={index}
                   className={cn(
                     "grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0",
-                    !isActive || hiddenAdverts ? "opacity-60" : "",
                   )}
                 >
-                  <TableCell className="p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap">
+                  <TableCell className={cn("p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
                     <div className="flex justify-between md:block">
                       <div className="mb-1 flex justify-normal ">
                         <span
