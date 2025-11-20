@@ -75,7 +75,7 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
           <DialogTitle className="font-bold text-2xl text-slate-1200">{t("myAds.visibilityStatus")}</DialogTitle>
         </DialogHeader>
