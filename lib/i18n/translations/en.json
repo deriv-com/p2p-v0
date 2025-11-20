@@ -448,6 +448,7 @@
     "actions": {
       "activateAd": "Activate ad",
       "editAd": "Update ad",
+      "close": "Maybe later",
       "addFunds": "Add funds",
       "activateAds": "Activate ads",
       "contactSupport": "Contact support",
