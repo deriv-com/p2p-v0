@@ -435,8 +435,9 @@ to other traders."
 until your active hours."
     },
     "advertiserTempBan": {
-      "title": "Temporary suspension",
-      "description": "Your account is temporarily suspended. Your ads will be visible once the suspension is lifted."
+      "title": "Your ad isn’t visible",
+      "description": "Your account is temporarily restricted. Check your profile for 
+details."
     },
     "advertiserNoPrivateGroups": {
       "title": "No matching private groups",
