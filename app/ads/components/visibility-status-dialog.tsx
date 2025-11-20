@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { AlertCircle } from "lucide-react"
 
 interface VisibilityStatusDialogProps {
   open: boolean
@@ -12,54 +13,33 @@ interface VisibilityStatusDialogProps {
 }
 
 const getReasonContent = (reason: string, t: (key: string) => string) => {
-  const reasonMap: Record<string, { title: string; description: string }> = {
-    advert_inactive: {
-      title: t("visibilityStatus.advertInactive.title"),
-      description: t("visibilityStatus.advertInactive.description"),
-    },
-    advert_remaining: {
-      title: t("visibilityStatus.advertRemaining.title"),
-      description: t("visibilityStatus.advertRemaining.description"),
-    },
-    advertiser_daily_limit: {
-      title: t("visibilityStatus.advertiserDailyLimit.title"),
-      description: t("visibilityStatus.advertiserDailyLimit.description"),
-    },
-    advertiser_balance: {
-      title: t("visibilityStatus.advertiserBalance.title"),
-      description: t("visibilityStatus.advertiserBalance.description"),
-    },
-    advertiser_adverts_unlisted: {
-      title: t("visibilityStatus.advertiserAdvertsUnlisted.title"),
-      description: t("visibilityStatus.advertiserAdvertsUnlisted.description"),
-    },
-    advertiser_status: {
-      title: t("visibilityStatus.advertiserStatus.title"),
-      description: t("visibilityStatus.advertiserStatus.description"),
-    },
-    advertiser_schedule_unavailable: {
-      title: t("visibilityStatus.advertiserScheduleUnavailable.title"),
-      description: t("visibilityStatus.advertiserScheduleUnavailable.description"),
-    },
-    advertiser_temp_ban: {
-      title: t("visibilityStatus.advertiserTempBan.title"),
-      description: t("visibilityStatus.advertiserTempBan.description"),
-    },
-    advertiser_no_private_groups: {
-      title: t("visibilityStatus.advertiserNoPrivateGroups.title"),
-      description: t("visibilityStatus.advertiserNoPrivateGroups.description"),
-    },
-    advert_float_rate_disabled: {
-      title: t("visibilityStatus.advertFloatRateDisabled.title"),
-      description: t("visibilityStatus.advertFloatRateDisabled.description"),
-    },
-    advert_no_payment_methods: {
-      title: t("visibilityStatus.advertNoPaymentMethods.title"),
-      description: t("visibilityStatus.advertNoPaymentMethods.description"),
-    },
+  const reasonKeyMap: Record<string, string> = {
+    advert_inactive: "advertInactive",
+    advert_remaining: "advertRemaining",
+    advertiser_daily_limit: "advertiserDailyLimit",
+    advertiser_balance: "advertiserBalance",
+    advertiser_adverts_unlisted: "advertiserAdvertsUnlisted",
+    advertiser_status: "advertiserStatus",
+    advertiser_schedule_unavailable: "advertiserScheduleUnavailable",
+    advertiser_temp_ban: "advertiserTempBan",
+    advertiser_no_private_groups: "advertiserNoPrivateGroups",
+    advert_float_rate_disabled: "advertFloatRateDisabled",
+    advert_no_payment_methods: "advertNoPaymentMethods",
   }
 
-  return reasonMap[reason] || { title: reason, description: t("visibilityStatus.unknownReason") }
+  const reasonKey = reasonKeyMap[reason]
+
+  if (reasonKey) {
+    return {
+      title: t(`visibilityStatus.${reasonKey}.title`),
+      description: t(`visibilityStatus.${reasonKey}.description`),
+    }
+  }
+
+  return {
+    title: reason,
+    description: t("visibilityStatus.unknownReason"),
+  }
 }
 
 export function VisibilityStatusDialog({ open, onOpenChange, reasons }: VisibilityStatusDialogProps) {
@@ -68,15 +48,13 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
 
   const content = (
     <div className="space-y-4 py-4">
-      <p className="text-sm text-slate-600">
-        {t("myAds.visibilityStatusDescription")}
-      </p>
+      <p className="text-sm text-slate-600">{t("myAds.visibilityStatusDescription")}</p>
       <ul className="space-y-4">
         {reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           return (
             <li key={index} className="flex items-start gap-3 rounded-lg border border-slate-200 p-4">
-              <span className="text-orange-600 mt-1 text-lg">⚠</span>
+              <AlertCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
               <div className="space-y-1 flex-1">
                 <p className="text-sm font-semibold text-slate-900">{reasonContent.title}</p>
                 <p className="text-sm text-slate-600">{reasonContent.description}</p>

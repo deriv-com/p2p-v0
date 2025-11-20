@@ -396,7 +396,56 @@
     "deleteAdError": "There was an error when deleting the advert. Please try again.",
     "deleteAdOpenOrders": "The advert has ongoing orders.",
     "unableToUpdateAd": "Unable to update advert",
-    "updateAdError": "There was an error when updating the advert. Please try again."
+    "updateAdError": "There was an error when updating the advert. Please try again.",
+    "visibilityStatus": "Ad visibility status",
+    "visibilityStatusDescription": "Your ad isn't visible to others. Here's why:"
+  },
+  "visibilityStatus": {
+    "advertInactive": {
+      "title": "Ad is inactive",
+      "description": "Your ad has been deactivated. Activate it to make it visible again."
+    },
+    "advertRemaining": {
+      "title": "Insufficient ad balance",
+      "description": "Your ad has insufficient balance remaining. Add funds to reactivate it."
+    },
+    "advertiserDailyLimit": {
+      "title": "Daily limit reached",
+      "description": "You've reached your daily trading limit. Your ad will be visible again tomorrow."
+    },
+    "advertiserBalance": {
+      "title": "Insufficient balance",
+      "description": "You don't have enough balance in your wallet to support this ad. Add funds to make it visible."
+    },
+    "advertiserAdvertsUnlisted": {
+      "title": "All ads unlisted",
+      "description": "You've chosen to hide all your ads. Enable them to make this ad visible."
+    },
+    "advertiserStatus": {
+      "title": "Account status restricted",
+      "description": "Your account has restrictions that prevent ads from being visible. Contact support for more details."
+    },
+    "advertiserScheduleUnavailable": {
+      "title": "Outside available hours",
+      "description": "Your ad is only visible during your scheduled availability hours."
+    },
+    "advertiserTempBan": {
+      "title": "Temporary suspension",
+      "description": "Your account is temporarily suspended. Your ads will be visible once the suspension is lifted."
+    },
+    "advertiserNoPrivateGroups": {
+      "title": "No matching private groups",
+      "description": "This ad is set for private groups, but you don't have any matching groups configured."
+    },
+    "advertFloatRateDisabled": {
+      "title": "Floating rate disabled",
+      "description": "Floating rate ads are currently disabled. Switch to a fixed rate or wait until floating rates are re-enabled."
+    },
+    "advertNoPaymentMethods": {
+      "title": "No payment methods",
+      "description": "Your ad doesn't have any payment methods configured. Add at least one payment method to make it visible."
+    },
+    "unknownReason": "Unknown reason for ad invisibility."
   },
   "orders": {
     "title": "Orders",
