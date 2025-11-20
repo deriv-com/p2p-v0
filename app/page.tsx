@@ -641,7 +641,7 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                               )}
-                              </div>
+                            </div>
                           </TableCell>
                           <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
                             <div className="font-bold text-base flex items-center">
@@ -690,7 +690,6 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                             )}
-                          </div>
                           <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
                               <Tooltip>
