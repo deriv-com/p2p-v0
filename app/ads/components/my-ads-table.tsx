@@ -301,7 +301,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap">
+                  <TableCell className={cn("p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
