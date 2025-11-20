@@ -163,6 +163,10 @@ export default function AdDetailsForm({
     if (!isConnected) return
 
     joinExchangeRatesChannel(buyCurrency, forCurrency)
+
+    return () => {
+      leaveExchangeRatesChannel(buyCurrency, forCurrency)
+    }
    
   }, [isConnected])
 
@@ -181,7 +185,6 @@ export default function AdDetailsForm({
 
     return () => {
       clearTimeout(requestTimer)
-      leaveExchangeRatesChannel(buyCurrency, forCurrency)
       unsubscribe()
     }
    
