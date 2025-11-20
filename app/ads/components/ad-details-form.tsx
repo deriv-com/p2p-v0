@@ -105,7 +105,6 @@ export default function AdDetailsForm({
             let lowestPrice = null
             let highestPrice = null
 
-            // Select the appropriate minimum and maximum rates based on type and price type
             if (type === "buy") {
               if (priceType === "fixed") {
                 lowestPrice = currencyStats.buy_fixed_minimum_rate
