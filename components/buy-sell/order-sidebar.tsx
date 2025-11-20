@@ -167,7 +167,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       })
       return () => {
         clearTimeout(timer)
-        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
+       //leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
         unsubscribe()
       }
     }
