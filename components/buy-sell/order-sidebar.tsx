@@ -242,7 +242,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
       const numAmount = Number.parseFloat(amount)
 
-      const order = await createOrder(ad.id, numAmount, selectedPaymentMethods)
+      const order = await createOrder(ad.id, ad.exchange_rate numAmount, selectedPaymentMethods)
       if (order.errors.length > 0) {
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
