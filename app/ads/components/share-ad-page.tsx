@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import QRCode from "qrcode"
-import html2canvas from "html2canvas"
+import * as htmlToImage from "html-to-image"
 import type { Ad } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
@@ -26,7 +26,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       try {
         setIsLoading(true)
         const advertiserId = ad.user?.id
-        const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+        const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
         const qrCode = await QRCode.toDataURL(adUrl, {
           width: 200,
           margin: 2,
@@ -37,7 +37,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         })
         setQrCodeUrl(qrCode)
       } catch (error) {
-        console.error("Error generating QR code:", error)
         toast({
           description: "Failed to generate QR code",
           variant: "destructive",
@@ -52,13 +51,13 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
-    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     const text = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
     const telegramText = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad. Thanks!`
 
     const shareUrls: Record<string, string> = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}`)}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${text}`)}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${adUrl}`)}`,
       telegram: `https://t.me/share/url?url=${encodeURIComponent(adUrl)}&text=${encodeURIComponent(telegramText)}`,
       twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,
       gmail: `https://mail.google.com/mail/?view=cm&fs=1&body=${encodeURIComponent(`${text}`)}`,
@@ -71,7 +70,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
   const handleCopyLink = async () => {
     const advertiserId = ad.user?.id
-    const adUrl = `${window.location.origin}/advertiser/${advertiserId}`
+    const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
     try {
       await navigator.clipboard.writeText(adUrl)
       toast({
@@ -96,78 +95,92 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     if (!cardRef.current) return
 
     try {
-      const canvas = await html2canvas(cardRef.current, {
+      await waitForImages(cardRef.current)
+
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
         backgroundColor: "#ffffff",
-        scale: 2,
       })
 
       const link = document.createElement("a")
+      link.href = dataUrl
       link.download = `deriv-p2p-ad-${ad.id}.png`
-      link.href = canvas.toDataURL()
+
+      link.style.display = "none"
+      document.body.appendChild(link)
       link.click()
 
-      toast({
-        description: (
-          <div className="flex items-center gap-2">
-            <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-            <span>Image saved successfully</span>
-          </div>
-        ),
-        className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
-        duration: 2500,
-      })
-    } catch (error) {
-      toast({
-        description: "Failed to save image",
-        variant: "destructive",
-      })
-    }
-  }
+      setTimeout(() => {
+        document.body.removeChild(link)
+      }, 100)
 
-  const handleShareImage = async () => {
-    if (!cardRef.current) return
-
-    try {
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: "#ffffff",
-        scale: 2,
-      })
-
-      const blob = await new Promise<Blob>((resolve) => {
-        canvas.toBlob((blob) => {
-          if (blob) resolve(blob)
-        })
-      })
-
-      const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, { type: "image/png" })
-
-      if (navigator.share && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: `${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} - Deriv P2P`,
-          text: `Check out this ${ad.type === "buy" ? "Buy" : "Sell"} ${ad.account_currency} ad on Deriv P2P`,
-        })
-
+      if(!isMobile) {
         toast({
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-              <span>Shared successfully</span>
+              <span>Image saved successfully</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
           duration: 2500,
         })
-      } else {
-        handleSaveImage()
       }
     } catch (error) {
-      if (error instanceof Error && error.name !== "AbortError") {
+      if(!isMobile) {
         toast({
-          description: "Failed to share image",
+          description: "Failed to save image",
           variant: "destructive",
         })
       }
+    }
+  }
+
+  const waitForImages = (element: HTMLElement) => {
+    return Promise.all(
+      Array.from(element.querySelectorAll("img")).map((img) => {
+        if (img.complete) return Promise.resolve()
+        return new Promise<void>((resolve) => {
+          img.onload = img.onerror = () => resolve()
+        })
+      }),
+    )
+  }
+
+  const handleShareImage = async () => {
+    if (!cardRef.current) return
+
+    await new Promise((r) => setTimeout(r, 300))
+    await waitForImages(cardRef.current)
+
+    try {
+      const dataUrl = await htmlToImage.toPng(cardRef.current, {
+        quality: 0.95,
+        pixelRatio: isMobile ? 2 : 3,
+        backgroundColor: "#ffffff",
+      })
+
+      const response = await fetch(dataUrl)
+      const blob = await response.blob()
+
+      const file = new File([blob], `deriv-p2p-ad-${ad.id}.png`, {
+        type: "image/png",
+        lastModified: Date.now(),
+      })
+
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
+        await navigator.share({
+          title: "",
+          files: [file],
+        })
+        toast({ description: "Shared successfully" })
+        return
+      }
+
+      await handleSaveImage()
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -189,7 +202,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
-          <h2 className="text-2xl font-bold px-4 md:px-0">Share ad</h2>
+          <h2 className="text-[24px] font-bold px-4 md:px-0">Share ad</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
@@ -228,7 +241,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
               {qrCodeUrl && (
                 <>
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
-                    <Image src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
+                    <img src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
                   <p className="text-grayscale-text-muted text-xs mt-3 text-center">
                     Scan this code to order via Deriv P2P
@@ -269,17 +282,6 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                     <Image src="/icons/telegram.svg" alt="Telegram" width={36} height={36} />
                   </div>
                   <span className="text-[10px] font-normal text-slate-1600">Telegram</span>
-                </Button>
-
-                <Button
-                  variant="ghost"
-                  onClick={() => handleShare("twitter")}
-                  className="flex flex-col items-center gap-2 rounded-lg transition-colors min-w-fit min-h-fit p-0 hover:bg-transparent"
-                >
-                  <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
-                    <Image src="/icons/x.svg" alt="Twitter" width={36} height={36} />
-                  </div>
-                  <span className="text-[10px] font-normal text-slate-1600">Twitter</span>
                 </Button>
 
                 <Button

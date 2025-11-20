@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import Image from "next/image"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -26,6 +26,7 @@ import { PreviousOrdersSection } from "./components/previous-orders-section"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { Skeleton } from "@/components/ui/skeleton"
 
 function TimeRemainingDisplay({ expiresAt }) {
   const timeRemaining = useTimeRemaining(expiresAt)
@@ -58,7 +59,6 @@ export default function OrdersPage() {
   const { joinChannel } = useWebSocketContext()
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
 
   const abortControllerRef = useRef<AbortController | null>(null)
 
@@ -222,6 +222,16 @@ export default function OrdersPage() {
     setActiveTab(tabValue)
   }
 
+  const OrdersLoadingSkeleton = () => (
+    <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] gap-4 bg-white">
+      {[1, 2, 3, 4].map((i) => (
+        <div key={i} className="border rounded-lg p-4">
+          <Skeleton className="h-[160px] w-full rounded-lg bg-grayscale-500" />
+        </div>
+      ))}
+    </div>
+  )
+
   const DesktopOrderTable = () => (
     <div className="relative">
       <div className="overflow-auto max-h-[calc(100vh-200px)]">
@@ -334,14 +344,6 @@ export default function OrdersPage() {
     </div>
   )
 
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
-  }
-
   if (isMobile && showChat && selectedOrder) {
     const counterpartyName =
       selectedOrder?.advert.user.id == userId ? selectedOrder?.user?.nickname : selectedOrder?.advert?.user?.nickname
@@ -434,10 +436,7 @@ export default function OrdersPage() {
         </div>
         <div className="flex-1 pb-4">
           {isLoading ? (
-            <div className="text-center py-12">
-              <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-              <p className="mt-2 text-slate-600">{t("orders.loadingOrders")}</p>
-            </div>
+            <OrdersLoadingSkeleton />
           ) : orders.length === 0 ? (
             <div className="mt-[40%] md:mt-0">
               {activeTab === "active" ? (

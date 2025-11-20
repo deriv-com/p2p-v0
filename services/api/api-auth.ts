@@ -1,4 +1,5 @@
 import { useUserDataStore } from "@/stores/user-data-store"
+import { getFeatureFlag } from "./api-remote-config"
 
 export interface LoginRequest {
   email: string
@@ -136,25 +137,63 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  * Verify token from URL parameter
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
+  const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
+  
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Enable-Session": "true",
-      },
-      credentials: "include",
-      body: JSON.stringify({ token }),
-    })
+    if(isOryEnabled) {
+      const url = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/redirect-url?token=${token}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      const { data } = result
+      console.log(data)
+
+      if(data.recovery_link) {
+        const recoveryResponse = await fetch(data.recovery_link, {
+          method: 'GET',
+          redirect: 'manual',
+          credentials: 'include',
+        })
+      
+        if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
+          window.location.href = url
+          return data
+        } else {
+          throw new Error('Failed to process recovery link')
+        }
+      }
+      
+      return data
+    } else {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_CORE_URL}/auth/token/verify`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Enable-Session": "true",
+        },
+        credentials: "include",
+        body: JSON.stringify({ token }),
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const result = await response.json()
+      const { data } = result
+
+      return data
     }
-
-    const result = await response.json()
-    const { data } = result
-
-    return data
   } catch (error) {
     console.error("Token verification error:", error)
     throw new Error("Failed to verify token. Please try again.")
@@ -166,7 +205,10 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
  */
 export async function getSession(): Promise<boolean> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami`, {
+    const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
+    const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
+
+    const response = await fetch(sessionUrl, {
       method: "GET",
       credentials: "include",
     })
@@ -217,11 +259,29 @@ export async function fetchUserIdAndStore(): Promise<void> {
     })
 
     const result = await response.json()
+    
+    if (response.status === 403) {
+      const errors = result?.errors || []
+      const isUserDisabled = errors.some((error: any) => 
+        error.code === "UserDisabled" || error.message?.includes("UserDisabled")
+      )
+      
+      if (isUserDisabled) {
+        useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}],
+          signup: "v2",
+          status: "disabled"
+        })
+        return
+      }
+    }
+    
     if (!response.ok) {
       useUserDataStore.getState().updateUserData({
           balances: [{amount: "0"}],
           signup: "v2"
         })
+      return
     }
 
     const userId = result?.data?.id

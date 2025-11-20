@@ -51,8 +51,8 @@ export function CurrencyFilter({
   }, [currencies, searchQuery, selectedCurrency])
 
   const handleCurrencySelect = useCallback(
-    (currencyCode: string) => {
-      onCurrencySelect(currencyCode)
+    (currencyCode: string, currencyName: string) => {
+      onCurrencySelect(currencyCode, currencyName)
       setIsOpen(false)
       setSearchQuery("")
     },
@@ -122,13 +122,13 @@ export function CurrencyFilter({
             {filteredCurrencies.map((currency) => (
               <div
                 key={currency.code}
-                onClick={() => handleCurrencySelect(currency.code)}
+                onClick={() => handleCurrencySelect(currency.code, currency.name)}
                 className={cn(
                   "px-4 py-3 rounded-sm cursor-pointer transition-colors",
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
-                {currency.code}
+                {currency.code} - {currency.name}
               </div>
             ))}
           </div>

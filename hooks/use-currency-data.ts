@@ -15,16 +15,33 @@ export function useCurrencyData(currency = "USD") {
         setIsLoading(true)
         const response = await getSettings()
 
+        const countries = response.countries || []
+        const currencyMap = new Map<string, string>()
+
+        countries.forEach((country: { currency?: string; currency_name?: string }) => {
+          if (country.currency && country.currency_name) {
+            currencyMap.set(country.currency, country.currency_name)
+          }
+        })
+
         const availableAdverts = response.available_adverts || {}
 
         let currencyList: Currency[] = []
 
-        const paymentCurrencies = availableAdverts[currency]?.map(
-          (advert: { payment_currency: string }) => advert.payment_currency,
-        )
-        const uniquePaymentCurrencies = [...new Set(paymentCurrencies)]
-        currencyList = uniquePaymentCurrencies.map((code) => ({ code })).sort((a, b) => a.code.localeCompare(b.code))
-        
+        const paymentCurrencies = availableAdverts[currency]?.map((advert: { payment_currency: string }) => ({
+          code: advert.payment_currency,
+          name: currencyMap.get(advert.payment_currency) || advert.payment_currency,
+        }))
+
+        const uniqueCurrencies = paymentCurrencies?.reduce((acc: Currency[], curr: Currency) => {
+          if (!acc.find((c) => c.code === curr.code)) {
+            acc.push(curr)
+          }
+          return acc
+        }, [])
+
+        currencyList = (uniqueCurrencies || []).sort((a, b) => a.code.localeCompare(b.code))
+
         setCurrencies(currencyList)
         setError(null)
       } catch (err) {
@@ -43,7 +60,7 @@ export function useCurrencyData(currency = "USD") {
     return currencies.find((currency) => currency.code === code)
   }
 
-  const getCurrencyName = (code: string): string => {
+  const getCurrencyNameByCode = (code: string): string => {
     const currency = getCurrencyByCode(code)
     return currency ? `${currency.code} - ${currency.name}` : code
   }
@@ -51,7 +68,7 @@ export function useCurrencyData(currency = "USD") {
   return {
     currencies,
     getCurrencyByCode,
-    getCurrencyName,
+    getCurrencyName: getCurrencyNameByCode,
     isLoading,
     error,
   }

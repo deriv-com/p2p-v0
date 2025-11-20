@@ -85,17 +85,28 @@ export function NovuNotifications() {
       colorBackground: "#ffffff",
     },
     elements: {
-      popoverTrigger: {
+       popoverTrigger: {
         borderRadius: "50%",
-        backgroundColor: "rgba(0, 0, 0, 0.04)",
+        backgroundColor: "rgba(0, 0, 0, 0.08)",
+        padding: 0,
+        width: "32px",
+        height: "32px",
       },
       bellContainer: {
-        width: "24px",
-        height: "24px",
+        margin: 0,
+           width: "32px",
+        height: "32px",
       },
       bellIcon: {
-        width: "24px",
+       width: "24px",
         height: "24px",
+      },
+      bellDot: {
+        top: "0px",
+        right: "0px",
+        width: "8px",
+        height: "8px",
+        border: "none",
       },
       preferences__button: { display: "none" },
       popoverContent: "novu-popover-content",

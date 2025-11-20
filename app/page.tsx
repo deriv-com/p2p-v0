@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
@@ -29,9 +29,12 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { VerifiedBadge } from "@/components/verified-badge"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function BuySellPage() {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -69,6 +72,15 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const { showAlert } = useAlertDialog()
+  
+  const redirectToHelpCentre = () => {
+    const helpCentreUrl =
+    locale != "en"
+      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+      : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+
+    window.open(helpCentreUrl, '_blank');
+  }
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
   const isV1Signup = userData?.signup === "v1"
@@ -77,7 +89,6 @@ export default function BuySellPage() {
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
-  const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
     if (!userData?.signup) return null
@@ -237,42 +248,42 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if(userId) {
-        router.push(`/advertiser/${advertiserId}`)
+    if (userId) {
+      router.push(`/advertiser/${advertiserId}`)
     } else {
-        showAlert({
-            title: t("profile.gettingStarted"),
-            description: (
-            <div className="space-y-4 mb-6 mt-2">
-                <KycOnboardingSheet />
-            </div>
-            ),
-            confirmText: undefined,
-            cancelText: undefined,
-        })
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     }
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if(userId) {
-        setSelectedAd(ad)
-        setIsOrderSidebarOpen(true)
-        setError(null)
+    if (userId) {
+      setSelectedAd(ad)
+      setIsOrderSidebarOpen(true)
+      setError(null)
     } else {
-        showAlert({
-            title: t("profile.gettingStarted"),
-            description: (
-            <div className="space-y-4 mb-6 mt-2">
-                <KycOnboardingSheet />
-            </div>
-            ),
-            confirmText: undefined,
-            cancelText: undefined,
-        })
+      showAlert({
+        title: t("profile.gettingStarted"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
     }
   }
 
-  const handleCurrencySelect = (currencyCode: string) => {
+  const handleCurrencySelect = (currencyCode: string, currencyName: string) => {
     setCurrency(currencyCode)
   }
 
@@ -315,14 +326,6 @@ export default function BuySellPage() {
       }
     }
   }, [])
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
-  }
 
   return (
     <>
@@ -475,9 +478,55 @@ export default function BuySellPage() {
         <div className="flex-1 overflow-y-auto pb-20 md:pb-4 scrollbar-hide">
           <div>
             {isLoading ? (
-              <div className="text-center py-12">
-                <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-                <p className="mt-2 text-slate-600">{t("market.loadingAds")}</p>
+              <div className="md:block">
+                <Table>
+                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+                    <TableRow className="text-xs">
+                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                        <Skeleton className="bg-grayscale-500 h-5 w-32" />
+                      </TableHead>
+                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                    {[...Array(2)].map((_, index) => (
+                      <TableRow
+                        key={index}
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                      >
+                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Skeleton className="bg-grayscale-500 h-[24px] w-[24px] flex-shrink-0 rounded-full mr-[8px]" />
+                            <div className="flex-1">
+                              <Skeleton className="bg-grayscale-500 h-4 w-32 mb-2" />
+                              <Skeleton className="bg-grayscale-500 h-3 w-48" />
+                              <Skeleton className="bg-grayscale-500 h-3 w-24 mt-2" />
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                          <Skeleton className="bg-grayscale-500 h-5 w-32 mb-2" />
+                          <Skeleton className="bg-grayscale-500 h-3 w-48" />
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                          <div className="flex flex-col gap-2">
+                            <Skeleton className="bg-grayscale-500 h-3 w-24" />
+                            <Skeleton className="bg-grayscale-500 h-3 w-28" />
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                          <Skeleton className="bg-grayscale-500 h-8 w-20 ml-auto" />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
             ) : error ? (
               <div className="text-center py-8">{error}</div>
@@ -488,100 +537,107 @@ export default function BuySellPage() {
                 redirectToAds={true}
               />
             ) : (
-              <>
-                <div className="md:block">
-                  <Table>
-                    <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
-                      <TableRow className="text-xs">
-                        <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
-                          {t("market.advertisers")}
-                        </TableHead>
-                        <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
-                          {t("market.rates")}
-                        </TableHead>
-                        <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
-                          {t("market.paymentMethods")}
-                        </TableHead>
-                        <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
-                      {adverts.map((ad) => (
-                        <TableRow
-                          className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
-                          key={ad.id}
-                        >
-                          <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-slate-900 flex items-center justify-center text-white font-bold text-sm mr-[8px]">
-                                {(ad.user?.nickname || "").charAt(0).toUpperCase()}
-                                <div
-                                  className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
-                                    ad.user?.is_online ? "bg-buy" : "bg-gray-400"
-                                  }`}
+              <div className="md:block">
+                <Table>
+                  <TableHeader className="hidden lg:table-header-group border-b sticky top-0 bg-white z-[1]">
+                    <TableRow className="text-xs">
+                      <TableHead className="text-left py-4 px-4 lg:pl-0 text-slate-600 font-normal">
+                        {t("market.advertisers")}
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 font-normal">
+                        {t("market.rates")}
+                      </TableHead>
+                      <TableHead className="text-left py-4 px-4 text-slate-600 hidden sm:table-cell font-normal">
+                        {t("market.paymentMethods")}
+                      </TableHead>
+                      <TableHead className="text-right py-4 px-4 lg:pr-0"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="bg-white lg:divide-y lg:divide-slate-200 font-normal text-sm">
+                    {adverts.map((ad) => (
+                      <TableRow
+                        className="grid grid-cols-[1fr_auto] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0"
+                        key={ad.id}
+                      >
+                        <TableCell className="p-2 lg:p-4 lg:pl-0 align-top row-start-1 col-span-full whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="relative h-[24px] w-[24px] flex-shrink-0 rounded-full bg-black flex items-center justify-center text-white font-bold text-sm mr-[8px]">
+                              {(ad.user?.nickname || "").charAt(0).toUpperCase()}
+                              <div
+                                className={`absolute bottom-0 right-0 h-2 w-2 rounded-full border border-white ${
+                                  ad.user?.is_online ? "bg-buy" : "bg-gray-400"
+                                }`}
+                              />
+                            </div>
+                            <div>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                  className="hover:underline cursor-pointer"
+                                >
+                                  {ad.user?.nickname}
+                                </button>
+                                <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
+                                {ad.user.trade_band === "bronze" && (
+                                  <TooltipProvider>
+                                    <Tooltip disableHoverableContent={false}>
+                                      <TooltipTrigger asChild>
+                                        <Image
+                                          src="/icons/bronze.png"
+                                          alt="Bronze"
+                                          width={18}
+                                          height={18}
+                                          className="mr-1 cursor-pointer"
+                                        />
+                                      </TooltipTrigger>
+                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                        <>
+                                          <p className="font-bold text-white mb-2">Bronze tier</p>
+                                          <p className="text-white mb-4">
+                                            Default tier for new users with basic trading limits.
+                                          </p>
+                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs">
+                                            Learn more
+                                            <Image
+                                              src="/icons/chevron-right-white.png"
+                                              alt="Arrow"
+                                              width={8}
+                                              height={18}
+                                              className="ml-2 cursor-pointer"
+                                            />
+                                          </Button>
+                                        </>
+                                        <TooltipArrow className="fill-black" />
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                                {ad.user?.is_favourite && (
+                                  <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                    {t("market.following")}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                            {ad.user.rating_average_lifetime && (
+                              <span className="flex items-center">
+                                <Image
+                                  src="/icons/star-active.svg"
+                                  alt="Rating"
+                                  width={16}
+                                  height={16}
+                                  className="mr-1"
                                 />
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-1">
-                                  <button
-                                    onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                    className="hover:underline cursor-pointer"
-                                  >
-                                    {ad.user?.nickname}
-                                  </button>
-                                  <Image src="/icons/verified-badge.png" alt="Verified" width={32} height={32} />
-                                  {ad.user.trade_band === "bronze" && (
-                                    <Image
-                                      src="/icons/bronze.png"
-                                      alt="Bronze"
-                                      width={18}
-                                      height={18}
-                                      className="mr-1"
-                                    />
-                                  )}
-                                  {ad.user?.is_favourite && (
-                                    <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                      {t("market.following")}
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                              {ad.user.rating_average_lifetime && (
-                                <span className="flex items-center">
-                                  <Image
-                                    src="/icons/star-active.png"
-                                    alt="Rating"
-                                    width={16}
-                                    height={16}
-                                    className="mr-1"
-                                  />
-                                  <span className="text-[#FFAD3A]">{ad.user.rating_average_lifetime.toFixed(2)}</span>
-                                </span>
-                              )}
-                              {ad.user.order_count_lifetime > 0 && (
-                                <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>
-                                    {ad.user.order_count_lifetime} {t("market.orders")}
-                                  </span>
-                                </div>
-                              )}
-                              {ad.user.completion_average_30day && (
-                                <div className="flex flex-row items-center justify-center gap-[8px]">
-                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>
-                                    {ad.user.completion_average_30day}% {t("market.completion")}
-                                  </span>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex items-center text-xs text-slate-500 mt-2">
-                              <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1">
-                                <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                <span className="text-pending-text-secondary">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                              </span>
+                            )}
+                            {ad.user.order_count_lifetime > 0 && (
+                              <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                 <span>
-                                  {ad.order_expiry_period} {t("market.min")}
+                                  {ad.user.order_count_lifetime} {t("market.orders")}
                                 </span>
                               </div>
                             </div>
@@ -625,13 +681,84 @@ export default function BuySellPage() {
                                 {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                               </Button>
                             )}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </>
+                            {ad.user.completion_rate_all_30day && (
+                              <div className="flex flex-row items-center justify-center gap-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                <span>
+                                  {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-2">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                    <span>
+                                      {ad.order_expiry_period} {t("market.min")}
+                                    </span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                  <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
+                                  <TooltipArrow className="fill-black" />
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
+                          <div className="font-bold text-base flex items-center">
+                            {ad.exchange_rate
+                              ? ad.exchange_rate.toLocaleString(undefined, {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                })
+                              : ""}{" "}
+                            {ad.payment_currency}
+                            <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
+                          </div>
+                          <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
+                            ad.actual_maximum_order_amount || "N/A"
+                          }  ${ad.account_currency}`}</div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
+                          <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
+                            {ad.payment_methods?.map((method, index) => (
+                              <div key={index} className="flex items-center">
+                                {method && (
+                                  <div
+                                    className={`h-2 w-2 rounded-full mr-2 ${
+                                      method.toLowerCase().includes("bank")
+                                        ? "bg-paymentMethod-bank"
+                                        : "bg-paymentMethod-ewallet"
+                                    }`}
+                                  ></div>
+                                )}
+                                <span className="text-xs">{formatPaymentMethodName(method)}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </TableCell>
+                        <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
+                          {userId != ad.user.id && (
+                            <Button
+                              variant={ad.type === "buy" ? "destructive" : "secondary"}
+                              size="sm"
+                              onClick={() => handleOrderClick(ad)}
+                              disabled={!!tempBanUntil}
+                            >
+                              {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
+                            </Button>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </div>
         </div>

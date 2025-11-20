@@ -20,6 +20,7 @@ import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { VisibilityStatusDialog } from "./visibility-status-dialog"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -211,9 +212,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
 
   if (isLoading) {
     return (
-      <div className="text-center py-12">
-        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">{t("myAds.loadingAds")}</p>
+      <div className="w-full space-y-4">
+        {Array.from({ length: 3 }).map((_, index) => (
+          <Skeleton key={index} className="h-[200px] w-full rounded-lg bg-grayscale-500" />
+        ))}
       </div>
     )
   }
@@ -274,7 +276,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         >
                           {adType}
                         </span>
-                        <span className="text-gray-900 text-base font-bold leading-6 ml-1"> {ad.account_currency}</span>
+                        <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
+                          {" "}
+                          {ad.account_currency}
+                        </span>
                       </div>
                       <div className="space-y-1">
                         <div className="flex items-center justify-between md:justify-normal gap-1">
@@ -283,7 +288,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               {t("myAds.adId")}:
                             </span>
                           )}
-                          <span className="text-xs md:text-sm leading-5 text-slate-500">{ad.id}</span>
+                          <span className="text-xs leading-5 text-slate-500">{ad.id}</span>
                         </div>
                         {!isMobile && (
                           <div className="flex items-center justify-between md:justify-normal gap-1">
@@ -301,7 +306,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className={cn("p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4  whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
+                  <TableCell className={cn("p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
@@ -323,10 +328,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
-                      <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.limit")}:</span>
-                      <span className="text-xs md:text-sm leading-5 text-gray-900 overflow-hidden text-ellipsis">
-                        {formatLimits(ad)}
-                      </span>
+                      <span className="text-xs leading-5">{t("myAds.limit")}:</span>
+                      <span className="text-xs leading-5 overflow-hidden text-ellipsis">{formatLimits(ad)}</span>
                     </div>
                   </TableCell>
                   <TableCell className={cn("p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>

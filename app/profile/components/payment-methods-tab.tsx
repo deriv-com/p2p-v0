@@ -297,7 +297,7 @@ export default function PaymentMethodsTab() {
       <div className="space-y-6">
         <div className="space-y-2">
           <CustomShimmer className="h-6 w-40" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
             <CustomShimmer className="h-24 w-full" />
             <CustomShimmer className="h-24 w-full" />
           </div>
@@ -305,7 +305,7 @@ export default function PaymentMethodsTab() {
 
         <div className="space-y-2">
           <CustomShimmer className="h-6 w-40" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
             <CustomShimmer className="h-24 w-full" />
             <CustomShimmer className="h-24 w-full" />
             <CustomShimmer className="h-24 w-full" />
@@ -345,7 +345,7 @@ export default function PaymentMethodsTab() {
       {bankTransfers.length > 0 && (
         <div className="mb-4">
           <h3 className="text-base font-bold mb-4">{t("paymentMethod.bankTransfers")}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {bankTransfers.map((method) => (
               <Card
                 key={method.id}
@@ -396,7 +396,7 @@ export default function PaymentMethodsTab() {
       {eWallets.length > 0 && (
         <div>
           <h3 className="text-base font-bold mb-4">{t("paymentMethod.eWallets")}</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {eWallets.map((method) => (
               <Card
                 key={method.id}

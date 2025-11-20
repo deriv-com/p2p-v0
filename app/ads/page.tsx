@@ -3,7 +3,7 @@
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useEffect, useState, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import MyAdsTable from "./components/my-ads-table"
 import { AdsAPI } from "@/services/api"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -36,7 +36,6 @@ export default function AdsPage() {
   const [statusData, setStatusData] = useState<StatusData | null>(null)
   const { userData, userId } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -172,43 +171,36 @@ export default function AdsPage() {
   }
 
   const getHideMyAdsComponent = () => {
+    const hasNoAds = ads.length > 0
     return (
-      <div className="flex items-center justify-self-end flex-shrink-0">
+      <div className="flex items-center justify-self-end self-end flex-shrink-0">
         <Switch
           id="hide-ads"
           checked={hiddenAdverts}
           onCheckedChange={handleHideMyAds}
           className="data-[state=checked]:bg-completed-icon"
-          disabled={tempBanUntil}
+          disabled={tempBanUntil || !hasNoAds}
         />
-        <label htmlFor="hide-ads" className="text-sm text-neutral-10 cursor-pointer ml-2 whitespace-nowrap">
+        <label htmlFor="hide-ads" className="text-sm text-grayscale-600 cursor-pointer ml-2 whitespace-nowrap">
           {t("myAds.hideMyAds")}
         </label>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
               <Image
-                src="/icons/info-circle.png"
+                src="/icons/info-circle.svg"
                 alt="Info"
-                width={12}
-                height={12}
+                width={24}
+                height={24}
                 className="ml-1 cursor-pointer flex-shrink-0"
               />
             </TooltipTrigger>
             <TooltipContent>
-              <p className="opacity-[0.72]">{t("myAds.hideMyAdsTooltip")}</p>
+              <p className="text-white">{t("myAds.hideMyAdsTooltip")}</p>
               <TooltipArrow className="fill-black" />
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
-      </div>
-    )
-  }
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
       </div>
     )
   }
@@ -233,7 +225,7 @@ export default function AdsPage() {
                 {t("myAds.createAd")}
               </Button>
             )}
-            {ads.length > 0 && getHideMyAdsComponent()}
+            {getHideMyAdsComponent()}
           </div>
         </div>
 

@@ -10,7 +10,7 @@ const textareaVariants = cva(
     variants: {
       variant: {
         default: "",
-        floating: "placeholder:opacity-0 pt-6 pb-2",
+        floating: "placeholder:opacity-0 pt-7 pb-2",
       },
     },
     defaultVariants: {
@@ -31,7 +31,6 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const [isFocused, setIsFocused] = React.useState(false)
     const [hasValue, setHasValue] = React.useState(false)
 
-    // Check if textarea has value on mount and when value changes
     React.useEffect(() => {
       const currentValue = value !== undefined ? value : defaultValue
       setHasValue(Boolean(currentValue && String(currentValue).length > 0))
@@ -70,8 +69,8 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           />
           <label
             className={cn(
-              "absolute left-3 text-sm text-muted-foreground transition-all duration-200 ease-in-out pointer-events-none",
-              shouldFloatLabel ? "top-2 text-xs text-[#000000B8]" : "top-4 text-sm",
+              "absolute left-3 text-sm text-muted-foreground transition-all duration-200 ease-in-out pointer-events-none z-10 bg-background px-1",
+              shouldFloatLabel ? "top-[1px] text-xs text-[#000000B8] py-2" : "top-4 text-sm",
             )}
           >
             {label}

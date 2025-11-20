@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -59,6 +59,8 @@ interface AdvertiserProfilePageProps {
 export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageProps) {
   const router = useRouter()
   const { id } = useParams() as { id: string }
+  const searchParams = useSearchParams()
+  const adIdParam = searchParams.get('adId')
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
@@ -111,8 +113,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setAdverts(advertiserAds)
     } catch (err) {
       if (!abortController.signal.aborted) {
-        console.error("Error fetching advertiser data:", err)
-        setError("Failed to load advertiser profile. Please try again.")
+        setError("Failed to load the advertiser profile.")
         setProfile(null)
         setAdverts([])
       }
@@ -124,7 +125,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   useEffect(() => {
-    fetchAdvertiserData()
+    if(id) {
+      fetchAdvertiserData()
+    } else {
+      router.push("/")
+    }
 
     return () => {
       if (abortControllerRef.current) {
@@ -132,6 +137,22 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       }
     }
   }, [id])
+
+  useEffect(() => {
+    if (adIdParam && adverts.length > 0 && !isBlocked) {
+      const ad = adverts.find(a => a.id == adIdParam)
+      if (ad) {
+        handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      } else {
+        showAlert({
+          title: "This ad is unavailable",
+          description: "It's either deleted or no longer active.",
+          confirmText: "OK",
+          type: "warning",
+        })
+      }
+    }
+  }, [adIdParam, adverts, isBlocked])
 
   const toggleFollow = async () => {
     if (!profile) return
@@ -252,7 +273,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   const handleBack = () => {
-    router.back()
+    router.push("/")
   }
 
   if (isLoading) {
@@ -306,7 +327,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
-                              <Image src="/icons/bronze.png" alt="Bronze" width={18} height={18} />
+                              <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
                             </TooltipTrigger>
                             <TooltipContent>
                               <>
@@ -335,7 +356,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                                 count: profile?.statistics_lifetime?.recommend_count,
                                 plural: profile?.statistics_lifetime?.recommend_count === 1 ? "" : "s",
                               })
-                            : t("advertiser.notRecommendedYet")}
+                            : t("profile.notRecommendedYet")}
                         </span>
                       </div>
                       <span className="opacity-[0.08]">|</span>
@@ -344,7 +365,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                         <span>
                           {profile?.statistics_lifetime?.rating_count > 0
                             ? profile?.statistics_lifetime?.rating_average
-                            : t("advertiser.notRatedYet")}
+                            : t("profile.notRatedYet")}
                         </span>
                       </div>
                     </div>

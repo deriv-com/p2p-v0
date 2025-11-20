@@ -173,7 +173,7 @@ export default function MarketFilterDropdown({
           {hasActiveFilters && <div className="absolute top-[5px] right-[12px] w-2 h-2 bg-red-500 rounded-full"></div>}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-fit h-fit p-2" align="end">
+      <PopoverContent className="w-fit h-fit py-2 px-4" align="end">
         <FilterContent />
       </PopoverContent>
     </Popover>

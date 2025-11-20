@@ -64,11 +64,10 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
-        {userPaymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
+        {userPaymentMethods.length > 0 && (<div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>)}
         {userPaymentMethods.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-600 mb-4">{t("paymentMethod.noCompatibleMethods")}</p>
-            <p className="text-sm text-gray-500">{t("paymentMethod.addCompatibleMethod")}</p>
+          <div className="pb-2 text-slate-1200 text-sm">
+            {t("paymentMethod.addCompatibleMethod")}
           </div>
         ) : (
           userPaymentMethods.map((method) => (
@@ -106,7 +105,7 @@ const PaymentSelectionContent = ({
         )}
 
         <div
-          className="bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+          className="border border-grayscale-200 rounded-lg p-4 cursor-pointer transition-colors"
           onClick={() => {
             handleAddPaymentMethodClick()
           }}
@@ -249,10 +248,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const errorCode = order.errors[0].code
         if (errorCode === "OrderExists") {
           showAlert({
-            title: t("order.unableToCreateOrder"),
+            title: "Existing order in progress",
             description: t("order.orderExists"),
-            confirmText: t("common.ok"),
+            confirmText: "Go to Market",
             type: "warning",
+            onConfirm: () => {
+              handleClose()
+            }
           })
         } else if(errorCode === "OrderCreateFailRateSlippage") {
           showAlert({
@@ -397,7 +399,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 </Button>
               </div>
 
-              <div className="flex flex-col h-full overflow-y-auto">
+              <div className="flex flex-col h-auto overflow-y-auto">
                 <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
                 <div className="p-4">
                   <div className="mb-2">
@@ -424,8 +426,8 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   </div>
                   {validationError && <p className="text-xs text-red-500 text-sm mb-2">{validationError}</p>}
                   <div className="flex items-center">
-                    <span className="text-gray-500">{youSendText}:&nbsp;</span>
-                    <span className="font-bold">
+                    <span className="text-grayscale-text-muted">{youSendText}:&nbsp;</span>
+                    <span className="text-slate-1200 font-bold">
                       {Number.parseFloat(totalAmount).toLocaleString(undefined, {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
@@ -437,7 +439,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
                 {isBuy && (
                   <div className="mx-4 mt-4 pb-6 border-b">
-                    <h3 className="text-sm text-slate-1400 mb-3">{t("order.receivePaymentTo")}</h3>
+                    <h3 className="text-sm text-slate-1200 mb-3">{t("order.receivePaymentTo")}</h3>
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
@@ -452,39 +454,39 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
                 <div className="mx-4 mt-4 text-sm">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{t("order.rateType")}</span>
+                    <span className="text-grayscale-text-muted">{t("order.rateType")}</span>
                     <span className="bg-blue-50 text-blue-800 capitalize text-xs rounded-sm p-1">
                       {ad.exchange_rate_type}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{t("order.exchangeRate")}</span>
-                    <span className="text-slate-1400">
+                    <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
+                    <span className="text-slate-1200">
                       {ad.effective_rate_display}{" "}
                       {ad.payment_currency}
-                      <span> /{ad.account_currency}</span>
+                      <span className="text-grayscale-text-muted"> /{ad.account_currency}</span>
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{t("order.orderLimit")}</span>
-                    <span className="text-slate-1400">
+                    <span className="text-grayscale-text-muted">{t("order.orderLimit")}</span>
+                    <span className="text-slate-1200">
                       {minLimit} - {maxLimit} {ad.account_currency}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{t("order.paymentTime")}</span>
-                    <span className="text-slate-1400">
+                    <span className="text-grayscale-text-muted">{t("order.paymentTime")}</span>
+                    <span className="text-slate-1200">
                       {ad.order_expiry_period} {t("market.min")}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-slate-500">{isBuy ? t("order.buyer") : t("order.seller")}</span>
-                    <span className="text-slate-1400">{ad.user?.nickname}</span>
+                    <span className="text-grayscale-text-muted">{isBuy ? t("order.buyer") : t("order.seller")}</span>
+                    <span className="text-slate-1200">{ad.user?.nickname}</span>
                   </div>
                 </div>
 
-                <div className="border-t m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
-                  <h3 className="text-slate-500 flex-1">
+                <div className="border-t border-[#E9ECEF] m-4 mb-0 pt-4 text-sm flex flex-col md:flex-row justify-between">
+                  <h3 className="text-grayscale-text-muted flex-1">
                     {isBuy ? t("order.buyersPaymentMethods") : t("order.sellersPaymentMethods")}
                   </h3>
                   <div className="flex flex-wrap gap-4">
@@ -495,17 +497,17 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                             method.toLowerCase().includes("bank") ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                           }`}
                         />
-                        <span className="text-slate-1400">{formatPaymentMethodName(method)}</span>
+                        <span className="text-slate-1200">{formatPaymentMethodName(method)}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div className="mx-4 mt-4 border-t py-2 text-sm flex-1">
-                  <h3 className="text-slate-500">
+                <div className="mx-4 mt-4 border-t border-[#E9ECEF] py-2 text-sm">
+                  <h3 className="text-grayscale-text-muted">
                     {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
                   </h3>
-                  <p className="text-slate-1400 break-words">
+                  <p className="text-slate-1200 break-words mt-2">
                     {ad.description ||
                       "Kindly transfer the payment to the provided account details after placing your order."}
                   </p>
