@@ -93,7 +93,7 @@ export function VisibilityStatusDialog({
           return (
             <li key={index} className="flex flex-col gap-8 py-2">
               <p className="text-base text-grayscale-600">{reasonContent.description}</p>
-              {actionInfo && (
+              {reasons.length == 1 && actionInfo && (
                 <Button onClick={() => handleAction(actionInfo.action)} className="w-full" variant="default">
                   {actionInfo.label}
                 </Button>
