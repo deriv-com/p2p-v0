@@ -203,7 +203,7 @@ export class WebSocketClient {
   }
 
   public requestExchangeRate(buyCurrency: string, forCurrency: string): void {
-    const channel = `exchange_rates/${buyCurrency}/${forCurrency}`
+    const channel = forCurrency? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
     const requestMessage: WebSocketMessage = {
       action: "message",
       options: {
