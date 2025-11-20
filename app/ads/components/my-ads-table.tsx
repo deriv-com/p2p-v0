@@ -413,23 +413,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       <VisibilityStatusDialog
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
-        reasons={selectedVisibilityReasons}
-        onActivateAd={() => {
-          if (selectedVisibilityAd) {
-            handleToggleStatus(selectedVisibilityAd)
-          }
-        }}
-        onEditAd={() => {
-          if (selectedVisibilityAd) {
-            handleEdit(selectedVisibilityAd)
-          }
-        }}
-        onAddPaymentMethod={() => {
-          router.push("/profile?tab=payment-methods")
-        }}
-        onContactSupport={() => {
-          window.open("https://deriv.com/contact-us/", "_blank")
-        }}
+        reasons={selectedVisibilityReasons
       />
     </>
   )
