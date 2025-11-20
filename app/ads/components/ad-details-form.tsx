@@ -162,14 +162,14 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
 
-    joinExchangeRatesChannel(buyCurrency, forCurrency)
+    joinExchangeRatesChannel(buyCurrency)
     
     const requestTimer = setTimeout(() => {
-      requestExchangeRate(buyCurrency, forCurrency)
+      requestExchangeRate(buyCurrency)
     }, 100)
 
     const unsubscribe = subscribe((data: any) => {
-      if (data.options.channel === `exchange_rates/${buyCurrency}/${forCurrency}`) {
+      if (data.options.channel === `exchange_rates/${buyCurrency}`) {
         if(data.payload?.rate) {
           setMarketPrice(data.payload.rate)
         } else if (data.payload?.data.rate) {
