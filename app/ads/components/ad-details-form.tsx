@@ -97,46 +97,69 @@ export default function AdDetailsForm({
       setIsLoadingPriceRange(true)
       try {
         const response = await getAdvertStatistics(buyCurrency)
-        
-        // Extract rates based on price type and payment currency
-        const advertStats = response || {}
-        const currencyStats = advertStats[forCurrency]
-        
-        if (currencyStats) {
-          const typeStats = priceType === "fixed" ? currencyStats.fixed : currencyStats.floating
-          
-          if (typeStats) {
-            const lowestPrice = typeStats.minimum_exchange_rate
-            const highestPrice = typeStats.maximum_exchange_rate
-            
-            setPriceRange({ 
-              lowestPrice: lowestPrice !== null ? lowestPrice : null, 
-              highestPrice: highestPrice !== null ? highestPrice : null 
-            })
-            
-            // Set market price as average if both values exist
-            if (lowestPrice !== null && highestPrice !== null) {
-              setMarketPrice((lowestPrice + highestPrice) / 2)
+
+        if (Array.isArray(response)) {
+          const currencyStats = response.find((stat) => stat.payment_currency === forCurrency)
+
+          if (currencyStats) {
+            let lowestPrice = null
+            let highestPrice = null
+
+            // Select the appropriate minimum and maximum rates based on type and price type
+            if (type === "buy") {
+              if (priceType === "fixed") {
+                lowestPrice = currencyStats.buy_fixed_minimum_rate
+                  ? Number.parseFloat(currencyStats.buy_fixed_minimum_rate)
+                  : null
+                highestPrice = currencyStats.buy_fixed_maximum_rate
+                  ? Number.parseFloat(currencyStats.buy_fixed_maximum_rate)
+                  : null
+              } else {
+                lowestPrice = currencyStats.buy_float_minimum_rate
+                  ? Number.parseFloat(currencyStats.buy_float_minimum_rate)
+                  : null
+                highestPrice = currencyStats.buy_float_maximum_rate
+                  ? Number.parseFloat(currencyStats.buy_float_maximum_rate)
+                  : null
+              }
+            } else {
+              if (priceType === "fixed") {
+                lowestPrice = currencyStats.sell_fixed_minimum_rate
+                  ? Number.parseFloat(currencyStats.sell_fixed_minimum_rate)
+                  : null
+                highestPrice = currencyStats.sell_fixed_maximum_rate
+                  ? Number.parseFloat(currencyStats.sell_fixed_maximum_rate)
+                  : null
+              } else {
+                lowestPrice = currencyStats.sell_float_minimum_rate
+                  ? Number.parseFloat(currencyStats.sell_float_minimum_rate)
+                  : null
+                highestPrice = currencyStats.sell_float_maximum_rate
+                  ? Number.parseFloat(currencyStats.sell_float_maximum_rate)
+                  : null
+              }
             }
+
+            setPriceRange({
+              lowestPrice,
+              highestPrice,
+            })
           } else {
             setPriceRange({ lowestPrice: null, highestPrice: null })
-            setMarketPrice(null)
           }
         } else {
           setPriceRange({ lowestPrice: null, highestPrice: null })
-          setMarketPrice(null)
         }
       } catch (error) {
         console.error("Error fetching price range:", error)
         setPriceRange({ lowestPrice: null, highestPrice: null })
-        setMarketPrice(null)
       } finally {
         setIsLoadingPriceRange(false)
       }
     }
 
     fetchPriceRange()
-  }, [buyCurrency, forCurrency, priceType])
+  }, [buyCurrency, forCurrency, priceType, type])
 
   useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
@@ -360,7 +383,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg"
-                               || "/placeholder.svg"}
+                              }
                               alt={`${currency.code} logo`}
                               width={20}
                               height={20}
@@ -376,7 +399,9 @@ export default function AdDetailsForm({
               </div>
 
               <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">{type === "buy" ? "Paying with" : "Receive in"}</label>
+                <label className="block mb-2 text-black text-sm font-normal leading-5">
+                  {type === "buy" ? "Paying with" : "Receive in"}
+                </label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>
@@ -405,7 +430,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg"
-                               || "/placeholder.svg"}
+                              }
                               alt={`${currency.code} logo`}
                               width={20}
                               height={20}
@@ -474,16 +499,18 @@ export default function AdDetailsForm({
           </div>
 
           <div>
-            {priceType === "fixed" && <div className="flex items-center justify-between text-xs mt-4">
-              <span className="text-grayscale-text-muted">Your rate:</span>
-              <span className="text-slate-1200">
-                {fixedRate?.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                <span className="text-xs font-normal">{forCurrency}</span>
-              </span>
-            </div>}
+            {priceType === "fixed" && (
+              <div className="flex items-center justify-between text-xs mt-4">
+                <span className="text-grayscale-text-muted">Your rate:</span>
+                <span className="text-slate-1200">
+                  {fixedRate?.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-xs font-normal">{forCurrency}</span>
+                </span>
+              </div>
+            )}
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Lowest rate in market:</span>
               <span className="text-slate-1200">
