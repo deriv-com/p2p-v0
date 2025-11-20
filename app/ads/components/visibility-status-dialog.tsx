@@ -47,16 +47,13 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
 
   const content = (
     <div className="space-y-4 py-4">
-      <p className="text-sm text-slate-600">{t("myAds.visibilityStatusDescription")}</p>
       <ul className="space-y-4">
         {reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           return (
-            <li key={index} className="flex items-start gap-3 rounded-lg border border-slate-200 p-4">
-              <div className="space-y-1 flex-1">
-                <p className="text-sm font-semibold text-slate-900">{reasonContent.title}</p>
-                <p className="text-sm text-slate-600">{reasonContent.description}</p>
-              </div>
+            <p className="text-sm text-slate-600">{reasonContent.title}}</p>
+            <li key={index} className="flex items-start gap-3p-4">
+              <p className="text-sm text-slate-600">{reasonContent.description}</p>
             </li>
           )
         })}
