@@ -450,8 +450,9 @@ that feature. Change the ad visibility to public to list it again."
 to a fixed rate to make your ad visible."
     },
     "advertNoPaymentMethods": {
-      "title": "No payment methods",
-      "description": "Your ad doesn't have any payment methods configured. Add at least one payment method to make it visible."
+      "title": "Your ad isn’t visible",
+      "description": "This ad doesn’t have a payment method. Add one to make it 
+visible to other traders."
     },
     "unknownReason": "Unknown reason for ad invisibility."
   },
