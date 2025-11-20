@@ -411,13 +411,14 @@
     },
     "advertiserDailyLimit": {
       "title": "Your ad isn’t visible",
-      "description": "Your remaining daily limitis below the 
+      "description": "Your remaining daily limit is below the 
 minimum order. Lower the minimum to list your ad or wait for the limit to
 reset within 24 hours."
     },
     "advertiserBalance": {
-      "title": "Insufficient balance",
-      "description": "You don't have enough balance in your wallet to support this ad. Add funds to make it visible."
+      "title": "Your ad isn’t visible",
+      "description": "Your balance is lower than your ad’s minimum order of Add funds or lower the minimum to list your 
+ad."
     },
     "advertiserAdvertsUnlisted": {
       "title": "All ads unlisted",
