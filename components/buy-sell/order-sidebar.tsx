@@ -154,7 +154,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
 
   useEffect(() => {
-    if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
+    if (isOpen && ad && ad.payment_currency && ad.account_currency && exchange_rate_type === "fixed" && isConnected) {
       joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
       const timer = setTimeout(() => {
         requestExchangeRate(ad.account_currency, ad.payment_currency)
