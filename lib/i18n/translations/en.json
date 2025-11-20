@@ -402,8 +402,8 @@
   },
   "visibilityStatus": {
     "advertInactive": {
-      "title": "Ad is inactive",
-      "description": "Your ad has been deactivated. Activate it to make it visible again."
+      "title": "Your ad is inactive",
+      "description": "Activate your ad to make it visible to other traders."
     },
     "advertRemaining": {
       "title": "Insufficient ad balance",
