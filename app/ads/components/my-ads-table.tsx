@@ -41,7 +41,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
 
-
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
       return `${ad.minimum_order_amount} - ${ad.actual_maximum_order_amount} USD`
@@ -413,7 +412,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       <VisibilityStatusDialog
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
-        reasons={selectedVisibilityReasons
+        reasons={selectedVisibilityReasons}
       />
     </>
   )
