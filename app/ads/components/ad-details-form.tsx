@@ -175,7 +175,7 @@ export default function AdDetailsForm({
         } else if (data.payload?.data.rate) {
           setMarketPrice(data.payload.data.rate)
         }
-      } else if() {
+      } else if(data.action === "error") {
         setMarketPrice(null)
       }
     })
