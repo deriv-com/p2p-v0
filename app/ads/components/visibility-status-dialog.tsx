@@ -47,7 +47,7 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
 
   const content = (
     <div className="space-y-4 py-4">
-      <ul className="space-y-4">
+      <ul>
         {reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           return (
