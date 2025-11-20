@@ -422,10 +422,11 @@ ad."
     },
     "advertiserAdvertsUnlisted": {
       "title": "Your ads aren't visible",
-      "description": "You've chosen to hide all your ads. Enable them to make this ad visible."
+      "description": "You’ve paused all your ad. Activate your ads to make it visible 
+to other traders."
     },
     "advertiserStatus": {
-      "title": "Account status restricted",
+      "title": "Your ad isn’t visible",
       "description": "Your account has restrictions that prevent ads from being visible. Contact support for more details."
     },
     "advertiserScheduleUnavailable": {
