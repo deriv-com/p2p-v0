@@ -445,7 +445,7 @@ details."
 that feature. Change the ad visibility to public to list it again."
     },
     "advertFloatRateDisabled": {
-      "title": "Floating rate disabled",
+      "title": "Your ad isn’t visible",
       "description": "Floating rate ads are currently disabled. Switch to a fixed rate or wait until floating rates are re-enabled."
     },
     "advertNoPaymentMethods": {
