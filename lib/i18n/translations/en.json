@@ -444,8 +444,7 @@
     "advertNoPaymentMethods": {
       "title": "Your ad isn't visible",
       "description": "This ad doesn't have a payment method. Add one to make it visible to other traders."
-    },
-    "unknownReason": "Your ad isn't visible."
+    }
   },
   "orders": {
     "title": "Orders",
