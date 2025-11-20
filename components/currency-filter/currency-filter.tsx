@@ -109,7 +109,7 @@ export function CurrencyFilter({
         )}
       </div>
 
-      <div className="max-h-[85%] overflow-y-auto">
+      <div className="max-h-[85%] overflow-y-auto scrollbar-custom">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={`${searchQuery} is unavailable`}
@@ -128,7 +128,7 @@ export function CurrencyFilter({
                   selectedCurrency === currency.code ? "bg-black text-white" : "hover:bg-gray-50 text-gray-700",
                 )}
               >
-                {currency.code} -  {currency.name} 
+                {currency.code} - {currency.name}
               </div>
             ))}
           </div>
