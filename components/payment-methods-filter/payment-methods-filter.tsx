@@ -249,7 +249,13 @@ export default function PaymentMethodsFilter({
     </div>
   )
 
-const enhancedTrigger = cloneElement(trigger, { className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"), })
+const enhancedTrigger = cloneElement(trigger, {
+  className: cn(
+    trigger.props.className,
+    "text-red-500", // <-- always red
+    "[&_img[alt='Arrow']]:rotate-180" // arrow still rotates on open
+  ),
+})
 
   if (isMobile) {
     return (
