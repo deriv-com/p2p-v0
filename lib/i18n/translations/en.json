@@ -406,12 +406,14 @@
       "description": "Activate your ad to make it visible to other traders."
     },
     "advertRemaining": {
-      "title": "Insufficient ad balance",
-      "description": "Your ad has insufficient balance remaining. Add funds to reactivate it."
+      "title": "Your ad isn’t visible",
+      "description": "Your ad’s remaining amount is below the minimum order."
     },
     "advertiserDailyLimit": {
-      "title": "Daily limit reached",
-      "description": "You've reached your daily trading limit. Your ad will be visible again tomorrow."
+      "title": "Your ad isn’t visible",
+      "description": "Your remaining daily limitis below the 
+minimum order. Lower the minimum to list your ad or wait for the limit to
+reset within 24 hours."
     },
     "advertiserBalance": {
       "title": "Insufficient balance",
