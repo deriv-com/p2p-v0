@@ -516,7 +516,7 @@ export default function AdDetailsForm({
               <span className="text-grayscale-text-muted">Lowest rate in market:</span>
               {priceRange?.lowestPrice ? 
                 (<span className="text-slate-1200">
-                  {priceRange?.lowestPrice?.toLocaleString(undefined, {
+                  {priceRange.lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
