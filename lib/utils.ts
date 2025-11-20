@@ -463,6 +463,7 @@ export const currencyLogoMapper = {
   AED: "/icons/aed-logo.png",
   USDT: "/icons/eusdt-logo.png",
   TRX: "/icons/trx-logo.png",
+    AMD: "/icons/usd-flag.png",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
