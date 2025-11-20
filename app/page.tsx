@@ -640,47 +640,6 @@ export default function BuySellPage() {
                                   {ad.user.order_count_lifetime} {t("market.orders")}
                                 </span>
                               </div>
-                              )}
-                            </div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
-                            <div className="font-bold text-base flex items-center">
-                              {ad.effective_rate_display}{" "}
-                              {ad.payment_currency}
-                              <div className="text-xs text-slate-500 font-normal ml-1">{`/${ad.account_currency}`}</div>
-                            </div>
-                            <div className="mt-1 text-xs">{`${t("market.orderLimits")}: ${ad.minimum_order_amount || "N/A"} - ${
-                              ad.actual_maximum_order_amount || "N/A"
-                            }  ${ad.account_currency}`}</div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 sm:table-cell align-top row-start-3">
-                            <div className="flex flex-row lg:flex-col flex-wrap gap-2 h-full">
-                              {ad.payment_methods?.map((method, index) => (
-                                <div key={index} className="flex items-center">
-                                  {method && (
-                                    <div
-                                      className={`h-2 w-2 rounded-full mr-2 ${
-                                        method.toLowerCase().includes("bank")
-                                          ? "bg-paymentMethod-bank"
-                                          : "bg-paymentMethod-ewallet"
-                                      }`}
-                                    ></div>
-                                  )}
-                                  <span className="text-xs">{formatPaymentMethodName(method)}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </TableCell>
-                          <TableCell className="p-2 lg:p-4 lg:pr-0 text-right align-middle row-start-3 whitespace-nowrap">
-                            {userId != ad.user.id && (
-                              <Button
-                                variant={ad.type === "buy" ? "destructive" : "secondary"}
-                                size="sm"
-                                onClick={() => handleOrderClick(ad)}
-                                disabled={!!tempBanUntil}
-                              >
-                                {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
-                              </Button>
                             )}
                             {ad.user.completion_rate_all_30day && (
                               <div className="flex flex-row items-center justify-center gap-[8px]">
@@ -690,6 +649,7 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                             )}
+                          </div>
                           <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
                               <Tooltip>
