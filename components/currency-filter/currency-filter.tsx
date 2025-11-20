@@ -158,7 +158,7 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-4" align="end">
+      <PopoverContent className="w-80 h-80 p-4  md:pr-0" align="end">
         <CurrencyList />
       </PopoverContent>
     </Popover>
