@@ -185,7 +185,7 @@ export default function AdDetailsForm({
       unsubscribe()
     }
    
-  }, [buyCurrency, forCurrency, isConnected])
+  }, [buyCurrency, forCurrency, isConnected, priceType])
 
   useEffect(() => {
     if (initialData) {
