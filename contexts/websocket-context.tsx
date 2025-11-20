@@ -119,7 +119,7 @@ export class WebSocketClient {
   }
 
   public leaveExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
-    const channel = `exchange_rates/${buyCurrency}/${forCurrency}`
+    const channel = `exchange_rates/${buyCurrency}`
     this.leaveChannel(channel)
   }
 
