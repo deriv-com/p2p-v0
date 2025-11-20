@@ -1,11 +1,12 @@
 "use client"
 
+
+import Image from "next/image"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import Image from "next/image"
 
 interface VisibilityStatusDialogProps {
   open: boolean
