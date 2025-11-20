@@ -165,7 +165,7 @@ export default function AdDetailsForm({
     joinExchangeRatesChannel(buyCurrency, forCurrency)
     
     const requestTimer = setTimeout(() => {
-      requestExchangeRate(buyCurrency)
+      requestExchangeRate(buyCurrency, forCurrency)
     }, 100)
 
     const unsubscribe = subscribe((data: any) => {
