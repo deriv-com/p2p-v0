@@ -295,9 +295,9 @@ export default function AdDetailsForm({
                               currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
                             }
                             alt={`${buyCurrency} logo`}
-                            width={20}
-                            height={20}
-                            className="w-5 h-5 rounded-full object-contain"
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 rounded object-contain"
                           />
                         )}
                         <span>{buyCurrency}</span>
@@ -316,9 +316,9 @@ export default function AdDetailsForm({
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
-                              width={20}
-                              height={20}
-                              className="w-5 h-5 rounded-full object-contain"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 rounded object-contain"
                             />
                           )}
                           <span>{currency.code}</span>
@@ -341,9 +341,9 @@ export default function AdDetailsForm({
                               currencyLogoMapper[forCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
                             }
                             alt={`${forCurrency} logo`}
-                            width={20}
-                            height={20}
-                            className="w-5 h-5 rounded-full object-contain"
+                            width={24}
+                            height={24}
+                            className="w-6 h-6 rounded object-contain"
                           />
                         )}
                         <span>{forCurrency}</span>
@@ -362,9 +362,9 @@ export default function AdDetailsForm({
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
-                              width={20}
-                              height={20}
-                              className="w-5 h-5 rounded-full object-contain"
+                              width={24}
+                              height={24}
+                              className="w-6 h-6 rounded object-contain"
                             />
                           )}
                           <span>{currency.code}</span>
