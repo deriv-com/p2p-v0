@@ -52,7 +52,7 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
           const reasonContent = getReasonContent(reason, t)
           return (
             <li key={index} className="flex items-start py-1">
-              <p className="text-sm text-grayscale-600">{reasonContent.description}</p>
+              <p className="text-base text-grayscale-600">{reasonContent.description}</p>
             </li>
           )
         })}
