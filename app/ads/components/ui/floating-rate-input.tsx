@@ -94,13 +94,16 @@ export function FloatingRateInput({
           </div>
           <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
             Current market price:{" "}
-            <span>
-              {marketPrice?.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}{" "}
-              {currency}
-            </span>
+            {marketPrice ? 
+              (<span>
+                {marketPrice.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                {currency}
+              </span>) : 
+              <span className="text-slate-1200">-</span>
+            }
           </div>
         </div>
       </div>
