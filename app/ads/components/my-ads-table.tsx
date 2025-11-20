@@ -40,7 +40,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
-  const [selectedVisibilityAd, setSelectedVisibilityAd] = useState<Ad | null>(null)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -206,7 +205,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const handleVisibilityStatusClick = (ad: Ad) => {
     if (ad.visibility_status && ad.visibility_status.length > 0) {
       setSelectedVisibilityReasons(ad.visibility_status)
-      setSelectedVisibilityAd(ad)
       setVisibilityDialogOpen(true)
     }
   }
@@ -413,7 +411,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
       <VisibilityStatusDialog
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
-        reasons={selectedVisibilityReasons
+        reasons={selectedVisibilityReasons}
       />
     </>
   )
