@@ -527,13 +527,16 @@ export default function AdDetailsForm({
             </div>
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Highest rate in market:</span>
-              <span className="text-slate-1200">
-                {priceRange?.highestPrice?.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                <span className="text-xs font-normal">{forCurrency}</span>
-              </span>
+              {priceRange?.highestPrice ? 
+                (<span className="text-slate-1200">
+                  {priceRange.highestPrice?.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  <span className="text-xs font-normal">{forCurrency}</span>
+                </span>) : 
+                <span className="text-slate-1200">-</span>
+              }
             </div>
           </div>
 
