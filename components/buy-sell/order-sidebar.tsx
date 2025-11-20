@@ -155,19 +155,19 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
   useEffect(() => {
     if (isOpen && ad && ad.payment_currency && ad.account_currency && isConnected) {
-      joinExchangeRatesChannel(ad.payment_currency, ad.account_currency)
+      joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
       const timer = setTimeout(() => {
-        requestExchangeRate(ad.payment_currency, ad.account_currency)
+        requestExchangeRate(ad.account_currency, ad.payment_currency)
       }, 100)
       const unsubscribe = subscribe((data) => {
-        const expectedChannel = `exchange_rates/${ad.payment_currency}/${ad.account_currency}`
+        const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
         if (data.channel === expectedChannel && data.payload?.rate) {
           setMarketRate(data.payload.rate)
         }
       })
       return () => {
         clearTimeout(timer)
-        leaveExchangeRatesChannel(ad.payment_currency, ad.account_currency)
+        leaveExchangeRatesChannel(ad.account_currency, ad.payment_currency)
         unsubscribe()
       }
     }
