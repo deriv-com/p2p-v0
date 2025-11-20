@@ -78,8 +78,10 @@ export function VisibilityStatusDialog({
       case "edit":
       case "edit_schedule":
       case "view_profile":
-         onOpenChange(false)
+        onOpenChange(false)
         break
+      default:
+         onOpenChange(false)
     }
   }
 
