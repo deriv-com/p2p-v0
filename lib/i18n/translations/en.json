@@ -406,55 +406,55 @@
       "description": "Activate your ad to make it visible to other traders."
     },
     "advertRemaining": {
-      "title": "Your ad isn’t visible",
-      "description": "Your ad’s remaining amount is below the minimum order."
+      "title": "Your ad isn't visible",
+      "description": "Your ad's remaining amount is below the minimum order."
     },
     "advertiserDailyLimit": {
-      "title": "Your ad isn’t visible",
+      "title": "Your ad isn't visible",
       "description": "Your remaining daily limit is below the 
 minimum order. Lower the minimum to list your ad or wait for the limit to
 reset within 24 hours."
     },
     "advertiserBalance": {
-      "title": "Your ad isn’t visible",
-      "description": "Your balance is lower than your ad’s minimum order. Add funds or lower the minimum to list your 
+      "title": "Your ad isn't visible",
+      "description": "Your balance is lower than your ad's minimum order. Add funds or lower the minimum to list your 
 ad."
     },
     "advertiserAdvertsUnlisted": {
       "title": "Your ads aren't visible",
-      "description": "You’ve paused all your ad. Activate your ads to make it visible 
+      "description": "You've paused all your ad. Activate your ads to make it visible 
 to other traders."
     },
     "advertiserStatus": {
-      "title": "Your ad isn’t visible",
+      "title": "Your ad isn't visible",
       "description": "Contact us via live chat for help."
     },
     "advertiserScheduleUnavailable": {
-      "title": "Your ad isn’t visible",
-      "description": "It’s outside your business hours. Update your schedule or wait 
+      "title": "Your ad isn't visible",
+      "description": "It's outside your business hours. Update your schedule or wait 
 until your active hours."
     },
     "advertiserTempBan": {
-      "title": "Your ad isn’t visible",
+      "title": "Your ad isn't visible",
       "description": "Your account is temporarily restricted. Check your profile for 
 details."
     },
     "advertiserNoPrivateGroups": {
-      "title": "Your ad isn’t visible",
-      "description": "This ad is set for closed groups. You’re no longer allowed to use 
+      "title": "Your ad isn't visible",
+      "description": "This ad is set for closed groups. You're no longer allowed to use 
 that feature. Change the ad visibility to public to list it again."
     },
     "advertFloatRateDisabled": {
-      "title": "Your ad isn’t visible",
+      "title": "Your ad isn't visible",
       "description": "Floating rates are no longer available for this currency pair. Switch 
 to a fixed rate to make your ad visible."
     },
     "advertNoPaymentMethods": {
-      "title": "Your ad isn’t visible",
-      "description": "This ad doesn’t have a payment method. Add one to make it 
+      "title": "Your ad isn't visible",
+      "description": "This ad doesn't have a payment method. Add one to make it 
 visible to other traders."
     },
-    "unknownReason": "Your ad isn’t visible."
+    "unknownReason": "Your ad isn't visible."
   },
   "orders": {
     "title": "Orders",
