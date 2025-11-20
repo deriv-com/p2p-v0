@@ -162,7 +162,7 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
 
-    joinExchangeRatesChannel(buyCurrency)
+    joinExchangeRatesChannel(buyCurrency, forCurrency)
 
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency, forCurrency)
