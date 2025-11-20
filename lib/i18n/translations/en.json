@@ -447,7 +447,7 @@
     },
     "actions": {
       "activateAd": "Activate ad",
-      "editAd": "Edit ad",
+      "editAd": "Update ad",
       "addFunds": "Add funds",
       "activateAds": "Activate ads",
       "contactSupport": "Contact support",
