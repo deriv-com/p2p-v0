@@ -78,10 +78,9 @@ export function VisibilityStatusDialog({
       case "edit":
       case "edit_schedule":
       case "view_profile":
-        onEditAd?.()
+         onOpenChange(false)
         break
     }
-    onOpenChange(false)
   }
 
   const content = (
