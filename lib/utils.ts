@@ -463,7 +463,16 @@ export const currencyLogoMapper = {
   AED: "/icons/aed-logo.png",
   USDT: "/icons/eusdt-logo.png",
   TRX: "/icons/trx-logo.png",
-    AMD: "/icons/usd-flag.png",
+  AMD: "/icons/flag-armenia.png",
+  ALL: "/icons/flag-albania.png",
+  ARS: "/icons/flag-argentina.png",
+  BSD: "/icons/flag-bahamas.png",
+  XAF: "/icons/flag-central-african-republic.png",
+  CLP: "/icons/flag-chile.png",
+  SVC: "/icons/flag-el-salvador.png",
+  ETB: "/icons/flag-ethiopia.png",
+  KWD: "/icons/flag-kuwait.png",
+  NPR: "/icons/flag-nepal.png",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
