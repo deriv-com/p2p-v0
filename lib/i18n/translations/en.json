@@ -454,7 +454,7 @@ to a fixed rate to make your ad visible."
       "description": "This ad doesn’t have a payment method. Add one to make it 
 visible to other traders."
     },
-    "unknownReason": "Unknown reason for ad invisibility."
+    "unknownReason": "Your ad isn’t visible"
   },
   "orders": {
     "title": "Orders",
