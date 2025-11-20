@@ -51,7 +51,6 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
         {reasons.map((reason, index) => {
           const reasonContent = getReasonContent(reason, t)
           return (
-            <p className="text-sm text-slate-600">{reasonContent.title}</p>
             <li key={index} className="flex items-start gap-3 p-4">
               <p className="text-sm text-slate-600">{reasonContent.description}</p>
             </li>
