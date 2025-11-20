@@ -397,7 +397,7 @@
     "deleteAdOpenOrders": "The advert has ongoing orders.",
     "unableToUpdateAd": "Unable to update advert",
     "updateAdError": "There was an error when updating the advert. Please try again.",
-    "visibilityStatus": "Ad visibility status",
+    "visibilityStatus": "Your a visible",
     "visibilityStatusDescription": "Your ad isn't visible to others. Here's why:"
   },
   "visibilityStatus": {
