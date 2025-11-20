@@ -117,7 +117,7 @@ export function CurrencyFilter({
             redirectToAds={false}
           />
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-1 pr-2">
             {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
