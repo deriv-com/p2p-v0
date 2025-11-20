@@ -69,33 +69,16 @@ export function VisibilityStatusDialog({
   open,
   onOpenChange,
   reasons,
-  onActivateAd,
-  onEditAd,
-  onAddPaymentMethod,
-  onContactSupport,
 }: VisibilityStatusDialogProps) {
   const isMobile = useIsMobile()
   const { t } = useTranslations()
 
   const handleAction = (actionType: string) => {
     switch (actionType) {
-      case "activate":
-        onActivateAd?.()
-        break
       case "edit":
       case "edit_schedule":
       case "view_profile":
         onEditAd?.()
-        break
-      case "add_payment":
-        onAddPaymentMethod?.()
-        break
-      case "add_funds":
-        // Navigate to wallet or trigger deposit flow
-        window.location.href = "/wallet"
-        break
-      case "contact_support":
-        onContactSupport?.()
         break
     }
     onOpenChange(false)
