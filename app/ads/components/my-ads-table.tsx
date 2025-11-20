@@ -341,7 +341,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                          className="p-1 hover:bgtransparent rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                           onClick={() => handleVisibilityStatusClick(ad)}
                         >
                           <Image src="/icons/ad-warning.svg" alt="Visibility Status" width={20} height={20} />
