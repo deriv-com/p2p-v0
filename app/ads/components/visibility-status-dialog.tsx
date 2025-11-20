@@ -125,6 +125,11 @@ export function VisibilityStatusDialog({
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
           <DialogTitle className="font-bold text-2xl text-slate-1200">{t("myAds.visibilityStatus")}</DialogTitle>
+          <DialogClose> 
+            <Button variant="ghost" className="bg-slate-75 min-w-[48px] px-0 absolute right-[32px] top-4">
+              <Image src="/icons/close-icon.png" alt="Close" width={24} height={24} />
+            </Button>
+          </DialogClose>
         </DialogHeader>
         {content}
       </DialogContent>
