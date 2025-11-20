@@ -171,8 +171,6 @@ export default function AdDetailsForm({
 
   useEffect(() => {
     if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
-
-    joinExchangeRatesChannel(buyCurrency)
     
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
