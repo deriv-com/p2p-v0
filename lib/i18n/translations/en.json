@@ -430,8 +430,9 @@ to other traders."
       "description": "Contact us via live chat for help."
     },
     "advertiserScheduleUnavailable": {
-      "title": "Outside available hours",
-      "description": "Your ad is only visible during your scheduled availability hours."
+      "title": "Your ad isn’t visible",
+      "description": "It’s outside your business hours. Update your schedule or wait 
+until your active hours."
     },
     "advertiserTempBan": {
       "title": "Temporary suspension",
