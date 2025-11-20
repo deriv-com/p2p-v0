@@ -162,29 +162,24 @@ export default function AdDetailsForm({
   useEffect(() => {
     if (!buyCurrency || !forCurrency || !isConnected) return
 
+    joinExchangeRatesChannel(buyCurrency, forCurrency)
+
+    const requestTimer = setTimeout(() => {
+      requestExchangeRate(buyCurrency, forCurrency)
+    }, 100)
+
     const unsubscribe = subscribe((data: any) => {
-      const channel = `exchange_rates/${buyCurrency}/${forCurrency}`
-
-      // Check if this is a join confirmation for our channel
-      if (data.action === "join" && data.channel === channel) {
-        // Now that we're joined, request the exchange rate
-        requestExchangeRate(buyCurrency, forCurrency)
-      }
-
-      // Handle rate updates
-      if (data.channel === channel && data.payload?.rate) {
+      if (data.channel === `exchange_rates/${buyCurrency}/${forCurrency}` && data.payload?.rate) {
         setMarketPrice(data.payload.rate)
       }
     })
 
-    // Join the channel
-    joinExchangeRatesChannel(buyCurrency, forCurrency)
-
     return () => {
+      clearTimeout(requestTimer)
       leaveExchangeRatesChannel(buyCurrency, forCurrency)
       unsubscribe()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
   }, [buyCurrency, forCurrency, isConnected])
 
   useEffect(() => {
@@ -385,7 +380,6 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -433,7 +427,6 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -514,39 +507,36 @@ export default function AdDetailsForm({
                       maximumFractionDigits: 2,
                     })}{" "}
                     <span className="text-xs font-normal">{forCurrency}</span>
-                  </span>
-                ) : (
+                  </span>) : 
                   <span className="text-slate-1200">-</span>
-                )}
+                }
               </div>
             )}
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Lowest rate in market:</span>
-              {priceRange?.lowestPrice ? (
-                <span className="text-slate-1200">
+              {priceRange?.lowestPrice ? 
+                (<span className="text-slate-1200">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
-                </span>
-              ) : (
+                </span>) : 
                 <span className="text-slate-1200">-</span>
-              )}
+              }
             </div>
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Highest rate in market:</span>
-              {priceRange?.highestPrice ? (
-                <span className="text-slate-1200">
+              {priceRange?.highestPrice ? 
+                (<span className="text-slate-1200">
                   {priceRange.highestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
-                </span>
-              ) : (
+                </span>) : 
                 <span className="text-slate-1200">-</span>
-              )}
+              }
             </div>
           </div>
 
