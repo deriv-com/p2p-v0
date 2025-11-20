@@ -65,7 +65,7 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
       <Drawer open={open} onOpenChange={onOpenChange}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle className="font-bold text-xl">{t("myAds.visibilityStatus")}</DrawerTitle>
+            <DrawerTitle className="font-bold text-xl text-slate-1200">{t("myAds.visibilityStatus")}</DrawerTitle>
           </DrawerHeader>
           <div className="px-4 pb-6">{content}</div>
         </DrawerContent>
@@ -77,7 +77,7 @@ export function VisibilityStatusDialog({ open, onOpenChange, reasons }: Visibili
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="font-bold text-xl">{t("myAds.visibilityStatus")}</DialogTitle>
+          <DialogTitle className="font-bold text-xl text-slate-1200">{t("myAds.visibilityStatus")}</DialogTitle>
         </DialogHeader>
         {content}
       </DialogContent>
