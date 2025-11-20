@@ -150,7 +150,6 @@ export default function AdDetailsForm({
           setPriceRange({ lowestPrice: null, highestPrice: null })
         }
       } catch (error) {
-        console.error("Error fetching price range:", error)
         setPriceRange({ lowestPrice: null, highestPrice: null })
       } finally {
         setIsLoadingPriceRange(false)
