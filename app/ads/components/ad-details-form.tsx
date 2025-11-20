@@ -160,7 +160,14 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency, priceType, type])
 
   useEffect(() => {
-    if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
+    if (!isConnected) return
+
+    joinExchangeRatesChannel(buyCurrency, forCurrency)
+   
+  }, [isConnected])
+
+  useEffect(() => {
+    if (!buyCurrency || !forCurrency || !isConnected) return
 
     joinExchangeRatesChannel(buyCurrency, forCurrency)
 
@@ -170,7 +177,7 @@ export default function AdDetailsForm({
 
     const unsubscribe = subscribe((data: any) => {
       if (data.channel === `exchange_rates/${buyCurrency}/${forCurrency}` && data.payload) {
-        setMarketPrice(data.payload[forCurrency]?.rate)
+        setMarketPrice(data.payload[forCurrency].rate)
       }
     })
 
