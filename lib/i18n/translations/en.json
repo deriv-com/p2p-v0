@@ -440,8 +440,9 @@ until your active hours."
 details."
     },
     "advertiserNoPrivateGroups": {
-      "title": "No matching private groups",
-      "description": "This ad is set for private groups, but you don't have any matching groups configured."
+      "title": "Your ad isn’t visible",
+      "description": "This ad is set for closed groups. You’re no longer allowed to use 
+that feature. Change the ad visibility to public to list it again."
     },
     "advertFloatRateDisabled": {
       "title": "Floating rate disabled",
