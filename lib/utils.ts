@@ -473,6 +473,9 @@ export const currencyLogoMapper = {
   ETB: "/icons/flag-ethiopia.png",
   KWD: "/icons/flag-kuwait.png",
   NPR: "/icons/flag-nepal.png",
+  XOF: "/icons/flag-niger.png",
+  OMR: "/icons/flag-oman.png",
+  VES: "/icons/flag-venezuela.png",
 }
 
 export const getHomeUrl = (isV1Signup = false, section = "", isWalletAccount = false) => {
