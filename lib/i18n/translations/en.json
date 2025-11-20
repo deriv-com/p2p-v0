@@ -417,11 +417,11 @@ reset within 24 hours."
     },
     "advertiserBalance": {
       "title": "Your ad isn’t visible",
-      "description": "Your balance is lower than your ad’s minimum order of Add funds or lower the minimum to list your 
+      "description": "Your balance is lower than your ad’s minimum order. Add funds or lower the minimum to list your 
 ad."
     },
     "advertiserAdvertsUnlisted": {
-      "title": "All ads unlisted",
+      "title": "Your ads aren't visible",
       "description": "You've chosen to hide all your ads. Enable them to make this ad visible."
     },
     "advertiserStatus": {
