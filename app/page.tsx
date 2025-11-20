@@ -425,7 +425,7 @@ export default function BuySellPage() {
                       variant="outline"
                       size="sm"
                       className={cn(
-                        "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
+                        "rounded-md border border-black/[0.08] font-normal w-full justify-between px-3 rounded-3xl",
                         hasFilteredPaymentMethods
                           ? "bg-black hover:bg-black text-white"
                           : isPaymentMethodsFilterOpen
