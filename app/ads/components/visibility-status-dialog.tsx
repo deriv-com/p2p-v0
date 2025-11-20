@@ -49,11 +49,11 @@ const getReasonContent = (reason: string, t: (key: string) => string) => {
 
 const getReasonAction = (reason: string, t: (key: string) => string) => {
   const actionMap: Record<string, { label: string; action: string }> = {
-    advert_inactive: { label: t("visibilityStatus.actions.activateAd"), action: "edit" },
+    advert_inactive: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advert_remaining: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advertiser_daily_limit: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
-    advertiser_balance: { label: t("visibilityStatus.actions.addFunds"), action: "edit" },
-    advertiser_adverts_unlisted: { label: t("visibilityStatus.actions.activateAds"), action: "edit" },
+    advertiser_balance: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
+    advertiser_adverts_unlisted: { label: t("visibilityStatus.actions.editAd"), action: "edit" },
     advertiser_status: { label: t("visibilityStatus.actions.contactSupport"), action: "close" },
     advertiser_schedule_unavailable: { label: t("visibilityStatus.actions.editSchedule"), action: "view_profile" },
     advertiser_temp_ban: { label: t("visibilityStatus.actions.viewProfile"), action: "close" },
