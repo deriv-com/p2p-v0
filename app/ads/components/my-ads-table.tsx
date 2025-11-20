@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -40,6 +40,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
   const [visibilityDialogOpen, setVisibilityDialogOpen] = useState(false)
   const [selectedVisibilityReasons, setSelectedVisibilityReasons] = useState<string[]>([])
+  const [selectedVisibilityAd, setSelectedVisibilityAd] = useState<Ad | null>(null)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -205,6 +206,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const handleVisibilityStatusClick = (ad: Ad) => {
     if (ad.visibility_status && ad.visibility_status.length > 0) {
       setSelectedVisibilityReasons(ad.visibility_status)
+      setSelectedVisibilityAd(ad)
       setVisibilityDialogOpen(true)
     }
   }
@@ -292,7 +294,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                               {t("myAds.rate")}:
                             </span>
                             <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
-                            {exchangeRateType == "float" && ad.exchange_rate != 0 && <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">{exchangeRate}</span>}
+                            {exchangeRateType == "float" && ad.exchange_rate != 0 && (
+                              <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                                {exchangeRate}
+                              </span>
+                            )}
                           </div>
                         )}
                       </div>
@@ -312,7 +318,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
                         <span className="text-xs leading-5 text-gray-900">{rate}</span>
-                        {exchangeRateType == "float" && ad.exchange_rate != 0 && <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">{exchangeRate}</span>}
+                        {exchangeRateType == "float" && ad.exchange_rate != 0 && (
+                          <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                            {exchangeRate}
+                          </span>
+                        )}
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
@@ -404,6 +414,22 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         open={visibilityDialogOpen}
         onOpenChange={setVisibilityDialogOpen}
         reasons={selectedVisibilityReasons}
+        onActivateAd={() => {
+          if (selectedVisibilityAd) {
+            handleToggleStatus(selectedVisibilityAd)
+          }
+        }}
+        onEditAd={() => {
+          if (selectedVisibilityAd) {
+            handleEdit(selectedVisibilityAd)
+          }
+        }}
+        onAddPaymentMethod={() => {
+          router.push("/profile?tab=payment-methods")
+        }}
+        onContactSupport={() => {
+          window.open("https://deriv.com/contact-us/", "_blank")
+        }}
       />
     </>
   )

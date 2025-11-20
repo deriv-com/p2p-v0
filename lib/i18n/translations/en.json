@@ -444,6 +444,16 @@
     "advertNoPaymentMethods": {
       "title": "Your ad isn't visible",
       "description": "This ad doesn't have a payment method. Add one to make it visible to other traders."
+    },
+    "actions": {
+      "activateAd": "Activate ad",
+      "editAd": "Edit ad",
+      "addFunds": "Add funds",
+      "activateAds": "Activate ads",
+      "contactSupport": "Contact support",
+      "editSchedule": "Edit schedule",
+      "viewProfile": "View profile",
+      "addPaymentMethod": "Add payment method"
     }
   },
   "orders": {
