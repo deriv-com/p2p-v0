@@ -107,7 +107,7 @@ export class WebSocketClient {
   }
 
   public joinExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
-    const channel = `exchange_rates/${buyCurrency}`
+    const channel = `exchange_rates/${buyCurrency}/${forCurrency}`
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -119,7 +119,7 @@ export class WebSocketClient {
   }
 
   public leaveExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
-    const channel = `exchange_rates/${buyCurrency}`
+    const channel = `exchange_rates/${buyCurrency}/${forCurrency}`
     this.leaveChannel(channel)
   }
 
