@@ -297,7 +297,7 @@ export default function AdDetailsForm({
                             alt={`${buyCurrency} logo`}
                             width={24}
                             height={24}
-                            className="w-6 h-6 rounded object-contain"
+                            className="w-6 h-6 rounded object-cover"
                           />
                         )}
                         <span>{buyCurrency}</span>
@@ -318,7 +318,7 @@ export default function AdDetailsForm({
                               alt={`${currency.code} logo`}
                               width={24}
                               height={24}
-                              className="w-6 h-6 rounded object-contain"
+                              className="w-6 h-6 rounded object-cover"
                             />
                           )}
                           <span>{currency.code}</span>
@@ -343,7 +343,7 @@ export default function AdDetailsForm({
                             alt={`${forCurrency} logo`}
                             width={24}
                             height={24}
-                            className="w-6 h-6 rounded object-contain"
+                            className="w-6 h-6 rounded object-cover"
                           />
                         )}
                         <span>{forCurrency}</span>
@@ -364,7 +364,7 @@ export default function AdDetailsForm({
                               alt={`${currency.code} logo`}
                               width={24}
                               height={24}
-                              className="w-6 h-6 rounded object-contain"
+                              className="w-6 h-6 rounded object-cover"
                             />
                           )}
                           <span>{currency.code}</span>
