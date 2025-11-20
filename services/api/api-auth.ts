@@ -521,7 +521,7 @@ export async function createP2PUser(): Promise<CreateP2PUserResponse> {
  */
 export async function getAdvertStatistics(accountCurrency: string): Promise<any> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/advert-statistics?${accountCurrency}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/advert-statistics/${accountCurrency}`, {
       method: "GET",
       credentials: "include",
       headers: getAuthHeader(),
