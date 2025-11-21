@@ -133,7 +133,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4">
-                  <h2 className="text-2xl font-bold mb-4">{t("profile.stats")}</h2>
+                  <h2 className="text-2xl font-bold mb-4 px-2 md:px-2">{t("profile.stats")}</h2>
                   <StatsGrid stats={stats} />
                 </div>
               </div>
