@@ -78,8 +78,8 @@ export default function RateChangeConfirmation({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onCancel()}>
-      <DialogContent className="p-8 rounded-2xl">
-        <DialogTitle className="text-2xl font-bold mb-6">Market rate changed</DialogTitle>
+      <DialogContent className="p-[32px] sm:rounded-[32px]">
+        <DialogTitle className="font-bold text-2xl">Market rate changed</DialogTitle>
         {content}
       </DialogContent>
     </Dialog>
