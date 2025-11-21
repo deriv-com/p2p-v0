@@ -31,8 +31,6 @@ body {
     display: none;
   }
 
-  /* Adding custom scrollbar styling for currency filter */
-  /* Using Tailwind color variables instead of hardcoded rgba values */
   .scrollbar-custom {
     scrollbar-width: thin;
     scrollbar-color: rgb(var(--foreground-rgb) / 0.08) transparent;
