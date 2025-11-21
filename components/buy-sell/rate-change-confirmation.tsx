@@ -60,6 +60,8 @@ export default function RateChangeConfirmation({
     </div>
   )
 
+  if(!showRateChangeConfirmation)
+
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
