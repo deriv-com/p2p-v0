@@ -60,7 +60,7 @@ export default function RateChangeConfirmation({
     </div>
   )
 
-  if(!showRateChangeConfirmation) return null
+  if(!isOpen) return null
 
   if (isMobile) {
     return (
