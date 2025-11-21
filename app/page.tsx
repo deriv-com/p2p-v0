@@ -318,16 +318,6 @@ export default function BuySellPage() {
   }, [isFilterPopupOpen])
 
   useEffect(() => {
-    if (isConnected && activeTab && selectedAccountCurrency && currency) {
-      joinAdvertsChannel(selectedAccountCurrency, currency, activeTab)
-
-      return () => {
-        leaveAdvertsChannel(selectedAccountCurrency, currency, activeTab)
-      }
-    }
-  }, [activeTab, selectedAccountCurrency, currency, isConnected, joinAdvertsChannel, leaveAdvertsChannel])
-
-  useEffect(() => {
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort()
