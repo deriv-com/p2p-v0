@@ -33,7 +33,7 @@ body {
 
   .scrollbar-custom {
     scrollbar-width: thin;
-    scrollbar-color: rgb(var(--foreground-rgb) / 0.08) transparent;
+    scrollbar-color: #00000014 transparent;
   }
 
   .scrollbar-custom::-webkit-scrollbar {
@@ -45,12 +45,12 @@ body {
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb {
-    background-color: rgb(var(--foreground-rgb) / 0.08);
+    background-color: #00000014;
     border-radius: 2px;
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(var(--foreground-rgb) / 0.12);
+    background-color: #0000001f;
   }
 }
 
