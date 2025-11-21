@@ -289,7 +289,6 @@ export async function createOrder(advertId: number, exchangeRate: number, amount
       data: {
         advert_id: advertId,
         amount: amount,
-        exchange_rate: exchangeRate,
         ...(exchangeRate && { exchange_rate: exchangeRate }),
         ...(paymentMethodIds.length > 0 && { payment_method_ids: paymentMethodIds }),
       },
