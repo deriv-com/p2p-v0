@@ -77,7 +77,7 @@ export default function StatsGrid({ stats }) {
 
   return (
     <TooltipProvider>
-      <div className="bg-transparent rounded-lg">
+      <div className="bg-transparent rounded-lg px-2">
         <div>
           <Tabs defaultValue="last30days">
             <TabsList>
