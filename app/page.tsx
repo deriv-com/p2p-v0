@@ -37,8 +37,6 @@ export default function BuySellPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const { joinAdvertsChannel, leaveAdvertsChannel, isConnected } = useWebSocketContext()
-
   const {
     activeTab,
     currency,
