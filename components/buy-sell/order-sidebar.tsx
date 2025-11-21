@@ -2,8 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from 'next/navigation'
-import { ChevronRight } from 'lucide-react'
+import { useRouter } from "next/navigation"
+import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -64,11 +64,9 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full overflow-y-auto">
       <div className="flex-1 space-y-4">
-        {userPaymentMethods.length > 0 && (<div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>)}
+        {userPaymentMethods.length > 0 && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
         {userPaymentMethods.length === 0 ? (
-          <div className="pb-2 text-slate-1200 text-sm">
-            {t("paymentMethod.addCompatibleMethod")}
-          </div>
+          <div className="pb-2 text-slate-1200 text-sm">{t("paymentMethod.addCompatibleMethod")}</div>
         ) : (
           userPaymentMethods.map((method) => (
             <div
@@ -147,15 +145,29 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   const { hideAlert, showAlert } = useAlertDialog()
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userData = useUserDataStore((state) => state.userData)
-  const { joinExchangeRatesChannel, leaveExchangeRatesChannel, requestExchangeRate, subscribe, isConnected } =
-    useWebSocketContext()
+  const {
+    joinExchangeRatesChannel,
+    leaveExchangeRatesChannel,
+    requestExchangeRate,
+    subscribe,
+    isConnected,
+    joinAdvertsChannel,
+    leaveAdvertsChannel,
+  } = useWebSocketContext()
   const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
 
   useEffect(() => {
-    if (isOpen && ad && ad.payment_currency && ad.account_currency && ad.exchange_rate_type === "float" && isConnected) {
+    if (
+      isOpen &&
+      ad &&
+      ad.payment_currency &&
+      ad.account_currency &&
+      ad.exchange_rate_type === "float" &&
+      isConnected
+    ) {
       joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
-  
+
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
         console.log(data)
@@ -173,6 +185,25 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       }
     }
   }, [isOpen, ad, isConnected])
+
+  useEffect(() => {
+    if (isOpen && ad && ad.account_currency && ad.payment_currency && ad.type && isConnected) {
+      joinAdvertsChannel(ad.account_currency, ad.payment_currency, ad.type)
+
+      const unsubscribe = subscribe((data) => {
+        const expectedChannel = `adverts/currency/${ad.account_currency}/${ad.payment_currency}/${ad.type}`
+        if (data.channel === expectedChannel) {
+          console.log("[v0] Adverts channel update:", data)
+          // Handle adverts updates here if needed
+        }
+      })
+
+      return () => {
+        leaveAdvertsChannel(ad.account_currency, ad.payment_currency, ad.type)
+        unsubscribe()
+      }
+    }
+  }, [isOpen, ad, isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe])
 
   useEffect(() => {
     if (isOpen) {
@@ -257,12 +288,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
             type: "warning",
             onConfirm: () => {
               handleClose()
-            }
+            },
           })
-        } else if(errorCode === "OrderFloatRateSlippage") {
+        } else if (errorCode === "OrderFloatRateSlippage") {
           showAlert({
             title: "Market rate changed significantly",
-            description: "The market price moved before we could place your order. Try again to proceed with the latest rate.",
+            description:
+              "The market price moved before we could place your order. Try again to proceed with the latest rate.",
             confirmText: "Try again",
             type: "warning",
           })
@@ -465,8 +497,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-grayscale-text-muted">{t("order.exchangeRate")}</span>
                     <span className="text-slate-1200">
-                      {ad.effective_rate_display}{" "}
-                      {ad.payment_currency}
+                      {ad.effective_rate_display} {ad.payment_currency}
                       <span className="text-grayscale-text-muted"> /{ad.account_currency}</span>
                     </span>
                   </div>

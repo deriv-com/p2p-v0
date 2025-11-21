@@ -107,7 +107,7 @@ export class WebSocketClient {
   }
 
   public joinExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
-    const channel = forCurrency? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    const channel = forCurrency ? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
     const joinMessage: WebSocketMessage = {
       action: "join",
       options: {
@@ -119,7 +119,24 @@ export class WebSocketClient {
   }
 
   public leaveExchangeRatesChannel(buyCurrency: string, forCurrency: string): void {
-    const channel = forCurrency? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    const channel = forCurrency ? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    this.leaveChannel(channel)
+  }
+
+  public joinAdvertsChannel(accountCurrency: string, localCurrency: string, advertType: string): void {
+    const channel = `adverts/currency/${accountCurrency}/${localCurrency}/${advertType}`
+    const joinMessage: WebSocketMessage = {
+      action: "join",
+      options: {
+        channel,
+      },
+      payload: {},
+    }
+    this.send(joinMessage)
+  }
+
+  public leaveAdvertsChannel(accountCurrency: string, localCurrency: string, advertType: string): void {
+    const channel = `adverts/currency/${accountCurrency}/${localCurrency}/${advertType}`
     this.leaveChannel(channel)
   }
 
@@ -203,7 +220,7 @@ export class WebSocketClient {
   }
 
   public requestExchangeRate(buyCurrency: string, forCurrency: string): void {
-    const channel = forCurrency? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
+    const channel = forCurrency ? `exchange_rates/${buyCurrency}/${forCurrency}` : `exchange_rates/${buyCurrency}`
     const requestMessage: WebSocketMessage = {
       action: "message",
       options: {
@@ -236,6 +253,8 @@ interface WebSocketContextType {
   joinExchangeRatesChannel: (buyCurrency: string, forCurrency: string) => void
   leaveExchangeRatesChannel: (buyCurrency: string, forCurrency: string) => void
   requestExchangeRate: (buyCurrency: string, forCurrency: string) => void
+  joinAdvertsChannel: (accountCurrency: string, localCurrency: string, advertType: string) => void
+  leaveAdvertsChannel: (accountCurrency: string, localCurrency: string, advertType: string) => void
 }
 
 const WebSocketContext = createContext<WebSocketContextType | null>(null)
@@ -348,6 +367,14 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     wsClientRef.current?.requestExchangeRate(buyCurrency, forCurrency)
   }
 
+  const joinAdvertsChannel = (accountCurrency: string, localCurrency: string, advertType: string) => {
+    wsClientRef.current?.joinAdvertsChannel(accountCurrency, localCurrency, advertType)
+  }
+
+  const leaveAdvertsChannel = (accountCurrency: string, localCurrency: string, advertType: string) => {
+    wsClientRef.current?.leaveAdvertsChannel(accountCurrency, localCurrency, advertType)
+  }
+
   const value: WebSocketContextType = {
     isConnected,
     joinChannel,
@@ -360,6 +387,8 @@ export function WebSocketProvider({ children }: WebSocketProviderProps) {
     joinExchangeRatesChannel,
     leaveExchangeRatesChannel,
     requestExchangeRate,
+    joinAdvertsChannel,
+    leaveAdvertsChannel,
   }
 
   return <WebSocketContext.Provider value={value}>{children}</WebSocketContext.Provider>
