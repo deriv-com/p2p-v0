@@ -85,8 +85,8 @@ export default function StatsGrid({ stats }) {
               <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
             <TabsContent value="last30days" className="mt-0 rounded-lg px-4 md:px-0   bg-transparent">
-              <div className="md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
-                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+              <div className="divide-y divide-black/[0.08] md:divide-y-0 md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
+                <div className="grid grid-cols-1 md:grid-cols-4 md:divide-y-0">
                   <StatCard
                     tab="last30days"
                     title={t("profile.sellCompletion")}
@@ -116,7 +116,7 @@ export default function StatsGrid({ stats }) {
                     value={formatTimeInMinutes(stats?.statistics_30day?.buy_time_average)}
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+                <div className="grid grid-cols-1 md:grid-cols-4 md:divide-y-0">
                   <StatCard
                     tab="last30days"
                     title={t("profile.avgReleaseTime")}
@@ -135,8 +135,8 @@ export default function StatsGrid({ stats }) {
               </div>
             </TabsContent>
             <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 md:px-0  bg-transparent">
-              <div className="md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
-                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+              <div className="divide-y divide-black/[0.08] md:divide-y-0 md:flex md:flex-col md:divide-y md:divide-black/[0.08]">
+                <div className="grid grid-cols-1 md:grid-cols-4 md:divide-y-0">
                   <StatCard
                     tab="lifetime"
                     title={t("profile.sellCompletion")}
@@ -166,7 +166,7 @@ export default function StatsGrid({ stats }) {
                     value={formatTimeInMinutes(stats?.statistics_lifetime?.buy_time_average)}
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-4 divide-y divide-black/[0.08] md:divide-y-0">
+                <div className="grid grid-cols-1 md:grid-cols-4 md:divide-y-0">
                   <StatCard
                     tab="lifetime"
                     title={t("profile.avgReleaseTime")}
