@@ -28,8 +28,8 @@ export default function RateChangeConfirmation({
 }: RateChangeConfirmationProps) {
   const isMobile = useIsMobile()
 
-  const oldTotal = (Number.parseFloat(amount) * oldRate).toFixed(2)
-  const newTotal = (Number.parseFloat(amount) * newRate).toFixed(2)
+  const oldTotal = (Number.parseFloat(amount) * oldRate)
+  const newTotal = (Number.parseFloat(amount) * newRate)
 
   const content = (
     <div className="flex flex-col gap-6">
@@ -38,7 +38,7 @@ export default function RateChangeConfirmation({
           You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}.
         </p>
         <p className="text-slate-600 text-base">
-          The current rate has changed from {oldRate?.toFixed(2)} to {newRate?.toFixed(2)}. Do you want to proceed with
+          The current rate has changed from {oldRate} to {newRate}. Do you want to proceed with
           the order?
         </p>
       </div>
