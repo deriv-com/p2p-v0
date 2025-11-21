@@ -2,8 +2,8 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { ChevronRight } from "lucide-react"
+import { useRouter } from 'next/navigation'
+import { ChevronRight } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -259,6 +259,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
 
       if (response.success) {
         await fetchUserPaymentMethods()
+        if (response.data?.id) {
+          setSelectedPaymentMethods((prev) => [...prev, response.data.id])
+          setTempSelectedPaymentMethods((prev) => [...prev, response.data.id])
+        }
         setShowAddPaymentPanel(false)
       } else {
         let title = t("paymentMethod.unableToAdd")
@@ -288,10 +292,10 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }
 
   const getSelectedPaymentMethodsText = () => {
-    if (selectedPaymentMethods.length === 0) return t("order.selectPayment")
+    if (selectedPaymentMethods.length === 0) return t("order.receivePaymentTo")
     if (selectedPaymentMethods.length === 1) {
       const method = userPaymentMethods.find((m) => m.id === selectedPaymentMethods[0])
-      return method ? `${method.display_name}` : t("order.selectPayment")
+      return method ? `${method.display_name}` : t("order.receivePaymentTo")
     }
     return t("order.selected") + ` (${selectedPaymentMethods.length})`
   }
@@ -358,7 +362,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
               <div className="flex flex-col h-auto overflow-y-auto">
                 <h2 className="text-xl font-bold p-4 pb-0">{title}</h2>
                 <div className="p-4">
-                  <div className="mb-2">
+                  <div className="mb-4">
                     <Input
                       value={amount}
                       onChange={handleAmountChange}
@@ -394,14 +398,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                 </div>
 
                 {isBuy && (
-                  <div className="mx-4 mt-4 pb-6 border-b">
-                    <h3 className="text-sm text-slate-1200 mb-3">{t("order.receivePaymentTo")}</h3>
+                  <div className="mx-4 mt-0 pb-6 border-b">
                     <div
                       className="border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
                       onClick={handleShowPaymentSelection}
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-gray-500">{getSelectedPaymentMethodsText()}</span>
+                        <span className="text-black/[0.72] text-base font-normal">{getSelectedPaymentMethodsText()}</span>
                         <ChevronRight className="h-5 w-5 text-gray-400" />
                       </div>
                     </div>

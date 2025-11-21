@@ -20,6 +20,7 @@
     "filter": "Filtrar",
     "sort": "Ordenar",
     "all": "Todos",
+    "allCountries": "Todos os países",
     "yes": "Sim",
     "no": "Não",
     "ok": "OK"
@@ -537,7 +538,7 @@
     "invalidValuesMessage": "Por favor, verifique seus valores de entrada.",
     "amountExceedsBalanceTitle": "O valor excede o saldo",
     "amountExceedsBalanceMessage": "O valor total excede seu saldo disponível. Por favor, insira um valor menor.",
-    "selectPayment": "Selecionar pagamento",
+    "selectPayment": "Selecionar método de pagamento",
     "selected": "Selecionados ({count})",
     "noPaymentMethodsFound": "Nenhum método de pagamento encontrado"
   },

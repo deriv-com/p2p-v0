@@ -20,6 +20,7 @@
     "filter": "Filtrer",
     "sort": "Trier",
     "all": "Tous",
+    "allCountries": "Tous les pays",
     "yes": "Oui",
     "no": "Non",
     "ok": "OK"
@@ -63,7 +64,7 @@
     "youReceive": "Vous recevez",
     "youPay": "Vous payez",
     "receivePaymentTo": "Recevoir le paiement sur",
-    "selectPayment": "Sélectionner le paiement",
+    "selectPayment": "Sélectionner la méthode de paiement",
     "selected": "Sélectionné",
     "rateType": "Type de taux",
     "exchangeRate": "Taux de change",
@@ -500,7 +501,7 @@
     "invalidValuesMessage": "Veuillez vérifier vos valeurs d'entrée.",
     "amountExceedsBalanceTitle": "Le montant dépasse le solde",
     "amountExceedsBalanceMessage": "Le montant total dépasse votre solde disponible. Veuillez entrer un montant inférieur.",
-    "selectPayment": "Sélectionner le paiement",
+    "selectPayment": "Sélectionner la méthode de paiement",
     "selected": "Sélectionnés ({count})",
     "noPaymentMethodsFound": "Aucune méthode de paiement trouvée"
   },

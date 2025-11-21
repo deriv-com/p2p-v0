@@ -478,7 +478,7 @@ export default function PaymentDetailsForm({
                   onClick={() => handleShowPaymentSelection()}
                   type="button"
                 >
-                  <span className="text-left font-normal">{getSelectedPaymentMethodsText()}</span>
+                  <span className="text-left font-normal text-base text-black/[0.72]">{getSelectedPaymentMethodsText()}</span>
                   <Image src="/icons/chevron-down.png" alt="Dropdown icon" width={24} height={24} className="ml-2" />
                 </Button>
               </div>
