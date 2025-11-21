@@ -3,7 +3,7 @@
 import type React from "react"
 
 import type { ReactElement } from "react"
-import { useCallback, useState, useMemo, cloneElement } from "react"
+import { useCallback, useState, useMemo, cloneElement, useRef, useEffect } from "react"
 import Image from "next/image"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -43,6 +43,8 @@ export default function PaymentMethodsFilter({
   const [tempSelectedMethods, setTempSelectedMethods] = useState<string[]>(selectedMethods)
   const isMobile = useIsMobile()
   const { t } = useTranslations()
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const scrollPositionRef = useRef<number>(0)
 
   const filteredPaymentMethods = useMemo(() => {
     if (!searchQuery.trim()) return paymentMethods
@@ -92,6 +94,10 @@ export default function PaymentMethodsFilter({
   }, [])
 
   const handleMethodToggle = (methodId: string) => {
+    if (scrollContainerRef.current) {
+      scrollPositionRef.current = scrollContainerRef.current.scrollTop
+    }
+
     if (isAllSelected) {
       const allMethodIds = paymentMethods.map((m) => m.method)
       const newMethods = allMethodIds.filter((id) => id !== methodId)
@@ -216,7 +222,7 @@ export default function PaymentMethodsFilter({
         </div>
       )}
 
-      <div className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
+      <div ref={scrollContainerRef} className="space-y-2 max-h-60 overflow-y-auto scrollbar-custom">
         {isLoading ? (
           <div className="text-center py-4 text-gray-500">{t("paymentMethod.loadingPaymentMethods")}</div>
         ) : filteredPaymentMethods.length === 0 ? (
@@ -253,6 +259,12 @@ export default function PaymentMethodsFilter({
       )}
     </div>
   )
+
+  useEffect(() => {
+    if (scrollContainerRef.current && scrollPositionRef.current > 0) {
+      scrollContainerRef.current.scrollTop = scrollPositionRef.current
+    }
+  }, [tempSelectedMethods])
 
   const enhancedTrigger = cloneElement(trigger, {
     className: cn(trigger.props.className, isOpen && "[&_img[alt='Arrow']]:rotate-180"),
