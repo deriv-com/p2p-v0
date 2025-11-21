@@ -38,7 +38,7 @@ export default function RateChangeConfirmation({
           You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}.
         </p>
         <p className="text-slate-600 text-base">
-          The current rate has changed from {oldRate.toFixed(2)} to {newRate.toFixed(2)}. Do you want to proceed with
+          The current rate has changed from {oldRate?.toFixed(2)} to {newRate?.toFixed(2)}. Do you want to proceed with
           the order?
         </p>
       </div>
