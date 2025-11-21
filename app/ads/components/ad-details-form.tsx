@@ -11,7 +11,7 @@ import { useAccountCurrencies } from "@/hooks/use-account-currencies"
 import { getSettings } from "@/services/api/api-auth"
 import { CustomShimmer } from "@/app/profile/components/ui/custom-shimmer"
 import Image from "next/image"
-import { currencyLogoMapper } from "@/lib/utils"
+import { currencyFlagMapper } from "@/lib/utils"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdDetailsFormProps {
@@ -31,19 +31,6 @@ interface ValidationErrors {
 interface PriceRange {
   lowestPrice: number | null
   highestPrice: number | null
-}
-
-const getCurrencyLogo = (currencyCode: string): string => {
-  const squareKey = `${currencyCode}-Square` as keyof typeof currencyLogoMapper
-  const defaultKey = currencyCode as keyof typeof currencyLogoMapper
-
-  // First check if square version exists
-  if (currencyLogoMapper[squareKey]) {
-    return currencyLogoMapper[squareKey]
-  }
-
-  // Fall back to default version
-  return currencyLogoMapper[defaultKey] || "/placeholder.svg"
 }
 
 export default function AdDetailsForm({
@@ -302,9 +289,11 @@ export default function AdDetailsForm({
                   <SelectTrigger className="w-full h-14 rounded-lg" disabled>
                     <SelectValue>
                       <div className="flex items-center gap-2">
-                        {currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] && (
+                        {currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] && (
                           <Image
-                            src={getCurrencyLogo(buyCurrency) || "/placeholder.svg"}
+                            src={
+                              currencyFlagMapper[buyCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                            }
                             alt={`${buyCurrency} logo`}
                             width={24}
                             height={24}
@@ -319,9 +308,13 @@ export default function AdDetailsForm({
                     {accountCurrencies.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         <div className="flex items-center gap-2">
-                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
+                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
                             <Image
-                              src={getCurrencyLogo(currency.code) || "/placeholder.svg"}
+                              src={
+                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
+                                "/placeholder.svg" ||
+                                "/placeholder.svg"
+                              }
                               alt={`${currency.code} logo`}
                               width={24}
                               height={24}
@@ -342,9 +335,11 @@ export default function AdDetailsForm({
                   <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>
                       <div className="flex items-center gap-2">
-                        {currencyLogoMapper[forCurrency as keyof typeof currencyLogoMapper] && (
+                        {currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] && (
                           <Image
-                            src={getCurrencyLogo(forCurrency) || "/placeholder.svg"}
+                            src={
+                              currencyFlagMapper[forCurrency as keyof typeof currencyFlagMapper] || "/placeholder.svg"
+                            }
                             alt={`${forCurrency} logo`}
                             width={24}
                             height={24}
@@ -359,9 +354,13 @@ export default function AdDetailsForm({
                     {currenciesProp.map((currency) => (
                       <SelectItem key={currency.code} value={currency.code}>
                         <div className="flex items-center gap-2">
-                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
+                          {currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] && (
                             <Image
-                              src={getCurrencyLogo(currency.code) || "/placeholder.svg"}
+                              src={
+                                currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
+                                "/placeholder.svg" ||
+                                "/placeholder.svg"
+                              }
                               alt={`${currency.code} logo`}
                               width={24}
                               height={24}
