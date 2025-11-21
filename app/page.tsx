@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import type { Advertisement, PaymentMethod } from "@/services/api/api-buy-sell"
 import { BuySellAPI } from "@/services/api"
@@ -24,9 +24,7 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { getTotalBalance } from "@/services/api/api-auth"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -72,14 +70,14 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const { showAlert } = useAlertDialog()
-  
+
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
-    locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-      : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+      locale != "en"
+        ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+        : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
 
-    window.open(helpCentreUrl, '_blank');
+    window.open(helpCentreUrl, "_blank")
   }
 
   const hasActiveFilters = filterOptions.fromFollowing !== false || sortBy !== "exchange_rate"
@@ -123,7 +121,6 @@ export default function BuySellPage() {
         const firstBalance = balances[0] || {}
         setBalance(firstBalance.amount || "0.00")
         setBalanceCurrency(firstBalance.currency || "USD")
-
       } else {
         const data = await getTotalBalance()
         const p2pWallet = data.wallets?.items?.find((wallet: any) => wallet.type === "p2p")
@@ -596,7 +593,12 @@ export default function BuySellPage() {
                                           <p className="text-white mb-4">
                                             Default tier for new users with basic trading limits.
                                           </p>
-                                          <Button variant="ghost" size="sm" onClick={redirectToHelpCentre} className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs">
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={redirectToHelpCentre}
+                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+                                          >
                                             Learn more
                                             <Image
                                               src="/icons/chevron-right-white.png"
@@ -630,7 +632,9 @@ export default function BuySellPage() {
                                   height={16}
                                   className="mr-1"
                                 />
-                                <span className="text-pending-text-secondary">{ad.user.rating_average_lifetime.toFixed(2)}</span>
+                                <span className="text-pending-text-secondary">
+                                  {ad.user.rating_average_lifetime.toFixed(2)}
+                                </span>
                               </span>
                             )}
                             {ad.user.order_count_lifetime > 0 && (
@@ -671,8 +675,8 @@ export default function BuySellPage() {
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
                           <div className="font-bold text-base flex items-center">
-                            {ad.exchange_rate
-                              ? ad.exchange_rate.toLocaleString(undefined, {
+                            {ad.effective_rate_display
+                              ? ad.effective_rate_display.toLocaleString(undefined, {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })
