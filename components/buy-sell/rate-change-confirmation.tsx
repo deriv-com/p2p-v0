@@ -32,7 +32,7 @@ export default function RateChangeConfirmation({
   const newTotal = (Number.parseFloat(amount) * newRate)
 
   const content = (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <div className="space-y-4">
         <p className="text-grayscale-100 text-base">
           You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}. The rate may vary slightly due to market movements. 
@@ -65,7 +65,7 @@ export default function RateChangeConfirmation({
     return (
       <Drawer open={isOpen} onOpenChange={(open) => !open && onCancel()}>
         <DrawerContent className="px-6 pb-8">
-          <DrawerTitle className="text-2xl font-bold mb-6">Market rate changed</DrawerTitle>
+          <DrawerTitle className="text-2xl font-bold mb-4">Market rate changed</DrawerTitle>
           {content}
         </DrawerContent>
       </Drawer>
