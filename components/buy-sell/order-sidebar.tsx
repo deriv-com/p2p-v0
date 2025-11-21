@@ -152,7 +152,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     subscribe,
     isConnected
   } = useWebSocketContext()
-  const [marketRate, setMarketRate] = useState<number | null>(ad.effective_rate_display)
+  const [marketRate, setMarketRate] = useState<number | null>(ad?.effective_rate_display)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
 
   useEffect(() => {
