@@ -32,9 +32,10 @@ body {
   }
 
   /* Adding custom scrollbar styling for currency filter */
+  /* Using Tailwind color variables instead of hardcoded rgba values */
   .scrollbar-custom {
     scrollbar-width: thin;
-    scrollbar-color: rgba(0, 0, 0, 0.08) transparent;
+    scrollbar-color: rgb(var(--foreground-rgb) / 0.08) transparent;
   }
 
   .scrollbar-custom::-webkit-scrollbar {
@@ -46,12 +47,12 @@ body {
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: rgb(var(--foreground-rgb) / 0.08);
     border-radius: 2px;
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.12);
+    background-color: rgb(var(--foreground-rgb) / 0.12);
   }
 }
 
