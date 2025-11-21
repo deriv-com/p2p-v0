@@ -186,25 +186,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   }, [isOpen, ad, isConnected])
 
   useEffect(() => {
-    if (isOpen && ad && ad.account_currency && ad.payment_currency && ad.type && isConnected) {
-      joinAdvertsChannel(ad.account_currency, ad.payment_currency, ad.type)
-
-      const unsubscribe = subscribe((data) => {
-        const expectedChannel = `adverts/currency/${ad.account_currency}/${ad.payment_currency}/${ad.type}`
-        if (data.channel === expectedChannel) {
-          console.log("[v0] Adverts channel update:", data)
-      
-        }
-      })
-
-      return () => {
-        leaveAdvertsChannel(ad.account_currency, ad.payment_currency, ad.type)
-        unsubscribe()
-      }
-    }
-  }, [isOpen, ad, isConnected, joinAdvertsChannel, leaveAdvertsChannel, subscribe])
-
-  useEffect(() => {
     if (isOpen) {
       setIsAnimating(true)
       setOrderStatus(null)
