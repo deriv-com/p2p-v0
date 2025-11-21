@@ -84,7 +84,7 @@ export default function StatsGrid({ stats }) {
               <TabsTrigger value="last30days">{t("profile.last30Days")}</TabsTrigger>
               <TabsTrigger value="lifetime">{t("profile.lifetime")}</TabsTrigger>
             </TabsList>
-            <TabsContent value="last30days" className="mt-0 rounded-lg px-4 md:px-0   bg-transparent">
+            <TabsContent value="last30days" className="mt-0 rounded-lg px-0 md:px-0   bg-transparent">
               <div className="flex flex-col divide-y divide-black/[0.08]">
                 <div className="flex flex-col divide-y divide-black/[0.08] md:divide-y-0 md:grid md:grid-cols-4">
                   <StatCard
@@ -134,7 +134,7 @@ export default function StatsGrid({ stats }) {
                 </div>
               </div>
             </TabsContent>
-            <TabsContent value="lifetime" className="mt-0 rounded-lg px-4 md:px-0  bg-transparent">
+            <TabsContent value="lifetime" className="mt-0 rounded-lg px-0 md:px-0  bg-transparent">
               <div className="flex flex-col divide-y divide-black/[0.08]">
                 <div className="flex flex-col divide-y divide-black/[0.08] md:divide-y-0 md:grid md:grid-cols-4">
                   <StatCard
