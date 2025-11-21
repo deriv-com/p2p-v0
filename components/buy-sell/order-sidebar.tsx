@@ -164,7 +164,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
           console.log("if")
         } else if (data.channel === expectedChannel && data.payload?.data?.rate) {
           setMarketRate(data.payload.data.rate)
-          console.log("if")
+          console.log("else if")
         }
       })
       return () => {
