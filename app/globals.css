@@ -31,9 +31,7 @@ body {
     display: none;
   }
 
-  /* Hide scrollbar on mobile, show custom scrollbar on desktop */
   .scrollbar-custom {
-    /* Hide scrollbar on mobile screens */
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
@@ -42,7 +40,6 @@ body {
     display: none;
   }
 
-  /* Show custom scrollbar on desktop (md breakpoint and above: 768px+) */
   @media (min-width: 768px) {
     .scrollbar-custom {
       scrollbar-width: thin;
