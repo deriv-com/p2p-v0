@@ -559,7 +559,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         />
       )}
 
-      {ad && (
+      {ad && marketRate != ad.effective_rate_display (
         <RateChangeConfirmation
           isOpen={showRateChangeConfirmation}
           onConfirm={proceedWithOrder}
