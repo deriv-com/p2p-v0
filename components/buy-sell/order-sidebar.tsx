@@ -152,7 +152,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
     subscribe,
     isConnected
   } = useWebSocketContext()
-  const [marketRate, setMarketRate] = useState<number | null>(ad?.effective_rate_display)
+  const [marketRate, setMarketRate] = useState<number | null>(null)
   const [showRateChangeConfirmation, setShowRateChangeConfirmation] = useState(false)
 
   useEffect(() => {
@@ -164,6 +164,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       ad.exchange_rate_type === "float" &&
       isConnected
     ) {
+      setMarketRate(ad.effec)
       joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
 
       const unsubscribe = subscribe((data) => {
