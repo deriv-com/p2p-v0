@@ -193,7 +193,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         const expectedChannel = `adverts/currency/${ad.account_currency}/${ad.payment_currency}/${ad.type}`
         if (data.channel === expectedChannel) {
           console.log("[v0] Adverts channel update:", data)
-          // Handle adverts updates here if needed
+      
         }
       })
 
