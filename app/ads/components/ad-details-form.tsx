@@ -33,6 +33,19 @@ interface PriceRange {
   highestPrice: number | null
 }
 
+const getCurrencyLogo = (currencyCode: string): string => {
+  const squareKey = `${currencyCode}-Square` as keyof typeof currencyLogoMapper
+  const defaultKey = currencyCode as keyof typeof currencyLogoMapper
+
+  // First check if square version exists
+  if (currencyLogoMapper[squareKey]) {
+    return currencyLogoMapper[squareKey]
+  }
+
+  // Fall back to default version
+  return currencyLogoMapper[defaultKey] || "/placeholder.svg"
+}
+
 export default function AdDetailsForm({
   onNext,
   initialData,
@@ -291,9 +304,7 @@ export default function AdDetailsForm({
                       <div className="flex items-center gap-2">
                         {currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] && (
                           <Image
-                            src={
-                              currencyLogoMapper[buyCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
-                            }
+                            src={getCurrencyLogo(buyCurrency) || "/placeholder.svg"}
                             alt={`${buyCurrency} logo`}
                             width={24}
                             height={24}
@@ -310,11 +321,7 @@ export default function AdDetailsForm({
                         <div className="flex items-center gap-2">
                           {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
                             <Image
-                              src={
-                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
-                                "/placeholder.svg"
-                              }
+                              src={getCurrencyLogo(currency.code) || "/placeholder.svg"}
                               alt={`${currency.code} logo`}
                               width={24}
                               height={24}
@@ -337,9 +344,7 @@ export default function AdDetailsForm({
                       <div className="flex items-center gap-2">
                         {currencyLogoMapper[forCurrency as keyof typeof currencyLogoMapper] && (
                           <Image
-                            src={
-                              currencyLogoMapper[forCurrency as keyof typeof currencyLogoMapper] || "/placeholder.svg"
-                            }
+                            src={getCurrencyLogo(forCurrency) || "/placeholder.svg"}
                             alt={`${forCurrency} logo`}
                             width={24}
                             height={24}
@@ -356,11 +361,7 @@ export default function AdDetailsForm({
                         <div className="flex items-center gap-2">
                           {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
                             <Image
-                              src={
-                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
-                                "/placeholder.svg"
-                              }
+                              src={getCurrencyLogo(currency.code) || "/placeholder.svg"}
                               alt={`${currency.code} logo`}
                               width={24}
                               height={24}
