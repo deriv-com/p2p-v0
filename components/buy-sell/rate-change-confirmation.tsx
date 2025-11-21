@@ -34,13 +34,13 @@ export default function RateChangeConfirmation({
   const content = (
     <div className="flex flex-col gap-6">
       <div className="space-y-4">
-        <p className="text-slate-600 text-base">
+        <p className="text-slate-100 text-base">
           You're placing an order to buy {amount} {accountCurrency} for {newTotal} {paymentCurrency}. 
         </p>
-        <p className="text-slate-600 text-base">
+        <p className="text-grayscale-100 text-base">
           The rate may vary slightly due to market movements.
         </p>
-        <p className="text-slate-600 text-base">
+        <p className="text-grayscale-100 text-base">
           
         If the rate changes significantly, we can’t process your order.
         </p>
