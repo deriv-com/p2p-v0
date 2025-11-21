@@ -41,7 +41,6 @@ export default function RateChangeConfirmation({
           The rate may vary slightly due to market movements.
         </p>
         <p className="text-grayscale-100 text-base">
-          
         If the rate changes significantly, we can’t process your order.
         </p>
       </div>
