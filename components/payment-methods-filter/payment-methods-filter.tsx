@@ -274,7 +274,7 @@ export default function PaymentMethodsFilter({
     return (
       <Drawer open={isOpen} onOpenChange={handleOpenChange}>
         <DrawerTrigger asChild>{enhancedTrigger}</DrawerTrigger>
-        <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl scrollbar-custom">
+        <DrawerContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">{t("paymentMethod.title")}</h3>
           </div>
