@@ -121,12 +121,14 @@ export default function PaymentMethodsFilter({
     setTempSelectedMethods(allMethodIds)
     onSelectionChange(allMethodIds)
     setIsOpen(false)
+    onOpenChangeProp?.(false)
     setSearchQuery("")
   }
 
   const handleApply = () => {
     onSelectionChange(tempSelectedMethods)
     setIsOpen(false)
+    onOpenChangeProp?.(false)
     setSearchQuery("")
   }
 
