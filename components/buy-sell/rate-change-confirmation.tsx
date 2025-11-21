@@ -48,14 +48,14 @@ export default function RateChangeConfirmation({
       <div className="flex flex-col gap-3">
         <Button
           onClick={onConfirm}
-          className="w-full bg-coral-red hover:bg-coral-red/90 text-white rounded-full h-12 text-base font-semibold"
+          className="w-full"
         >
           Confirm and continue
         </Button>
         <Button
           onClick={onCancel}
           variant="outline"
-          className="w-full border-2 border-slate-1200 text-slate-1200 rounded-full h-12 text-base font-semibold hover:bg-slate-50"
+          className="w-full hover:bg-slate-50"
         >
           Cancel order
         </Button>
