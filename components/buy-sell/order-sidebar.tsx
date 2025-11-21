@@ -158,10 +158,13 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
   
       const unsubscribe = subscribe((data) => {
         const expectedChannel = `exchange_rates/${ad.account_currency}/${ad.payment_currency}`
+        console.log(data)
         if (data.channel === expectedChannel && data.payload?.rate) {
           setMarketRate(data.payload.rate)
+          console.log("if")
         } else if (data.channel === expectedChannel && data.payload?.data?.rate) {
           setMarketRate(data.payload.data.rate)
+          console.log("if")
         }
       })
       return () => {
