@@ -46,7 +46,7 @@ body {
 
   .scrollbar-custom::-webkit-scrollbar-thumb {
     background-color: #00000014;
-    border-radius: 2px;
+    border-radius: 96px; /* increased from 2px to 96px for more rounded scrollbar */
   }
 
   .scrollbar-custom::-webkit-scrollbar-thumb:hover {
