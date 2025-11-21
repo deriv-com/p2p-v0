@@ -559,7 +559,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
         />
       )}
 
-      {ad  && (
+      {ad && (
         <RateChangeConfirmation
           isOpen={showRateChangeConfirmation}
           onConfirm={proceedWithOrder}
