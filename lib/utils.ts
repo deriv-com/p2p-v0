@@ -453,7 +453,7 @@ export function preventSwipeNavigation(): () => void {
 
 export const currencyLogoMapper = {
   USD: "/icons/usd-flag.png",
-  "USD-Square": "/icons/usd-flag-square.png", // Added square version of USD flag
+  "USD-Square": "/icons/usd-flag-square.png",
   BTC: "/icons/bitcoin-logo.png",
   ETH: "/icons/ethereum-logo.png",
   LTC: "/icons/litecoin-logo.png",
