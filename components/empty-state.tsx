@@ -60,7 +60,7 @@ export default function EmptyState({
       {onAddPaymentMethod && (
         <Button
           onClick={onAddPaymentMethod}
-          className="mt-4 w-[227px]"
+          className="mt-4"
         >
           {t("profile.addPaymentMethod")}
         </Button>
