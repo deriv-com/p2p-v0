@@ -10,6 +10,7 @@ import fr from "./translations/fr.json"
 import ru from "./translations/ru.json"
 import vi from "./translations/vi.json"
 import de from "./translations/de.json" // Added German translations import
+import bn from "./translations/bn.json"
 import type { Locale } from "./config"
 
 const translations = {
@@ -20,7 +21,8 @@ const translations = {
   fr,
   ru,
   vi,
-  de, // Added German to translations object
+  de,
+  bn,
 }
 
 type TranslationKey = string
