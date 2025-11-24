@@ -47,9 +47,7 @@ export default function UserInfo({
             ) : (
               <Skeleton className="h-7 w-32 bg-white/20" />
             )}
-            {isFullyVerified && (
-              <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification." />
-            )}
+            {isFullyVerified && <VerifiedBadge isCurrentUser={true} />}
             {tradeBand === "bronze" && (
               <TooltipProvider>
                 <Tooltip>

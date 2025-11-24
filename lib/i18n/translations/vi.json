@@ -22,7 +22,12 @@
     "all": "Tất cả",
     "yes": "Có",
     "no": "Không",
-    "ok": "OK"
+    "ok": "OK",
+    "verifiedBadge": {
+      "title": "Tài khoản đã xác minh đầy đủ",
+      "descriptionSelf": "Bạn đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ.",
+      "descriptionOther": "Người dùng này đã hoàn thành tất cả các bước xác minh cần thiết, bao gồm email, số điện thoại, danh tính (KYC) và xác minh địa chỉ. Bạn có thể giao dịch với sự tự tin vì tài khoản này đã được xác minh."
+    }
   },
   "navigation": {
     "market": "Thị trường",

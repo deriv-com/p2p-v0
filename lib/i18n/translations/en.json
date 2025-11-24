@@ -22,7 +22,12 @@
     "all": "All",
     "yes": "Yes",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "verifiedBadge": {
+      "title": "Fully verified account",
+      "descriptionSelf": "You have completed all required verification steps, including email, phone number, identity (KYC), and address verification.",
+      "descriptionOther": "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."
+    }
   },
   "navigation": {
     "market": "Market",
