@@ -23,7 +23,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -384,7 +383,6 @@ export default function BuySellPage() {
               </div>
             </div>
             {tempBanUntil && <TemporaryBanAlert tempBanUntil={tempBanUntil} />}
-            {!isConnected && <P2PAccessRemoved />}
             <div className="flex flex-wrap gap-2 md:gap-3 md:px-0 mt-4 md:mt-0 justify-end">
               {!isV1Signup && (
                 <div className="flex gap-2 mb-3 flex-1 hidden">
