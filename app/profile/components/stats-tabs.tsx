@@ -37,6 +37,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
   const { t } = useTranslations()
+  const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
 
   const tabs = [
     { id: "stats", label: t("profile.stats") },
@@ -132,7 +133,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4">
-                  <h2 className="text-2xl font-bold mb-4">{t("profile.stats")}</h2>
+                  <h2 className="text-2xl font-bold mb-4 px-2 md:px-2">{t("profile.stats")}</h2>
                   <StatsGrid stats={stats} />
                 </div>
               </div>
@@ -160,18 +161,22 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   </Button>
                 </div>
                 <div className="m-4 flex-1 overflow-auto">
-                  <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
-                  <PaymentMethodsTab key={refreshKey} />
+                  {paymentMethodsCount > 0 && (
+                    <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
+                  )}
+                  <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} onPaymentMethodsCountChange={setPaymentMethodsCount} />
                 </div>
-                <div className="p-4">
-                  <Button
-                    onClick={handleShowAddPaymentMethod}
-                    variant="outline"
-                    className="w-full rounded-full bg-transparent"
-                  >
-                    {t("profile.addPaymentMethod")}
-                  </Button>
-                </div>
+                {paymentMethodsCount > 0 && (
+                  <div className="p-4">
+                    <Button
+                      onClick={handleShowAddPaymentMethod}
+                      variant="outline"
+                      className="w-full rounded-full bg-transparent"
+                    >
+                      {t("profile.addPaymentMethod")}
+                    </Button>
+                  </div>
+                )}
               </div>
             )}
             <Divider />
@@ -234,17 +239,19 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           </div>
         ) : (
           <Tabs defaultValue="stats">
-            <TabsList className="w-full md:w-auto mb-2 bg-transparent">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.id}
-                  value={tab.id}
-                  className="w-full px-4 py-2 rounded-none border-b-2 border-b-grayscale-500 data-[state=active]:border-b-black data-[state=active]:shadow-none"
-                >
-                  {tab.label}
-                </TabsTrigger>
-              ))}
-            </TabsList>
+            <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2">
+              <TabsList className="w-auto h-9 bg-transparent">
+                {tabs.map((tab) => (
+                  <TabsTrigger
+                    key={tab.id}
+                    value={tab.id}
+                    className="w-full px-4 py-2 rounded-none border-b-2 border-b-transparent data-[state=active]:border-b-black data-[state=active]:shadow-none"
+                  >
+                    {tab.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
 
             <TabsContent value="stats" className="mt-4">
               {isLoading ? (
@@ -285,13 +292,19 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
 
             <TabsContent value="payment" className="mt-4">
               <div className="relative">
-                <div className="flex justify-end mb-4">
-                  <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
-                    <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
-                    {t("profile.addPaymentMethod")}
-                  </Button>
-                </div>
-                <PaymentMethodsTab key={refreshKey} />
+                {paymentMethodsCount > 0 && (
+                  <div className="flex justify-end mb-4">
+                    <Button variant="outline" size="sm" onClick={handleShowAddPaymentMethod}>
+                      <Image src="/icons/plus_icon.png" alt="Add payment" width={14} height={24} className="mr-1" />
+                      {t("profile.addPaymentMethod")}
+                    </Button>
+                  </div>
+                )}
+                <PaymentMethodsTab 
+                  key={refreshKey} 
+                  onAddPaymentMethod={handleShowAddPaymentMethod}
+                  onPaymentMethodsCountChange={setPaymentMethodsCount}
+                />
               </div>
             </TabsContent>
 

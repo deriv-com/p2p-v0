@@ -53,7 +53,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return t("common.all")
+      return t("common.allCountries")
     }
 
     const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
@@ -90,8 +90,8 @@ export default function CountrySelection({ countries, selectedCountries, onCount
         )}
       </div>
 
-      <div className="space-y-4 overflow-y-auto px-4">
-        <div className="flex items-center space-x-3">
+      <div className="space-y-4 px-1 relative">
+        <div className="flex items-center space-x-3 mt-6 mb-1">
           <Checkbox
             id="all-countries"
             checked={isAllSelected}
@@ -99,24 +99,28 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             className="data-[state=checked]:bg-black border-black"
           />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
-            {t("common.all")}
+            {t("common.allCountries")}
           </label>
         </div>
 
-        {filteredCountries.map((country) => (
-          <div key={country.code} className="flex items-center space-x-3">
-            <Checkbox
-              id={country.code}
-              checked={selectedCountries.includes(country.code)}
-              onCheckedChange={() => handleCountryToggle(country.code)}
-              disabled={false}
-              className="data-[state=checked]:bg-black border-black"
-            />
-            <label htmlFor={country.code} className="text-sm cursor-pointer">
-              {country.name}
-            </label>
-          </div>
-        ))}
+        <div className="h-px bg-black/[0.08] my-7 md:fixed md:left-0 md:w-full" />
+
+        <div className="space-y-4 max-h-[300px] overflow-y-auto md:pt-6">
+          {filteredCountries.map((country) => (
+            <div key={country.code} className="flex items-center space-x-3">
+              <Checkbox
+                id={country.code}
+                checked={selectedCountries.includes(country.code)}
+                onCheckedChange={() => handleCountryToggle(country.code)}
+                disabled={false}
+                className="data-[state=checked]:bg-black border-black"
+              />
+              <label htmlFor={country.code} className="text-sm cursor-pointer">
+                {country.name}
+              </label>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -171,7 +175,12 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-4" align="start">
+      <PopoverContent
+        align="start"
+        className="p-4 
+                   w-[var(--radix-popover-trigger-width)] 
+                   min-w-[var(--radix-popover-trigger-width)]"
+      >
         <CountryList />
       </PopoverContent>
     </Popover>

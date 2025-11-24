@@ -20,6 +20,7 @@
     "filter": "Filter",
     "sort": "Sort",
     "all": "All",
+    "allCountries": "All countries",
     "yes": "Yes",
     "no": "No",
     "ok": "OK"
@@ -493,7 +494,7 @@
     "invalidValuesMessage": "Please check your input values.",
     "amountExceedsBalanceTitle": "Amount exceeds balance",
     "amountExceedsBalanceMessage": "The total amount exceeds your available balance. Please enter a smaller amount.",
-    "selectPayment": "Select payment",
+    "selectPayment": "Select payment method",
     "selected": "Selected ({count})",
     "noPaymentMethodsFound": "No payment methods found"
   },
