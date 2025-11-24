@@ -24,7 +24,6 @@ import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useTranslations } from "@/lib/i18n/use-translations"
-import { useWebSocketContext } from "@/contexts/websocket-context"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
@@ -36,7 +35,6 @@ export default function BuySellPage() {
   const { t, locale } = useTranslations()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { isConnected } = useWebSocketContext()
 
   const {
     activeTab,
