@@ -3,7 +3,7 @@
     "buy": "Kaufen",
     "sell": "Verkaufen",
     "market": "Markt",
-    "orders": "Aufträge",
+    "orders": "Bestellungen",
     "myAds": "Meine Anzeigen",
     "wallet": "Wallet",
     "profile": "Profil",
@@ -32,7 +32,7 @@
   },
   "navigation": {
     "market": "Markt",
-    "orders": "Bestellungen",
+    "orders": "Aufträge",
     "myAds": "Meine Anzeigen",
     "wallet": "Wallet",
     "profile": "Profil",
