@@ -244,7 +244,7 @@
     "tradePartners": "Handelspartner",
     "tradeVolume": "Handelsvolumen",
     "tradePartnersTooltip": "Gesamtzahl der Nutzer, mit denen Sie erfolgreich gehandelt haben.",
-    "tradeVolumeLifetimeTooltip": "Der Gesamtwert aller in Ihrem Leben abgeschlossenen Trades.",
+    "tradeVolumeLifetimeTooltip": "Der Gesamtwert aller jemals abgeschlossenen Trades.",
     "tradeVolume30DaysTooltip": "Der Gesamtwert aller in den letzten 30 Tagen abgeschlossenen Trades.",
     "lessThanOneMin": "< 1 min",
     "mins": "Min.",
