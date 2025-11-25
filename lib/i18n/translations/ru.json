@@ -509,5 +509,19 @@
     "loadingProfile": "Загрузка профиля...",
     "errorLoadingProfile": "Не удалось загрузить профиль рекламодателя",
     "tryAgain": "Попробовать снова"
+  },
+  "status": {
+    "refunded": "Возвращено",
+    "cancelled": "Отменено",
+    "orderCancelled": "Заказ отменен",
+    "timedOut": "Истекло",
+    "orderExpired": "Заказ истек",
+    "completed": "Завершено",
+    "orderComplete": "Заказ завершен",
+    "completePayment": "Завершить оплату",
+    "awaitingPayment": "Ожидание оплаты",
+    "waitingSellersConfirmation": "Ожидание подтверждения продавца",
+    "confirmPayment": "Подтвердить оплату",
+    "underDispute": "На рассмотрении"
   }
 }

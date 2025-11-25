@@ -521,5 +521,19 @@
     "title": "Ngôn ngữ",
     "selectLanguage": "Chọn ngôn ngữ",
     "currentLanguage": "Ngôn ngữ hiện tại"
+  },
+  "status": {
+    "refunded": "Đã hoàn tiền",
+    "cancelled": "Đã hủy",
+    "orderCancelled": "Đơn hàng đã bị hủy",
+    "timedOut": "Đã hết hạn",
+    "orderExpired": "Đơn hàng đã hết hạn",
+    "completed": "Đã hoàn thành",
+    "orderComplete": "Đơn hàng hoàn tất",
+    "completePayment": "Hoàn tất thanh toán",
+    "awaitingPayment": "Đang chờ thanh toán",
+    "waitingSellersConfirmation": "Đang chờ xác nhận của người bán",
+    "confirmPayment": "Xác nhận thanh toán",
+    "underDispute": "Đang tranh chấp"
   }
 }
