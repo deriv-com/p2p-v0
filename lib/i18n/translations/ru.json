@@ -501,7 +501,7 @@
     "invalidValuesMessage": "Пожалуйста, проверьте введенные значения.",
     "amountExceedsBalanceTitle": "Сумма превышает баланс",
     "amountExceedsBalanceMessage": "Общая сумма превышает ваш доступный баланс. Пожалуйста, введите меньшую сумму.",
-    "selectPayment": "Выберите платеж",
+    "selectPayment": "Выберите способ оплаты",
     "selected": "Выбрано ({count})",
     "noPaymentMethodsFound": "Способы оплаты не найдены",
     "minimumOrderRequired": "Минимальный заказ обязателен",
