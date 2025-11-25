@@ -263,7 +263,7 @@
     "unfollowUser": "Отписаться от {nickname}?",
     "unfollowDescription": "Вы собираетесь отписаться от этого пользователя. Вы потеряете быстрый доступ к его профилю и активным объявлениям.",
     "unfollow": "Отписаться",
-    "userUnfollowed": "Отписка от {nickname}.",
+    "userUnfollowed": "Отписка от {nickname} выполнена.",
     "userFollowed": "Подписка на {nickname}.",
     "unblockUser": "Разблокировать {nickname}?",
     "unblockDescription": "Разблокируйте их, если хотите снова взаимодействовать с этим рекламодателем.",
