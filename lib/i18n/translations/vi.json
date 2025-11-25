@@ -582,7 +582,7 @@
     "timeLimit": "Giới hạn thời gian",
     "paymentMethods": "Phương thức thanh toán",
     "noAdsYet": "Chưa có quảng cáo",
-    "noActiveAds": "Nhà quảng cáo này không có quảng cáo đang hoạt động nào.",
+    "noActiveAds": "Nhà quảng cáo này không có quảng cáo đang hoạt động.",
     "loadingAdvertiser": "Đang tải nhà quảng cáo...",
     "failedToLoad": "Không thể tải hồ sơ nhà quảng cáo. Vui lòng thử lại.",
     "follow": "Theo dõi",
