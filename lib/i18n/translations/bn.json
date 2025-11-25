@@ -279,7 +279,7 @@
     "deletePaymentMethodDescription": "আপনি কি নিশ্চিত যে আপনি এই পেমেন্ট পদ্ধতি মুছতে চান?",
     "paymentMethodDeleted": "পেমেন্ট পদ্ধতি মুছে ফেলা হয়েছে।",
     "unableToDeletePaymentMethod": "এই পেমেন্ট পদ্ধতি মুছে ফেলা সম্ভব নয়।",
-    "paymentMethodLinkedToOrder": "এই পেমেন্ট পদ্ধতি আপনার একটি অর্ডারের সাথে সংযুক্ত এবং মুছে ফেলা যাবে না।",
+    "paymentMethodLinkedToOrder": "এই পেমেন্ট পদ্ধতিটি আপনার একটি অর্ডারের সাথে সংযুক্ত এবং মুছে ফেলা যাবে না।",
     "paymentMethodLinkedToAd": "এই পেমেন্ট পদ্ধতি আপনার একটি বিজ্ঞাপনের সাথে সংযুক্ত এবং মুছে ফেলা যাবে না।",
     "cannotDeletePaymentMethod": "এই পেমেন্ট পদ্ধতি মুছে ফেলা যাবে না",
     "paymentMethodUpdated": "পেমেন্ট পদ্ধতি আপডেট করা হয়েছে।",
@@ -347,7 +347,9 @@
     "minimumTransfer": "সর্বনিম্ন ট্রান্সফার হল {amount} {currency}",
     "minimumTransferAmount": "সর্বনিম্ন ট্রান্সফার পরিমাণ হল {amount} {currency}।",
     "exceedsBalance": "পরিমাণ উপলব্ধ ব্যালেন্স {amount} {currency} অতিক্রম করতে পারবে না।",
-    "gettingStartedWithP2P": "P2P দিয়ে শুরু করা"
+    "gettingStartedWithP2P": "P2P দিয়ে শুরু করা",
+    "walletName": "{currency} ওয়ালেট",
+    "external": "বাহ্যিক"
   },
   "errors": {
     "generic": "কিছু ভুল হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
@@ -508,7 +510,7 @@
     "updatingAd": "বিজ্ঞাপন আপডেট হচ্ছে...",
     "unableToCreateAd": "বিজ্ঞাপন তৈরি করা সম্ভব নয়",
     "createAdError": "বিজ্ঞাপন তৈরি করতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
-    "unableToUpdateAd": "বিজ্ঞাপন আপডেট করা সম্ভব নয়",
+    "unableToUpdateAd": "বিজ্ঞাপন আপডেট করতে অক্ষম",
     "updateAdError": "বিজ্ঞাপন আপডেট করতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
     "fixed": "স্থির",
     "floating": "ভাসমান",

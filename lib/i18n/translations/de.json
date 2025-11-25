@@ -325,6 +325,8 @@
     "processing": "Wird verarbeitet",
     "pending": "Ausstehend",
     "failed": "Fehlgeschlagen",
+    "walletName": "{currency} Wallet",
+    "external": "Extern",
     "chooseCurrency": "Währung wählen",
     "chooseCurrencyDescription": "Wählen Sie, welche Währung Sie {action} möchten.",
     "depositWith": "Einzahlen mit",

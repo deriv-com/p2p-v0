@@ -348,7 +348,9 @@
     "minimumTransfer": "Chuyển khoản tối thiểu là {amount} {currency}",
     "minimumTransferAmount": "Số tiền chuyển khoản tối thiểu là {amount} {currency}.",
     "exceedsBalance": "Số tiền không được vượt quá số dư khả dụng {amount} {currency}.",
-    "gettingStartedWithP2P": "Bắt đầu với P2P"
+    "gettingStartedWithP2P": "Bắt đầu với P2P",
+    "walletName": "Ví {currency}",
+    "external": "Bên ngoài"
   },
   "errors": {
     "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",

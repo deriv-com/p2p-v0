@@ -326,6 +326,8 @@
     "processing": "Обработка",
     "pending": "В ожидании",
     "failed": "Неудачно",
+    "walletName": "{currency} Кошелек",
+    "external": "Внешний",
     "chooseCurrency": "Выберите валюту",
     "chooseCurrencyDescription": "Выберите валюту, которую вы хотите {action}.",
     "depositWith": "Пополнить с",
