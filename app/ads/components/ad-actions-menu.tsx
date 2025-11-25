@@ -42,7 +42,7 @@ export function AdActionsMenu({
         onClick={() => onShare(ad)}
       >
         <Image className="mr-2" src="/icons/share-icon.svg" alt="Share" width={14} height={16} />
-        Share
+        {t("myAds.share")}
       </Button>
       <Button
         variant="ghost"
