@@ -9,7 +9,7 @@ import pt from "./translations/pt.json"
 import fr from "./translations/fr.json"
 import ru from "./translations/ru.json"
 import vi from "./translations/vi.json"
-import de from "./translations/de.json" // Added German translations import
+import de from "./translations/de.json" 
 import bn from "./translations/bn.json"
 import type { Locale } from "./config"
 
