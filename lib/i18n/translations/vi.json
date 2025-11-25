@@ -416,7 +416,7 @@
     "noActiveOrders": "Không có đơn hàng đang hoạt động",
     "noActiveOrdersDescription": "Xem và quản lý các đơn hàng đang hoạt động của bạn tại đây.",
     "noPastOrders": "Không có đơn hàng đã qua",
-    "noPastOrdersDescription": "Xem và quản lý các đơn hàng quá khứ của bạn tại đây.",
+    "noPastOrdersDescription": "Xem và quản lý các đơn hàng đã qua của bạn tại đây.",
     "date": "Ngày",
     "orderId": "ID đơn hàng",
     "amount": "Số tiền",
