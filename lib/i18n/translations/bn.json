@@ -502,7 +502,18 @@
     "amountExceedsBalanceMessage": "মোট পরিমাণ আপনার উপলব্ধ ব্যালেন্স অতিক্রম করে। অনুগ্রহ করে একটি ছোট পরিমাণ লিখুন।",
     "selectPayment": "পেমেন্ট নির্বাচন করুন",
     "selected": "নির্বাচিত ({count})",
-    "noPaymentMethodsFound": "কোন পেমেন্ট পদ্ধতি পাওয়া যায়নি"
+    "noPaymentMethodsFound": "কোন পেমেন্ট পদ্ধতি পাওয়া যায়নি",
+    "postAd": "বিজ্ঞাপন পোস্ট করুন",
+    "creatingAd": "বিজ্ঞাপন তৈরি হচ্ছে...",
+    "updatingAd": "বিজ্ঞাপন আপডেট হচ্ছে...",
+    "unableToCreateAd": "বিজ্ঞাপন তৈরি করা সম্ভব নয়",
+    "createAdError": "বিজ্ঞাপন তৈরি করতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "unableToUpdateAd": "বিজ্ঞাপন আপডেট করা সম্ভব নয়",
+    "updateAdError": "বিজ্ঞাপন আপডেট করতে ত্রুটি হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "fixed": "স্থির",
+    "floating": "ভাসমান",
+    "counterparty": "প্রতিপক্ষ",
+    "allCounterparties": "সমস্ত প্রতিপক্ষ"
   },
   "advertiser": {
     "goBack": "ফিরে যান",
@@ -536,7 +547,9 @@
     "youveBlockedUser": "আপনি এই ব্যবহারকারীকে ব্লক করেছেন",
     "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে আবার ইন্টারঅ্যাক্ট করতে চান তবে তাদের আনব্লক করুন।",
     "successfullyFollowed": "সফলভাবে অনুসরণ করা হয়েছে",
-    "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে"
+    "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে",
+    "userBlocked": "ব্লক করা হয়েছে {nickname}।",
+    "userUnblocked": "আনব্লক করা হয়েছে {nickname}।"
   },
   "kyc": {
     "accessP2PMessage": "P2P অ্যাক্সেস করতে, আপনার প্রোফাইল এবং যাচাইকরণ সম্পূর্ণ করুন।",
