@@ -245,7 +245,7 @@
     "tradePartners": "Đối tác giao dịch",
     "tradeVolume": "Khối lượng giao dịch",
     "tradePartnersTooltip": "Tổng số người dùng bạn đã giao dịch thành công.",
-    "tradeVolumeLifetimeTooltip": "Tổng giá trị của tất cả các giao dịch đã hoàn thành trong suốt cuộc đời.",
+    "tradeVolumeLifetimeTooltip": "Tổng giá trị của tất cả các giao dịch đã hoàn thành trong toàn bộ thời gian.",
     "tradeVolume30DaysTooltip": "Tổng giá trị của tất cả các giao dịch đã hoàn thành trong 30 ngày qua.",
     "lessThanOneMin": "< 1 phút",
     "mins": "phút",
