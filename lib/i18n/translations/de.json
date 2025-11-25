@@ -594,6 +594,7 @@
     "qrCodeDescription": "Scannen Sie diesen Code, um über Deriv P2P zu bestellen",
     "idNumber": "ID-Nummer",
     "limits": "Limits",
+    "rate": "Kurs",
     "failedToGenerateQR": "QR-Code konnte nicht generiert werden",
     "adLinkCopied": "Anzeigenlink kopiert",
     "failedToCopyLink": "Link konnte nicht kopiert werden",

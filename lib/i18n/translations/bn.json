@@ -579,6 +579,7 @@
     "qrCodeDescription": "Deriv P2P-এর মাধ্যমে অর্ডার করতে এই কোড স্ক্যান করুন",
     "idNumber": "আইডি নম্বর",
     "limits": "সীমা",
+    "rate": "রেট",
     "failedToGenerateQR": "QR কোড তৈরি করতে ব্যর্থ",
     "adLinkCopied": "বিজ্ঞাপন লিঙ্ক কপি করা হয়েছে",
     "failedToCopyLink": "লিঙ্ক কপি করতে ব্যর্থ",

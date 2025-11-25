@@ -575,5 +575,15 @@
     "waitingSellersConfirmation": "Waiting seller's confirmation",
     "confirmPayment": "Confirm payment",
     "underDispute": "Under dispute"
+  },
+  "shareAdPage": {
+    "shareAdTitle": "Share ad",
+    "shareMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad {url}. Thanks!",
+    "shareTelegramMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad. Thanks!",
+    "qrCodeDescription": "Scan this code to order via Deriv P2P",
+    "idNumber": "ID number",
+    "limits": "Limits",
+    "rate": "Rate",
+    "failedToGenerateQR": "Failed to generate QR code"
   }
 }

@@ -599,6 +599,7 @@
     "qrCodeDescription": "Отсканируйте этот код для заказа через Deriv P2P",
     "idNumber": "ID номер",
     "limits": "Лимиты",
+    "rate": "Курс",
     "failedToGenerateQR": "Не удалось создать QR-код",
     "adLinkCopied": "Ссылка на объявление скопирована",
     "failedToCopyLink": "Не удалось скопировать ссылку",

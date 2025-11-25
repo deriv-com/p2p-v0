@@ -626,6 +626,7 @@
     "qrCodeDescription": "Quét mã này để đặt hàng qua Deriv P2P",
     "idNumber": "Số ID",
     "limits": "Giới hạn",
+    "rate": "Tỷ giá",
     "failedToGenerateQR": "Không thể tạo mã QR",
     "adLinkCopied": "Đã sao chép liên kết quảng cáo",
     "failedToCopyLink": "Không thể sao chép liên kết",
