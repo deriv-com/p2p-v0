@@ -548,8 +548,8 @@
     "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে আবার ইন্টারঅ্যাক্ট করতে চান তবে তাদের আনব্লক করুন।",
     "successfullyFollowed": "সফলভাবে অনুসরণ করা হয়েছে",
     "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে",
-    "userBlocked": "ব্লক করা হয়েছে {nickname}।",
-    "userUnblocked": "আনব্লক করা হয়েছে {nickname}।"
+    "userBlocked": "{nickname} ব্লক করা হয়েছে।",
+    "userUnblocked": "{nickname} আনব্লক করা হয়েছে।"
   },
   "kyc": {
     "accessP2PMessage": "P2P অ্যাক্সেস করতে, আপনার প্রোফাইল এবং যাচাইকরণ সম্পূর্ণ করুন।",
