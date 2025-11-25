@@ -1,5 +1,7 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -26,7 +28,7 @@ import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getTotalBalance } from "@/services/api/api-auth"
@@ -589,17 +591,15 @@ export default function BuySellPage() {
                                       </TooltipTrigger>
                                       <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
                                         <>
-                                          <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="text-white mb-4">
-                                            Default tier for new users with basic trading limits.
-                                          </p>
+                                          <p className="font-bold text-white mb-2">{t("profile.bronzeTier")}</p>
+                                          <p className="text-white mb-4">{t("profile.bronzeTierDescription")}</p>
                                           <Button
                                             variant="ghost"
                                             size="sm"
                                             onClick={redirectToHelpCentre}
                                             className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
                                           >
-                                            Learn more
+                                            {t("common.learnMore")}
                                             <Image
                                               src="/icons/chevron-right-white.png"
                                               alt="Arrow"
