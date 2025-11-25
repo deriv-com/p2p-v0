@@ -666,7 +666,7 @@ export default function BuySellPage() {
                                   </div>
                                 </TooltipTrigger>
                                 <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                  <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
+                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
                                   <TooltipArrow className="fill-black" />
                                 </TooltipContent>
                               </Tooltip>

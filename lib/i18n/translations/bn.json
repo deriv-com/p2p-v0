@@ -74,6 +74,7 @@
     "exchangeRate": "বিনিময় হার",
     "orderLimit": "অর্ডার সীমা",
     "paymentTime": "পেমেন্টের সময়",
+    "paymentTimeTooltip": "অর্ডার দেওয়ার পরে {minutes} মিনিটের মধ্যে আপনার পেমেন্ট সম্পন্ন করুন।",
     "buyer": "ক্রেতা",
     "seller": "বিক্রেতা",
     "buyersPaymentMethods": "ক্রেতার পেমেন্ট পদ্ধতি",

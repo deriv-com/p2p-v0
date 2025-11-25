@@ -74,6 +74,7 @@
     "exchangeRate": "Exchange rate",
     "orderLimit": "Order limit",
     "paymentTime": "Payment time",
+    "paymentTimeTooltip": "Complete your payment within {minutes} minutes after placing the order.",
     "buyer": "Buyer",
     "seller": "Seller",
     "buyersPaymentMethods": "Buyer's payment method(s)",

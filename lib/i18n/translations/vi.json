@@ -75,6 +75,7 @@
     "exchangeRate": "Tỷ giá hối đoái",
     "orderLimit": "Giới hạn đơn hàng",
     "paymentTime": "Thời gian thanh toán",
+    "paymentTimeTooltip": "Hoàn tất thanh toán trong vòng {minutes} phút sau khi đặt hàng.",
     "buyer": "Người mua",
     "seller": "Người bán",
     "buyersPaymentMethods": "Phương thức thanh toán của người mua",

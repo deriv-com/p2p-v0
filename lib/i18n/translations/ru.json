@@ -75,6 +75,7 @@
     "exchangeRate": "Обменный курс",
     "orderLimit": "Лимит заказа",
     "paymentTime": "Время оплаты",
+    "paymentTimeTooltip": "Завершите оплату в течение {minutes} минут после размещения заказа.",
     "buyer": "Покупатель",
     "seller": "Продавец",
     "buyersPaymentMethods": "Способ(ы) оплаты покупателя",
