@@ -310,7 +310,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                     <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                   </div>
-                  <span className="text-[10px] font-normal text-slate-1600">{t("myAds.copyLink")}</span>
+                  <span className="text-[10px] font-normal text-slate-1600">{t("shareAdPage.copyLink")}</span>
                 </Button>
 
                 <Button
@@ -321,7 +321,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                     <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                   </div>
-                  <span className="text-[10px] font-normal text-slate-1600">{t("myAds.saveImage")}</span>
+                  <span className="text-[10px] font-normal text-slate-1600">{t("shareAdPage.saveImage")}</span>
                 </Button>
               </div>
             )}
@@ -329,9 +329,9 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         </div>
         {isMobile && (
           <div className="fixed bottom-0 left-0 right-0 p-4 flex flex-col gap-2 max-w-xl mx-auto">
-            <Button onClick={handleShareImage}>{t("myAds.shareImage")}</Button>
+            <Button onClick={handleShareImage}>{t("shareAdPage.shareImage")}</Button>
             <Button variant="outline" onClick={handleSaveImage}>
-              {t("myAds.saveImage")}
+              {t("shareAdPage.saveImage")}
             </Button>
           </div>
         )}
