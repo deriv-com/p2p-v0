@@ -40,7 +40,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         setQrCodeUrl(qrCode)
       } catch (error) {
         toast({
-          description: t("myAds.failedToGenerateQR"),
+          description: t("shareAdPage.failedToGenerateQR"),
           variant: "destructive",
         })
       } finally {
@@ -54,12 +54,12 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
-    const text = t("myAds.shareMessage", {
+    const text = t("shareAdPage.shareMessage", {
       currency: ad?.account_currency,
       rate: ad?.rate.value,
       url: adUrl,
     })
-    const telegramText = t("myAds.shareTelegramMessage", {
+    const telegramText = t("shareAdPage.shareTelegramMessage", {
       currency: ad?.account_currency,
       rate: ad?.rate.value,
     })
