@@ -1114,7 +1114,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               <Button
                 onClick={handleConfirmTransfer}
                 disabled={isSubmitting}
-                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+                className="w-full h-12 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
               >
                 {isSubmitting ? (
                   <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
