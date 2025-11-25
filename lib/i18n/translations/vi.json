@@ -85,7 +85,7 @@
     "sellersInstructions": "Hướng dẫn của người bán",
     "insufficientBalance": "Số dư không đủ. Vui lòng nạp tiền vào ví của bạn trước khi tạo đơn hàng.",
     "orderLimitError": "Giới hạn đơn hàng: {min} - {max} {currency}",
-    "orderExists": "Bạn chỉ có thể có một đơn hàng đang hoạt động cho mỗi quảng cáo. Hoàn thành đơn hàng hiện tại để tiếp tục.",
+    "orderExists": "Bạn chỉ có thể có một đơn hàng đang hoạt động cho mỗi tin đăng. Hoàn thành đơn hàng hiện tại để tiếp tục.",
     "orderCreationError": "Đã xảy ra lỗi khi tạo đơn hàng. Vui lòng thử lại.",
     "unableToCreateOrder": "Không thể tạo đơn hàng"
   },
