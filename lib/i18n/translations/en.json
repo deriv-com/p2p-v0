@@ -586,6 +586,14 @@
     "idNumber": "ID number",
     "limits": "Limits",
     "rate": "Rate",
-    "failedToGenerateQR": "Failed to generate QR code"
+    "failedToGenerateQR": "Failed to generate QR code",
+    "adLinkCopied": "Anzeigenlink kopiert",
+    "failedToCopyLink": "Link konnte nicht kopiert werden",
+    "imageSavedSuccessfully": "Bild erfolgreich gespeichert",
+    "failedToSaveImage": "Bild konnte nicht gespeichert werden",
+    "sharedSuccessfully": "Erfolgreich geteilt",
+    "copyLink": "Link kopieren",
+    "saveImage": "Bild speichern",
+    "shareImage": "Bild teilen"
   }
 }
