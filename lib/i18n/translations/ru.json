@@ -403,7 +403,7 @@
     "unableToDeleteAd": "Не удалось удалить объявление",
     "deleteAdError": "Произошла ошибка при удалении объявления. Пожалуйста, попробуйте снова.",
     "deleteAdOpenOrders": "У объявления есть текущие заказы.",
-    "unableToUpdateAd": "Не удалось обновить объявление",
+    "unableToUpdateAd": "Невозможно обновить объявление",
     "updateAdError": "Произошла ошибка при обновлении объявления. Пожалуйста, попробуйте снова."
   },
   "orders": {
@@ -591,5 +591,22 @@
     "waitingSellersConfirmation": "Ожидание подтверждения продавца",
     "confirmPayment": "Подтвердить оплату",
     "underDispute": "В споре"
+  },
+  "shareAdPage": {
+    "shareAdTitle": "Поделиться объявлением",
+    "shareMessage": "Привет! Я хочу обменять {currency} по курсу {rate} на Deriv P2P. Если вам интересно, посмотрите мое объявление {url}. Спасибо!",
+    "shareTelegramMessage": "Привет! Я хочу обменять {currency} по курсу {rate} на Deriv P2P. Если вам интересно, посмотрите мое объявление. Спасибо!",
+    "qrCodeDescription": "Отсканируйте этот код для заказа через Deriv P2P",
+    "idNumber": "ID номер",
+    "limits": "Лимиты",
+    "failedToGenerateQR": "Не удалось создать QR-код",
+    "adLinkCopied": "Ссылка на объявление скопирована",
+    "failedToCopyLink": "Не удалось скопировать ссылку",
+    "imageSavedSuccessfully": "Изображение успешно сохранено",
+    "failedToSaveImage": "Не удалось сохранить изображение",
+    "sharedSuccessfully": "Успешно поделились",
+    "copyLink": "Скопировать ссылку",
+    "saveImage": "Сохранить изображение",
+    "shareImage": "Поделиться изображением"
   }
 }

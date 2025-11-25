@@ -571,5 +571,22 @@
     "waitingSellersConfirmation": "বিক্রেতার নিশ্চিতকরণের জন্য অপেক্ষা করা হচ্ছে",
     "confirmPayment": "পেমেন্ট নিশ্চিত করুন",
     "underDispute": "বিরোধের অধীনে"
+  },
+  "shareAdPage": {
+    "shareAdTitle": "বিজ্ঞাপন শেয়ার করুন",
+    "shareMessage": "হাই! আমি Deriv P2P-তে {rate}-এ {currency} বিনিময় করতে চাই। আগ্রহী হলে, আমার বিজ্ঞাপন দেখুন {url}। ধন্যবাদ!",
+    "shareTelegramMessage": "হাই! আমি Deriv P2P-তে {rate}-এ {currency} বিনিময় করতে চাই। আগ্রহী হলে, আমার বিজ্ঞাপন দেখুন। ধন্যবাদ!",
+    "qrCodeDescription": "Deriv P2P-এর মাধ্যমে অর্ডার করতে এই কোড স্ক্যান করুন",
+    "idNumber": "আইডি নম্বর",
+    "limits": "সীমা",
+    "failedToGenerateQR": "QR কোড তৈরি করতে ব্যর্থ",
+    "adLinkCopied": "বিজ্ঞাপন লিঙ্ক কপি করা হয়েছে",
+    "failedToCopyLink": "লিঙ্ক কপি করতে ব্যর্থ",
+    "imageSavedSuccessfully": "ছবি সফলভাবে সংরক্ষিত হয়েছে",
+    "failedToSaveImage": "ছবি সংরক্ষণ করতে ব্যর্থ",
+    "sharedSuccessfully": "সফলভাবে শেয়ার করা হয়েছে",
+    "copyLink": "লিঙ্ক কপি করুন",
+    "saveImage": "ছবি সংরক্ষণ করুন",
+    "shareImage": "ছবি শেয়ার করুন"
   }
 }

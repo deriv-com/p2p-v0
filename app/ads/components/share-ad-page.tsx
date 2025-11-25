@@ -8,6 +8,7 @@ import type { Ad } from "@/types"
 import { useToast } from "@/hooks/use-toast"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface ShareAdPageProps {
   ad: Ad
@@ -15,6 +16,7 @@ interface ShareAdPageProps {
 }
 
 export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
+  const { t } = useTranslations()
   const { toast } = useToast()
   const [qrCodeUrl, setQrCodeUrl] = useState<string>("")
   const [isLoading, setIsLoading] = useState(true)
@@ -38,7 +40,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         setQrCodeUrl(qrCode)
       } catch (error) {
         toast({
-          description: "Failed to generate QR code",
+          description: t("myAds.failedToGenerateQR"),
           variant: "destructive",
         })
       } finally {
@@ -47,13 +49,20 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     }
 
     generateQRCode()
-  }, [ad.id, toast])
+  }, [ad.id, toast, t])
 
   const handleShare = async (platform: string) => {
     const advertiserId = ad.user?.id
     const adUrl = `${window.location.origin}/advertiser/${advertiserId}?adId=${ad.id}`
-    const text = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad ${adUrl}. Thanks!`
-    const telegramText = `Hi! I'd like to exchange ${ad?.account_currency} at ${ad?.rate.value} on Deriv P2P. If you're interested, check out my ad. Thanks!`
+    const text = t("myAds.shareMessage", {
+      currency: ad?.account_currency,
+      rate: ad?.rate.value,
+      url: adUrl,
+    })
+    const telegramText = t("myAds.shareTelegramMessage", {
+      currency: ad?.account_currency,
+      rate: ad?.rate.value,
+    })
 
     const shareUrls: Record<string, string> = {
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${text}`)}`,
@@ -77,7 +86,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         description: (
           <div className="flex items-center gap-2">
             <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-            <span>Ad link copied</span>
+            <span>{t("myAds.adLinkCopied")}</span>
           </div>
         ),
         className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -85,7 +94,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
       })
     } catch (error) {
       toast({
-        description: "Failed to copy link",
+        description: t("myAds.failedToCopyLink"),
         variant: "destructive",
       })
     }
@@ -115,12 +124,12 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         document.body.removeChild(link)
       }, 100)
 
-      if(!isMobile) {
+      if (!isMobile) {
         toast({
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} />
-              <span>Image saved successfully</span>
+              <span>{t("myAds.imageSavedSuccessfully")}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -128,9 +137,9 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         })
       }
     } catch (error) {
-      if(!isMobile) {
+      if (!isMobile) {
         toast({
-          description: "Failed to save image",
+          description: t("myAds.failedToSaveImage"),
           variant: "destructive",
         })
       }
@@ -174,7 +183,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           title: "",
           files: [file],
         })
-        toast({ description: "Shared successfully" })
+        toast({ description: t("myAds.sharedSuccessfully") })
         return
       }
 
@@ -188,7 +197,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
     return (
       <div className="text-center py-12">
         <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-r-transparent"></div>
-        <p className="mt-2 text-slate-600">Loading ads...</p>
+        <p className="mt-2 text-slate-600">{t("myAds.loadingAds")}</p>
       </div>
     )
   }
@@ -202,7 +211,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
-          <h2 className="text-[24px] font-bold px-4 md:px-0">Share ad</h2>
+          <h2 className="text-[24px] font-bold px-4 md:px-0">{t("myAds.shareAdTitle")}</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
@@ -213,23 +222,23 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <Image src="/icons/p2p-logo-white.svg" alt="Deriv P2P" />
                 </div>
                 <div className="text-lg font-bold">
-                  {ad.type === "buy" ? "Sell" : "Buy"} {ad.account_currency}
+                  {ad.type === "buy" ? t("common.sell") : t("common.buy")} {ad.account_currency}
                 </div>
               </div>
 
               <div className="space-y-1 mb-4">
                 <div className="grid grid-cols-[85px_auto]">
-                  <span className="text-sm">ID number</span>
+                  <span className="text-sm">{t("myAds.idNumber")}</span>
                   <span className="font-bold text-sm">{ad.id}</span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
-                  <span className="text-sm">Limits</span>
+                  <span className="text-sm">{t("myAds.limits")}</span>
                   <span className="font-bold text-sm">
                     {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
-                  <span className="text-sm">Rate</span>
+                  <span className="text-sm">{t("myAds.rate")}</span>
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
                       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
@@ -243,9 +252,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
                     <img src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
-                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">
-                    Scan this code to order via Deriv P2P
-                  </p>
+                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">{t("myAds.qrCodeDescription")}</p>
                 </>
               )}
             </div>
@@ -303,7 +310,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                     <Image src="/icons/link.svg" alt="link" width={36} height={36} />
                   </div>
-                  <span className="text-[10px] font-normal text-slate-1600">Copy link</span>
+                  <span className="text-[10px] font-normal text-slate-1600">{t("myAds.copyLink")}</span>
                 </Button>
 
                 <Button
@@ -314,7 +321,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-[#F2F3F4] p-2 rounded-full flex items-center justify-center">
                     <Image src="/icons/download.svg" alt="download" width={36} height={36} />
                   </div>
-                  <span className="text-[10px] font-normal text-slate-1600">Save image</span>
+                  <span className="text-[10px] font-normal text-slate-1600">{t("myAds.saveImage")}</span>
                 </Button>
               </div>
             )}
@@ -322,9 +329,9 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
         </div>
         {isMobile && (
           <div className="fixed bottom-0 left-0 right-0 p-4 flex flex-col gap-2 max-w-xl mx-auto">
-            <Button onClick={handleShareImage}>Share image</Button>
+            <Button onClick={handleShareImage}>{t("myAds.shareImage")}</Button>
             <Button variant="outline" onClick={handleSaveImage}>
-              Save image
+              {t("myAds.saveImage")}
             </Button>
           </div>
         )}

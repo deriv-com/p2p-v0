@@ -402,7 +402,7 @@
     "deleteAdDescription": "Bạn sẽ không thể khôi phục nó.",
     "unableToDeleteAd": "Không thể xóa quảng cáo",
     "deleteAdError": "Đã xảy ra lỗi khi xóa quảng cáo. Vui lòng thử lại.",
-    "deleteAdOpenOrders": "Quảng cáo có đơn hàng đang chờ xử lý.",
+    "deleteAdOpenOrders": "Quảng cáo có đơn hàng đang diễn ra.",
     "unableToUpdateAd": "Không thể cập nhật quảng cáo",
     "updateAdError": "Đã xảy ra lỗi khi cập nhật quảng cáo. Vui lòng thử lại."
   },
@@ -618,5 +618,22 @@
     "waitingSellersConfirmation": "Đang chờ xác nhận của người bán",
     "confirmPayment": "Xác nhận thanh toán",
     "underDispute": "Đang tranh chấp"
+  },
+  "shareAdPage": {
+    "shareAdTitle": "Chia sẻ quảng cáo",
+    "shareMessage": "Xin chào! Tôi muốn trao đổi {currency} với tỷ giá {rate} trên Deriv P2P. Nếu bạn quan tâm, hãy xem quảng cáo của tôi {url}. Cảm ơn!",
+    "shareTelegramMessage": "Xin chào! Tôi muốn trao đổi {currency} với tỷ giá {rate} trên Deriv P2P. Nếu bạn quan tâm, hãy xem quảng cáo của tôi. Cảm ơn!",
+    "qrCodeDescription": "Quét mã này để đặt hàng qua Deriv P2P",
+    "idNumber": "Số ID",
+    "limits": "Giới hạn",
+    "failedToGenerateQR": "Không thể tạo mã QR",
+    "adLinkCopied": "Đã sao chép liên kết quảng cáo",
+    "failedToCopyLink": "Không thể sao chép liên kết",
+    "imageSavedSuccessfully": "Đã lưu hình ảnh thành công",
+    "failedToSaveImage": "Không thể lưu hình ảnh",
+    "sharedSuccessfully": "Đã chia sẻ thành công",
+    "copyLink": "Sao chép liên kết",
+    "saveImage": "Lưu hình ảnh",
+    "shareImage": "Chia sẻ hình ảnh"
   }
 }
