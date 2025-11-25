@@ -588,7 +588,7 @@
     "rate": "Rate",
     "failedToGenerateQR": "Failed to generate QR code",
     "adLinkCopied": "Ad link copied",
-    "failedToCopyLink": "Link konnte nicht kopiert werden",
+    "failedToCopyLink": "Failed to copy link",
     "imageSavedSuccessfully": "Image saved successfully",
     "failedToSaveImage": "Failed to save image",
     "sharedSuccessfully": "Shared successfully",
