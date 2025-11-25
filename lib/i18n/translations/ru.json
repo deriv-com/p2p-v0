@@ -156,7 +156,7 @@
     "offline": "Оффлайн",
     "seenMinutesAgo": "{minutes} минут{plural} назад",
     "seenHoursAgo": "{hours} час{plural} назад",
-    "seenDaysAgo": "{days} день/дней назад",
+    "seenDaysAgo": "{days} дн{plural} назад,
     "justNow": "только что",
     "enterMessage": "Введите сообщение",
     "messageSent": "Сообщение отправлено",
