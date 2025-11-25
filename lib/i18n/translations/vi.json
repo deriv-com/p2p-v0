@@ -409,7 +409,7 @@
   "orders": {
     "title": "Đơn hàng",
     "active": "Đang hoạt động",
-    "past": "Quá khứ",
+    "past": "Đã qua",
     "checkPreviousOrders": "Kiểm tra đơn hàng trước",
     "previousOrders": "Đơn hàng trước",
     "loadingOrders": "Đang tải đơn hàng...",
