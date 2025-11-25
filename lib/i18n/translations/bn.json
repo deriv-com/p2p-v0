@@ -318,7 +318,7 @@
     "transactionId": "লেনদেন ID",
     "transactionType": "লেনদেন টাইপ",
     "from": "থেকে",
-    "to": "পর্যন্ত",
+    "to": "প্রতি",
     "date": "তারিখ",
     "time": "সময়",
     "success": "সফল",
