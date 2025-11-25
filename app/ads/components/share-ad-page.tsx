@@ -183,7 +183,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           title: "",
           files: [file],
         })
-        toast({ description: t("myAds.sharedSuccessfully") })
+        toast({ description: t("shareAdPage.sharedSuccessfully") })
         return
       }
 
@@ -211,7 +211,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
           </Button>
         </div>
         <div className="flex-1 overflow-y-auto pb-32 md:pb-0">
-          <h2 className="text-[24px] font-bold px-4 md:px-0">{t("myAds.shareAdTitle")}</h2>
+          <h2 className="text-[24px] font-bold px-4 md:px-0">{t("shareAdPage.shareAdTitle")}</h2>
           <div className="flex items-center flex-col py-6 space-y-6 px-4 md:px-0">
             <div
               ref={cardRef}
@@ -228,17 +228,17 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
 
               <div className="space-y-1 mb-4">
                 <div className="grid grid-cols-[85px_auto]">
-                  <span className="text-sm">{t("myAds.idNumber")}</span>
+                  <span className="text-sm">{t("shareAdPage.idNumber")}</span>
                   <span className="font-bold text-sm">{ad.id}</span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
-                  <span className="text-sm">{t("myAds.limits")}</span>
+                  <span className="text-sm">{t("shareAdPage.limits")}</span>
                   <span className="font-bold text-sm">
                     {ad.limits.min} - {ad.limits.max} {ad.limits.currency}
                   </span>
                 </div>
                 <div className="grid grid-cols-[85px_auto]">
-                  <span className="text-sm">{t("myAds.rate")}</span>
+                  <span className="text-sm">{t("shareAdPage.rate")}</span>
                   <span className="font-bold text-sm">
                     {ad.exchange_rate_type === "float"
                       ? `${ad.exchange_rate > 0 ? "+" : ""}${ad.exchange_rate}%`
@@ -252,7 +252,7 @@ export default function ShareAdPage({ ad, onClose }: ShareAdPageProps) {
                   <div className="bg-white rounded-lg p-2 flex flex-col items-center w-fit mx-auto">
                     <img src={qrCodeUrl || "/placeholder.svg"} alt="QR Code" width={110} height={110} />
                   </div>
-                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">{t("myAds.qrCodeDescription")}</p>
+                  <p className="text-grayscale-text-muted text-xs mt-3 text-center">{t("shareAdPage.qrCodeDescription")}</p>
                 </>
               )}
             </div>
