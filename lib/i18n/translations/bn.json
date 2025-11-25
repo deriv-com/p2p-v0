@@ -290,7 +290,7 @@
     "saveChanges": "পরিবর্তন সংরক্ষণ করুন",
     "loading": "লোড হচ্ছে...",
     "validationSymbolsOnly": "শুধুমাত্র অক্ষর, সংখ্যা, স্পেস, এবং চিহ্ন -+.,'#@():; অনুমোদিত",
-    "fieldRequired": "{field} প্রয়োজন",
+    "fieldRequired": "{field} প্রয়োজনীয়",
     "enterField": "{field} লিখুন",
     "tryAgain": "আবার চেষ্টা করুন"
   },
