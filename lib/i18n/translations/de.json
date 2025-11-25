@@ -149,7 +149,7 @@
   },
   "chat": {
     "conversationClosed": "Diese Unterhaltung ist geschlossen.",
-    "typeMessage": "Nachricht eingeben...",
+    "typeMessage": "Geben Sie eine Nachricht ein...",
     "send": "Senden",
     "online": "Online",
     "offline": "Offline",
