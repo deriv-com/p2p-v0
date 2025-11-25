@@ -302,7 +302,7 @@
     "transfer": "Übertragen",
     "amount": "Betrag",
     "loadingAssets": "Vermögenswerte werden geladen...",
-    "noAssetsTitle": "Noch keine Assets",
+    "noAssetsTitle": "Noch keine Vermögenswerte",
     "noAssetsDescription": "Tätigen Sie Ihre erste Einzahlung und beginnen Sie noch heute Ihre Trading-Reise",
     "transactions": "Transaktionen",
     "all": "Alle",
@@ -585,6 +585,6 @@
     "awaitingPayment": "Zahlung ausstehend",
     "waitingSellersConfirmation": "Warten auf Bestätigung des Verkäufers",
     "confirmPayment": "Zahlung bestätigen",
-    "underDispute": "Im Streitfall"
+    "underDispute": "In Streitfall"
   }
 }
