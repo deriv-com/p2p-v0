@@ -23,6 +23,7 @@
     "yes": "Ja",
     "no": "Nein",
     "ok": "OK",
+    "learnMore": "Mehr erfahren",
     "verifiedBadge": {
       "title": "Vollständig verifiziertes Konto",
       "descriptionSelf": "Sie haben alle erforderlichen Verifizierungsschritte abgeschlossen, einschließlich E-Mail, Telefonnummer, Identität (KYC) und Adressverifizierung.",
@@ -169,8 +170,8 @@
     "errorPromotionalContent": "Werbeinhalte und Anzeigen sind nicht erlaubt.",
     "errorOffPlatformCommunication": "Bitte führen Sie die Unterhaltung auf dieser Plattform. Wir können bei Anfragen zur Kommunikation anderswo nicht helfen.",
     "errorHumanAttention": "Bedrohliche oder belästigende Sprache wird nicht toleriert. Bitte kommunizieren Sie respektvoll.",
-    "errorHarassment": "Bitte geben Sie sich nicht als Deriv-Mitarbeiter aus und stellen Sie Ihre Identität nicht falsch dar.",
-    "errorFakeIdentity": "Teilen Sie niemals Passwörter, OTPs oder Anmeldedaten. Deriv-Mitarbeiter werden niemals im Chat danach fragen.",
+    "errorFakeIdentity": "Bitte geben Sie sich nicht als Deriv-Mitarbeiter aus und stellen Sie Ihre Identität nicht falsch dar.",
+    "errorFakeIdentityDescription": "Teilen Sie niemals Passwörter, OTPs oder Anmeldedaten. Deriv-Mitarbeiter werden niemals im Chat danach fragen.",
     "errorSensitiveDataRequests": "Ihre Nachricht erfordert eine zusätzliche Überprüfung. Bitte warten Sie, während wir Sie mit einem Spezialisten verbinden.",
     "errorMiscellaneous": "Ihre Nachricht entspricht nicht unseren Community-Richtlinien. Bitte versuchen Sie es erneut.",
     "errorMultipleViolations": "Sie verstößt gegen unsere Chat-Richtlinien."
