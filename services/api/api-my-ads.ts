@@ -517,6 +517,8 @@ export async function createAd(
         }
       }
 
+      console.log(errorCode)
+
       const error = new Error(errorMessage)
       //if (errorCode) {
         error.name = errorCode
