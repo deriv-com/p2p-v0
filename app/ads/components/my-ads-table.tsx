@@ -262,7 +262,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             adType.toLowerCase() === "buy" ? "text-buy" : "text-sell",
                           )}
                         >
-                          {adType}
+                          {adType.toLowerCase() === "buy" ? t("common.buy"): t("common.sell")}
                         </span>
                         <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
                           {" "}
@@ -337,7 +337,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-[160px] p-1">
+                        <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
                           <AdActionsMenu
                             ad={ad}
                             onEdit={handleEdit}

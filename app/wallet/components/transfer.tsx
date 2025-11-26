@@ -697,16 +697,16 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency
 
     if (numAmount < effectiveMinAmount && effectiveMinAmount > 0) {
-      return `Minimum transfer is ${formatAmountByCurrency(effectiveMinAmount, effectiveCurrency || "")} ${effectiveCurrency}`
+      return t("wallet.minimumTransfer", { amount: formatAmountByCurrency(effectiveMinAmount), currency: effectiveCurrency || ""})
     }
 
     const minAmount = getMinimumAmount()
     if (numAmount < minAmount) {
-      return `Minimum transfer amount is ${formatAmountWithDecimals(minAmount)} ${selectedCurrency || "USD"}.`
+      return t("wallet.minimumTransferAmount", { amount: formatAmountWithDecimals(minAmount), currency: selectedCurrency || "USD"})
     }
 
     if (numAmount > sourceBalance) {
-      return `Amount cannot exceed available balance ${formatAmountWithDecimals(sourceBalance.toString())} ${selectedCurrency || "USD"}.`
+      return t("wallet.exceedsBalance", { amount: formatAmountWithDecimals(sourceBalance.toString()), currency: selectedCurrency || "USD"})
     }
 
     return ""
@@ -1114,7 +1114,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
               <Button
                 onClick={handleConfirmTransfer}
                 disabled={isSubmitting}
-                className="w-full h-12 min-w-24 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
+                className="w-full h-12 min-h-12 max-h-12 px-7 flex justify-center items-center gap-2"
               >
                 {isSubmitting ? (
                   <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
@@ -1703,7 +1703,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   !destinationWalletData ||
                   !isAmountValid(transferAmount)
                 }
-                className="flex h-12 w-24 min-h-12 max-h-12 px-7 justify-center items-center gap-2"
+                className="flex h-12 min-h-12 max-h-12 px-7 justify-center items-center gap-2"
               >
                 {t("wallet.transfer")}
               </Button>

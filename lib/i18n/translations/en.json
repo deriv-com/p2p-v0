@@ -22,7 +22,13 @@
     "all": "All",
     "yes": "Yes",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Learn More",
+    "verifiedBadge": {
+      "title": "Fully verified account",
+      "descriptionSelf": "You have completed all required verification steps, including email, phone number, identity (KYC), and address verification.",
+      "descriptionOther": "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."
+    }
   },
   "navigation": {
     "market": "Market",
@@ -69,6 +75,7 @@
     "exchangeRate": "Exchange rate",
     "orderLimit": "Order limit",
     "paymentTime": "Payment time",
+    "paymentTimeTooltip": "Complete your payment within {minutes} minutes after placing the order.",
     "buyer": "Buyer",
     "seller": "Seller",
     "buyersPaymentMethods": "Buyer's payment method(s)",
@@ -111,7 +118,7 @@
     "bank_name": "Bank Name",
     "account_number": "Account Number",
     "account_holder": "Account Holder",
-    "branch_code": "Branch Code",
+    "branch": "Branch Code",
     "iban": "IBAN",
     "swift_code": "SWIFT Code",
     "bic": "BIC",
@@ -138,7 +145,9 @@
     "exchangeRateHighLow": "Exchange rate (high-low)",
     "userRatingHighLow": "User rating (high-low)",
     "applyFilters": "Apply filters",
-    "filter": "Filter"
+    "filter": "Filter",
+    "currencyUnavailable": "{currency} is unavailable",
+    "selectAnotherCurrency": "Select another currency"
   },
   "chat": {
     "conversationClosed": "This conversation is closed.",
@@ -318,6 +327,8 @@
     "processing": "Processing",
     "pending": "Pending",
     "failed": "Failed",
+    "walletName": "{currency} Wallet",
+    "external": "External",
     "chooseCurrency": "Choose currency",
     "chooseCurrencyDescription": "Choose which currency you would like to {action}.",
     "depositWith": "Deposit with",
@@ -396,7 +407,22 @@
     "deleteAdError": "There was an error when deleting the advert. Please try again.",
     "deleteAdOpenOrders": "The advert has ongoing orders.",
     "unableToUpdateAd": "Unable to update advert",
-    "updateAdError": "There was an error when updating the advert. Please try again."
+    "updateAdError": "There was an error when updating the advert. Please try again.",
+    "shareAdTitle": "Share ad",
+    "shareMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad {url}. Thanks!",
+    "shareTelegramMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad. Thanks!",
+    "qrCodeDescription": "Scan this code to order via Deriv P2P",
+    "idNumber": "ID number",
+    "limits": "Limits",
+    "failedToGenerateQR": "Failed to generate QR code",
+    "adLinkCopied": "Ad link copied",
+    "failedToCopyLink": "Failed to copy link",
+    "imageSavedSuccessfully": "Image saved successfully",
+    "failedToSaveImage": "Failed to save image",
+    "sharedSuccessfully": "Shared successfully",
+    "copyLink": "Copy link",
+    "saveImage": "Save image",
+    "shareImage": "Share image"
   },
   "orders": {
     "title": "Orders",
@@ -553,5 +579,23 @@
     "waitingSellersConfirmation": "Waiting seller's confirmation",
     "confirmPayment": "Confirm payment",
     "underDispute": "Under dispute"
+  },
+  "shareAdPage": {
+    "shareAdTitle": "Share ad",
+    "shareMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad {url}. Thanks!",
+    "shareTelegramMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad. Thanks!",
+    "qrCodeDescription": "Scan this code to order via Deriv P2P",
+    "idNumber": "ID number",
+    "limits": "Limits",
+    "rate": "Rate",
+    "failedToGenerateQR": "Failed to generate QR code",
+    "adLinkCopied": "Ad link copied",
+    "failedToCopyLink": "Failed to copy link",
+    "imageSavedSuccessfully": "Image saved successfully",
+    "failedToSaveImage": "Failed to save image",
+    "sharedSuccessfully": "Shared successfully",
+    "copyLink": "Copy link",
+    "saveImage": "Save image",
+    "shareImage": "Share image"
   }
 }

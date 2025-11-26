@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -16,7 +16,6 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
@@ -60,7 +59,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const router = useRouter()
   const { id } = useParams() as { id: string }
   const searchParams = useSearchParams()
-  const adIdParam = searchParams.get('adId')
+  const adIdParam = searchParams.get("adId")
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
@@ -125,7 +124,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   useEffect(() => {
-    if(id) {
+    if (id) {
       fetchAdvertiserData()
     } else {
       router.push("/")
@@ -140,7 +139,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
-      const ad = adverts.find(a => a.id == adIdParam)
+      const ad = adverts.find((a) => a.id == adIdParam)
       if (ad) {
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
       } else {
@@ -322,23 +321,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                   <div className="flex-1">
                     <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
-                      <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
-                      {profile?.trade_band === "bronze" && (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <>
-                                <p className="font-bold text-white mb-2">Bronze tier</p>
-                                <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
-                              </>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      )}
+                      <VerifiedBadge />
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">

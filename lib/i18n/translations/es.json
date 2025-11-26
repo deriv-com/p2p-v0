@@ -118,7 +118,7 @@
     "bank_name": "Nombre del Banco",
     "account_number": "Número de Cuenta",
     "account_holder": "Titular de la Cuenta",
-    "branch_code": "Código de Sucursal",
+    "branch": "Código de Sucursal",
     "iban": "IBAN",
     "swift_code": "Código SWIFT",
     "bic": "BIC",
@@ -145,7 +145,9 @@
     "exchangeRateHighLow": "Tasa de cambio (alto-bajo)",
     "userRatingHighLow": "Calificación de usuario (alto-bajo)",
     "applyFilters": "Aplicar filtros",
-    "filter": "Filtrar"
+    "filter": "Filtrar",
+    "currencyUnavailable": "{currency} no disponible",
+    "selectAnotherCurrency": "Por favor, selecciona otra moneda."
   },
   "chat": {
     "conversationClosed": "Esta conversación está cerrada.",

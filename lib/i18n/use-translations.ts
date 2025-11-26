@@ -7,6 +7,10 @@ import es from "./translations/es.json"
 import it from "./translations/it.json"
 import pt from "./translations/pt.json"
 import fr from "./translations/fr.json"
+import ru from "./translations/ru.json"
+import vi from "./translations/vi.json"
+import de from "./translations/de.json" 
+import bn from "./translations/bn.json"
 import type { Locale } from "./config"
 
 const translations = {
@@ -15,6 +19,10 @@ const translations = {
   it,
   pt,
   fr,
+  ru,
+  vi,
+  de,
+  bn,
 }
 
 type TranslationKey = string
@@ -32,13 +40,12 @@ export function useTranslations() {
         if (value && typeof value === "object" && k in value) {
           value = value[k]
         } else {
-
           value = translations.en
           for (const fallbackKey of keys) {
             if (value && typeof value === "object" && fallbackKey in value) {
               value = value[fallbackKey]
             } else {
-              return key 
+              return key
             }
           }
           break

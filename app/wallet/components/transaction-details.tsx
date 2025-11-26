@@ -1,6 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import Image from "next/image"
 
 interface Transaction {
@@ -33,6 +34,7 @@ interface TransactionDetailsProps {
 
 export default function TransactionDetails({ transaction, onClose }: TransactionDetailsProps) {
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
 
   const formatDate = (timestamp: string) => {
     const date = new Date(timestamp)
@@ -66,11 +68,11 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
   const getTransactionType = (transaction: Transaction) => {
     const walletTransactionType = transaction.metadata.wallet_transaction_type
     if (walletTransactionType === "transfer_cashier_to_wallet") {
-      return "Deposit"
+      return t("wallet.deposit")
     } else if (walletTransactionType === "transfer_cashier_from_wallet") {
-      return "Withdraw"
+      return t("wallet.withdraw")
     } else if (walletTransactionType === "transfer_between_wallets") {
-      return "Transfer"
+      return t("wallet.transfer")
     }
     return formatTransactionType(walletTransactionType)
   }
@@ -80,9 +82,9 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     const transactionCurrency = transaction.metadata.transaction_currency
 
     if (sourceWalletType === "main") {
-      return `${transactionCurrency} Wallet`
+      return t("wallet.walletName", { currency: transactionCurrency })
     } else if (sourceWalletType === "system") {
-      return transaction.metadata.payout_method || "External"
+      return transaction.metadata.payout_method || t("wallet.external")
     } else if (sourceWalletType === "p2p") {
       return `P2P ${transactionCurrency}`
     }
@@ -94,9 +96,9 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     const transactionCurrency = transaction.metadata.transaction_currency
 
     if (destinationWalletType === "main") {
-      return `${transactionCurrency} Wallet`
+      return t("wallet.walletName", { currency: transactionCurrency })
     } else if (destinationWalletType === "system") {
-      return transaction.metadata.payout_method || "External"
+      return transaction.metadata.payout_method || t("wallet.external")
     } else if (destinationWalletType === "p2p") {
       return `P2P ${transactionCurrency}`
     }
@@ -108,25 +110,25 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     const amount = formatAmount(transaction.metadata.transaction_net_amount, transaction.metadata.transaction_currency)
 
     switch (type) {
-      case "Deposit":
+      case t("wallet.deposit"):
         return {
           icon: "/icons/add-green.png",
           iconBg: "bg-success-light",
           amount: amount,
           amountColor: "text-success-text",
-          subtitle: "Deposit",
+          subtitle: t("wallet.deposit"),
           subtitleColor: "text-grayscale-text-muted",
         }
-      case "Withdraw":
+      case t("wallet.withdraw"):
         return {
           icon: "/icons/withdraw-red.png",
           iconBg: "bg-error-light",
           amount: amount,
           amountColor: "text-error-text",
-          subtitle: "Withdraw",
+          subtitle: t("wallet.withdraw"),
           subtitleColor: "text-grayscale-text-muted",
         }
-      case "Transfer":
+      case t("wallet.transfer"):
         return {
           icon: "/icons/transfer-bold.png",
           iconBg: "bg-slate-1200/[0.08]",
@@ -151,11 +153,10 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
     switch (status.toLowerCase()) {
       case "complete":
       case "completed":
-        return { text: "Success", color: "text-success-text" }
+        return { text: t("wallet.success"), color: "text-success-text" }
       case "pending":
-        return { text: "Processing", color: "text-pending-text-secondary" }
       case "processing":
-        return { text: "Processing", color: "text-pending-text-secondary" }
+        return { text: t("wallet.processing"), color: "text-pending-text-secondary" }
       default:
         return { text: status, color: "text-slate-1200" }
     }
@@ -175,7 +176,7 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
         className={`bg-slate-75 pt-16 pb-6 flex flex-col items-center relative ${isMobile ? "" : "mt-6 mx-auto w-[592px] rounded-2xl"}`}
       >
         <Button variant="ghost" size="sm" onClick={onClose} className="absolute top-4 right-6 px-0 z-10">
-          <Image src="/icons/close-circle-secondary.png" alt="Close" width={32} height={32} />
+          <Image src="/icons/close-circle-secondary.png" alt={t("common.close")} width={32} height={32} />
         </Button>
 
         <div className={`${isMobile ? "w-full" : "max-w-[592px]"} flex flex-col items-center`}>
@@ -190,17 +191,17 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
       <div className={`${isMobile ? "" : "max-w-[592px] mx-auto"} pb-20 pt-6`}>
         <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">Transaction status</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionStatus")}</span>
             <span className={`text-base font-normal ${statusDisplay.color}`}>{statusDisplay.text}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">Transaction ID</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionId")}</span>
             <span className="text-base font-normal text-slate-1200">{transaction.transaction_id}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">Transaction type</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.transactionType")}</span>
             <span className="text-base font-normal text-slate-1200">{transactionType}</span>
           </div>
         </div>
@@ -211,17 +212,17 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
         <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">From</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.from")}</span>
             <span className="text-base font-normal text-slate-1200">{getFromWalletName(transaction)}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">To</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.to")}</span>
             <span className="text-base font-normal text-slate-1200">{getToWalletName(transaction)}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">Amount</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.amount")}</span>
             <span className="text-base font-normal text-slate-1200">{display.amount}</span>
           </div>
         </div>
@@ -232,12 +233,12 @@ export default function TransactionDetails({ transaction, onClose }: Transaction
 
         <div className="px-6 space-y-2">
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">Date</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.date")}</span>
             <span className="text-base font-normal text-slate-1200">{formatDate(transaction.timestamp)}</span>
           </div>
 
           <div className="flex justify-between items-center">
-            <span className="text-base font-normal text-grayscale-text-muted">Time</span>
+            <span className="text-base font-normal text-grayscale-text-muted">{t("wallet.time")}</span>
             <span className="text-base font-normal text-slate-1200">{formatTime(transaction.timestamp)}</span>
           </div>
         </div>
