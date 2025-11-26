@@ -253,24 +253,24 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                          <Skeleton className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"/>
+                          <Skeleton className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"/>
                         </div>
                       ))}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                          <Skeleton className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"/>
+                          <Skeleton className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"/>
                         </div>
                       ))}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                          <Skeleton className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"/>
+                          <Skeleton className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"/>
                         </div>
                       ))}
                     </div>
