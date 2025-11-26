@@ -270,7 +270,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
                           <Skeleton className="bg-grayscale-500 h-4 w-3/4 mb-2 rounded"/>
-                          <Skeleton className="bg-grayscale-500h-8 w-1/2 rounded"/>
+                          <Skeleton className="bg-grayscale-500 h-8 w-1/2 rounded"/>
                         </div>
                       ))}
                     </div>
