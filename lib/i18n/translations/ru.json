@@ -119,7 +119,7 @@
     "bank_name": "Название банка",
     "account_number": "Номер счета",
     "account_holder": "Владелец счета",
-    "branch_code": "Код отделения",
+    "branch": "Код отделения",
     "iban": "IBAN",
     "swift_code": "SWIFT код",
     "bic": "BIC",
