@@ -360,7 +360,7 @@
     "notFound": "Die angeforderte Ressource wurde nicht gefunden.",
     "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten",
     "invalidExchangeRateMessage": "Der von Ihnen angegebene Wechselkurs ist ungültig.",
-    "invalidOrderAmountMessage": "Die Bestellbetragsgrenzen sind ungültig.",
+    "invalidOrderAmountMessage": "Die Bestellbetragsgrenzen sind ungültig."
   },
   "validation": {
     "required": "Dieses Feld ist erforderlich",
