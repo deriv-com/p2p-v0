@@ -118,7 +118,7 @@
     "bank_name": "ব্যাংকের নাম",
     "account_number": "অ্যাকাউন্ট নম্বর",
     "account_holder": "অ্যাকাউন্ট ধারক",
-    "branch_code": "শাখা কোড",
+    "branch": "শাখা কোড",
     "iban": "IBAN",
     "swift_code": "SWIFT কোড",
     "bic": "BIC",
