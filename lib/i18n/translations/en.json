@@ -521,7 +521,12 @@
     "amountExceedsBalanceMessage": "The total amount exceeds your available balance. Please enter a smaller amount.",
     "selectPayment": "Select payment",
     "selected": "Selected ({count})",
-    "noPaymentMethodsFound": "No payment methods found"
+    "noPaymentMethodsFound": "No payment methods found",
+    "unknownErrorMessage": "An unknown error occurred",
+    "invalidExchangeRateMessage": "The exchange rate you provided is invalid.",
+    "invalidOrderAmountMessage": "The order amount limits are invalid.",
+    "genericErrorCodeMessage": "Error: {code}. Please try again or contact support.",
+    "genericProcessingErrorMessage": "There was an error processing your request. Please try again."
   },
   "advertiser": {
     "goBack": "Go Back",

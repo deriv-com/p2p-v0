@@ -613,5 +613,12 @@
     "copyLink": "Скопировать ссылку",
     "saveImage": "Сохранить изображение",
     "shareImage": "Поделиться изображением"
+  },
+  "newErrors": {
+    "unknownErrorMessage": "Произошла неизвестная ошибка",
+    "invalidExchangeRateMessage": "Указанный вами курс обмена недействителен.",
+    "invalidOrderAmountMessage": "Лимиты суммы заказа недействительны.",
+    "genericErrorCodeMessage": "Ошибка: {code}. Повторите попытку или обратитесь в службу поддержки.",
+    "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку."
   }
 }

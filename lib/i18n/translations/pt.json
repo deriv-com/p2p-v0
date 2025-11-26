@@ -392,7 +392,12 @@
     "generic": "Algo deu errado. Por favor, tente novamente.",
     "networkError": "Erro de rede. Por favor, verifique sua conexão.",
     "unauthorized": "Você não está autorizado a realizar esta ação.",
-    "notFound": "O recurso solicitado não foi encontrado."
+    "notFound": "O recurso solicitado não foi encontrado.",
+    "unknownErrorMessage": "Ocorreu um erro desconhecido",
+    "invalidExchangeRateMessage": "A taxa de câmbio fornecida é inválida.",
+    "invalidOrderAmountMessage": "Os limites de valor do pedido são inválidos.",
+    "genericErrorCodeMessage": "Erro: {code}. Tente novamente ou entre em contato com o suporte.",
+    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente."
   },
   "validation": {
     "required": "Este campo é obrigatório",
