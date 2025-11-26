@@ -361,9 +361,7 @@
     "notFound": "Không tìm thấy tài nguyên được yêu cầu.",
     "unknownErrorMessage": "Đã xảy ra lỗi không xác định",
     "invalidExchangeRateMessage": "Tỷ giá hối đoái bạn cung cấp không hợp lệ.",
-    "invalidOrderAmountMessage": "Giới hạn số tiền đơn hàng không hợp lệ.",
-    "genericErrorCodeMessage": "Lỗi: {code}. Vui lòng thử lại hoặc liên hệ hỗ trợ.",
-    "genericProcessingErrorMessage": "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại."
+    "invalidOrderAmountMessage": "Giới hạn số tiền đơn hàng không hợp lệ."
   },
   "validation": {
     "required": "Trường này là bắt buộc",
