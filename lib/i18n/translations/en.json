@@ -118,7 +118,7 @@
     "bank_name": "Bank Name",
     "account_number": "Account Number",
     "account_holder": "Account Holder",
-    "branch_code": "Branch Code",
+    "branch": "Branch Code",
     "iban": "IBAN",
     "swift_code": "SWIFT Code",
     "bic": "BIC",
