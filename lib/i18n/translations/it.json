@@ -507,7 +507,9 @@
     "amountExceedsBalanceMessage": "L'importo totale supera il tuo saldo disponibile. Inserisci un importo inferiore.",
     "selectPayment": "Seleziona pagamento",
     "selected": "Selezionati ({count})",
-    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato"
+    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato",
+    "genericErrorCodeMessage": "Errore: {code}. Riprova o contatta l'assistenza.",
+    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova."
   },
   "advertiser": {
     "goBack": "Torna Indietro",
