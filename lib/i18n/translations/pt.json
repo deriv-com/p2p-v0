@@ -544,7 +544,9 @@
     "amountExceedsBalanceMessage": "O valor total excede seu saldo disponível. Por favor, insira um valor menor.",
     "selectPayment": "Selecionar pagamento",
     "selected": "Selecionados ({count})",
-    "noPaymentMethodsFound": "Nenhum método de pagamento encontrado"
+    "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
+    "genericErrorCodeMessage": "Erro: {code}. Tente novamente ou entre em contato com o suporte.",
+    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente."
   },
   "kyc": {
     "title": "Verificação de identidade",
