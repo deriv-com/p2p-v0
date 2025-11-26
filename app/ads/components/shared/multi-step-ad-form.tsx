@@ -317,7 +317,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
         }
 
-        const result = await AdsAPI.createAd(payload)
+        const result = await AdsAPI.createAd(payload, t)
 
         if (result.errors && result.errors.length > 0) {
           const errorMessage = formatErrorMessage(result.errors)
