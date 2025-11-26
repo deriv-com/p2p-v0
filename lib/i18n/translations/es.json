@@ -438,9 +438,7 @@
     "notFound": "No se encontró el recurso solicitado.",
     "unknownErrorMessage": "Ocurrió un error desconocido",
     "invalidExchangeRateMessage": "El tipo de cambio que proporcionó no es válido.",
-    "invalidOrderAmountMessage": "Los límites de cantidad del pedido no son válidos.",
-    "genericErrorCodeMessage": "Error: {code}. Inténtelo de nuevo o contacte con soporte.",
-    "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo."
+    "invalidOrderAmountMessage": "Los límites de cantidad del pedido no son válidos."
   },
   "validation": {
     "required": "Este campo es obligatorio",
