@@ -119,7 +119,7 @@
     "bank_name": "Tên ngân hàng",
     "account_number": "Số tài khoản",
     "account_holder": "Chủ tài khoản",
-    "branch_code": "Mã chi nhánh",
+    "branch": "Mã chi nhánh",
     "iban": "IBAN",
     "swift_code": "Mã SWIFT",
     "bic": "BIC",
