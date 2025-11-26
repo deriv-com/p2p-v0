@@ -504,7 +504,7 @@ export async function createAd(
               errorMessage = "The total amount exceeds your available balance. Please enter a smaller amount."
               break
             default:
-              errorMessage = `Error: ${errorCode}. Please try again or contact support.`
+              errorMessage = t("adForm.genericErrorCodeMessage", { code: errorCode })
           }
         } else if (responseData.errors[0].message) {
           errorMessage = responseData.errors[0].message
