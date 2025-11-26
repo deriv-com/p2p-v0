@@ -697,7 +697,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
       selectedAmountCurrency === "source" ? sourceWalletData?.currency : destinationWalletData?.currency
 
     if (numAmount < effectiveMinAmount && effectiveMinAmount > 0) {
-      return `Minimum transfer is ${formatAmountByCurrency(effectiveMinAmount, effectiveCurrency || "")} ${effectiveCurrency}`
+      return t("wallet.minimumTransfer", { amount: formatAmountByCurrency(effectiveMinAmount), currency: effectiveCurrency || ""})
     }
 
     const minAmount = getMinimumAmount()
