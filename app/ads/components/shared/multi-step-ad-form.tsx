@@ -613,7 +613,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           {isMobile ? (
             <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
-                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting} className="w-full">
                   {isSubmitting ? (
                     <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                   ) : (
@@ -627,7 +627,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           )}
 
           <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
+            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
               {isSubmitting ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
