@@ -358,9 +358,7 @@
     "notFound": "La risorsa richiesta non è stata trovata.",
     "unknownErrorMessage": "Si è verificato un errore sconosciuto",
     "invalidExchangeRateMessage": "Il tasso di cambio fornito non è valido.",
-    "invalidOrderAmountMessage": "I limiti dell'importo dell'ordine non sono validi.",
-    "genericErrorCodeMessage": "Errore: {code}. Riprova o contatta l'assistenza.",
-    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova."
+    "invalidOrderAmountMessage": "I limiti dell'importo dell'ordine non sono validi."
   },
   "validation": {
     "required": "Questo campo è obbligatorio",
