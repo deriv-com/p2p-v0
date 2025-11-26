@@ -419,7 +419,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             actionButtonText: t("adForm.updateAd"),
           }
         } else {
-          errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.code })
+          errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.name })
         }
       }
 
