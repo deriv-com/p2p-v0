@@ -706,7 +706,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
     }
 
     if (numAmount > sourceBalance) {
-      return `Amount cannot exceed available balance ${formatAmountWithDecimals(sourceBalance.toString())} ${selectedCurrency || "USD"}.`
+      return t("wallet.exceedsBalance", { amount: formatAmountWithDecimals(sourceBalance.toString()), currency: selectedCurrency || "USD"})
     }
 
     return ""
