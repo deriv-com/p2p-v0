@@ -249,6 +249,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const formatErrorMessage = (errors: any[]): string => {
+  console.log(errors)
     if (!errors || errors.length === 0) {
       return t("adForm.unknownErrorMessage")
     }
