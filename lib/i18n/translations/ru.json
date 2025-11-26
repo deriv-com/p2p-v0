@@ -146,7 +146,9 @@
     "exchangeRateHighLow": "Обменный курс (высокий-низкий)",
     "userRatingHighLow": "Рейтинг пользователя (высокий-низкий)",
     "applyFilters": "Применить фильтры",
-    "filter": "Фильтр"
+    "filter": "Фильтр",
+    "currencyUnavailable": "{currency} недоступна",
+    "selectAnotherCurrency": "Выберите другую валюту"
   },
   "chat": {
     "conversationClosed": "Этот разговор закрыт.",

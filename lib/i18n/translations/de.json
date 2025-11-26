@@ -145,7 +145,9 @@
     "exchangeRateHighLow": "Wechselkurs (hoch-niedrig)",
     "userRatingHighLow": "Nutzerbewertung (hoch-niedrig)",
     "applyFilters": "Filter anwenden",
-    "filter": "Filter"
+    "filter": "Filter",
+    "currencyUnavailable": "{currency} ist nicht verfügbar",
+    "selectAnotherCurrency": "Wählen Sie eine andere Währung"
   },
   "chat": {
     "conversationClosed": "Diese Unterhaltung ist geschlossen.",

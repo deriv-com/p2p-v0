@@ -146,7 +146,9 @@
     "exchangeRateHighLow": "Tỷ giá (cao-thấp)",
     "userRatingHighLow": "Đánh giá người dùng (cao-thấp)",
     "applyFilters": "Áp dụng bộ lọc",
-    "filter": "Lọc"
+    "filter": "Lọc",
+    "currencyUnavailable": "{currency} không khả dụng",
+    "selectAnotherCurrency": "Chọn một loại tiền tệ khác"
   },
   "chat": {
     "conversationClosed": "Cuộc trò chuyện này đã đóng.",
