@@ -337,7 +337,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-min flex flex-col p-1">
+                        <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
                           <AdActionsMenu
                             ad={ad}
                             onEdit={handleEdit}
