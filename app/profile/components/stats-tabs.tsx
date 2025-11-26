@@ -249,7 +249,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             <TabsContent value="stats" className="mt-4">
               {isLoading ? (
                 <div className="space-y-4">
-                  <div className="bg-[#F5F5F5] rounded-lg p-4">
+                  <div className="rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
