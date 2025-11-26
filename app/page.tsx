@@ -23,7 +23,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { getTotalBalance } from "@/services/api/api-auth"
 import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
@@ -31,6 +30,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getTotalBalance } from "@/services/api/api-auth" // Fix import to use correct api-auth file instead of non-existent api-user
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -65,6 +65,7 @@ export default function BuySellPage() {
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+  const [isMarketFilterOpen, setIsMarketFilterOpen] = useState(false)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -465,13 +466,18 @@ export default function BuySellPage() {
                   initialFilters={filterOptions}
                   initialSortBy={sortBy}
                   hasActiveFilters={hasActiveFilters}
+                  onOpenChange={setIsMarketFilterOpen}
                   trigger={
                     <Button
                       variant="outline"
                       size="sm"
                       className={cn(
                         "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
-                        hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
+                        hasActiveFilters
+                          ? "bg-black hover:bg-black"
+                          : isMarketFilterOpen
+                            ? "bg-black/[0.16] hover:bg-black/[0.16]"
+                            : "bg-transparent hover:bg-transparent",
                       )}
                     >
                       {hasActiveFilters ? (

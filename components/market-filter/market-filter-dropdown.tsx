@@ -20,6 +20,7 @@ interface MarketFilterDropdownProps {
   initialSortBy: string
   trigger: React.ReactElement
   hasActiveFilters?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 export default function MarketFilterDropdown({
@@ -29,6 +30,7 @@ export default function MarketFilterDropdown({
   initialSortBy,
   trigger,
   hasActiveFilters = false,
+  onOpenChange: onOpenChangeProp,
 }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
@@ -44,16 +46,22 @@ export default function MarketFilterDropdown({
     setSortBy("exchange_rate")
     onApply({ fromFollowing: false }, "exchange_rate")
     setIsOpen(false)
+    onOpenChangeProp?.(false)
   }
 
   const handleApply = () => {
     onApply(filters, sortBy)
     setIsOpen(false)
+    onOpenChangeProp?.(false)
   }
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsOpen(open)
-  }, [])
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setIsOpen(open)
+      onOpenChangeProp?.(open)
+    },
+    [onOpenChangeProp],
+  )
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
     const newFilters = {
