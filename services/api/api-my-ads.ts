@@ -445,7 +445,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
 }
 
 export async function createAd(
-  payload: CreateAdPayload,
+  payload: CreateAdPayload, t
 ): Promise<{ success: boolean; data: CreateAdResponse; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
