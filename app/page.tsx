@@ -472,7 +472,7 @@ export default function BuySellPage() {
                       variant="outline"
                       size="sm"
                       className={cn(
-                        "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
+                        "rounded-md border border-black/[0.08] font-normal px-3  focus:border-black min-w-fit rounded-3xl",
                         hasActiveFilters
                           ? "bg-black hover:bg-black"
                           : isMarketFilterOpen
