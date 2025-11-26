@@ -702,7 +702,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
 
     const minAmount = getMinimumAmount()
     if (numAmount < minAmount) {
-      return t("Minimum transfer amount is ", { amount: formatAmountWithDecimals(minAmount), currency: selectedCurrency || "USD"})
+      return t("wallet.minimumTransferAmount", { amount: formatAmountWithDecimals(minAmount), currency: selectedCurrency || "USD"})
     }
 
     if (numAmount > sourceBalance) {
