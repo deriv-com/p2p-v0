@@ -445,7 +445,7 @@ export async function deleteAd(id: string): Promise<{ success: boolean; errors?:
 }
 
 export async function createAd(
-  payload: CreateAdPayload, t
+  payload: CreateAdPayload,
 ): Promise<{ success: boolean; data: CreateAdResponse; errors?: any[] }> {
   try {
     const url = `${API.baseUrl}${API.endpoints.ads}`
@@ -504,7 +504,7 @@ export async function createAd(
               errorMessage = "The total amount exceeds your available balance. Please enter a smaller amount."
               break
             default:
-              errorMessage = t("adForm.genericErrorCodeMessage", { code: errorCode })
+              errorMessage = `Error: ${errorCode}. Please try again or contact support.`
           }
         } else if (responseData.errors[0].message) {
           errorMessage = responseData.errors[0].message
