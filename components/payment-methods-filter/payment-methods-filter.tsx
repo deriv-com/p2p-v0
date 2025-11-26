@@ -99,9 +99,7 @@ export default function PaymentMethodsFilter({
     }
 
     if (isAllSelected) {
-      const allMethodIds = paymentMethods.map((m) => m.method)
-      const newMethods = allMethodIds.filter((id) => id !== methodId)
-      setTempSelectedMethods(newMethods)
+      setTempSelectedMethods([methodId])
       return
     }
     const isSelected = tempSelectedMethods.includes(methodId)
