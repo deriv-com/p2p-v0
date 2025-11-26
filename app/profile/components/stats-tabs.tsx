@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface StatsTabsProps {
   stats?: any
