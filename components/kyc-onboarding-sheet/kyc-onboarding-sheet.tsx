@@ -39,6 +39,13 @@ function KycOnboardingSheet() {
       completed: isPoaCompleted,
       link: `https://${getHomeUrl()}/dashboard/kyc/address?is_from_p2p=true`,
     },
+    {
+      id: "phone",
+      title: t("kyc.phoneNumber"),
+      icon: "/icons/pnv.png",
+      completed: isPhoneCompleted,
+      link: `https://${getHomeUrl()}/dashboard/details?is_from_p2p=true`,
+    },
   ]
 
   const handleStepClick = (link) => {
