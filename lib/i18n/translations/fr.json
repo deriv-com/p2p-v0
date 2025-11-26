@@ -358,7 +358,7 @@
     "notFound": "La ressource demandée n'a pas été trouvée.",
     "unknownErrorMessage": "Une erreur inconnue s'est produite",
     "invalidExchangeRateMessage": "Le taux de change que vous avez fourni n'est pas valide.",
-    "invalidOrderAmountMessage": "Les limites de montant de commande ne sont pas valides.",
+    "invalidOrderAmountMessage": "Les limites de montant de commande ne sont pas valides."
   },
   "validation": {
     "required": "Ce champ est obligatoire",
