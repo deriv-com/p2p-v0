@@ -526,7 +526,9 @@
     "fixed": "Фиксированный",
     "floating": "Плавающий",
     "counterparty": "Контрагент",
-    "allCounterparties": "Все контрагенты"
+    "allCounterparties": "Все контрагенты",
+    "genericErrorCodeMessage": "Ошибка: {code}. Повторите попытку или обратитесь в службу поддержки.",
+    "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку."
   },
   "advertiser": {
     "profile": "Профиль рекламодателя",
