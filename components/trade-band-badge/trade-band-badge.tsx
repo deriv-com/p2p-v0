@@ -1,0 +1,94 @@
+"use client"
+
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import { useTranslations } from "@/lib/i18n/use-translations"
+
+interface TradeBandBadgeProps {
+  tradeBand: string
+  showLearnMore?: boolean
+  size?: number
+  className?: string
+}
+
+const TRADE_BAND_CONFIG = {
+  bronze: {
+    icon: "/icons/bronze.png",
+    alt: "Bronze",
+    titleKey: "profile.bronzeTier",
+    descriptionKey: "profile.bronzeTierDescription",
+  },
+  silver: {
+    icon: "/icons/silver.jpg",
+    alt: "Silver",
+    titleKey: "profile.silverTier",
+    descriptionKey: "profile.silverTierDescription",
+  },
+  gold: {
+    icon: "/icons/gold.jpg",
+    alt: "Gold",
+    titleKey: "profile.goldTier",
+    descriptionKey: "profile.goldTierDescription",
+  },
+  platinum: {
+    icon: "/icons/platinum.jpg",
+    alt: "Platinum",
+    titleKey: "profile.platinumTier",
+    descriptionKey: "profile.platinumTierDescription",
+  },
+} as const
+
+export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, className = "" }: TradeBandBadgeProps) {
+  const { t } = useTranslations()
+
+  const config = TRADE_BAND_CONFIG[tradeBand as keyof typeof TRADE_BAND_CONFIG]
+
+  if (!config) {
+    return null
+  }
+
+  const redirectToHelpCentre = () => {
+    window.open("https://deriv.com/help-centre/", "_blank", "noopener,noreferrer")
+  }
+
+  return (
+    <TooltipProvider>
+      <Tooltip disableHoverableContent={false}>
+        <TooltipTrigger asChild>
+          <Image
+            src={config.icon || "/placeholder.svg"}
+            alt={config.alt}
+            width={size}
+            height={size}
+            className={`cursor-pointer ${className}`}
+          />
+        </TooltipTrigger>
+        <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+          <>
+            <p className="font-bold text-white mb-2">{t(config.titleKey)}</p>
+            <p className={`text-white ${showLearnMore ? "mb-4" : ""}`}>{t(config.descriptionKey)}</p>
+            {showLearnMore && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={redirectToHelpCentre}
+                className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+              >
+                {t("common.learnMore")}
+                <Image
+                  src="/icons/chevron-right-white.png"
+                  alt="Arrow"
+                  width={8}
+                  height={18}
+                  className="ml-2 cursor-pointer"
+                />
+              </Button>
+            )}
+          </>
+          <TooltipArrow className="fill-black" />
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  )
+}
