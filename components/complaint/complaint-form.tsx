@@ -53,7 +53,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
                 htmlFor={option.id}
                 className="font-normal text-base leading-relaxed cursor-pointer flex-1 text-grayscale-100"
               >
-                {t(option.value)}
+                {t(`complaint.${option.value}`)}
               </Label>
             </div>
           ))}
