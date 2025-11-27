@@ -50,7 +50,7 @@ export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, cl
 
   const redirectToHelpCentre = () => {
     const url = locale != "en"
-      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limitsp`
+      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
       : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
     window.open(url, "_blank", "noopener,noreferrer")
   }
