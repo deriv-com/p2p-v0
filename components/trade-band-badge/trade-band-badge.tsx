@@ -40,7 +40,7 @@ const TRADE_BAND_CONFIG = {
 } as const
 
 export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, className = "" }: TradeBandBadgeProps) {
-  const { t, locale } = useTranslations()
+  const { t } = useTranslations()
 
   const config = TRADE_BAND_CONFIG[tradeBand as keyof typeof TRADE_BAND_CONFIG]
 
