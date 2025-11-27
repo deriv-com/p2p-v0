@@ -659,7 +659,7 @@ export default function OrderDetailsPage() {
         onClose={() => setShowRatingSidebar(false)}
         orderId={orderId}
         onSubmit={handleSubmitReview}
-          recommendLabel={t("orders.wouldYouRecommend", { role: counterpartyLabel.toLowerCase() })}
+        recommendLabel={t("orders.wouldYouRecommend", { role: counterpartyLabel.toLowerCase() })}
       />
       {isMobile && (
         <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />
