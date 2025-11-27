@@ -31,11 +31,11 @@ const TRADE_BAND_CONFIG = {
     titleKey: "profile.goldTier",
     descriptionKey: "profile.goldTierDescription",
   },
-  platinum: {
-    icon: "/icons/platinum.jpg",
-    alt: "Platinum",
-    titleKey: "profile.platinumTier",
-    descriptionKey: "profile.platinumTierDescription",
+  diamond: {
+    icon: "/icons/diamond.jpg",
+    alt: "Diamond",
+    titleKey: "profile.diamondTier",
+    descriptionKey: "profile.diamondTierDescription",
   },
 } as const
 
