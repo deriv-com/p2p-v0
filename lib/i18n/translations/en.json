@@ -133,6 +133,18 @@
     "totalBalance": "Total balance",
     "loading": "Loading balance..."
   },
+  "complaint": {
+    "title": "Submit a complaint",
+    "buyer_not_paid": "I didn't receive any payment.",
+    "buyer_underpaid": "I received less than the agreed amount.",
+    "buyer_overpaid": "I received more than the agreed amount.",
+    "buyer_third_party_payment_method": "I've received payment from 3rd party.",
+    "seller_not_released": "I've made the payment, but the seller hasn't released the funds.",
+    "buyer_underpaid_buyer": "I couldn't complete the full payment.",
+    "buyer_overpaid_buyer": "I paid more than the agreed amount.",
+    "helpText": "If your issue isn't listed, contact us via live chat for help.",
+    "submit": "Submit"
+  },
   "filter": {
     "fromFollowing": "From following",
     "sortBy": "Sort by",

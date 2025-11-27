@@ -143,6 +143,18 @@
     "totalBalance": "Solde total",
     "loading": "Chargement du solde..."
   },
+  "complaint": {
+    "title": "Soumettre une plainte",
+    "buyer_not_paid": "Je n'ai reçu aucun paiement.",
+    "buyer_underpaid": "J'ai reçu moins que le montant convenu.",
+    "buyer_overpaid": "J'ai reçu plus que le montant convenu.",
+    "buyer_third_party_payment_method": "J'ai reçu un paiement d'un tiers.",
+    "seller_not_released": "J'ai effectué le paiement, mais le vendeur n'a pas libéré les fonds.",
+    "buyer_underpaid_buyer": "Je n'ai pas pu effectuer le paiement complet.",
+    "buyer_overpaid_buyer": "J'ai payé plus que le montant convenu.",
+    "helpText": "Si votre problème n'est pas répertorié, contactez-nous par chat en direct pour obtenir de l'aide.",
+    "submit": "Soumettre"
+  },
   "filter": {
     "fromFollowing": "De suivis",
     "sortBy": "Trier par",

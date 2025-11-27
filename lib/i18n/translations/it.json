@@ -590,5 +590,17 @@
     "waitingSellersConfirmation": "In attesa della conferma del venditore",
     "confirmPayment": "Conferma il pagamento",
     "underDispute": "In disputa"
+  },
+  "complaint": {
+    "title": "Invia un reclamo",
+    "buyer_not_paid": "Non ho ricevuto alcun pagamento.",
+    "buyer_underpaid": "Ho ricevuto meno dell'importo concordato.",
+    "buyer_overpaid": "Ho ricevuto più dell'importo concordato.",
+    "buyer_third_party_payment_method": "Ho ricevuto il pagamento da una terza parte.",
+    "seller_not_released": "Ho effettuato il pagamento, ma il venditore non ha rilasciato i fondi.",
+    "buyer_underpaid_buyer": "Non sono riuscito a completare il pagamento completo.",
+    "buyer_overpaid_buyer": "Ho pagato più dell'importo concordato.",
+    "helpText": "Se il tuo problema non è elencato, contattaci tramite chat dal vivo per assistenza.",
+    "submit": "Invia"
   }
 }

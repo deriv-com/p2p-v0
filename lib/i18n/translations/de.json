@@ -628,5 +628,17 @@
     "copyLink": "Link kopieren",
     "saveImage": "Bild speichern",
     "shareImage": "Bild teilen"
+  },
+  "complaint": {
+    "title": "Beschwerde einreichen",
+    "buyer_not_paid": "Ich habe keine Zahlung erhalten.",
+    "buyer_underpaid": "Ich habe weniger als den vereinbarten Betrag erhalten.",
+    "buyer_overpaid": "Ich habe mehr als den vereinbarten Betrag erhalten.",
+    "buyer_third_party_payment_method": "Ich habe eine Zahlung von Dritten erhalten.",
+    "seller_not_released": "Ich habe die Zahlung geleistet, aber der Verkäufer hat die Mittel nicht freigegeben.",
+    "buyer_underpaid_buyer": "Ich konnte die vollständige Zahlung nicht abschließen.",
+    "buyer_overpaid_buyer": "Ich habe mehr als den vereinbarten Betrag bezahlt.",
+    "helpText": "Wenn Ihr Problem nicht aufgeführt ist, kontaktieren Sie uns über den Live-Chat für Hilfe.",
+    "submit": "Einreichen"
   }
 }

@@ -143,6 +143,18 @@
     "totalBalance": "Saldo total",
     "loading": "Cargando saldo..."
   },
+  "complaint": {
+    "title": "Enviar una queja",
+    "buyer_not_paid": "No recibí ningún pago.",
+    "buyer_underpaid": "Recibí menos de la cantidad acordada.",
+    "buyer_overpaid": "Recibí más de la cantidad acordada.",
+    "buyer_third_party_payment_method": "He recibido el pago de un tercero.",
+    "seller_not_released": "He realizado el pago, pero el vendedor no ha liberado los fondos.",
+    "buyer_underpaid_buyer": "No pude completar el pago completo.",
+    "buyer_overpaid_buyer": "Pagué más de la cantidad acordada.",
+    "helpText": "Si tu problema no está en la lista, contáctanos a través del chat en vivo para obtener ayuda.",
+    "submit": "Enviar"
+  },
   "filter": {
     "fromFollowing": "De seguidos",
     "sortBy": "Ordenar por",
