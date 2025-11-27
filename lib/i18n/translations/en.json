@@ -632,5 +632,15 @@
     "copyLink": "Copy link",
     "saveImage": "Save image",
     "shareImage": "Share image"
+  },
+  "ratingSidebar": {
+    "title": "Rate and recommend",
+    "ratingLabel": "How would you rate this transaction?",
+    "recommendLabel": "Would you recommend this user?",
+    "yes": "Yes",
+    "no": "No",
+    "submit": "Submit",
+    "ratingRequiredTitle": "Rating required",
+    "ratingRequiredDescription": "Please select a star rating before submitting."
   }
 }

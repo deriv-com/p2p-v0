@@ -657,5 +657,15 @@
     "copyLink": "Sao chép liên kết",
     "saveImage": "Lưu hình ảnh",
     "shareImage": "Chia sẻ hình ảnh"
+  },
+  "ratingSidebar": {
+    "title": "Đánh giá và giới thiệu",
+    "ratingLabel": "Bạn đánh giá giao dịch này như thế nào?",
+    "recommendLabel": "Bạn có giới thiệu người dùng này không?",
+    "yes": "Có",
+    "no": "Không",
+    "submit": "Gửi",
+    "ratingRequiredTitle": "Yêu cầu đánh giá",
+    "ratingRequiredDescription": "Vui lòng chọn đánh giá sao trước khi gửi."
   }
 }

@@ -602,5 +602,15 @@
     "waitingSellersConfirmation": "En attente de la confirmation du vendeur",
     "confirmPayment": "Confirmer le paiement",
     "underDispute": "En litige"
+  },
+  "ratingSidebar": {
+    "title": "Évaluer et recommander",
+    "ratingLabel": "Comment évalueriez-vous cette transaction ?",
+    "recommendLabel": "Recommanderiez-vous cet utilisateur ?",
+    "yes": "Oui",
+    "no": "Non",
+    "submit": "Soumettre",
+    "ratingRequiredTitle": "Évaluation requise",
+    "ratingRequiredDescription": "Veuillez sélectionner une note en étoiles avant de soumettre."
   }
 }
