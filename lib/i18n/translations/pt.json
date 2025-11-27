@@ -558,7 +558,8 @@
     "selected": "Selecionados ({count})",
     "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
     "genericErrorCodeMessage": "Tente novamente ou entre em contato com o suporte.",
-    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente."
+    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+    "unknownErrorMessage": "Ocorreu um erro desconhecido"
   },
   "kyc": {
     "title": "Verificação de identidade",
