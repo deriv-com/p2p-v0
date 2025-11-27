@@ -217,7 +217,17 @@
     "loadingOrderDetails": "অর্ডার বিবরণ লোড হচ্ছে...",
     "failedToLoadOrderDetails": "অর্ডার বিবরণ লোড করতে ব্যর্থ। অনুগ্রহ করে আবার চেষ্টা করুন।",
     "tryAgain": "আবার চেষ্টা করুন",
-    "orderNotFound": "অর্ডার পাওয়া যায়নি"
+    "orderNotFound": "অর্ডার পাওয়া যায়নি",
+    "confirmPaymentReceived": "পেমেন্ট পাওয়ার বিষয়টি নিশ্চিত করুন",
+    "otpSentTo": "{email}-এ পাঠানো ৬ ডিজিটের কোড লিখুন। অন্য পক্ষের কাছে পেমেন্ট রিলিজ করার আগে এই ধাপটি আপনার পরিচয় যাচাই করে।",
+    "incorrectCode": "ভুল কোড। আপনার {attempts}টি প্রচেষ্টা বাকি আছে।",
+    "maxAttemptsReached": "সর্বোচ্চ প্রচেষ্টা পৌঁছেছে।",
+    "tooManyAttempts": "অনেক ব্যর্থ প্রচেষ্টা",
+    "tooManyAttemptsDescription": "মনে হচ্ছে আপনি এই অর্ডার নিশ্চিত করতে অনেক বেশি প্রচেষ্টা করেছেন। অনুগ্রহ করে ১০ মিনিট পরে আবার চেষ্টা করুন।",
+    "verifying": "যাচাই করা হচ্ছে...",
+    "didntReceiveCode": "কোড পাননি?",
+    "resendCode": "কোড পুনরায় পাঠান",
+    "resendCodeTimer": "কোড পুনরায় পাঠান ({seconds}s)"
   },
   "profile": {
     "title": "প্রোফাইল",

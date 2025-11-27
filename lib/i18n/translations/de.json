@@ -451,7 +451,16 @@
     "uploadProof": "Zahlungsnachweis hochladen",
     "fileTypes": "JPEG, JPG, PNG, PDF (bis zu 5MB)",
     "fileTooLarge": "Die Datei darf maximal 5MB groß sein.",
-    "submit": "Absenden"
+    "submit": "Absenden",
+    "confirmPaymentReceived": "Zahlungseingang bestätigen",
+    "otpSentTo": "Geben Sie den 6-stelligen Code ein, der an {email} gesendet wurde. Dieser Schritt überprüft Ihre Identität, bevor die Zahlung an die andere Partei freigegeben wird.",
+    "incorrectCode": "Falscher Code. Sie haben noch {attempts} Versuch{plural}.",
+    "maxAttemptsReached": "Maximale Anzahl an Versuchen erreicht.",
+    "tooManyAttempts": "Zu viele fehlgeschlagene Versuche",
+    "tooManyAttemptsDescription": "Es scheint, dass Sie zu viele Versuche unternommen haben, diese Bestellung zu bestätigen. Bitte versuchen Sie es nach 10 Minuten erneut.",
+    "didntReceiveCode": "Haben Sie den Code nicht erhalten?",
+    "resendCode": "Code erneut senden",
+    "resendCodeTimer": "Code erneut senden ({seconds}s)"
   },
   "adForm": {
     "createAd": "Anzeige erstellen",

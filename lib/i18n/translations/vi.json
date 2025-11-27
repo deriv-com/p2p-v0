@@ -452,7 +452,17 @@
     "uploadProof": "Tải lên bằng chứng thanh toán",
     "fileTypes": "JPEG, JPG, PNG, PDF (tối đa 5MB)",
     "fileTooLarge": "Tệp phải có kích thước 5MB hoặc nhỏ hơn.",
-    "submit": "Gửi"
+    "submit": "Gửi",
+    "confirmPaymentReceived": "Xác nhận đã nhận thanh toán",
+    "otpSentTo": "Nhập mã gồm 6 chữ số được gửi đến {email}. Bước này xác minh danh tính của bạn trước khi chuyển khoản cho bên kia.",
+    "incorrectCode": "Mã không chính xác. Bạn còn {attempts} lần thử{plural}.",
+    "maxAttemptsReached": "Đã đạt số lần thử tối đa.",
+    "tooManyAttempts": "Quá nhiều lần thử thất bại",
+    "tooManyAttemptsDescription": "Có vẻ như bạn đã thực hiện quá nhiều lần thử để xác nhận đơn hàng này. Vui lòng thử lại sau 10 phút.",
+    "verifying": "Đang xác minh...",
+    "didntReceiveCode": "Không nhận được mã?",
+    "resendCode": "Gửi lại mã",
+    "resendCodeTimer": "Gửi lại mã ({seconds}s)"
   },
   "adForm": {
     "createAd": "Tạo quảng cáo",

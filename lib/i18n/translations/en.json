@@ -464,7 +464,18 @@
     "uploadProof": "Upload proof of payment",
     "fileTypes": "JPEG, JPG, PNG, PDF (up to 5MB)",
     "fileTooLarge": "File must be 5MB or smaller.",
-    "submit": "Submit"
+    "submit": "Submit",
+    "confirmPaymentReceived": "Confirm payment received",
+    "otpSentTo": "Enter the 6-digit code sent to {email}. This step verifies your identity before releasing payment to the other party.",
+    "incorrectCode": "Incorrect code. You have {attempts} attempt{plural} left.",
+    "maxAttemptsReached": "Max attempts reached.",
+    "tooManyAttempts": "Too many failed attempts",
+    "tooManyAttemptsDescription": "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
+    "gotIt": "Got it",
+    "verifying": "Verifying...",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend code",
+    "resendCodeTimer": "Resend code ({seconds}s)"
   },
   "adForm": {
     "createAd": "Create ad",
