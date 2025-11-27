@@ -236,6 +236,14 @@
     "paymentMethodAdded": "Método de pagamento adicionado.",
     "bronzeTier": "Nível Bronze",
     "bronzeTierDescription": "Nível padrão para novos usuários com limites básicos de negociação.",
+    "silverTier": "Nível Prata",
+    "silverTierDescription": "Negociador confiável com limites mais altos e atividade comprovada.",
+    "goldTier": "Nível Ouro",
+    "goldTierDescription": "Negociador experiente com histórico sólido e privilégios mais elevados.",
+    "platinumTier": "Nível Platina",
+    "platinumTierDescription": "Nível premium com limites de negociação máximos e benefícios exclusivos.",
+    "diamondTier": "Nível Diamante",
+    "diamondTierDescription": "Negociador de alto nível com limites diários máximos e excelente histórico.",
     "last30Days": "Últimos 30 dias",
     "lifetime": "Desde o início",
     "sellCompletion": "Conclusão de vendas",
@@ -392,7 +400,10 @@
     "generic": "Algo deu errado. Por favor, tente novamente.",
     "networkError": "Erro de rede. Por favor, verifique sua conexão.",
     "unauthorized": "Você não está autorizado a realizar esta ação.",
-    "notFound": "O recurso solicitado não foi encontrado."
+    "notFound": "O recurso solicitado não foi encontrado.",
+    "unknownErrorMessage": "Ocorreu um erro desconhecido",
+    "invalidExchangeRateMessage": "A taxa de câmbio fornecida é inválida.",
+    "invalidOrderAmountMessage": "Os limites de valor do pedido são inválidos."
   },
   "validation": {
     "required": "Este campo é obrigatório",
@@ -541,7 +552,9 @@
     "amountExceedsBalanceMessage": "O valor total excede seu saldo disponível. Por favor, insira um valor menor.",
     "selectPayment": "Selecionar pagamento",
     "selected": "Selecionados ({count})",
-    "noPaymentMethodsFound": "Nenhum método de pagamento encontrado"
+    "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
+    "genericErrorCodeMessage": "Tente novamente ou entre em contato com o suporte.",
+    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente."
   },
   "kyc": {
     "title": "Verificação de identidade",

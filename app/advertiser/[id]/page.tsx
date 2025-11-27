@@ -19,6 +19,7 @@ import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdvertiserProfile {
@@ -322,6 +323,14 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                       <VerifiedBadge />
+                      {profile.trade_band && (
+                        <TradeBandBadge
+                          tradeBand={profile.trade_band}
+                          showLearnMore={true}
+                          size={18}
+                          className="mr-1"
+                        />
+                      )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">

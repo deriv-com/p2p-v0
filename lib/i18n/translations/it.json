@@ -236,6 +236,12 @@
     "paymentMethodAdded": "Metodo di pagamento aggiunto.",
     "bronzeTier": "Livello bronzo",
     "bronzeTierDescription": "Livello predefinito per i nuovi utenti con limiti di trading di base.",
+    "silverTier": "Livello argento",
+    "silverTierDescription": "Trader fidato con limiti più alti e attività comprovata.",
+    "goldTier": "Livello oro",
+    "goldTierDescription": "Trader esperto con una storia solida e privilegi più elevati.",
+    "diamondTier": "Livello diamante",
+    "diamondTierDescription": "Trader di alto livello con limiti giornalieri massimi e record eccellente.",
     "last30Days": "Ultimi 30 giorni",
     "lifetime": "Dall'inizio",
     "sellCompletion": "Vendite completate",
@@ -355,7 +361,10 @@
     "generic": "Qualcosa è andato storto. Riprova.",
     "networkError": "Errore di rete. Controlla la tua connessione.",
     "unauthorized": "Non sei autorizzato a eseguire questa azione.",
-    "notFound": "La risorsa richiesta non è stata trovata."
+    "notFound": "La risorsa richiesta non è stata trovata.",
+    "unknownErrorMessage": "Si è verificato un errore sconosciuto",
+    "invalidExchangeRateMessage": "Il tasso di cambio fornito non è valido.",
+    "invalidOrderAmountMessage": "I limiti dell'importo dell'ordine non sono validi."
   },
   "validation": {
     "required": "Questo campo è obbligatorio",
@@ -504,7 +513,9 @@
     "amountExceedsBalanceMessage": "L'importo totale supera il tuo saldo disponibile. Inserisci un importo inferiore.",
     "selectPayment": "Seleziona pagamento",
     "selected": "Selezionati ({count})",
-    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato"
+    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato",
+    "genericErrorCodeMessage": "Riprova o contatta l'assistenza.",
+    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova."
   },
   "advertiser": {
     "goBack": "Torna Indietro",

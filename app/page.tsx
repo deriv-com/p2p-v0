@@ -1,6 +1,7 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
+import { TradeBandBadge } from "@/components/trade-band-badge"
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -577,42 +578,13 @@ export default function BuySellPage() {
                                   {ad.user?.nickname}
                                 </button>
                                 <VerifiedBadge />
-                                {ad.user.trade_band === "bronze" && (
-                                  <TooltipProvider>
-                                    <Tooltip disableHoverableContent={false}>
-                                      <TooltipTrigger asChild>
-                                        <Image
-                                          src="/icons/bronze.png"
-                                          alt="Bronze"
-                                          width={18}
-                                          height={18}
-                                          className="mr-1 cursor-pointer"
-                                        />
-                                      </TooltipTrigger>
-                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-                                        <>
-                                          <p className="font-bold text-white mb-2">{t("profile.bronzeTier")}</p>
-                                          <p className="text-white mb-4">{t("profile.bronzeTierDescription")}</p>
-                                          <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={redirectToHelpCentre}
-                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
-                                          >
-                                            {t("common.learnMore")}
-                                            <Image
-                                              src="/icons/chevron-right-white.png"
-                                              alt="Arrow"
-                                              width={8}
-                                              height={18}
-                                              className="ml-2 cursor-pointer"
-                                            />
-                                          </Button>
-                                        </>
-                                        <TooltipArrow className="fill-black" />
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
+                                {ad.user.trade_band && (
+                                  <TradeBandBadge
+                                    tradeBand={ad.user.trade_band}
+                                    showLearnMore={true}
+                                    size={18}
+                                    className="mr-1"
+                                  />
                                 )}
                                 {ad.user?.is_favourite && (
                                   <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">

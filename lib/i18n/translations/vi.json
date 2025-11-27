@@ -237,6 +237,12 @@
     "paymentMethodAdded": "Đã thêm phương thức thanh toán.",
     "bronzeTier": "Hạng Đồng",
     "bronzeTierDescription": "Hạng mặc định cho người dùng mới với giới hạn giao dịch cơ bản.",
+    "silverTier": "Hạng Bạc",
+    "silverTierDescription": "Nhà giao dịch đáng tin cậy với giới hạn cao hơn và hoạt động đã được chứng minh.",
+    "goldTier": "Hạng Vàng",
+    "goldTierDescription": "Nhà giao dịch có kinh nghiệm với lịch sử vững chắc và đặc quyền cao hơn.",
+    "diamondTier": "Hạng Kim Cương",
+    "diamondTierDescription": "Nhà giao dịch hàng đầu với giới hạn hàng ngày tối đa và hồ sơ xuất sắc.",
     "last30Days": "30 ngày qua",
     "lifetime": "Toàn bộ thời gian",
     "sellCompletion": "Tỷ lệ hoàn thành bán",
@@ -358,7 +364,10 @@
     "generic": "Đã xảy ra lỗi. Vui lòng thử lại.",
     "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối của bạn.",
     "unauthorized": "Bạn không được phép thực hiện hành động này.",
-    "notFound": "Không tìm thấy tài nguyên được yêu cầu."
+    "notFound": "Không tìm thấy tài nguyên được yêu cầu.",
+    "unknownErrorMessage": "Đã xảy ra lỗi không xác định",
+    "invalidExchangeRateMessage": "Tỷ giá hối đoái bạn cung cấp không hợp lệ.",
+    "invalidOrderAmountMessage": "Giới hạn số tiền đơn hàng không hợp lệ."
   },
   "validation": {
     "required": "Trường này là bắt buộc",
@@ -526,7 +535,9 @@
     "fixed": "Cố định",
     "floating": "Thả nổi",
     "counterparty": "Đối tác",
-    "allCounterparties": "Tất cả đối tác"
+    "allCounterparties": "Tất cả đối tác",
+    "genericErrorCodeMessage": "Vui lòng thử lại hoặc liên hệ hỗ trợ.",
+    "genericProcessingErrorMessage": "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại."
   },
   "audience": {
     "title": "Đối tượng",

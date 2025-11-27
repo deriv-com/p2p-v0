@@ -249,8 +249,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const formatErrorMessage = (errors: any[]): string => {
+
     if (!errors || errors.length === 0) {
-      return "An unknown error occurred"
+      return t("adForm.unknownErrorMessage")
     }
 
     if (errors[0].code === "AdvertExchangeRateDuplicate") {
@@ -272,8 +273,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
     if (errors[0].code) {
       const errorCodeMap: Record<string, string> = {
         AdvertLimitReached: t("adForm.adLimitReachedMessage"),
-        InvalidExchangeRate: "The exchange rate you provided is invalid.",
-        InvalidOrderAmount: "The order amount limits are invalid.",
+        InvalidExchangeRate: t("adForm.invalidExchangeRateMessage"),
+        InvalidOrderAmount: t("adForm.invalidOrderAmountMessage"),
         InsufficientBalance: t("adForm.insufficientBalanceMessage"),
         AdvertTotalAmountExceeded: t("adForm.amountExceedsBalanceMessage"),
       }
@@ -284,10 +285,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         throw error
       }
 
-      return `Error: ${errors[0].code}. Please try again or contact support.`
+      return t("adForm.genericErrorCodeMessage", { code: errors[0].code })
     }
 
-    return "There was an error processing your request. Please try again."
+    return t("adForm.genericProcessingErrorMessage")
   }
 
   const handleFinalSubmit = async () => {
@@ -418,7 +419,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             actionButtonText: t("adForm.updateAd"),
           }
         } else {
-          errorInfo.message = error.message || errorInfo.message
+          errorInfo.message = t("adForm.genericErrorCodeMessage", { code: error.name })
         }
       }
 
@@ -613,7 +614,12 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           {isMobile ? (
             <div className="fixed bottom-0 left-0 w-full bg-white mt-4 py-4 md:mb-0 border-t border-gray-200">
               <div className="mx-6">
-                <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled} className="w-full">
+                <Button
+                  type="button"
+                  onClick={handleButtonClick}
+                  disabled={isButtonDisabled || isSubmitting}
+                  className="w-full"
+                >
                   {isSubmitting ? (
                     <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
                   ) : (
@@ -627,7 +633,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           )}
 
           <div className="hidden md:flex justify-end mt-8 px-6">
-            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled}>
+            <Button type="button" onClick={handleButtonClick} disabled={isButtonDisabled || isSubmitting}>
               {isSubmitting ? (
                 <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
               ) : (
