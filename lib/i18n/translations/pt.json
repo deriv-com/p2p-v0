@@ -414,7 +414,6 @@
     "networkError": "Erro de rede. Por favor, verifique sua conexão.",
     "unauthorized": "Você não está autorizado a realizar esta ação.",
     "notFound": "O recurso solicitado não foi encontrado.",
-    "unknownErrorMessage": "Ocorreu um erro desconhecido",
     "invalidExchangeRateMessage": "A taxa de câmbio fornecida é inválida.",
     "invalidOrderAmountMessage": "Os limites de valor do pedido são inválidos."
   },
