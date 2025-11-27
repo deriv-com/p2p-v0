@@ -577,7 +577,7 @@ export default function BuySellPage() {
                                 >
                                   {ad.user?.nickname}
                                 </button>
-                                {ad.user.verified && <VerifiedBadge isCurrentUser={false} />}
+                                <VerifiedBadge />
                                 {ad.user.trade_band && (
                                   <TradeBandBadge
                                     tradeBand={ad.user.trade_band}
