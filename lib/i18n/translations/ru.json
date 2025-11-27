@@ -327,7 +327,7 @@
     "transactionId": "ID транзакции",
     "transactionType": "Тип транзакции",
     "from": "От",
-    "to": "এ",
+    "to": "К",
     "date": "Дата",
     "time": "Время",
     "success": "Успешно",
