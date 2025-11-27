@@ -570,8 +570,13 @@ export default function BuySellPage() {
                               />
                             </div>
                             <div>
-                              <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium text-white">{ad.user.nickname}</span>
+                              <div className="flex items-center gap-1">
+                                <button
+                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                  className="hover:underline cursor-pointer"
+                                >
+                                  {ad.user?.nickname}
+                                </button>
                                 {ad.user.verified && <VerifiedBadge isCurrentUser={false} />}
                                 {ad.user.trade_band && (
                                   <TradeBandBadge
