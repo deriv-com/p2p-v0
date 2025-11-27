@@ -58,7 +58,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
             </div>
           ))}
         </RadioGroup>
-        <div className="text-base">{t("helpText")}</div>
+        <div className="text-base">{t("complaint.helpText")}</div>
       </div>
 
       <div className="p-4 md:px-0">
@@ -70,7 +70,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           {isSubmitting ? (
             <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
           ) : (
-            t("submit")
+            t("complaint.submit")
           )}
         </Button>
       </div>
@@ -84,7 +84,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
       <Drawer open={isOpen} onOpenChange={handleClose}>
         <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
           <DrawerHeader className="pb-4">
-            <DrawerTitle className="text-xl font-bold text-center">{t("title")}</DrawerTitle>
+            <DrawerTitle className="text-xl font-bold text-center">{t("complaint.title")}</DrawerTitle>
           </DrawerHeader>
           <ComplaintContent />
         </DrawerContent>
@@ -96,7 +96,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
-          <DialogTitle className="tracking-normal font-bold text-2xl">{t("title")}</DialogTitle>
+          <DialogTitle className="tracking-normal font-bold text-2xl">{t("complaint.title")}</DialogTitle>
         </DialogHeader>
         <ComplaintContent />
       </DialogContent>
