@@ -617,9 +617,7 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                             )}
-                            {ad.user.completion_rate_all_30day !== null &&
-                              ad.user.completion_rate_all_30day !== undefined &&
-                              ad.user.completion_rate_all_30day > 0 && (
+                            {ad.user.completion_rate_all_30day > 0 && (
                                 <div className="flex flex-row items-center justify-center gap-[8px]">
                                   <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                   <span>
