@@ -23,7 +23,12 @@
     "yes": "Sí",
     "no": "No",
     "ok": "OK",
-    "learnMore": "Más información"
+    "learnMore": "Más información",
+    "verifiedBadge": {
+      "title": "Cuenta completamente verificada",
+      "descriptionSelf": "Has completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección.",
+      "descriptionOther": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes comerciar con confianza sabiendo que esta cuenta está verificada."
+    }
   },
   "navigation": {
     "market": "Mercado",
@@ -70,6 +75,7 @@
     "exchangeRate": "Tasa de cambio",
     "orderLimit": "Límite de orden",
     "paymentTime": "Tiempo de pago",
+    "paymentTimeTooltip": "Completa tu pago dentro de {minutes} minutos después de realizar la orden.",
     "buyer": "Comprador",
     "seller": "Vendedor",
     "buyersPaymentMethods": "Método(s) de pago del comprador",
@@ -253,8 +259,6 @@
     "silverTierDescription": "Comerciante de confianza con límites más altos y actividad comprobada.",
     "goldTier": "Nivel oro",
     "goldTierDescription": "Comerciante experimentado con historial sólido y mayores privilegios.",
-    "platinumTier": "Nivel platino",
-    "platinumTierDescription": "Nivel premium con límites de negociación máximos y beneficios exclusivos.",
     "diamondTier": "Nivel diamante",
     "diamondTierDescription": "Comerciante de primer nivel con límites diarios máximos y excelente récord.",
     "last30Days": "Últimos 30 días",
