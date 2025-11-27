@@ -530,7 +530,7 @@
     "floating": "Thả nổi",
     "counterparty": "Đối tác",
     "allCounterparties": "Tất cả đối tác",
-    "genericErrorCodeMessage": "Lỗi: {code}. Vui lòng thử lại hoặc liên hệ hỗ trợ.",
+    "genericErrorCodeMessage": "Vui lòng thử lại hoặc liên hệ hỗ trợ.",
     "genericProcessingErrorMessage": "Đã xảy ra lỗi khi xử lý yêu cầu của bạn. Vui lòng thử lại."
   },
   "audience": {
