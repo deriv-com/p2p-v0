@@ -458,7 +458,8 @@
     "uploadProof": "পেমেন্টের প্রমাণ আপলোড করুন",
     "fileTypes": "JPEG, JPG, PNG, PDF (৫MB পর্যন্ত)",
     "fileTooLarge": "ফাইলটি ৫MB বা ছোট হতে হবে।",
-    "submit": "জমা দিন"
+    "submit": "জমা দিন",
+    "confirmPaymentReceived": "পেমেন্ট পাওয়ার বিষয়টি নিশ্চিত করুন",
   },
   "adForm": {
     "createAd": "বিজ্ঞাপন তৈরি করুন",
