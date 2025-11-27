@@ -87,7 +87,6 @@
     "fileTypes": "JPEG, JPG, PNG, PDF (fino a 5MB)",
     "fileTooLarge": "Il file deve essere di 5MB o meno.",
     "submit": "Invia",
-    "confirmPaymentReceived": "Conferma pagamento ricevuto",
     "otpSentTo": "Inserisci il codice a 6 cifre inviato a {email}. Questo passaggio verifica la tua identità prima di rilasciare il pagamento all'altra parte.",
     "incorrectCode": "Codice errato. Hai {attempts} tentativo{plural} rimasto.",
     "maxAttemptsReached": "Numero massimo di tentativi raggiunto.",
