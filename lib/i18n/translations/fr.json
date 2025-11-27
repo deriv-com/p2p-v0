@@ -508,7 +508,7 @@
     "selectPayment": "Sélectionner le paiement",
     "selected": "Sélectionnés ({count})",
     "noPaymentMethodsFound": "Aucune méthode de paiement trouvée",
-    "genericErrorCodeMessage": "Erreur : {code}. Veuillez réessayer ou contacter le support.",
+    "genericErrorCodeMessage": "Veuillez réessayer ou contacter le support.",
     "genericProcessingErrorMessage": "Une erreur s'est produite lors du traitement de votre demande. Veuillez réessayer."
   },
   "advertiser": {
