@@ -604,5 +604,15 @@
     "waitingSellersConfirmation": "Esperando confirmación del vendedor",
     "confirmPayment": "Confirmar pago",
     "underDispute": "En disputa"
+  },
+  "ratingSidebar": {
+    "title": "Calificar y recomendar",
+    "ratingLabel": "¿Cómo calificarías esta transacción?",
+    "recommendLabel": "¿Recomendarías a este usuario?",
+    "yes": "Sí",
+    "no": "No",
+    "submit": "Enviar",
+    "ratingRequiredTitle": "Calificación requerida",
+    "ratingRequiredDescription": "Por favor, selecciona una calificación de estrellas antes de enviar."
   }
 }

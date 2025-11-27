@@ -640,5 +640,15 @@
     "buyer_overpaid_buyer": "Ich habe mehr als den vereinbarten Betrag bezahlt.",
     "helpText": "Wenn Ihr Problem nicht aufgeführt ist, kontaktieren Sie uns über den Live-Chat für Hilfe.",
     "submit": "Einreichen"
+  },
+  "ratingSidebar": {
+    "title": "Bewerten und empfehlen",
+    "ratingLabel": "Wie würden Sie diese Transaktion bewerten?",
+    "recommendLabel": "Würden Sie diesen Benutzer empfehlen?",
+    "yes": "Ja",
+    "no": "Nein",
+    "submit": "Einreichen",
+    "ratingRequiredTitle": "Bewertung erforderlich",
+    "ratingRequiredDescription": "Bitte wählen Sie eine Sternebewertung aus, bevor Sie absenden."
   }
 }

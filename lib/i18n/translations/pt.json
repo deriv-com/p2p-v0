@@ -586,5 +586,15 @@
     "waitingSellersConfirmation": "Aguardando confirmação do vendedor",
     "confirmPayment": "Confirmar pagamento",
     "underDispute": "Em disputa"
+  },
+  "ratingSidebar": {
+    "title": "Avaliar e recomendar",
+    "ratingLabel": "Como você avaliaria esta transação?",
+    "recommendLabel": "Você recomendaria este usuário?",
+    "yes": "Sim",
+    "no": "Não",
+    "submit": "Enviar",
+    "ratingRequiredTitle": "Avaliação necessária",
+    "ratingRequiredDescription": "Por favor, selecione uma avaliação em estrelas antes de enviar."
   }
 }

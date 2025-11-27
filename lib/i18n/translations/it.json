@@ -602,5 +602,15 @@
     "buyer_overpaid_buyer": "Ho pagato più dell'importo concordato.",
     "helpText": "Se il tuo problema non è elencato, contattaci tramite chat dal vivo per assistenza.",
     "submit": "Invia"
+  },
+  "ratingSidebar": {
+    "title": "Valuta e raccomanda",
+    "ratingLabel": "Come valuteresti questa transazione?",
+    "recommendLabel": "Consiglieresti questo utente?",
+    "yes": "Sì",
+    "no": "No",
+    "submit": "Invia",
+    "ratingRequiredTitle": "Valutazione richiesta",
+    "ratingRequiredDescription": "Seleziona una valutazione a stelle prima di inviare."
   }
 }
