@@ -19,6 +19,7 @@ import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdvertiserProfile {
