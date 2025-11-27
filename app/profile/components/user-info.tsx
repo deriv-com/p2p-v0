@@ -47,7 +47,7 @@ export default function UserInfo({
               <Skeleton className="h-7 w-32 bg-white/20" />
             )}
             {isFullyVerified && <VerifiedBadge isCurrentUser={true} />}
-            {tradeBand && <TradeBandBadge tradeBand={tradeBand} showLearnMore={false} size={18} />}
+            {tradeBand && <TradeBandBadge tradeBand={tradeBand} showLearnMore={true} size={18} />}
           </div>
           {joinDate && <div className="text-xs text-white opacity-[0.72]">{joinDate}</div>}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
