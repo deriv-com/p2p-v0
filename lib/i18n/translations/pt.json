@@ -86,16 +86,7 @@
     "uploadProof": "Carregar comprovante de pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (até 5MB)",
     "fileTooLarge": "O arquivo deve ter 5MB ou menos.",
-    "submit": "Enviar",
-    "otpSentTo": "Digite o código de 6 dígitos enviado para {email}. Esta etapa verifica sua identidade antes de liberar o pagamento para a outra parte.",
-    "incorrectCode": "Código incorreto. Você tem {attempts} tentativa{plural} restante{plural}.",
-    "maxAttemptsReached": "Número máximo de tentativas atingido.",
-    "tooManyAttempts": "Muitas tentativas falhadas",
-    "tooManyAttemptsDescription": "Parece que você fez muitas tentativas para confirmar este pedido. Tente novamente após 10 minutos.",
-    "verifying": "Verificando...",
-    "didntReceiveCode": "Não recebeu o código?",
-    "resendCode": "Reenviar código",
-    "resendCodeTimer": "Reenviar código ({seconds}s)"
+    "submit": "Enviar"
   },
   "paymentMethod": {
     "title": "Método de pagamento",
