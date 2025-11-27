@@ -322,6 +322,14 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                     <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
                       <VerifiedBadge />
+                      {ad.user.trade_band && (
+                        <TradeBandBadge
+                          tradeBand={ad.user.trade_band}
+                          showLearnMore={true}
+                          size={18}
+                          className="mr-1"
+                        />
+                      )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">
                       <span className="mr-[8px]">
