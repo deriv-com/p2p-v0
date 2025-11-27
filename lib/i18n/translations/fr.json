@@ -87,7 +87,6 @@
     "fileTypes": "JPEG, JPG, PNG, PDF (jusqu'à 5 Mo)",
     "fileTooLarge": "Le fichier doit faire 5 Mo ou moins.",
     "submit": "Soumettre",
-    "confirmPaymentReceived": "Confirmer la réception du paiement",
     "otpSentTo": "Saisissez le code à 6 chiffres envoyé à {email}. Cette étape vérifie votre identité avant de libérer le paiement à l'autre partie.",
     "incorrectCode": "Code incorrect. Il vous reste {attempts} tentative{plural}.",
     "maxAttemptsReached": "Nombre maximum de tentatives atteint.",
@@ -471,7 +470,8 @@
     "uploadProof": "Télécharger la preuve de paiement",
     "fileTypes": "JPEG, JPG, PNG, PDF (jusqu'à 5 Mo)",
     "fileTooLarge": "Le fichier doit faire 5 Mo ou moins.",
-    "submit": "Soumettre"
+    "submit": "Soumettre",
+    "confirmPaymentReceived": "Confirmer la réception du paiement",
   },
   "adForm": {
     "createAd": "Créer une annonce",
