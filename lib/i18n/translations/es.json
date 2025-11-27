@@ -502,6 +502,15 @@
     "fileTooLarge": "El archivo debe tener 5 MB o menos.",
     "submit": "Enviar",
     "confirmPaymentReceived": "Confirmar pago recibido",
+    "otpSentTo": "Ingrese el código de 6 dígitos enviado a {email}. Este paso verifica su identidad antes de liberar el pago a la otra parte.",
+    "incorrectCode": "Código incorrecto. Le quedan {attempts} intento{plural}.",
+    "maxAttemptsReached": "Máximo de intentos alcanzado.",
+    "tooManyAttempts": "Demasiados intentos fallidos",
+    "tooManyAttemptsDescription": "Parece que ha realizado demasiados intentos para confirmar este pedido. Vuelva a intentarlo después de 10 minutos.",
+    "verifying": "Verificando...",
+    "didntReceiveCode": "¿No recibió el código?",
+    "resendCode": "Reenviar código",
+    "resendCodeTimer": "Reenviar código ({seconds}s)"
   },
   "adForm": {
     "createAd": "Crear anuncio",
