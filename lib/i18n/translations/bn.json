@@ -566,8 +566,8 @@
     "blockUser": "{nickname} ব্লক করবেন?",
     "blockDescription": "আপনি {nickname} এর বিজ্ঞাপন দেখবেন না, এবং তারা আপনার বিজ্ঞাপনে অর্ডার দিতে পারবে না।",
     "youveBlockedUser": "আপনি এই ব্যবহারকারীকে ব্লক করেছেন",
-    "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে আবার ইন্টারঅ্যাক্ট করতে চান তবে তাদের আনব্লক করুন।",
-    "successfullyFollowed": "সফলভাবে অনুসরণ করা হয়েছে",
+    "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে পুনরায় যোগাযোগ করতে চান তাহলে তাদের আনব্লক করুন।",
+    "successfullyFollowed": "সফলভাবে ফলো করা হয়েছে",
     "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে",
     "userBlocked": "{nickname} ব্লক করা হয়েছে।",
     "userUnblocked": "{nickname} আনব্লক করা হয়েছে।"

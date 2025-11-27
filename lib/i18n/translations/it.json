@@ -23,12 +23,7 @@
     "yes": "Sì",
     "no": "No",
     "ok": "OK",
-    "learnMore": "Scopri di più",
-    "verifiedBadge": {
-      "title": "Account completamente verificato",
-      "descriptionSelf": "Hai completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo.",
-      "descriptionOther": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
-    }
+    "learnMore": "Scopri di più"
   },
   "navigation": {
     "market": "Mercato",
@@ -75,7 +70,6 @@
     "exchangeRate": "Tasso di cambio",
     "orderLimit": "Limite ordine",
     "paymentTime": "Tempo di pagamento",
-    "paymentTimeTooltip": "Completa il tuo pagamento entro {minutes} minuti dopo aver effettuato l'ordine.",
     "buyer": "Acquirente",
     "seller": "Venditore",
     "buyersPaymentMethods": "Metodo/i di pagamento dell'acquirente",
