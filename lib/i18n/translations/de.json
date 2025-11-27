@@ -134,7 +134,7 @@
     "loading": "Guthaben wird geladen..."
   },
   "filter": {
-    "fromFollowing": "Von Verfolgten",
+    "fromFollowing": "Von gefolgten Inserenten",
     "sortBy": "Sortieren nach",
     "exchangeRate": "Wechselkurs",
     "apply": "Anwenden",
@@ -151,7 +151,7 @@
   },
   "chat": {
     "conversationClosed": "Diese Unterhaltung ist geschlossen.",
-    "typeMessage": "Geben Sie eine Nachricht ein...",
+    "typeMessage": "Nachricht eingeben...",
     "send": "Senden",
     "online": "Online",
     "offline": "Offline",
