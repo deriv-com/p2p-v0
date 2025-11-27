@@ -364,7 +364,6 @@
     "networkError": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.",
     "unauthorized": "Sie sind nicht berechtigt, diese Aktion auszuführen.",
     "notFound": "Die angeforderte Ressource wurde nicht gefunden.",
-    "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten",
     "invalidExchangeRateMessage": "Der von Ihnen angegebene Wechselkurs ist ungültig.",
     "invalidOrderAmountMessage": "Die Bestellbetragsgrenzen sind ungültig."
   },
