@@ -528,7 +528,7 @@
     "maximumOrderLessThanTotal": "Höchstbestellung muss kleiner oder gleich dem Gesamtbetrag sein",
     "minimumOrderLessThanMaximum": "Mindestbestellung muss kleiner als Höchstbestellung sein",
     "selectAtLeastOnePaymentMethod": "Wählen Sie mindestens eine Zahlungsmethode aus",
-    "genericErrorCodeMessage": "Fehler: {code}. Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
+    "genericErrorCodeMessage": "Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
     "genericProcessingErrorMessage": "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   },
   "advertiser": {
