@@ -20,19 +20,19 @@ const TRADE_BAND_CONFIG = {
     descriptionKey: "profile.bronzeTierDescription",
   },
   silver: {
-    icon: "/icons/silver.jpg",
+    icon: "/icons/silver.svg",
     alt: "Silver",
     titleKey: "profile.silverTier",
     descriptionKey: "profile.silverTierDescription",
   },
   gold: {
-    icon: "/icons/gold.jpg",
+    icon: "/icons/gold.svg",
     alt: "Gold",
     titleKey: "profile.goldTier",
     descriptionKey: "profile.goldTierDescription",
   },
   diamond: {
-    icon: "/icons/diamond.jpg",
+    icon: "/icons/diamond.svg",
     alt: "Diamond",
     titleKey: "profile.diamondTier",
     descriptionKey: "profile.diamondTierDescription",
