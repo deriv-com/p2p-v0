@@ -55,7 +55,7 @@
     "paymentMethods": "Zahlungsmethoden",
     "orders": "Aufträge",
     "completion": "Abschluss",
-    "min": "min",
+    "min": "Min.",
     "orderLimits": "Bestelllimits",
     "loadingAds": "Anzeigen werden geladen...",
     "noAdsTitle": "Keine Anzeigen für diese Währung",
@@ -99,7 +99,7 @@
     "unableToAdd": "Zahlungsmethode kann nicht hinzugefügt werden",
     "addError": "Beim Hinzufügen der Zahlungsmethode ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "search": "Suchen",
-    "allPaymentMethod": "Alle Zahlungsmethoden",
+    "allPaymentMethod": "Alle Zahlungsmethode",
     "bankTransfers": "Banküberweisung",
     "eWallets": "E-Wallets",
     "paymentMethodUnavailable": "Zahlungsmethode nicht verfügbar",
@@ -134,7 +134,7 @@
     "loading": "Guthaben wird geladen..."
   },
   "filter": {
-    "fromFollowing": "Von Verfolgten",
+    "fromFollowing": "Von gefolgten Inserenten",
     "sortBy": "Sortieren nach",
     "exchangeRate": "Wechselkurs",
     "apply": "Anwenden",
@@ -151,7 +151,7 @@
   },
   "chat": {
     "conversationClosed": "Diese Unterhaltung ist geschlossen.",
-    "typeMessage": "Geben Sie eine Nachricht ein...",
+    "typeMessage": "Nachricht eingeben...",
     "send": "Senden",
     "online": "Online",
     "offline": "Offline",
@@ -451,7 +451,16 @@
     "uploadProof": "Zahlungsnachweis hochladen",
     "fileTypes": "JPEG, JPG, PNG, PDF (bis zu 5MB)",
     "fileTooLarge": "Die Datei darf maximal 5MB groß sein.",
-    "submit": "Absenden"
+    "submit": "Absenden",
+    "confirmPaymentReceived": "Zahlungseingang bestätigen",
+    "otpSentTo": "Geben Sie den 6-stelligen Code ein, der an {email} gesendet wurde. Dieser Schritt überprüft Ihre Identität, bevor die Zahlung an die andere Partei freigegeben wird.",
+    "incorrectCode": "Falscher Code. Sie haben noch {attempts} Versuch{plural}.",
+    "maxAttemptsReached": "Maximale Anzahl an Versuchen erreicht.",
+    "tooManyAttempts": "Zu viele fehlgeschlagene Versuche",
+    "tooManyAttemptsDescription": "Es scheint, dass Sie zu viele Versuche unternommen haben, diese Bestellung zu bestätigen. Bitte versuchen Sie es nach 10 Minuten erneut.",
+    "didntReceiveCode": "Haben Sie den Code nicht erhalten?",
+    "resendCode": "Code erneut senden",
+    "resendCodeTimer": "Code erneut senden ({seconds}s)"
   },
   "adForm": {
     "createAd": "Anzeige erstellen",
@@ -557,7 +566,7 @@
     "timeLimit": "Zeitlimit",
     "paymentMethods": "Zahlungsmethoden",
     "noAdsYet": "Noch keine Anzeigen",
-    "noActiveAds": "Dieser Inserent hat keine aktiven Anzeigen.",
+    "noActiveAds": "Dieser Inserent hat keine aktiven Anzeigen",
     "loadingAdvertiser": "Inserent wird geladen...",
     "failedToLoad": "Inserentenprofil konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
     "follow": "Folgen",
@@ -619,5 +628,17 @@
     "copyLink": "Link kopieren",
     "saveImage": "Bild speichern",
     "shareImage": "Bild teilen"
+  },
+  "complaint": {
+    "title": "Beschwerde einreichen",
+    "buyer_not_paid": "Ich habe keine Zahlung erhalten.",
+    "buyer_underpaid": "Ich habe weniger als den vereinbarten Betrag erhalten.",
+    "buyer_overpaid": "Ich habe mehr als den vereinbarten Betrag erhalten.",
+    "buyer_third_party_payment_method": "Ich habe eine Zahlung von Dritten erhalten.",
+    "seller_not_released": "Ich habe die Zahlung geleistet, aber der Verkäufer hat die Mittel nicht freigegeben.",
+    "buyer_underpaid_buyer": "Ich konnte die vollständige Zahlung nicht abschließen.",
+    "buyer_overpaid_buyer": "Ich habe mehr als den vereinbarten Betrag bezahlt.",
+    "helpText": "Wenn Ihr Problem nicht aufgeführt ist, kontaktieren Sie uns über den Live-Chat für Hilfe.",
+    "submit": "Einreichen"
   }
 }

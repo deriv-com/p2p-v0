@@ -83,10 +83,20 @@
     "confirmPayment": "Confirma tu pago",
     "fraudWarning": "Proporcionar documentos fraudulentos resultará en una prohibición permanente.",
     "ensurePayment": "Asegúrate de haber pagado {amount} {currency} a {name} y sube el recibo como prueba de pago.",
-    "uploadProof": "Subir comprobante de pago",
+    "uploadProof": "Cargar comprobante de pago",
     "fileTypes": "JPEG, JPG, PNG, PDF (hasta 5MB)",
-    "fileTooLarge": "El archivo debe ser de 5MB o menos.",
-    "submit": "Enviar"
+    "fileTooLarge": "El archivo debe tener 5 MB o menos.",
+    "submit": "Enviar",
+    "confirmPaymentReceived": "Confirmar pago recibido",
+    "otpSentTo": "Ingrese el código de 6 dígitos enviado a {email}. Este paso verifica su identidad antes de liberar el pago a la otra parte.",
+    "incorrectCode": "Código incorrecto. Le quedan {attempts} intento{plural}.",
+    "maxAttemptsReached": "Máximo de intentos alcanzado.",
+    "tooManyAttempts": "Demasiados intentos fallidos",
+    "tooManyAttemptsDescription": "Parece que ha realizado demasiados intentos para confirmar este pedido. Vuelva a intentarlo después de 10 minutos.",
+    "verifying": "Verificando...",
+    "didntReceiveCode": "¿No recibió el código?",
+    "resendCode": "Reenviar código",
+    "resendCodeTimer": "Reenviar código ({seconds}s)"
   },
   "paymentMethod": {
     "title": "Método de pago",
@@ -132,6 +142,18 @@
     "title": "Saldo",
     "totalBalance": "Saldo total",
     "loading": "Cargando saldo..."
+  },
+  "complaint": {
+    "title": "Enviar una queja",
+    "buyer_not_paid": "No recibí ningún pago.",
+    "buyer_underpaid": "Recibí menos de la cantidad acordada.",
+    "buyer_overpaid": "Recibí más de la cantidad acordada.",
+    "buyer_third_party_payment_method": "He recibido el pago de un tercero.",
+    "seller_not_released": "He realizado el pago, pero el vendedor no ha liberado los fondos.",
+    "buyer_underpaid_buyer": "No pude completar el pago completo.",
+    "buyer_overpaid_buyer": "Pagué más de la cantidad acordada.",
+    "helpText": "Si tu problema no está en la lista, contáctanos a través del chat en vivo para obtener ayuda.",
+    "submit": "Enviar"
   },
   "filter": {
     "fromFollowing": "De seguidos",
@@ -485,9 +507,9 @@
     "confirmPayment": "Confirma tu pago",
     "fraudWarning": "Proporcionar documentos fraudulentos resultará en una prohibición permanente.",
     "ensurePayment": "Asegúrate de haber pagado {amount} {currency} a {name} y sube el recibo como prueba de pago.",
-    "uploadProof": "Subir comprobante de pago",
+    "uploadProof": "Cargar comprobante de pago",
     "fileTypes": "JPEG, JPG, PNG, PDF (hasta 5MB)",
-    "fileTooLarge": "El archivo debe ser de 5MB o menos.",
+    "fileTooLarge": "El archivo debe tener 5 MB o menos.",
     "submit": "Enviar"
   },
   "adForm": {

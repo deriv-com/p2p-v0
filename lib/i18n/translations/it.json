@@ -86,7 +86,17 @@
     "uploadProof": "Carica prova di pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (fino a 5MB)",
     "fileTooLarge": "Il file deve essere di 5MB o meno.",
-    "submit": "Invia"
+    "submit": "Invia",
+    "confirmPaymentReceived": "Conferma pagamento ricevuto",
+    "otpSentTo": "Inserisci il codice a 6 cifre inviato a {email}. Questo passaggio verifica la tua identità prima di rilasciare il pagamento all'altra parte.",
+    "incorrectCode": "Codice errato. Hai {attempts} tentativo{plural} rimasto.",
+    "maxAttemptsReached": "Numero massimo di tentativi raggiunto.",
+    "tooManyAttempts": "Troppi tentativi falliti",
+    "tooManyAttemptsDescription": "Sembra che tu abbia effettuato troppi tentativi per confermare questo ordine. Riprova tra 10 minuti.",
+    "verifying": "Verifica in corso...",
+    "didntReceiveCode": "Non hai ricevuto il codice?",
+    "resendCode": "Invia di nuovo il codice",
+    "resendCodeTimer": "Invia di nuovo il codice ({seconds}s)"
   },
   "paymentMethod": {
     "title": "Metodo di pagamento",
@@ -580,5 +590,17 @@
     "waitingSellersConfirmation": "In attesa della conferma del venditore",
     "confirmPayment": "Conferma il pagamento",
     "underDispute": "In disputa"
+  },
+  "complaint": {
+    "title": "Invia un reclamo",
+    "buyer_not_paid": "Non ho ricevuto alcun pagamento.",
+    "buyer_underpaid": "Ho ricevuto meno dell'importo concordato.",
+    "buyer_overpaid": "Ho ricevuto più dell'importo concordato.",
+    "buyer_third_party_payment_method": "Ho ricevuto il pagamento da una terza parte.",
+    "seller_not_released": "Ho effettuato il pagamento, ma il venditore non ha rilasciato i fondi.",
+    "buyer_underpaid_buyer": "Non sono riuscito a completare il pagamento completo.",
+    "buyer_overpaid_buyer": "Ho pagato più dell'importo concordato.",
+    "helpText": "Se il tuo problema non è elencato, contattaci tramite chat dal vivo per assistenza.",
+    "submit": "Invia"
   }
 }
