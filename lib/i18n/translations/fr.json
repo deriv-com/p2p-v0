@@ -75,6 +75,7 @@
     "exchangeRate": "Taux de change",
     "orderLimit": "Limite de commande",
     "paymentTime": "Temps de paiement",
+    "paymentTimeTooltip": "Effectuez votre paiement dans les {minutes} minutes suivant la passation de la commande.",
     "buyer": "Acheteur",
     "seller": "Vendeur",
     "buyersPaymentMethods": "Méthode(s) de paiement de l'acheteur",
