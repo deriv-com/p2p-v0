@@ -365,7 +365,6 @@
     "networkError": "Lỗi mạng. Vui lòng kiểm tra kết nối của bạn.",
     "unauthorized": "Bạn không được phép thực hiện hành động này.",
     "notFound": "Không tìm thấy tài nguyên được yêu cầu.",
-    "unknownErrorMessage": "Đã xảy ra lỗi không xác định",
     "invalidExchangeRateMessage": "Tỷ giá hối đoái bạn cung cấp không hợp lệ.",
     "invalidOrderAmountMessage": "Giới hạn số tiền đơn hàng không hợp lệ."
   },
