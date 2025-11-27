@@ -40,7 +40,7 @@ const TRADE_BAND_CONFIG = {
 } as const
 
 export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, className = "" }: TradeBandBadgeProps) {
-  const { t } = useTranslations()
+  const { t, locale } = useTranslations()
 
   const config = TRADE_BAND_CONFIG[tradeBand as keyof typeof TRADE_BAND_CONFIG]
 
@@ -49,7 +49,10 @@ export function TradeBandBadge({ tradeBand, showLearnMore = false, size = 18, cl
   }
 
   const redirectToHelpCentre = () => {
-    window.open("https://deriv.com/help-centre/", "_blank", "noopener,noreferrer")
+    const url = locale != "en"
+      ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+      : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+    window.open(url, "_blank", "noopener,noreferrer")
   }
 
   return (

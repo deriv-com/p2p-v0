@@ -217,17 +217,7 @@
     "loadingOrderDetails": "অর্ডার বিবরণ লোড হচ্ছে...",
     "failedToLoadOrderDetails": "অর্ডার বিবরণ লোড করতে ব্যর্থ। অনুগ্রহ করে আবার চেষ্টা করুন।",
     "tryAgain": "আবার চেষ্টা করুন",
-    "orderNotFound": "অর্ডার পাওয়া যায়নি",
-    "confirmPaymentReceived": "পেমেন্ট পাওয়ার বিষয়টি নিশ্চিত করুন",
-    "otpSentTo": "{email}-এ পাঠানো ৬ ডিজিটের কোড লিখুন। অন্য পক্ষের কাছে পেমেন্ট রিলিজ করার আগে এই ধাপটি আপনার পরিচয় যাচাই করে।",
-    "incorrectCode": "ভুল কোড। আপনার {attempts}টি প্রচেষ্টা বাকি আছে।",
-    "maxAttemptsReached": "সর্বোচ্চ প্রচেষ্টা পৌঁছেছে।",
-    "tooManyAttempts": "অনেক ব্যর্থ প্রচেষ্টা",
-    "tooManyAttemptsDescription": "মনে হচ্ছে আপনি এই অর্ডার নিশ্চিত করতে অনেক বেশি প্রচেষ্টা করেছেন। অনুগ্রহ করে ১০ মিনিট পরে আবার চেষ্টা করুন।",
-    "verifying": "যাচাই করা হচ্ছে...",
-    "didntReceiveCode": "কোড পাননি?",
-    "resendCode": "কোড পুনরায় পাঠান",
-    "resendCodeTimer": "কোড পুনরায় পাঠান ({seconds}s)"
+    "orderNotFound": "অর্ডার পাওয়া যায়নি"
   },
   "profile": {
     "title": "প্রোফাইল",
@@ -458,7 +448,17 @@
     "uploadProof": "পেমেন্টের প্রমাণ আপলোড করুন",
     "fileTypes": "JPEG, JPG, PNG, PDF (৫MB পর্যন্ত)",
     "fileTooLarge": "ফাইলটি ৫MB বা ছোট হতে হবে।",
-    "submit": "জমা দিন"
+    "submit": "জমা দিন",
+    "confirmPaymentReceived": "পেমেন্ট পাওয়ার বিষয়টি নিশ্চিত করুন",
+    "otpSentTo": "{email}-এ পাঠানো ৬ ডিজিটের কোড লিখুন। অন্য পক্ষের কাছে পেমেন্ট রিলিজ করার আগে এই ধাপটি আপনার পরিচয় যাচাই করে।",
+    "incorrectCode": "ভুল কোড। আপনার {attempts}টি প্রচেষ্টা বাকি আছে।",
+    "maxAttemptsReached": "সর্বোচ্চ প্রচেষ্টা পৌঁছেছে।",
+    "tooManyAttempts": "অনেক ব্যর্থ প্রচেষ্টা",
+    "tooManyAttemptsDescription": "মনে হচ্ছে আপনি এই অর্ডার নিশ্চিত করতে অনেক বেশি প্রচেষ্টা করেছেন। অনুগ্রহ করে ১০ মিনিট পরে আবার চেষ্টা করুন।",
+    "verifying": "যাচাই করা হচ্ছে...",
+    "didntReceiveCode": "কোড পাননি?",
+    "resendCode": "কোড পুনরায় পাঠান",
+    "resendCodeTimer": "কোড পুনরায় পাঠান ({seconds}s)"
   },
   "adForm": {
     "createAd": "বিজ্ঞাপন তৈরি করুন",
@@ -566,8 +566,8 @@
     "blockUser": "{nickname} ব্লক করবেন?",
     "blockDescription": "আপনি {nickname} এর বিজ্ঞাপন দেখবেন না, এবং তারা আপনার বিজ্ঞাপনে অর্ডার দিতে পারবে না।",
     "youveBlockedUser": "আপনি এই ব্যবহারকারীকে ব্লক করেছেন",
-    "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে আবার ইন্টারঅ্যাক্ট করতে চান তবে তাদের আনব্লক করুন।",
-    "successfullyFollowed": "সফলভাবে অনুসরণ করা হয়েছে",
+    "unblockDescription": "আপনি যদি এই বিজ্ঞাপনদাতার সাথে পুনরায় যোগাযোগ করতে চান তাহলে তাদের আনব্লক করুন।",
+    "successfullyFollowed": "সফলভাবে ফলো করা হয়েছে",
     "successfullyUnfollowed": "সফলভাবে আনফলো করা হয়েছে",
     "userBlocked": "{nickname} ব্লক করা হয়েছে।",
     "userUnblocked": "{nickname} আনব্লক করা হয়েছে।"

@@ -544,7 +544,8 @@
     "counterparty": "Контрагент",
     "allCounterparties": "Все контрагенты",
     "genericErrorCodeMessage": "Повторите попытку или обратитесь в службу поддержки.",
-    "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку."
+    "genericProcessingErrorMessage": "При обработке вашего запроса произошла ошибка. Повторите попытку.",
+    "unknownErrorMessage": "Произошла неизвестная ошибка"
   },
   "advertiser": {
     "profile": "Профиль рекламодателя",
@@ -633,7 +634,6 @@
     "shareImage": "Поделиться изображением"
   },
   "newErrors": {
-    "unknownErrorMessage": "Произошла неизвестная ошибка",
     "invalidExchangeRateMessage": "Указанный вами курс обмена недействителен.",
     "invalidOrderAmountMessage": "Лимиты суммы заказа недействительны."
   },

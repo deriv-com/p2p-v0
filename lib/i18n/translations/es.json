@@ -22,7 +22,13 @@
     "all": "Todos",
     "yes": "Sí",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Más información",
+    "verifiedBadge": {
+      "title": "Cuenta totalmente verificada",
+      "descriptionSelf": "Has completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección.",
+      "descriptionOther": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
+    }
   },
   "navigation": {
     "market": "Mercado",
@@ -69,6 +75,7 @@
     "exchangeRate": "Tasa de cambio",
     "orderLimit": "Límite de orden",
     "paymentTime": "Tiempo de pago",
+    "paymentTimeTooltip": "Completa tu pago dentro de {minutes} minutos después de realizar la orden.",
     "buyer": "Comprador",
     "seller": "Vendedor",
     "buyersPaymentMethods": "Método(s) de pago del comprador",
@@ -86,17 +93,7 @@
     "uploadProof": "Cargar comprobante de pago",
     "fileTypes": "JPEG, JPG, PNG, PDF (hasta 5MB)",
     "fileTooLarge": "El archivo debe tener 5 MB o menos.",
-    "submit": "Enviar",
-    "confirmPaymentReceived": "Confirmar pago recibido",
-    "otpSentTo": "Ingrese el código de 6 dígitos enviado a {email}. Este paso verifica su identidad antes de liberar el pago a la otra parte.",
-    "incorrectCode": "Código incorrecto. Le quedan {attempts} intento{plural}.",
-    "maxAttemptsReached": "Máximo de intentos alcanzado.",
-    "tooManyAttempts": "Demasiados intentos fallidos",
-    "tooManyAttemptsDescription": "Parece que ha realizado demasiados intentos para confirmar este pedido. Vuelva a intentarlo después de 10 minutos.",
-    "verifying": "Verificando...",
-    "didntReceiveCode": "¿No recibió el código?",
-    "resendCode": "Reenviar código",
-    "resendCodeTimer": "Reenviar código ({seconds}s)"
+    "submit": "Enviar"
   },
   "paymentMethod": {
     "title": "Método de pago",
@@ -413,8 +410,8 @@
     "blockDescription": "No verás los anuncios de {nickname} y no podrán realizar órdenes en los tuyos.",
     "youveBlockedUser": "Has bloqueado a este usuario",
     "unblockDescription": "Desbloquéalo si deseas interactuar con este anunciante nuevamente.",
-    "successfullyFollowed": "Seguido exitosamente",
-    "successfullyUnfollowed": "Dejado de seguir exitosamente",
+    "successfullyFollowed": "Seguido con éxito",
+    "successfullyUnfollowed": "Dejó de seguir con éxito",
     "userBlocked": "{nickname} bloqueado.",
     "userUnblocked": "{nickname} desbloqueado."
   },
@@ -466,7 +463,6 @@
     "networkError": "Error de red. Por favor, verifica tu conexión.",
     "unauthorized": "No estás autorizado para realizar esta acción.",
     "notFound": "No se encontró el recurso solicitado.",
-    "unknownErrorMessage": "Ocurrió un error desconocido",
     "invalidExchangeRateMessage": "El tipo de cambio que proporcionó no es válido.",
     "invalidOrderAmountMessage": "Los límites de cantidad del pedido no son válidos."
   },
@@ -510,7 +506,17 @@
     "uploadProof": "Cargar comprobante de pago",
     "fileTypes": "JPEG, JPG, PNG, PDF (hasta 5MB)",
     "fileTooLarge": "El archivo debe tener 5 MB o menos.",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "confirmPaymentReceived": "Confirmar pago recibido",
+    "otpSentTo": "Ingrese el código de 6 dígitos enviado a {email}. Este paso verifica su identidad antes de liberar el pago a la otra parte.",
+    "incorrectCode": "Código incorrecto. Le quedan {attempts} intento{plural}.",
+    "maxAttemptsReached": "Máximo de intentos alcanzado.",
+    "tooManyAttempts": "Demasiados intentos fallidos",
+    "tooManyAttemptsDescription": "Parece que ha realizado demasiados intentos para confirmar este pedido. Vuelva a intentarlo después de 10 minutos.",
+    "verifying": "Verificando...",
+    "didntReceiveCode": "¿No recibió el código?",
+    "resendCode": "Reenviar código",
+    "resendCodeTimer": "Reenviar código ({seconds}s)"
   },
   "adForm": {
     "createAd": "Crear anuncio",
@@ -576,7 +582,8 @@
     "selected": "Seleccionados ({count})",
     "noPaymentMethodsFound": "No se encontraron métodos de pago",
     "genericErrorCodeMessage": "Inténtelo de nuevo o contacte con soporte.",
-    "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo."
+    "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo.",
+    "unknownErrorMessage": "Ocurrió un error desconocido"
   },
   "kyc": {
     "title": "Verificación de identidad",

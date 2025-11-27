@@ -73,13 +73,13 @@ export default function BuySellPage() {
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
   const { showAlert } = useAlertDialog()
+  
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
       locale != "en"
         ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
         : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
-
     window.open(helpCentreUrl, "_blank")
   }
 
@@ -617,14 +617,14 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                             )}
-                            {ad.user.completion_rate_all_30day && (
-                              <div className="flex flex-row items-center justify-center gap-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                <span>
-                                  {ad.user.completion_rate_all_30day}% {t("market.completion")}
-                                </span>
-                              </div>
-                            )}
+                            {ad.user.completion_rate_all_30day > 0 && (
+                                <div className="flex flex-row items-center justify-center gap-[8px]">
+                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                  <span>
+                                    {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                                  </span>
+                                </div>
+                              )}
                           </div>
                           <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>

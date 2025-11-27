@@ -22,7 +22,13 @@
     "all": "Todos",
     "yes": "Sim",
     "no": "Não",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Saiba mais",
+    "verifiedBadge": {
+      "title": "Conta totalmente verificada",
+      "descriptionSelf": "Você concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço.",
+      "descriptionOther": "Este usuário concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço. Você pode negociar com confiança sabendo que esta conta está verificada."
+    }
   },
   "navigation": {
     "market": "Mercado",
@@ -69,6 +75,7 @@
     "exchangeRate": "Taxa de câmbio",
     "orderLimit": "Limite do pedido",
     "paymentTime": "Tempo de pagamento",
+    "paymentTimeTooltip": "Complete seu pagamento dentro de {minutes} minutos após fazer o pedido.",
     "buyer": "Comprador",
     "seller": "Vendedor",
     "buyersPaymentMethods": "Método(s) de pagamento do comprador",
@@ -86,17 +93,7 @@
     "uploadProof": "Carregar comprovante de pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (até 5MB)",
     "fileTooLarge": "O arquivo deve ter 5MB ou menos.",
-    "submit": "Enviar",
-    "confirmPaymentReceived": "Confirmar pagamento recebido",
-    "otpSentTo": "Digite o código de 6 dígitos enviado para {email}. Esta etapa verifica sua identidade antes de liberar o pagamento para a outra parte.",
-    "incorrectCode": "Código incorreto. Você tem {attempts} tentativa{plural} restante{plural}.",
-    "maxAttemptsReached": "Número máximo de tentativas atingido.",
-    "tooManyAttempts": "Muitas tentativas falhadas",
-    "tooManyAttemptsDescription": "Parece que você fez muitas tentativas para confirmar este pedido. Tente novamente após 10 minutos.",
-    "verifying": "Verificando...",
-    "didntReceiveCode": "Não recebeu o código?",
-    "resendCode": "Reenviar código",
-    "resendCodeTimer": "Reenviar código ({seconds}s)"
+    "submit": "Enviar"
   },
   "paymentMethod": {
     "title": "Método de pagamento",
@@ -423,7 +420,6 @@
     "networkError": "Erro de rede. Por favor, verifique sua conexão.",
     "unauthorized": "Você não está autorizado a realizar esta ação.",
     "notFound": "O recurso solicitado não foi encontrado.",
-    "unknownErrorMessage": "Ocorreu um erro desconhecido",
     "invalidExchangeRateMessage": "A taxa de câmbio fornecida é inválida.",
     "invalidOrderAmountMessage": "Os limites de valor do pedido são inválidos."
   },
@@ -510,7 +506,17 @@
     "uploadProof": "Carregar comprovante de pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (até 5MB)",
     "fileTooLarge": "O arquivo deve ter 5MB ou menos.",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "confirmPaymentReceived": "Confirmar pagamento recebido",
+    "otpSentTo": "Digite o código de 6 dígitos enviado para {email}. Esta etapa verifica sua identidade antes de liberar o pagamento para a outra parte.",
+    "incorrectCode": "Código incorreto. Você tem {attempts} tentativa{plural} restante{plural}.",
+    "maxAttemptsReached": "Número máximo de tentativas atingido.",
+    "tooManyAttempts": "Muitas tentativas falhadas",
+    "tooManyAttemptsDescription": "Parece que você fez muitas tentativas para confirmar este pedido. Tente novamente após 10 minutos.",
+    "verifying": "Verificando...",
+    "didntReceiveCode": "Não recebeu o código?",
+    "resendCode": "Reenviar código",
+    "resendCodeTimer": "Reenviar código ({seconds}s)"
   },
   "adForm": {
     "createAd": "Criar anúncio",
@@ -558,7 +564,8 @@
     "selected": "Selecionados ({count})",
     "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
     "genericErrorCodeMessage": "Tente novamente ou entre em contato com o suporte.",
-    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente."
+    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+    "unknownErrorMessage": "Ocorreu um erro desconhecido"
   },
   "kyc": {
     "title": "Verificação de identidade",
