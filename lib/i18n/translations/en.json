@@ -525,7 +525,7 @@
     "unknownErrorMessage": "An unknown error occurred",
     "invalidExchangeRateMessage": "The exchange rate you provided is invalid.",
     "invalidOrderAmountMessage": "The order amount limits are invalid.",
-    "genericErrorCodeMessage": "Error: {code}. Please try again or contact support.",
+    "genericErrorCodeMessage": "Please try again or contact support.",
     "genericProcessingErrorMessage": "There was an error processing your request. Please try again."
   },
   "advertiser": {
