@@ -99,7 +99,7 @@
     "unableToAdd": "Zahlungsmethode kann nicht hinzugefügt werden",
     "addError": "Beim Hinzufügen der Zahlungsmethode ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "search": "Suchen",
-    "allPaymentMethod": "Alle Zahlungsmethoden",
+    "allPaymentMethod": "Alle Zahlungsmethode",
     "bankTransfers": "Banküberweisung",
     "eWallets": "E-Wallets",
     "paymentMethodUnavailable": "Zahlungsmethode nicht verfügbar",
