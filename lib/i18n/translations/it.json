@@ -458,7 +458,8 @@
     "uploadProof": "Carica prova di pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (fino a 5MB)",
     "fileTooLarge": "Il file deve essere di 5MB o meno.",
-    "submit": "Invia"
+    "submit": "Invia",
+    "confirmPaymentReceived": "Conferma pagamento ricevuto",
   },
   "adForm": {
     "createAd": "Crea annuncio",
