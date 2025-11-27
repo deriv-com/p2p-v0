@@ -525,7 +525,8 @@
     "selected": "Selezionati ({count})",
     "noPaymentMethodsFound": "Nessun metodo di pagamento trovato",
     "genericErrorCodeMessage": "Riprova o contatta l'assistenza.",
-    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova."
+    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova.",
+    "unknownErrorMessage": "Si è verificato un errore sconosciuto"
   },
   "advertiser": {
     "goBack": "Torna Indietro",
