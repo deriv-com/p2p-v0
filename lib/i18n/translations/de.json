@@ -544,7 +544,7 @@
     "selectAtLeastOnePaymentMethod": "Wählen Sie mindestens eine Zahlungsmethode aus",
     "genericErrorCodeMessage": "Bitte versuchen Sie es erneut oder kontaktieren Sie den Support.",
     "genericProcessingErrorMessage": "Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-    "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten",
+    "unknownErrorMessage": "Ein unbekannter Fehler ist aufgetreten"
   },
   "advertiser": {
     "goBack": "Zurück",
