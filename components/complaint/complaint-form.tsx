@@ -9,7 +9,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
-import { useTranslations } from "@/lib/i18n/client"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 
 export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: ComplaintProps) {
