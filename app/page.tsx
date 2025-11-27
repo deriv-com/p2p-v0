@@ -614,6 +614,117 @@ export default function BuySellPage() {
                                     </Tooltip>
                                   </TooltipProvider>
                                 )}
+                                {ad.user.trade_band === "silver" && (
+                                  <TooltipProvider>
+                                    <Tooltip disableHoverableContent={false}>
+                                      <TooltipTrigger asChild>
+                                        <Image
+                                          src="/icons/silver.jpg"
+                                          alt="Silver"
+                                          width={18}
+                                          height={18}
+                                          className="mr-1 cursor-pointer"
+                                        />
+                                      </TooltipTrigger>
+                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                        <>
+                                          <p className="font-bold text-white mb-2">{t("profile.silverTier")}</p>
+                                          <p className="text-white mb-4">{t("profile.silverTierDescription")}</p>
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={redirectToHelpCentre}
+                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+                                          >
+                                            {t("common.learnMore")}
+                                            <Image
+                                              src="/icons/chevron-right-white.png"
+                                              alt="Arrow"
+                                              width={8}
+                                              height={18}
+                                              className="ml-2 cursor-pointer"
+                                            />
+                                          </Button>
+                                        </>
+                                        <TooltipArrow className="fill-black" />
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                                {ad.user.trade_band === "gold" && (
+                                  <TooltipProvider>
+                                    <Tooltip disableHoverableContent={false}>
+                                      <TooltipTrigger asChild>
+                                        <Image
+                                          src="/icons/gold.jpg"
+                                          alt="Gold"
+                                          width={18}
+                                          height={18}
+                                          className="mr-1 cursor-pointer"
+                                        />
+                                      </TooltipTrigger>
+                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                        <>
+                                          <p className="font-bold text-white mb-2">{t("profile.goldTier")}</p>
+                                          <p className="text-white mb-4">{t("profile.goldTierDescription")}</p>
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={redirectToHelpCentre}
+                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+                                          >
+                                            {t("common.learnMore")}
+                                            <Image
+                                              src="/icons/chevron-right-white.png"
+                                              alt="Arrow"
+                                              width={8}
+                                              height={18}
+                                              className="ml-2 cursor-pointer"
+                                            />
+                                          </Button>
+                                        </>
+                                        <TooltipArrow className="fill-black" />
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
+                                {ad.user.trade_band === "platinum" && (
+                                  <TooltipProvider>
+                                    <Tooltip disableHoverableContent={false}>
+                                      <TooltipTrigger asChild>
+                                        <Image
+                                          src="/icons/platinum.jpg"
+                                          alt="Platinum"
+                                          width={18}
+                                          height={18}
+                                          className="mr-1 cursor-pointer"
+                                        />
+                                      </TooltipTrigger>
+                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                        <>
+                                          <p className="font-bold text-white mb-2">{t("profile.platinumTier")}</p>
+                                          <p className="text-white mb-4">{t("profile.platinumTierDescription")}</p>
+                                          <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={redirectToHelpCentre}
+                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+                                          >
+                                            {t("common.learnMore")}
+                                            <Image
+                                              src="/icons/chevron-right-white.png"
+                                              alt="Arrow"
+                                              width={8}
+                                              height={18}
+                                              className="ml-2 cursor-pointer"
+                                            />
+                                          </Button>
+                                        </>
+                                        <TooltipArrow className="fill-black" />
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  </TooltipProvider>
+                                )}
                                 {ad.user?.is_favourite && (
                                   <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
                                     {t("market.following")}

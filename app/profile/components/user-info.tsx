@@ -64,6 +64,54 @@ export default function UserInfo({
                 </Tooltip>
               </TooltipProvider>
             )}
+            {tradeBand === "silver" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/icons/silver.jpg" className="cursor-pointer" alt="Silver" width={18} height={18} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <>
+                      <p className="font-bold text-white mb-2">{t("profile.silverTier")}</p>
+                      <p className="text-white">{t("profile.silverTierDescription")}</p>
+                    </>
+                    <TooltipArrow className="fill-black" />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            {tradeBand === "gold" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/icons/gold.jpg" className="cursor-pointer" alt="Gold" width={18} height={18} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <>
+                      <p className="font-bold text-white mb-2">{t("profile.goldTier")}</p>
+                      <p className="text-white">{t("profile.goldTierDescription")}</p>
+                    </>
+                    <TooltipArrow className="fill-black" />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+            {tradeBand === "platinum" && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image src="/icons/platinum.jpg" className="cursor-pointer" alt="Platinum" width={18} height={18} />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <>
+                      <p className="font-bold text-white mb-2">{t("profile.platinumTier")}</p>
+                      <p className="text-white">{t("profile.platinumTierDescription")}</p>
+                    </>
+                    <TooltipArrow className="fill-black" />
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </div>
           {joinDate && <div className="text-xs text-white opacity-[0.72]">{joinDate}</div>}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">
