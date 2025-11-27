@@ -167,7 +167,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              {isFollowing ? <span>Successfully unfollowed</span> : <span>Successfully followed</span>}
+              {isFollowing ? (
+                <span>{t("advertiser.successfullyUnfollowed")}</span>
+              ) : (
+                <span>{t("advertiser.successfullyFollowed")}</span>
+              )}
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -205,11 +209,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                 description: (
                   <div className="flex items-center gap-2">
                     <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    {isBlocked ? (
-                      <span>{profile?.nickname} unblocked.</span>
-                    ) : (
-                      <span>{profile?.nickname} blocked.</span>
-                    )}
+                    <span>
+                      {isBlocked
+                        ? t("advertiser.userUnblocked", { nickname: profile?.nickname })
+                        : t("advertiser.userBlocked", { nickname: profile?.nickname })}
+                    </span>
                   </div>
                 ),
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -244,7 +248,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{profile?.nickname} unblocked.</span>
+              <span>{t("advertiser.userUnblocked", { nickname: profile?.nickname })}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
