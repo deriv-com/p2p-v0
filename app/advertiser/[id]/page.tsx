@@ -190,10 +190,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const handleBlockClick = () => {
     if (!isBlocked) {
       showAlert({
-        title: `Block ${profile?.nickname}?`,
-        description: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
-        confirmText: "Block",
-        cancelText: "Cancel",
+        title: t("advertiser.blockUser", { nickname: profile?.nickname }),
+        description: t("advertiser.blockDescription", { nickname: profile?.nickname }),
+        confirmText: t("advertiser.block"),
+        cancelText: t("common.cancel"),
         type: "warning",
         onConfirm: async () => {
           if (!profile) return
