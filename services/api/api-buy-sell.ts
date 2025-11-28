@@ -79,8 +79,8 @@ export async function getAdvertisements(params?: SearchParams): Promise<Advertis
       if (params.favourites_only) queryParams.append("favourites_only", params.favourites_only.toString())
     }
 
-    const country_code = useUserDataStore.getState().residenceCountry
-    if (country_code) queryParams.append("country_code", country_code)
+    const auth_country_code = useUserDataStore.getState().residenceCountry
+    if (auth_country_code) queryParams.append("auth_country_code", auth_country_code)
 
     const queryString = queryParams.toString() ? `?${queryParams.toString()}` : ""
 
