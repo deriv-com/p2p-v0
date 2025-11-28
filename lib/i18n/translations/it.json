@@ -23,7 +23,7 @@
     "allCountries": "Tutti i paesi",
     "countrySelection": "Selezione paese",
     "selectedAll": "Selezionato (Tutti)",
-    "selectedCount": "Selezionato ({{count}})",
+    "selectedCount": "Selezionato {{count}}",
     "yes": "Sì",
     "no": "No",
     "ok": "OK"
@@ -47,7 +47,7 @@
     "youreReceiving": "Stai ricevendo",
     "paymentMethod": "Metodo di pagamento",
     "paymentMethodAll": "Metodo di pagamento (Tutti)",
-    "paymentMethodSelected": "Metodo di pagamento ({count})",
+    "paymentMethodSelected": "Metodo di pagamento {{count}}",
     "advertisers": "Inserzionisti",
     "rates": "Tassi",
     "paymentMethods": "Metodi di pagamento",
@@ -508,7 +508,7 @@
     "amountExceedsBalanceTitle": "L'importo supera il saldo",
     "amountExceedsBalanceMessage": "L'importo totale supera il tuo saldo disponibile. Inserisci un importo inferiore.",
     "selectPayment": "Seleziona metodo di pagamento",
-    "selected": "Selezionati ({count})",
+    "selected": "Selezionati {{count}}",
     "noPaymentMethodsFound": "Nessun metodo di pagamento trovato"
   },
   "advertiser": {

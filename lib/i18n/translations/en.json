@@ -23,7 +23,7 @@
     "allCountries": "All countries",
     "countrySelection": "Country selection",
     "selectedAll": "Selected (All)",
-    "selectedCount": "Selected ({{count}})",
+    "selectedCount": "Selected (count)",
     "yes": "Yes",
     "no": "No",
     "ok": "OK"
@@ -47,7 +47,7 @@
     "youreReceiving": "You're receiving",
     "paymentMethod": "Payment method",
     "paymentMethodAll": "Payment method (All)",
-    "paymentMethodSelected": "Payment method ({count})",
+    "paymentMethodSelected": "Payment method (count)",
     "advertisers": "Advertisers",
     "rates": "Rates",
     "paymentMethods": "Payment methods",

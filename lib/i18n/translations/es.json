@@ -23,7 +23,7 @@
     "allCountries": "Todos los países",
     "countrySelection": "Selección de país",
     "selectedAll": "Seleccionado (Todos)",
-    "selectedCount": "Seleccionado ({{count}})",
+    "selectedCount": "Seleccionado {{count}}",
     "yes": "Sí",
     "no": "No",
     "ok": "OK"
@@ -47,7 +47,7 @@
     "youreReceiving": "Estás recibiendo",
     "paymentMethod": "Método de pago",
     "paymentMethodAll": "Método de pago (Todos)",
-    "paymentMethodSelected": "Método de pago ({count})",
+    "paymentMethodSelected": "Método de pago {{count}}",
     "advertisers": "Anunciantes",
     "rates": "Tasas",
     "paymentMethods": "Métodos de pago",
@@ -255,8 +255,8 @@
     "gettingStarted": "Comenzando con P2P",
     "errorLoadingProfile": "Error al cargar los datos del usuario",
     "noUserData": "No se encontraron datos del usuario",
-    "followsCount": "Seguidos ({count})",
-    "followersCount": "Seguidores ({count})",
+    "followsCount": "Seguidos {{count}}",
+    "followersCount": "Seguidores {{count}}",
     "notFollowingAnyone": "Aún no sigues a nadie",
     "startFollowing": "Comienza a seguir usuarios para verlos aquí.",
     "noFollowers": "Aún no tienes seguidores",
@@ -539,7 +539,7 @@
     "amountExceedsBalanceTitle": "El monto excede el saldo",
     "amountExceedsBalanceMessage": "El monto total excede tu saldo disponible. Por favor, ingresa un monto menor.",
     "selectPayment": "Seleccionar método de pago",
-    "selected": "Seleccionados ({count})",
+    "selected": "Seleccionados {{count}}",
     "noPaymentMethodsFound": "No se encontraron métodos de pago"
   },
   "kyc": {
