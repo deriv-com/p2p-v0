@@ -19,6 +19,7 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface StatsTabsProps {
   stats?: any
+  isLoading?: boolean
 }
 
 export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
@@ -164,7 +165,11 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                   {paymentMethodsCount > 0 && (
                     <h2 className="text-2xl font-bold mb-4">{t("profile.paymentMethods")}</h2>
                   )}
-                  <PaymentMethodsTab key={refreshKey} onAddPaymentMethod={handleShowAddPaymentMethod} onPaymentMethodsCountChange={setPaymentMethodsCount} />
+                  <PaymentMethodsTab
+                    key={refreshKey}
+                    onAddPaymentMethod={handleShowAddPaymentMethod}
+                    onPaymentMethodsCountChange={setPaymentMethodsCount}
+                  />
                 </div>
                 {paymentMethodsCount > 0 && (
                   <div className="p-4">
@@ -239,7 +244,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
           </div>
         ) : (
           <Tabs defaultValue="stats">
-            <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2">
+            <div className="flex items-end border-b-2 border-b-grayscale-500 mb-2 md:mt-8">
               <TabsList className="w-auto h-9 bg-transparent">
                 {tabs.map((tab) => (
                   <TabsTrigger
@@ -300,8 +305,8 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
                     </Button>
                   </div>
                 )}
-                <PaymentMethodsTab 
-                  key={refreshKey} 
+                <PaymentMethodsTab
+                  key={refreshKey}
                   onAddPaymentMethod={handleShowAddPaymentMethod}
                   onPaymentMethodsCountChange={setPaymentMethodsCount}
                 />
