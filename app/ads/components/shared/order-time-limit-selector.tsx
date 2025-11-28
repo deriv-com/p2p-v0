@@ -99,7 +99,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
       >
         <SelectTrigger
           className={cn(
-            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 [&>svg]:hidden",
+            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 [&>svg]:hidden [&_[data-radix-select-icon]]:hidden",
             hasValue ? "pt-6 pb-2" : "py-4",
             className,
           )}
