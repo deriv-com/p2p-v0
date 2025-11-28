@@ -48,13 +48,13 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
                 className,
               )}
             >
-              <span className={cn("text-left", hasValue ? "text-base" : "text-base")}>
+              <span className={cn("text-left text-base")}>
                 {hasValue ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
               </span>
             </Button>
           </SheetTrigger>
           {hasValue && (
-            <label className="absolute left-[15px] top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
+            <label className="absolute left-[15px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
               {t("adForm.orderTimeLimitPlaceholder")}
             </label>
           )}
@@ -116,7 +116,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         </SelectContent>
       </Select>
       {hasValue && (
-        <label className="absolute left-[15px] top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
+        <label className="absolute left-[15px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
           {t("adForm.orderTimeLimitPlaceholder")}
         </label>
       )}
