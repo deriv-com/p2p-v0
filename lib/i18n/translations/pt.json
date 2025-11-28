@@ -23,7 +23,7 @@
     "allCountries": "Todos os países",
     "countrySelection": "Seleção de país",
     "selectedAll": "Selecionado (Todos)",
-    "selectedCount": "Selecionado ({{count}})",
+    "selectedCount": "Selecionado",
     "yes": "Sim",
     "no": "Não",
     "ok": "OK"
@@ -47,7 +47,7 @@
     "youreReceiving": "Você está recebendo",
     "paymentMethod": "Método de pagamento",
     "paymentMethodAll": "Método de pagamento (Todos)",
-    "paymentMethodSelected": "Método de pagamento ({count})",
+    "paymentMethodSelected": "Método de pagamento",
     "advertisers": "Anunciantes",
     "rates": "Taxas",
     "paymentMethods": "Métodos de pagamento",

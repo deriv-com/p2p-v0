@@ -23,7 +23,7 @@
     "allCountries": "Todos los países",
     "countrySelection": "Selección de país",
     "selectedAll": "Seleccionado (Todos)",
-    "selectedCount": "Seleccionado {{count}}",
+    "selectedCount": "Seleccionado",
     "yes": "Sí",
     "no": "No",
     "ok": "OK"

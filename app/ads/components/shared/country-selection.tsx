@@ -55,7 +55,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
     if (isAllSelected) {
       return t("common.selectedAll")
     }
-    return t("common.selectedCount", { count: selectedCountries.length })
+    return `${t("common.selectedCount")} (${selectedCountries.length})`
   }
 
   const hasValue = true // Always show the floating label
