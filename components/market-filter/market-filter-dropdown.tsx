@@ -145,7 +145,7 @@ export default function MarketFilterDropdown({
             className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
             size="default"
           >
-            {t("filter.applyFilters")}
+            {t("filter.apply")}
           </Button>
         </div>
       )}
