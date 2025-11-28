@@ -42,27 +42,27 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
             <Button
               variant="outline"
               className={cn(
-                "w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal",
+                "w-full h-[56px] max-h-none justify-start pl-4 pr-12 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal",
                 selectedOption ? "pt-6 pb-2" : "",
                 className,
               )}
             >
-              <span className={cn("transition-all duration-200", selectedOption ? "text-base" : "text-base")}>
+              <span className="text-base">
                 {selectedOption ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
               </span>
-              <Image
-                src="/icons/chevron-down.png"
-                alt="Arrow"
-                width={24}
-                height={24}
-                className="ml-2 absolute right-4 top-1/2 -translate-y-1/2"
-              />
             </Button>
             {selectedOption && (
-              <label className="absolute left-3 top-2 text-xs font-normal text-[#000000B8] pointer-events-none">
+              <label className="absolute left-4 top-2 text-xs font-normal text-[#000000B8] pointer-events-none">
                 {t("adForm.orderTimeLimitPlaceholder")}
               </label>
             )}
+            <Image
+              src="/icons/chevron-down.png"
+              alt="Arrow"
+              width={24}
+              height={24}
+              className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+            />
           </div>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
@@ -89,13 +89,17 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
   return (
     <div className="relative w-full">
       {selectedOption && (
-        <label className="absolute left-3 top-2 text-xs font-normal text-[#000000B8] pointer-events-none z-10">
+        <label className="absolute left-4 top-2 text-xs font-normal text-[#000000B8] pointer-events-none z-10">
           {t("adForm.orderTimeLimitPlaceholder")}
         </label>
       )}
       <Select value={value.toString()} onValueChange={(selectedValue) => onValueChange(Number(selectedValue))}>
         <SelectTrigger
-          className={`w-[100%] h-[56px] text-base rounded-lg ${selectedOption ? "pt-6 pb-2" : ""} ${className}`}
+          className={cn(
+            "w-full h-[56px] text-base rounded-lg pl-4 pr-12",
+            selectedOption ? "pt-6 pb-2" : "",
+            className,
+          )}
         >
           <SelectValue placeholder={t("adForm.orderTimeLimitPlaceholder")}>{selectedOption?.label}</SelectValue>
         </SelectTrigger>
