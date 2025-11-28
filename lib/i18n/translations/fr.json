@@ -439,14 +439,7 @@
     "uploadProof": "Télécharger la preuve de paiement",
     "fileTypes": "JPEG, JPG, PNG, PDF (jusqu'à 5 Mo)",
     "fileTooLarge": "Le fichier doit faire 5 Mo ou moins.",
-    "submit": "Soumettre",
-    "orderTimeLimit": "Limite de temps de commande",
-    "orderTimeLimitTooltip": "Les commandes expireront si elles ne sont pas terminées dans ce délai.",
-    "orderTimeLimitPlaceholder": "Les commandes doivent être complétées dans",
-    "timeLimit15Minutes": "15 minutes",
-    "timeLimit30Minutes": "30 minutes",
-    "timeLimit45Minutes": "45 minutes",
-    "timeLimit60Minutes": "60 minutes"
+    "submit": "Soumettre"
   },
   "adForm": {
     "createAd": "Créer une annonce",
@@ -470,6 +463,7 @@
     "maximumOrder": "Commande maximum",
     "orderTimeLimit": "Limite de temps de commande",
     "orderTimeLimitTooltip": "Les commandes expireront si elles ne sont pas terminées dans ce délai.",
+    "orderTimeLimitPlaceholder": "Les commandes doivent être terminées dans",
     "timeLimit15Minutes": "15 minutes",
     "timeLimit30Minutes": "30 minutes",
     "timeLimit45Minutes": "45 minutes",

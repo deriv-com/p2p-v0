@@ -476,7 +476,10 @@
     "uploadProof": "Carregar comprovante de pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (até 5MB)",
     "fileTooLarge": "O arquivo deve ter 5MB ou menos.",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "orderTimeLimit": "Limite de tempo do pedido",
+    "orderTimeLimitTooltip": "Os pedidos expirarão se não forem concluídos dentro deste prazo.",
+    "orderTimeLimitPlaceholder": "Os pedidos devem ser concluídos em"
   },
   "adForm": {
     "createAd": "Criar anúncio",
@@ -500,7 +503,6 @@
     "maximumOrder": "Pedido máximo",
     "orderTimeLimit": "Limite de tempo do pedido",
     "orderTimeLimitTooltip": "Os pedidos expirarão se não forem concluídos dentro deste prazo.",
-    "orderTimeLimitPlaceholder": "Os pedidos devem ser concluídos em",
     "timeLimit15Minutes": "15 minutos",
     "timeLimit30Minutes": "30 minutos",
     "timeLimit45Minutes": "45 minutos",
