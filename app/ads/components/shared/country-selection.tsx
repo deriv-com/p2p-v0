@@ -53,12 +53,12 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   const getDisplayText = () => {
     if (isAllSelected) {
-      return t("common.allCountries")
+      return t("common.selectedAll")
     }
-
-    const countryNames = selectedCountries.map((code) => countries.find((c) => c.code === code)?.name).join(", ")
-    return countryNames
+    return t("common.selectedCount", { count: selectedCountries.length })
   }
+
+  const hasValue = true // Always show the floating label
 
   const CountryList = () => (
     <div className="space-y-4">
@@ -128,22 +128,34 @@ export default function CountrySelection({ countries, selectedCountries, onCount
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={setIsOpen}>
-        <DrawerTrigger asChild>
-          <Button
-            variant="outline"
-            className="w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black"
-            onClick={() => setIsOpen(true)}
-          >
-            <span className="text-left font-normal">{getDisplayText()}</span>
+        <div className="relative">
+          <DrawerTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
+                hasValue ? "pt-6 pb-2" : "py-4",
+              )}
+              onClick={() => setIsOpen(true)}
+            >
+              <span className="text-left text-base text-[#000000B8]">{getDisplayText()}</span>
+            </Button>
+          </DrawerTrigger>
+          {hasValue && (
+            <label className="absolute left-[15px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+              {t("common.countrySelection")}
+            </label>
+          )}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
             <Image
               src="/icons/chevron-down.png"
-              alt="Dropdown icon"
+              alt="Arrow"
               width={24}
               height={24}
-              className={cn("ml-2 transition-transform duration-200", isOpen && "rotate-180")}
+              className={cn("transition-transform", isOpen && "rotate-180")}
             />
-          </Button>
-        </DrawerTrigger>
+          </div>
+        </div>
         <DrawerContent side="bottom" className="h-fit">
           <div className="my-4">
             <h3 className="text-xl font-bold text-center">Country selection</h3>
@@ -159,22 +171,34 @@ export default function CountrySelection({ countries, selectedCountries, onCount
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span className="text-left font-normal">{getDisplayText()}</span>
+      <div className="relative">
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className={cn(
+              "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
+              hasValue ? "pt-6 pb-2" : "py-4",
+            )}
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span className="text-left text-base text-[#000000B8]">{getDisplayText()}</span>
+          </Button>
+        </PopoverTrigger>
+        {hasValue && (
+          <label className="absolute left-[15px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+            {t("common.countrySelection")}
+          </label>
+        )}
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
           <Image
             src="/icons/chevron-down.png"
-            alt="Dropdown icon"
+            alt="Arrow"
             width={24}
             height={24}
-            className={cn("ml-2 transition-transform duration-200", isOpen && "rotate-180")}
+            className={cn("transition-transform", isOpen && "rotate-180")}
           />
-        </Button>
-      </PopoverTrigger>
+        </div>
+      </div>
       <PopoverContent
         align="start"
         className="p-4 

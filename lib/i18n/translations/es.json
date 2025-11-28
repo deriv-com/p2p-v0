@@ -21,6 +21,9 @@
     "sort": "Ordenar",
     "all": "Todos",
     "allCountries": "Todos los países",
+    "countrySelection": "Selección de país",
+    "selectedAll": "Seleccionado (Todos)",
+    "selectedCount": "Seleccionado ({{count}})",
     "yes": "Sí",
     "no": "No",
     "ok": "OK"
