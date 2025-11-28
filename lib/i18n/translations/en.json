@@ -23,7 +23,7 @@
     "allCountries": "All countries",
     "countrySelection": "Country selection",
     "selectedAll": "Selected (All)",
-    "selectedCount": "Selected {{count}}",
+    "selectedCount": "Selected ({{count}})",
     "yes": "Yes",
     "no": "No",
     "ok": "OK"

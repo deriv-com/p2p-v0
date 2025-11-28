@@ -48,7 +48,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
                 className,
               )}
             >
-              <span className={cn("text-left text-base")}>
+              <span className={cn("text-left text-base text-[#000000B8]")}>
                 {hasValue ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
               </span>
             </Button>
@@ -100,7 +100,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         <SelectTrigger
           hideChevron
           className={cn(
-            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12",
+            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 text-[#000000B8]",
             hasValue ? "pt-6 pb-2" : "py-4",
             className,
           )}
