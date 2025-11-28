@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 interface OrderTimeLimitSelectorProps {
   value: number
@@ -37,24 +38,32 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            className={`w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black ${className} font-normal ${
-              selectedOption ? "flex-col items-start pt-2 pb-2" : ""
-            }`}
-          >
-            <span className={selectedOption ? "text-[#000000B8] text-xs font-normal" : "text-base font-normal"}>
-              {t("adForm.orderTimeLimitPlaceholder")}
-            </span>
-            {selectedOption && <span className="text-base font-normal">{selectedOption.label}</span>}
-            <Image
-              src="/icons/chevron-down.png"
-              alt="Arrow"
-              width={24}
-              height={24}
-              className={`ml-2 ${selectedOption ? "absolute right-4 top-1/2 -translate-y-1/2" : ""}`}
-            />
-          </Button>
+          <div className="relative w-full">
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal",
+                selectedOption ? "pt-6 pb-2" : "",
+                className,
+              )}
+            >
+              <span className={cn("transition-all duration-200", selectedOption ? "text-base" : "text-base")}>
+                {selectedOption ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
+              </span>
+              <Image
+                src="/icons/chevron-down.png"
+                alt="Arrow"
+                width={24}
+                height={24}
+                className="ml-2 absolute right-4 top-1/2 -translate-y-1/2"
+              />
+            </Button>
+            {selectedOption && (
+              <label className="absolute left-3 top-2 text-xs font-normal text-[#000000B8] pointer-events-none">
+                {t("adForm.orderTimeLimitPlaceholder")}
+              </label>
+            )}
+          </div>
         </SheetTrigger>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
