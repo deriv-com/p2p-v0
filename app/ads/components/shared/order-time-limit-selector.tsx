@@ -38,12 +38,12 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <div className="relative">
+        <div className="relative">
+          <SheetTrigger asChild>
             <Button
               variant="outline"
               className={cn(
-                "w-full h-[56px] max-h-none justify-between rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal",
+                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12",
                 hasValue ? "pt-6 pb-2" : "py-4",
                 className,
               )}
@@ -51,21 +51,23 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
               <span className={cn("text-left", hasValue ? "text-base" : "text-base")}>
                 {hasValue ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
               </span>
-              <Image
-                src="/icons/chevron-down.png"
-                alt="Arrow"
-                width={24}
-                height={24}
-                className={cn("ml-2 transition-transform", isOpen && "rotate-180")}
-              />
             </Button>
-            {hasValue && (
-              <label className="absolute left-3 top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
-                {t("adForm.orderTimeLimitPlaceholder")}
-              </label>
-            )}
+          </SheetTrigger>
+          {hasValue && (
+            <label className="absolute left-4 top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
+              {t("adForm.orderTimeLimitPlaceholder")}
+            </label>
+          )}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+            <Image
+              src="/icons/chevron-down.png"
+              alt="Arrow"
+              width={24}
+              height={24}
+              className={cn("transition-transform", isOpen && "rotate-180")}
+            />
           </div>
-        </SheetTrigger>
+        </div>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">{t("adForm.orderTimeLimit")}</h3>
@@ -97,7 +99,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
       >
         <SelectTrigger
           className={cn(
-            "w-[100%] h-[56px] text-base rounded-lg",
+            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12",
             hasValue ? "pt-6 pb-2" : "py-4",
             "[&>svg]:hidden",
             className,
@@ -114,7 +116,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         </SelectContent>
       </Select>
       {hasValue && (
-        <label className="absolute left-3 top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
+        <label className="absolute left-4 top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
           {t("adForm.orderTimeLimitPlaceholder")}
         </label>
       )}
