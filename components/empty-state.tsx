@@ -1,6 +1,6 @@
 "use client"
 import Image from "next/image"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Button } from "@/components/ui/button"
@@ -51,17 +51,14 @@ export default function EmptyState({
     <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
       {title && <p className="text-lg text-neutral-10 mt-2 font-bold">{title}</p>}
-      {description && <p className="text-base text-neutral-7 mb-[10px] mt-2">{description}</p>}
+      {description && <p className="text-base font-normal text-[#0000007A] mb-[10px] mt-2">{description}</p>}
       {redirectToAds && (
         <Button onClick={createAd} className="mt-4">
           {t("myAds.createAd")}
         </Button>
       )}
       {onAddPaymentMethod && (
-        <Button
-          onClick={onAddPaymentMethod}
-          className="mt-4"
-        >
+        <Button onClick={onAddPaymentMethod} className="mt-4">
           {t("profile.addPaymentMethod")}
         </Button>
       )}
