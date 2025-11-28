@@ -96,7 +96,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
       <Select value={value.toString()} onValueChange={(selectedValue) => onValueChange(Number(selectedValue))}>
         <SelectTrigger
           className={cn(
-            "w-full h-[56px] text-base rounded-lg pl-4 pr-12",
+            "w-full h-[56px] text-base rounded-lg pl-4 pr-12 [&>svg]:hidden",
             selectedOption ? "pt-6 pb-2" : "",
             className,
           )}
@@ -111,6 +111,13 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
           ))}
         </SelectContent>
       </Select>
+      <Image
+        src="/icons/chevron-down.png"
+        alt="Arrow"
+        width={24}
+        height={24}
+        className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none"
+      />
     </div>
   )
 }
