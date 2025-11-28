@@ -43,7 +43,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
             <Button
               variant="outline"
               className={cn(
-                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12",
+                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
                 hasValue ? "pt-6 pb-2" : "py-4",
                 className,
               )}
@@ -54,7 +54,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
             </Button>
           </SheetTrigger>
           {hasValue && (
-            <label className="absolute left-4 top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
+            <label className="absolute left-[15px] top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
               {t("adForm.orderTimeLimitPlaceholder")}
             </label>
           )}
@@ -99,9 +99,8 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
       >
         <SelectTrigger
           className={cn(
-            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12",
+            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 [&>svg]:hidden",
             hasValue ? "pt-6 pb-2" : "py-4",
-            "[&>svg]:hidden",
             className,
           )}
         >
@@ -116,7 +115,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         </SelectContent>
       </Select>
       {hasValue && (
-        <label className="absolute left-4 top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
+        <label className="absolute left-[15px] top-2 text-xs text-black/70 pointer-events-none bg-white px-1">
           {t("adForm.orderTimeLimitPlaceholder")}
         </label>
       )}
