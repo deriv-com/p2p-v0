@@ -349,11 +349,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             variant="ghost"
                             size="sm"
                             className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                            onClick={() => {
-                              if (!userId || !verificationStatus?.phone_verified) {
-                                setShowKycSheet(true)
-                              }
-                            }}
+                            onClick={() => handleOpenDrawer(ad)}
                           >
                             <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                           </Button>
