@@ -1,7 +1,5 @@
 "use client"
 
-import { useTranslations } from "next/intl"
-
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useEffect, useState, useRef } from "react"
@@ -18,6 +16,7 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
