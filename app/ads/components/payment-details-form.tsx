@@ -102,9 +102,9 @@ const FullPagePaymentSelection = ({
     onClose()
   }
 
-  const mobileContent = (
+  const content = (
     <>
-      <div className="px-6 pb-4">
+      <div className={isMobile ? "px-6 pb-4" : "pb-4"}>
         <div className="relative">
           <Image
             src="/icons/search-icon-custom.png"
@@ -122,10 +122,10 @@ const FullPagePaymentSelection = ({
           />
         </div>
       </div>
-      <div className="px-6 pb-4">
+      <div className={isMobile ? "px-6 pb-4" : "pb-4"}>
         <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
       </div>
-      <div className="flex-1 overflow-y-auto px-6 space-y-3">
+      <div className={isMobile ? "flex-1 overflow-y-auto px-6 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
         {filteredMethods.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-600">{t("adForm.noPaymentMethodsFound")}</p>
@@ -161,74 +161,7 @@ const FullPagePaymentSelection = ({
           })
         )}
       </div>
-      <div className="p-6 pt-4">
-        <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary" className="w-full">
-          {t("common.confirm")}
-        </Button>
-      </div>
-    </>
-  )
-
-  const desktopContent = (
-    <>
-      <div className="pb-4">
-        <div className="relative">
-          <Image
-            src="/icons/search-icon-custom.png"
-            alt="Search"
-            width={20}
-            height={20}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
-          />
-          <Input
-            type="text"
-            placeholder={t("common.search")}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
-          />
-        </div>
-      </div>
-      <div className="pb-4">
-        <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
-      </div>
-      <div className="flex-1 overflow-y-auto space-y-3">
-        {filteredMethods.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-600">{t("adForm.noPaymentMethodsFound")}</p>
-          </div>
-        ) : (
-          filteredMethods.map((method) => {
-            const methodId = getMethodId(method)
-            const isSelected = localSelected.includes(methodId)
-            const isDisabled = !isSelected && localSelected.length >= 3
-
-            return (
-              <div
-                key={methodId}
-                className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors ${
-                  isDisabled ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                onClick={() => !isDisabled && handleToggle(methodId)}
-              >
-                <div className="flex items-center gap-3">
-                  <div className={`h-2 w-2 rounded-full ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`} />
-                  <span className="text-base text-slate-1200">{method.display_name}</span>
-                </div>
-                <div onClick={(e) => e.stopPropagation()}>
-                  <Checkbox
-                    checked={isSelected}
-                    disabled={isDisabled}
-                    onCheckedChange={() => !isDisabled && handleToggle(methodId)}
-                    className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px]"
-                  />
-                </div>
-              </div>
-            )
-          })
-        )}
-      </div>
-      <div className="pt-4">
+      <div className={isMobile ? "p-6 pt-4" : "pt-4"}>
         <Button onClick={handleConfirm} disabled={localSelected.length === 0} variant="primary" className="w-full">
           {t("common.confirm")}
         </Button>
@@ -243,7 +176,7 @@ const FullPagePaymentSelection = ({
           <DrawerHeader>
             <DrawerTitle className="text-2xl font-bold">{t("paymentMethod.title")}</DrawerTitle>
           </DrawerHeader>
-          {mobileContent}
+          {content}
         </DrawerContent>
       </Drawer>
     )
@@ -255,7 +188,7 @@ const FullPagePaymentSelection = ({
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{t("paymentMethod.title")}</DialogTitle>
         </DialogHeader>
-        {desktopContent}
+        {content}
       </DialogContent>
     </Dialog>
   )
