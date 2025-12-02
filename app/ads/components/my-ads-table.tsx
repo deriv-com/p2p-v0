@@ -210,10 +210,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
         confirmText: undefined,
         cancelText: undefined,
       })
-      return
+    } else {
+      setSelectedAd(ad)
+      setDrawerOpen(true)
     }
-    setSelectedAd(ad)
-    setDrawerOpen(true)
   }
 
   if (isLoading) {
