@@ -25,11 +25,12 @@ export default function EmptyState({
 }: EmptyStateProps) {
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
   const { t } = useTranslations()
 
   const createAd = () => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       router.push("/ads/create")
     } else {
       showAlert({
