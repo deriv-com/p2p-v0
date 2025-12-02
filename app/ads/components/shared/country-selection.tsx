@@ -142,7 +142,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             </Button>
           </DrawerTrigger>
           {hasValue && (
-            <label className="absolute left-[15px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
               {t("common.countrySelection")}
             </label>
           )}
@@ -185,7 +185,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
           </Button>
         </PopoverTrigger>
         {hasValue && (
-          <label className="absolute left-[15px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+          <label className="absolute left-[14px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
             {t("common.countrySelection")}
           </label>
         )}
