@@ -20,6 +20,8 @@ import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -34,6 +36,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const { toast } = useToast()
   const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
+  const { userId, verificationStatus } = useUserDataStore()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
@@ -196,8 +199,21 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   const handleOpenDrawer = (ad: Ad) => {
-    setSelectedAd(ad)
-    setDrawerOpen(true)
+    if (!userId || !verificationStatus?.phone_verified) {
+      showAlert({
+        title: t("wallet.gettingStartedWithP2P"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
+    } else {
+      setSelectedAd(ad)
+      setDrawerOpen(true)
+    }
   }
 
   if (isLoading) {
@@ -262,7 +278,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             adType.toLowerCase() === "buy" ? "text-buy" : "text-sell",
                           )}
                         >
-                          {adType.toLowerCase() === "buy" ? t("common.buy"): t("common.sell")}
+                          {adType.toLowerCase() === "buy" ? t("common.buy") : t("common.sell")}
                         </span>
                         <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
                           {" "}
@@ -327,26 +343,39 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                       </Button>
                     ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                      <>
+                        {!userId || !verificationStatus?.phone_verified ? (
                           <Button
                             variant="ghost"
                             size="sm"
                             className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            onClick={() => handleOpenDrawer(ad)}
                           >
                             <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                           </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
-                          <AdActionsMenu
-                            ad={ad}
-                            onEdit={handleEdit}
-                            onToggleStatus={handleToggleStatus}
-                            onDelete={handleDelete}
-                            onShare={handleShare}
-                          />
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                        ) : (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                              >
+                                <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
+                              <AdActionsMenu
+                                ad={ad}
+                                onEdit={handleEdit}
+                                onToggleStatus={handleToggleStatus}
+                                onDelete={handleDelete}
+                                onShare={handleShare}
+                              />
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                      </>
                     )}
                   </TableCell>
                 </TableRow>

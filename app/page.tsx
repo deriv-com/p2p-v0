@@ -72,8 +72,8 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
-  
 
   const redirectToHelpCentre = () => {
     const helpCentreUrl =
@@ -248,7 +248,7 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
       showAlert({
@@ -265,7 +265,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
@@ -618,13 +618,13 @@ export default function BuySellPage() {
                               </div>
                             )}
                             {ad.user.completion_rate_all_30day > 0 && (
-                                <div className="flex flex-row items-center justify-center gap-[8px]">
-                                  <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                  <span>
-                                    {ad.user.completion_rate_all_30day}% {t("market.completion")}
-                                  </span>
-                                </div>
-                              )}
+                              <div className="flex flex-row items-center justify-center gap-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                <span>
+                                  {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                                </span>
+                              </div>
+                            )}
                           </div>
                           <div className="flex items-center text-xs text-slate-500 mt-2">
                             <TooltipProvider>
