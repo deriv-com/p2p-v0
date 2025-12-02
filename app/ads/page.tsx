@@ -3,7 +3,7 @@
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useEffect, useState, useRef } from "react"
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation"
 import MyAdsTable from "./components/my-ads-table"
 import { AdsAPI } from "@/services/api"
 import { hideMyAds } from "@/services/api/api-my-ads"
@@ -17,8 +17,8 @@ import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface StatusData {
   success: "create" | "update"
@@ -34,7 +34,7 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData, userId } = useUserDataStore()
+  const { userData, userId, verificationStatus } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
@@ -44,9 +44,19 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
+  const [showKycSheet, setShowKycSheet] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
+
+  const handleCreateAd = () => {
+    if (!userId || !verificationStatus?.phone_verified) {
+      setShowKycSheet(true)
+      return
+    }
+    router.push("/ads/create")
+  }
+
   const fetchAds = async () => {
     if (!userId) {
       setLoading(false)
@@ -216,7 +226,7 @@ export default function AdsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
             {ads.length > 0 && (
               <Button
-                onClick={() => router.push("/ads/create")}
+                onClick={handleCreateAd}
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center whitespace-nowrap"
                 disabled={!!tempBanUntil}
@@ -254,6 +264,7 @@ export default function AdsPage() {
           />
         )}
       </div>
+      <KycOnboardingSheet isOpen={showKycSheet} onClose={() => setShowKycSheet(false)} />
     </>
   )
 }

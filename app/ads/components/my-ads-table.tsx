@@ -20,6 +20,8 @@ import { AdActionsMenu } from "./ad-actions-menu"
 import ShareAdPage from "./share-ad-page"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useUserDataStore } from "@/stores/user-data-store"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface MyAdsTableProps {
   ads: Ad[]
@@ -34,10 +36,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const { toast } = useToast()
   const { showDeleteDialog, showAlert, hideAlert } = useAlertDialog()
   const isMobile = useIsMobile()
+  const { userId, verificationStatus } = useUserDataStore()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
+  const [showKycSheet, setShowKycSheet] = useState(false)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
@@ -196,6 +200,10 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   }
 
   const handleOpenDrawer = (ad: Ad) => {
+    if (!userId || !verificationStatus?.phone_verified) {
+      setShowKycSheet(true)
+      return
+    }
     setSelectedAd(ad)
     setDrawerOpen(true)
   }
@@ -262,7 +270,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             adType.toLowerCase() === "buy" ? "text-buy" : "text-sell",
                           )}
                         >
-                          {adType.toLowerCase() === "buy" ? t("common.buy"): t("common.sell")}
+                          {adType.toLowerCase() === "buy" ? t("common.buy") : t("common.sell")}
                         </span>
                         <span className="text-slate-1200 text-base font-bold leading-6 ml-1">
                           {" "}
@@ -333,6 +341,11 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             variant="ghost"
                             size="sm"
                             className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                            onClick={() => {
+                              if (!userId || !verificationStatus?.phone_verified) {
+                                setShowKycSheet(true)
+                              }
+                            }}
                           >
                             <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                           </Button>
@@ -375,6 +388,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
           </div>
         </DrawerContent>
       </Drawer>
+
+      <KycOnboardingSheet isOpen={showKycSheet} onClose={() => setShowKycSheet(false)} />
     </>
   )
 }
