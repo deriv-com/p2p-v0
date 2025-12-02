@@ -1,5 +1,7 @@
 "use client"
 
+import { useTranslations } from "next/intl"
+
 import { TooltipTrigger } from "@/components/ui/tooltip"
 
 import { useEffect, useState, useRef } from "react"
@@ -17,7 +19,6 @@ import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { useTranslations } from "@/lib/i18n/use-translations"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface StatusData {
@@ -44,14 +45,22 @@ export default function AdsPage() {
   })
   const { showAlert } = useAlertDialog()
   const hasFetchedRef = useRef(false)
-  const [showKycSheet, setShowKycSheet] = useState(false)
 
   const isMobile = useIsMobile()
   const router = useRouter()
 
   const handleCreateAd = () => {
     if (!userId || !verificationStatus?.phone_verified) {
-      setShowKycSheet(true)
+      showAlert({
+        title: t("wallet.gettingStartedWithP2P"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
       return
     }
     router.push("/ads/create")
@@ -264,7 +273,6 @@ export default function AdsPage() {
           />
         )}
       </div>
-      <KycOnboardingSheet isOpen={showKycSheet} onClose={() => setShowKycSheet(false)} />
     </>
   )
 }
