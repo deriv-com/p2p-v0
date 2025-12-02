@@ -343,8 +343,8 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                       </Button>
                     ) : (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                      <>
+                        {!userId || !verificationStatus?.phone_verified ? (
                           <Button
                             variant="ghost"
                             size="sm"
@@ -353,17 +353,29 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                           >
                             <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
                           </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
-                          <AdActionsMenu
-                            ad={ad}
-                            onEdit={handleEdit}
-                            onToggleStatus={handleToggleStatus}
-                            onDelete={handleDelete}
-                            onShare={handleShare}
-                          />
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                        ) : (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                              >
+                                <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
+                              <AdActionsMenu
+                                ad={ad}
+                                onEdit={handleEdit}
+                                onToggleStatus={handleToggleStatus}
+                                onDelete={handleDelete}
+                                onShare={handleShare}
+                              />
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                      </>
                     )}
                   </TableCell>
                 </TableRow>
