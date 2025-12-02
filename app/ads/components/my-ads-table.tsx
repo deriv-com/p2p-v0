@@ -41,7 +41,6 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
   const [selectedAd, setSelectedAd] = useState<Ad | null>(null)
   const [showShareView, setShowShareView] = useState(false)
   const [adToShare, setAdToShare] = useState<Ad | null>(null)
-  const [showKycSheet, setShowKycSheet] = useState(false)
 
   const formatLimits = (ad: Ad) => {
     if (ad.minimum_order_amount && ad.actual_maximum_order_amount) {
