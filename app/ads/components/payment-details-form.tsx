@@ -122,7 +122,7 @@ const FullPagePaymentSelection = ({
           />
         </div>
       </div>
-      <div className={isMobile ? "px-6 pb-4" : "py-4"}>
+      <div className={isMobile ? "px-6 pb-4" : "py-0"}>
         <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
       </div>
       <div className={isMobile ? "flex-1 overflow-y-auto px-6 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
