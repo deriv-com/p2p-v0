@@ -87,14 +87,14 @@ export default function MarketFilterDropdown({
     <div className="w-full h-full">
       <div className="space-y-2 mb-2">
         <div className="mb-2">
-          <h4 className="text-base font-normal text-[#0000007A]">{t("filter.adTypes")}</h4>
+          <h4 className="text-base font-normal text-black/50">{t("filter.adTypes")}</h4>
         </div>
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"
             checked={filters.fromFollowing}
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
-            className="data-[state=checked]:bg-black border-2 border-[#0000007A]"
+            className="data-[state=checked]:bg-black border-2 border-black/50"
           />
           <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
             {t("filter.adsFromFollowing")}
@@ -103,7 +103,7 @@ export default function MarketFilterDropdown({
       </div>
       <div className="mb-2">
         <div className="border-t border-gray-200 pt-2">
-          <h4 className="text-base font-normal text-[#0000007A] mb-2">{t("filter.sortBy")}</h4>
+          <h4 className="text-base font-normal text-black/50 mb-2">{t("filter.sortBy")}</h4>
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className="flex items-center space-x-3">
               <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
