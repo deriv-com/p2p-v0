@@ -282,7 +282,7 @@ export default function AdDetailsForm({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
-                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">
+                <label className="block mb-2 text-[#181C25] text-sm font-normal leading-5">
                   {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
@@ -300,7 +300,7 @@ export default function AdDetailsForm({
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span className="text-base font-normal text-grayscale-600">{buyCurrency}</span>
+                        <span className="text-base font-normal text-[#000000B8]">{buyCurrency}</span>
                       </div>
                     </SelectValue>
                   </SelectTrigger>
@@ -313,6 +313,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
                                 "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -321,7 +322,7 @@ export default function AdDetailsForm({
                               className="w-6 h-6 rounded object-cover"
                             />
                           )}
-                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                          <span className="text-base font-normal text-[#000000B8]">{currency.code}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -330,7 +331,7 @@ export default function AdDetailsForm({
               </div>
 
               <div>
-                <label className="block mb-2 text-slate-1200 text-sm font-normal leading-5">{t("adForm.for")}</label>
+                <label className="block mb-2 text-[#181C25] text-sm font-normal leading-5">{t("adForm.for")}</label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>
@@ -346,7 +347,7 @@ export default function AdDetailsForm({
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span className="text-base font-normal text-grayscale-600">{forCurrency}</span>
+                        <span className="text-base font-normal text-[#000000B8]">{forCurrency}</span>
                       </div>
                     </SelectValue>
                   </SelectTrigger>
@@ -359,6 +360,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
                                 "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -367,7 +369,7 @@ export default function AdDetailsForm({
                               className="w-6 h-6 rounded object-cover"
                             />
                           )}
-                          <span className="text-base font-normal text-grayscale-600">{currency.code}</span>
+                          <span className="text-base font-normal text-[#000000B8]">{currency.code}</span>
                         </div>
                       </SelectItem>
                     ))}

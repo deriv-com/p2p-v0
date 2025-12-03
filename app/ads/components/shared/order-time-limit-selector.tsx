@@ -48,13 +48,13 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
                 className,
               )}
             >
-              <span className={cn("text-left text-base text-[#000000B8]")}>
+              <span className={cn("text-left text-base text-grayscale-600")}>
                 {hasValue ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
               </span>
             </Button>
           </SheetTrigger>
           {hasValue && (
-            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
               {t("adForm.orderTimeLimitPlaceholder")}
             </label>
           )}
@@ -100,7 +100,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         <SelectTrigger
           hideChevron
           className={cn(
-            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 text-[#000000B8]",
+            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 text-grayscale-600",
             hasValue ? "pt-6 pb-2" : "py-4",
             className,
           )}
@@ -116,7 +116,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
         </SelectContent>
       </Select>
       {hasValue && (
-        <label className="absolute left-[14px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+        <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
           {t("adForm.orderTimeLimitPlaceholder")}
         </label>
       )}

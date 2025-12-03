@@ -138,11 +138,11 @@ export default function CountrySelection({ countries, selectedCountries, onCount
               )}
               onClick={() => setIsOpen(true)}
             >
-              <span className="text-left text-base text-[#000000B8]">{getDisplayText()}</span>
+              <span className="text-left text-base text-grayscale-600">{getDisplayText()}</span>
             </Button>
           </DrawerTrigger>
           {hasValue && (
-            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
               {t("common.countrySelection")}
             </label>
           )}
@@ -181,11 +181,11 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             )}
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className="text-left text-base text-[#000000B8]">{getDisplayText()}</span>
+            <span className="text-left text-base text-grayscale-600">{getDisplayText()}</span>
           </Button>
         </PopoverTrigger>
         {hasValue && (
-          <label className="absolute left-[14px] top-2 text-[12px] font-normal text-[#000000B8] pointer-events-none bg-white px-1">
+          <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
             {t("common.countrySelection")}
           </label>
         )}
