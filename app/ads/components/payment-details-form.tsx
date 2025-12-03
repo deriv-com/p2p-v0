@@ -123,7 +123,7 @@ const FullPagePaymentSelection = ({
             placeholder={t("common.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="text-base pl-10 pr-10 h-8 md:h-14 border-grayscale-500 focus:border-black rounded-lg"
+            className="text-base pl-10 pr-10 h-8 md:h-14 bg-[#0000000A] border-0 focus:border-0 focus:ring-0 rounded-lg placeholder:text-[#0000003D] placeholder:text-base placeholder:font-normal"
           />
         </div>
       </div>
