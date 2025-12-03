@@ -282,7 +282,7 @@ export default function AdDetailsForm({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
               <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">
+                <label className="block mb-2 text-[#181C25] text-sm font-normal leading-5">
                   {type === "buy" ? t("adForm.buyCurrency") : t("adForm.sellCurrency")}
                 </label>
                 <Select value={buyCurrency} onValueChange={setBuyCurrency}>
@@ -313,6 +313,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
                                 "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -330,7 +331,7 @@ export default function AdDetailsForm({
               </div>
 
               <div>
-                <label className="block mb-2 text-black text-sm font-normal leading-5">{t("adForm.for")}</label>
+                <label className="block mb-2 text-[#181C25] text-sm font-normal leading-5">{t("adForm.for")}</label>
                 <Select value={forCurrency} onValueChange={setForCurrency}>
                   <SelectTrigger className="w-full h-14 rounded-lg">
                     <SelectValue>
@@ -358,6 +359,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyFlagMapper[currency.code as keyof typeof currencyFlagMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
