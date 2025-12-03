@@ -16,9 +16,9 @@ import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { Switch } from "@/components/ui/switch"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { useUserDataStore } from "@/stores/user-data-store"
-import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 
 interface StatusData {
   success: "create" | "update"
@@ -34,9 +34,8 @@ export default function AdsPage() {
   const [error, setError] = useState<string | null>(null)
   const [showDeletedBanner, setShowDeletedBanner] = useState(false)
   const [statusData, setStatusData] = useState<StatusData | null>(null)
-  const { userData, userId } = useUserDataStore()
+  const { userData, userId, verificationStatus } = useUserDataStore()
   const tempBanUntil = userData?.temp_ban_until
-  const isDisabled = userData?.status === "disabled"
   const [hiddenAdverts, setHiddenAdverts] = useState(false)
   const [errorModal, setErrorModal] = useState({
     show: false,
@@ -48,6 +47,24 @@ export default function AdsPage() {
 
   const isMobile = useIsMobile()
   const router = useRouter()
+
+  const handleCreateAd = () => {
+    if (!userId || !verificationStatus?.phone_verified) {
+      showAlert({
+        title: t("wallet.gettingStartedWithP2P"),
+        description: (
+          <div className="space-y-4 mb-6 mt-2">
+            <KycOnboardingSheet />
+          </div>
+        ),
+        confirmText: undefined,
+        cancelText: undefined,
+      })
+      return
+    }
+    router.push("/ads/create")
+  }
+
   const fetchAds = async () => {
     if (!userId) {
       setLoading(false)
@@ -206,14 +223,6 @@ export default function AdsPage() {
     )
   }
 
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
-  }
-
   return (
     <>
       <div className="flex flex-col h-screen bg-white px-3">
@@ -225,7 +234,7 @@ export default function AdsPage() {
           <div className="flex flex-wrap items-center justify-between gap-3 my-6">
             {ads.length > 0 && (
               <Button
-                onClick={() => router.push("/ads/create")}
+                onClick={handleCreateAd}
                 size="sm"
                 className="font-bold text-base leading-4 tracking-[0%] text-center whitespace-nowrap"
                 disabled={!!tempBanUntil}

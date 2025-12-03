@@ -1,8 +1,7 @@
 "use client"
-
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import Image from "next/image"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useTranslations } from "@/lib/i18n/use-translations"
@@ -47,25 +46,8 @@ export default function UserInfo({
             ) : (
               <Skeleton className="h-7 w-32 bg-white/20" />
             )}
-            {isFullyVerified && (
-              <VerifiedBadge description="You have completed all required verification steps, including email, phone number, identity (KYC), and address verification." />
-            )}
-            {tradeBand === "bronze" && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <>
-                      <p className="font-bold text-white mb-2">{t("profile.bronzeTier")}</p>
-                      <p className="text-white">{t("profile.bronzeTierDescription")}</p>
-                    </>
-                    <TooltipArrow className="fill-black" />
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+            {isFullyVerified && <VerifiedBadge isCurrentUser={true} />}
+            {tradeBand && <TradeBandBadge tradeBand={tradeBand} showLearnMore={true} size={18} />}
           </div>
           {joinDate && <div className="text-xs text-white opacity-[0.72]">{joinDate}</div>}
           <div className="flex flex-wrap gap-y-2 items-center mt-1 text-xs">

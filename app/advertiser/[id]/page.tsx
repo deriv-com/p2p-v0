@@ -3,7 +3,7 @@
 export const runtime = "edge"
 
 import { useState, useEffect, useRef } from "react"
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { useUserDataStore } from "@/stores/user-data-store"
@@ -16,10 +16,10 @@ import OrderSidebar from "@/components/buy-sell/order-sidebar"
 import EmptyState from "@/components/empty-state"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import AdvertiserStats from "@/app/advertiser/components/advertiser-stats"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useToast } from "@/hooks/use-toast"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { VerifiedBadge } from "@/components/verified-badge"
+import { TradeBandBadge } from "@/components/trade-band-badge"
 import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface AdvertiserProfile {
@@ -60,7 +60,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const router = useRouter()
   const { id } = useParams() as { id: string }
   const searchParams = useSearchParams()
-  const adIdParam = searchParams.get('adId')
+  const adIdParam = searchParams.get("adId")
   const { toast } = useToast()
   const isMobile = useIsMobile()
   const { showAlert } = useAlertDialog()
@@ -113,7 +113,6 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
       setAdverts(advertiserAds)
     } catch (err) {
       if (!abortController.signal.aborted) {
-        console.error("Error fetching advertiser data:", err)
         setError("Failed to load the advertiser profile.")
         setProfile(null)
         setAdverts([])
@@ -126,7 +125,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   }
 
   useEffect(() => {
-    if(id) {
+    if (id) {
       fetchAdvertiserData()
     } else {
       router.push("/")
@@ -141,9 +140,16 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
 
   useEffect(() => {
     if (adIdParam && adverts.length > 0 && !isBlocked) {
-      const ad = adverts.find(a => a.id == adIdParam)
+      const ad = adverts.find((a) => a.id == adIdParam)
       if (ad) {
         handleOrderClick(ad, ad.type === "buy" ? "buy" : "sell")
+      } else {
+        showAlert({
+          title: "This ad is unavailable",
+          description: "It's either deleted or no longer active.",
+          confirmText: "OK",
+          type: "warning",
+        })
       }
     }
   }, [adIdParam, adverts, isBlocked])
@@ -161,7 +167,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              {isFollowing ? <span>Successfully unfollowed</span> : <span>Successfully followed</span>}
+              {isFollowing ? (
+                <span>{t("advertiser.successfullyUnfollowed")}</span>
+              ) : (
+                <span>{t("advertiser.successfullyFollowed")}</span>
+              )}
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -180,10 +190,10 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
   const handleBlockClick = () => {
     if (!isBlocked) {
       showAlert({
-        title: `Block ${profile?.nickname}?`,
-        description: `You won't see ${profile?.nickname}'s ads, and they can't place orders on yours.`,
-        confirmText: "Block",
-        cancelText: "Cancel",
+        title: t("advertiser.blockUser", { nickname: profile?.nickname }),
+        description: t("advertiser.blockDescription", { nickname: profile?.nickname }),
+        confirmText: t("advertiser.block"),
+        cancelText: t("common.cancel"),
         type: "warning",
         onConfirm: async () => {
           if (!profile) return
@@ -199,11 +209,11 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                 description: (
                   <div className="flex items-center gap-2">
                     <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                    {isBlocked ? (
-                      <span>{profile?.nickname} unblocked.</span>
-                    ) : (
-                      <span>{profile?.nickname} blocked.</span>
-                    )}
+                    <span>
+                      {isBlocked
+                        ? t("advertiser.userUnblocked", { nickname: profile?.nickname })
+                        : t("advertiser.userBlocked", { nickname: profile?.nickname })}
+                    </span>
                   </div>
                 ),
                 className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -238,7 +248,7 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
           description: (
             <div className="flex items-center gap-2">
               <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-              <span>{profile?.nickname} unblocked.</span>
+              <span>{t("advertiser.userUnblocked", { nickname: profile?.nickname })}</span>
             </div>
           ),
           className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -316,22 +326,14 @@ export default function AdvertiserProfilePage({ onBack }: AdvertiserProfilePageP
                   <div className="flex-1">
                     <div className="flex gap-1 items-center">
                       <h2 className="text-lg font-bold">{profile?.nickname}</h2>
-                      <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
-                      {profile?.trade_band === "bronze" && (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Image src="/icons/bronze.png" className="cursor-pointer" alt="Bronze" width={18} height={18} />
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <>
-                                <p className="font-bold text-white mb-2">Bronze tier</p>
-                                <p className="opacity-[0.72]">Default tier for new users with basic trading limits.</p>
-                              </>
-                              <TooltipArrow className="fill-black" />
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
+                      <VerifiedBadge />
+                      {profile.trade_band && (
+                        <TradeBandBadge
+                          tradeBand={profile.trade_band}
+                          showLearnMore={true}
+                          size={18}
+                          className="mr-1"
+                        />
                       )}
                     </div>
                     <div className="flex items-center text-xs text-grayscale-600 mt-2">

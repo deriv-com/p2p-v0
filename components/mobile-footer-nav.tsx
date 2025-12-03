@@ -37,6 +37,10 @@ export default function MobileFooterNav() {
     }
   }, [userData?.signup])
 
+  if (userData?.status === "disabled") {
+    return null
+  }
+
   if (
     pathname.startsWith("/orders/") ||
     pathname.startsWith("/ads/create") ||

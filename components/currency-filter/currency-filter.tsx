@@ -112,8 +112,8 @@ export function CurrencyFilter({
       <div className="max-h-[85%] overflow-y-auto scrollbar-custom md:pr-2 md:mr-2">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
-            title={`${searchQuery} is unavailable`}
-            description="Select another currency"
+            title={t("filter.currencyUnavailable", { currency: searchQuery })}
+            description={t("filter.selectAnotherCurrency")}
             redirectToAds={false}
           />
         ) : (

@@ -1,5 +1,8 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+import { TradeBandBadge } from "@/components/trade-band-badge"
+
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -27,7 +30,7 @@ import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getTotalBalance } from "@/services/api/api-auth"
@@ -72,6 +75,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
 
   const redirectToHelpCentre = () => {
@@ -90,7 +94,6 @@ export default function BuySellPage() {
     paymentMethods.length > 0 &&
     selectedPaymentMethods.length < paymentMethods.length &&
     selectedPaymentMethods.length > 0
-  const isDisabled = userData?.status === "disabled"
 
   const balancesKey = useMemo(() => {
     if (!userData?.signup) return null
@@ -249,7 +252,7 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
       showAlert({
@@ -266,7 +269,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
@@ -327,14 +330,6 @@ export default function BuySellPage() {
       }
     }
   }, [])
-
-  if (isDisabled) {
-    return (
-      <div className="flex flex-col h-screen overflow-hidden px-3">
-        <P2PAccessRemoved />
-      </div>
-    )
-  }
 
   return (
     <>
@@ -665,7 +660,7 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                             )}
-                            {ad.user.completion_rate_all_30day && (
+                            {ad.user.completion_rate_all_30day > 0 && (
                               <div className="flex flex-row items-center justify-center gap-[8px]">
                                 <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                 <span>
@@ -686,7 +681,7 @@ export default function BuySellPage() {
                                   </div>
                                 </TooltipTrigger>
                                 <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                  <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
+                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
                                   <TooltipArrow className="fill-black" />
                                 </TooltipContent>
                               </Tooltip>

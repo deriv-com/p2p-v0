@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface StatsTabsProps {
   stats?: any
@@ -37,6 +38,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   const [selectedMethodForDetails, setSelectedMethodForDetails] = useState<string | null>(null)
   const [showAddPaymentPanel, setShowAddPaymentPanel] = useState(false)
   const userId = useUserDataStore((state) => state.userId)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { t } = useTranslations()
   const [paymentMethodsCount, setPaymentMethodsCount] = useState(0)
 
@@ -90,7 +92,7 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
   }
 
   const handleShowAddPaymentMethod = () => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setShowAddPaymentPanel(true)
     } else {
       showAlert({
@@ -261,28 +263,28 @@ export default function StatsTabs({ stats, isLoading }: StatsTabsProps) {
             <TabsContent value="stats" className="mt-4">
               {isLoading ? (
                 <div className="space-y-4">
-                  <div className="bg-[#F5F5F5] rounded-lg p-4">
+                  <div className="rounded-lg p-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                          <Skeleton className="bg-grayscale-500 h-4 w-3/4 mb-2 rounded" />
+                          <Skeleton className="bg-grayscale-500 h-8 w-1/2 rounded" />
                         </div>
                       ))}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-t border-b border-slate-200 py-2">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                          <Skeleton className="bg-grayscale-500 h-4 w-3/4 mb-2 rounded" />
+                          <Skeleton className="bg-grayscale-500 h-8 w-1/2 rounded" />
                         </div>
                       ))}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       {[...Array(3)].map((_, i) => (
                         <div key={i} className="py-4">
-                          <div className="animate-pulse bg-slate-200 h-4 w-3/4 mb-2 rounded"></div>
-                          <div className="animate-pulse bg-slate-200 h-8 w-1/2 rounded"></div>
+                          <Skeleton className="bg-grayscale-500 h-4 w-3/4 mb-2 rounded" />
+                          <Skeleton className="bg-grayscale-500 h-8 w-1/2 rounded" />
                         </div>
                       ))}
                     </div>

@@ -137,7 +137,7 @@ export async function verifyCode(verificationData: VerificationRequest): Promise
  * Verify token from URL parameter
  */
 export async function verifyToken(token: string): Promise<VerificationResponse> {
-  const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
+  const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
   
   try {
     if(isOryEnabled) {
@@ -205,7 +205,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
  */
 export async function getSession(): Promise<boolean> {
   try {
-    const isOryEnabled = (localStorage.getItem("is_ory_enabled") && localStorage.getItem("is_ory_enabled") === "true") ?? true
+    const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
     const sessionUrl = isOryEnabled ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami` : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
     const response = await fetch(sessionUrl, {
@@ -259,11 +259,29 @@ export async function fetchUserIdAndStore(): Promise<void> {
     })
 
     const result = await response.json()
+    
+    if (response.status === 403) {
+      const errors = result?.errors || []
+      const isUserDisabled = errors.some((error: any) => 
+        error.code === "UserDisabled" || error.message?.includes("UserDisabled")
+      )
+      
+      if (isUserDisabled) {
+        useUserDataStore.getState().updateUserData({
+          balances: [{amount: "0"}],
+          signup: "v2",
+          status: "disabled"
+        })
+        return
+      }
+    }
+    
     if (!response.ok) {
       useUserDataStore.getState().updateUserData({
           balances: [{amount: "0"}],
           signup: "v2"
         })
+      return
     }
 
     const userId = result?.data?.id
