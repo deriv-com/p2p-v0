@@ -128,7 +128,7 @@ const FullPagePaymentSelection = ({
         </div>
       </div>
       {!isMobile && (
-        <div className="py-4">
+        <div className="my-4">
           <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
@@ -180,7 +180,7 @@ const FullPagePaymentSelection = ({
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
         <DrawerContent className="max-h-[90vh]">
-          <DrawerHeader>
+          <DrawerHeader className="pb-[10px]">
             <DrawerTitle className="text-[20px] font-bold">{t("paymentMethod.title")}</DrawerTitle>
           </DrawerHeader>
           {content}
