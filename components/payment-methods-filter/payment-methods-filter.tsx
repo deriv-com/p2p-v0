@@ -186,7 +186,7 @@ export default function PaymentMethodsFilter({
           placeholder={t("paymentMethod.search")}
           value={searchQuery}
           onChange={handleSearchChange}
-          className="text-sm font-normal placeholder:text-[#0000003D] pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
+          className="text-sm font-normal placeholder:text-grayscale-text-placeholder pl-10 pr-10 h-14 md:h-8 border-0 focus:border-0 bg-grayscale-500 rounded-lg"
           autoComplete="off"
           autoFocus
         />
