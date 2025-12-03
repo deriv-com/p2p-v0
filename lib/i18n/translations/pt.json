@@ -47,7 +47,7 @@
     "youreReceiving": "Você está recebendo",
     "paymentMethod": "Método de pagamento",
     "paymentMethodAll": "Método de pagamento (Todos)",
-    "paymentMethodSelected": "Método de pagamento",
+    "paymentMethodSelected": "Método de pagamento ({count})",
     "advertisers": "Anunciantes",
     "rates": "Taxas",
     "paymentMethods": "Métodos de pagamento",
