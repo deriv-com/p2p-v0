@@ -160,7 +160,7 @@ const FullPagePaymentSelection = ({
                     checked={isSelected}
                     disabled={isDisabled}
                     onCheckedChange={() => !isDisabled && handleToggle(methodId)}
-                    className="border-slate-1200 data-[state=checked]:!bg-slate-1200 data-[state=checked]:!border-slate-1200 rounded-[2px] w-[14px] h-[14px]"
+                    className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-[#0000007A] rounded-[2px]"
                   />
                 </div>
               </div>
