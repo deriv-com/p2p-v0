@@ -106,7 +106,7 @@ const FullPagePaymentSelection = ({
     <>
       {isMobile && (
         <div className="px-6 pb-4 text-center">
-          <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
+          <p className="text-base text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
       <div className={isMobile ? "px-6 pb-4" : ""}>
@@ -129,7 +129,7 @@ const FullPagePaymentSelection = ({
       </div>
       {!isMobile && (
         <div className="my-0">
-          <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
+          <p className="text-base text-[#181C25]">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
       <div className={isMobile ? "flex-1 overflow-y-auto px-6 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
