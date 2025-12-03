@@ -30,7 +30,7 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getTotalBalance } from "@/services/api/api-auth" // Fix import to use correct api-auth file instead of non-existent api-user
+import { getTotalBalance } from "@/services/api/api-auth"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
