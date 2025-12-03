@@ -159,7 +159,7 @@ export default function PaymentMethodsFilter({
                   id={method.method}
                   checked={isAllSelected ? false : tempSelectedMethods.includes(method.method)}
                   onCheckedChange={() => handleMethodToggle(method.method)}
-                  className="data-[state=checked]:bg-black border-black"
+                  className="data-[state=checked]:bg-black "
                   disabled={isLoading}
                 />
                 <label htmlFor={method.method} className="text-sm text-grayscale-600 cursor-pointer flex-1">
@@ -211,7 +211,7 @@ export default function PaymentMethodsFilter({
               if (el) el.indeterminate = isIndeterminate
             }}
             onCheckedChange={handleSelectAll}
-            className="data-[state=checked]:bg-black border-black"
+            className="data-[state=checked]:bg-black "
             disabled={isLoading || filteredPaymentMethods.length === 0}
           />
           <label htmlFor="select-all" className="text-sm text-slate-1200 cursor-pointer">
