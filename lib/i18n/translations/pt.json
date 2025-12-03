@@ -513,7 +513,7 @@
     "submit": "Enviar",
     "orderTimeLimit": "Limite de tempo do pedido",
     "orderTimeLimitTooltip": "Os pedidos expirarão se não forem concluídos dentro deste prazo.",
-    "orderTimeLimitPlaceholder": "Os pedidos devem ser concluídos em"
+    "orderTimeLimitPlaceholder": "Os pedidos devem ser concluídos em",
     "confirmPaymentReceived": "Confirmar pagamento recebido",
     "otpSentTo": "Digite o código de 6 dígitos enviado para {email}. Esta etapa verifica sua identidade antes de liberar o pagamento para a outra parte.",
     "incorrectCode": "Código incorreto. Você tem {attempts} tentativa{plural} restante{plural}.",
