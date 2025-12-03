@@ -94,7 +94,7 @@ export default function MarketFilterDropdown({
             id="from-following"
             checked={filters.fromFollowing}
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
-            className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-[#0000007A]"
+            className="data-[state=checked]:bg-black border-2 border-[#0000007A]"
           />
           <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
             {t("filter.adsFromFollowing")}
