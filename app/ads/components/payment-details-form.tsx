@@ -195,7 +195,7 @@ const FullPagePaymentSelection = ({
         <DialogHeader className="flex flex-row items-center justify-between">
           <DialogTitle className="text-2xl font-bold">{t("paymentMethod.title")}</DialogTitle>
           <button onClick={onClose} className="p-0 rounded-full hover:opacity-80 transition-opacity" aria-label="Close">
-            <Image src="/icons/close-circle-secondary.png" alt="Close" width={48} height={48} />
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
           </button>
         </DialogHeader>
         {content}
