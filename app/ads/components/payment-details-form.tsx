@@ -191,18 +191,18 @@ const FullPagePaymentSelection = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px] relative">
-        <Button
-          onClick={onClose}
-          variant="ghost"
-          size="icon"
-          className="absolute right-4 top-4 p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12"
-          aria-label="Close"
-        >
-          <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
-        </Button>
-        <DialogHeader>
+      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
+        <DialogHeader className="relative">
           <DialogTitle className="text-2xl font-extrabold">{t("paymentMethod.title")}</DialogTitle>
+          <Button
+            onClick={onClose}
+            variant="ghost"
+            size="icon"
+            className="absolute right-[-16px] top-[-16px] p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12"
+            aria-label="Close"
+          >
+            <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
+          </Button>
         </DialogHeader>
         {content}
       </DialogContent>
