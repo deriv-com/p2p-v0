@@ -300,7 +300,7 @@ export default function AdDetailsForm({
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span>{buyCurrency}</span>
+                        <span className="text-base font-normal text-[#000000B8]">{buyCurrency}</span>
                       </div>
                     </SelectValue>
                   </SelectTrigger>
@@ -321,7 +321,7 @@ export default function AdDetailsForm({
                               className="w-6 h-6 rounded object-cover"
                             />
                           )}
-                          <span>{currency.code}</span>
+                          <span className="text-base font-normal text-[#000000B8]">{currency.code}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -346,7 +346,7 @@ export default function AdDetailsForm({
                             className="w-6 h-6 rounded object-cover"
                           />
                         )}
-                        <span>{forCurrency}</span>
+                        <span className="text-base font-normal text-[#000000B8]">{forCurrency}</span>
                       </div>
                     </SelectValue>
                   </SelectTrigger>
@@ -367,7 +367,7 @@ export default function AdDetailsForm({
                               className="w-6 h-6 rounded object-cover"
                             />
                           )}
-                          <span>{currency.code}</span>
+                          <span className="text-base font-normal text-[#000000B8]">{currency.code}</span>
                         </div>
                       </SelectItem>
                     ))}
