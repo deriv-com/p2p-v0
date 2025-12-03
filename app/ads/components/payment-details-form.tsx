@@ -104,6 +104,11 @@ const FullPagePaymentSelection = ({
 
   const content = (
     <>
+      {isMobile && (
+        <div className="px-6 pb-4 text-center">
+          <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
+        </div>
+      )}
       <div className={isMobile ? "px-6 pb-4" : ""}>
         <div className="relative">
           <Image
@@ -122,9 +127,11 @@ const FullPagePaymentSelection = ({
           />
         </div>
       </div>
-      <div className={isMobile ? "px-6 pb-4" : "py-0"}>
-        <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
-      </div>
+      {!isMobile && (
+        <div className="py-4">
+          <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
+        </div>
+      )}
       <div className={isMobile ? "flex-1 overflow-y-auto px-6 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
         {filteredMethods.length === 0 ? (
           <div className="text-center py-8">
@@ -174,7 +181,7 @@ const FullPagePaymentSelection = ({
       <Drawer open={isOpen} onOpenChange={onClose}>
         <DrawerContent className="max-h-[90vh]">
           <DrawerHeader>
-            <DrawerTitle className="text-2xl font-bold">{t("paymentMethod.title")}</DrawerTitle>
+            <DrawerTitle className="text-[20px] font-bold">{t("paymentMethod.title")}</DrawerTitle>
           </DrawerHeader>
           {content}
         </DrawerContent>
@@ -184,7 +191,7 @@ const FullPagePaymentSelection = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8">
+      <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold">{t("paymentMethod.title")}</DialogTitle>
         </DialogHeader>
