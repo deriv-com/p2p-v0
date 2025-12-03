@@ -96,7 +96,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
             id="all-countries"
             checked={isAllSelected}
             onCheckedChange={handleAllToggle}
-            className="data-[state=checked]:bg-black border-black"
+            className="data-[state=checked]:bg-black "
           />
           <label htmlFor="all-countries" className="text-sm cursor-pointer">
             {t("common.allCountries")}
@@ -113,7 +113,7 @@ export default function CountrySelection({ countries, selectedCountries, onCount
                 checked={selectedCountries.includes(country.code)}
                 onCheckedChange={() => handleCountryToggle(country.code)}
                 disabled={false}
-                className="data-[state=checked]:bg-black border-black"
+                className="data-[state=checked]:bg-black "
               />
               <label htmlFor={country.code} className="text-sm cursor-pointer">
                 {country.name}
