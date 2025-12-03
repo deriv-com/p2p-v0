@@ -198,7 +198,7 @@ const FullPagePaymentSelection = ({
             onClick={onClose}
             variant="ghost"
             size="icon"
-            className="absolute right-[-16px] top-[-16px] p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12 pb-4""
+            className="absolute right-[-16px] top-[-16px] p-0 rounded-full hover:opacity-80 hover:bg-transparent transition-opacity w-12 h-12 pb-4"
             aria-label="Close"
           >
             <Image src="/icons/button-close.png" alt="Close" width={48} height={48} />
