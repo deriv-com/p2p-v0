@@ -193,7 +193,7 @@ const FullPagePaymentSelection = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-xl max-h-[90vh] flex flex-col p-8 rounded-[32px]">
         <DialogHeader className="relative mb-4">
-          <DialogTitle className="text-2xl font-extrabold mt-4">{t("paymentMethod.title")}</DialogTitle>
+          <DialogTitle className="text-2xl font-extrabold mt-0">{t("paymentMethod.title")}</DialogTitle>
           <Button
             onClick={onClose}
             variant="ghost"
