@@ -128,7 +128,7 @@ const FullPagePaymentSelection = ({
         </div>
       </div>
       {!isMobile && (
-        <div className="my-4">
+        <div className="my-0">
           <p className="text-sm">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
