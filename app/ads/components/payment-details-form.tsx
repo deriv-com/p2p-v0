@@ -106,7 +106,7 @@ const FullPagePaymentSelection = ({
     <>
       {isMobile && (
         <div className="px-6 pb-4 text-center">
-          <p className="text-base text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</p>
+          <p className="text-base text-grayscale-600">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
       <div className={isMobile ? "px-6 pb-4" : ""}>
@@ -123,13 +123,13 @@ const FullPagePaymentSelection = ({
             placeholder={t("common.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="text-base pl-10 pr-10 h-8 md:h-14 bg-[#0000000A] border-0 focus:border-0 focus:ring-0 rounded-lg placeholder:text-[#0000003D] placeholder:text-base placeholder:font-normal"
+            className="text-base pl-10 pr-10 h-8 md:h-14 bg-grayscale-500 border-0 focus:border-0 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal"
           />
         </div>
       </div>
       {!isMobile && (
         <div className="my-0">
-          <p className="text-base text-[#181C25]">{t("paymentMethod.selectUpTo3")}</p>
+          <p className="text-base text-slate-1200">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
       <div className={isMobile ? "flex-1 overflow-y-auto px-6 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
@@ -160,7 +160,7 @@ const FullPagePaymentSelection = ({
                     checked={isSelected}
                     disabled={isDisabled}
                     onCheckedChange={() => !isDisabled && handleToggle(methodId)}
-                    className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-[#0000007A] rounded-[2px]"
+                    className="w-[14px] h-[14px] data-[state=checked]:bg-black border-2 border-grayscale-text-muted rounded-[2px]"
                   />
                 </div>
               </div>
@@ -266,7 +266,7 @@ const PaymentSelectionContent = ({
   return (
     <div className="flex flex-col h-full md:h-[60vh] md:max-h-[600px]">
       <div className="flex-1 overflow-y-auto space-y-4 pb-4">
-        {paymentMethods && <div className="text-[#000000B8]">{t("paymentMethod.selectUpTo3")}</div>}
+        {paymentMethods && <div className="text-grayscale-600">{t("paymentMethod.selectUpTo3")}</div>}
         {paymentMethods.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-gray-600 mb-4">{t("adForm.noPaymentMethodsFound")}</p>
