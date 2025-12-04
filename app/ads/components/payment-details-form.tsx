@@ -123,7 +123,9 @@ const FullPagePaymentSelection = ({
             placeholder={t("common.search")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 border-0 focus:border-0 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal"
+            className={`text-base pl-[40px] md:pl-[48px] pr-10 h-8 md:h-14 bg-grayscale-500 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal ${
+              searchQuery.length > 0 ? "border border-black" : "border-0 focus:border-0"
+            }`}
           />
           {searchQuery && (
             <Button
