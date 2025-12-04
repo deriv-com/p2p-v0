@@ -1,7 +1,6 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
-import { TradeBandBadge } from "@/components/trade-band-badge"
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -26,7 +25,6 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
-import { P2PAccessRemoved } from "@/components/p2p-access-removed"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
@@ -629,63 +627,69 @@ export default function BuySellPage() {
                                     </Tooltip>
                                   </TooltipProvider>
                                 )}
+                                {ad.user?.is_favourite && (
+                                  <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] ml-2">
+                                    {t("market.following")}
+                                  </span>
+                                )}
                               </div>
-                              {ad.user?.is_favourite && (
-                                <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                  {t("market.following")}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                            {ad.user.rating_average_lifetime && (
-                              <span className="flex items-center">
-                                <Image
-                                  src="/icons/star-active.svg"
-                                  alt="Rating"
-                                  width={16}
-                                  height={16}
-                                  className="mr-1"
-                                />
-                                <span className="text-pending-text-secondary">
-                                  {ad.user.rating_average_lifetime.toFixed(2)}
-                                </span>
-                              </span>
-                            )}
-                            {ad.user.order_count_lifetime > 0 && (
-                              <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                <span>
-                                  {ad.user.order_count_lifetime} {t("market.orders")}
-                                </span>
-                              </div>
-                            )}
-                            {ad.user.completion_rate_all_30day > 0 && (
-                              <div className="flex flex-row items-center justify-center gap-[8px]">
-                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                <span>
-                                  {ad.user.completion_rate_all_30day}% {t("market.completion")}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-                          <div className="flex items-center text-xs text-slate-500 mt-2">
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                              <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                                {ad.user.rating_average_lifetime && (
+                                  <span className="flex items-center">
+                                    <Image
+                                      src="/icons/star-active.svg"
+                                      alt="Rating"
+                                      width={16}
+                                      height={16}
+                                      className="mr-1"
+                                    />
+                                    <span className="text-pending-text-secondary">
+                                      {ad.user.rating_average_lifetime.toFixed(2)}
+                                    </span>
+                                  </span>
+                                )}
+                                {ad.user.order_count_lifetime > 0 && (
+                                  <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                    <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                     <span>
-                                      {ad.order_expiry_period} {t("market.min")}
+                                      {ad.user.order_count_lifetime} {t("market.orders")}
                                     </span>
                                   </div>
-                                </TooltipTrigger>
-                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
-                                  <TooltipArrow className="fill-black" />
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
+                                )}
+                                {ad.user.completion_rate_all_30day > 0 && (
+                                  <div className="flex flex-row items-center justify-center gap-[8px]">
+                                    <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                    <span>
+                                      {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                                    </span>
+                                  </div>
+                                )}
+                              </div>
+                              <div className="flex items-center text-xs text-slate-500 mt-2">
+                                <TooltipProvider>
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                        <Image
+                                          src="/icons/clock.png"
+                                          alt="Time"
+                                          width={12}
+                                          height={12}
+                                          className="mr-2"
+                                        />
+                                        <span>
+                                          {ad.order_expiry_period} {t("market.min")}
+                                        </span>
+                                      </div>
+                                    </TooltipTrigger>
+                                    <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                      <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                      <TooltipArrow className="fill-black" />
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </div>
+                            </div>
                           </div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
