@@ -579,117 +579,109 @@ export default function BuySellPage() {
                                 }`}
                               />
                             </div>
-                            <div className="flex flex-col">
-                              <div className="flex items-center gap-1">
-                                <button
-                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                  className="hover:underline cursor-pointer"
-                                >
-                                  {ad.user?.nickname}
-                                </button>
-                                <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
-                                {ad.user.trade_band === "bronze" && (
-                                  <TooltipProvider>
-                                    <Tooltip disableHoverableContent={false}>
-                                      <TooltipTrigger asChild>
-                                        <Image
-                                          src="/icons/bronze.png"
-                                          alt="Bronze"
-                                          width={18}
-                                          height={18}
-                                          className="mr-1 cursor-pointer"
-                                        />
-                                      </TooltipTrigger>
-                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-                                        <>
-                                          <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="text-white mb-4">
-                                            Default tier for new users with basic trading limits.
-                                          </p>
-                                          <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={redirectToHelpCentre}
-                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
-                                          >
-                                            Learn more
-                                            <Image
-                                              src="/icons/chevron-right-white.png"
-                                              alt="Arrow"
-                                              width={8}
-                                              height={18}
-                                              className="ml-2 cursor-pointer"
-                                            />
-                                          </Button>
-                                        </>
-                                        <TooltipArrow className="fill-black" />
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
-                                )}
-                                {ad.user?.is_favourite && (
-                                  <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px] ml-2">
-                                    {t("market.following")}
-                                  </span>
-                                )}
-                              </div>
-                              <div className="flex items-center text-xs text-slate-500 mt-[4px]">
-                                {ad.user.rating_average_lifetime && (
-                                  <span className="flex items-center">
-                                    <Image
-                                      src="/icons/star-active.svg"
-                                      alt="Rating"
-                                      width={16}
-                                      height={16}
-                                      className="mr-1"
-                                    />
-                                    <span className="text-pending-text-secondary">
-                                      {ad.user.rating_average_lifetime.toFixed(2)}
-                                    </span>
-                                  </span>
-                                )}
-                                {ad.user.order_count_lifetime > 0 && (
-                                  <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
-                                    <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                    <span>
-                                      {ad.user.order_count_lifetime} {t("market.orders")}
-                                    </span>
-                                  </div>
-                                )}
-                                {ad.user.completion_rate_all_30day > 0 && (
-                                  <div className="flex flex-row items-center justify-center gap-[8px]">
-                                    <div className="h-1 w-1 rounded-full bg-slate-500"></div>
-                                    <span>
-                                      {ad.user.completion_rate_all_30day}% {t("market.completion")}
-                                    </span>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="flex items-center text-xs text-slate-500 mt-2">
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                className="hover:underline cursor-pointer"
+                              >
+                                {ad.user?.nickname}
+                              </button>
+                              <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
+                              {ad.user.trade_band === "bronze" && (
                                 <TooltipProvider>
-                                  <Tooltip>
+                                  <Tooltip disableHoverableContent={false}>
                                     <TooltipTrigger asChild>
-                                      <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
-                                        <Image
-                                          src="/icons/clock.png"
-                                          alt="Time"
-                                          width={12}
-                                          height={12}
-                                          className="mr-2"
-                                        />
-                                        <span>
-                                          {ad.order_expiry_period} {t("market.min")}
-                                        </span>
-                                      </div>
+                                      <Image
+                                        src="/icons/bronze.png"
+                                        alt="Bronze"
+                                        width={18}
+                                        height={18}
+                                        className="mr-1 cursor-pointer"
+                                      />
                                     </TooltipTrigger>
-                                    <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                      <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                    <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                      <>
+                                        <p className="font-bold text-white mb-2">Bronze tier</p>
+                                        <p className="text-white mb-4">
+                                          Default tier for new users with basic trading limits.
+                                        </p>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={redirectToHelpCentre}
+                                          className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+                                        >
+                                          Learn more
+                                          <Image
+                                            src="/icons/chevron-right-white.png"
+                                            alt="Arrow"
+                                            width={8}
+                                            height={18}
+                                            className="ml-2 cursor-pointer"
+                                          />
+                                        </Button>
+                                      </>
                                       <TooltipArrow className="fill-black" />
                                     </TooltipContent>
                                   </Tooltip>
                                 </TooltipProvider>
-                              </div>
+                              )}
+                              {ad.user?.is_favourite && (
+                                <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                  {t("market.following")}
+                                </span>
+                              )}
                             </div>
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-[4px]">
+                            {ad.user.rating_average_lifetime && (
+                              <span className="flex items-center">
+                                <Image
+                                  src="/icons/star-active.svg"
+                                  alt="Rating"
+                                  width={16}
+                                  height={16}
+                                  className="mr-1"
+                                />
+                                <span className="text-pending-text-secondary">
+                                  {ad.user.rating_average_lifetime.toFixed(2)}
+                                </span>
+                              </span>
+                            )}
+                            {ad.user.order_count_lifetime > 0 && (
+                              <div className="flex flex-row items-center justify-center gap-[8px] mx-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                <span>
+                                  {ad.user.order_count_lifetime} {t("market.orders")}
+                                </span>
+                              </div>
+                            )}
+                            {ad.user.completion_rate_all_30day > 0 && (
+                              <div className="flex flex-row items-center justify-center gap-[8px]">
+                                <div className="h-1 w-1 rounded-full bg-slate-500"></div>
+                                <span>
+                                  {ad.user.completion_rate_all_30day}% {t("market.completion")}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex items-center text-xs text-slate-500 mt-2">
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <div className="flex items-center bg-gray-100 text-slate-500 rounded-sm px-2 py-1 cursor-pointer">
+                                    <Image src="/icons/clock.png" alt="Time" width={12} height={12} className="mr-2" />
+                                    <span>
+                                      {ad.order_expiry_period} {t("market.min")}
+                                    </span>
+                                  </div>
+                                </TooltipTrigger>
+                                <TooltipContent align="start" className="max-w-[328px] text-wrap">
+                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
+                                  <TooltipArrow className="fill-black" />
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           </div>
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
