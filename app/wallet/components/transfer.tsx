@@ -1703,7 +1703,7 @@ export default function Transfer({ currencySelected, onClose, stepVal = "enterAm
                   !destinationWalletData ||
                   !isAmountValid(transferAmount)
                 }
-                className="flex h-12 w-[124px] min-h-12 max-h-12 px-7 justify-center items-center gap-2"
+                className="flex h-12 min-h-12 max-h-12 px-7 justify-center items-center gap-2"
               >
                 {t("wallet.transfer")}
               </Button>
