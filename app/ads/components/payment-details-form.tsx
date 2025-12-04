@@ -144,7 +144,7 @@ const FullPagePaymentSelection = ({
       )}
       <div className={isMobile ? "flex-1 overflow-y-auto px-4 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
         {filteredMethods.length === 0 ? (
-          <div className="text-center pt-2 pb-4 md:pt-4 md:pb-8 flex flex-col items-center">
+          <div className="text-center pt-0 pb-4 md:pt-4 md:pb-8 flex flex-col items-center">
             <Image src="/icons/magnifier.png" alt="No results" width={88} height={88} className="mb-0" />
             <p className="text-slate-1200 text-base font-bold text-center mb-2">
               {t("paymentMethod.noMatchingPayment")}
