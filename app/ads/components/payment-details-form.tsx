@@ -109,7 +109,7 @@ const FullPagePaymentSelection = ({
           <p className="text-base text-grayscale-600">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
-      <div className={isMobile ? "px-4 pb-4" : ""}>
+      <div className={isMobile ? "px-4 pb-6" : ""}>
         <div className="relative">
           <Image
             src="/icons/search-icon-custom.png"
