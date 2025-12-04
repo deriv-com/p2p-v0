@@ -116,7 +116,7 @@ const FullPagePaymentSelection = ({
             alt="Search"
             width={24}
             height={24}
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 z-10"
+            className="absolute left-2 md:left-4 top-1/2 transform -translate-y-1/2 z-10"
           />
           <Input
             type="text"
