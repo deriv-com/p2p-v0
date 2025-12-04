@@ -167,7 +167,7 @@ const FullPagePaymentSelection = ({
                 } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                 onClick={() => !isDisabled && handleToggle(methodId)}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <div
                     className={`h-2 w-2 rounded-full mx-[11px] ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
                   />
