@@ -162,9 +162,9 @@ const FullPagePaymentSelection = ({
             return (
               <div
                 key={methodId}
-                className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer hover:bg-gray-50 transition-colors ${
-                  isDisabled ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+                className={`bg-grayscale-500 rounded-lg p-4 h-16 flex items-center justify-between cursor-pointer ${
+                  isSelected ? "border-2 border-black" : "border-2 border-transparent"
+                } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                 onClick={() => !isDisabled && handleToggle(methodId)}
               >
                 <div className="flex items-center gap-3">
@@ -295,7 +295,7 @@ const PaymentSelectionContent = ({
             return (
               <div
                 key={methodId}
-                className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${
+                className={`bg-grayscale-500 rounded-lg p-4 h-16 flex items-center justify-between cursor-pointer ${
                   !selectedPMs?.includes(methodId) && selectedPMs?.length >= 3
                     ? "opacity-30 cursor-not-allowed hover:bg-white"
                     : ""
@@ -333,7 +333,7 @@ const PaymentSelectionContent = ({
 
         {handleAddPaymentMethodClick && (
           <div
-            className="bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+            className="bg-grayscale-500 rounded-lg p-4 h-16 cursor-pointer hover:bg-gray-50 transition-colors"
             onClick={() => {
               handleAddPaymentMethodClick()
             }}
