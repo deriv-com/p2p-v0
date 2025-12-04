@@ -579,7 +579,7 @@ export default function BuySellPage() {
                                 }`}
                               />
                             </div>
-                            <div>
+                            <div className="flex flex-col">
                               <div className="flex items-center gap-1">
                                 <button
                                   onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
