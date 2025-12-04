@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { toast } from "@/components/ui/use-toast"
 import { cn } from "@/lib/utils"
 import { OrdersAPI } from "@/services/api"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import type { RatingSidebarProps, RatingData } from "./types"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
@@ -22,6 +23,7 @@ interface RatingContentProps {
   recommendLabel?: string
   onSubmit: () => void
   isSubmitting: boolean
+  t: (key: string) => string
 }
 
 const RatingContent = ({
@@ -35,6 +37,7 @@ const RatingContent = ({
   recommendLabel,
   onSubmit,
   isSubmitting,
+  t,
 }: RatingContentProps) => (
   <>
     <div className="flex-1 overflow-auto p-4 md:px-0">
@@ -83,7 +86,7 @@ const RatingContent = ({
                   recommend === true ? "text-white" : "text-grayscale-100",
                 )}
               >
-                Yes
+                {t("ratingSidebar.yes")}
               </span>
             </Button>
             <Button
@@ -104,7 +107,7 @@ const RatingContent = ({
                   recommend === false ? "text-white" : "text-grayscale-100",
                 )}
               >
-                No
+                {t("ratingSidebar.no")}
               </span>
             </Button>
           </div>
@@ -116,7 +119,7 @@ const RatingContent = ({
         {isSubmitting ? (
           <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
         ) : (
-          "Submit"
+          t("ratingSidebar.submit")
         )}
       </Button>
     </div>
@@ -128,8 +131,8 @@ export function RatingSidebar({
   onClose,
   onSubmit,
   orderId,
-  title = "Rate and recommend",
-  ratingLabel = "How would you rate this transaction?",
+  title,
+  ratingLabel,
   recommendLabel,
 }: RatingSidebarProps) {
   const [rating, setRating] = useState(0)
@@ -138,12 +141,13 @@ export function RatingSidebar({
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
 
   const handleSubmit = async () => {
     if (rating === 0) {
       toast({
-        title: "Rating required",
-        description: "Please select a star rating before submitting.",
+        title: t("ratingSidebar.ratingRequiredTitle"),
+        description: t("ratingSidebar.ratingRequiredDescription"),
         variant: "destructive",
       })
       return
@@ -179,12 +183,16 @@ export function RatingSidebar({
 
   if (!isOpen) return null
 
+  const displayTitle = title || t("ratingSidebar.title")
+  const displayRatingLabel = ratingLabel || t("ratingSidebar.ratingLabel")
+  const displayRecommendLabel = recommendLabel || t("ratingSidebar.recommendLabel")
+
   if (isMobile) {
     return (
       <Drawer open={isOpen} onOpenChange={onClose}>
         <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
           <DrawerHeader className="pb-4">
-            <DrawerTitle className="text-xl font-bold text-center">{title}</DrawerTitle>
+            <DrawerTitle className="text-xl font-bold text-center">{displayTitle}</DrawerTitle>
           </DrawerHeader>
           <RatingContent
             rating={rating}
@@ -193,10 +201,11 @@ export function RatingSidebar({
             setHoverRating={setHoverRating}
             recommend={recommend}
             setRecommend={setRecommend}
-            ratingLabel={ratingLabel}
-            recommendLabel={recommendLabel}
+            ratingLabel={displayRatingLabel}
+            recommendLabel={displayRecommendLabel}
             onSubmit={handleSubmit}
             isSubmitting={isSubmitting}
+            t={t}
           />
         </DrawerContent>
       </Drawer>
@@ -207,7 +216,7 @@ export function RatingSidebar({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
-          <DialogTitle className="tracking-normal font-bold text-2xl">{title}</DialogTitle>
+          <DialogTitle className="tracking-normal font-bold text-2xl">{displayTitle}</DialogTitle>
         </DialogHeader>
         <RatingContent
           rating={rating}
@@ -216,10 +225,11 @@ export function RatingSidebar({
           setHoverRating={setHoverRating}
           recommend={recommend}
           setRecommend={setRecommend}
-          ratingLabel={ratingLabel}
-          recommendLabel={recommendLabel}
+          ratingLabel={displayRatingLabel}
+          recommendLabel={displayRecommendLabel}
           onSubmit={handleSubmit}
           isSubmitting={isSubmitting}
+          t={t}
         />
       </DialogContent>
     </Dialog>

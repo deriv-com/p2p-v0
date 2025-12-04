@@ -199,7 +199,7 @@ export default function OrderDetailsPage() {
                       description: (
                         <div className="flex items-center gap-2">
                           <Image src="/icons/tick.svg" alt="Success" width={24} height={24} className="text-white" />
-                          <span>The text has been copied to your clipboard.</span>
+                          <span>{t("orderDetails.textCopiedToClipboard")}</span>
                         </div>
                       ),
                       className: "bg-black text-white border-black h-[48px] rounded-lg px-[16px] py-[8px]",
@@ -659,7 +659,7 @@ export default function OrderDetailsPage() {
         onClose={() => setShowRatingSidebar(false)}
         orderId={orderId}
         onSubmit={handleSubmitReview}
-        recommendLabel={`Would you recommend this ${counterpartyLabel.toLowerCase()}?`}
+        recommendLabel={t("orders.wouldYouRecommend", { role: counterpartyLabel.toLowerCase() })}
       />
       {isMobile && (
         <OrderDetailsSidebar isOpen={showDetailsSidebar} onClose={() => setShowDetailsSidebar(false)} order={order} />

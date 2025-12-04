@@ -22,7 +22,13 @@
     "all": "All",
     "yes": "Yes",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Learn More",
+    "verifiedBadge": {
+      "title": "Fully verified account",
+      "descriptionSelf": "You have completed all required verification steps, including email, phone number, identity (KYC), and address verification.",
+      "descriptionOther": "This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified."
+    }
   },
   "navigation": {
     "market": "Market",
@@ -69,6 +75,7 @@
     "exchangeRate": "Exchange rate",
     "orderLimit": "Order limit",
     "paymentTime": "Payment time",
+    "paymentTimeTooltip": "Complete your payment within {minutes} minutes after placing the order.",
     "buyer": "Buyer",
     "seller": "Seller",
     "buyersPaymentMethods": "Buyer's payment method(s)",
@@ -111,7 +118,7 @@
     "bank_name": "Bank Name",
     "account_number": "Account Number",
     "account_holder": "Account Holder",
-    "branch_code": "Branch Code",
+    "branch": "Branch Code",
     "iban": "IBAN",
     "swift_code": "SWIFT Code",
     "bic": "BIC",
@@ -126,6 +133,18 @@
     "totalBalance": "Total balance",
     "loading": "Loading balance..."
   },
+  "complaint": {
+    "title": "Submit a complaint",
+    "buyer_not_paid": "I didn't receive any payment.",
+    "buyer_underpaid": "I received less than the agreed amount.",
+    "buyer_overpaid": "I received more than the agreed amount.",
+    "buyer_third_party_payment_method": "I've received payment from 3rd party.",
+    "seller_not_released": "I've made the payment, but the seller hasn't released the funds.",
+    "buyer_underpaid_buyer": "I couldn't complete the full payment.",
+    "buyer_overpaid_buyer": "I paid more than the agreed amount.",
+    "helpText": "If your issue isn't listed, contact us via live chat for help.",
+    "submit": "Submit"
+  },
   "filter": {
     "fromFollowing": "From following",
     "sortBy": "Sort by",
@@ -138,7 +157,9 @@
     "exchangeRateHighLow": "Exchange rate (high-low)",
     "userRatingHighLow": "User rating (high-low)",
     "applyFilters": "Apply filters",
-    "filter": "Filter"
+    "filter": "Filter",
+    "currencyUnavailable": "{currency} is unavailable",
+    "selectAnotherCurrency": "Select another currency"
   },
   "chat": {
     "conversationClosed": "This conversation is closed.",
@@ -227,6 +248,12 @@
     "paymentMethodAdded": "Payment method added.",
     "bronzeTier": "Bronze tier",
     "bronzeTierDescription": "Default tier for new users with basic trading limits.",
+    "silverTier": "Silver tier",
+    "silverTierDescription": "Trusted trader with higher limits and proven activity.",
+    "goldTier": "Gold tier",
+    "goldTierDescription": "Experienced trader with strong history and higher privileges.",
+    "diamondTier": "Diamond tier",
+    "diamondTierDescription": "Top-tier trader with maximum daily limits and excellent record.",
     "last30Days": "Last 30 days",
     "lifetime": "Lifetime",
     "sellCompletion": "Sell completion",
@@ -318,6 +345,8 @@
     "processing": "Processing",
     "pending": "Pending",
     "failed": "Failed",
+    "walletName": "{currency} Wallet",
+    "external": "External",
     "chooseCurrency": "Choose currency",
     "chooseCurrencyDescription": "Choose which currency you would like to {action}.",
     "depositWith": "Deposit with",
@@ -456,6 +485,22 @@
       "viewProfile": "View profile",
       "addPaymentMethod": "Add payment method"
     }
+    "shareAdTitle": "Share ad",
+    "shareMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad {url}. Thanks!",
+    "shareTelegramMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad. Thanks!",
+    "qrCodeDescription": "Scan this code to order via Deriv P2P",
+    "idNumber": "ID number",
+    "limits": "Limits",
+    "rate": "Rate",
+    "failedToGenerateQR": "Failed to generate QR code",
+    "adLinkCopied": "Ad link copied",
+    "failedToCopyLink": "Failed to copy link",
+    "imageSavedSuccessfully": "Image saved successfully",
+    "failedToSaveImage": "Failed to save image",
+    "sharedSuccessfully": "Shared successfully",
+    "copyLink": "Copy link",
+    "saveImage": "Save image",
+    "shareImage": "Share image"
   },
   "orders": {
     "title": "Orders",
@@ -490,7 +535,18 @@
     "uploadProof": "Upload proof of payment",
     "fileTypes": "JPEG, JPG, PNG, PDF (up to 5MB)",
     "fileTooLarge": "File must be 5MB or smaller.",
-    "submit": "Submit"
+    "submit": "Submit",
+    "confirmPaymentReceived": "Confirm payment received",
+    "otpSentTo": "Enter the 6-digit code sent to {email}. This step verifies your identity before releasing payment to the other party.",
+    "incorrectCode": "Incorrect code. You have {attempts} attempt{plural} left.",
+    "maxAttemptsReached": "Max attempts reached.",
+    "tooManyAttempts": "Too many failed attempts",
+    "tooManyAttemptsDescription": "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
+    "gotIt": "Got it",
+    "verifying": "Verifying...",
+    "didntReceiveCode": "Didn't receive the code?",
+    "resendCode": "Resend code",
+    "resendCodeTimer": "Resend code ({seconds}s)"
   },
   "adForm": {
     "createAd": "Create ad",
@@ -554,7 +610,12 @@
     "amountExceedsBalanceMessage": "The total amount exceeds your available balance. Please enter a smaller amount.",
     "selectPayment": "Select payment",
     "selected": "Selected ({count})",
-    "noPaymentMethodsFound": "No payment methods found"
+    "noPaymentMethodsFound": "No payment methods found",
+    "unknownErrorMessage": "An unknown error occurred",
+    "invalidExchangeRateMessage": "The exchange rate you provided is invalid.",
+    "invalidOrderAmountMessage": "The order amount limits are invalid.",
+    "genericErrorCodeMessage": "Please try again or contact support.",
+    "genericProcessingErrorMessage": "There was an error processing your request. Please try again."
   },
   "advertiser": {
     "goBack": "Go Back",
@@ -612,5 +673,33 @@
     "waitingSellersConfirmation": "Waiting seller's confirmation",
     "confirmPayment": "Confirm payment",
     "underDispute": "Under dispute"
+  },
+  "shareAdPage": {
+    "shareAdTitle": "Share ad",
+    "shareMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad {url}. Thanks!",
+    "shareTelegramMessage": "Hi! I'd like to exchange {currency} at {rate} on Deriv P2P. If you're interested, check out my ad. Thanks!",
+    "qrCodeDescription": "Scan this code to order via Deriv P2P",
+    "idNumber": "ID number",
+    "limits": "Limits",
+    "rate": "Rate",
+    "failedToGenerateQR": "Failed to generate QR code",
+    "adLinkCopied": "Ad link copied",
+    "failedToCopyLink": "Failed to copy link",
+    "imageSavedSuccessfully": "Image saved successfully",
+    "failedToSaveImage": "Failed to save image",
+    "sharedSuccessfully": "Shared successfully",
+    "copyLink": "Copy link",
+    "saveImage": "Save image",
+    "shareImage": "Share image"
+  },
+  "ratingSidebar": {
+    "title": "Rate and recommend",
+    "ratingLabel": "How would you rate this transaction?",
+    "recommendLabel": "Would you recommend this user?",
+    "yes": "Yes",
+    "no": "No",
+    "submit": "Submit",
+    "ratingRequiredTitle": "Rating required",
+    "ratingRequiredDescription": "Please select a star rating before submitting."
   }
 }

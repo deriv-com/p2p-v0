@@ -7,6 +7,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { useUserDataStore } from "@/stores/user-data-store"
 import { OrdersAPI } from "@/services/api"
+import { useTranslations } from "@/lib/i18n/use-translations"
 
 interface PaymentReceivedConfirmationSidebarProps {
   isOpen: boolean
@@ -23,6 +24,7 @@ export const PaymentReceivedConfirmationSidebar = ({
   orderId,
   isLoading = false,
 }: PaymentReceivedConfirmationSidebarProps) => {
+  const { t } = useTranslations()
   const [otpValue, setOtpValue] = useState("")
   const [resendTimer, setResendTimer] = useState(0)
   const [error, setError] = useState<string | null>(null)
@@ -65,9 +67,14 @@ export const PaymentReceivedConfirmationSidebar = ({
 
         if (error.code === "InvalidOrExpiredVerificationCode") {
           const attemptsLeft = error.detail?.attempts_left || 0
-          setError(`Incorrect code. You have ${attemptsLeft} attempt${attemptsLeft !== 1 ? "s" : ""} left.`)
+          setError(
+            t("orders.incorrectCode", {
+              attempts: attemptsLeft,
+              plural: attemptsLeft !== 1 ? "s" : "",
+            }),
+          )
         } else if (error.code === "OrderCompleteVerificationTempLock") {
-          setWarning("Max attempts reached.")
+          setWarning(t("orders.maxAttemptsReached"))
         } else {
           setError(error.message || "An error occurred. Please try again.")
         }
@@ -90,10 +97,9 @@ export const PaymentReceivedConfirmationSidebar = ({
         if (error.code === "OrderCompleteVerificationTempLock") {
           setOtpRequested(false)
           showAlert({
-            title: "Too many failed attempts",
-            description:
-              "It looks like you've made too many attempts to confirm this order. Please try again after 10 minutes.",
-            confirmText: "Got it",
+            title: t("orders.tooManyAttempts"),
+            description: t("orders.tooManyAttemptsDescription"),
+            confirmText: t("orders.gotIt"),
             type: "warning",
             onConfirm: () => {
               onClose()
@@ -141,10 +147,11 @@ export const PaymentReceivedConfirmationSidebar = ({
 
           <div className="flex-1 p-6 space-y-6">
             <div>
-              <SheetTitle className="text-2xl font-bold mb-4 text-slate-1200">Confirm payment received</SheetTitle>
+              <SheetTitle className="text-2xl font-bold mb-4 text-slate-1200">
+                {t("orders.confirmPaymentReceived")}
+              </SheetTitle>
               <p className="text-sm text-gray-600">
-                Enter the 6-digit code sent to <span className="font-semibold">{userData?.email || "your email"}</span>.
-                This step verifies your identity before releasing payment to the other party.
+                {t("orders.otpSentTo", { email: userData?.email || "your email" })}
               </p>
             </div>
 
@@ -166,16 +173,16 @@ export const PaymentReceivedConfirmationSidebar = ({
               {isVerifying && (
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent"></div>
-                  <span>Verifying...</span>
+                  <span>{t("orders.verifying")}</span>
                 </div>
               )}
             </div>
 
             {otpRequested && (
               <div className="space-y-2">
-                <p className="text-sm text-gray-600">Didn't receive the code?</p>
+                <p className="text-sm text-gray-600">{t("orders.didntReceiveCode")}</p>
                 {resendTimer > 0 ? (
-                  <p className="text-sm text-gray-600">Resend code ({resendTimer}s)</p>
+                  <p className="text-sm text-gray-600">{t("orders.resendCodeTimer", { seconds: resendTimer })}</p>
                 ) : (
                   <Button
                     variant="ghost"
@@ -183,7 +190,7 @@ export const PaymentReceivedConfirmationSidebar = ({
                     className="p-0 hover:bg-transparent underline font-normal text-gray-600"
                     size="sm"
                   >
-                    Resend code
+                    {t("orders.resendCode")}
                   </Button>
                 )}
               </div>

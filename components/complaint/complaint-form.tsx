@@ -9,12 +9,14 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/u
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { OrdersAPI } from "@/services/api"
+import { useTranslations } from "@/lib/i18n/use-translations"
 import { type ComplaintProps, COMPLAINT_OPTIONS } from "./types"
 
 export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: ComplaintProps) {
   const [selectedOption, setSelectedOption] = useState<string>("")
   const [isSubmitting, setIsSubmitting] = useState(false)
   const isMobile = useIsMobile()
+  const { t } = useTranslations()
 
   const handleSubmit = async () => {
     if (selectedOption && !isSubmitting) {
@@ -51,12 +53,12 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
                 htmlFor={option.id}
                 className="font-normal text-base leading-relaxed cursor-pointer flex-1 text-grayscale-100"
               >
-                {option.label}
+                {t(`complaint.${option.value}`)}
               </Label>
             </div>
           ))}
         </RadioGroup>
-        <div className="text-base">If your issue isn't listed, contact us via live chat for help.</div>
+        <div className="text-base">{t("complaint.helpText")}</div>
       </div>
 
       <div className="p-4 md:px-0">
@@ -68,7 +70,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
           {isSubmitting ? (
             <Image src="/icons/spinner.png" alt="Loading" width={20} height={20} className="animate-spin" />
           ) : (
-            "Submit"
+            t("complaint.submit")
           )}
         </Button>
       </div>
@@ -82,7 +84,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
       <Drawer open={isOpen} onOpenChange={handleClose}>
         <DrawerContent side="bottom" className="h-auto max-h-[80vh] rounded-t-2xl px-0">
           <DrawerHeader className="pb-4">
-            <DrawerTitle className="text-xl font-bold text-center">Submit a complaint</DrawerTitle>
+            <DrawerTitle className="text-xl font-bold text-center">{t("complaint.title")}</DrawerTitle>
           </DrawerHeader>
           <ComplaintContent />
         </DrawerContent>
@@ -94,7 +96,7 @@ export function ComplaintForm({ isOpen, onClose, onSubmit, orderId, type }: Comp
     <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md sm:rounded-[32px]">
         <DialogHeader>
-          <DialogTitle className="tracking-normal font-bold text-2xl">Submit a complaint</DialogTitle>
+          <DialogTitle className="tracking-normal font-bold text-2xl">{t("complaint.title")}</DialogTitle>
         </DialogHeader>
         <ComplaintContent />
       </DialogContent>

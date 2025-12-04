@@ -520,8 +520,7 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
                     {isBuy ? t("order.buyersInstructions") : t("order.sellersInstructions")}
                   </h3>
                   <p className="text-slate-1200 break-words mt-2">
-                    {ad.description ||
-                      "Kindly transfer the payment to the provided account details after placing your order."}
+                    {ad.description || "-"}
                   </p>
                 </div>
 

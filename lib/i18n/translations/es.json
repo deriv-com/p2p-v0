@@ -22,7 +22,13 @@
     "all": "Todos",
     "yes": "Sí",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Más información",
+    "verifiedBadge": {
+      "title": "Cuenta totalmente verificada",
+      "descriptionSelf": "Has completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección.",
+      "descriptionOther": "Este usuario ha completado todos los pasos de verificación requeridos, incluyendo correo electrónico, número de teléfono, identidad (KYC) y verificación de dirección. Puedes operar con confianza sabiendo que esta cuenta está verificada."
+    }
   },
   "navigation": {
     "market": "Mercado",
@@ -69,6 +75,7 @@
     "exchangeRate": "Tasa de cambio",
     "orderLimit": "Límite de orden",
     "paymentTime": "Tiempo de pago",
+    "paymentTimeTooltip": "Completa tu pago dentro de {minutes} minutos después de realizar la orden.",
     "buyer": "Comprador",
     "seller": "Vendedor",
     "buyersPaymentMethods": "Método(s) de pago del comprador",
@@ -83,9 +90,9 @@
     "confirmPayment": "Confirma tu pago",
     "fraudWarning": "Proporcionar documentos fraudulentos resultará en una prohibición permanente.",
     "ensurePayment": "Asegúrate de haber pagado {amount} {currency} a {name} y sube el recibo como prueba de pago.",
-    "uploadProof": "Subir comprobante de pago",
+    "uploadProof": "Cargar comprobante de pago",
     "fileTypes": "JPEG, JPG, PNG, PDF (hasta 5MB)",
-    "fileTooLarge": "El archivo debe ser de 5MB o menos.",
+    "fileTooLarge": "El archivo debe tener 5 MB o menos.",
     "submit": "Enviar"
   },
   "paymentMethod": {
@@ -118,7 +125,7 @@
     "bank_name": "Nombre del Banco",
     "account_number": "Número de Cuenta",
     "account_holder": "Titular de la Cuenta",
-    "branch_code": "Código de Sucursal",
+    "branch": "Código de Sucursal",
     "iban": "IBAN",
     "swift_code": "Código SWIFT",
     "bic": "BIC",
@@ -133,6 +140,18 @@
     "totalBalance": "Saldo total",
     "loading": "Cargando saldo..."
   },
+  "complaint": {
+    "title": "Enviar una queja",
+    "buyer_not_paid": "No recibí ningún pago.",
+    "buyer_underpaid": "Recibí menos de la cantidad acordada.",
+    "buyer_overpaid": "Recibí más de la cantidad acordada.",
+    "buyer_third_party_payment_method": "He recibido el pago de un tercero.",
+    "seller_not_released": "He realizado el pago, pero el vendedor no ha liberado los fondos.",
+    "buyer_underpaid_buyer": "No pude completar el pago completo.",
+    "buyer_overpaid_buyer": "Pagué más de la cantidad acordada.",
+    "helpText": "Si tu problema no está en la lista, contáctanos a través del chat en vivo para obtener ayuda.",
+    "submit": "Enviar"
+  },
   "filter": {
     "fromFollowing": "De seguidos",
     "sortBy": "Ordenar por",
@@ -145,7 +164,9 @@
     "exchangeRateHighLow": "Tasa de cambio (alto-bajo)",
     "userRatingHighLow": "Calificación de usuario (alto-bajo)",
     "applyFilters": "Aplicar filtros",
-    "filter": "Filtrar"
+    "filter": "Filtrar",
+    "currencyUnavailable": "{currency} no disponible",
+    "selectAnotherCurrency": "Por favor, selecciona otra moneda."
   },
   "chat": {
     "conversationClosed": "Esta conversación está cerrada.",
@@ -234,6 +255,14 @@
     "paymentMethodAdded": "Método de pago agregado.",
     "bronzeTier": "Nivel bronce",
     "bronzeTierDescription": "Nivel predeterminado para nuevos usuarios con límites básicos de negociación.",
+    "silverTier": "Nivel plata",
+    "silverTierDescription": "Comerciante de confianza con límites más altos y actividad comprobada.",
+    "goldTier": "Nivel oro",
+    "goldTierDescription": "Comerciante experimentado con historial sólido y mayores privilegios.",
+    "platinumTier": "Nivel platino",
+    "platinumTierDescription": "Nivel premium con límites de negociación máximos y beneficios exclusivos.",
+    "diamondTier": "Nivel diamante",
+    "diamondTierDescription": "Comerciante de primer nivel con límites diarios máximos y excelente récord.",
     "last30Days": "Últimos 30 días",
     "lifetime": "Desde el inicio",
     "sellCompletion": "Ventas completadas",
@@ -381,8 +410,8 @@
     "blockDescription": "No verás los anuncios de {nickname} y no podrán realizar órdenes en los tuyos.",
     "youveBlockedUser": "Has bloqueado a este usuario",
     "unblockDescription": "Desbloquéalo si deseas interactuar con este anunciante nuevamente.",
-    "successfullyFollowed": "Seguido exitosamente",
-    "successfullyUnfollowed": "Dejado de seguir exitosamente",
+    "successfullyFollowed": "Seguido con éxito",
+    "successfullyUnfollowed": "Dejó de seguir con éxito",
     "userBlocked": "{nickname} bloqueado.",
     "userUnblocked": "{nickname} desbloqueado."
   },
@@ -433,7 +462,9 @@
     "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
     "networkError": "Error de red. Por favor, verifica tu conexión.",
     "unauthorized": "No estás autorizado para realizar esta acción.",
-    "notFound": "No se encontró el recurso solicitado."
+    "notFound": "No se encontró el recurso solicitado.",
+    "invalidExchangeRateMessage": "El tipo de cambio que proporcionó no es válido.",
+    "invalidOrderAmountMessage": "Los límites de cantidad del pedido no son válidos."
   },
   "validation": {
     "required": "Este campo es obligatorio",
@@ -472,10 +503,20 @@
     "confirmPayment": "Confirma tu pago",
     "fraudWarning": "Proporcionar documentos fraudulentos resultará en una prohibición permanente.",
     "ensurePayment": "Asegúrate de haber pagado {amount} {currency} a {name} y sube el recibo como prueba de pago.",
-    "uploadProof": "Subir comprobante de pago",
+    "uploadProof": "Cargar comprobante de pago",
     "fileTypes": "JPEG, JPG, PNG, PDF (hasta 5MB)",
-    "fileTooLarge": "El archivo debe ser de 5MB o menos.",
-    "submit": "Enviar"
+    "fileTooLarge": "El archivo debe tener 5 MB o menos.",
+    "submit": "Enviar",
+    "confirmPaymentReceived": "Confirmar pago recibido",
+    "otpSentTo": "Ingrese el código de 6 dígitos enviado a {email}. Este paso verifica su identidad antes de liberar el pago a la otra parte.",
+    "incorrectCode": "Código incorrecto. Le quedan {attempts} intento{plural}.",
+    "maxAttemptsReached": "Máximo de intentos alcanzado.",
+    "tooManyAttempts": "Demasiados intentos fallidos",
+    "tooManyAttemptsDescription": "Parece que ha realizado demasiados intentos para confirmar este pedido. Vuelva a intentarlo después de 10 minutos.",
+    "verifying": "Verificando...",
+    "didntReceiveCode": "¿No recibió el código?",
+    "resendCode": "Reenviar código",
+    "resendCodeTimer": "Reenviar código ({seconds}s)"
   },
   "adForm": {
     "createAd": "Crear anuncio",
@@ -539,7 +580,10 @@
     "amountExceedsBalanceMessage": "El monto total excede tu saldo disponible. Por favor, ingresa un monto menor.",
     "selectPayment": "Seleccionar pago",
     "selected": "Seleccionados ({count})",
-    "noPaymentMethodsFound": "No se encontraron métodos de pago"
+    "noPaymentMethodsFound": "No se encontraron métodos de pago",
+    "genericErrorCodeMessage": "Inténtelo de nuevo o contacte con soporte.",
+    "genericProcessingErrorMessage": "Hubo un error al procesar su solicitud. Inténtelo de nuevo.",
+    "unknownErrorMessage": "Ocurrió un error desconocido"
   },
   "kyc": {
     "title": "Verificación de identidad",
@@ -567,5 +611,15 @@
     "waitingSellersConfirmation": "Esperando confirmación del vendedor",
     "confirmPayment": "Confirmar pago",
     "underDispute": "En disputa"
+  },
+  "ratingSidebar": {
+    "title": "Calificar y recomendar",
+    "ratingLabel": "¿Cómo calificarías esta transacción?",
+    "recommendLabel": "¿Recomendarías a este usuario?",
+    "yes": "Sí",
+    "no": "No",
+    "submit": "Enviar",
+    "ratingRequiredTitle": "Calificación requerida",
+    "ratingRequiredDescription": "Por favor, selecciona una calificación de estrellas antes de enviar."
   }
 }

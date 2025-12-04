@@ -1,5 +1,8 @@
 "use client"
 
+import { TooltipTrigger } from "@/components/ui/tooltip"
+import { TradeBandBadge } from "@/components/trade-band-badge"
+
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -27,9 +30,10 @@ import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
-import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
+import { getTotalBalance } from "@/services/api/api-auth"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -69,6 +73,7 @@ export default function BuySellPage() {
   const abortControllerRef = useRef<AbortController | null>(null)
   const userId = useUserDataStore((state) => state.userId)
   const userData = useUserDataStore((state) => state.userData)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus)
   const { showAlert } = useAlertDialog()
 
   const redirectToHelpCentre = () => {
@@ -245,7 +250,7 @@ export default function BuySellPage() {
   }
 
   const handleAdvertiserClick = (advertiserId: number) => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       router.push(`/advertiser/${advertiserId}`)
     } else {
       showAlert({
@@ -262,7 +267,7 @@ export default function BuySellPage() {
   }
 
   const handleOrderClick = (ad: Advertisement) => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setSelectedAd(ad)
       setIsOrderSidebarOpen(true)
       setError(null)
@@ -574,45 +579,14 @@ export default function BuySellPage() {
                                 >
                                   {ad.user?.nickname}
                                 </button>
-                                <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
-                                {ad.user.trade_band === "bronze" && (
-                                  <TooltipProvider>
-                                    <Tooltip disableHoverableContent={false}>
-                                      <TooltipTrigger asChild>
-                                        <Image
-                                          src="/icons/bronze.png"
-                                          alt="Bronze"
-                                          width={18}
-                                          height={18}
-                                          className="mr-1 cursor-pointer"
-                                        />
-                                      </TooltipTrigger>
-                                      <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
-                                        <>
-                                          <p className="font-bold text-white mb-2">Bronze tier</p>
-                                          <p className="text-white mb-4">
-                                            Default tier for new users with basic trading limits.
-                                          </p>
-                                          <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={redirectToHelpCentre}
-                                            className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
-                                          >
-                                            Learn more
-                                            <Image
-                                              src="/icons/chevron-right-white.png"
-                                              alt="Arrow"
-                                              width={8}
-                                              height={18}
-                                              className="ml-2 cursor-pointer"
-                                            />
-                                          </Button>
-                                        </>
-                                        <TooltipArrow className="fill-black" />
-                                      </TooltipContent>
-                                    </Tooltip>
-                                  </TooltipProvider>
+                                <VerifiedBadge />
+                                {ad.user.trade_band && (
+                                  <TradeBandBadge
+                                    tradeBand={ad.user.trade_band}
+                                    showLearnMore={true}
+                                    size={18}
+                                    className="mr-1"
+                                  />
                                 )}
                                 {ad.user?.is_favourite && (
                                   <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
@@ -645,7 +619,7 @@ export default function BuySellPage() {
                                 </span>
                               </div>
                             )}
-                            {ad.user.completion_rate_all_30day && (
+                            {ad.user.completion_rate_all_30day > 0 && (
                               <div className="flex flex-row items-center justify-center gap-[8px]">
                                 <div className="h-1 w-1 rounded-full bg-slate-500"></div>
                                 <span>
@@ -666,7 +640,7 @@ export default function BuySellPage() {
                                   </div>
                                 </TooltipTrigger>
                                 <TooltipContent align="start" className="max-w-[328px] text-wrap">
-                                  <p>{`Complete your payment within ${ad.order_expiry_period} minutes after placing the order.`}</p>
+                                  <p>{t("order.paymentTimeTooltip", { minutes: ad.order_expiry_period })}</p>
                                   <TooltipArrow className="fill-black" />
                                 </TooltipContent>
                               </Tooltip>

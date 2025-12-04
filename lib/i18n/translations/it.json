@@ -22,7 +22,13 @@
     "all": "Tutti",
     "yes": "Sì",
     "no": "No",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Scopri di più",
+    "verifiedBadge": {
+      "title": "Account completamente verificato",
+      "descriptionSelf": "Hai completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo.",
+      "descriptionOther": "Questo utente ha completato tutti i passaggi di verifica richiesti, tra cui email, numero di telefono, identità (KYC) e verifica dell'indirizzo. Puoi fare trading con fiducia sapendo che questo account è verificato."
+    }
   },
   "navigation": {
     "market": "Mercato",
@@ -69,6 +75,7 @@
     "exchangeRate": "Tasso di cambio",
     "orderLimit": "Limite ordine",
     "paymentTime": "Tempo di pagamento",
+    "paymentTimeTooltip": "Completa il tuo pagamento entro {minutes} minuti dopo aver effettuato l'ordine.",
     "buyer": "Acquirente",
     "seller": "Venditore",
     "buyersPaymentMethods": "Metodo/i di pagamento dell'acquirente",
@@ -118,7 +125,7 @@
     "bank_name": "Nome della Banca",
     "account_number": "Numero di Conto",
     "account_holder": "Titolare del Conto",
-    "branch_code": "Codice Filiale",
+    "branch": "Codice Filiale",
     "iban": "IBAN",
     "swift_code": "Codice SWIFT",
     "bic": "BIC",
@@ -145,7 +152,9 @@
     "exchangeRateHighLow": "Tasso di cambio (alto-basso)",
     "userRatingHighLow": "Valutazione utente (alto-basso)",
     "applyFilters": "Applica filtri",
-    "filter": "Filtra"
+    "filter": "Filtra",
+    "currencyUnavailable": "{currency} non disponibile",
+    "selectAnotherCurrency": "Si prega di selezionare un'altra valuta."
   },
   "chat": {
     "conversationClosed": "Questa conversazione è chiusa.",
@@ -234,6 +243,12 @@
     "paymentMethodAdded": "Metodo di pagamento aggiunto.",
     "bronzeTier": "Livello bronzo",
     "bronzeTierDescription": "Livello predefinito per i nuovi utenti con limiti di trading di base.",
+    "silverTier": "Livello argento",
+    "silverTierDescription": "Trader fidato con limiti più alti e attività comprovata.",
+    "goldTier": "Livello oro",
+    "goldTierDescription": "Trader esperto con una storia solida e privilegi più elevati.",
+    "diamondTier": "Livello diamante",
+    "diamondTierDescription": "Trader di alto livello con limiti giornalieri massimi e record eccellente.",
     "last30Days": "Ultimi 30 giorni",
     "lifetime": "Dall'inizio",
     "sellCompletion": "Vendite completate",
@@ -353,7 +368,9 @@
     "generic": "Qualcosa è andato storto. Riprova.",
     "networkError": "Errore di rete. Controlla la tua connessione.",
     "unauthorized": "Non sei autorizzato a eseguire questa azione.",
-    "notFound": "La risorsa richiesta non è stata trovata."
+    "notFound": "La risorsa richiesta non è stata trovata.",
+    "invalidExchangeRateMessage": "Il tasso di cambio fornito non è valido.",
+    "invalidOrderAmountMessage": "I limiti dell'importo dell'ordine non sono validi."
   },
   "validation": {
     "required": "Questo campo è obbligatorio",
@@ -438,7 +455,17 @@
     "uploadProof": "Carica prova di pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (fino a 5MB)",
     "fileTooLarge": "Il file deve essere di 5MB o meno.",
-    "submit": "Invia"
+    "submit": "Invia",
+    "confirmPaymentReceived": "Conferma pagamento ricevuto",
+    "otpSentTo": "Inserisci il codice a 6 cifre inviato a {email}. Questo passaggio verifica la tua identità prima di rilasciare il pagamento all'altra parte.",
+    "incorrectCode": "Codice errato. Hai {attempts} tentativo{plural} rimasto.",
+    "maxAttemptsReached": "Numero massimo di tentativi raggiunto.",
+    "tooManyAttempts": "Troppi tentativi falliti",
+    "tooManyAttemptsDescription": "Sembra che tu abbia effettuato troppi tentativi per confermare questo ordine. Riprova tra 10 minuti.",
+    "verifying": "Verifica in corso...",
+    "didntReceiveCode": "Non hai ricevuto il codice?",
+    "resendCode": "Invia di nuovo il codice",
+    "resendCodeTimer": "Invia di nuovo il codice ({seconds}s)"
   },
   "adForm": {
     "createAd": "Crea annuncio",
@@ -502,7 +529,10 @@
     "amountExceedsBalanceMessage": "L'importo totale supera il tuo saldo disponibile. Inserisci un importo inferiore.",
     "selectPayment": "Seleziona pagamento",
     "selected": "Selezionati ({count})",
-    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato"
+    "noPaymentMethodsFound": "Nessun metodo di pagamento trovato",
+    "genericErrorCodeMessage": "Riprova o contatta l'assistenza.",
+    "genericProcessingErrorMessage": "Si è verificato un errore durante l'elaborazione della richiesta. Riprova.",
+    "unknownErrorMessage": "Si è verificato un errore sconosciuto"
   },
   "advertiser": {
     "goBack": "Torna Indietro",
@@ -567,5 +597,27 @@
     "waitingSellersConfirmation": "In attesa della conferma del venditore",
     "confirmPayment": "Conferma il pagamento",
     "underDispute": "In disputa"
+  },
+  "complaint": {
+    "title": "Invia un reclamo",
+    "buyer_not_paid": "Non ho ricevuto alcun pagamento.",
+    "buyer_underpaid": "Ho ricevuto meno dell'importo concordato.",
+    "buyer_overpaid": "Ho ricevuto più dell'importo concordato.",
+    "buyer_third_party_payment_method": "Ho ricevuto il pagamento da una terza parte.",
+    "seller_not_released": "Ho effettuato il pagamento, ma il venditore non ha rilasciato i fondi.",
+    "buyer_underpaid_buyer": "Non sono riuscito a completare il pagamento completo.",
+    "buyer_overpaid_buyer": "Ho pagato più dell'importo concordato.",
+    "helpText": "Se il tuo problema non è elencato, contattaci tramite chat dal vivo per assistenza.",
+    "submit": "Invia"
+  },
+  "ratingSidebar": {
+    "title": "Valuta e raccomanda",
+    "ratingLabel": "Come valuteresti questa transazione?",
+    "recommendLabel": "Consiglieresti questo utente?",
+    "yes": "Sì",
+    "no": "No",
+    "submit": "Invia",
+    "ratingRequiredTitle": "Valutazione richiesta",
+    "ratingRequiredDescription": "Seleziona una valutazione a stelle prima di inviare."
   }
 }

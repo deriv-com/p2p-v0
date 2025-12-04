@@ -45,6 +45,7 @@ export default function WalletSummary({
 }: WalletSummaryProps) {
   const { t } = useTranslations()
   const userId = useUserDataStore((state) => state.userId)
+  const verificationStatus = useUserDataStore((state) => state.verificationStatus) // Added verificationStatus from userDataStore to check phone_verified
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false)
   const [currentOperation, setCurrentOperation] = useState<OperationType>("DEPOSIT")
@@ -80,7 +81,7 @@ export default function WalletSummary({
   }, [])
 
   const handleDepositClick = () => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setCurrentOperation("DEPOSIT")
       setCurrentStep("chooseCurrency")
     } else {
@@ -98,7 +99,7 @@ export default function WalletSummary({
   }
 
   const handleWithdrawClick = () => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setCurrentOperation("WITHDRAW")
       setCurrentStep("chooseCurrency")
     } else {
@@ -116,7 +117,7 @@ export default function WalletSummary({
   }
 
   const handleTransferClick = () => {
-    if (userId) {
+    if (userId && verificationStatus?.phone_verified) {
       setCurrentOperation("TRANSFER")
       setIsSidebarOpen(true)
     } else {

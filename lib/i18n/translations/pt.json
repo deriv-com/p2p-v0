@@ -22,7 +22,13 @@
     "all": "Todos",
     "yes": "Sim",
     "no": "Não",
-    "ok": "OK"
+    "ok": "OK",
+    "learnMore": "Saiba mais",
+    "verifiedBadge": {
+      "title": "Conta totalmente verificada",
+      "descriptionSelf": "Você concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço.",
+      "descriptionOther": "Este usuário concluiu todas as etapas de verificação necessárias, incluindo e-mail, número de telefone, identidade (KYC) e verificação de endereço. Você pode negociar com confiança sabendo que esta conta está verificada."
+    }
   },
   "navigation": {
     "market": "Mercado",
@@ -69,6 +75,7 @@
     "exchangeRate": "Taxa de câmbio",
     "orderLimit": "Limite do pedido",
     "paymentTime": "Tempo de pagamento",
+    "paymentTimeTooltip": "Complete seu pagamento dentro de {minutes} minutos após fazer o pedido.",
     "buyer": "Comprador",
     "seller": "Vendedor",
     "buyersPaymentMethods": "Método(s) de pagamento do comprador",
@@ -118,7 +125,7 @@
     "bank_name": "Nome do Banco",
     "account_number": "Número da Conta",
     "account_holder": "Titular da Conta",
-    "branch_code": "Código da Agência",
+    "branch": "Código da Agência",
     "iban": "IBAN",
     "swift_code": "Código SWIFT",
     "bic": "BIC",
@@ -133,6 +140,18 @@
     "totalBalance": "Saldo total",
     "loading": "Carregando saldo..."
   },
+  "complaint": {
+    "title": "Enviar uma reclamação",
+    "buyer_not_paid": "Não recebi nenhum pagamento.",
+    "buyer_underpaid": "Recebi menos do que o valor acordado.",
+    "buyer_overpaid": "Recebi mais do que o valor acordado.",
+    "buyer_third_party_payment_method": "Recebi pagamento de terceiros.",
+    "seller_not_released": "Fiz o pagamento, mas o vendedor não liberou os fundos.",
+    "buyer_underpaid_buyer": "Não consegui completar o pagamento total.",
+    "buyer_overpaid_buyer": "Paguei mais do que o valor acordado.",
+    "helpText": "Se o seu problema não estiver listado, entre em contato conosco via chat ao vivo para obter ajuda.",
+    "submit": "Enviar"
+  },
   "filter": {
     "fromFollowing": "De seguidos",
     "sortBy": "Ordenar por",
@@ -145,7 +164,9 @@
     "exchangeRateHighLow": "Taxa de câmbio (alto-baixo)",
     "userRatingHighLow": "Avaliação do usuário (alto-baixo)",
     "applyFilters": "Aplicar filtros",
-    "filter": "Filtrar"
+    "filter": "Filtrar",
+    "currencyUnavailable": "{currency} não disponível",
+    "selectAnotherCurrency": "Por favor, selecione outra moeda."
   },
   "chat": {
     "conversationClosed": "Esta conversa está fechada.",
@@ -234,6 +255,14 @@
     "paymentMethodAdded": "Método de pagamento adicionado.",
     "bronzeTier": "Nível Bronze",
     "bronzeTierDescription": "Nível padrão para novos usuários com limites básicos de negociação.",
+    "silverTier": "Nível Prata",
+    "silverTierDescription": "Negociador confiável com limites mais altos e atividade comprovada.",
+    "goldTier": "Nível Ouro",
+    "goldTierDescription": "Negociador experiente com histórico sólido e privilégios mais elevados.",
+    "platinumTier": "Nível Platina",
+    "platinumTierDescription": "Nível premium com limites de negociação máximos e benefícios exclusivos.",
+    "diamondTier": "Nível Diamante",
+    "diamondTierDescription": "Negociador de alto nível com limites diários máximos e excelente histórico.",
     "last30Days": "Últimos 30 dias",
     "lifetime": "Desde o início",
     "sellCompletion": "Conclusão de vendas",
@@ -390,7 +419,9 @@
     "generic": "Algo deu errado. Por favor, tente novamente.",
     "networkError": "Erro de rede. Por favor, verifique sua conexão.",
     "unauthorized": "Você não está autorizado a realizar esta ação.",
-    "notFound": "O recurso solicitado não foi encontrado."
+    "notFound": "O recurso solicitado não foi encontrado.",
+    "invalidExchangeRateMessage": "A taxa de câmbio fornecida é inválida.",
+    "invalidOrderAmountMessage": "Os limites de valor do pedido são inválidos."
   },
   "validation": {
     "required": "Este campo é obrigatório",
@@ -475,7 +506,17 @@
     "uploadProof": "Carregar comprovante de pagamento",
     "fileTypes": "JPEG, JPG, PNG, PDF (até 5MB)",
     "fileTooLarge": "O arquivo deve ter 5MB ou menos.",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "confirmPaymentReceived": "Confirmar pagamento recebido",
+    "otpSentTo": "Digite o código de 6 dígitos enviado para {email}. Esta etapa verifica sua identidade antes de liberar o pagamento para a outra parte.",
+    "incorrectCode": "Código incorreto. Você tem {attempts} tentativa{plural} restante{plural}.",
+    "maxAttemptsReached": "Número máximo de tentativas atingido.",
+    "tooManyAttempts": "Muitas tentativas falhadas",
+    "tooManyAttemptsDescription": "Parece que você fez muitas tentativas para confirmar este pedido. Tente novamente após 10 minutos.",
+    "verifying": "Verificando...",
+    "didntReceiveCode": "Não recebeu o código?",
+    "resendCode": "Reenviar código",
+    "resendCodeTimer": "Reenviar código ({seconds}s)"
   },
   "adForm": {
     "createAd": "Criar anúncio",
@@ -519,27 +560,12 @@
     "maxAmountGreaterThanMin": "O valor máximo deve ser maior que o valor mínimo",
     "minAmountLessThanTotal": "O valor mínimo deve ser menor que o valor total",
     "maxAmountLessThanTotal": "O valor máximo deve ser menor que o valor total",
-    "adCreatedSuccess": "Você criou com sucesso um anúncio de {type}.\n\nSe o seu anúncio não receber um pedido em 3 dias, ele será desativado.",
-    "adUpdatedSuccess": "Os detalhes do anúncio foram atualizados.",
-    "failedToCreateAd": "Falha ao criar anúncio",
-    "failedToUpdateAd": "Falha ao atualizar anúncio",
-    "tryAgain": "Por favor, tente novamente.",
-    "updateAd": "Atualizar anúncio",
-    "duplicateRateTitle": "Você já tem um anúncio com esta taxa",
-    "duplicateRateMessage": "Você tem outro anúncio ativo com a mesma taxa para este par de moedas e tipo de pedido. Defina uma taxa diferente.",
-    "rangeOverlapTitle": "Você já tem um anúncio com este intervalo",
-    "rangeOverlapMessage": "Altere o limite mínimo e/ou máximo do pedido para este anúncio. O intervalo entre esses limites não deve se sobrepor a outro anúncio ativo que você criou para este par de moedas e tipo de pedido.",
-    "adLimitReachedTitle": "Limite de anúncios atingido",
-    "adLimitReachedMessage": "Você pode ter apenas 3 anúncios ativos para este par de moedas e tipo de pedido. Exclua um para criar um novo anúncio.",
-    "insufficientBalanceTitle": "Saldo insuficiente",
-    "insufficientBalanceMessage": "Você não tem saldo suficiente para criar este anúncio",
-    "invalidValuesTitle": "Valores inválidos",
-    "invalidValuesMessage": "Por favor, verifique seus valores de entrada.",
-    "amountExceedsBalanceTitle": "O valor excede o saldo",
-    "amountExceedsBalanceMessage": "O valor total excede seu saldo disponível. Por favor, insira um valor menor.",
     "selectPayment": "Selecionar pagamento",
     "selected": "Selecionados ({count})",
-    "noPaymentMethodsFound": "Nenhum método de pagamento encontrado"
+    "noPaymentMethodsFound": "Nenhum método de pagamento encontrado",
+    "genericErrorCodeMessage": "Tente novamente ou entre em contato com o suporte.",
+    "genericProcessingErrorMessage": "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
+    "unknownErrorMessage": "Ocorreu um erro desconhecido"
   },
   "kyc": {
     "title": "Verificação de identidade",
@@ -567,5 +593,15 @@
     "waitingSellersConfirmation": "Aguardando confirmação do vendedor",
     "confirmPayment": "Confirmar pagamento",
     "underDispute": "Em disputa"
+  },
+  "ratingSidebar": {
+    "title": "Avaliar e recomendar",
+    "ratingLabel": "Como você avaliaria esta transação?",
+    "recommendLabel": "Você recomendaria este usuário?",
+    "yes": "Sim",
+    "no": "Não",
+    "submit": "Enviar",
+    "ratingRequiredTitle": "Avaliação necessária",
+    "ratingRequiredDescription": "Por favor, selecione uma avaliação em estrelas antes de enviar."
   }
 }
