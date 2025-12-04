@@ -283,7 +283,7 @@
     "noFollowers": "No followers yet",
     "whenUsersFollow": "When users follow you, they'll appear here.",
     "noMatchingName": "No matching name",
-    "noResultFor": "There is no result for {query}.",
+    "noResultFor": "There is no result for",
     "unfollowUser": "Unfollow {nickname}?",
     "unfollowDescription": "You're about to unfollow this user. You'll lose quick access to their profile and active ads.",
     "unfollow": "Unfollow",

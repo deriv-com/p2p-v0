@@ -140,7 +140,7 @@ const FullPagePaymentSelection = ({
               {t("paymentMethod.noMatchingPayment")}
             </p>
             <p className="text-grayscale-text-muted text-sm text-center">
-              There is no result for &quot;{searchQuery}&quot;
+              {t("common.noResultFor")} &quot;{searchQuery}&quot;
             </p>
           </div>
         ) : (

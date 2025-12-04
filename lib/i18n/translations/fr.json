@@ -290,7 +290,7 @@
     "noFollowers": "Pas encore d'abonnés",
     "whenUsersFollow": "Lorsque des utilisateurs vous suivent, ils apparaîtront ici.",
     "noMatchingName": "Aucun nom correspondant",
-    "noResultFor": "Il n'y a aucun résultat pour {query}.",
+    "noResultFor": "Il n'y a aucun résultat pour",
     "unfollowUser": "Ne plus suivre {nickname} ?",
     "unfollowDescription": "Vous êtes sur le point de ne plus suivre cet utilisateur. Vous perdrez l'accès rapide à son profil et à ses annonces actives.",
     "unfollow": "Ne plus suivre",
