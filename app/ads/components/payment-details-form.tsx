@@ -151,7 +151,7 @@ const FullPagePaymentSelection = ({
             <p className="text-slate-1200 text-base font-bold text-center mb-2">
               {t("paymentMethod.noMatchingPayment")}
             </p>
-            <p className="text-grayscale-text-muted text-sm text-center">
+            <p className="text-grayscale-text-muted text-base text-center">
               {t("profile.noResultForPrefix")} &quot;{searchQuery}&quot;
             </p>
           </div>
