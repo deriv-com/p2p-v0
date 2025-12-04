@@ -169,7 +169,7 @@ const FullPagePaymentSelection = ({
               >
                 <div className="flex items-center gap-4">
                   <div
-                    className={`h-2 w-2 rounded-full mx-[11px] ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
+                    className={`h-[10px] w-[10px] rounded-full mx-[11px] ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
                   />
                   <span className="text-base text-slate-1200">{method.display_name}</span>
                 </div>
@@ -307,7 +307,7 @@ const PaymentSelectionContent = ({
                   <div className="flex-1">
                     <div className="flex items-center mb-[6px] gap-2">
                       <div
-                        className={`h-2 w-2 rounded-full mr-2 ${
+                        className={`h-[10px] w-[10px] rounded-full mr-2 ${
                           getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                         }`}
                       />
