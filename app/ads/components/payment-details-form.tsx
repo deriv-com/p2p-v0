@@ -125,6 +125,16 @@ const FullPagePaymentSelection = ({
             onChange={(e) => setSearchQuery(e.target.value)}
             className="text-base pl-10 pr-10 h-8 md:h-14 bg-grayscale-500 border-0 focus:border-0 focus:ring-0 rounded-lg placeholder:text-grayscale-text-placeholder placeholder:text-base placeholder:font-normal"
           />
+          {searchQuery && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2 md:right-4 top-1/2 transform -translate-y-1/2 hover:bg-transparent p-0 h-auto"
+            >
+              <Image src="/icons/clear-search-icon.png" alt="Clear search" width={24} height={24} />
+            </Button>
+          )}
         </div>
       </div>
       {!isMobile && filteredMethods.length > 0 && (
