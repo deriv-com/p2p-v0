@@ -127,7 +127,7 @@ const FullPagePaymentSelection = ({
           />
         </div>
       </div>
-      {!isMobile && (
+      {!isMobile && filteredMethods.length > 0 && (
         <div className="my-0">
           <p className="text-base text-slate-1200">{t("paymentMethod.selectUpTo3")}</p>
         </div>
@@ -135,12 +135,12 @@ const FullPagePaymentSelection = ({
       <div className={isMobile ? "flex-1 overflow-y-auto px-6 space-y-3" : "flex-1 overflow-y-auto space-y-3"}>
         {filteredMethods.length === 0 ? (
           <div className="text-center py-8 flex flex-col items-center">
-            <Image src="/icons/magnifier.png" alt="No results" width={80} height={80} className="mb-0" />
+            <Image src="/icons/magnifier.png" alt="No results" width={88} height={88} className="mb-0" />
             <p className="text-slate-1200 text-base font-bold text-center mb-2">
               {t("paymentMethod.noMatchingPayment")}
             </p>
             <p className="text-grayscale-text-muted text-sm text-center">
-              {t("common.noResultFor")} "{searchQuery}"
+              {t("common.noResultFor", { query: `"${searchQuery}"` })}
             </p>
           </div>
         ) : (
