@@ -278,7 +278,7 @@
     "noFollowers": "Nessun follower ancora",
     "whenUsersFollow": "Quando gli utenti ti seguiranno, appariranno qui.",
     "noMatchingName": "Nessuna corrispondenza",
-    "noResultFor": "Non ci sono risultati per",
+    "noResultFor": "Non ci sono risultati per {query}.",
     "unfollowUser": "Smettere di seguire {nickname}?",
     "unfollowDescription": "Stai per smettere di seguire questo utente. Perderai l'accesso rapido al suo profilo e agli annunci attivi.",
     "unfollow": "Smetti di seguire",
