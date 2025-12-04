@@ -33,7 +33,6 @@ import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getTotalBalance } from "@/services/api/api-auth"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
