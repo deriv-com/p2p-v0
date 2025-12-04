@@ -144,7 +144,7 @@ const FullPagePaymentSelection = ({
           <p className="text-base text-slate-1200">{t("paymentMethod.selectUpTo3")}</p>
         </div>
       )}
-      <div className={isMobile ? "flex-1 overflow-y-auto px-4 space-y-3" : "flex-1 overflow-y-auto space-y-2"}>
+      <div className="flex-1 overflow-y-auto px-4 space-y-2">
         {filteredMethods.length === 0 ? (
           <div className="text-center pt-0 pb-4 md:pt-4 md:pb-8 flex flex-col items-center">
             <Image src="/icons/magnifier.png" alt="No results" width={88} height={88} className="mb-0" />
