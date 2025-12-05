@@ -304,7 +304,7 @@ const PaymentSelectionContent = ({
                 key={methodId}
                 className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
                   !selectedPMs?.includes(methodId) && selectedPMs?.length >= 3 ? "opacity-30 cursor-not-allowed" : ""
-                } ${selectedPMs?.includes(methodId) ? "border-2 border-black" : "border-2 border-transparent"}`}
+                } ${selectedPMs?.includes(methodId) ? "border border-black" : "border-2 border-transparent"}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
