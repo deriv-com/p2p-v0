@@ -165,7 +165,6 @@ export default function OrderSidebar({ isOpen, onClose, ad, orderType, p2pBalanc
       ad.exchange_rate_type === "float" &&
       isConnected
     ) {
-      console.log(isConnected)
       setMarketRate(ad.effective_rate_display)
       joinExchangeRatesChannel(ad.account_currency, ad.payment_currency)
 
