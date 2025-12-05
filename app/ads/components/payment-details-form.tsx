@@ -302,15 +302,17 @@ const PaymentSelectionContent = ({
             return (
               <div
                 key={methodId}
-                className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
-                  !selectedPMs?.includes(methodId) && selectedPMs?.length >= 3 ? "opacity-30 cursor-not-allowed" : ""
-                } ${selectedPMs?.includes(methodId) ? "border border-black" : "border border-transparent"}`}
+                className={`bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-color ${
+                  !selectedPMs?.includes(methodId) && selectedPMs?.length >= 3
+                    ? "opacity-30 cursor-not-allowed hover:bg-white"
+                    : ""
+                }`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center mb-[6px] gap-2">
                       <div
-                        className={`h-[10px] w-[10px] rounded-full mx-[11px] ${
+                        className={`h-2 w-2 rounded-full mr-2 ${
                           getMethodType(method) === "bank" ? "bg-paymentMethod-bank" : "bg-paymentMethod-ewallet"
                         }`}
                       />
@@ -328,7 +330,7 @@ const PaymentSelectionContent = ({
                     checked={selectedPMs?.includes(methodId)}
                     onCheckedChange={() => handlePaymentMethodToggle(methodId)}
                     disabled={!selectedPMs?.includes(methodId) && selectedPMs?.length >= 3}
-                    className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[14px] h-[14px] rounded-[2px] border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[20px] h-[20px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
