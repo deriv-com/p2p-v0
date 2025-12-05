@@ -215,7 +215,6 @@ export async function getSession(): Promise<boolean> {
 
     return response.status === 200
   } catch (error) {
-    console.error("[v0] getSession error:", error)
     return false
   }
 }
