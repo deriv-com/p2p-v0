@@ -168,7 +168,7 @@ const FullPagePaymentSelection = ({
               <div
                 key={methodId}
                 className={`bg-grayscale-500 rounded-lg p-4 flex items-center justify-between cursor-pointer ${
-                  isSelected ? "border border-black" : "border-2 border-transparent"
+                  isSelected ? "border border-black" : "border border-transparent"
                 } ${isDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
                 onClick={() => !isDisabled && handleToggle(methodId)}
               >
