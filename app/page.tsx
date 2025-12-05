@@ -26,13 +26,13 @@ import { useUserDataStore } from "@/stores/user-data-store"
 import { BalanceSection } from "@/components/balance-section"
 import { cn } from "@/lib/utils"
 import { TemporaryBanAlert } from "@/components/temporary-ban-alert"
+import { getTotalBalance } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
 import { useAlertDialog } from "@/hooks/use-alert-dialog"
 import { KycOnboardingSheet } from "@/components/kyc-onboarding-sheet"
 import { Tooltip, TooltipArrow, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 import { VerifiedBadge } from "@/components/verified-badge"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getTotalBalance } from "@/services/api/api-auth"
 
 export default function BuySellPage() {
   const { t, locale } = useTranslations()
@@ -80,6 +80,7 @@ export default function BuySellPage() {
       locale != "en"
         ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
         : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+
     window.open(helpCentreUrl, "_blank")
   }
 
@@ -647,8 +648,8 @@ export default function BuySellPage() {
                         </TableCell>
                         <TableCell className="p-2 lg:p-4 align-top row-start-2 col-span-full">
                           <div className="font-bold text-base flex items-center">
-                            {ad.exchange_rate
-                              ? ad.exchange_rate.toLocaleString(undefined, {
+                            {ad.effective_rate_display
+                              ? ad.effective_rate_display.toLocaleString(undefined, {
                                   minimumFractionDigits: 2,
                                   maximumFractionDigits: 2,
                                 })

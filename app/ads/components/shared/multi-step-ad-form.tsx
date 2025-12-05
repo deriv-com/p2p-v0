@@ -117,7 +117,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
         const uniqueCurrencies = Array.from(
           new Set(
             countriesData
-              .filter((country: Country) => country.fixed_rate === "enabled")
               .map((country: Country) => country.currency)
               .filter((currency): currency is string => !!currency),
           ),
@@ -181,6 +180,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
               instructions: data.description || "",
               forCurrency: data.payment_currency,
               buyCurrency: data.account_currency,
+              priceType: data.exchange_rate_type,
+              floatingRate: Number.parseFloat(data.exchange_rate) || "",
             }
 
             setFormData(formattedData)
@@ -300,6 +301,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
       const selectedPaymentMethodIdsForSubmit = finalData.type === "sell" ? selectedPaymentMethodIds : []
 
       if (mode === "create") {
+        const exchangeRate =
+          finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+
         const payload = {
           type: finalData.type || "buy",
           account_currency: finalData.buyCurrency,
@@ -307,8 +311,8 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           minimum_order_amount: finalData.minAmount || 0,
           maximum_order_amount: finalData.maxAmount || 0,
           available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed" as const,
+          exchange_rate: exchangeRate || 0,
+          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
           description: finalData.instructions || "",
           is_active: 1,
           order_expiry_period: orderTimeLimit,
@@ -333,13 +337,16 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           })
         }
       } else {
+        const exchangeRate =
+          finalData.priceType === "float" ? Number(finalData.floatingRate) : Number(finalData.fixedRate)
+
         const payload = {
           is_active: true,
           minimum_order_amount: finalData.minAmount || 0,
           maximum_order_amount: finalData.maxAmount || 0,
           available_amount: finalData.totalAmount || 0,
-          exchange_rate: finalData.fixedRate || 0,
-          exchange_rate_type: "fixed",
+          exchange_rate: exchangeRate || 0,
+          exchange_rate_type: (finalData.priceType || "fixed") as "fixed" | "float",
           order_expiry_period: orderTimeLimit,
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           description: finalData.instructions || "",
