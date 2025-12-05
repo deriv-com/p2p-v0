@@ -149,8 +149,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        },
-        credentials: "include",
+        }
       })
 
       console.log("[v0] redirect-url response status:", response.status)
@@ -167,7 +166,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       if (data.recovery_link) {
         const recoveryResponse = await fetch(data.recovery_link, {
           method: "GET",
-          redirect: "follow",
+          redirect: "manual",
           credentials: "include",
         })
 
