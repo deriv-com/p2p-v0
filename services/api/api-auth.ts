@@ -149,6 +149,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "X-Enable-Session": "true",
         },
         credentials: "include",
       })
