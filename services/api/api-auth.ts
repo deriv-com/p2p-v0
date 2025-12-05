@@ -165,7 +165,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
           credentials: "include",
         })
 
-        if (recoveryResponse.ok) {
+        if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
           window.location.href = url
           return data
         } else {
