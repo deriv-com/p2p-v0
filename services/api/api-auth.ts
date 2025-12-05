@@ -139,6 +139,8 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
   const isOryEnabled = process.env.NEXT_PUBLIC_IS_ORY_ENABLED == 1
 
   try {
+    console.log("[v0] verifyToken started with Ory enabled:", isOryEnabled)
+
     if (isOryEnabled) {
       const url =
         process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://dp2p.deriv.com" : "https://staging-dp2p.deriv.com"
@@ -151,6 +153,8 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         credentials: "include",
       })
 
+      console.log("[v0] redirect-url response status:", response.status)
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
@@ -158,17 +162,24 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
       const result = await response.json()
       const { data } = result
 
+      console.log("[v0] Got recovery link, processing...")
+
       if (data.recovery_link) {
         const recoveryResponse = await fetch(data.recovery_link, {
           method: "GET",
-          redirect: "manual",
+          redirect: "follow",
           credentials: "include",
         })
 
-        if (recoveryResponse.type === 'opaqueredirect' || recoveryResponse.ok) {
+        console.log("[v0] recovery response status:", recoveryResponse.status, "ok:", recoveryResponse.ok)
+
+        if (recoveryResponse.ok || recoveryResponse.type === "opaqueredirect") {
+          await new Promise((resolve) => setTimeout(resolve, 100))
+          console.log("[v0] Redirecting after cookie propagation delay")
           window.location.href = url
           return data
         } else {
+          console.error("[v0] Recovery response failed:", recoveryResponse.status)
           throw new Error("Failed to process recovery link")
         }
       }
@@ -210,14 +221,18 @@ export async function getSession(): Promise<boolean> {
       ? `${process.env.NEXT_PUBLIC_ORY_URL}/sessions/whoami`
       : `${process.env.NEXT_PUBLIC_CORE_URL}/session`
 
+    console.log("[v0] getSession called, checking:", sessionUrl)
+
     const response = await fetch(sessionUrl, {
       method: "GET",
       credentials: "include",
     })
 
+    console.log("[v0] getSession response status:", response.status)
+
     return response.status === 200
   } catch (error) {
-    console.error(error)
+    console.error("[v0] getSession error:", error)
     return false
   }
 }
