@@ -328,7 +328,7 @@ const PaymentSelectionContent = ({
                     checked={selectedPMs?.includes(methodId)}
                     onCheckedChange={() => handlePaymentMethodToggle(methodId)}
                     disabled={!selectedPMs?.includes(methodId) && selectedPMs?.length >= 3}
-                    className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[14px] h-[14px] rounded-sm border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
+                    className="border-neutral-7 data-[state=checked]:bg-black data-[state=checked]:border-black w-[14px] h-[14px] rounded-[2px] border-[2px] disabled:opacity-30 disabled:cursor-not-allowed"
                   />
                 </div>
               </div>
