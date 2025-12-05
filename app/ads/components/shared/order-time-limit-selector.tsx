@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 interface OrderTimeLimitSelectorProps {
   value: number
@@ -27,6 +28,7 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
   ]
 
   const selectedOption = TIME_LIMIT_OPTIONS.find((option) => option.value === value)
+  const hasValue = !!selectedOption
 
   const handleSelect = (selectedValue: number) => {
     onValueChange(selectedValue)
@@ -36,15 +38,36 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
   if (isMobile) {
     return (
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
-        <SheetTrigger asChild>
-          <Button
-            variant="outline"
-            className={`w-full h-[56px] max-h-none justify-between px-4 rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black ${className} font-normal`}
-          >
-            <span>{selectedOption?.label || t("adForm.orderTimeLimit")}</span>
-            <Image src="/icons/chevron-down.png" alt="Arrow" width={24} height={24} className="ml-2" />
-          </Button>
-        </SheetTrigger>
+        <div className="relative">
+          <SheetTrigger asChild>
+            <Button
+              variant="outline"
+              className={cn(
+                "w-full h-[56px] max-h-none justify-start rounded-lg bg-transparent border-input hover:bg-transparent focus:border-black font-normal pl-4 pr-12 [&>svg]:hidden",
+                hasValue ? "pt-6 pb-2" : "py-4",
+                className,
+              )}
+            >
+              <span className={cn("text-left text-base text-grayscale-600")}>
+                {hasValue ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}
+              </span>
+            </Button>
+          </SheetTrigger>
+          {hasValue && (
+            <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
+              {t("adForm.orderTimeLimitPlaceholder")}
+            </label>
+          )}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+            <Image
+              src="/icons/chevron-down.png"
+              alt="Arrow"
+              width={24}
+              height={24}
+              className={cn("transition-transform", isOpen && "rotate-180")}
+            />
+          </div>
+        </div>
         <SheetContent side="bottom" className="h-fit p-4 rounded-t-2xl">
           <div className="mb-4">
             <h3 className="text-xl font-bold text-center">{t("adForm.orderTimeLimit")}</h3>
@@ -67,17 +90,45 @@ export default function OrderTimeLimitSelector({ value, onValueChange, className
   }
 
   return (
-    <Select value={value.toString()} onValueChange={(selectedValue) => onValueChange(Number(selectedValue))}>
-      <SelectTrigger className={`w-[70%] h-[56px] text-base rounded-lg ${className}`}>
-        <SelectValue>{selectedOption?.label}</SelectValue>
-      </SelectTrigger>
-      <SelectContent>
-        {TIME_LIMIT_OPTIONS.map((option) => (
-          <SelectItem key={option.value} value={option.value.toString()} className="text-base">
-            {option.label}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <div className="relative">
+      <Select
+        value={value.toString()}
+        onValueChange={(selectedValue) => onValueChange(Number(selectedValue))}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      >
+        <SelectTrigger
+          hideChevron
+          className={cn(
+            "w-[100%] h-[56px] text-base rounded-lg pl-4 pr-12 text-grayscale-600",
+            hasValue ? "pt-6 pb-2" : "py-4",
+            className,
+          )}
+        >
+          <SelectValue>{hasValue ? selectedOption.label : t("adForm.orderTimeLimitPlaceholder")}</SelectValue>
+        </SelectTrigger>
+        <SelectContent>
+          {TIME_LIMIT_OPTIONS.map((option) => (
+            <SelectItem key={option.value} value={option.value.toString()} className="text-base h-12">
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+      {hasValue && (
+        <label className="absolute left-[14px] top-2 text-[12px] font-normal text-grayscale-600 pointer-events-none bg-white px-1">
+          {t("adForm.orderTimeLimitPlaceholder")}
+        </label>
+      )}
+      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+        <Image
+          src="/icons/chevron-down.png"
+          alt="Arrow"
+          width={24}
+          height={24}
+          className={cn("transition-transform", isOpen && "rotate-180")}
+        />
+      </div>
+    </div>
   )
 }

@@ -20,6 +20,7 @@ interface MarketFilterDropdownProps {
   initialSortBy: string
   trigger: React.ReactElement
   hasActiveFilters?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 export default function MarketFilterDropdown({
@@ -29,6 +30,7 @@ export default function MarketFilterDropdown({
   initialSortBy,
   trigger,
   hasActiveFilters = false,
+  onOpenChange: onOpenChangeProp,
 }: MarketFilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filters, setFilters] = useState<MarketFilterOptions>(initialFilters)
@@ -44,16 +46,22 @@ export default function MarketFilterDropdown({
     setSortBy("exchange_rate")
     onApply({ fromFollowing: false }, "exchange_rate")
     setIsOpen(false)
+    onOpenChangeProp?.(false)
   }
 
   const handleApply = () => {
     onApply(filters, sortBy)
     setIsOpen(false)
+    onOpenChangeProp?.(false)
   }
 
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsOpen(open)
-  }, [])
+  const handleOpenChange = useCallback(
+    (open: boolean) => {
+      setIsOpen(open)
+      onOpenChangeProp?.(open)
+    },
+    [onOpenChangeProp],
+  )
 
   const handleFilterChange = (key: keyof MarketFilterOptions, value: boolean) => {
     const newFilters = {
@@ -79,18 +87,14 @@ export default function MarketFilterDropdown({
     <div className="w-full h-full">
       <div className="space-y-2 mb-2">
         <div className="mb-2">
-          {isMobile ? (
-            <h4 className="text-sm text-black font-bold mb-2">{t("filter.adTypes")}</h4>
-          ) : (
-            <h4 className="text-sm text-grayscale-text-muted mb-2">{t("filter.adTypes")}</h4>
-          )}
+          <h4 className="text-base font-normal text-grayscale-text-muted">{t("filter.adTypes")}</h4>
         </div>
         <div className="flex items-center space-x-3">
           <Checkbox
             id="from-following"
             checked={filters.fromFollowing}
             onCheckedChange={(checked) => handleFilterChange("fromFollowing", checked as boolean)}
-            className="data-[state=checked]:bg-black border-black"
+            className="data-[state=checked]:bg-black border-2 border-grayscale-text-muted"
           />
           <label htmlFor="from-following" className="text-sm text-grayscale-600 cursor-pointer">
             {t("filter.adsFromFollowing")}
@@ -99,11 +103,7 @@ export default function MarketFilterDropdown({
       </div>
       <div className="mb-2">
         <div className="border-t border-gray-200 pt-2">
-          {isMobile ? (
-            <h4 className="text-sm text-black font-bold mb-2">{t("filter.sortBy")}</h4>
-          ) : (
-            <h4 className="text-sm text-grayscale-text-muted mb-2">{t("filter.sortBy")}</h4>
-          )}
+          <h4 className="text-base font-normal text-grayscale-text-muted mb-2">{t("filter.sortBy")}</h4>
           <RadioGroup value={sortBy} onValueChange={handleSortByChange} className="gap-4">
             <div className="flex items-center space-x-3">
               <RadioGroupItem value="exchange_rate" id="exchange_rate" className="border-grayscale-100 text-black" />
@@ -137,7 +137,7 @@ export default function MarketFilterDropdown({
             className={`flex-1 rounded-full text-white hover:bg-gray-800 order-first`}
             size="default"
           >
-            {t("filter.applyFilters")}
+            {t("filter.apply")}
           </Button>
         </div>
       )}

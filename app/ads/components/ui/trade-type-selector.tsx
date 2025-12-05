@@ -14,15 +14,15 @@ export function TradeTypeSelector({ value, onChange, isEditMode = false }: Trade
 
   return (
     <Tabs
-      className="w-full md:w-[272px]"
+      className="w-full"
       defaultValue={value}
       onValueChange={(type) => !isEditMode && onChange(type as "buy" | "sell")}
     >
-      <TabsList className="w-full md:min-w-[270px]">
-        <TabsTrigger className="w-full" value="buy">
+      <TabsList className="w-full">
+        <TabsTrigger className="w-full data-[state=active]:text-slate-1200 text-grayscale-600" value="buy">
           {t("market.iWantToBuy")}
         </TabsTrigger>
-        <TabsTrigger className="w-full" value="sell">
+        <TabsTrigger className="w-full data-[state=active]:text-slate-1200 text-grayscale-600" value="sell">
           {t("market.iWantToSell")}
         </TabsTrigger>
       </TabsList>

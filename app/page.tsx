@@ -1,7 +1,6 @@
 "use client"
 
 import { TooltipTrigger } from "@/components/ui/tooltip"
-import { TradeBandBadge } from "@/components/trade-band-badge"
 
 import { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -61,11 +60,13 @@ export default function BuySellPage() {
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([])
   const [isLoadingPaymentMethods, setIsLoadingPaymentMethods] = useState(false)
   const [paymentMethodsInitialized, setPaymentMethodsInitialized] = useState(false)
+  const [isPaymentMethodsFilterOpen, setIsPaymentMethodsFilterOpen] = useState(false)
   const [isOrderSidebarOpen, setIsOrderSidebarOpen] = useState(false)
   const [selectedAd, setSelectedAd] = useState<Advertisement | null>(null)
   const [balance, setBalance] = useState<string>("0.00")
   const [balanceCurrency, setBalanceCurrency] = useState<string>("USD")
   const [isLoadingBalance, setIsLoadingBalance] = useState<boolean>(true)
+  const [isMarketFilterOpen, setIsMarketFilterOpen] = useState(false)
   const fetchedForRef = useRef<string | null>(null)
   const { currencies } = useCurrencyData()
   const { accountCurrencies } = useAccountCurrencies()
@@ -80,6 +81,7 @@ export default function BuySellPage() {
       locale != "en"
         ? `https://trade.deriv.com/${locale}/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
         : `https://trade.deriv.com/help-centre-question/what-are-the-p2p-tier-levels-and-limits`
+
     window.open(helpCentreUrl, "_blank")
   }
 
@@ -411,15 +413,18 @@ export default function BuySellPage() {
                   selectedMethods={selectedPaymentMethods}
                   onSelectionChange={setSelectedPaymentMethods}
                   isLoading={isLoadingPaymentMethods}
+                  onOpenChange={setIsPaymentMethodsFilterOpen}
                   trigger={
                     <Button
                       variant="outline"
                       size="sm"
                       className={cn(
-                        "rounded-md border border-input font-normal w-full justify-between px-3 rounded-3xl",
+                        "rounded-md border border-black/[0.08] font-normal w-full justify-between px-3 rounded-3xl",
                         hasFilteredPaymentMethods
                           ? "bg-black hover:bg-black text-white"
-                          : "bg-transparent hover:bg-transparent",
+                          : isPaymentMethodsFilterOpen
+                            ? "bg-black/[0.16] hover:bg-black/[0.16]"
+                            : "bg-transparent hover:bg-transparent",
                       )}
                     >
                       <span className="truncate overflow-hidden text-ellipsis whitespace-nowrap">
@@ -454,13 +459,18 @@ export default function BuySellPage() {
                   initialFilters={filterOptions}
                   initialSortBy={sortBy}
                   hasActiveFilters={hasActiveFilters}
+                  onOpenChange={setIsMarketFilterOpen}
                   trigger={
                     <Button
                       variant="outline"
                       size="sm"
                       className={cn(
-                        "rounded-md border border-input font-normal px-3  focus:border-black min-w-fit rounded-3xl",
-                        hasActiveFilters ? "bg-black hover:bg-black" : "bg-transparent hover:bg-transparent",
+                        "rounded-md border border-black/[0.08] font-normal px-3  focus:border-black min-w-fit rounded-3xl",
+                        hasActiveFilters
+                          ? "bg-black hover:bg-black"
+                          : isMarketFilterOpen
+                            ? "bg-black/[0.16] hover:bg-black/[0.16]"
+                            : "bg-transparent hover:bg-transparent",
                       )}
                     >
                       {hasActiveFilters ? (
@@ -569,29 +579,58 @@ export default function BuySellPage() {
                                 }`}
                               />
                             </div>
-                            <div>
-                              <div className="flex items-center gap-1">
-                                <button
-                                  onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
-                                  className="hover:underline cursor-pointer"
-                                >
-                                  {ad.user?.nickname}
-                                </button>
-                                <VerifiedBadge />
-                                {ad.user.trade_band && (
-                                  <TradeBandBadge
-                                    tradeBand={ad.user.trade_band}
-                                    showLearnMore={true}
-                                    size={18}
-                                    className="mr-1"
-                                  />
-                                )}
-                                {ad.user?.is_favourite && (
-                                  <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
-                                    {t("market.following")}
-                                  </span>
-                                )}
-                              </div>
+                            <div className="flex items-center gap-1">
+                              <button
+                                onClick={() => handleAdvertiserClick(ad.user?.id || 0)}
+                                className="hover:underline cursor-pointer"
+                              >
+                                {ad.user?.nickname}
+                              </button>
+                              <VerifiedBadge description="This user has completed all required verification steps, including email, phone number, identity (KYC), and address verification. You can trade with confidence knowing this account is verified." />
+                              {ad.user.trade_band === "bronze" && (
+                                <TooltipProvider>
+                                  <Tooltip disableHoverableContent={false}>
+                                    <TooltipTrigger asChild>
+                                      <Image
+                                        src="/icons/bronze.png"
+                                        alt="Bronze"
+                                        width={18}
+                                        height={18}
+                                        className="mr-1 cursor-pointer"
+                                      />
+                                    </TooltipTrigger>
+                                    <TooltipContent side="bottom" className="max-w-[340px] text-wrap">
+                                      <>
+                                        <p className="font-bold text-white mb-2">Bronze tier</p>
+                                        <p className="text-white mb-4">
+                                          Default tier for new users with basic trading limits.
+                                        </p>
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          onClick={redirectToHelpCentre}
+                                          className="h-auto text-white hover:bg-transparent hover:text-white p-0 font-normal text-xs"
+                                        >
+                                          Learn more
+                                          <Image
+                                            src="/icons/chevron-right-white.png"
+                                            alt="Arrow"
+                                            width={8}
+                                            height={18}
+                                            className="ml-2 cursor-pointer"
+                                          />
+                                        </Button>
+                                      </>
+                                      <TooltipArrow className="fill-black" />
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              )}
+                              {ad.user?.is_favourite && (
+                                <span className="px-[8px] py-[4px] bg-blue-50 text-blue-100 text-xs rounded-[4px]">
+                                  {t("market.following")}
+                                </span>
+                              )}
                             </div>
                           </div>
                           <div className="flex items-center text-xs text-slate-500 mt-[4px]">

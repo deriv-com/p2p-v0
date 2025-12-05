@@ -80,7 +80,7 @@ export function CurrencyFilter({
 
   const CurrencyList = () => (
     <div className="w-full h-full">
-      <div className="relative mb-4 md:mb-0">
+      <div className="relative mb-4 md:mb-0 md:pr-5">
         <Image
           src="/icons/search-icon-custom.png"
           alt="Search"
@@ -109,7 +109,7 @@ export function CurrencyFilter({
         )}
       </div>
 
-      <div className="max-h-[85%] overflow-y-auto">
+      <div className="max-h-[85%] overflow-y-auto scrollbar-custom md:pr-2 md:mr-2">
         {filteredCurrencies.length === 0 ? (
           <EmptyState
             title={t("filter.currencyUnavailable", { currency: searchQuery })}
@@ -117,7 +117,7 @@ export function CurrencyFilter({
             redirectToAds={false}
           />
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-1 md:pr-2">
             {!isMobile && <div className="text-base text-black opacity-[0.48] py-3">{title}</div>}
             {filteredCurrencies.map((currency) => (
               <div
@@ -158,7 +158,7 @@ export function CurrencyFilter({
   return (
     <Popover open={isOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>{enhancedTrigger}</PopoverTrigger>
-      <PopoverContent className="w-80 h-80 p-4" align="end">
+      <PopoverContent className="w-80 h-80 p-4 md:pt-5 md:pl-5 md:pr-0 md:pb-0" align="end">
         <CurrencyList />
       </PopoverContent>
     </Popover>
