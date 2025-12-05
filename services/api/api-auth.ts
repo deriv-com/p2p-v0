@@ -177,7 +177,7 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         if (recoveryResponse.ok || recoveryResponse.type === "opaqueredirect") {
           await new Promise((resolve) => setTimeout(resolve, 100))
           console.log("[v0] Redirecting after cookie propagation delay")
-          //window.location.href = url
+          window.location.href = url
           return data
         } else {
           console.error("[v0] Recovery response failed:", recoveryResponse.status)
