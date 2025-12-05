@@ -338,7 +338,7 @@ const PaymentSelectionContent = ({
 
         {handleAddPaymentMethodClick && (
           <div
-            className="bg-grayscale-500 rounded-lg p-4 h-16 cursor-pointer hover:bg-gray-50 transition-colors"
+            className="bg-grayscale-500 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
             onClick={() => {
               handleAddPaymentMethodClick()
             }}
