@@ -65,6 +65,7 @@ export default function Main({
           } catch (error) {
             if (!isPublic) {
               //window.location.href = getLoginUrl(true)
+              console.log("catch after verifytoken")
             }
             return
           }
