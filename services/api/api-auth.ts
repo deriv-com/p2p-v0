@@ -149,7 +149,8 @@ export async function verifyToken(token: string): Promise<VerificationResponse> 
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
+        credentials: "include",
       })
 
       console.log("[v0] redirect-url response status:", response.status)
