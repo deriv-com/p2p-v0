@@ -64,8 +64,7 @@ export default function Main({
             window.history.replaceState({}, "", newUrl.toString())
           } catch (error) {
             if (!isPublic) {
-              //window.location.href = getLoginUrl(true)
-              console.log("catch after verifytoken")
+              window.location.href = getLoginUrl(true)
             }
             return
           }
