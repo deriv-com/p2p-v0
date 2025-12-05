@@ -174,7 +174,7 @@ const FullPagePaymentSelection = ({
               >
                 <div className="flex items-center gap-4">
                   <div
-                    className={`h-[10px] w-[10px] rounded-full mx-[11px] ${method.type === "bank" ? "bg-[#4BB543]" : "bg-[#377DFF]"}`}
+                    className={`h-[10px] w-[10px] rounded-full mx-[11px] ${method.type === "bank" ? "bg-[#26A44E]" : "bg-[#3DAAFF]"}`}
                   />
                   <span className="text-base text-slate-1200">{method.display_name}</span>
                 </div>
