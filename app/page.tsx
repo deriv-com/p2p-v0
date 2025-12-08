@@ -255,7 +255,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="markets" />
           </div>
         ),
         confirmText: undefined,
@@ -274,7 +274,7 @@ export default function BuySellPage() {
         title: t("profile.gettingStarted"),
         description: (
           <div className="space-y-4 mb-6 mt-2">
-            <KycOnboardingSheet />
+            <KycOnboardingSheet route="markets" />
           </div>
         ),
         confirmText: undefined,
