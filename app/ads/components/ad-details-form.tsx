@@ -185,8 +185,6 @@ export default function AdDetailsForm({
         }
       } else if(data.action === "error") {
         setMarketPrice(null)
-      } else {
-        setMarketPrice(null)
       }
     })
 
