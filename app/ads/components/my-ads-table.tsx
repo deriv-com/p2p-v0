@@ -281,7 +281,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     "grid grid-cols-[2fr_1fr] lg:flex flex-col border rounded-sm mb-[16px] lg:table-row lg:border-x-[0] lg:border-t-[0] lg:mb-[0] p-3 lg:p-0",
                   )}
                 >
-                  <TableCell className={cn("p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
+                  <TableCell
+                    className={cn(
+                      "p-2 lg:pl-0 lg:pr-4 lg:py-4 align-top row-start-2 col-start-1 col-end-4 whitespace-nowrap",
+                      !isActive || hiddenAdverts ? "opacity-60" : "",
+                    )}
+                  >
                     <div className="flex justify-between md:block">
                       <div className="mb-1 flex justify-normal ">
                         <span
@@ -322,7 +327,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className={cn("p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
+                  <TableCell
+                    className={cn(
+                      "p-2 lg:p-4 align-top row-start-3 col-start-1 col-end-4 text-xs text-slate-1200 whitespace-nowrap",
+                      !isActive || hiddenAdverts ? "opacity-60" : "",
+                    )}
+                  >
                     <div className="mb-2">
                       {availableData.current.toFixed(2)} / {availableData.total.toFixed(2)} USD
                     </div>
@@ -348,7 +358,12 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                       <span className="text-xs leading-5 overflow-hidden text-ellipsis">{formatLimits(ad)}</span>
                     </div>
                   </TableCell>
-                  <TableCell className={cn("p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap", !isActive || hiddenAdverts ? "opacity-60" : "",)}>
+                  <TableCell
+                    className={cn(
+                      "p-2 lg:p-4 lg:w-[200px] align-top row-start-4 col-span-full whitespace-nowrap",
+                      !isActive || hiddenAdverts ? "opacity-60" : "",
+                    )}
+                  >
                     {formatPaymentMethods(paymentMethods)}
                   </TableCell>
                   <TableCell className="p-2 lg:p-4 align-top row-start-1 col-span-full whitespace-nowrap">
@@ -377,37 +392,37 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                         </Button>
                       ) : (
                         <>
-                        {!userId || !verificationStatus?.phone_verified ? (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                            onClick={() => handleOpenDrawer(ad)}
-                          >
-                            <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                          </Button>
-                        ) : (
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
-                              >
-                                <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
-                              <AdActionsMenu
-                                ad={ad}
-                                onEdit={handleEdit}
-                                onToggleStatus={handleToggleStatus}
-                                onDelete={handleDelete}
-                                onShare={handleShare}
-                              />
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                         )}
+                          {!userId || !verificationStatus?.phone_verified ? (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                              onClick={() => handleOpenDrawer(ad)}
+                            >
+                              <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                            </Button>
+                          ) : (
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="p-1 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+                                >
+                                  <Image src="/icons/vertical.svg" alt="Options" width={20} height={20} />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-auto flex flex-col p-1">
+                                <AdActionsMenu
+                                  ad={ad}
+                                  onEdit={handleEdit}
+                                  onToggleStatus={handleToggleStatus}
+                                  onDelete={handleDelete}
+                                  onShare={handleShare}
+                                />
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          )}
                         </>
                       )}
                     </div>
