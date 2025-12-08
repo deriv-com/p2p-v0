@@ -360,7 +360,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                   </TableCell>
                   <TableCell
                     className={cn(
-                      "p-2 lg:p-4 lg:w-[200px] align-top row-start-4 col-span-full whitespace-nowrap",
+                      "p-2 lg:p-4 align-top row-start-4 col-span-full whitespace-nowrap",
                       !isActive || hiddenAdverts ? "opacity-60" : "",
                     )}
                   >
