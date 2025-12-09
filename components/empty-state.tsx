@@ -14,6 +14,7 @@ interface EmptyStateProps {
   description?: string
   className?: string
   redirectToAds?: boolean
+  onAddPaymentMethod?: () => void
 }
 
 export default function EmptyState({
@@ -22,6 +23,7 @@ export default function EmptyState({
   description,
   className,
   redirectToAds = false,
+  onAddPaymentMethod,
 }: EmptyStateProps) {
   const router = useRouter()
   const userId = useUserDataStore((state) => state.userId)
@@ -50,10 +52,15 @@ export default function EmptyState({
     <div className={cn("flex flex-col items-center justify-center py-8 text-center", className)}>
       <Image src={icon || "/icons/search-icon.svg"} alt="No ads found" width={88} height={88} />
       {title && <p className="text-lg text-neutral-10 mt-2 font-bold">{title}</p>}
-      {description && <p className="text-base text-neutral-7 mb-[10px] mt-2">{description}</p>}
+      {description && <p className="text-base font-normal text-grayscale-text-muted mb-[10px] mt-2">{description}</p>}
       {redirectToAds && (
         <Button onClick={createAd} className="mt-4">
           {t("myAds.createAd")}
+        </Button>
+      )}
+      {onAddPaymentMethod && (
+        <Button onClick={onAddPaymentMethod} className="mt-4">
+          {t("profile.addPaymentMethod")}
         </Button>
       )}
     </div>
