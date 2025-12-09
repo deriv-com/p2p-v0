@@ -26,6 +26,7 @@ interface AdDetailsFormProps {
 interface ValidationErrors {
   totalAmount?: string
   fixedRate?: string
+  floatingRate?: string // Add floatingRate to validation errors
   minAmount?: string
   maxAmount?: string
 }
@@ -58,6 +59,7 @@ export default function AdDetailsForm({
     fixedRate: false,
     minAmount: false,
     maxAmount: false,
+    floatingRate: false, // Add floatingRate to touched state
   })
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
@@ -238,6 +240,12 @@ export default function AdDetailsForm({
       }
     }
 
+    if (touched.floatingRate && priceType === "float") {
+      if (!floatingRate) {
+        errors.floatingRate = t("adForm.rateRequired")
+      }
+    }
+
     if (touched.minAmount) {
       if (!minAmount) {
         errors.minAmount = t("adForm.minAmountRequired")
@@ -271,6 +279,7 @@ export default function AdDetailsForm({
       minAmount: true,
       maxAmount: true,
       forCurrency,
+      floatingRate: true, // Add floatingRate to touched state
     })
 
     const total = Number(totalAmount)
@@ -392,6 +401,7 @@ export default function AdDetailsForm({
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -439,6 +449,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
@@ -498,13 +509,23 @@ export default function AdDetailsForm({
                   )}
                 </div>
               ) : (
-                <FloatingRateInput
-                  value={floatingRate}
-                  onChange={setFloatingRate}
-                  label="Rate"
-                  currency={forCurrency}
-                  marketPrice={marketPrice || undefined}
-                />
+                <div>
+                  <FloatingRateInput
+                    value={floatingRate}
+                    onChange={(value) => {
+                      setFloatingRate(value)
+                      setTouched((prev) => ({ ...prev, floatingRate: true }))
+                    }}
+                    onBlur={() => setTouched((prev) => ({ ...prev, floatingRate: true }))}
+                    label="Rate"
+                    currency={forCurrency}
+                    marketPrice={marketPrice || undefined}
+                    error={touched.floatingRate && !!formErrors.floatingRate}
+                  />
+                  {touched.floatingRate && formErrors.floatingRate && (
+                    <p className="text-destructive text-xs mt-1">{formErrors.floatingRate}</p>
+                  )}
+                </div>
               )}
             </div>
           </div>
