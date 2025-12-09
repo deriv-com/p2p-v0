@@ -562,7 +562,7 @@
     "priceType": "Price type",
     "ratePerCurrency": "Rate per {currency}",
     "sellQuantity": "Total sell amount",
-    "buyQuantity": "Buy quantity",
+    "buyQuantity": "Total buy amount",
     "lowestPrice": "Lowest price:",
     "highestPrice": "Highest price:",
     "transactionLimit": "Transaction limit",
