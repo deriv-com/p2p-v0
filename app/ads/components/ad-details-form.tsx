@@ -508,10 +508,7 @@ export default function AdDetailsForm({
               ) : (
                 <FloatingRateInput
                   value={floatingRate}
-                  onChange={(value) => {
-                    setFloatingRate(value)
-                    setTouched((prev) => ({ ...prev, floatingRate: true }))
-                  }}
+                  onChange={setFloatingRate}
                   onBlur={() => setTouched((prev) => ({ ...prev, floatingRate: true }))}
                   label="Rate"
                   currency={forCurrency}
