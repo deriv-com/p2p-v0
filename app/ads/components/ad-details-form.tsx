@@ -17,13 +17,10 @@ import { useTranslations } from "@/lib/i18n/use-translations"
 import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface AdDetailsFormProps {
-  onNext: (data: Partial<AdFormData>) => void
-  onClose: () => void
+  onNext: (data: Partial<AdFormData>, errors?: ValidationErrors) => void
   initialData?: Partial<AdFormData>
-  setFormData: (data: Partial<AdFormData>) => void
   isEditMode?: boolean
-  currencies: { currency: string }[]
-  onRegisterCleanup?: (cleanup: () => void) => void
+  currencies?: Array<{ code: string }>
 }
 
 interface ValidationErrors {
@@ -40,12 +37,9 @@ interface PriceRange {
 
 export default function AdDetailsForm({
   onNext,
-  onClose,
   initialData,
-  setFormData,
-  isEditMode = false,
-  currencies,
-  onRegisterCleanup,
+  isEditMode,
+  currencies: currenciesProp,
 }: AdDetailsFormProps) {
   const { t } = useTranslations()
   const [type, setType] = useState<"buy" | "sell">(initialData?.type || "buy")
@@ -91,10 +85,10 @@ export default function AdDetailsForm({
   }
 
   useEffect(() => {
-    if (currencies.length > 0 && !initialData.forCurrency && !forCurrency) {
-      setForCurrency(currencies[0].currency)
+    if (currenciesProp.length > 0 && !initialData.forCurrency && !forCurrency) {
+      setForCurrency(currenciesProp[0].code)
     }
-  }, [currencies, forCurrency])
+  }, [currenciesProp, forCurrency])
 
   useEffect(() => {
     const fetchPriceRange = async () => {
@@ -166,38 +160,30 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency, priceType, type])
 
   useEffect(() => {
-    if (!isConnected) return
+    if(!isConnected) return
 
     joinExchangeRatesChannel(buyCurrency)
 
-    const cleanup = () => {
-      leaveExchangeRatesChannel(buyCurrency)
+    return () => {
+     // leaveExchangeRatesChannel(buyCurrency)
     }
-
-    // Register cleanup with parent if callback provided
-    if (onRegisterCleanup) {
-      onRegisterCleanup(cleanup)
-    }
-
-    // Don't cleanup on unmount, only when parent calls it
-    return () => {}
   }, [isConnected])
 
   useEffect(() => {
     if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
-
+    
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
     }, 100)
 
     const unsubscribe = subscribe((data: any) => {
       if (data.options.channel === `exchange_rates/${buyCurrency}`) {
-        if (data.payload[forCurrency]?.rate) {
+        if(data.payload[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
         } else if (data.payload?.data[forCurrency]?.rate) {
           setMarketPrice(data.payload.data.rate)
         }
-      } else if (data.action === "error") {
+      } else if(data.action === "error") {
         setMarketPrice(null)
       }
     })
@@ -206,6 +192,7 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
+   
   }, [buyCurrency, forCurrency, isConnected, priceType])
 
   useEffect(() => {
@@ -406,7 +393,6 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -447,23 +433,22 @@ export default function AdDetailsForm({
                     </SelectValue>
                   </SelectTrigger>
                   <SelectContent>
-                    {currencies.map((currency) => (
-                      <SelectItem key={currency.currency} value={currency.currency}>
+                    {currenciesProp.map((currency) => (
+                      <SelectItem key={currency.code} value={currency.code}>
                         <div className="flex items-center gap-2">
-                          {currencyLogoMapper[currency.currency as keyof typeof currencyLogoMapper] && (
+                          {currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] && (
                             <Image
                               src={
-                                currencyLogoMapper[currency.currency as keyof typeof currencyLogoMapper] ||
-                                "/placeholder.svg" ||
+                                currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
                                 "/placeholder.svg"
                               }
-                              alt={`${currency.currency} logo`}
+                              alt={`${currency.code} logo`}
                               width={20}
                               height={20}
                               className="w-5 h-5 rounded-full object-contain"
                             />
                           )}
-                          <span>{currency.currency}</span>
+                          <span>{currency.code}</span>
                         </div>
                       </SelectItem>
                     ))}
@@ -535,39 +520,36 @@ export default function AdDetailsForm({
                       maximumFractionDigits: 2,
                     })}{" "}
                     <span className="text-xs font-normal">{forCurrency}</span>
-                  </span>
-                ) : (
+                  </span>) : 
                   <span className="text-slate-1200">-</span>
-                )}
+                }
               </div>
             )}
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Lowest rate in market:</span>
-              {priceRange?.lowestPrice ? (
-                <span className="text-slate-1200">
+              {priceRange?.lowestPrice ? 
+                (<span className="text-slate-1200">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
-                </span>
-              ) : (
+                </span>) : 
                 <span className="text-slate-1200">-</span>
-              )}
+              }
             </div>
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Highest rate in market:</span>
-              {priceRange?.highestPrice ? (
-                <span className="text-slate-1200">
+              {priceRange?.highestPrice ? 
+                (<span className="text-slate-1200">
                   {priceRange.highestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
-                </span>
-              ) : (
+                </span>) : 
                 <span className="text-slate-1200">-</span>
-              )}
+              }
             </div>
           </div>
 
