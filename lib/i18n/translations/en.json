@@ -507,7 +507,7 @@
     "setAdConditions": "Set ad conditions",
     "buyCurrency": "Buy",
     "sellCurrency": "Sell",
-    "for": "Paying with",
+    "for": "For",
     "priceType": "Price type",
     "ratePerCurrency": "Rate per {currency}",
     "sellQuantity": "Sell quantity",
