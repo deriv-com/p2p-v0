@@ -345,12 +345,14 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                     {isMobile && (
                       <div className="flex items-center justify-between gap-1">
                         <span className="text-xs font-bold leading-5 text-slate-500">{t("myAds.rate")}:</span>
-                        <span className="text-xs leading-5 text-gray-900">{rate}</span>
-                        {exchangeRateType == "float" && ad.exchange_rate != 0 && (
-                          <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
-                            {exchangeRate}
-                          </span>
-                        )}
+                        <div>
+                          <span className="text-xs leading-5 text-gray-900">{rate}</span>
+                          {exchangeRateType == "float" && ad.exchange_rate != 0 && (
+                            <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
+                              {exchangeRate}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     )}
                     <div className="flex items-center justify-between md:justify-normal gap-1">
