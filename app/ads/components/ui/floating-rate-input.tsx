@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -25,6 +25,18 @@ export function FloatingRateInput({
   marketPrice,
 }: FloatingRateInputProps) {
   const [isFocused, setIsFocused] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (inputRef.current && isFocused) {
+      const input = inputRef.current
+      const valueLength = value.length
+
+      if (input.selectionStart && input.selectionStart > valueLength) {
+        input.setSelectionRange(valueLength, valueLength)
+      }
+    }
+  }, [value, isFocused])
 
   const handleIncrement = () => {
     const currentValue = Number.parseFloat(value) || 0
@@ -39,22 +51,43 @@ export function FloatingRateInput({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value.replace("%", "").trim()
+    const inputValue = e.target.value
+    const newValue = inputValue.replace(/%/g, "").trim()
 
     if (newValue === "" || newValue === "-") {
       onChange(newValue)
       return
     }
 
-    // Allow partial decimal input like "1.", "1.0", "-0.", etc.
     if (newValue.endsWith(".") || /^-?\d*\.?\d*$/.test(newValue)) {
       const numValue = Number.parseFloat(newValue)
-      // Only validate range if it's a complete number, not a partial decimal
       if (newValue.endsWith(".") || isNaN(numValue)) {
         onChange(newValue)
       } else if (numValue >= -100 && numValue <= 100) {
         onChange(newValue)
       }
+    }
+  }
+
+  const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
+    const input = e.currentTarget
+    const clickPosition = input.selectionStart || 0
+    const valueLength = value.length
+
+    if (clickPosition > valueLength) {
+      setTimeout(() => {
+        input.setSelectionRange(valueLength, valueLength)
+      }, 0)
+    }
+  }
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const input = e.currentTarget
+    const cursorPosition = input.selectionStart || 0
+    const valueLength = value.length
+
+    if ((e.key === "ArrowRight" || e.key === "End") && cursorPosition >= valueLength) {
+      e.preventDefault()
     }
   }
 
@@ -74,9 +107,12 @@ export function FloatingRateInput({
           >
             <div className="flex-1 relative">
               <Input
+                ref={inputRef}
                 type="text"
                 value={`${value}%`}
                 onChange={handleChange}
+                onClick={handleClick}
+                onKeyDown={handleKeyDown}
                 onBlur={() => {
                   setIsFocused(false)
                   onBlur?.()
