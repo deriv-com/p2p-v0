@@ -101,6 +101,10 @@ export const maskAccountNumber = (accountNumber: any): string => {
 export function formatPaymentMethodName(methodName: string): string {
   if (!methodName) return ""
 
+  if (methodName === "bank_transfer") {
+    return "Bank transfer"
+  }
+
   return methodName
     .split("_")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
