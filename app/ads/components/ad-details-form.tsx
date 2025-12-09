@@ -279,7 +279,7 @@ export default function AdDetailsForm({
       minAmount: true,
       maxAmount: true,
       forCurrency,
-      floatingRate: true, // Add floatingRate to touched state
+      floatingRate: true,
     })
 
     const total = Number(totalAmount)
