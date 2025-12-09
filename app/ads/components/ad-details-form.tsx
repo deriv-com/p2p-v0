@@ -464,7 +464,7 @@ export default function AdDetailsForm({
 
           <div className="mt-4">
             <div className="grid gap-4">
-              {priceType === "fixed" ? (
+              {priceType === "fixed" || !marketPrice ? (
                 <div>
                   <RateInput
                     currency={forCurrency}
