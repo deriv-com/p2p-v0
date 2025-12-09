@@ -47,7 +47,7 @@ export function FloatingRateInput({
     }
 
     // Allow partial decimal input like "1.", "1.0", "-0.", etc.
-    if (newValue.endsWith(".") || /^-?\d*\.?\d*$/.test(newValue)) {
+    if (/^-?\d*\.?\d{0,2}$/.test(newValue)) {
       const numValue = Number.parseFloat(newValue)
       // Only validate range if it's a complete number, not a partial decimal
       if (newValue.endsWith(".") || isNaN(numValue)) {
