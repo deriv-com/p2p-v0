@@ -64,6 +64,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
 
   const formDataRef = useRef({})
   const previousTypeRef = useRef<"buy" | "sell" | undefined>(initialType)
+  const exchangeRateCleanupRef = useRef<(() => void) | null>(null)
 
   const steps = [
     { title: t("adForm.setTypeAndPrice"), completed: currentStep > 0 },
@@ -250,7 +251,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const formatErrorMessage = (errors: any[]): string => {
-
     if (!errors || errors.length === 0) {
       return t("adForm.unknownErrorMessage")
     }
@@ -490,7 +490,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const handleClose = () => {
+    if (exchangeRateCleanupRef.current) {
+      exchangeRateCleanupRef.current()
+      exchangeRateCleanupRef.current = null
+    }
     router.push("/ads")
+  }
+
+  const handleRegisterCleanup = (cleanup: () => void) => {
+    exchangeRateCleanupRef.current = cleanup
   }
 
   const isButtonDisabled =
@@ -544,6 +552,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                 setFormData={setFormData}
                 isEditMode={mode === "edit"}
                 currencies={currencies}
+                onRegisterCleanup={handleRegisterCleanup}
               />
             ) : currentStep === 1 ? (
               <PaymentDetailsForm
@@ -654,10 +663,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   )
 }
 
-export default function MultiStepAdForm({ mode, adId, initialType }: MultiStepAdFormProps) {
+export default function MultiStepAdForm({ mode }: MultiStepAdFormProps) {
   return (
     <PaymentSelectionProvider>
-      <MultiStepAdFormInner mode={mode} adId={adId} initialType={initialType} />
+      <MultiStepAdFormInner mode={mode} />
     </PaymentSelectionProvider>
   )
 }
