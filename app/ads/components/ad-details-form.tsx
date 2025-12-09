@@ -176,8 +176,10 @@ export default function AdDetailsForm({
       if (data.options.channel === `exchange_rates/${buyCurrency}`) {
         if(data.payload[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
+          setPriceType("float")
         } else if (data.payload?.data[forCurrency]?.rate) {
           setMarketPrice(data.payload.data[forCurrency].rate)
+          setPriceType("float")
         } else {
           setMarketPrice(null)
           setPriceType("fixed")
