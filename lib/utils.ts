@@ -118,7 +118,7 @@ export function getMethodDisplayDetails(method: {
 }) {
   if (method.type === "bank") {
     const account = method.fields.account?.value || ""
-    const bankName = method.fields.bank_name?.value || "Bank Transfer"
+    const bankName = method.fields.bank_name?.value || "Bank transfer"
     const maskedAccount = maskAccountNumber(account)
 
     return {
