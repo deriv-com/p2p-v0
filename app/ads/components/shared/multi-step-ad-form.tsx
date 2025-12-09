@@ -490,6 +490,9 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const handleClose = () => {
+    const finalData = { ...formDataRef.current }
+    leaveExchangeRatesChannel(finalData?.buyCurrency)
+
     router.push("/ads")
   }
 
