@@ -173,13 +173,11 @@ export default function AdDetailsForm({
 
     const unsubscribe = subscribe((data: any) => {
       if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
-        // Check if payload exists and has the currency data
         if (data.payload?.[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
         } else if (data.payload?.data?.[forCurrency]?.rate) {
           setMarketPrice(data.payload.data[forCurrency].rate)
         } else {
-          // Currency pair has no exchange rate available
           setMarketPrice(null)
         }
       } else if (data.action === "error") {
