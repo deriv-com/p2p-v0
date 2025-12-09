@@ -18,6 +18,7 @@ import { PaymentSelectionProvider, usePaymentSelection } from "../payment-select
 import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { useWebSocketContext } from "@/contexts/websocket-context"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
