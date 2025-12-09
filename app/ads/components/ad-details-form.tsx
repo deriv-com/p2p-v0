@@ -180,6 +180,7 @@ export default function AdDetailsForm({
           setMarketPrice(data.payload.data[forCurrency].rate)
         } else {
           setMarketPrice(null)
+          setPriceType("fixed")
         }
       } else if(data.action === "error") {
         setMarketPrice(null)
