@@ -173,8 +173,6 @@ export default function AdDetailsForm({
 
     const unsubscribe = subscribe((data: any) => {
       if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
-        console.log(data.payload?.[forCurrency])
-        console.log(data.payload?.data[forCurrency])
         if (data.payload?.[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
         } else if (data.payload?.data[forCurrency]?.rate) {
