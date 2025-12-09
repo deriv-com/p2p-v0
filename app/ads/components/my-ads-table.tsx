@@ -319,7 +319,7 @@ export default function MyAdsTable({ ads, hiddenAdverts, isLoading, onAdDeleted 
                             <span className="text-xs md:text-sm font-bold leading-5 text-gray-900">{rate}</span>
                             {exchangeRateType == "float" && ad.exchange_rate != 0 && (
                               <span className="text-xs text-grayscale-600 rounded-sm bg-grayscale-500 p-1 ml-1">
-                                {exchangeRate}
+                                {exchangeRate} {ad.payment_currency}
                               </span>
                             )}
                           </div>
