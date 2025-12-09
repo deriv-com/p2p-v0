@@ -175,7 +175,7 @@ export default function AdDetailsForm({
       if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
         if (data.payload?.[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
-        } else if (data.payload?.data?.[forCurrency]?.rate) {
+        } else if (data.payload?.data[forCurrency]?.rate) {
           setMarketPrice(data.payload.data[forCurrency].rate)
         } else {
           setMarketPrice(null)
