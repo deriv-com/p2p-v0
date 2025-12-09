@@ -63,8 +63,7 @@ export default function AdDetailsForm({
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
   const [marketPrice, setMarketPrice] = useState<number | null>(null)
 
-  const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } =
-    useWebSocketContext()
+  const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } = useWebSocketContext()
 
   const getDecimalPlaces = (value: string): number => {
     const decimalPart = value.split(".")[1]
@@ -160,28 +159,30 @@ export default function AdDetailsForm({
   }, [buyCurrency, forCurrency, priceType, type])
 
   useEffect(() => {
-    if(!isConnected) return
+    if (!isConnected) return
 
     joinExchangeRatesChannel(buyCurrency)
   }, [isConnected])
 
   useEffect(() => {
     if (priceType === "fixed" || !buyCurrency || !forCurrency || !isConnected) return
-    
+
     const requestTimer = setTimeout(() => {
       requestExchangeRate(buyCurrency)
     }, 100)
 
     const unsubscribe = subscribe((data: any) => {
-      if (data.options.channel === `exchange_rates/${buyCurrency}`) {
-        if(data.payload[forCurrency]?.rate) {
+      if (data.options?.channel === `exchange_rates/${buyCurrency}`) {
+        // Check if payload exists and has the currency data
+        if (data.payload?.[forCurrency]?.rate) {
           setMarketPrice(data.payload[forCurrency].rate)
-        } else if (data.payload?.data[forCurrency]?.rate) {
+        } else if (data.payload?.data?.[forCurrency]?.rate) {
           setMarketPrice(data.payload.data[forCurrency].rate)
         } else {
+          // Currency pair has no exchange rate available
           setMarketPrice(null)
         }
-      } else if(data.action === "error") {
+      } else if (data.action === "error") {
         setMarketPrice(null)
       }
     })
@@ -190,7 +191,6 @@ export default function AdDetailsForm({
       clearTimeout(requestTimer)
       unsubscribe()
     }
-   
   }, [buyCurrency, forCurrency, isConnected, priceType])
 
   useEffect(() => {
@@ -391,6 +391,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -438,6 +439,7 @@ export default function AdDetailsForm({
                             <Image
                               src={
                                 currencyLogoMapper[currency.code as keyof typeof currencyLogoMapper] ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={`${currency.code} logo`}
@@ -518,36 +520,39 @@ export default function AdDetailsForm({
                       maximumFractionDigits: 2,
                     })}{" "}
                     <span className="text-xs font-normal">{forCurrency}</span>
-                  </span>) : 
+                  </span>
+                ) : (
                   <span className="text-slate-1200">-</span>
-                }
+                )}
               </div>
             )}
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Lowest rate in market:</span>
-              {priceRange?.lowestPrice ? 
-                (<span className="text-slate-1200">
+              {priceRange?.lowestPrice ? (
+                <span className="text-slate-1200">
                   {priceRange.lowestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
-                </span>) : 
+                </span>
+              ) : (
                 <span className="text-slate-1200">-</span>
-              }
+              )}
             </div>
             <div className="flex items-center justify-between text-xs ">
               <span className="text-grayscale-text-muted">Highest rate in market:</span>
-              {priceRange?.highestPrice ? 
-                (<span className="text-slate-1200">
+              {priceRange?.highestPrice ? (
+                <span className="text-slate-1200">
                   {priceRange.highestPrice.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}{" "}
                   <span className="text-xs font-normal">{forCurrency}</span>
-                </span>) : 
+                </span>
+              ) : (
                 <span className="text-slate-1200">-</span>
-              }
+              )}
             </div>
           </div>
 
