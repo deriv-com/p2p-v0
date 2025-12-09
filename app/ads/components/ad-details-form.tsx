@@ -63,7 +63,7 @@ export default function AdDetailsForm({
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
   const [marketPrice, setMarketPrice] = useState<number | null>(null)
 
-  const { isConnected, joinExchangeRatesChannel, leaveExchangeRatesChannel, subscribe, requestExchangeRate } =
+  const { isConnected, joinExchangeRatesChannel, subscribe, requestExchangeRate } =
     useWebSocketContext()
 
   const getDecimalPlaces = (value: string): number => {
