@@ -39,7 +39,7 @@ export function FloatingRateInput({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value
+    const newValue = e.target.value.replace("%", "").trim()
 
     if (newValue === "" || newValue === "-") {
       onChange(newValue)
@@ -79,7 +79,6 @@ export function FloatingRateInput({
                 placeholder=""
                 aria-invalid={error}
                 className="pr-8 border-0 h-[56px] text-grayscale-600"
-                readOnly
               />
             </div>
 
@@ -94,31 +93,33 @@ export function FloatingRateInput({
           </div>
           <div className="text-xs text-grayscale-text-muted ml-4 mt-1">
             Current market price:{" "}
-            {marketPrice ? 
-              (<span>
+            {marketPrice ? (
+              <span>
                 {marketPrice.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}{" "}
                 {currency}
-              </span>) : 
+              </span>
+            ) : (
               <span className="text-slate-1200">-</span>
-            }
+            )}
           </div>
         </div>
       </div>
       <div className="flex items-center justify-between text-xs">
         <span className="text-grayscale-text-muted">Your rate:</span>
-        {yourPrice ? 
-          (<span className="text-slate-1200">
+        {yourPrice ? (
+          <span className="text-slate-1200">
             {yourPrice.toLocaleString(undefined, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}{" "}
             <span className="text-xs font-normal">{currency}</span>
-          </span>) : 
+          </span>
+        ) : (
           <span className="text-slate-1200">-</span>
-        }
+        )}
       </div>
     </div>
   )
