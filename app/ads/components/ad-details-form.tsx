@@ -163,10 +163,6 @@ export default function AdDetailsForm({
     if(!isConnected) return
 
     joinExchangeRatesChannel(buyCurrency)
-
-    return () => {
-     // leaveExchangeRatesChannel(buyCurrency)
-    }
   }, [isConnected])
 
   useEffect(() => {
