@@ -26,7 +26,7 @@ interface AdDetailsFormProps {
 interface ValidationErrors {
   totalAmount?: string
   fixedRate?: string
-  floatingRate?: string // Add floatingRate to validation errors
+  floatingRate?: string
   minAmount?: string
   maxAmount?: string
 }
@@ -59,7 +59,7 @@ export default function AdDetailsForm({
     fixedRate: false,
     minAmount: false,
     maxAmount: false,
-    floatingRate: false, // Add floatingRate to touched state
+    floatingRate: false,
   })
   const [priceRange, setPriceRange] = useState<PriceRange>({ lowestPrice: null, highestPrice: null })
   const [isLoadingPriceRange, setIsLoadingPriceRange] = useState(false)
