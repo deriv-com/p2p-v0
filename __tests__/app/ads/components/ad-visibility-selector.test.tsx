@@ -116,20 +116,20 @@ describe("AdVisibilitySelector", () => {
     expect(closedGroupLabel).toHaveClass("bg-white")
   })
 
-  it("renders globe icon for 'everyone' option", () => {
-    const { container } = render(<AdVisibilitySelector value="everyone" onValueChange={mockOnValueChange} />)
+  it("renders everyone icon image for 'everyone' option", () => {
+    render(<AdVisibilitySelector value="everyone" onValueChange={mockOnValueChange} />)
 
-    const everyoneLabel = container.querySelector('label[for="visibility-everyone"]')
-    const svgIcon = everyoneLabel?.querySelector("svg")
-    expect(svgIcon).toBeInTheDocument()
+    const everyoneIcon = screen.getByAltText("Everyone")
+    expect(everyoneIcon).toBeInTheDocument()
+    expect(everyoneIcon).toHaveAttribute("src", "/icons/everyone.svg")
   })
 
-  it("renders star icon for 'closed_group' option", () => {
-    const { container } = render(<AdVisibilitySelector value="closed_group" onValueChange={mockOnValueChange} />)
+  it("renders closed group icon image for 'closed_group' option", () => {
+    render(<AdVisibilitySelector value="closed_group" onValueChange={mockOnValueChange} />)
 
-    const closedGroupLabel = container.querySelector('label[for="visibility-closed-group"]')
-    const svgIcon = closedGroupLabel?.querySelector("svg")
-    expect(svgIcon).toBeInTheDocument()
+    const closedGroupIcon = screen.getByAltText("Closed group")
+    expect(closedGroupIcon).toBeInTheDocument()
+    expect(closedGroupIcon).toHaveAttribute("src", "/icons/closed-group.svg")
   })
 
   it("prevents default behavior when clicking 'Edit list' button", () => {
