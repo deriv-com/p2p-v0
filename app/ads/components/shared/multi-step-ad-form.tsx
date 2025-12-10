@@ -18,6 +18,7 @@ import { PaymentSelectionProvider, usePaymentSelection } from "../payment-select
 import { useToast } from "@/hooks/use-toast"
 import { getSettings, type Country } from "@/services/api/api-auth"
 import { useTranslations } from "@/lib/i18n/use-translations"
+import { AdVisibilitySelector, type AdVisibilityType } from "./ad-visibility-selector"
 
 interface MultiStepAdFormProps {
   mode: "create" | "edit"
@@ -56,6 +57,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   const { showAlert } = useAlertDialog()
   const [orderTimeLimit, setOrderTimeLimit] = useState(15)
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+  const [adVisibility, setAdVisibility] = useState<AdVisibilityType>("everyone")
   const [countries, setCountries] = useState<Country[]>([])
   const [isLoadingCountries, setIsLoadingCountries] = useState(true)
   const [currencies, setCurrencies] = useState<Array<{ code: string }>>([])
@@ -193,6 +195,10 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
             if (data.available_countries) {
               setSelectedCountries(data.available_countries)
             }
+
+            if (data.ad_visibility) {
+              setAdVisibility(data.ad_visibility as AdVisibilityType)
+            }
           }
         } catch (error) {}
       }
@@ -249,7 +255,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const formatErrorMessage = (errors: any[]): string => {
-
     if (!errors || errors.length === 0) {
       return t("adForm.unknownErrorMessage")
     }
@@ -313,6 +318,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           is_active: 1,
           order_expiry_period: orderTimeLimit,
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
+          ad_visibility: adVisibility,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -343,6 +349,7 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           order_expiry_period: orderTimeLimit,
           available_countries: selectedCountries.length > 0 ? selectedCountries : undefined,
           description: finalData.instructions || "",
+          ad_visibility: adVisibility,
           ...(finalData.type === "buy"
             ? { payment_method_names: finalData.paymentMethods || [] }
             : { payment_method_ids: selectedPaymentMethodIdsForSubmit }),
@@ -607,6 +614,15 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
                     />
                   </div>
                 </div>
+
+                <AdVisibilitySelector
+                  value={adVisibility}
+                  onValueChange={setAdVisibility}
+                  onEditList={() => {
+                    // TODO: Implement edit list functionality
+                    console.log("Edit list clicked")
+                  }}
+                />
               </div>
             )}
           </div>
