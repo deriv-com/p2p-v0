@@ -556,6 +556,7 @@
     "audienceTooltip": "Você pode filtrar quem interage com seus anúncios com base em sua localização ou histórico P2P. Filtros mais rigorosos podem reduzir a visibilidade do anúncio.",
     "instructions": "Instruções do vendedor (Opcional)",
     "instructionsDisclaimer": "Esta informação será visível para todos. Não compartilhe seu número de telefone ou detalhes pessoais.",
+    "instructionsInvalidCharacters": "Apenas letras, números e espaços são permitidos",
     "totalAmountRequired": "O valor total é obrigatório",
     "totalAmountGreaterThanZero": "O valor total deve ser maior que 0",
     "rateRequired": "A taxa é obrigatória",

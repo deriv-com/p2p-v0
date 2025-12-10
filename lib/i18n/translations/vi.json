@@ -493,6 +493,7 @@
     "audienceTooltip": "Bạn có thể lọc người tương tác với quảng cáo của mình dựa trên vị trí hoặc lịch sử P2P của họ. Bộ lọc nghiêm ngặt hơn có thể giảm khả năng hiển thị quảng cáo.",
     "instructions": "Hướng dẫn (Tùy chọn)",
     "instructionsDisclaimer": "Thông tin này sẽ hiển thị cho mọi người. Đừng chia sẻ số điện thoại hoặc chi tiết cá nhân của bạn.",
+    "instructionsInvalidCharacters": "Chỉ cho phép chữ cái, số và khoảng trắng",
     "totalAmountRequired": "Tổng số tiền là bắt buộc",
     "totalAmountGreaterThanZero": "Tổng số tiền phải lớn hơn 0",
     "rateRequired": "Tỷ giá là bắt buộc",
