@@ -387,9 +387,18 @@ export default function PaymentDetailsForm({
   const [showFullPageModal, setShowFullPageModal] = useState(false)
   const { hideAlert, showAlert } = useAlertDialog()
   const { selectedPaymentMethodIds, setSelectedPaymentMethodIds } = usePaymentSelection()
+  const [instructionsError, setInstructionsError] = useState(false)
+
+  const validateInstructions = (value: string) => {
+    if (value.length === 0) return true
+    const regex = /^[\p{L}\p{Nd}\s@\-.!/%&,_()+:;]{0,300}$/u
+    return regex.test(value)
+  }
 
   const isFormValid = () => {
-    return selectedPaymentMethodIds.length > 0
+    const hasPaymentMethod = selectedPaymentMethodIds.length > 0
+    const instructionsValid = instructions.length === 0 || validateInstructions(instructions)
+    return hasPaymentMethod && instructionsValid
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -541,11 +550,24 @@ export default function PaymentDetailsForm({
               <div>
                 <Textarea
                   value={instructions}
-                  onChange={(e) => setInstructions(e.target.value)}
+                  onChange={(e) => {
+                    const newValue = e.target.value
+                    setInstructions(newValue)
+                    if (newValue.length > 0) {
+                      setInstructionsError(!validateInstructions(newValue))
+                    } else {
+                      setInstructionsError(false)
+                    }
+                  }}
                   placeholder={t("adForm.instructions")}
-                  className="min-h-[120px] resize-none"
+                  className={`min-h-[120px] resize-none ${instructionsError ? "border-red-500" : ""}`}
                   maxLength={300}
                 />
+                {instructionsError && (
+                  <div className="flex items-center gap-2 mt-2 text-red-500 text-sm mx-4">
+                    <span>Please enter allowed characters</span>
+                  </div>
+                )}
                 <div className="flex justify-between items-start mt-2 text-xs text-gray-500 mx-4">
                   <span>{t("adForm.instructionsDisclaimer")}</span>
                   <span>{instructions.length}/300</span>
