@@ -83,7 +83,7 @@ export function PriceTypeSelector({ marketPrice, value, onChange, disabled = fal
         {marketPrice && value === "float" ? 
           (<h3 className="text-lg font-bold leading-6 tracking-normal">Rate</h3>) :
           (
-            <div className="flex">
+            <div className="flex items-center">
               <h3 className="text-lg font-bold leading-6 tracking-normal">Rate (fixed)</h3>
               <Tooltip>
                 <TooltipTrigger asChild>
