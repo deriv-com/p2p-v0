@@ -249,7 +249,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
   }
 
   const formatErrorMessage = (errors: any[]): string => {
-
     if (!errors || errors.length === 0) {
       return t("adForm.unknownErrorMessage")
     }
@@ -337,7 +336,6 @@ function MultiStepAdFormInner({ mode, adId, initialType }: MultiStepAdFormProps)
           is_active: true,
           minimum_order_amount: finalData.minAmount || 0,
           maximum_order_amount: finalData.maxAmount || 0,
-          available_amount: finalData.totalAmount || 0,
           exchange_rate: finalData.fixedRate || 0,
           exchange_rate_type: "fixed",
           order_expiry_period: orderTimeLimit,
