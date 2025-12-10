@@ -12,7 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export type PriceType = "fixed" | "float"
 
 interface PriceTypeSelectorProps {
-  marketPrice: string
+  marketPrice: number | null
   value: PriceType
   onChange: (value: PriceType) => void
   disabled?: boolean
