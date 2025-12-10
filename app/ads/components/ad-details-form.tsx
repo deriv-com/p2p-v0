@@ -462,7 +462,7 @@ export default function AdDetailsForm({
         )}
 
         <div>
-          {marketPrice && <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />}
+          <PriceTypeSelector marketPrice={marketPrice} value={priceType} onChange={setPriceType} disabled={isEditMode} />
 
           <div className="mt-4">
             <div className="grid gap-4">
