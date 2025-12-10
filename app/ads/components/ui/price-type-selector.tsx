@@ -12,12 +12,13 @@ import { useIsMobile } from "@/hooks/use-mobile"
 export type PriceType = "fixed" | "float"
 
 interface PriceTypeSelectorProps {
+  marketPrice: string
   value: PriceType
   onChange: (value: PriceType) => void
   disabled?: boolean
 }
 
-export function PriceTypeSelector({ value, onChange, disabled = false }: PriceTypeSelectorProps) {
+export function PriceTypeSelector({ marketPrice, value, onChange, disabled = false }: PriceTypeSelectorProps) {
   const [open, setOpen] = useState(false)
   const isMobile = useIsMobile()
 
